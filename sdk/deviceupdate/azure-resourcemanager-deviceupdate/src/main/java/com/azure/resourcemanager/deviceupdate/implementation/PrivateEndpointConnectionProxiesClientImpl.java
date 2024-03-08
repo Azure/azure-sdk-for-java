@@ -44,24 +44,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionProxiesClient.
  */
 public final class PrivateEndpointConnectionProxiesClientImpl implements PrivateEndpointConnectionProxiesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateEndpointConnectionProxiesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DeviceUpdateImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionProxiesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateEndpointConnectionProxiesClientImpl(DeviceUpdateImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    PrivateEndpointConnectionProxiesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateEndpointConnectionProxiesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,133 +71,91 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      */
     @Host("{$host}")
     @ServiceInterface(name = "DeviceUpdatePrivateE")
-    private interface PrivateEndpointConnectionProxiesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/privateEndpointConnectionProxies")
-        @ExpectedResponses({200})
+    public interface PrivateEndpointConnectionProxiesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/privateEndpointConnectionProxies")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionProxyListResult>> listByAccount(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PrivateEndpointConnectionProxyListResult>> listByAccount(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyId}"
-                + "/validate")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyId}/validate")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> validate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> validate(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("privateEndpointConnectionProxyId") String privateEndpointConnectionProxyId,
             @BodyParam("application/json") PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyId}"
-                + "/updatePrivateEndpointProperties")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyId}/updatePrivateEndpointProperties")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> updatePrivateEndpointProperties(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+        Mono<Response<Void>> updatePrivateEndpointProperties(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("privateEndpointConnectionProxyId") String privateEndpointConnectionProxyId,
             @BodyParam("application/json") PrivateEndpointUpdate privateEndpointUpdate,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionProxyInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+        Mono<Response<PrivateEndpointConnectionProxyInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("privateEndpointConnectionProxyId") String privateEndpointConnectionProxyId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyId}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyId}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("privateEndpointConnectionProxyId") String privateEndpointConnectionProxyId,
             @BodyParam("application/json") PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyId}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/privateEndpointConnectionProxies/{privateEndpointConnectionProxyId}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("privateEndpointConnectionProxyId") String privateEndpointConnectionProxyId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private endpoint connection proxies for an Account (not to be used by anyone, here because
-     *     of ARM requirements) along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * of ARM requirements) along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionProxyInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<PrivateEndpointConnectionProxyInner>>
+        listByAccountSinglePageAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -208,27 +166,16 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAccount(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            accept,
-                            context))
-            .<PagedResponse<PrivateEndpointConnectionProxyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByAccount(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, accept, context))
+            .<PagedResponse<PrivateEndpointConnectionProxyInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -236,22 +183,18 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private endpoint connection proxies for an Account (not to be used by anyone, here because
-     *     of ARM requirements) along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * of ARM requirements) along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionProxyInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<PrivateEndpointConnectionProxyInner>>
+        listByAccountSinglePageAsync(String resourceGroupName, String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -263,40 +206,32 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAccount(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByAccount(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private endpoint connection proxies for an Account (not to be used by anyone, here because
-     *     of ARM requirements) as paginated response with {@link PagedFlux}.
+     * of ARM requirements) as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionProxyInner> listByAccountAsync(
-        String resourceGroupName, String accountName) {
+    private PagedFlux<PrivateEndpointConnectionProxyInner> listByAccountAsync(String resourceGroupName,
+        String accountName) {
         return new PagedFlux<>(() -> listByAccountSinglePageAsync(resourceGroupName, accountName));
     }
 
     /**
      * (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -304,34 +239,34 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private endpoint connection proxies for an Account (not to be used by anyone, here because
-     *     of ARM requirements) as paginated response with {@link PagedFlux}.
+     * of ARM requirements) as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionProxyInner> listByAccountAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private PagedFlux<PrivateEndpointConnectionProxyInner> listByAccountAsync(String resourceGroupName,
+        String accountName, Context context) {
         return new PagedFlux<>(() -> listByAccountSinglePageAsync(resourceGroupName, accountName, context));
     }
 
     /**
      * (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private endpoint connection proxies for an Account (not to be used by anyone, here because
-     *     of ARM requirements) as paginated response with {@link PagedIterable}.
+     * of ARM requirements) as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateEndpointConnectionProxyInner> listByAccount(
-        String resourceGroupName, String accountName) {
+    public PagedIterable<PrivateEndpointConnectionProxyInner> listByAccount(String resourceGroupName,
+        String accountName) {
         return new PagedIterable<>(listByAccountAsync(resourceGroupName, accountName));
     }
 
     /**
      * (INTERNAL - DO NOT USE) List all private endpoint connection proxies in a device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -339,17 +274,17 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the available private endpoint connection proxies for an Account (not to be used by anyone, here because
-     *     of ARM requirements) as paginated response with {@link PagedIterable}.
+     * of ARM requirements) as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateEndpointConnectionProxyInner> listByAccount(
-        String resourceGroupName, String accountName, Context context) {
+    public PagedIterable<PrivateEndpointConnectionProxyInner> listByAccount(String resourceGroupName,
+        String accountName, Context context) {
         return new PagedIterable<>(listByAccountAsync(resourceGroupName, accountName, context));
     }
 
     /**
      * (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -360,22 +295,15 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> validateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
+    private Mono<Response<Void>> validateWithResponseAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -385,40 +313,26 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateEndpointConnectionProxyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
         }
         if (privateEndpointConnectionProxy == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxy is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxy is required and cannot be null."));
         } else {
             privateEndpointConnectionProxy.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .validate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            privateEndpointConnectionProxyId,
-                            privateEndpointConnectionProxy,
-                            accept,
-                            context))
+            .withContext(context -> service.validate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, privateEndpointConnectionProxyId,
+                privateEndpointConnectionProxy, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -430,23 +344,16 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> validateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
+    private Mono<Response<Void>> validateWithResponseAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -456,37 +363,25 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateEndpointConnectionProxyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
         }
         if (privateEndpointConnectionProxy == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxy is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxy is required and cannot be null."));
         } else {
             privateEndpointConnectionProxy.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .validate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                privateEndpointConnectionProxy,
-                accept,
-                context);
+        return service.validate(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointConnectionProxy, accept,
+            context);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -497,40 +392,15 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> validateAsync(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
-        return validateWithResponseAsync(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointConnectionProxy)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> validateAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
+        return validateWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointConnectionProxy).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
-     * @param privateEndpointConnectionProxy The parameters for creating a private endpoint connection proxy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void validate(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
-        validateAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointConnectionProxy)
-            .block();
-    }
-
-    /**
-     * (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -542,24 +412,34 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> validateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
+    public Response<Void> validateWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
         Context context) {
-        return validateWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                privateEndpointConnectionProxy,
-                context)
-            .block();
+        return validateWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointConnectionProxy, context).block();
+    }
+
+    /**
+     * (INTERNAL - DO NOT USE) Validates a private endpoint connection proxy object.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
+     * @param privateEndpointConnectionProxy The parameters for creating a private endpoint connection proxy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void validate(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
+        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
+        validateWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointConnectionProxy, Context.NONE);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection proxy object.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -570,22 +450,15 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updatePrivateEndpointPropertiesWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointUpdate privateEndpointUpdate) {
+    private Mono<Response<Void>> updatePrivateEndpointPropertiesWithResponseAsync(String resourceGroupName,
+        String accountName, String privateEndpointConnectionProxyId, PrivateEndpointUpdate privateEndpointUpdate) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -595,10 +468,8 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateEndpointConnectionProxyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
         }
         if (privateEndpointUpdate == null) {
             return Mono
@@ -608,25 +479,15 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updatePrivateEndpointProperties(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            privateEndpointConnectionProxyId,
-                            privateEndpointUpdate,
-                            accept,
-                            context))
+            .withContext(context -> service.updatePrivateEndpointProperties(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                privateEndpointConnectionProxyId, privateEndpointUpdate, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection proxy object.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -638,23 +499,16 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updatePrivateEndpointPropertiesWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointUpdate privateEndpointUpdate,
+    private Mono<Response<Void>> updatePrivateEndpointPropertiesWithResponseAsync(String resourceGroupName,
+        String accountName, String privateEndpointConnectionProxyId, PrivateEndpointUpdate privateEndpointUpdate,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -664,10 +518,8 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateEndpointConnectionProxyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
         }
         if (privateEndpointUpdate == null) {
             return Mono
@@ -677,22 +529,14 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updatePrivateEndpointProperties(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                privateEndpointUpdate,
-                accept,
-                context);
+        return service.updatePrivateEndpointProperties(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointUpdate, accept, context);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection proxy object.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -703,41 +547,15 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> updatePrivateEndpointPropertiesAsync(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointUpdate privateEndpointUpdate) {
-        return updatePrivateEndpointPropertiesWithResponseAsync(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointUpdate)
-            .flatMap(ignored -> Mono.empty());
+    private Mono<Void> updatePrivateEndpointPropertiesAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointUpdate privateEndpointUpdate) {
+        return updatePrivateEndpointPropertiesWithResponseAsync(resourceGroupName, accountName,
+            privateEndpointConnectionProxyId, privateEndpointUpdate).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection proxy object.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
-     * @param privateEndpointUpdate The parameters for updating a private endpoint connection proxy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePrivateEndpointProperties(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointUpdate privateEndpointUpdate) {
-        updatePrivateEndpointPropertiesAsync(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointUpdate)
-            .block();
-    }
-
-    /**
-     * (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection proxy object.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -749,44 +567,53 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updatePrivateEndpointPropertiesWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointUpdate privateEndpointUpdate,
-        Context context) {
-        return updatePrivateEndpointPropertiesWithResponseAsync(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointUpdate, context)
-            .block();
+    public Response<Void> updatePrivateEndpointPropertiesWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointUpdate privateEndpointUpdate, Context context) {
+        return updatePrivateEndpointPropertiesWithResponseAsync(resourceGroupName, accountName,
+            privateEndpointConnectionProxyId, privateEndpointUpdate, context).block();
+    }
+
+    /**
+     * (INTERNAL - DO NOT USE) Updates a private endpoint inside the private endpoint connection proxy object.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
+     * @param privateEndpointUpdate The parameters for updating a private endpoint connection proxy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updatePrivateEndpointProperties(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointUpdate privateEndpointUpdate) {
+        updatePrivateEndpointPropertiesWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointUpdate, Context.NONE);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection proxy details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return private endpoint connection proxy details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionProxyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId) {
+    private Mono<Response<PrivateEndpointConnectionProxyInner>> getWithResponseAsync(String resourceGroupName,
+        String accountName, String privateEndpointConnectionProxyId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -796,32 +623,21 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateEndpointConnectionProxyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            privateEndpointConnectionProxyId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, privateEndpointConnectionProxyId,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -829,23 +645,19 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection proxy details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return private endpoint connection proxy details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionProxyInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId, Context context) {
+    private Mono<Response<PrivateEndpointConnectionProxyInner>> getWithResponseAsync(String resourceGroupName,
+        String accountName, String privateEndpointConnectionProxyId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -855,29 +667,19 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateEndpointConnectionProxyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, privateEndpointConnectionProxyId, accept, context);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -887,8 +689,8 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return private endpoint connection proxy details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionProxyInner> getAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId) {
+    private Mono<PrivateEndpointConnectionProxyInner> getAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId) {
         return getWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -896,25 +698,7 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
     /**
      * (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update
      * account.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection proxy details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionProxyInner get(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId) {
-        return getAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId).block();
-    }
-
-    /**
-     * (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update
-     * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -925,15 +709,34 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return private endpoint connection proxy details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionProxyInner> getWithResponse(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId, Context context) {
+    public Response<PrivateEndpointConnectionProxyInner> getWithResponse(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId, context).block();
     }
 
     /**
+     * (INTERNAL - DO NOT USE) Get the specified private endpoint connection proxy associated with the device update
+     * account.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private endpoint connection proxy details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionProxyInner get(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId) {
+        return getWithResponse(resourceGroupName, accountName, privateEndpointConnectionProxyId, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -941,26 +744,20 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection proxy details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return private endpoint connection proxy details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String privateEndpointConnectionProxyId,
         PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -970,41 +767,27 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateEndpointConnectionProxyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
         }
         if (privateEndpointConnectionProxy == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxy is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxy is required and cannot be null."));
         } else {
             privateEndpointConnectionProxy.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            privateEndpointConnectionProxyId,
-                            privateEndpointConnectionProxy,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, privateEndpointConnectionProxyId,
+                privateEndpointConnectionProxy, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1013,27 +796,20 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private endpoint connection proxy details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return private endpoint connection proxy details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String accountName, String privateEndpointConnectionProxyId,
+        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1043,38 +819,26 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateEndpointConnectionProxyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
         }
         if (privateEndpointConnectionProxy == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxy is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxy is required and cannot be null."));
         } else {
             privateEndpointConnectionProxy.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                privateEndpointConnectionProxy,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointConnectionProxy, accept, context);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1086,28 +850,19 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionProxyInner>, PrivateEndpointConnectionProxyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String accountName,
-            String privateEndpointConnectionProxyId,
+        beginCreateOrUpdateAsync(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
             PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointConnectionProxy);
-        return this
-            .client
-            .<PrivateEndpointConnectionProxyInner, PrivateEndpointConnectionProxyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateEndpointConnectionProxyInner.class,
-                PrivateEndpointConnectionProxyInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, accountName,
+            privateEndpointConnectionProxyId, privateEndpointConnectionProxy);
+        return this.client.<PrivateEndpointConnectionProxyInner, PrivateEndpointConnectionProxyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PrivateEndpointConnectionProxyInner.class,
+            PrivateEndpointConnectionProxyInner.class, this.client.getContext());
     }
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1120,34 +875,20 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionProxyInner>, PrivateEndpointConnectionProxyInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String accountName,
-            String privateEndpointConnectionProxyId,
-            PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
+            PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                privateEndpointConnectionProxy,
-                context);
-        return this
-            .client
-            .<PrivateEndpointConnectionProxyInner, PrivateEndpointConnectionProxyInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateEndpointConnectionProxyInner.class,
-                PrivateEndpointConnectionProxyInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, accountName,
+            privateEndpointConnectionProxyId, privateEndpointConnectionProxy, context);
+        return this.client.<PrivateEndpointConnectionProxyInner, PrivateEndpointConnectionProxyInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PrivateEndpointConnectionProxyInner.class,
+            PrivateEndpointConnectionProxyInner.class, context);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1159,20 +900,16 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionProxyInner>, PrivateEndpointConnectionProxyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String accountName,
-            String privateEndpointConnectionProxyId,
+        beginCreateOrUpdate(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
             PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointConnectionProxy)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointConnectionProxy).getSyncPoller();
     }
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1185,25 +922,16 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionProxyInner>, PrivateEndpointConnectionProxyInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String accountName,
-            String privateEndpointConnectionProxyId,
-            PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
-            Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                privateEndpointConnectionProxy,
-                context)
-            .getSyncPoller();
+        beginCreateOrUpdate(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
+            PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointConnectionProxy, context).getSyncPoller();
     }
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1214,21 +942,16 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return private endpoint connection proxy details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionProxyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointConnectionProxy)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<PrivateEndpointConnectionProxyInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointConnectionProxy).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1240,26 +963,17 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return private endpoint connection proxy details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionProxyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
+    private Mono<PrivateEndpointConnectionProxyInner> createOrUpdateAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                privateEndpointConnectionProxy,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointConnectionProxy, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1270,20 +984,16 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return private endpoint connection proxy details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionProxyInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
-        return createOrUpdateAsync(
-                resourceGroupName, accountName, privateEndpointConnectionProxyId, privateEndpointConnectionProxy)
-            .block();
+    public PrivateEndpointConnectionProxyInner createOrUpdate(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy) {
+        return createOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointConnectionProxy).block();
     }
 
     /**
      * (INTERNAL - DO NOT USE) Creates or updates the specified private endpoint connection proxy resource associated
      * with the device update account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1295,25 +1005,17 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return private endpoint connection proxy details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionProxyInner createOrUpdate(
-        String resourceGroupName,
-        String accountName,
-        String privateEndpointConnectionProxyId,
-        PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
+    public PrivateEndpointConnectionProxyInner createOrUpdate(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, PrivateEndpointConnectionProxyInner privateEndpointConnectionProxy,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                privateEndpointConnectionProxy,
-                context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId,
+            privateEndpointConnectionProxy, context).block();
     }
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1323,19 +1025,15 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1345,32 +1043,21 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateEndpointConnectionProxyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            privateEndpointConnectionProxyId,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, accountName, privateEndpointConnectionProxyId,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1381,19 +1068,15 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1403,29 +1086,19 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateEndpointConnectionProxyId == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionProxyId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                privateEndpointConnectionProxyId,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, privateEndpointConnectionProxyId, accept, context);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1435,20 +1108,18 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1459,20 +1130,19 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1482,15 +1152,15 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId) {
-        return beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId).getSyncPoller();
     }
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1501,16 +1171,16 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId, context)
             .getSyncPoller();
     }
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1520,17 +1190,16 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId) {
-        return beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId) {
+        return beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1541,17 +1210,16 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName,
+        String privateEndpointConnectionProxyId, Context context) {
+        return beginDeleteAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1567,7 +1235,7 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
     /**
      * (INTERNAL - DO NOT USE) Deletes the specified private endpoint connection proxy associated with the device update
      * account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param privateEndpointConnectionProxyId The ID of the private endpoint connection proxy object.
@@ -1577,8 +1245,8 @@ public final class PrivateEndpointConnectionProxiesClientImpl implements Private
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String accountName, String privateEndpointConnectionProxyId, Context context) {
+    public void delete(String resourceGroupName, String accountName, String privateEndpointConnectionProxyId,
+        Context context) {
         deleteAsync(resourceGroupName, accountName, privateEndpointConnectionProxyId, context).block();
     }
 }

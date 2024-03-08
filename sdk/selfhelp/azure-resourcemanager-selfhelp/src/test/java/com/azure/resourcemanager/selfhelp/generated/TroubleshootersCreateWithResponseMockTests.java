@@ -32,46 +32,33 @@ public final class TroubleshootersCreateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"solutionId\":\"smwutwbdsrezpd\",\"parameters\":{\"ytisibir\":\"euyowqkd\",\"lfzxiavrmbzonoki\":\"gpikpzimejza\"},\"provisioningState\":\"Failed\",\"steps\":[{\"id\":\"rgz\",\"title\":\"rlazszrnw\",\"description\":\"indfpwpjyl\",\"guidance\":\"tlhflsjcdhszf\",\"executionStatus\":\"Warning\",\"executionStatusDescription\":\"gofel\",\"type\":\"Insight\",\"isLastStep\":true,\"inputs\":[{}],\"automatedCheckResults\":{\"result\":\"dvriiiojnal\",\"type\":\"Success\"},\"insights\":[{},{},{},{}]},{\"id\":\"sexso\",\"title\":\"el\",\"description\":\"hhahhxvrhmzkwpjg\",\"guidance\":\"spughftqsxhq\",\"executionStatus\":\"Success\",\"executionStatusDescription\":\"ukndxdigrjgu\",\"type\":\"Insight\",\"isLastStep\":false,\"inputs\":[{},{}],\"automatedCheckResults\":{\"result\":\"fi\",\"type\":\"Information\"},\"insights\":[{}]}]},\"id\":\"ingamvp\",\"name\":\"ho\",\"type\":\"zqzudph\"}";
+        String responseStr
+            = "{\"properties\":{\"solutionId\":\"ygvjayvblmh\",\"parameters\":{\"gsopbyrqufegxu\":\"uhbxvvy\",\"bnhlmc\":\"wz\",\"dn\":\"l\",\"ijejvegrhbpn\":\"itvgbmhrixkwm\"},\"provisioningState\":\"Canceled\",\"steps\":[{\"id\":\"cbdreaxhcexd\",\"title\":\"vqahqkghtpwi\",\"description\":\"hyjsvfycx\",\"guidance\":\"fvoow\",\"executionStatus\":\"Failed\",\"executionStatusDescription\":\"t\",\"type\":\"Decision\",\"isLastStep\":true,\"inputs\":[{},{}],\"automatedCheckResults\":{\"result\":\"ronzmyhgfip\",\"type\":\"Information\"},\"insights\":[{},{},{}]},{\"id\":\"a\",\"title\":\"rrjreafxtsgu\",\"description\":\"jglikkxwslolb\",\"guidance\":\"vuzlm\",\"executionStatus\":\"Success\",\"executionStatusDescription\":\"fktgplc\",\"type\":\"Insight\",\"isLastStep\":false,\"inputs\":[{},{}],\"automatedCheckResults\":{\"result\":\"igbrnjw\",\"type\":\"Success\"},\"insights\":[{},{},{},{}]},{\"id\":\"azej\",\"title\":\"qkagfhsxt\",\"description\":\"ugzxnf\",\"guidance\":\"zpxdt\",\"executionStatus\":\"Success\",\"executionStatusDescription\":\"kqjjlwuenvrkp\",\"type\":\"AutomatedCheck\",\"isLastStep\":false,\"inputs\":[{},{},{}],\"automatedCheckResults\":{\"result\":\"qaaysjkixqt\",\"type\":\"Warning\"},\"insights\":[{}]},{\"id\":\"wfff\",\"title\":\"kpj\",\"description\":\"qmt\",\"guidance\":\"ltmm\",\"executionStatus\":\"Failed\",\"executionStatusDescription\":\"eozphv\",\"type\":\"AutomatedCheck\",\"isLastStep\":true,\"inputs\":[{}],\"automatedCheckResults\":{\"result\":\"upkvipmdsc\",\"type\":\"Warning\"},\"insights\":[{},{}]}]},\"id\":\"zhfstot\",\"name\":\"hojujbypelmcuv\",\"type\":\"ixbjx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SelfHelpManager manager =
-            SelfHelpManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SelfHelpManager manager = SelfHelpManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TroubleshooterResource response =
-            manager
-                .troubleshooters()
-                .define("alnswhccsphk")
-                .withExistingScope("qzpiyyl")
-                .withSolutionId("witqscywuggwoluh")
-                .withParameters(mapOf("ai", "wem", "wmsweypqwd", "sbrgz", "mkttlstvlzywem", "ggicccnxqhue"))
+        TroubleshooterResource response
+            = manager.troubleshooters().define("wws").withExistingScope("qhhahhxvrhmzkwpj")
+                .withSolutionId("hftqsxhqxujxukn")
+                .withParameters(
+                    mapOf("yqtfihwh", "igrjguufzdm", "gamv", "otzi", "dphqamv", "phoszqz", "vtbvkayh", "kfwynw"))
                 .create();
 
-        Assertions.assertEquals("smwutwbdsrezpd", response.solutionId());
-        Assertions.assertEquals("euyowqkd", response.parameters().get("ytisibir"));
+        Assertions.assertEquals("ygvjayvblmh", response.solutionId());
+        Assertions.assertEquals("uhbxvvy", response.parameters().get("gsopbyrqufegxu"));
     }
 
     // Use "Map.of" if available

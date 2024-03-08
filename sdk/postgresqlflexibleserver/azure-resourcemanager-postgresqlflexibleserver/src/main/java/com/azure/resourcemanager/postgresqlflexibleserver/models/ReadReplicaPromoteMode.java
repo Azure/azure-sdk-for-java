@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Sets the promote mode for a replica server. This is a write only property. */
+/**
+ * Sets the promote mode for a replica server. This is a write only property.
+ */
 public final class ReadReplicaPromoteMode extends ExpandableStringEnum<ReadReplicaPromoteMode> {
-    /** Static value standalone for ReadReplicaPromoteMode. */
+    /**
+     * Static value standalone for ReadReplicaPromoteMode.
+     */
     public static final ReadReplicaPromoteMode STANDALONE = fromString("standalone");
 
-    /** Static value switchover for ReadReplicaPromoteMode. */
+    /**
+     * Static value switchover for ReadReplicaPromoteMode.
+     */
     public static final ReadReplicaPromoteMode SWITCHOVER = fromString("switchover");
 
     /**
      * Creates a new instance of ReadReplicaPromoteMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ReadReplicaPromoteMode extends ExpandableStringEnum<ReadRepli
 
     /**
      * Creates or finds a ReadReplicaPromoteMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReadReplicaPromoteMode.
      */
@@ -38,7 +44,7 @@ public final class ReadReplicaPromoteMode extends ExpandableStringEnum<ReadRepli
 
     /**
      * Gets known ReadReplicaPromoteMode values.
-     *
+     * 
      * @return known ReadReplicaPromoteMode values.
      */
     public static Collection<ReadReplicaPromoteMode> values() {

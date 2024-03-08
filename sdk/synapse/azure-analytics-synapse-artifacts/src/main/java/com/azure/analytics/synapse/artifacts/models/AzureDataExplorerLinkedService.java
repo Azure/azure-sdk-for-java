@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Data Explorer (Kusto) linked service. */
+/**
+ * Azure Data Explorer (Kusto) linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataExplorer")
 @JsonFlatten
@@ -57,14 +59,17 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.credential")
     private CredentialReference credential;
 
-    /** Creates an instance of AzureDataExplorerLinkedService class. */
-    public AzureDataExplorerLinkedService() {}
+    /**
+     * Creates an instance of AzureDataExplorerLinkedService class.
+     */
+    public AzureDataExplorerLinkedService() {
+    }
 
     /**
-     * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
-     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
-     * string).
-     *
+     * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the
+     * format https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the endpoint value.
      */
     public Object getEndpoint() {
@@ -72,10 +77,10 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     }
 
     /**
-     * Set the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
-     * https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with resultType
-     * string).
-     *
+     * Set the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the
+     * format https://&lt;clusterName&gt;.&lt;regionName&gt;.kusto.windows.net. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param endpoint the endpoint value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
@@ -87,7 +92,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: The ID of the service principal used to authenticate against Azure Data
      * Explorer. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object getServicePrincipalId() {
@@ -97,7 +102,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: The ID of the service principal used to authenticate against Azure Data
      * Explorer. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
@@ -108,7 +113,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalKey property: The key of the service principal used to authenticate against Kusto.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase getServicePrincipalKey() {
@@ -117,7 +122,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalKey property: The key of the service principal used to authenticate against Kusto.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
@@ -128,7 +133,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
 
     /**
      * Get the database property: Database name for connection. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the database value.
      */
     public Object getDatabase() {
@@ -137,7 +142,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
 
     /**
      * Set the database property: Database name for connection. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param database the database value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
@@ -149,7 +154,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     /**
      * Get the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object getTenant() {
@@ -159,7 +164,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     /**
      * Set the tenant property: The name or ID of the tenant to which the service principal belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
@@ -170,7 +175,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference getCredential() {
@@ -179,7 +184,7 @@ public class AzureDataExplorerLinkedService extends LinkedService {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the AzureDataExplorerLinkedService object itself.
      */
@@ -188,28 +193,36 @@ public class AzureDataExplorerLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataExplorerLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

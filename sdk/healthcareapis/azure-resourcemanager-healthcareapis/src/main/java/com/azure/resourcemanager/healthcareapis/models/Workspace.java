@@ -10,133 +10,153 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.healthcareapis.fluent.models.WorkspaceInner;
 import java.util.Map;
 
-/** An immutable client-side representation of Workspace. */
+/**
+ * An immutable client-side representation of Workspace.
+ */
 public interface Workspace {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the etag property: An etag associated with the resource, used for optimistic concurrency when editing it.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the location property: The resource location.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the properties property: Workspaces resource specific properties.
-     *
+     * 
      * @return the properties value.
      */
     WorkspaceProperties properties();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.healthcareapis.fluent.models.WorkspaceInner object.
-     *
+     * 
      * @return the inner object.
      */
     WorkspaceInner innerModel();
 
-    /** The entirety of the Workspace definition. */
+    /**
+     * The entirety of the Workspace definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithResourceGroup, DefinitionStages.WithCreate {
     }
-    /** The Workspace definition stages. */
+
+    /**
+     * The Workspace definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Workspace definition. */
+        /**
+         * The first stage of the Workspace definition.
+         */
         interface Blank extends WithResourceGroup {
         }
-        /** The stage of the Workspace definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the Workspace definition allowing to specify parent resource.
+         */
         interface WithResourceGroup {
             /**
              * Specifies resourceGroupName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group that contains the service instance.
              * @return the next definition stage.
              */
             WithCreate withExistingResourceGroup(String resourceGroupName);
         }
+
         /**
          * The stage of the Workspace definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithLocation,
-                DefinitionStages.WithTags,
-                DefinitionStages.WithEtag,
-                DefinitionStages.WithProperties {
+        interface WithCreate extends DefinitionStages.WithLocation, DefinitionStages.WithTags,
+            DefinitionStages.WithEtag, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Workspace create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Workspace create(Context context);
         }
-        /** The stage of the Workspace definition allowing to specify location. */
+
+        /**
+         * The stage of the Workspace definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The resource location.
              * @return the next definition stage.
              */
@@ -144,91 +164,109 @@ public interface Workspace {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The resource location.
              * @return the next definition stage.
              */
             WithCreate withRegion(String location);
         }
-        /** The stage of the Workspace definition allowing to specify tags. */
+
+        /**
+         * The stage of the Workspace definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the Workspace definition allowing to specify etag. */
+
+        /**
+         * The stage of the Workspace definition allowing to specify etag.
+         */
         interface WithEtag {
             /**
              * Specifies the etag property: An etag associated with the resource, used for optimistic concurrency when
              * editing it..
-             *
+             * 
              * @param etag An etag associated with the resource, used for optimistic concurrency when editing it.
              * @return the next definition stage.
              */
             WithCreate withEtag(String etag);
         }
-        /** The stage of the Workspace definition allowing to specify properties. */
+
+        /**
+         * The stage of the Workspace definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: Workspaces resource specific properties..
-             *
+             * 
              * @param properties Workspaces resource specific properties.
              * @return the next definition stage.
              */
             WithCreate withProperties(WorkspaceProperties properties);
         }
     }
+
     /**
      * Begins update for the Workspace resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Workspace.Update update();
 
-    /** The template for Workspace update. */
+    /**
+     * The template for Workspace update.
+     */
     interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Workspace apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Workspace apply(Context context);
     }
-    /** The Workspace update stages. */
+
+    /**
+     * The Workspace update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Workspace update allowing to specify tags. */
+        /**
+         * The stage of the Workspace update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Workspace refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

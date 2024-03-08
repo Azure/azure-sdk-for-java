@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The network profile definition. */
+/**
+ * The network profile definition.
+ */
 @Fluent
 public final class NetworkProfile {
     /*
@@ -18,15 +20,20 @@ public final class NetworkProfile {
     private ApiEntityReference subnet;
 
     /*
-     * Specifies the list of resource Ids for the network interfaces associated
-     * with the dedicated HSM.
+     * Specifies the list of resource Ids for the network interfaces associated with the dedicated HSM.
      */
     @JsonProperty(value = "networkInterfaces")
     private List<NetworkInterface> networkInterfaces;
 
     /**
+     * Creates an instance of NetworkProfile class.
+     */
+    public NetworkProfile() {
+    }
+
+    /**
      * Get the subnet property: Specifies the identifier of the subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public ApiEntityReference subnet() {
@@ -35,7 +42,7 @@ public final class NetworkProfile {
 
     /**
      * Set the subnet property: Specifies the identifier of the subnet.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the NetworkProfile object itself.
      */
@@ -45,9 +52,9 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
-     * the dedicated HSM.
-     *
+     * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated
+     * with the dedicated HSM.
+     * 
      * @return the networkInterfaces value.
      */
     public List<NetworkInterface> networkInterfaces() {
@@ -55,9 +62,9 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
-     * the dedicated HSM.
-     *
+     * Set the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated
+     * with the dedicated HSM.
+     * 
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the NetworkProfile object itself.
      */
@@ -68,7 +75,7 @@ public final class NetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

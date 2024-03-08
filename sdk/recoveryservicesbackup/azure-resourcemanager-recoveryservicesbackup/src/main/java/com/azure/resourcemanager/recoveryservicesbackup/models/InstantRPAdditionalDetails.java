@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InstantRPAdditionalDetails model. */
+/**
+ * The InstantRPAdditionalDetails model.
+ */
 @Fluent
 public final class InstantRPAdditionalDetails {
     /*
@@ -22,13 +24,15 @@ public final class InstantRPAdditionalDetails {
     @JsonProperty(value = "azureBackupRGNameSuffix")
     private String azureBackupRGNameSuffix;
 
-    /** Creates an instance of InstantRPAdditionalDetails class. */
+    /**
+     * Creates an instance of InstantRPAdditionalDetails class.
+     */
     public InstantRPAdditionalDetails() {
     }
 
     /**
      * Get the azureBackupRGNamePrefix property: The azureBackupRGNamePrefix property.
-     *
+     * 
      * @return the azureBackupRGNamePrefix value.
      */
     public String azureBackupRGNamePrefix() {
@@ -37,7 +41,7 @@ public final class InstantRPAdditionalDetails {
 
     /**
      * Set the azureBackupRGNamePrefix property: The azureBackupRGNamePrefix property.
-     *
+     * 
      * @param azureBackupRGNamePrefix the azureBackupRGNamePrefix value to set.
      * @return the InstantRPAdditionalDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class InstantRPAdditionalDetails {
 
     /**
      * Get the azureBackupRGNameSuffix property: The azureBackupRGNameSuffix property.
-     *
+     * 
      * @return the azureBackupRGNameSuffix value.
      */
     public String azureBackupRGNameSuffix() {
@@ -57,7 +61,7 @@ public final class InstantRPAdditionalDetails {
 
     /**
      * Set the azureBackupRGNameSuffix property: The azureBackupRGNameSuffix property.
-     *
+     * 
      * @param azureBackupRGNameSuffix the azureBackupRGNameSuffix value to set.
      * @return the InstantRPAdditionalDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class InstantRPAdditionalDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

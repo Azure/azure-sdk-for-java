@@ -11,16 +11,16 @@ public final class HttpReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HttpReadSettings model = BinaryData.fromString(
-            "{\"type\":\"HttpReadSettings\",\"requestMethod\":\"databbhukx\",\"requestBody\":\"datahyr\",\"additionalHeaders\":\"dataqpgadesnesg\",\"requestTimeout\":\"datadvgxte\",\"additionalColumns\":\"datasictoq\",\"maxConcurrentConnections\":\"datazmznoe\",\"disableMetricsCollection\":\"dataduyqb\",\"\":{\"dpbnbpzxnopryu\":\"dataza\",\"nighcx\":\"dataxa\",\"pfudzntbzg\":\"datakhiihggzqheittym\"}}")
+            "{\"type\":\"HttpReadSettings\",\"requestMethod\":\"dataaiqyxlr\",\"requestBody\":\"dataxpebsxcnhq\",\"additionalHeaders\":\"databtyorlr\",\"requestTimeout\":\"datamyumro\",\"additionalColumns\":\"dataaxnym\",\"maxConcurrentConnections\":\"datag\",\"disableMetricsCollection\":\"dataqmkakgw\",\"\":{\"sdgyhe\":\"datano\"}}")
             .toObject(HttpReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HttpReadSettings model = new HttpReadSettings().withMaxConcurrentConnections("datazmznoe")
-            .withDisableMetricsCollection("dataduyqb").withRequestMethod("databbhukx").withRequestBody("datahyr")
-            .withAdditionalHeaders("dataqpgadesnesg").withRequestTimeout("datadvgxte")
-            .withAdditionalColumns("datasictoq");
+        HttpReadSettings model
+            = new HttpReadSettings().withMaxConcurrentConnections("datag").withDisableMetricsCollection("dataqmkakgw")
+                .withRequestMethod("dataaiqyxlr").withRequestBody("dataxpebsxcnhq").withAdditionalHeaders("databtyorlr")
+                .withRequestTimeout("datamyumro").withAdditionalColumns("dataaxnym");
         model = BinaryData.fromObject(model).toObject(HttpReadSettings.class);
     }
 }

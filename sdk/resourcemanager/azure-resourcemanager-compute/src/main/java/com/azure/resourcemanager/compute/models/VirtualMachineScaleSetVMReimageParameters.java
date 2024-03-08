@@ -6,28 +6,38 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Describes a Virtual Machine Scale Set VM Reimage Parameters. */
+/**
+ * Describes a Virtual Machine Scale Set VM Reimage Parameters.
+ */
 @Fluent
 public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineReimageParameters {
-    /** Creates an instance of VirtualMachineScaleSetVMReimageParameters class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetVMReimageParameters class.
+     */
     public VirtualMachineScaleSetVMReimageParameters() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineScaleSetVMReimageParameters withTempDisk(Boolean tempDisk) {
         super.withTempDisk(tempDisk);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineScaleSetVMReimageParameters withExactVersion(String exactVersion) {
         super.withExactVersion(exactVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineScaleSetVMReimageParameters withOsProfile(OSProfileProvisioningData osProfile) {
         super.withOsProfile(osProfile);
@@ -36,7 +46,7 @@ public class VirtualMachineScaleSetVMReimageParameters extends VirtualMachineRei
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

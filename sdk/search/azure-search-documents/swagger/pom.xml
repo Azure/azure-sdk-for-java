@@ -11,8 +11,8 @@
     <relativePath>../../../parents/azure-code-customization-parent</relativePath>
   </parent>
 
-  <name>Microsoft Azure Cognitive Search client for Java</name>
-  <description>This package contains client functionality for Microsoft Azure Cognitive Search</description>
+  <name>Microsoft Azure AI Search client for Java</name>
+  <description>This package contains client functionality for Microsoft Azure AI Search</description>
 
   <groupId>com.azure.tools</groupId>
   <artifactId>azure-search-documents-autorest-customization</artifactId>

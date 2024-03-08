@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * AzureBackupRule
- *
- * <p>Azure backup rule.
+ * 
+ * Azure backup rule.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureBackupRule")
@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class AzureBackupRule extends BasePolicyRule {
     /*
      * BackupParameters
-     *
+     * 
      * BackupParameters base
      */
     @JsonProperty(value = "backupParameters")
@@ -29,7 +29,7 @@ public final class AzureBackupRule extends BasePolicyRule {
 
     /*
      * DataStoreInfoBase
-     *
+     * 
      * DataStoreInfo base
      */
     @JsonProperty(value = "dataStore", required = true)
@@ -37,21 +37,23 @@ public final class AzureBackupRule extends BasePolicyRule {
 
     /*
      * TriggerContext
-     *
+     * 
      * Trigger context
      */
     @JsonProperty(value = "trigger", required = true)
     private TriggerContext trigger;
 
-    /** Creates an instance of AzureBackupRule class. */
+    /**
+     * Creates an instance of AzureBackupRule class.
+     */
     public AzureBackupRule() {
     }
 
     /**
      * Get the backupParameters property: BackupParameters
-     *
-     * <p>BackupParameters base.
-     *
+     * 
+     * BackupParameters base.
+     * 
      * @return the backupParameters value.
      */
     public BackupParameters backupParameters() {
@@ -60,9 +62,9 @@ public final class AzureBackupRule extends BasePolicyRule {
 
     /**
      * Set the backupParameters property: BackupParameters
-     *
-     * <p>BackupParameters base.
-     *
+     * 
+     * BackupParameters base.
+     * 
      * @param backupParameters the backupParameters value to set.
      * @return the AzureBackupRule object itself.
      */
@@ -73,9 +75,9 @@ public final class AzureBackupRule extends BasePolicyRule {
 
     /**
      * Get the dataStore property: DataStoreInfoBase
-     *
-     * <p>DataStoreInfo base.
-     *
+     * 
+     * DataStoreInfo base.
+     * 
      * @return the dataStore value.
      */
     public DataStoreInfoBase dataStore() {
@@ -84,9 +86,9 @@ public final class AzureBackupRule extends BasePolicyRule {
 
     /**
      * Set the dataStore property: DataStoreInfoBase
-     *
-     * <p>DataStoreInfo base.
-     *
+     * 
+     * DataStoreInfo base.
+     * 
      * @param dataStore the dataStore value to set.
      * @return the AzureBackupRule object itself.
      */
@@ -97,9 +99,9 @@ public final class AzureBackupRule extends BasePolicyRule {
 
     /**
      * Get the trigger property: TriggerContext
-     *
-     * <p>Trigger context.
-     *
+     * 
+     * Trigger context.
+     * 
      * @return the trigger value.
      */
     public TriggerContext trigger() {
@@ -108,9 +110,9 @@ public final class AzureBackupRule extends BasePolicyRule {
 
     /**
      * Set the trigger property: TriggerContext
-     *
-     * <p>Trigger context.
-     *
+     * 
+     * Trigger context.
+     * 
      * @param trigger the trigger value to set.
      * @return the AzureBackupRule object itself.
      */
@@ -119,7 +121,9 @@ public final class AzureBackupRule extends BasePolicyRule {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupRule withName(String name) {
         super.withName(name);
@@ -128,7 +132,7 @@ public final class AzureBackupRule extends BasePolicyRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -138,16 +142,14 @@ public final class AzureBackupRule extends BasePolicyRule {
             backupParameters().validate();
         }
         if (dataStore() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataStore in model AzureBackupRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property dataStore in model AzureBackupRule"));
         } else {
             dataStore().validate();
         }
         if (trigger() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property trigger in model AzureBackupRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property trigger in model AzureBackupRule"));
         } else {
             trigger().validate();
         }

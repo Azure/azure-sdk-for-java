@@ -8,27 +8,39 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Health of backend server. */
+/**
+ * Health of backend server.
+ */
 public final class ApplicationGatewayBackendHealthServerHealth
     extends ExpandableStringEnum<ApplicationGatewayBackendHealthServerHealth> {
-    /** Static value Unknown for ApplicationGatewayBackendHealthServerHealth. */
+    /**
+     * Static value Unknown for ApplicationGatewayBackendHealthServerHealth.
+     */
     public static final ApplicationGatewayBackendHealthServerHealth UNKNOWN = fromString("Unknown");
 
-    /** Static value Up for ApplicationGatewayBackendHealthServerHealth. */
+    /**
+     * Static value Up for ApplicationGatewayBackendHealthServerHealth.
+     */
     public static final ApplicationGatewayBackendHealthServerHealth UP = fromString("Up");
 
-    /** Static value Down for ApplicationGatewayBackendHealthServerHealth. */
+    /**
+     * Static value Down for ApplicationGatewayBackendHealthServerHealth.
+     */
     public static final ApplicationGatewayBackendHealthServerHealth DOWN = fromString("Down");
 
-    /** Static value Partial for ApplicationGatewayBackendHealthServerHealth. */
+    /**
+     * Static value Partial for ApplicationGatewayBackendHealthServerHealth.
+     */
     public static final ApplicationGatewayBackendHealthServerHealth PARTIAL = fromString("Partial");
 
-    /** Static value Draining for ApplicationGatewayBackendHealthServerHealth. */
+    /**
+     * Static value Draining for ApplicationGatewayBackendHealthServerHealth.
+     */
     public static final ApplicationGatewayBackendHealthServerHealth DRAINING = fromString("Draining");
 
     /**
      * Creates a new instance of ApplicationGatewayBackendHealthServerHealth value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -37,7 +49,7 @@ public final class ApplicationGatewayBackendHealthServerHealth
 
     /**
      * Creates or finds a ApplicationGatewayBackendHealthServerHealth from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewayBackendHealthServerHealth.
      */
@@ -48,7 +60,7 @@ public final class ApplicationGatewayBackendHealthServerHealth
 
     /**
      * Gets known ApplicationGatewayBackendHealthServerHealth values.
-     *
+     * 
      * @return known ApplicationGatewayBackendHealthServerHealth values.
      */
     public static Collection<ApplicationGatewayBackendHealthServerHealth> values() {

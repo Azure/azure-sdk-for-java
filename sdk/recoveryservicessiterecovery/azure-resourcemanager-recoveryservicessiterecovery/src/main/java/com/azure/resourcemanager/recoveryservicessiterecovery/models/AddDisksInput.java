@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input for add disk(s) operation. */
+/**
+ * Input for add disk(s) operation.
+ */
 @Fluent
 public final class AddDisksInput {
     /*
@@ -16,13 +18,15 @@ public final class AddDisksInput {
     @JsonProperty(value = "properties")
     private AddDisksInputProperties properties;
 
-    /** Creates an instance of AddDisksInput class. */
+    /**
+     * Creates an instance of AddDisksInput class.
+     */
     public AddDisksInput() {
     }
 
     /**
      * Get the properties property: Add disks input properties.
-     *
+     * 
      * @return the properties value.
      */
     public AddDisksInputProperties properties() {
@@ -31,7 +35,7 @@ public final class AddDisksInput {
 
     /**
      * Set the properties property: Add disks input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AddDisksInput object itself.
      */
@@ -42,7 +46,7 @@ public final class AddDisksInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

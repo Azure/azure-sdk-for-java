@@ -10,13 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.ExportJobsResultInner;
 
-/** An instance of this class provides access to all the operations defined in ExportJobsOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExportJobsOperationResultsClient.
+ */
 public interface ExportJobsOperationResultsClient {
     /**
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.
@@ -27,14 +29,14 @@ public interface ExportJobsOperationResultsClient {
      * @return the operation result of operation triggered by Export Jobs API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExportJobsResultInner> getWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context);
+    Response<ExportJobsResultInner> getWithResponse(String resourceGroupName, String vaultName, String operationId,
+        Context context);
 
     /**
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId OperationID which represents the export job.

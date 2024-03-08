@@ -11,6 +11,8 @@ import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import io.netty.buffer.ByteBufInputStream;
+import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.Test;
 
@@ -70,10 +72,12 @@ public class TransactionalBatchResponseTests {
         headers.put(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS, "1234");
         headers.put(HttpConstants.HttpHeaders.SUB_STATUS, String.valueOf(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE));
 
+        byte[] blob = responseContent.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
             headers,
-            responseContent.getBytes(StandardCharsets.UTF_8));
+            new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
+            blob.length);
 
         CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),
@@ -130,10 +134,12 @@ public class TransactionalBatchResponseTests {
         results.add(transactionalBatchOperationResult);
         String responseContent = new BatchResponsePayloadWriter(results).generatePayload();
 
+        byte[] blob = responseContent.getBytes(StandardCharsets.UTF_8);
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
             new HashMap<>(),
-            responseContent.getBytes(StandardCharsets.UTF_8));
+            new ByteBufInputStream(Unpooled.wrappedBuffer(blob), true),
+            blob.length);
 
         CosmosBatchResponse batchResponse = BatchResponseParser.fromDocumentServiceResponse(
             new RxDocumentServiceResponse(null, storeResponse),

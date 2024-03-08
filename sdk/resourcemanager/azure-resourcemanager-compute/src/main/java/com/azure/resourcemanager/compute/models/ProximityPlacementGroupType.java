@@ -13,15 +13,19 @@ import java.util.Collection;
  * an Azure region or Availability Zone. **Ultra** : For future use.
  */
 public final class ProximityPlacementGroupType extends ExpandableStringEnum<ProximityPlacementGroupType> {
-    /** Static value Standard for ProximityPlacementGroupType. */
+    /**
+     * Static value Standard for ProximityPlacementGroupType.
+     */
     public static final ProximityPlacementGroupType STANDARD = fromString("Standard");
 
-    /** Static value Ultra for ProximityPlacementGroupType. */
+    /**
+     * Static value Ultra for ProximityPlacementGroupType.
+     */
     public static final ProximityPlacementGroupType ULTRA = fromString("Ultra");
 
     /**
      * Creates a new instance of ProximityPlacementGroupType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class ProximityPlacementGroupType extends ExpandableStringEnum<Prox
 
     /**
      * Creates or finds a ProximityPlacementGroupType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProximityPlacementGroupType.
      */
@@ -41,7 +45,7 @@ public final class ProximityPlacementGroupType extends ExpandableStringEnum<Prox
 
     /**
      * Gets known ProximityPlacementGroupType values.
-     *
+     * 
      * @return known ProximityPlacementGroupType values.
      */
     public static Collection<ProximityPlacementGroupType> values() {

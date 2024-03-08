@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workload identity settings for the security profile. */
+/**
+ * Workload identity settings for the security profile.
+ */
 @Fluent
 public final class ManagedClusterSecurityProfileWorkloadIdentity {
     /*
@@ -16,13 +18,15 @@ public final class ManagedClusterSecurityProfileWorkloadIdentity {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of ManagedClusterSecurityProfileWorkloadIdentity class. */
+    /**
+     * Creates an instance of ManagedClusterSecurityProfileWorkloadIdentity class.
+     */
     public ManagedClusterSecurityProfileWorkloadIdentity() {
     }
 
     /**
      * Get the enabled property: Whether to enable workload identity.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -31,7 +35,7 @@ public final class ManagedClusterSecurityProfileWorkloadIdentity {
 
     /**
      * Set the enabled property: Whether to enable workload identity.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterSecurityProfileWorkloadIdentity object itself.
      */
@@ -42,7 +46,7 @@ public final class ManagedClusterSecurityProfileWorkloadIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

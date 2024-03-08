@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of key vault. */
+/**
+ * Properties of key vault.
+ */
 @Fluent
 public final class KeyVaultProperties {
     /*
@@ -41,13 +43,15 @@ public final class KeyVaultProperties {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private KeyVaultStatus status;
 
-    /** Creates an instance of KeyVaultProperties class. */
+    /**
+     * Creates an instance of KeyVaultProperties class.
+     */
     public KeyVaultProperties() {
     }
 
     /**
      * Get the keyVaultId property: UUID v4 used to identify the Azure Key Vault configuration.
-     *
+     * 
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
@@ -56,7 +60,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVaultUri property: The Uri of KeyVault.
-     *
+     * 
      * @return the keyVaultUri value.
      */
     public String keyVaultUri() {
@@ -65,7 +69,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVaultUri property: The Uri of KeyVault.
-     *
+     * 
      * @param keyVaultUri the keyVaultUri value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyName property: The name of KeyVault key.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -85,7 +89,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyName property: The name of KeyVault key.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVaultResourceId property: The resource ID of KeyVault.
-     *
+     * 
      * @return the keyVaultResourceId value.
      */
     public String keyVaultResourceId() {
@@ -105,7 +109,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVaultResourceId property: The resource ID of KeyVault.
-     *
+     * 
      * @param keyVaultResourceId the keyVaultResourceId value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -116,7 +120,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the status property: Status of the KeyVault connection.
-     *
+     * 
      * @return the status value.
      */
     public KeyVaultStatus status() {
@@ -125,25 +129,21 @@ public final class KeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyVaultUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyVaultUri in model KeyVaultProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyVaultUri in model KeyVaultProperties"));
         }
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyName in model KeyVaultProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyName in model KeyVaultProperties"));
         }
         if (keyVaultResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultResourceId in model KeyVaultProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyVaultResourceId in model KeyVaultProperties"));
         }
     }
 

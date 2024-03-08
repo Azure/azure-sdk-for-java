@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.GalleryImageInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Gallery Images operation response. */
+/**
+ * The List Gallery Images operation response.
+ */
 @Fluent
 public final class GalleryImageList {
     /*
@@ -26,13 +28,15 @@ public final class GalleryImageList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of GalleryImageList class. */
+    /**
+     * Creates an instance of GalleryImageList class.
+     */
     public GalleryImageList() {
     }
 
     /**
      * Get the value property: A list of Shared Image Gallery images.
-     *
+     * 
      * @return the value value.
      */
     public List<GalleryImageInner> value() {
@@ -41,7 +45,7 @@ public final class GalleryImageList {
 
     /**
      * Set the value property: A list of Shared Image Gallery images.
-     *
+     * 
      * @param value the value value to set.
      * @return the GalleryImageList object itself.
      */
@@ -53,7 +57,7 @@ public final class GalleryImageList {
     /**
      * Get the nextLink property: The uri to fetch the next page of Image Definitions in the Shared Image Gallery. Call
      * ListNext() with this to fetch the next page of gallery image definitions.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +67,7 @@ public final class GalleryImageList {
     /**
      * Set the nextLink property: The uri to fetch the next page of Image Definitions in the Shared Image Gallery. Call
      * ListNext() with this to fetch the next page of gallery image definitions.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GalleryImageList object itself.
      */
@@ -74,14 +78,13 @@ public final class GalleryImageList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model GalleryImageList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model GalleryImageList"));
         } else {
             value().forEach(e -> e.validate());
         }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Export operation configuration information. */
+/**
+ * Export operation configuration information.
+ */
 @Fluent
 public final class FhirServiceExportConfiguration {
     /*
@@ -17,8 +19,14 @@ public final class FhirServiceExportConfiguration {
     private String storageAccountName;
 
     /**
+     * Creates an instance of FhirServiceExportConfiguration class.
+     */
+    public FhirServiceExportConfiguration() {
+    }
+
+    /**
      * Get the storageAccountName property: The name of the default export storage account.
-     *
+     * 
      * @return the storageAccountName value.
      */
     public String storageAccountName() {
@@ -27,7 +35,7 @@ public final class FhirServiceExportConfiguration {
 
     /**
      * Set the storageAccountName property: The name of the default export storage account.
-     *
+     * 
      * @param storageAccountName the storageAccountName value to set.
      * @return the FhirServiceExportConfiguration object itself.
      */
@@ -38,7 +46,7 @@ public final class FhirServiceExportConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

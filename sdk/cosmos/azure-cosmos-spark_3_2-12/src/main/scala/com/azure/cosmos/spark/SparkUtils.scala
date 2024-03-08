@@ -29,40 +29,6 @@ private object SparkUtils {
     Runtime.getRuntime.availableProcessors
   }
 
-  def safeOpenConnectionInitCaches(container: CosmosAsyncContainer, logger: ILogger): Unit = {
-    safeOpenConnectionInitCaches(container, (msg, exception) => logger.logWarning(msg, exception))
-  }
-
-  def safeOpenConnectionInitCaches(container: CosmosAsyncContainer, logger: (String, Exception) => Unit): Unit = {
-
-    // TODO @fabianm - uncomment and fix or completely remove this code
-    // the version below can cause perf problems whenever there is data available in
-    // a container already and when the container does not index all properties
-    // because the query below will result in a full table scan (vs. index lookup only)
-    /*
-    try {
-
-      // this results in a cross partition query with one single query plan request
-      // resulting in warming up all caches and connections
-      // once container.openConnectionsAndInitCaches() is fixed we can switch back.
-      val sqlQuery = new SqlQuerySpec(s"SELECT * FROM r WHERE r['${UUID.randomUUID().toString}'] = @param",
-        new SqlParameter("@param", UUID.randomUUID().toString)
-      )
-
-      container.queryItems(sqlQuery,
-        new CosmosQueryRequestOptions(),
-        classOf[ObjectNode])
-        .collectList()
-        .block()
-
-    } catch {
-      case e: Exception => {
-        logger("ignoring openConnectionsAndInitCaches failure", e)
-      }
-    }
-    */
-  }
-
   private object DaemonThreadFactory {
     val poolNumber = new AtomicInteger(1)
   }

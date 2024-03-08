@@ -25,7 +25,8 @@ public interface AmqpReceiveLink extends AmqpLink {
      *
      * @return The connection identifier.
      */
-    // Note: Ideally, we may expose connectionId in AmqpLink, but given it's a public contract, lets not do that until a use case needing it.
+    // Note: Ideally, we may expose connectionId in AmqpLink, but given it's a public contract, lets not do that until a
+    // use case needing it.
     String getConnectionId();
 
     /**
@@ -48,12 +49,12 @@ public interface AmqpReceiveLink extends AmqpLink {
 
     /**
      * Schedule to adds the specified number of credits to the link.
-     *
+     * <p>
      * The number of link credits initialises to zero. It is the application's responsibility to call this method to
      * allow the receiver to receive {@code credits} more deliveries.
      *
      * @param credits Number of credits to add to the receive link.
-     *
+     * @return A Mono that completes when the credits are successfully added to the link.
      * @throws IllegalStateException if adding credits to a closed link.
      * @throws UncheckedIOException if the work could not be scheduled on the receive link.
      */

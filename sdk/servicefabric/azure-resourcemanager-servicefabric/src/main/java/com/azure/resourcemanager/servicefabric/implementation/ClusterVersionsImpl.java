@@ -21,22 +21,18 @@ public final class ClusterVersionsImpl implements ClusterVersions {
 
     private final com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager;
 
-    public ClusterVersionsImpl(
-        ClusterVersionsClient innerClient,
+    public ClusterVersionsImpl(ClusterVersionsClient innerClient,
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ClusterCodeVersionsListResult> getWithResponse(
-        String location, String clusterVersion, Context context) {
-        Response<ClusterCodeVersionsListResultInner> inner =
-            this.serviceClient().getWithResponse(location, clusterVersion, context);
+    public Response<ClusterCodeVersionsListResult> getWithResponse(String location, String clusterVersion,
+        Context context) {
+        Response<ClusterCodeVersionsListResultInner> inner
+            = this.serviceClient().getWithResponse(location, clusterVersion, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterCodeVersionsListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,25 +48,22 @@ public final class ClusterVersionsImpl implements ClusterVersions {
         }
     }
 
-    public Response<ClusterCodeVersionsListResult> getByEnvironmentWithResponse(
-        String location, ClusterVersionsEnvironment environment, String clusterVersion, Context context) {
-        Response<ClusterCodeVersionsListResultInner> inner =
-            this.serviceClient().getByEnvironmentWithResponse(location, environment, clusterVersion, context);
+    public Response<ClusterCodeVersionsListResult> getByEnvironmentWithResponse(String location,
+        ClusterVersionsEnvironment environment, String clusterVersion, Context context) {
+        Response<ClusterCodeVersionsListResultInner> inner
+            = this.serviceClient().getByEnvironmentWithResponse(location, environment, clusterVersion, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterCodeVersionsListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ClusterCodeVersionsListResult getByEnvironment(
-        String location, ClusterVersionsEnvironment environment, String clusterVersion) {
-        ClusterCodeVersionsListResultInner inner =
-            this.serviceClient().getByEnvironment(location, environment, clusterVersion);
+    public ClusterCodeVersionsListResult getByEnvironment(String location, ClusterVersionsEnvironment environment,
+        String clusterVersion) {
+        ClusterCodeVersionsListResultInner inner
+            = this.serviceClient().getByEnvironment(location, environment, clusterVersion);
         if (inner != null) {
             return new ClusterCodeVersionsListResultImpl(inner, this.manager());
         } else {
@@ -81,10 +74,7 @@ public final class ClusterVersionsImpl implements ClusterVersions {
     public Response<ClusterCodeVersionsListResult> listWithResponse(String location, Context context) {
         Response<ClusterCodeVersionsListResultInner> inner = this.serviceClient().listWithResponse(location, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterCodeVersionsListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -100,15 +90,12 @@ public final class ClusterVersionsImpl implements ClusterVersions {
         }
     }
 
-    public Response<ClusterCodeVersionsListResult> listByEnvironmentWithResponse(
-        String location, ClusterVersionsEnvironment environment, Context context) {
-        Response<ClusterCodeVersionsListResultInner> inner =
-            this.serviceClient().listByEnvironmentWithResponse(location, environment, context);
+    public Response<ClusterCodeVersionsListResult> listByEnvironmentWithResponse(String location,
+        ClusterVersionsEnvironment environment, Context context) {
+        Response<ClusterCodeVersionsListResultInner> inner
+            = this.serviceClient().listByEnvironmentWithResponse(location, environment, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClusterCodeVersionsListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

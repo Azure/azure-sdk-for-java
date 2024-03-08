@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SnapshotPolicies. */
+/**
+ * Resource collection API of SnapshotPolicies.
+ */
 public interface SnapshotPolicies {
     /**
      * List snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface SnapshotPolicies {
 
     /**
      * List snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface SnapshotPolicies {
 
     /**
      * Get a snapshot Policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -47,12 +49,12 @@ public interface SnapshotPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot Policy along with {@link Response}.
      */
-    Response<SnapshotPolicy> getWithResponse(
-        String resourceGroupName, String accountName, String snapshotPolicyName, Context context);
+    Response<SnapshotPolicy> getWithResponse(String resourceGroupName, String accountName, String snapshotPolicyName,
+        Context context);
 
     /**
      * Get a snapshot Policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -65,7 +67,7 @@ public interface SnapshotPolicies {
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -77,7 +79,7 @@ public interface SnapshotPolicies {
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -90,9 +92,9 @@ public interface SnapshotPolicies {
 
     /**
      * Get volumes for snapshot policy
-     *
-     * <p>Get volumes associated with snapshot policy.
-     *
+     * 
+     * Get volumes associated with snapshot policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -102,14 +104,14 @@ public interface SnapshotPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return volumes associated with snapshot policy along with {@link Response}.
      */
-    Response<SnapshotPolicyVolumeList> listVolumesWithResponse(
-        String resourceGroupName, String accountName, String snapshotPolicyName, Context context);
+    Response<SnapshotPolicyVolumeList> listVolumesWithResponse(String resourceGroupName, String accountName,
+        String snapshotPolicyName, Context context);
 
     /**
      * Get volumes for snapshot policy
-     *
-     * <p>Get volumes associated with snapshot policy.
-     *
+     * 
+     * Get volumes associated with snapshot policy.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param snapshotPolicyName The name of the snapshot policy.
@@ -122,7 +124,7 @@ public interface SnapshotPolicies {
 
     /**
      * Get a snapshot Policy.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,7 +135,7 @@ public interface SnapshotPolicies {
 
     /**
      * Get a snapshot Policy.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +147,7 @@ public interface SnapshotPolicies {
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -155,7 +157,7 @@ public interface SnapshotPolicies {
 
     /**
      * Delete snapshot policy.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,7 +168,7 @@ public interface SnapshotPolicies {
 
     /**
      * Begins definition for a new SnapshotPolicy resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SnapshotPolicy definition.
      */

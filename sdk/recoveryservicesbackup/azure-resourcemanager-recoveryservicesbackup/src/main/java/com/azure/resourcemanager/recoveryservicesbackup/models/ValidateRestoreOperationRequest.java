@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** AzureRestoreValidation request. */
+/**
+ * AzureRestoreValidation request.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,8 +22,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "ValidateIaasVMRestoreOperationRequest",
-        value = ValidateIaasVMRestoreOperationRequest.class)
-})
+        value = ValidateIaasVMRestoreOperationRequest.class) })
 @Fluent
 public class ValidateRestoreOperationRequest extends ValidateOperationRequest {
     /*
@@ -30,13 +31,15 @@ public class ValidateRestoreOperationRequest extends ValidateOperationRequest {
     @JsonProperty(value = "restoreRequest")
     private RestoreRequest restoreRequest;
 
-    /** Creates an instance of ValidateRestoreOperationRequest class. */
+    /**
+     * Creates an instance of ValidateRestoreOperationRequest class.
+     */
     public ValidateRestoreOperationRequest() {
     }
 
     /**
      * Get the restoreRequest property: Sets restore request to be validated.
-     *
+     * 
      * @return the restoreRequest value.
      */
     public RestoreRequest restoreRequest() {
@@ -45,7 +48,7 @@ public class ValidateRestoreOperationRequest extends ValidateOperationRequest {
 
     /**
      * Set the restoreRequest property: Sets restore request to be validated.
-     *
+     * 
      * @param restoreRequest the restoreRequest value to set.
      * @return the ValidateRestoreOperationRequest object itself.
      */
@@ -56,7 +59,7 @@ public class ValidateRestoreOperationRequest extends ValidateOperationRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

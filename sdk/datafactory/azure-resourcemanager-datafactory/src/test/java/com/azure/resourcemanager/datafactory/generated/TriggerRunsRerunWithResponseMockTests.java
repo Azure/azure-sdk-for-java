@@ -45,7 +45,7 @@ public final class TriggerRunsRerunWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.triggerRuns().rerunWithResponse("nctkqbvtdeou", "ixgtpykbjevj", "juwdvfaulbfrc", "h",
+        manager.triggerRuns().rerunWithResponse("lkmwvgdfutds", "jtuq", "ojpauiccja", "a",
             com.azure.core.util.Context.NONE);
 
     }

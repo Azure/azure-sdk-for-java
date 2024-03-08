@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** VMwareCbt specific resume replication input. */
+/**
+ * VMwareCbt specific resume replication input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VMwareCbt")
 @Fluent
@@ -20,13 +22,15 @@ public final class VMwareCbtResumeReplicationInput extends ResumeReplicationProv
     @JsonProperty(value = "deleteMigrationResources")
     private String deleteMigrationResources;
 
-    /** Creates an instance of VMwareCbtResumeReplicationInput class. */
+    /**
+     * Creates an instance of VMwareCbtResumeReplicationInput class.
+     */
     public VMwareCbtResumeReplicationInput() {
     }
 
     /**
      * Get the deleteMigrationResources property: A value indicating whether Migration resources to be deleted.
-     *
+     * 
      * @return the deleteMigrationResources value.
      */
     public String deleteMigrationResources() {
@@ -35,7 +39,7 @@ public final class VMwareCbtResumeReplicationInput extends ResumeReplicationProv
 
     /**
      * Set the deleteMigrationResources property: A value indicating whether Migration resources to be deleted.
-     *
+     * 
      * @param deleteMigrationResources the deleteMigrationResources value to set.
      * @return the VMwareCbtResumeReplicationInput object itself.
      */
@@ -46,7 +50,7 @@ public final class VMwareCbtResumeReplicationInput extends ResumeReplicationProv
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

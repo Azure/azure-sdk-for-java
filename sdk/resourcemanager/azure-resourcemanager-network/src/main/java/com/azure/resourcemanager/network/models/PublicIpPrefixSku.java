@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SKU of a public IP prefix. */
+/**
+ * SKU of a public IP prefix.
+ */
 @Fluent
 public final class PublicIpPrefixSku {
     /*
@@ -22,13 +24,15 @@ public final class PublicIpPrefixSku {
     @JsonProperty(value = "tier")
     private PublicIpPrefixSkuTier tier;
 
-    /** Creates an instance of PublicIpPrefixSku class. */
+    /**
+     * Creates an instance of PublicIpPrefixSku class.
+     */
     public PublicIpPrefixSku() {
     }
 
     /**
      * Get the name property: Name of a public IP prefix SKU.
-     *
+     * 
      * @return the name value.
      */
     public PublicIpPrefixSkuName name() {
@@ -37,7 +41,7 @@ public final class PublicIpPrefixSku {
 
     /**
      * Set the name property: Name of a public IP prefix SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the PublicIpPrefixSku object itself.
      */
@@ -48,7 +52,7 @@ public final class PublicIpPrefixSku {
 
     /**
      * Get the tier property: Tier of a public IP prefix SKU.
-     *
+     * 
      * @return the tier value.
      */
     public PublicIpPrefixSkuTier tier() {
@@ -57,7 +61,7 @@ public final class PublicIpPrefixSku {
 
     /**
      * Set the tier property: Tier of a public IP prefix SKU.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the PublicIpPrefixSku object itself.
      */
@@ -68,7 +72,7 @@ public final class PublicIpPrefixSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

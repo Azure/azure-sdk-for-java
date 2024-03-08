@@ -10,10 +10,8 @@ import com.azure.resourcemanager.servicefabric.models.PartitionSchemeDescription
 public final class PartitionSchemeDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PartitionSchemeDescription model =
-            BinaryData
-                .fromString("{\"partitionScheme\":\"PartitionSchemeDescription\"}")
-                .toObject(PartitionSchemeDescription.class);
+        PartitionSchemeDescription model = BinaryData.fromString("{\"partitionScheme\":\"PartitionSchemeDescription\"}")
+            .toObject(PartitionSchemeDescription.class);
     }
 
     @org.junit.jupiter.api.Test

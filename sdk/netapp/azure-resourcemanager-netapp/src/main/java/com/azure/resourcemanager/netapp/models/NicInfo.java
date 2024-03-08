@@ -10,8 +10,8 @@ import java.util.List;
 
 /**
  * NIC information
- *
- * <p>NIC information and list of volumes for which the NIC has the primary mount ip address.
+ * 
+ * NIC information and list of volumes for which the NIC has the primary mount ip address.
  */
 @Fluent
 public final class NicInfo {
@@ -27,13 +27,15 @@ public final class NicInfo {
     @JsonProperty(value = "volumeResourceIds")
     private List<String> volumeResourceIds;
 
-    /** Creates an instance of NicInfo class. */
+    /**
+     * Creates an instance of NicInfo class.
+     */
     public NicInfo() {
     }
 
     /**
      * Get the ipAddress property: ipAddress.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -42,7 +44,7 @@ public final class NicInfo {
 
     /**
      * Get the volumeResourceIds property: Volume resource Ids.
-     *
+     * 
      * @return the volumeResourceIds value.
      */
     public List<String> volumeResourceIds() {
@@ -51,7 +53,7 @@ public final class NicInfo {
 
     /**
      * Set the volumeResourceIds property: Volume resource Ids.
-     *
+     * 
      * @param volumeResourceIds the volumeResourceIds value to set.
      * @return the NicInfo object itself.
      */
@@ -62,7 +64,7 @@ public final class NicInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

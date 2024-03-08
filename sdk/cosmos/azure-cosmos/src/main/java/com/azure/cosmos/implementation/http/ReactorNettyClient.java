@@ -12,7 +12,6 @@ import org.reactivestreams.Publisher;
 import org.reactivestreams.Subscription;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
@@ -29,7 +28,6 @@ import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.lang.invoke.WrongMethodTypeException;
-import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Objects;
@@ -306,15 +304,9 @@ public class ReactorNettyClient implements HttpClient {
         }
 
         @Override
-        public Flux<ByteBuf> body() {
+        public Mono<ByteBuf> body() {
             return bodyIntern()
-                .doOnSubscribe(this::updateSubscriptionState);
-        }
-
-        @Override
-        public Mono<byte[]> bodyAsByteArray() {
-            return bodyIntern().aggregate()
-                .asByteArray()
+                .aggregate()
                 .doOnSubscribe(this::updateSubscriptionState);
         }
 
@@ -322,13 +314,6 @@ public class ReactorNettyClient implements HttpClient {
         public Mono<String> bodyAsString() {
             return bodyIntern().aggregate()
                 .asString()
-                .doOnSubscribe(this::updateSubscriptionState);
-        }
-
-        @Override
-        public Mono<String> bodyAsString(Charset charset) {
-            return bodyIntern().aggregate()
-                .asString(charset)
                 .doOnSubscribe(this::updateSubscriptionState);
         }
 

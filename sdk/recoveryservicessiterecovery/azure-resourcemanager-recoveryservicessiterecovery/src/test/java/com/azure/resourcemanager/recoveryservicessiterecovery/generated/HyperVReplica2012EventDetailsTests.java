@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HyperVReplica2012EventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVReplica2012EventDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"HyperVReplica2012\",\"containerName\":\"yttzgixgyrih\",\"fabricName\":\"mgb\",\"remoteContainerName\":\"lqtxnrflkndrn\",\"remoteFabricName\":\"gfjo\"}")
-                .toObject(HyperVReplica2012EventDetails.class);
+        HyperVReplica2012EventDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"HyperVReplica2012\",\"containerName\":\"yttzgixgyrih\",\"fabricName\":\"mgb\",\"remoteContainerName\":\"lqtxnrflkndrn\",\"remoteFabricName\":\"gfjo\"}")
+            .toObject(HyperVReplica2012EventDetails.class);
         Assertions.assertEquals("yttzgixgyrih", model.containerName());
         Assertions.assertEquals("mgb", model.fabricName());
         Assertions.assertEquals("lqtxnrflkndrn", model.remoteContainerName());
@@ -24,12 +22,8 @@ public final class HyperVReplica2012EventDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplica2012EventDetails model =
-            new HyperVReplica2012EventDetails()
-                .withContainerName("yttzgixgyrih")
-                .withFabricName("mgb")
-                .withRemoteContainerName("lqtxnrflkndrn")
-                .withRemoteFabricName("gfjo");
+        HyperVReplica2012EventDetails model = new HyperVReplica2012EventDetails().withContainerName("yttzgixgyrih")
+            .withFabricName("mgb").withRemoteContainerName("lqtxnrflkndrn").withRemoteFabricName("gfjo");
         model = BinaryData.fromObject(model).toObject(HyperVReplica2012EventDetails.class);
         Assertions.assertEquals("yttzgixgyrih", model.containerName());
         Assertions.assertEquals("mgb", model.fabricName());

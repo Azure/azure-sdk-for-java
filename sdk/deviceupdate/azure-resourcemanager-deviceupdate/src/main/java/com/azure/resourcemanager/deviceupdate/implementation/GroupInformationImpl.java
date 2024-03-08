@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.deviceupdate.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.deviceupdate.fluent.models.GroupInformationInner;
 import com.azure.resourcemanager.deviceupdate.models.GroupIdProvisioningState;
 import com.azure.resourcemanager.deviceupdate.models.GroupInformation;
@@ -15,8 +16,8 @@ public final class GroupInformationImpl implements GroupInformation {
 
     private final com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager;
 
-    GroupInformationImpl(
-        GroupInformationInner innerObject, com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
+    GroupInformationImpl(GroupInformationInner innerObject,
+        com.azure.resourcemanager.deviceupdate.DeviceUpdateManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -31,6 +32,10 @@ public final class GroupInformationImpl implements GroupInformation {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public GroupIdProvisioningState provisioningState() {

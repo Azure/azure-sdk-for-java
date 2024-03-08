@@ -12,8 +12,7 @@ public final class RequiredAmlFilesystemSubnetsSizeImpl implements RequiredAmlFi
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    RequiredAmlFilesystemSubnetsSizeImpl(
-        RequiredAmlFilesystemSubnetsSizeInner innerObject,
+    RequiredAmlFilesystemSubnetsSizeImpl(RequiredAmlFilesystemSubnetsSizeInner innerObject,
         com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

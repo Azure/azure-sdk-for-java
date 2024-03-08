@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the disallowed disk types. */
+/**
+ * Describes the disallowed disk types.
+ */
 @Fluent
 public final class Disallowed {
     /*
@@ -17,13 +19,15 @@ public final class Disallowed {
     @JsonProperty(value = "diskTypes")
     private List<String> diskTypes;
 
-    /** Creates an instance of Disallowed class. */
+    /**
+     * Creates an instance of Disallowed class.
+     */
     public Disallowed() {
     }
 
     /**
      * Get the diskTypes property: A list of disk types.
-     *
+     * 
      * @return the diskTypes value.
      */
     public List<String> diskTypes() {
@@ -32,7 +36,7 @@ public final class Disallowed {
 
     /**
      * Set the diskTypes property: A list of disk types.
-     *
+     * 
      * @param diskTypes the diskTypes value to set.
      * @return the Disallowed object itself.
      */
@@ -43,7 +47,7 @@ public final class Disallowed {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

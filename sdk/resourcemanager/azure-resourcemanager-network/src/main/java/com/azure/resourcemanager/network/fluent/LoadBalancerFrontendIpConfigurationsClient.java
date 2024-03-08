@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public interface LoadBalancerFrontendIpConfigurationsClient {
     /**
      * Gets all the load balancer frontend IP configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,7 +33,7 @@ public interface LoadBalancerFrontendIpConfigurationsClient {
 
     /**
      * Gets all the load balancer frontend IP configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -46,7 +46,7 @@ public interface LoadBalancerFrontendIpConfigurationsClient {
 
     /**
      * Gets all the load balancer frontend IP configurations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -56,28 +56,28 @@ public interface LoadBalancerFrontendIpConfigurationsClient {
      * @return all the load balancer frontend IP configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<FrontendIpConfigurationInner> list(
-        String resourceGroupName, String loadBalancerName, Context context);
+    PagedIterable<FrontendIpConfigurationInner> list(String resourceGroupName, String loadBalancerName,
+        Context context);
 
     /**
      * Gets load balancer frontend IP configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param frontendIpConfigurationName The name of the frontend IP configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return load balancer frontend IP configuration along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return load balancer frontend IP configuration along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<FrontendIpConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, String frontendIpConfigurationName);
+    Mono<Response<FrontendIpConfigurationInner>> getWithResponseAsync(String resourceGroupName, String loadBalancerName,
+        String frontendIpConfigurationName);
 
     /**
      * Gets load balancer frontend IP configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param frontendIpConfigurationName The name of the frontend IP configuration.
@@ -87,12 +87,12 @@ public interface LoadBalancerFrontendIpConfigurationsClient {
      * @return load balancer frontend IP configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FrontendIpConfigurationInner> getAsync(
-        String resourceGroupName, String loadBalancerName, String frontendIpConfigurationName);
+    Mono<FrontendIpConfigurationInner> getAsync(String resourceGroupName, String loadBalancerName,
+        String frontendIpConfigurationName);
 
     /**
      * Gets load balancer frontend IP configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param frontendIpConfigurationName The name of the frontend IP configuration.
@@ -103,12 +103,12 @@ public interface LoadBalancerFrontendIpConfigurationsClient {
      * @return load balancer frontend IP configuration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FrontendIpConfigurationInner> getWithResponse(
-        String resourceGroupName, String loadBalancerName, String frontendIpConfigurationName, Context context);
+    Response<FrontendIpConfigurationInner> getWithResponse(String resourceGroupName, String loadBalancerName,
+        String frontendIpConfigurationName, Context context);
 
     /**
      * Gets load balancer frontend IP configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param frontendIpConfigurationName The name of the frontend IP configuration.
@@ -118,6 +118,6 @@ public interface LoadBalancerFrontendIpConfigurationsClient {
      * @return load balancer frontend IP configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FrontendIpConfigurationInner get(
-        String resourceGroupName, String loadBalancerName, String frontendIpConfigurationName);
+    FrontendIpConfigurationInner get(String resourceGroupName, String loadBalancerName,
+        String frontendIpConfigurationName);
 }

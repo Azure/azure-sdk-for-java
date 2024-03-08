@@ -31,43 +31,32 @@ public final class OperationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"qyzhf\",\"isDataAction\":false,\"display\":{\"provider\":\"ogczhonnxkrlg\",\"operation\":\"hmossxkkgth\",\"resource\":\"gh\",\"description\":\"bdhqxvcxgf\"},\"origin\":\"dsofbshrns\",\"properties\":\"datauswdv\"}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"utpwoqhihejqgw\",\"isDataAction\":false,\"display\":{\"provider\":\"n\",\"operation\":\"ypsxjvfoim\",\"resource\":\"slirciz\",\"description\":\"vydfceacvlhvygdy\"},\"origin\":\"umrtwnawjsl\",\"properties\":\"datawkojgcyztsfmzn\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        BatchManager manager =
-            BatchManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        BatchManager manager = BatchManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qyzhf", response.iterator().next().name());
+        Assertions.assertEquals("utpwoqhihejqgw", response.iterator().next().name());
         Assertions.assertEquals(false, response.iterator().next().isDataAction());
-        Assertions.assertEquals("ogczhonnxkrlg", response.iterator().next().display().provider());
-        Assertions.assertEquals("hmossxkkgth", response.iterator().next().display().operation());
-        Assertions.assertEquals("gh", response.iterator().next().display().resource());
-        Assertions.assertEquals("bdhqxvcxgf", response.iterator().next().display().description());
-        Assertions.assertEquals("dsofbshrns", response.iterator().next().origin());
+        Assertions.assertEquals("n", response.iterator().next().display().provider());
+        Assertions.assertEquals("ypsxjvfoim", response.iterator().next().display().operation());
+        Assertions.assertEquals("slirciz", response.iterator().next().display().resource());
+        Assertions.assertEquals("vydfceacvlhvygdy", response.iterator().next().display().description());
+        Assertions.assertEquals("umrtwnawjsl", response.iterator().next().origin());
     }
 }

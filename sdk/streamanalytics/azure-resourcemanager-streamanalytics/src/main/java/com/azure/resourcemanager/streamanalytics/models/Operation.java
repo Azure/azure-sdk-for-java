@@ -6,32 +6,34 @@ package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.resourcemanager.streamanalytics.fluent.models.OperationInner;
 
-/** An immutable client-side representation of Operation. */
+/**
+ * An immutable client-side representation of Operation.
+ */
 public interface Operation {
     /**
      * Gets the name property: The name of the operation being performed on this particular object.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
      * Gets the display property: Contains the localized display information for this particular operation / action.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
      * Gets the inner com.azure.resourcemanager.streamanalytics.fluent.models.OperationInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationInner innerModel();

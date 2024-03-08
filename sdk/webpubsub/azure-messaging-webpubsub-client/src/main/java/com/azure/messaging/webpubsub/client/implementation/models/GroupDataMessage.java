@@ -5,7 +5,7 @@ package com.azure.messaging.webpubsub.client.implementation.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 
 /**
  * The message of group data.
@@ -14,7 +14,7 @@ import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
 public final class GroupDataMessage {
 
     private final String group;
-    private final WebPubSubDataType dataType;
+    private final WebPubSubDataFormat dataType;
     private final BinaryData data;
     private final String fromUserId;
     private final Long sequenceId;
@@ -28,7 +28,7 @@ public final class GroupDataMessage {
      * @param fromUserId the userId of sender.
      * @param sequenceId the sequenceId.
      */
-    public GroupDataMessage(String group, WebPubSubDataType dataType, BinaryData data, String fromUserId,
+    public GroupDataMessage(String group, WebPubSubDataFormat dataType, BinaryData data, String fromUserId,
                             Long sequenceId) {
         this.data = data;
         this.dataType = dataType;
@@ -51,7 +51,7 @@ public final class GroupDataMessage {
      *
      * @return the data type.
      */
-    public WebPubSubDataType getDataType() {
+    public WebPubSubDataFormat getDataType() {
         return dataType;
     }
 

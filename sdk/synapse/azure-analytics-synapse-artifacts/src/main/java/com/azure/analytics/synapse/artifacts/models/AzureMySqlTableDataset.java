@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure MySQL database dataset. */
+/**
+ * The Azure MySQL database dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureMySqlTable")
 @JsonFlatten
@@ -30,13 +32,16 @@ public class AzureMySqlTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
-    /** Creates an instance of AzureMySqlTableDataset class. */
-    public AzureMySqlTableDataset() {}
+    /**
+     * Creates an instance of AzureMySqlTableDataset class.
+     */
+    public AzureMySqlTableDataset() {
+    }
 
     /**
      * Get the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -46,7 +51,7 @@ public class AzureMySqlTableDataset extends Dataset {
     /**
      * Set the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the AzureMySqlTableDataset object itself.
      */
@@ -58,7 +63,7 @@ public class AzureMySqlTableDataset extends Dataset {
     /**
      * Get the table property: The name of Azure MySQL database table. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -68,7 +73,7 @@ public class AzureMySqlTableDataset extends Dataset {
     /**
      * Set the table property: The name of Azure MySQL database table. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureMySqlTableDataset object itself.
      */
@@ -77,49 +82,63 @@ public class AzureMySqlTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureMySqlTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

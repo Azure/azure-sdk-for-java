@@ -25,14 +25,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworksClient. */
-public interface VirtualNetworksClient
-    extends InnerSupportsGet<VirtualNetworkInner>,
-        InnerSupportsListing<VirtualNetworkInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in VirtualNetworksClient.
+ */
+public interface VirtualNetworksClient extends InnerSupportsGet<VirtualNetworkInner>,
+    InnerSupportsListing<VirtualNetworkInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +45,7 @@ public interface VirtualNetworksClient
 
     /**
      * Deletes the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +58,7 @@ public interface VirtualNetworksClient
 
     /**
      * Deletes the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +71,7 @@ public interface VirtualNetworksClient
 
     /**
      * Deletes the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -81,12 +81,12 @@ public interface VirtualNetworksClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualNetworkName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName,
+        Context context);
 
     /**
      * Deletes the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +99,7 @@ public interface VirtualNetworksClient
 
     /**
      * Deletes the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -111,7 +111,7 @@ public interface VirtualNetworksClient
 
     /**
      * Deletes the specified virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
@@ -124,7 +124,7 @@ public interface VirtualNetworksClient
 
     /**
      * Gets the specified virtual network by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param expand Expands referenced resources.
@@ -132,15 +132,15 @@ public interface VirtualNetworksClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified virtual network by resource group along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualNetworkInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, String expand);
+    Mono<Response<VirtualNetworkInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String virtualNetworkName, String expand);
 
     /**
      * Gets the specified virtual network by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +153,7 @@ public interface VirtualNetworksClient
 
     /**
      * Gets the specified virtual network by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param expand Expands referenced resources.
@@ -164,12 +164,12 @@ public interface VirtualNetworksClient
      * @return the specified virtual network by resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualNetworkName, String expand, Context context);
+    Response<VirtualNetworkInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualNetworkName,
+        String expand, Context context);
 
     /**
      * Gets the specified virtual network by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +182,7 @@ public interface VirtualNetworksClient
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -192,12 +192,12 @@ public interface VirtualNetworksClient
      * @return virtual Network resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String virtualNetworkName, VirtualNetworkInner parameters);
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -207,12 +207,12 @@ public interface VirtualNetworksClient
      * @return the {@link PollerFlux} for polling of virtual Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters);
+    PollerFlux<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String virtualNetworkName, VirtualNetworkInner parameters);
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -222,12 +222,12 @@ public interface VirtualNetworksClient
      * @return the {@link SyncPoller} for polling of virtual Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters);
+    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualNetworkName, VirtualNetworkInner parameters);
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -238,12 +238,12 @@ public interface VirtualNetworksClient
      * @return the {@link SyncPoller} for polling of virtual Network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters, Context context);
+    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualNetworkName, VirtualNetworkInner parameters, Context context);
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -253,12 +253,12 @@ public interface VirtualNetworksClient
      * @return virtual Network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkInner> createOrUpdateAsync(
-        String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters);
+    Mono<VirtualNetworkInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName,
+        VirtualNetworkInner parameters);
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -268,12 +268,12 @@ public interface VirtualNetworksClient
      * @return virtual Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkInner createOrUpdate(
-        String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters);
+    VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
+        VirtualNetworkInner parameters);
 
     /**
      * Creates or updates a virtual network in the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to the create or update virtual network operation.
@@ -284,12 +284,12 @@ public interface VirtualNetworksClient
      * @return virtual Network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkInner createOrUpdate(
-        String resourceGroupName, String virtualNetworkName, VirtualNetworkInner parameters, Context context);
+    VirtualNetworkInner createOrUpdate(String resourceGroupName, String virtualNetworkName,
+        VirtualNetworkInner parameters, Context context);
 
     /**
      * Updates a virtual network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to update virtual network tags.
@@ -299,12 +299,12 @@ public interface VirtualNetworksClient
      * @return virtual Network resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualNetworkInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String virtualNetworkName, TagsObject parameters);
+    Mono<Response<VirtualNetworkInner>> updateTagsWithResponseAsync(String resourceGroupName, String virtualNetworkName,
+        TagsObject parameters);
 
     /**
      * Updates a virtual network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to update virtual network tags.
@@ -314,12 +314,12 @@ public interface VirtualNetworksClient
      * @return virtual Network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkInner> updateTagsAsync(
-        String resourceGroupName, String virtualNetworkName, TagsObject parameters);
+    Mono<VirtualNetworkInner> updateTagsAsync(String resourceGroupName, String virtualNetworkName,
+        TagsObject parameters);
 
     /**
      * Updates a virtual network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to update virtual network tags.
@@ -330,12 +330,12 @@ public interface VirtualNetworksClient
      * @return virtual Network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkInner> updateTagsWithResponse(
-        String resourceGroupName, String virtualNetworkName, TagsObject parameters, Context context);
+    Response<VirtualNetworkInner> updateTagsWithResponse(String resourceGroupName, String virtualNetworkName,
+        TagsObject parameters, Context context);
 
     /**
      * Updates a virtual network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param parameters Parameters supplied to update virtual network tags.
@@ -349,7 +349,7 @@ public interface VirtualNetworksClient
 
     /**
      * Gets all virtual networks in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all virtual networks in a subscription as paginated response with {@link PagedFlux}.
@@ -359,7 +359,7 @@ public interface VirtualNetworksClient
 
     /**
      * Gets all virtual networks in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all virtual networks in a subscription as paginated response with {@link PagedIterable}.
@@ -369,7 +369,7 @@ public interface VirtualNetworksClient
 
     /**
      * Gets all virtual networks in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -381,7 +381,7 @@ public interface VirtualNetworksClient
 
     /**
      * Gets all virtual networks in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -393,7 +393,7 @@ public interface VirtualNetworksClient
 
     /**
      * Gets all virtual networks in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -405,7 +405,7 @@ public interface VirtualNetworksClient
 
     /**
      * Gets all virtual networks in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -418,7 +418,7 @@ public interface VirtualNetworksClient
 
     /**
      * Checks whether a private IP address is available for use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
@@ -426,7 +426,7 @@ public interface VirtualNetworksClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for CheckIPAddressAvailability API service call along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<IpAddressAvailabilityResultInner>> checkIpAddressAvailabilityWithResponseAsync(
@@ -434,7 +434,7 @@ public interface VirtualNetworksClient
 
     /**
      * Checks whether a private IP address is available for use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
@@ -444,12 +444,12 @@ public interface VirtualNetworksClient
      * @return response for CheckIPAddressAvailability API service call on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<IpAddressAvailabilityResultInner> checkIpAddressAvailabilityAsync(
-        String resourceGroupName, String virtualNetworkName, String ipAddress);
+    Mono<IpAddressAvailabilityResultInner> checkIpAddressAvailabilityAsync(String resourceGroupName,
+        String virtualNetworkName, String ipAddress);
 
     /**
      * Checks whether a private IP address is available for use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
@@ -460,12 +460,12 @@ public interface VirtualNetworksClient
      * @return response for CheckIPAddressAvailability API service call along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IpAddressAvailabilityResultInner> checkIpAddressAvailabilityWithResponse(
-        String resourceGroupName, String virtualNetworkName, String ipAddress, Context context);
+    Response<IpAddressAvailabilityResultInner> checkIpAddressAvailabilityWithResponse(String resourceGroupName,
+        String virtualNetworkName, String ipAddress, Context context);
 
     /**
      * Checks whether a private IP address is available for use.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param ipAddress The private IP address to be verified.
@@ -475,12 +475,12 @@ public interface VirtualNetworksClient
      * @return response for CheckIPAddressAvailability API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    IpAddressAvailabilityResultInner checkIpAddressAvailability(
-        String resourceGroupName, String virtualNetworkName, String ipAddress);
+    IpAddressAvailabilityResultInner checkIpAddressAvailability(String resourceGroupName, String virtualNetworkName,
+        String ipAddress);
 
     /**
      * Lists usage stats.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -493,37 +493,37 @@ public interface VirtualNetworksClient
 
     /**
      * Lists usage stats.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the virtual networks GetUsage API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for the virtual networks GetUsage API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkUsageInner> listUsage(String resourceGroupName, String virtualNetworkName);
 
     /**
      * Lists usage stats.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for the virtual networks GetUsage API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for the virtual networks GetUsage API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualNetworkUsageInner> listUsage(
-        String resourceGroupName, String virtualNetworkName, Context context);
+    PagedIterable<VirtualNetworkUsageInner> listUsage(String resourceGroupName, String virtualNetworkName,
+        Context context);
 
     /**
      * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The max number of ip addresses to return.
@@ -532,45 +532,45 @@ public interface VirtualNetworksClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Ddos Protection Status of all IP Addresses under the Virtual Network as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatusAsync(
-        String resourceGroupName, String virtualNetworkName, Integer top, String skipToken);
+    PagedFlux<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatusAsync(String resourceGroupName,
+        String virtualNetworkName, Integer top, String skipToken);
 
     /**
      * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Ddos Protection Status of all IP Addresses under the Virtual Network as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatusAsync(
-        String resourceGroupName, String virtualNetworkName);
+    PagedFlux<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatusAsync(String resourceGroupName,
+        String virtualNetworkName);
 
     /**
      * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Ddos Protection Status of all IP Addresses under the Virtual Network as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatus(
-        String resourceGroupName, String virtualNetworkName);
+    PagedIterable<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatus(String resourceGroupName,
+        String virtualNetworkName);
 
     /**
      * Gets the Ddos Protection Status of all IP Addresses under the Virtual Network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param top The max number of ip addresses to return.
@@ -580,9 +580,9 @@ public interface VirtualNetworksClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Ddos Protection Status of all IP Addresses under the Virtual Network as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatus(
-        String resourceGroupName, String virtualNetworkName, Integer top, String skipToken, Context context);
+    PagedIterable<PublicIpDdosProtectionStatusResultInner> listDdosProtectionStatus(String resourceGroupName,
+        String virtualNetworkName, Integer top, String skipToken, Context context);
 }

@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ChoiceResultInternal model.
- */
+/** The ChoiceResultInternal model. */
 @Fluent
 public final class ChoiceResultInternal {
     /*
@@ -20,21 +18,15 @@ public final class ChoiceResultInternal {
 
     /*
      * Phrases are set to the value if choice is selected via phrase detection.
-     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set
-     * to null
+     * If Dtmf input is recognized, then Label will be the identifier for the
+     * choice detected and phrases will be set to null
      */
     @JsonProperty(value = "recognizedPhrase")
     private String recognizedPhrase;
 
     /**
-     * Creates an instance of ChoiceResultInternal class.
-     */
-    public ChoiceResultInternal() {
-    }
-
-    /**
      * Get the label property: Label is the primary identifier for the choice detected.
-     * 
+     *
      * @return the label value.
      */
     public String getLabel() {
@@ -43,7 +35,7 @@ public final class ChoiceResultInternal {
 
     /**
      * Set the label property: Label is the primary identifier for the choice detected.
-     * 
+     *
      * @param label the label value to set.
      * @return the ChoiceResultInternal object itself.
      */
@@ -53,10 +45,10 @@ public final class ChoiceResultInternal {
     }
 
     /**
-     * Get the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection.
-     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set
-     * to null.
-     * 
+     * Get the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection. If
+     * Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
+     * null.
+     *
      * @return the recognizedPhrase value.
      */
     public String getRecognizedPhrase() {
@@ -64,10 +56,10 @@ public final class ChoiceResultInternal {
     }
 
     /**
-     * Set the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection.
-     * If Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set
-     * to null.
-     * 
+     * Set the recognizedPhrase property: Phrases are set to the value if choice is selected via phrase detection. If
+     * Dtmf input is recognized, then Label will be the identifier for the choice detected and phrases will be set to
+     * null.
+     *
      * @param recognizedPhrase the recognizedPhrase value to set.
      * @return the ChoiceResultInternal object itself.
      */

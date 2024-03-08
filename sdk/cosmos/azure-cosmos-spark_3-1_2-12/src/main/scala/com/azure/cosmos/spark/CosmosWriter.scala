@@ -5,7 +5,6 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosDiagnosticsContext
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
-import org.apache.spark.SparkInternalsBridge
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.connector.write.WriterCommitMessage

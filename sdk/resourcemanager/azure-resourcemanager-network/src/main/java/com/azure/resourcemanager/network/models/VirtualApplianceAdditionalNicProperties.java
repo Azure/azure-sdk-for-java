@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Network Virtual Appliance Additional Nic Properties
- *
- * <p>Network Virtual Appliance Additional NIC properties.
+ * 
+ * Network Virtual Appliance Additional NIC properties.
  */
 @Fluent
 public final class VirtualApplianceAdditionalNicProperties {
@@ -26,13 +26,15 @@ public final class VirtualApplianceAdditionalNicProperties {
     @JsonProperty(value = "hasPublicIp")
     private Boolean hasPublicIp;
 
-    /** Creates an instance of VirtualApplianceAdditionalNicProperties class. */
+    /**
+     * Creates an instance of VirtualApplianceAdditionalNicProperties class.
+     */
     public VirtualApplianceAdditionalNicProperties() {
     }
 
     /**
      * Get the name property: Name of additional nic.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +43,7 @@ public final class VirtualApplianceAdditionalNicProperties {
 
     /**
      * Set the name property: Name of additional nic.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualApplianceAdditionalNicProperties object itself.
      */
@@ -52,7 +54,7 @@ public final class VirtualApplianceAdditionalNicProperties {
 
     /**
      * Get the hasPublicIp property: Flag (true or false) for Intent for Public Ip on additional nic.
-     *
+     * 
      * @return the hasPublicIp value.
      */
     public Boolean hasPublicIp() {
@@ -61,7 +63,7 @@ public final class VirtualApplianceAdditionalNicProperties {
 
     /**
      * Set the hasPublicIp property: Flag (true or false) for Intent for Public Ip on additional nic.
-     *
+     * 
      * @param hasPublicIp the hasPublicIp value to set.
      * @return the VirtualApplianceAdditionalNicProperties object itself.
      */
@@ -72,7 +74,7 @@ public final class VirtualApplianceAdditionalNicProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request body structure for data flow expression preview. */
+/**
+ * Request body structure for data flow expression preview.
+ */
 @Fluent
 public final class EvaluateDataFlowExpressionRequest {
     /*
@@ -40,12 +42,15 @@ public final class EvaluateDataFlowExpressionRequest {
     @JsonProperty(value = "expression")
     private String expression;
 
-    /** Creates an instance of EvaluateDataFlowExpressionRequest class. */
-    public EvaluateDataFlowExpressionRequest() {}
+    /**
+     * Creates an instance of EvaluateDataFlowExpressionRequest class.
+     */
+    public EvaluateDataFlowExpressionRequest() {
+    }
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String getSessionId() {
@@ -54,7 +59,7 @@ public final class EvaluateDataFlowExpressionRequest {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the EvaluateDataFlowExpressionRequest object itself.
      */
@@ -65,7 +70,7 @@ public final class EvaluateDataFlowExpressionRequest {
 
     /**
      * Get the dataFlowName property: The data flow which contains the debug session.
-     *
+     * 
      * @return the dataFlowName value.
      */
     public String getDataFlowName() {
@@ -74,7 +79,7 @@ public final class EvaluateDataFlowExpressionRequest {
 
     /**
      * Set the dataFlowName property: The data flow which contains the debug session.
-     *
+     * 
      * @param dataFlowName the dataFlowName value to set.
      * @return the EvaluateDataFlowExpressionRequest object itself.
      */
@@ -85,7 +90,7 @@ public final class EvaluateDataFlowExpressionRequest {
 
     /**
      * Get the streamName property: The output stream name.
-     *
+     * 
      * @return the streamName value.
      */
     public String getStreamName() {
@@ -94,7 +99,7 @@ public final class EvaluateDataFlowExpressionRequest {
 
     /**
      * Set the streamName property: The output stream name.
-     *
+     * 
      * @param streamName the streamName value to set.
      * @return the EvaluateDataFlowExpressionRequest object itself.
      */
@@ -105,7 +110,7 @@ public final class EvaluateDataFlowExpressionRequest {
 
     /**
      * Get the rowLimits property: The row limit for preview request.
-     *
+     * 
      * @return the rowLimits value.
      */
     public Integer getRowLimits() {
@@ -114,7 +119,7 @@ public final class EvaluateDataFlowExpressionRequest {
 
     /**
      * Set the rowLimits property: The row limit for preview request.
-     *
+     * 
      * @param rowLimits the rowLimits value to set.
      * @return the EvaluateDataFlowExpressionRequest object itself.
      */
@@ -125,7 +130,7 @@ public final class EvaluateDataFlowExpressionRequest {
 
     /**
      * Get the expression property: The expression for preview.
-     *
+     * 
      * @return the expression value.
      */
     public String getExpression() {
@@ -134,7 +139,7 @@ public final class EvaluateDataFlowExpressionRequest {
 
     /**
      * Set the expression property: The expression for preview.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the EvaluateDataFlowExpressionRequest object itself.
      */

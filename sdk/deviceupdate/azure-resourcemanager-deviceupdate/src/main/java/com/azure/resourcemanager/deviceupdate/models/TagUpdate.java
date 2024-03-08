@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Request payload used to update an existing resource's tags. */
+/**
+ * Request payload used to update an existing resource's tags.
+ */
 @Fluent
 public class TagUpdate {
     /*
@@ -20,8 +22,15 @@ public class TagUpdate {
     private Map<String, String> tags;
 
     /**
-     * Get the tags property: List of key value pairs that describe the resource. This will overwrite the existing tags.
-     *
+     * Creates an instance of TagUpdate class.
+     */
+    public TagUpdate() {
+    }
+
+    /**
+     * Get the tags property: List of key value pairs that describe the resource. This will overwrite the existing
+     * tags.
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -29,8 +38,9 @@ public class TagUpdate {
     }
 
     /**
-     * Set the tags property: List of key value pairs that describe the resource. This will overwrite the existing tags.
-     *
+     * Set the tags property: List of key value pairs that describe the resource. This will overwrite the existing
+     * tags.
+     * 
      * @param tags the tags value to set.
      * @return the TagUpdate object itself.
      */
@@ -41,7 +51,7 @@ public class TagUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Route Table resource. */
+/**
+ * Route Table resource.
+ */
 @Fluent
 public final class RouteTablePropertiesFormat {
     /*
@@ -42,13 +44,15 @@ public final class RouteTablePropertiesFormat {
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
-    /** Creates an instance of RouteTablePropertiesFormat class. */
+    /**
+     * Creates an instance of RouteTablePropertiesFormat class.
+     */
     public RouteTablePropertiesFormat() {
     }
 
     /**
      * Get the routes property: Collection of routes contained within a route table.
-     *
+     * 
      * @return the routes value.
      */
     public List<RouteInner> routes() {
@@ -57,7 +61,7 @@ public final class RouteTablePropertiesFormat {
 
     /**
      * Set the routes property: Collection of routes contained within a route table.
-     *
+     * 
      * @param routes the routes value to set.
      * @return the RouteTablePropertiesFormat object itself.
      */
@@ -68,7 +72,7 @@ public final class RouteTablePropertiesFormat {
 
     /**
      * Get the subnets property: A collection of references to subnets.
-     *
+     * 
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -78,7 +82,7 @@ public final class RouteTablePropertiesFormat {
     /**
      * Get the disableBgpRoutePropagation property: Whether to disable the routes learned by BGP on that route table.
      * True means disable.
-     *
+     * 
      * @return the disableBgpRoutePropagation value.
      */
     public Boolean disableBgpRoutePropagation() {
@@ -88,7 +92,7 @@ public final class RouteTablePropertiesFormat {
     /**
      * Set the disableBgpRoutePropagation property: Whether to disable the routes learned by BGP on that route table.
      * True means disable.
-     *
+     * 
      * @param disableBgpRoutePropagation the disableBgpRoutePropagation value to set.
      * @return the RouteTablePropertiesFormat object itself.
      */
@@ -99,7 +103,7 @@ public final class RouteTablePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the route table resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -108,7 +112,7 @@ public final class RouteTablePropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the route table.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -117,7 +121,7 @@ public final class RouteTablePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

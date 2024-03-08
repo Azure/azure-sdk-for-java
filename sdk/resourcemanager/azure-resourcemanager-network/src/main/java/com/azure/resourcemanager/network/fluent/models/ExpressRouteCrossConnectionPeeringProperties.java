@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringCo
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of express route cross connection peering. */
+/**
+ * Properties of express route cross connection peering.
+ */
 @Fluent
 public final class ExpressRouteCrossConnectionPeeringProperties {
     /*
@@ -105,13 +107,15 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
     @JsonProperty(value = "ipv6PeeringConfig")
     private Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig;
 
-    /** Creates an instance of ExpressRouteCrossConnectionPeeringProperties class. */
+    /**
+     * Creates an instance of ExpressRouteCrossConnectionPeeringProperties class.
+     */
     public ExpressRouteCrossConnectionPeeringProperties() {
     }
 
     /**
      * Get the peeringType property: The peering type.
-     *
+     * 
      * @return the peeringType value.
      */
     public ExpressRoutePeeringType peeringType() {
@@ -120,7 +124,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Set the peeringType property: The peering type.
-     *
+     * 
      * @param peeringType the peeringType value to set.
      * @return the ExpressRouteCrossConnectionPeeringProperties object itself.
      */
@@ -131,7 +135,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the state property: The peering state.
-     *
+     * 
      * @return the state value.
      */
     public ExpressRoutePeeringState state() {
@@ -140,7 +144,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Set the state property: The peering state.
-     *
+     * 
      * @param state the state value to set.
      * @return the ExpressRouteCrossConnectionPeeringProperties object itself.
      */
@@ -151,7 +155,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the azureAsn property: The Azure ASN.
-     *
+     * 
      * @return the azureAsn value.
      */
     public Integer azureAsn() {
@@ -160,7 +164,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the peerAsn property: The peer ASN.
-     *
+     * 
      * @return the peerAsn value.
      */
     public Long peerAsn() {
@@ -169,7 +173,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Set the peerAsn property: The peer ASN.
-     *
+     * 
      * @param peerAsn the peerAsn value to set.
      * @return the ExpressRouteCrossConnectionPeeringProperties object itself.
      */
@@ -180,7 +184,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the primaryPeerAddressPrefix property: The primary address prefix.
-     *
+     * 
      * @return the primaryPeerAddressPrefix value.
      */
     public String primaryPeerAddressPrefix() {
@@ -189,7 +193,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Set the primaryPeerAddressPrefix property: The primary address prefix.
-     *
+     * 
      * @param primaryPeerAddressPrefix the primaryPeerAddressPrefix value to set.
      * @return the ExpressRouteCrossConnectionPeeringProperties object itself.
      */
@@ -200,7 +204,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the secondaryPeerAddressPrefix property: The secondary address prefix.
-     *
+     * 
      * @return the secondaryPeerAddressPrefix value.
      */
     public String secondaryPeerAddressPrefix() {
@@ -209,19 +213,19 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Set the secondaryPeerAddressPrefix property: The secondary address prefix.
-     *
+     * 
      * @param secondaryPeerAddressPrefix the secondaryPeerAddressPrefix value to set.
      * @return the ExpressRouteCrossConnectionPeeringProperties object itself.
      */
-    public ExpressRouteCrossConnectionPeeringProperties withSecondaryPeerAddressPrefix(
-        String secondaryPeerAddressPrefix) {
+    public ExpressRouteCrossConnectionPeeringProperties
+        withSecondaryPeerAddressPrefix(String secondaryPeerAddressPrefix) {
         this.secondaryPeerAddressPrefix = secondaryPeerAddressPrefix;
         return this;
     }
 
     /**
      * Get the primaryAzurePort property: The primary port.
-     *
+     * 
      * @return the primaryAzurePort value.
      */
     public String primaryAzurePort() {
@@ -230,7 +234,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the secondaryAzurePort property: The secondary port.
-     *
+     * 
      * @return the secondaryAzurePort value.
      */
     public String secondaryAzurePort() {
@@ -239,7 +243,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the sharedKey property: The shared key.
-     *
+     * 
      * @return the sharedKey value.
      */
     public String sharedKey() {
@@ -248,7 +252,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Set the sharedKey property: The shared key.
-     *
+     * 
      * @param sharedKey the sharedKey value to set.
      * @return the ExpressRouteCrossConnectionPeeringProperties object itself.
      */
@@ -259,7 +263,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the vlanId property: The VLAN ID.
-     *
+     * 
      * @return the vlanId value.
      */
     public Integer vlanId() {
@@ -268,7 +272,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Set the vlanId property: The VLAN ID.
-     *
+     * 
      * @param vlanId the vlanId value to set.
      * @return the ExpressRouteCrossConnectionPeeringProperties object itself.
      */
@@ -279,7 +283,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the microsoftPeeringConfig property: The Microsoft peering configuration.
-     *
+     * 
      * @return the microsoftPeeringConfig value.
      */
     public ExpressRouteCircuitPeeringConfig microsoftPeeringConfig() {
@@ -288,12 +292,12 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Set the microsoftPeeringConfig property: The Microsoft peering configuration.
-     *
+     * 
      * @param microsoftPeeringConfig the microsoftPeeringConfig value to set.
      * @return the ExpressRouteCrossConnectionPeeringProperties object itself.
      */
-    public ExpressRouteCrossConnectionPeeringProperties withMicrosoftPeeringConfig(
-        ExpressRouteCircuitPeeringConfig microsoftPeeringConfig) {
+    public ExpressRouteCrossConnectionPeeringProperties
+        withMicrosoftPeeringConfig(ExpressRouteCircuitPeeringConfig microsoftPeeringConfig) {
         this.microsoftPeeringConfig = microsoftPeeringConfig;
         return this;
     }
@@ -301,7 +305,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
     /**
      * Get the provisioningState property: The provisioning state of the express route cross connection peering
      * resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -310,7 +314,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the gatewayManagerEtag property: The GatewayManager Etag.
-     *
+     * 
      * @return the gatewayManagerEtag value.
      */
     public String gatewayManagerEtag() {
@@ -319,7 +323,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Set the gatewayManagerEtag property: The GatewayManager Etag.
-     *
+     * 
      * @param gatewayManagerEtag the gatewayManagerEtag value to set.
      * @return the ExpressRouteCrossConnectionPeeringProperties object itself.
      */
@@ -330,7 +334,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the lastModifiedBy property: Who was the last to modify the peering.
-     *
+     * 
      * @return the lastModifiedBy value.
      */
     public String lastModifiedBy() {
@@ -339,7 +343,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Get the ipv6PeeringConfig property: The IPv6 peering configuration.
-     *
+     * 
      * @return the ipv6PeeringConfig value.
      */
     public Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig() {
@@ -348,19 +352,19 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
 
     /**
      * Set the ipv6PeeringConfig property: The IPv6 peering configuration.
-     *
+     * 
      * @param ipv6PeeringConfig the ipv6PeeringConfig value to set.
      * @return the ExpressRouteCrossConnectionPeeringProperties object itself.
      */
-    public ExpressRouteCrossConnectionPeeringProperties withIpv6PeeringConfig(
-        Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig) {
+    public ExpressRouteCrossConnectionPeeringProperties
+        withIpv6PeeringConfig(Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig) {
         this.ipv6PeeringConfig = ipv6PeeringConfig;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

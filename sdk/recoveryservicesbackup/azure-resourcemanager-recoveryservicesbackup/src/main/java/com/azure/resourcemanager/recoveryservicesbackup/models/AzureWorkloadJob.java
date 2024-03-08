@@ -12,7 +12,9 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Azure storage specific job. */
+/**
+ * Azure storage specific job.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
 @JsonTypeName("AzureWorkloadJob")
 @Fluent
@@ -47,13 +49,15 @@ public final class AzureWorkloadJob extends Job {
     @JsonProperty(value = "extendedInfo")
     private AzureWorkloadJobExtendedInfo extendedInfo;
 
-    /** Creates an instance of AzureWorkloadJob class. */
+    /**
+     * Creates an instance of AzureWorkloadJob class.
+     */
     public AzureWorkloadJob() {
     }
 
     /**
      * Get the workloadType property: Workload type of the job.
-     *
+     * 
      * @return the workloadType value.
      */
     public String workloadType() {
@@ -62,7 +66,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Set the workloadType property: Workload type of the job.
-     *
+     * 
      * @param workloadType the workloadType value to set.
      * @return the AzureWorkloadJob object itself.
      */
@@ -73,7 +77,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Get the duration property: Time elapsed during the execution of this job.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -82,7 +86,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Set the duration property: Time elapsed during the execution of this job.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the AzureWorkloadJob object itself.
      */
@@ -93,7 +97,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Get the actionsInfo property: Gets or sets the state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @return the actionsInfo value.
      */
     public List<JobSupportedAction> actionsInfo() {
@@ -102,7 +106,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Set the actionsInfo property: Gets or sets the state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @param actionsInfo the actionsInfo value to set.
      * @return the AzureWorkloadJob object itself.
      */
@@ -113,7 +117,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Get the errorDetails property: Error details on execution of this job.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<AzureWorkloadErrorInfo> errorDetails() {
@@ -122,7 +126,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Set the errorDetails property: Error details on execution of this job.
-     *
+     * 
      * @param errorDetails the errorDetails value to set.
      * @return the AzureWorkloadJob object itself.
      */
@@ -133,7 +137,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Get the extendedInfo property: Additional information about the job.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public AzureWorkloadJobExtendedInfo extendedInfo() {
@@ -142,7 +146,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Set the extendedInfo property: Additional information about the job.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the AzureWorkloadJob object itself.
      */
@@ -151,49 +155,63 @@ public final class AzureWorkloadJob extends Job {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withEntityFriendlyName(String entityFriendlyName) {
         super.withEntityFriendlyName(entityFriendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withOperation(String operation) {
         super.withOperation(operation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withStatus(String status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadJob withActivityId(String activityId) {
         super.withActivityId(activityId);
@@ -202,7 +220,7 @@ public final class AzureWorkloadJob extends Job {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

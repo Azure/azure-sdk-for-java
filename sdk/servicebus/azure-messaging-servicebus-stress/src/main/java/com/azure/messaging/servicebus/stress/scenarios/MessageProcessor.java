@@ -20,7 +20,6 @@ import java.util.concurrent.ThreadLocalRandom;
 import static com.azure.messaging.servicebus.stress.util.TestUtils.blockingWait;
 import static com.azure.messaging.servicebus.stress.util.TestUtils.createMessagePayload;
 import static com.azure.messaging.servicebus.stress.util.TestUtils.getProcessorBuilder;
-import static com.azure.messaging.servicebus.stress.util.TestUtils.startSampledInSpan;
 
 /**
  * Test ServiceBusProcessorClient
@@ -53,32 +52,25 @@ public class MessageProcessor extends ServiceBusScenario {
     @Value("${AUTO_RENEW_LOCK:true}")
     private boolean renewLock;
 
-    private BinaryData expectedPayload;
+    private byte[] expectedPayload;
 
     @Override
     public void run() throws InterruptedException {
-        expectedPayload = createMessagePayload(options.getMessageSize());
+        expectedPayload = createMessagePayload(options.getMessageSize()).toBytes();
 
         ServiceBusProcessorClient processor = toClose(getProcessorBuilder(options)
             .maxAutoLockRenewDuration(renewLock ? Duration.ofMinutes(5) : Duration.ZERO)
             .maxConcurrentCalls(maxConcurrentCalls)
             .prefetchCount(prefetchCount)
             .processMessage(this::process)
-            .processError(err -> recordError(err.getException().getClass().getName(), err.getException(), "processError"))
+            .processError(err -> telemetryHelper.recordError(err.getException(), "processError"))
             .buildProcessorClient());
         processor.start();
 
         blockingWait(options.getTestDuration());
 
-        int activeMessages = getRemainingQueueMessages();
-        for (int extraMinutes = 0; extraMinutes < 3 && activeMessages > 0; extraMinutes++) {
-            blockingWait(Duration.ofMinutes(1));
-            activeMessages = getRemainingQueueMessages();
-        }
-
-        if (activeMessages != 0) {
-            recordError("queue is not empty", null, "getRemainingQueueMessages");
-        }
+        getRemainingQueueMessages();
+        processor.stop();
     }
 
     @Override
@@ -114,22 +106,15 @@ public class MessageProcessor extends ServiceBusScenario {
     }
 
     private boolean checkMessage(ServiceBusReceivedMessage message) {
-        LOGGER.atInfo()
-            .addKeyValue("traceparent", message.getApplicationProperties().get("traceparent"))
-            .addKeyValue("lockToken", message.getLockToken())
-            .addKeyValue("lockedUntil", message.getLockedUntil())
-            .log("message received");
-
-        if (message.getLockedUntil().isBefore(OffsetDateTime.now())) {
-            recordError("message lock expired", null, "checkMessage");
+         if (message.getLockedUntil().isBefore(OffsetDateTime.now())) {
+            telemetryHelper.recordError("message lock expired",  "checkMessage");
         }
 
-        String payload = message.getBody().toString();
-        if (!payload.equals(expectedPayload.toString())) {
-            recordError("message corrupted", null, "checkMessage");
-            startSampledInSpan("message corrupted")
-                .setAttribute("actualPayload", payload)
-                .end();
+        byte[] payload = message.getBody().toBytes();
+        for (int i = 0; i < expectedPayload.length; i++) {
+            if (payload[i] != expectedPayload[i]) {
+                telemetryHelper.recordError("message corrupted", "checkMessage");
+            }
         }
 
         return true;
@@ -146,7 +131,7 @@ public class MessageProcessor extends ServiceBusScenario {
                 LOGGER.info("not settling message");
             }
         } catch (Throwable ex) {
-            recordError(ex.getClass().getName(), ex, "settleMessage");
+            telemetryHelper.recordError(ex, "settleMessage");
         }
     }
 }

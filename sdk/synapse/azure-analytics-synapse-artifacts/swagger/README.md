@@ -40,6 +40,6 @@ security: AADToken
 security-scopes: https://dev.azuresynapse.net/.default
 custom-strongly-typed-header-deserialization: true
 model-override-setter-from-superclass: true
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/$(branch)/specification/synapse/data-plane/readme.md
+require: https://github.com/Azure/azure-rest-api-specs/blob/5ae522bc106bf8609c6cb379e584aa3e0e2639f3/specification/synapse/data-plane/readme.md
 tag: package-artifacts-composite-v7
 ```

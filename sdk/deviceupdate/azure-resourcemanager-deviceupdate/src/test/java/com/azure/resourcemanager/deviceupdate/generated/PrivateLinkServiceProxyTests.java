@@ -12,67 +12,44 @@ import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceProxy;
 import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceProxyRemotePrivateEndpointConnection;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkServiceProxyTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkServiceProxy model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"fudwpznt\",\"remotePrivateLinkServiceConnectionState\":{\"status\":\"Rejected\",\"description\":\"lrqjbhckfr\",\"actionsRequired\":\"rxsbkyvp\"},\"remotePrivateEndpointConnection\":{\"id\":\"n\"},\"groupConnectivityInformation\":[{\"groupId\":\"zka\",\"memberName\":\"uwbc\",\"customerVisibleFqdns\":[\"bmehh\"],\"internalFqdn\":\"yvjusrtslhsp\",\"redirectMapId\":\"eemaofmxagkvtme\",\"privateLinkServiceArmRegion\":\"qkrhahvljua\"},{\"groupId\":\"quhcdhmduala\",\"memberName\":\"qpv\",\"customerVisibleFqdns\":[\"mwsrcrgvxpvgo\",\"zlfmisgwbnbbeld\",\"wkz\",\"ali\"],\"internalFqdn\":\"rqhakauha\",\"redirectMapId\":\"sfwxosowzxc\",\"privateLinkServiceArmRegion\":\"i\"},{\"groupId\":\"ooxdjebwpuc\",\"memberName\":\"fvovbvmeuecivy\",\"customerVisibleFqdns\":[\"euojgjrwju\"],\"internalFqdn\":\"otwmcdyt\",\"redirectMapId\":\"wit\",\"privateLinkServiceArmRegion\":\"rjaw\"}]}")
-                .toObject(PrivateLinkServiceProxy.class);
-        Assertions.assertEquals("fudwpznt", model.id());
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.REJECTED,
-                model.remotePrivateLinkServiceConnectionState().status());
-        Assertions.assertEquals("lrqjbhckfr", model.remotePrivateLinkServiceConnectionState().description());
-        Assertions.assertEquals("rxsbkyvp", model.remotePrivateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("bmehh", model.groupConnectivityInformation().get(0).customerVisibleFqdns().get(0));
-        Assertions.assertEquals("eemaofmxagkvtme", model.groupConnectivityInformation().get(0).redirectMapId());
-        Assertions
-            .assertEquals("qkrhahvljua", model.groupConnectivityInformation().get(0).privateLinkServiceArmRegion());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkServiceProxy model = BinaryData.fromString(
+            "{\"id\":\"xrxxlep\",\"remotePrivateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"jezwlwnw\",\"actionsRequired\":\"qlcvydy\"},\"remotePrivateEndpointConnection\":{\"id\":\"dooaojkniodko\"},\"groupConnectivityInformation\":[{\"groupId\":\"nuj\",\"memberName\":\"mmsbvdkcrodtjin\",\"customerVisibleFqdns\":[\"lfltka\",\"jvefkdlfoakggkfp\",\"gaowpulpqblylsyx\",\"qjnsjervtia\"],\"internalFqdn\":\"sdszue\",\"redirectMapId\":\"sbzkf\",\"privateLinkServiceArmRegion\":\"eyvpnqicvinvkj\"}]}")
+            .toObject(PrivateLinkServiceProxy.class);
+        Assertions.assertEquals("xrxxlep", model.id());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            model.remotePrivateLinkServiceConnectionState().status());
+        Assertions.assertEquals("jezwlwnw", model.remotePrivateLinkServiceConnectionState().description());
+        Assertions.assertEquals("qlcvydy", model.remotePrivateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("lfltka", model.groupConnectivityInformation().get(0).customerVisibleFqdns().get(0));
+        Assertions.assertEquals("sbzkf", model.groupConnectivityInformation().get(0).redirectMapId());
+        Assertions.assertEquals("eyvpnqicvinvkj",
+            model.groupConnectivityInformation().get(0).privateLinkServiceArmRegion());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkServiceProxy model =
-            new PrivateLinkServiceProxy()
-                .withId("fudwpznt")
-                .withRemotePrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED)
-                        .withDescription("lrqjbhckfr")
-                        .withActionsRequired("rxsbkyvp"))
-                .withRemotePrivateEndpointConnection(new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
-                .withGroupConnectivityInformation(
-                    Arrays
-                        .asList(
-                            new GroupConnectivityInformation()
-                                .withCustomerVisibleFqdns(Arrays.asList("bmehh"))
-                                .withRedirectMapId("eemaofmxagkvtme")
-                                .withPrivateLinkServiceArmRegion("qkrhahvljua"),
-                            new GroupConnectivityInformation()
-                                .withCustomerVisibleFqdns(
-                                    Arrays.asList("mwsrcrgvxpvgo", "zlfmisgwbnbbeld", "wkz", "ali"))
-                                .withRedirectMapId("sfwxosowzxc")
-                                .withPrivateLinkServiceArmRegion("i"),
-                            new GroupConnectivityInformation()
-                                .withCustomerVisibleFqdns(Arrays.asList("euojgjrwju"))
-                                .withRedirectMapId("wit")
-                                .withPrivateLinkServiceArmRegion("rjaw")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkServiceProxy model = new PrivateLinkServiceProxy().withId("xrxxlep")
+            .withRemotePrivateLinkServiceConnectionState(
+                new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                    .withDescription("jezwlwnw").withActionsRequired("qlcvydy"))
+            .withRemotePrivateEndpointConnection(new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
+            .withGroupConnectivityInformation(Arrays.asList(new GroupConnectivityInformation()
+                .withCustomerVisibleFqdns(
+                    Arrays.asList("lfltka", "jvefkdlfoakggkfp", "gaowpulpqblylsyx", "qjnsjervtia"))
+                .withRedirectMapId("sbzkf").withPrivateLinkServiceArmRegion("eyvpnqicvinvkj")));
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceProxy.class);
-        Assertions.assertEquals("fudwpznt", model.id());
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.REJECTED,
-                model.remotePrivateLinkServiceConnectionState().status());
-        Assertions.assertEquals("lrqjbhckfr", model.remotePrivateLinkServiceConnectionState().description());
-        Assertions.assertEquals("rxsbkyvp", model.remotePrivateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("bmehh", model.groupConnectivityInformation().get(0).customerVisibleFqdns().get(0));
-        Assertions.assertEquals("eemaofmxagkvtme", model.groupConnectivityInformation().get(0).redirectMapId());
-        Assertions
-            .assertEquals("qkrhahvljua", model.groupConnectivityInformation().get(0).privateLinkServiceArmRegion());
+        Assertions.assertEquals("xrxxlep", model.id());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            model.remotePrivateLinkServiceConnectionState().status());
+        Assertions.assertEquals("jezwlwnw", model.remotePrivateLinkServiceConnectionState().description());
+        Assertions.assertEquals("qlcvydy", model.remotePrivateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("lfltka", model.groupConnectivityInformation().get(0).customerVisibleFqdns().get(0));
+        Assertions.assertEquals("sbzkf", model.groupConnectivityInformation().get(0).redirectMapId());
+        Assertions.assertEquals("eyvpnqicvinvkj",
+            model.groupConnectivityInformation().get(0).privateLinkServiceArmRegion());
     }
 }

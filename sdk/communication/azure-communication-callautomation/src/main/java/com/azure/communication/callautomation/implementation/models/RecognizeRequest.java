@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The RecognizeRequest model.
- */
+/** The RecognizeRequest model. */
 @Fluent
 public final class RecognizeRequest {
     /*
@@ -25,7 +23,8 @@ public final class RecognizeRequest {
     private PlaySourceInternal playPrompt;
 
     /*
-     * If set recognize can barge into other existing queued-up/currently-processing requests.
+     * If set recognize can barge into other existing
+     * queued-up/currently-processing requests.
      */
     @JsonProperty(value = "interruptCallMediaOperation")
     private Boolean interruptCallMediaOperation;
@@ -43,22 +42,17 @@ public final class RecognizeRequest {
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
+     * Set a callback URI that overrides the default callback URI set by
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /**
-     * Creates an instance of RecognizeRequest class.
-     */
-    public RecognizeRequest() {
-    }
-
-    /**
      * Get the recognizeInputType property: Determines the type of the recognition.
-     * 
+     *
      * @return the recognizeInputType value.
      */
     public RecognizeInputTypeInternal getRecognizeInputType() {
@@ -67,7 +61,7 @@ public final class RecognizeRequest {
 
     /**
      * Set the recognizeInputType property: Determines the type of the recognition.
-     * 
+     *
      * @param recognizeInputType the recognizeInputType value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -78,7 +72,7 @@ public final class RecognizeRequest {
 
     /**
      * Get the playPrompt property: The source of the audio to be played for recognition.
-     * 
+     *
      * @return the playPrompt value.
      */
     public PlaySourceInternal getPlayPrompt() {
@@ -87,7 +81,7 @@ public final class RecognizeRequest {
 
     /**
      * Set the playPrompt property: The source of the audio to be played for recognition.
-     * 
+     *
      * @param playPrompt the playPrompt value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -99,7 +93,7 @@ public final class RecognizeRequest {
     /**
      * Get the interruptCallMediaOperation property: If set recognize can barge into other existing
      * queued-up/currently-processing requests.
-     * 
+     *
      * @return the interruptCallMediaOperation value.
      */
     public Boolean isInterruptCallMediaOperation() {
@@ -109,7 +103,7 @@ public final class RecognizeRequest {
     /**
      * Set the interruptCallMediaOperation property: If set recognize can barge into other existing
      * queued-up/currently-processing requests.
-     * 
+     *
      * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -120,7 +114,7 @@ public final class RecognizeRequest {
 
     /**
      * Get the recognizeOptions property: Defines options for recognition.
-     * 
+     *
      * @return the recognizeOptions value.
      */
     public RecognizeOptionsInternal getRecognizeOptions() {
@@ -129,7 +123,7 @@ public final class RecognizeRequest {
 
     /**
      * Set the recognizeOptions property: Defines options for recognition.
-     * 
+     *
      * @param recognizeOptions the recognizeOptions value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -140,7 +134,7 @@ public final class RecognizeRequest {
 
     /**
      * Get the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -149,7 +143,7 @@ public final class RecognizeRequest {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the RecognizeRequest object itself.
      */
@@ -160,10 +154,9 @@ public final class RecognizeRequest {
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
-     * 
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -172,10 +165,9 @@ public final class RecognizeRequest {
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
-     * used.
-     * 
+     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
+     * set by CreateCall/AnswerCall will be used.
+     *
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the RecognizeRequest object itself.
      */

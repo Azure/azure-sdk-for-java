@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workload Auto-scaler profile for the managed cluster. */
+/**
+ * Workload Auto-scaler profile for the managed cluster.
+ */
 @Fluent
 public final class ManagedClusterWorkloadAutoScalerProfile {
     /*
@@ -22,13 +24,15 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
     @JsonProperty(value = "verticalPodAutoscaler")
     private ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler;
 
-    /** Creates an instance of ManagedClusterWorkloadAutoScalerProfile class. */
+    /**
+     * Creates an instance of ManagedClusterWorkloadAutoScalerProfile class.
+     */
     public ManagedClusterWorkloadAutoScalerProfile() {
     }
 
     /**
      * Get the keda property: KEDA (Kubernetes Event-driven Autoscaling) settings for the workload auto-scaler profile.
-     *
+     * 
      * @return the keda value.
      */
     public ManagedClusterWorkloadAutoScalerProfileKeda keda() {
@@ -37,7 +41,7 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
 
     /**
      * Set the keda property: KEDA (Kubernetes Event-driven Autoscaling) settings for the workload auto-scaler profile.
-     *
+     * 
      * @param keda the keda value to set.
      * @return the ManagedClusterWorkloadAutoScalerProfile object itself.
      */
@@ -49,7 +53,7 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
     /**
      * Get the verticalPodAutoscaler property: VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler
      * profile.
-     *
+     * 
      * @return the verticalPodAutoscaler value.
      */
     public ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler() {
@@ -59,19 +63,19 @@ public final class ManagedClusterWorkloadAutoScalerProfile {
     /**
      * Set the verticalPodAutoscaler property: VPA (Vertical Pod Autoscaler) settings for the workload auto-scaler
      * profile.
-     *
+     * 
      * @param verticalPodAutoscaler the verticalPodAutoscaler value to set.
      * @return the ManagedClusterWorkloadAutoScalerProfile object itself.
      */
-    public ManagedClusterWorkloadAutoScalerProfile withVerticalPodAutoscaler(
-        ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler) {
+    public ManagedClusterWorkloadAutoScalerProfile
+        withVerticalPodAutoscaler(ManagedClusterWorkloadAutoScalerProfileVerticalPodAutoscaler verticalPodAutoscaler) {
         this.verticalPodAutoscaler = verticalPodAutoscaler;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

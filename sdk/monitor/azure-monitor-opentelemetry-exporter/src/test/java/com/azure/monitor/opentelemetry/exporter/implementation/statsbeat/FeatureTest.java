@@ -41,4 +41,14 @@ public class FeatureTest {
         Set<Feature> result = StatsbeatTestUtils.decodeFeature(number);
         assertThat(result).isEqualTo(features);
     }
+
+    @Test
+    public void testRabittmqDisabledDecodeFeature() {
+        // long values with RABBITMQ_DISABLED on bit are from Statsbeat Kusto
+        long[] numbers = new long[] {37495182980L, 585629569L, 37090492292L, 3135444612L, 15204225L, 2732851076L, 585367456L, 2730753952L, 37495185056L, 37092585348L, 174531509920L, 70405836767105L};
+        for (long number : numbers) {
+            Set<Feature> result = StatsbeatTestUtils.decodeFeature(number);
+            assertThat(result.contains(Feature.RABBITMQ_DISABLED)).isTrue();
+        }
+    }
 }

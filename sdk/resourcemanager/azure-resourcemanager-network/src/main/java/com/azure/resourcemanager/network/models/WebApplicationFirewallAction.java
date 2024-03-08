@@ -8,20 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of Actions. */
+/**
+ * Type of Actions.
+ */
 public final class WebApplicationFirewallAction extends ExpandableStringEnum<WebApplicationFirewallAction> {
-    /** Static value Allow for WebApplicationFirewallAction. */
+    /**
+     * Static value Allow for WebApplicationFirewallAction.
+     */
     public static final WebApplicationFirewallAction ALLOW = fromString("Allow");
 
-    /** Static value Block for WebApplicationFirewallAction. */
+    /**
+     * Static value Block for WebApplicationFirewallAction.
+     */
     public static final WebApplicationFirewallAction BLOCK = fromString("Block");
 
-    /** Static value Log for WebApplicationFirewallAction. */
+    /**
+     * Static value Log for WebApplicationFirewallAction.
+     */
     public static final WebApplicationFirewallAction LOG = fromString("Log");
 
     /**
+     * Static value JSChallenge for WebApplicationFirewallAction.
+     */
+    public static final WebApplicationFirewallAction JSCHALLENGE = fromString("JSChallenge");
+
+    /**
      * Creates a new instance of WebApplicationFirewallAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +43,7 @@ public final class WebApplicationFirewallAction extends ExpandableStringEnum<Web
 
     /**
      * Creates or finds a WebApplicationFirewallAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WebApplicationFirewallAction.
      */
@@ -41,7 +54,7 @@ public final class WebApplicationFirewallAction extends ExpandableStringEnum<Web
 
     /**
      * Gets known WebApplicationFirewallAction values.
-     *
+     * 
      * @return known WebApplicationFirewallAction values.
      */
     public static Collection<WebApplicationFirewallAction> values() {

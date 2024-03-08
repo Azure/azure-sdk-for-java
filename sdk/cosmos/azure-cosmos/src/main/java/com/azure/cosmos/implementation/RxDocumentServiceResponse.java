@@ -15,7 +15,6 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,6 +69,14 @@ public class RxDocumentServiceResponse {
         return result;
     }
 
+    public boolean hasPayload() {
+        return this.storeResponse.getResponseBodyLength() > 0;
+    }
+
+    public int getResponsePayloadLength() {
+        return this.storeResponse.getResponseBodyLength();
+    }
+
     private static <T> String getResourceKey(Class<T> c) {
         if (c.equals(Conflict.class)) {
             return InternalConstants.ResourceKeys.CONFLICTS;
@@ -110,12 +117,8 @@ public class RxDocumentServiceResponse {
         return this.headersMap;
     }
 
-    public byte[] getResponseBodyAsByteArray() {
-        return this.storeResponse.getResponseBody();
-    }
-
-    public String getResponseBodyAsString() {
-        return Utils.utf8StringFromOrNull(this.getResponseBodyAsByteArray());
+    public JsonNode getResponseBody() {
+        return this.storeResponse.getResponseBodyAsJson();
     }
 
     public RequestTimeline getGatewayHttpRequestTimeline() {
@@ -123,13 +126,14 @@ public class RxDocumentServiceResponse {
     }
 
     public <T extends Resource> T getResource(Class<T> c) {
-        String responseBody = this.getResponseBodyAsString();
-        if (StringUtils.isEmpty(responseBody))
+        ObjectNode responseBody = (ObjectNode)this.getResponseBody();
+        if (responseBody == null) {
             return null;
+        }
 
         T resource = null;
         try {
-            resource =  c.getConstructor(String.class).newInstance(responseBody);
+            resource =  c.getConstructor(ObjectNode.class).newInstance(responseBody);
         } catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException
                 | NoSuchMethodException | SecurityException e) {
             throw new IllegalStateException("Failed to instantiate class object.", e);
@@ -142,12 +146,11 @@ public class RxDocumentServiceResponse {
     }
 
     private ArrayNode extractQueryResponseNodes(String resourceKey) {
-        byte[] responseBody = this.getResponseBodyAsByteArray();
-        if (responseBody == null) {
+        JsonNode jobject = this.getResponseBody();
+        if (jobject == null) {
             return null;
         }
 
-        JsonNode jobject = fromJson(responseBody);
         ArrayNode jTokenArray = (ArrayNode) jobject.get(resourceKey);
 
         // Aggregate queries may return a nested array
@@ -168,10 +171,10 @@ public class RxDocumentServiceResponse {
         String resourceKey = RxDocumentServiceResponse.getResourceKey(c);
         ArrayNode jTokenArray = this.extractQueryResponseNodes(resourceKey);
         if (jTokenArray == null) {
-            return new ArrayList<T>();
+            return new ArrayList<>();
         }
 
-        List<T> queryResults = new ArrayList<T>();
+        List<T> queryResults = new ArrayList<>();
 
         for (int i = 0; i < jTokenArray.size(); ++i) {
             JsonNode jToken = jTokenArray.get(i);
@@ -205,14 +208,6 @@ public class RxDocumentServiceResponse {
             return Utils.getSimpleObjectMapper().readTree(json);
         } catch (IOException e) {
             throw new IllegalStateException(String.format("Unable to parse JSON %s", json), e);
-        }
-    }
-
-    private static JsonNode fromJson(byte[] json){
-        try {
-            return Utils.getSimpleObjectMapper().readTree(json);
-        } catch (IOException e) {
-            throw new IllegalStateException(String.format("Unable to parse JSON %s", Arrays.toString(json)), e);
         }
     }
 

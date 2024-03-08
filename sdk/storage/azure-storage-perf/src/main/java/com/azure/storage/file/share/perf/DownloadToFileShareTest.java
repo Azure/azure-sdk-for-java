@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.share.perf;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.share.ShareFileAsyncClient;
@@ -14,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
-import java.util.UUID;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
@@ -34,7 +34,7 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
 
     public DownloadToFileShareTest(PerfStressOptions options) {
         super(options);
-        String fileName = "perfstressdfile" + UUID.randomUUID();
+        String fileName = "perfstressdfile" + CoreUtils.randomUuid();
         shareFileClient = shareDirectoryClient.getFileClient(fileName);
         shareFileAsyncClient = shareDirectoryAsyncClient.getFileClient(fileName);
 
@@ -57,7 +57,7 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
     // Perform the API call to be tested here
     @Override
     public void run() {
-        File file = new File(tempDir, UUID.randomUUID().toString());
+        File file = new File(tempDir, CoreUtils.randomUuid().toString());
         try {
             shareFileClient.downloadToFile(file.getAbsolutePath());
         } finally {
@@ -72,7 +72,7 @@ public class DownloadToFileShareTest extends DirectoryTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        File file = new File(tempDir, UUID.randomUUID().toString());
+        File file = new File(tempDir, CoreUtils.randomUuid().toString());
         return shareFileAsyncClient.downloadToFile(file.getAbsolutePath())
             .doFinally(ignored -> {
                 // We don't use File.deleteOnExit.

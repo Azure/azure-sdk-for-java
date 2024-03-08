@@ -10,7 +10,9 @@ import com.azure.resourcemanager.netapp.models.EndpointType;
 import com.azure.resourcemanager.netapp.models.ReplicationSchedule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Replication properties. */
+/**
+ * Replication properties.
+ */
 @Fluent
 public final class ReplicationInner {
     /*
@@ -37,14 +39,16 @@ public final class ReplicationInner {
     @JsonProperty(value = "remoteVolumeRegion")
     private String remoteVolumeRegion;
 
-    /** Creates an instance of ReplicationInner class. */
+    /**
+     * Creates an instance of ReplicationInner class.
+     */
     public ReplicationInner() {
     }
 
     /**
      * Get the endpointType property: Indicates whether the local volume is the source or destination for the Volume
      * Replication.
-     *
+     * 
      * @return the endpointType value.
      */
     public EndpointType endpointType() {
@@ -54,7 +58,7 @@ public final class ReplicationInner {
     /**
      * Set the endpointType property: Indicates whether the local volume is the source or destination for the Volume
      * Replication.
-     *
+     * 
      * @param endpointType the endpointType value to set.
      * @return the ReplicationInner object itself.
      */
@@ -65,7 +69,7 @@ public final class ReplicationInner {
 
     /**
      * Get the replicationSchedule property: Schedule.
-     *
+     * 
      * @return the replicationSchedule value.
      */
     public ReplicationSchedule replicationSchedule() {
@@ -74,7 +78,7 @@ public final class ReplicationInner {
 
     /**
      * Set the replicationSchedule property: Schedule.
-     *
+     * 
      * @param replicationSchedule the replicationSchedule value to set.
      * @return the ReplicationInner object itself.
      */
@@ -85,7 +89,7 @@ public final class ReplicationInner {
 
     /**
      * Get the remoteVolumeResourceId property: The resource ID of the remote volume.
-     *
+     * 
      * @return the remoteVolumeResourceId value.
      */
     public String remoteVolumeResourceId() {
@@ -94,7 +98,7 @@ public final class ReplicationInner {
 
     /**
      * Set the remoteVolumeResourceId property: The resource ID of the remote volume.
-     *
+     * 
      * @param remoteVolumeResourceId the remoteVolumeResourceId value to set.
      * @return the ReplicationInner object itself.
      */
@@ -105,7 +109,7 @@ public final class ReplicationInner {
 
     /**
      * Get the remoteVolumeRegion property: The remote region for the other end of the Volume Replication.
-     *
+     * 
      * @return the remoteVolumeRegion value.
      */
     public String remoteVolumeRegion() {
@@ -114,7 +118,7 @@ public final class ReplicationInner {
 
     /**
      * Set the remoteVolumeRegion property: The remote region for the other end of the Volume Replication.
-     *
+     * 
      * @param remoteVolumeRegion the remoteVolumeRegion value to set.
      * @return the ReplicationInner object itself.
      */
@@ -125,15 +129,13 @@ public final class ReplicationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (remoteVolumeResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property remoteVolumeResourceId in model ReplicationInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property remoteVolumeResourceId in model ReplicationInner"));
         }
     }
 

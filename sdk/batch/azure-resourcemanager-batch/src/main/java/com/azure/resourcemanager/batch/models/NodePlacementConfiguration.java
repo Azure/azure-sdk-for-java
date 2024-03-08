@@ -9,30 +9,32 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Node placement configuration for batch pools.
- *
- * <p>Allocation configuration used by Batch Service to provision the nodes.
+ * 
+ * Allocation configuration used by Batch Service to provision the nodes.
  */
 @Fluent
 public final class NodePlacementConfiguration {
     /*
      * The placement policy for allocating nodes in the pool.
-     *
+     * 
      * Allocation policy used by Batch Service to provision the nodes. If not specified, Batch will use the regional
      * policy.
      */
     @JsonProperty(value = "policy")
     private NodePlacementPolicyType policy;
 
-    /** Creates an instance of NodePlacementConfiguration class. */
+    /**
+     * Creates an instance of NodePlacementConfiguration class.
+     */
     public NodePlacementConfiguration() {
     }
 
     /**
      * Get the policy property: The placement policy for allocating nodes in the pool.
-     *
-     * <p>Allocation policy used by Batch Service to provision the nodes. If not specified, Batch will use the regional
+     * 
+     * Allocation policy used by Batch Service to provision the nodes. If not specified, Batch will use the regional
      * policy.
-     *
+     * 
      * @return the policy value.
      */
     public NodePlacementPolicyType policy() {
@@ -41,10 +43,10 @@ public final class NodePlacementConfiguration {
 
     /**
      * Set the policy property: The placement policy for allocating nodes in the pool.
-     *
-     * <p>Allocation policy used by Batch Service to provision the nodes. If not specified, Batch will use the regional
+     * 
+     * Allocation policy used by Batch Service to provision the nodes. If not specified, Batch will use the regional
      * policy.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the NodePlacementConfiguration object itself.
      */
@@ -55,7 +57,7 @@ public final class NodePlacementConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

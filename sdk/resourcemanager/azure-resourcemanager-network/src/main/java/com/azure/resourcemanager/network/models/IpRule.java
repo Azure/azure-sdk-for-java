@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IpRule model. */
+/**
+ * The IpRule model.
+ */
 @Fluent
 public final class IpRule {
     /*
@@ -16,13 +18,15 @@ public final class IpRule {
     @JsonProperty(value = "addressPrefix")
     private String addressPrefix;
 
-    /** Creates an instance of IpRule class. */
+    /**
+     * Creates an instance of IpRule class.
+     */
     public IpRule() {
     }
 
     /**
      * Get the addressPrefix property: Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -31,7 +35,7 @@ public final class IpRule {
 
     /**
      * Set the addressPrefix property: Specifies the IP or IP range in CIDR format. Only IPV4 address is allowed.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the IpRule object itself.
      */
@@ -42,7 +46,7 @@ public final class IpRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

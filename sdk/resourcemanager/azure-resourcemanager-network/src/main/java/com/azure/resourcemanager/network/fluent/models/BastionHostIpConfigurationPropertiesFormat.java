@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of IP configuration of an Bastion Host. */
+/**
+ * Properties of IP configuration of an Bastion Host.
+ */
 @Fluent
 public final class BastionHostIpConfigurationPropertiesFormat {
     /*
@@ -38,13 +40,15 @@ public final class BastionHostIpConfigurationPropertiesFormat {
     @JsonProperty(value = "privateIPAllocationMethod")
     private IpAllocationMethod privateIpAllocationMethod;
 
-    /** Creates an instance of BastionHostIpConfigurationPropertiesFormat class. */
+    /**
+     * Creates an instance of BastionHostIpConfigurationPropertiesFormat class.
+     */
     public BastionHostIpConfigurationPropertiesFormat() {
     }
 
     /**
      * Get the subnet property: Reference of the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -53,7 +57,7 @@ public final class BastionHostIpConfigurationPropertiesFormat {
 
     /**
      * Set the subnet property: Reference of the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the BastionHostIpConfigurationPropertiesFormat object itself.
      */
@@ -64,7 +68,7 @@ public final class BastionHostIpConfigurationPropertiesFormat {
 
     /**
      * Get the publicIpAddress property: Reference of the PublicIP resource.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public SubResource publicIpAddress() {
@@ -73,7 +77,7 @@ public final class BastionHostIpConfigurationPropertiesFormat {
 
     /**
      * Set the publicIpAddress property: Reference of the PublicIP resource.
-     *
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the BastionHostIpConfigurationPropertiesFormat object itself.
      */
@@ -84,7 +88,7 @@ public final class BastionHostIpConfigurationPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the bastion host IP configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -93,7 +97,7 @@ public final class BastionHostIpConfigurationPropertiesFormat {
 
     /**
      * Get the privateIpAllocationMethod property: Private IP allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -102,34 +106,29 @@ public final class BastionHostIpConfigurationPropertiesFormat {
 
     /**
      * Set the privateIpAllocationMethod property: Private IP allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the BastionHostIpConfigurationPropertiesFormat object itself.
      */
-    public BastionHostIpConfigurationPropertiesFormat withPrivateIpAllocationMethod(
-        IpAllocationMethod privateIpAllocationMethod) {
+    public BastionHostIpConfigurationPropertiesFormat
+        withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnet() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property subnet in model BastionHostIpConfigurationPropertiesFormat"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property subnet in model BastionHostIpConfigurationPropertiesFormat"));
         }
         if (publicIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publicIpAddress in model"
-                            + " BastionHostIpConfigurationPropertiesFormat"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property publicIpAddress in model BastionHostIpConfigurationPropertiesFormat"));
         }
     }
 

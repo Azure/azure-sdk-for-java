@@ -30,6 +30,13 @@ public final class BuildDocumentClassifierRequest {
     private String description;
 
     /*
+     * Base classifierId on top of which to train the classifier.
+     */
+    @Generated
+    @JsonProperty(value = "baseClassifierId")
+    private String baseClassifierId;
+
+    /*
      * List of document types to classify against.
      */
     @Generated
@@ -79,6 +86,28 @@ public final class BuildDocumentClassifierRequest {
     @Generated
     public BuildDocumentClassifierRequest setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the baseClassifierId property: Base classifierId on top of which to train the classifier.
+     * 
+     * @return the baseClassifierId value.
+     */
+    @Generated
+    public String getBaseClassifierId() {
+        return this.baseClassifierId;
+    }
+
+    /**
+     * Set the baseClassifierId property: Base classifierId on top of which to train the classifier.
+     * 
+     * @param baseClassifierId the baseClassifierId value to set.
+     * @return the BuildDocumentClassifierRequest object itself.
+     */
+    @Generated
+    public BuildDocumentClassifierRequest setBaseClassifierId(String baseClassifierId) {
+        this.baseClassifierId = baseClassifierId;
         return this;
     }
 

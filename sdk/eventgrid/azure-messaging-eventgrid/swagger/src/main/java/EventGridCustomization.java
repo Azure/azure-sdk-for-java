@@ -1,8 +1,10 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.PropertyCustomization;
+import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.Modifier.Keyword;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.Parameter;
@@ -14,6 +16,13 @@ import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQueries;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,6 +68,9 @@ public class EventGridCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization customization, Logger logger) {
+        customizeEventGridEvent(customization.getPackage("com.azure.messaging.eventgrid.implementation.models")
+            .getClass("EventGridEvent"));
+
         List<ClassCustomization> classCustomizations = customization.getPackage("com.azure.messaging.eventgrid.systemevents")
             .listClasses();
 
@@ -252,8 +264,8 @@ public class EventGridCustomization extends Customization {
                     compilationUnit.addImport("com.azure.core.util.serializer.SerializerEncoding");
                     compilationUnit.addImport("java.io.IOException");
                     compilationUnit.addImport("java.io.UncheckedIOException");
-                    clazz.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(" + className + ".class)"), Keyword.STATIC, Keyword.FINAL, Keyword.PRIVATE);
-                    clazz.addFieldWithInitializer("SerializerAdapter", "DEFAULT_SERIALIZER_ADAPTER", parseExpression("JacksonAdapter.createDefaultSerializerAdapter()"), Keyword.STATIC, Keyword.FINAL, Keyword.PRIVATE);
+                    clazz.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(" + className + ".class)"), Keyword.PRIVATE, Keyword.STATIC, Keyword.FINAL);
+                    clazz.addFieldWithInitializer("SerializerAdapter", "DEFAULT_SERIALIZER_ADAPTER", parseExpression("JacksonAdapter.createDefaultSerializerAdapter()"), Keyword.PRIVATE, Keyword.STATIC, Keyword.FINAL);
 
 
                     Arrays.asList("Authorization", "Claims", "HttpRequest").forEach(method -> {
@@ -360,7 +372,9 @@ public class EventGridCustomization extends Customization {
             classCustomization.removeMethod("setChannelLatencyMs");
             classCustomization.removeMethod("setLatencyResultCode");
             classCustomization.removeMethod("getLogger");
-        } catch (IllegalArgumentException none) {}
+        } catch (IllegalArgumentException ignored) {
+
+        }
     }
 
     public void customizeAcsRecordingFileStatusUpdatedEventDataDuration(LibraryCustomization customization) {
@@ -437,9 +451,7 @@ public class EventGridCustomization extends Customization {
         ClassCustomization classCustomization = packageModels.getClass("EventGridPublisherClientImpl");
 
         classCustomization.customizeAst(comp -> {
-            comp.getImports().removeIf(p -> {
-                return p.getNameAsString().equals("com.azure.messaging.eventgrid.implementation.models.CloudEvent");
-            });
+            comp.getImports().removeIf(p -> p.getNameAsString().equals("com.azure.messaging.eventgrid.implementation.models.CloudEvent"));
             comp.addImport("com.azure.core.models.CloudEvent");
         });
 
@@ -501,12 +513,8 @@ public class EventGridCustomization extends Customization {
         classCustomization = packageModels.getClass("AcsRouterJobWaitingForActivationEventData");
         classCustomization.customizeAst(comp -> {
            ClassOrInterfaceDeclaration clazz = comp.getClassByName("AcsRouterJobWaitingForActivationEventData").get();
-           clazz.getMethodsByName("setUnavailableForMatching").forEach(m -> {
-             m.getParameter(0).setType(Boolean.class);
-           });
-           clazz.getMethodsByName("isUnavailableForMatching").forEach(m -> {
-               m.setType(Boolean.class);
-           });
+           clazz.getMethodsByName("setUnavailableForMatching").forEach(m -> m.getParameter(0).setType(Boolean.class));
+           clazz.getMethodsByName("isUnavailableForMatching").forEach(m -> m.setType(Boolean.class));
         });
     }
 
@@ -517,14 +525,10 @@ public class EventGridCustomization extends Customization {
             ClassOrInterfaceDeclaration clazz = comp.getClassByName("ResourceNotificationsResourceUpdatedDetails").get();
             comp.addImport("com.azure.core.util.logging.ClientLogger");
             comp.addImport("com.azure.core.util.logging.LogLevel");
-            clazz.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class)"), Keyword.STATIC, Keyword.FINAL, Keyword.PRIVATE);
+            clazz.addFieldWithInitializer("ClientLogger", "LOGGER", parseExpression("new ClientLogger(ResourceNotificationsResourceUpdatedDetails.class)"), Keyword.PRIVATE, Keyword.STATIC, Keyword.FINAL);
 
-            clazz.getMethodsByName("getTags").forEach(m -> {
-                m.setName("getResourceTags");
-            });
-            clazz.getMethodsByName("setTags").forEach(m -> {
-                m.setName("setResourceTags");
-            });
+            clazz.getMethodsByName("getTags").forEach(m -> m.setName("getResourceTags"));
+            clazz.getMethodsByName("setTags").forEach(m -> m.setName("setResourceTags"));
             clazz.addMethod("getTags", Keyword.PUBLIC)
                 .setType("String")
                 .setBody(parseBlock("{ LOGGER.log(LogLevel.INFORMATIONAL, () -> \"This method has been replaced with getResourceTags().\"); return null; }"))
@@ -544,6 +548,49 @@ public class EventGridCustomization extends Customization {
                     .addBlockTag("deprecated", "This property has been replaced with {@link #setResourceTags(Map)}."))
                 .addAnnotation("Deprecated");
         });
+    }
+
+    private static void customizeEventGridEvent(ClassCustomization classCustomization) {
+        classCustomization.customizeAst(ast -> {
+            ast.addImport(LocalDateTime.class);
+            ast.addImport(ZoneOffset.class);
+            ast.addImport(DateTimeParseException.class);
+            ast.addImport(TemporalAccessor.class);
+            ast.addImport(TemporalQueries.class);
+
+            ClassOrInterfaceDeclaration clazz = ast.getClassByName(classCustomization.getClassName()).get();
+
+            clazz.addMethod("parseOffsetDateTimeBest", Keyword.PRIVATE, Keyword.STATIC)
+                .setType(OffsetDateTime.class)
+                .addParameter(String.class, "datetimeString")
+                .setJavadocComment(StaticJavaParser.parseJavadoc(String.join("\n",
+                    "Attempts to parse an ISO datetime string as best possible. The initial attempt will use",
+                    "{@link OffsetDateTime#from(TemporalAccessor)} and will fall back to",
+                    "{@link LocalDateTime#from(TemporalAccessor)} and apply {@link ZoneOffset#UTC} as the",
+                    "timezone.",
+                    "",
+                    "@param datetimeString The datetime string to parse.",
+                    "@return The {@link OffsetDateTime} representing the string.",
+                    "@throws DateTimeParseException If the datetime is neither an ISO offset datetime or ISO local datetime."
+                )))
+                .setBody(StaticJavaParser.parseBlock(String.join("\n",
+                    "{",
+                    "    TemporalAccessor temporal = DateTimeFormatter.ISO_DATE_TIME",
+                    "        .parseBest(datetimeString, OffsetDateTime::from, LocalDateTime::from);",
+                    "",
+                    "    return  (temporal.query(TemporalQueries.offset()) == null)",
+                    "        ? LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC)",
+                    "        : OffsetDateTime.from(temporal);",
+                    "}")));
+        });
+
+        Editor editor = classCustomization.getEditor();
+
+        String originalContent = editor.getFileContent(classCustomization.getFileName());
+        String replacedContent = originalContent.replace("= reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));",
+            "= reader.getNullable(nonNullReader -> parseOffsetDateTimeBest(nonNullReader.getString()));");
+
+        editor.replaceFile(classCustomization.getFileName(), replacedContent);
     }
 
     private static final Map<String, String> replacementNames = new HashMap<String,String>() {
@@ -575,6 +622,4 @@ public class EventGridCustomization extends Customization {
         }
         return name;
     }
-
-
 }

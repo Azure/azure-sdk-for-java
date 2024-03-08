@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ChildResource;
 import com.azure.resourcemanager.network.models.ScopeConnectionState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Network Manager Connection resource. */
+/**
+ * The Network Manager Connection resource.
+ */
 @Fluent
 public final class NetworkManagerConnectionInner extends ChildResource {
     /*
@@ -25,13 +27,15 @@ public final class NetworkManagerConnectionInner extends ChildResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of NetworkManagerConnectionInner class. */
+    /**
+     * Creates an instance of NetworkManagerConnectionInner class.
+     */
     public NetworkManagerConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: The scope connection properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkManagerConnectionProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class NetworkManagerConnectionInner extends ChildResource {
 
     /**
      * Get the systemData property: The system metadata related to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,7 +53,7 @@ public final class NetworkManagerConnectionInner extends ChildResource {
 
     /**
      * Get the networkManagerId property: Network Manager Id.
-     *
+     * 
      * @return the networkManagerId value.
      */
     public String networkManagerId() {
@@ -58,7 +62,7 @@ public final class NetworkManagerConnectionInner extends ChildResource {
 
     /**
      * Set the networkManagerId property: Network Manager Id.
-     *
+     * 
      * @param networkManagerId the networkManagerId value to set.
      * @return the NetworkManagerConnectionInner object itself.
      */
@@ -72,7 +76,7 @@ public final class NetworkManagerConnectionInner extends ChildResource {
 
     /**
      * Get the connectionState property: Connection state.
-     *
+     * 
      * @return the connectionState value.
      */
     public ScopeConnectionState connectionState() {
@@ -81,7 +85,7 @@ public final class NetworkManagerConnectionInner extends ChildResource {
 
     /**
      * Get the description property: A description of the network manager connection.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -90,7 +94,7 @@ public final class NetworkManagerConnectionInner extends ChildResource {
 
     /**
      * Set the description property: A description of the network manager connection.
-     *
+     * 
      * @param description the description value to set.
      * @return the NetworkManagerConnectionInner object itself.
      */
@@ -104,7 +108,7 @@ public final class NetworkManagerConnectionInner extends ChildResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

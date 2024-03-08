@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.Resource;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.util.List;
@@ -32,8 +33,8 @@ public final class CosmosDatabaseProperties {
         this.database.setId(id);
     }
 
-    CosmosDatabaseProperties(String jsonString, String dummy) {
-        this.database = new Database(jsonString);
+    CosmosDatabaseProperties(ObjectNode jsonNode, String dummy) {
+        this.database = new Database(jsonNode);
     }
 
     // Converting container to CosmosContainerProperties

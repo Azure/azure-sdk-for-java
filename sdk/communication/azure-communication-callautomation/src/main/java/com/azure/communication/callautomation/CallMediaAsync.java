@@ -22,8 +22,11 @@ import com.azure.communication.callautomation.implementation.models.SendDtmfTone
 import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
 import com.azure.communication.callautomation.implementation.models.StartHoldMusicRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StartTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.StopHoldMusicRequestInternal;
+import com.azure.communication.callautomation.implementation.models.StopTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
+import com.azure.communication.callautomation.implementation.models.UpdateTranscriptionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.VoiceKindInternal;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
@@ -41,6 +44,8 @@ import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.StartHoldMusicOptions;
+import com.azure.communication.callautomation.models.StartTranscriptionOptions;
+import com.azure.communication.callautomation.models.StopTranscriptionOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -54,9 +59,10 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -247,12 +253,17 @@ public final class CallMediaAsync {
 
     Mono<Response<Void>> playToAllWithResponseInternal(PlayToAllOptions options, Context context) {
         try {
-            PlayOptions playOptions = new PlayOptions(options.getPlaySources(), Collections.emptyList());
+            PlayToAllOptions playOptions = new PlayToAllOptions(options.getPlaySources());
             playOptions.setLoop(options.isLoop());
+            playOptions.setInterruptCallMediaOperation(options.isInterruptCallMediaOperation());
             playOptions.setOperationContext(options.getOperationContext());
             playOptions.setOperationCallbackUrl(options.getOperationCallbackUrl());
 
-            return playWithResponseInternal(playOptions, context);
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                PlayRequest request = getPlayToAllRequest(options);
+                return contentsInternal.playWithResponseAsync(callConnectionId, request, contextValue);
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -286,6 +297,39 @@ public final class CallMediaAsync {
                         .collect(Collectors.toList()));
 
             request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
+            request.setOperationContext(options.getOperationContext());
+            request.setOperationCallbackUri(options.getOperationCallbackUrl());
+
+            return request;
+        }
+
+        throw logger.logExceptionAsError(new IllegalArgumentException(options.getPlaySources().getClass().getCanonicalName()));
+    }
+    
+    PlayRequest getPlayToAllRequest(PlayToAllOptions options) {
+        List<PlaySourceInternal> playSourcesInternal = new ArrayList<>();
+        for (PlaySource source: options.getPlaySources()) {
+            PlaySourceInternal playSourceInternal = null;
+            if (source instanceof FileSource) {
+                playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) source);
+            } else if (source instanceof TextSource) {
+                playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) source);
+            } else if (source instanceof SsmlSource) {
+                playSourceInternal = getPlaySourceInternalFromSsmlSource((SsmlSource) source);
+            }
+            if (playSourceInternal != null && playSourceInternal.getKind() != null) {
+                playSourcesInternal.add(playSourceInternal);
+            } else {
+                throw logger.logExceptionAsError(new IllegalArgumentException(source.getClass().getCanonicalName()));
+            }
+        }
+
+        if (!playSourcesInternal.isEmpty()) {
+            PlayRequest request = new PlayRequest()
+                .setPlaySources(playSourcesInternal);
+
+            request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop())
+                                                            .setInterruptCallMediaOperation(options.isInterruptCallMediaOperation()));
             request.setOperationContext(options.getOperationContext());
             request.setOperationCallbackUri(options.getOperationCallbackUrl());
 
@@ -576,6 +620,8 @@ public final class CallMediaAsync {
             return contentsInternal.sendDtmfTonesWithResponseAsync(
                 callConnectionId,
                 requestInternal,
+                UUID.randomUUID(),
+                OffsetDateTime.now(),
                 context
             ).map(response -> new SimpleResponse<>(response, SendDtmfTonesResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException e) {
@@ -725,4 +771,100 @@ public final class CallMediaAsync {
             return monoError(logger, ex);
         }
     }
+
+    /**
+     * Starts transcription in the call.
+     *
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> startTranscription() {
+        return startTranscriptionWithResponseAsync(null).then();
+    }
+
+    /**
+     * Starts transcription in the call with options.
+     *
+     * @param options Options for the Start Transcription operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> startTranscriptionWithResponseAsync(StartTranscriptionOptions options) {
+        return withContext(context -> startTranscriptionWithResponseInternal(options, context));
+    }
+
+    Mono<Response<Void>> startTranscriptionWithResponseInternal(StartTranscriptionOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            StartTranscriptionRequestInternal request = new StartTranscriptionRequestInternal();
+            if (options != null) {
+                request.setLocale(options.getLocale());
+                request.setOperationContext(options.getOperationContext());
+            }
+            return contentsInternal
+                .startTranscriptionWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Stops transcription in the call.
+     *
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> stopTranscription() {
+        return stopTranscriptionWithResponseAsync(null).then();
+    }
+
+    /**
+     * Stops transcription in the call with options.
+     *
+     * @param options Options for the Stop Transcription operation.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> stopTranscriptionWithResponseAsync(StopTranscriptionOptions options) {
+        return withContext(context -> stopTranscriptionWithResponseInternal(options, context));
+    }
+
+    Mono<Response<Void>> stopTranscriptionWithResponseInternal(StopTranscriptionOptions options, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            StopTranscriptionRequestInternal request = new StopTranscriptionRequestInternal();
+            if (options != null) {
+                request.setOperationContext(options.getOperationContext());
+            }
+            return contentsInternal
+                .stopTranscriptionWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Updates transcription language
+     *
+     * @param locale Defines new locale for transcription.
+     * @return Response for successful operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> updateTranscription(String locale) {
+        return withContext(context -> updateTranscriptionWithResponseInternal(locale, context)).then();
+    }
+
+    Mono<Response<Void>> updateTranscriptionWithResponseInternal(String locale, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            UpdateTranscriptionRequestInternal request = new UpdateTranscriptionRequestInternal();
+            request.setLocale(locale);
+            return contentsInternal
+                .updateTranscriptionWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+
 }

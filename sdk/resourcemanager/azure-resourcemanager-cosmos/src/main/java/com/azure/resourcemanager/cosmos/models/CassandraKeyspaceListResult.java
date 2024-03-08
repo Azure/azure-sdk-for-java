@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.CassandraKeyspaceGetResult
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the Cassandra keyspaces and their properties. */
+/**
+ * The List operation response, that contains the Cassandra keyspaces and their properties.
+ */
 @Immutable
 public final class CassandraKeyspaceListResult {
     /*
@@ -18,13 +20,15 @@ public final class CassandraKeyspaceListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<CassandraKeyspaceGetResultsInner> value;
 
-    /** Creates an instance of CassandraKeyspaceListResult class. */
+    /**
+     * Creates an instance of CassandraKeyspaceListResult class.
+     */
     public CassandraKeyspaceListResult() {
     }
 
     /**
      * Get the value property: List of Cassandra keyspaces and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<CassandraKeyspaceGetResultsInner> value() {
@@ -33,7 +37,7 @@ public final class CassandraKeyspaceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

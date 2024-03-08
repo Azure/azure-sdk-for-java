@@ -9,7 +9,9 @@ import com.azure.resourcemanager.selfhelp.fluent.models.SolutionMetadataResource
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Discovery response. */
+/**
+ * Discovery response.
+ */
 @Fluent
 public final class DiscoveryResponse {
     /*
@@ -24,13 +26,15 @@ public final class DiscoveryResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DiscoveryResponse class. */
+    /**
+     * Creates an instance of DiscoveryResponse class.
+     */
     public DiscoveryResponse() {
     }
 
     /**
      * Get the value property: The list of metadata.
-     *
+     * 
      * @return the value value.
      */
     public List<SolutionMetadataResourceInner> value() {
@@ -39,7 +43,7 @@ public final class DiscoveryResponse {
 
     /**
      * Set the value property: The list of metadata.
-     *
+     * 
      * @param value the value value to set.
      * @return the DiscoveryResponse object itself.
      */
@@ -50,7 +54,7 @@ public final class DiscoveryResponse {
 
     /**
      * Get the nextLink property: The link used to get the next page of solution metadata.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class DiscoveryResponse {
 
     /**
      * Set the nextLink property: The link used to get the next page of solution metadata.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DiscoveryResponse object itself.
      */
@@ -70,7 +74,7 @@ public final class DiscoveryResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

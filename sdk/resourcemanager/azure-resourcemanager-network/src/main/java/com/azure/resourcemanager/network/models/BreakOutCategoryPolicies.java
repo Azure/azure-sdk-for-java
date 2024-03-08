@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network Virtual Appliance Sku Properties. */
+/**
+ * Network Virtual Appliance Sku Properties.
+ */
 @Fluent
 public final class BreakOutCategoryPolicies {
     /*
@@ -28,13 +30,15 @@ public final class BreakOutCategoryPolicies {
     @JsonProperty(value = "default")
     private Boolean defaultProperty;
 
-    /** Creates an instance of BreakOutCategoryPolicies class. */
+    /**
+     * Creates an instance of BreakOutCategoryPolicies class.
+     */
     public BreakOutCategoryPolicies() {
     }
 
     /**
      * Get the allow property: Flag to control breakout of o365 allow category.
-     *
+     * 
      * @return the allow value.
      */
     public Boolean allow() {
@@ -43,7 +47,7 @@ public final class BreakOutCategoryPolicies {
 
     /**
      * Set the allow property: Flag to control breakout of o365 allow category.
-     *
+     * 
      * @param allow the allow value to set.
      * @return the BreakOutCategoryPolicies object itself.
      */
@@ -54,7 +58,7 @@ public final class BreakOutCategoryPolicies {
 
     /**
      * Get the optimize property: Flag to control breakout of o365 optimize category.
-     *
+     * 
      * @return the optimize value.
      */
     public Boolean optimize() {
@@ -63,7 +67,7 @@ public final class BreakOutCategoryPolicies {
 
     /**
      * Set the optimize property: Flag to control breakout of o365 optimize category.
-     *
+     * 
      * @param optimize the optimize value to set.
      * @return the BreakOutCategoryPolicies object itself.
      */
@@ -74,7 +78,7 @@ public final class BreakOutCategoryPolicies {
 
     /**
      * Get the defaultProperty property: Flag to control breakout of o365 default category.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Boolean defaultProperty() {
@@ -83,7 +87,7 @@ public final class BreakOutCategoryPolicies {
 
     /**
      * Set the defaultProperty property: Flag to control breakout of o365 default category.
-     *
+     * 
      * @param defaultProperty the defaultProperty value to set.
      * @return the BreakOutCategoryPolicies object itself.
      */
@@ -94,7 +98,7 @@ public final class BreakOutCategoryPolicies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

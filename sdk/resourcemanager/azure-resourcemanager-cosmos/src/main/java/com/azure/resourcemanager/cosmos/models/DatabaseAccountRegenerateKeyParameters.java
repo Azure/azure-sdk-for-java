@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters to regenerate the keys within the database account. */
+/**
+ * Parameters to regenerate the keys within the database account.
+ */
 @Fluent
 public final class DatabaseAccountRegenerateKeyParameters {
     /*
@@ -17,13 +19,15 @@ public final class DatabaseAccountRegenerateKeyParameters {
     @JsonProperty(value = "keyKind", required = true)
     private KeyKind keyKind;
 
-    /** Creates an instance of DatabaseAccountRegenerateKeyParameters class. */
+    /**
+     * Creates an instance of DatabaseAccountRegenerateKeyParameters class.
+     */
     public DatabaseAccountRegenerateKeyParameters() {
     }
 
     /**
      * Get the keyKind property: The access key to regenerate.
-     *
+     * 
      * @return the keyKind value.
      */
     public KeyKind keyKind() {
@@ -32,7 +36,7 @@ public final class DatabaseAccountRegenerateKeyParameters {
 
     /**
      * Set the keyKind property: The access key to regenerate.
-     *
+     * 
      * @param keyKind the keyKind value to set.
      * @return the DatabaseAccountRegenerateKeyParameters object itself.
      */
@@ -43,15 +47,13 @@ public final class DatabaseAccountRegenerateKeyParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyKind() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyKind in model DatabaseAccountRegenerateKeyParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property keyKind in model DatabaseAccountRegenerateKeyParameters"));
         }
     }
 

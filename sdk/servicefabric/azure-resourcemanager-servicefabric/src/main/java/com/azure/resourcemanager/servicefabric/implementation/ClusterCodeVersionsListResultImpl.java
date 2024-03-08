@@ -15,8 +15,7 @@ public final class ClusterCodeVersionsListResultImpl implements ClusterCodeVersi
 
     private final com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager;
 
-    ClusterCodeVersionsListResultImpl(
-        ClusterCodeVersionsListResultInner innerObject,
+    ClusterCodeVersionsListResultImpl(ClusterCodeVersionsListResultInner innerObject,
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -46,6 +46,12 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
     private String tenantId;
 
     /**
+     * Constructs an instance of AzureCliCredentialBuilder.
+     */
+    public AzureCliCredentialBuilder() {
+        super();
+    }
+    /**
      * Sets the tenant ID of the application.
      *
      * @param tenantId the tenant ID of the application.

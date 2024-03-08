@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB StoredProcedure. */
+/**
+ * The properties of an Azure Cosmos DB StoredProcedure.
+ */
 @Fluent
 public final class SqlStoredProcedureGetProperties {
     /*
@@ -17,13 +19,15 @@ public final class SqlStoredProcedureGetProperties {
     @JsonProperty(value = "resource")
     private SqlStoredProcedureGetPropertiesResource resource;
 
-    /** Creates an instance of SqlStoredProcedureGetProperties class. */
+    /**
+     * Creates an instance of SqlStoredProcedureGetProperties class.
+     */
     public SqlStoredProcedureGetProperties() {
     }
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public SqlStoredProcedureGetPropertiesResource resource() {
@@ -32,7 +36,7 @@ public final class SqlStoredProcedureGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlStoredProcedureGetProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class SqlStoredProcedureGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

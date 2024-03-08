@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SQL stored procedure parameter. */
+/**
+ * SQL stored procedure parameter.
+ */
 @Fluent
 public final class StoredProcedureParameter {
     /*
@@ -22,12 +24,15 @@ public final class StoredProcedureParameter {
     @JsonProperty(value = "type")
     private StoredProcedureParameterType type;
 
-    /** Creates an instance of StoredProcedureParameter class. */
-    public StoredProcedureParameter() {}
+    /**
+     * Creates an instance of StoredProcedureParameter class.
+     */
+    public StoredProcedureParameter() {
+    }
 
     /**
      * Get the value property: Stored procedure parameter value. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the value value.
      */
     public Object getValue() {
@@ -36,7 +41,7 @@ public final class StoredProcedureParameter {
 
     /**
      * Set the value property: Stored procedure parameter value. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param value the value value to set.
      * @return the StoredProcedureParameter object itself.
      */
@@ -47,7 +52,7 @@ public final class StoredProcedureParameter {
 
     /**
      * Get the type property: Stored procedure parameter type.
-     *
+     * 
      * @return the type value.
      */
     public StoredProcedureParameterType getType() {
@@ -56,7 +61,7 @@ public final class StoredProcedureParameter {
 
     /**
      * Set the type property: Stored procedure parameter type.
-     *
+     * 
      * @param type the type value to set.
      * @return the StoredProcedureParameter object itself.
      */

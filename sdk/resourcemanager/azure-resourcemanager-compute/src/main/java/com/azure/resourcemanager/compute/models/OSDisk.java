@@ -99,14 +99,16 @@ public final class OSDisk {
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
 
-    /** Creates an instance of OSDisk class. */
+    /**
+     * Creates an instance of OSDisk class.
+     */
     public OSDisk() {
     }
 
     /**
      * Get the osType property: This property allows you to specify the type of the OS that is included in the disk if
      * creating a VM from user-image or a specialized VHD. Possible values are: **Windows,** **Linux.**.
-     *
+     * 
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
@@ -116,7 +118,7 @@ public final class OSDisk {
     /**
      * Set the osType property: This property allows you to specify the type of the OS that is included in the disk if
      * creating a VM from user-image or a specialized VHD. Possible values are: **Windows,** **Linux.**.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the OSDisk object itself.
      */
@@ -128,7 +130,7 @@ public final class OSDisk {
     /**
      * Get the encryptionSettings property: Specifies the encryption settings for the OS Disk. Minimum api-version:
      * 2015-06-15.
-     *
+     * 
      * @return the encryptionSettings value.
      */
     public DiskEncryptionSettings encryptionSettings() {
@@ -138,7 +140,7 @@ public final class OSDisk {
     /**
      * Set the encryptionSettings property: Specifies the encryption settings for the OS Disk. Minimum api-version:
      * 2015-06-15.
-     *
+     * 
      * @param encryptionSettings the encryptionSettings value to set.
      * @return the OSDisk object itself.
      */
@@ -149,7 +151,7 @@ public final class OSDisk {
 
     /**
      * Get the name property: The disk name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -158,7 +160,7 @@ public final class OSDisk {
 
     /**
      * Set the name property: The disk name.
-     *
+     * 
      * @param name the name value to set.
      * @return the OSDisk object itself.
      */
@@ -169,7 +171,7 @@ public final class OSDisk {
 
     /**
      * Get the vhd property: The virtual hard disk.
-     *
+     * 
      * @return the vhd value.
      */
     public VirtualHardDisk vhd() {
@@ -178,7 +180,7 @@ public final class OSDisk {
 
     /**
      * Set the vhd property: The virtual hard disk.
-     *
+     * 
      * @param vhd the vhd value to set.
      * @return the OSDisk object itself.
      */
@@ -191,7 +193,7 @@ public final class OSDisk {
      * Get the image property: The source user image virtual hard disk. The virtual hard disk will be copied before
      * being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
      * exist.
-     *
+     * 
      * @return the image value.
      */
     public VirtualHardDisk image() {
@@ -202,7 +204,7 @@ public final class OSDisk {
      * Set the image property: The source user image virtual hard disk. The virtual hard disk will be copied before
      * being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
      * exist.
-     *
+     * 
      * @param image the image value to set.
      * @return the OSDisk object itself.
      */
@@ -214,7 +216,7 @@ public final class OSDisk {
     /**
      * Get the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
      * **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**.
-     *
+     * 
      * @return the caching value.
      */
     public CachingTypes caching() {
@@ -224,7 +226,7 @@ public final class OSDisk {
     /**
      * Set the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
      * **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**.
-     *
+     * 
      * @param caching the caching value to set.
      * @return the OSDisk object itself.
      */
@@ -234,9 +236,9 @@ public final class OSDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
-     * disk.
-     *
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
+     * the disk.
+     * 
      * @return the writeAcceleratorEnabled value.
      */
     public Boolean writeAcceleratorEnabled() {
@@ -244,9 +246,9 @@ public final class OSDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
-     * disk.
-     *
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
+     * the disk.
+     * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the OSDisk object itself.
      */
@@ -258,7 +260,7 @@ public final class OSDisk {
     /**
      * Get the diffDiskSettings property: Specifies the ephemeral Disk Settings for the operating system disk used by
      * the virtual machine.
-     *
+     * 
      * @return the diffDiskSettings value.
      */
     public DiffDiskSettings diffDiskSettings() {
@@ -268,7 +270,7 @@ public final class OSDisk {
     /**
      * Set the diffDiskSettings property: Specifies the ephemeral Disk Settings for the operating system disk used by
      * the virtual machine.
-     *
+     * 
      * @param diffDiskSettings the diffDiskSettings value to set.
      * @return the OSDisk object itself.
      */
@@ -283,7 +285,7 @@ public final class OSDisk {
      * **FromImage.** This value is used when you are using an image to create the virtual machine. If you are using a
      * platform image, you should also use the imageReference element described above. If you are using a marketplace
      * image, you should also use the plan element previously described.
-     *
+     * 
      * @return the createOption value.
      */
     public DiskCreateOptionTypes createOption() {
@@ -296,7 +298,7 @@ public final class OSDisk {
      * **FromImage.** This value is used when you are using an image to create the virtual machine. If you are using a
      * platform image, you should also use the imageReference element described above. If you are using a marketplace
      * image, you should also use the plan element previously described.
-     *
+     * 
      * @param createOption the createOption value to set.
      * @return the OSDisk object itself.
      */
@@ -309,7 +311,7 @@ public final class OSDisk {
      * Get the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
      * overwrite the size of the disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x
      * 1024^3 for the disk and the value cannot be larger than 1023.
-     *
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -320,7 +322,7 @@ public final class OSDisk {
      * Set the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
      * overwrite the size of the disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x
      * 1024^3 for the disk and the value cannot be larger than 1023.
-     *
+     * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the OSDisk object itself.
      */
@@ -331,7 +333,7 @@ public final class OSDisk {
 
     /**
      * Get the managedDisk property: The managed disk parameters.
-     *
+     * 
      * @return the managedDisk value.
      */
     public ManagedDiskParameters managedDisk() {
@@ -340,7 +342,7 @@ public final class OSDisk {
 
     /**
      * Set the managedDisk property: The managed disk parameters.
-     *
+     * 
      * @param managedDisk the managedDisk value to set.
      * @return the OSDisk object itself.
      */
@@ -350,12 +352,12 @@ public final class OSDisk {
     }
 
     /**
-     * Get the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion. Possible
-     * values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.** If this
-     * value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For an
-     * ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
+     * Get the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion.
+     * Possible values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.**
+     * If this value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For
+     * an ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
      * ephemeral OS Disk.
-     *
+     * 
      * @return the deleteOption value.
      */
     public DiskDeleteOptionTypes deleteOption() {
@@ -363,12 +365,12 @@ public final class OSDisk {
     }
 
     /**
-     * Set the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion. Possible
-     * values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.** If this
-     * value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For an
-     * ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
+     * Set the deleteOption property: Specifies whether OS Disk should be deleted or detached upon VM deletion.
+     * Possible values are: **Delete.** If this value is used, the OS disk is deleted when VM is deleted. **Detach.**
+     * If this value is used, the os disk is retained after VM is deleted. The default value is set to **Detach**. For
+     * an ephemeral OS Disk, the default value is set to **Delete**. The user cannot change the delete option for an
      * ephemeral OS Disk.
-     *
+     * 
      * @param deleteOption the deleteOption value to set.
      * @return the OSDisk object itself.
      */
@@ -379,7 +381,7 @@ public final class OSDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -396,9 +398,8 @@ public final class OSDisk {
             diffDiskSettings().validate();
         }
         if (createOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property createOption in model OSDisk"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property createOption in model OSDisk"));
         }
         if (managedDisk() != null) {
             managedDisk().validate();

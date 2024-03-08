@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The response payload for transferring the call.
- */
+/** The response payload for transferring the call. */
 @Fluent
 public final class TransferCallResponseInternal {
     /*
@@ -19,14 +17,8 @@ public final class TransferCallResponseInternal {
     private String operationContext;
 
     /**
-     * Creates an instance of TransferCallResponseInternal class.
-     */
-    public TransferCallResponseInternal() {
-    }
-
-    /**
      * Get the operationContext property: The operation context provided by client.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -35,7 +27,7 @@ public final class TransferCallResponseInternal {
 
     /**
      * Set the operationContext property: The operation context provided by client.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the TransferCallResponseInternal object itself.
      */

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CrossSubscriptionRestore Settings. */
+/**
+ * CrossSubscriptionRestore Settings.
+ */
 @Fluent
 public final class CrossSubscriptionRestoreSettings {
     /*
@@ -16,13 +18,15 @@ public final class CrossSubscriptionRestoreSettings {
     @JsonProperty(value = "state")
     private CrossSubscriptionRestoreState state;
 
-    /** Creates an instance of CrossSubscriptionRestoreSettings class. */
+    /**
+     * Creates an instance of CrossSubscriptionRestoreSettings class.
+     */
     public CrossSubscriptionRestoreSettings() {
     }
 
     /**
      * Get the state property: CrossSubscriptionRestore state.
-     *
+     * 
      * @return the state value.
      */
     public CrossSubscriptionRestoreState state() {
@@ -31,7 +35,7 @@ public final class CrossSubscriptionRestoreSettings {
 
     /**
      * Set the state property: CrossSubscriptionRestore state.
-     *
+     * 
      * @param state the state value to set.
      * @return the CrossSubscriptionRestoreSettings object itself.
      */
@@ -42,7 +46,7 @@ public final class CrossSubscriptionRestoreSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

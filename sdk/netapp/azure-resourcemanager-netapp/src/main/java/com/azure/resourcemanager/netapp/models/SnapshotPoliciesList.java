@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Snapshot Policies. */
+/**
+ * List of Snapshot Policies.
+ */
 @Fluent
 public final class SnapshotPoliciesList {
     /*
@@ -18,13 +20,15 @@ public final class SnapshotPoliciesList {
     @JsonProperty(value = "value")
     private List<SnapshotPolicyInner> value;
 
-    /** Creates an instance of SnapshotPoliciesList class. */
+    /**
+     * Creates an instance of SnapshotPoliciesList class.
+     */
     public SnapshotPoliciesList() {
     }
 
     /**
      * Get the value property: A list of snapshot policies.
-     *
+     * 
      * @return the value value.
      */
     public List<SnapshotPolicyInner> value() {
@@ -33,7 +37,7 @@ public final class SnapshotPoliciesList {
 
     /**
      * Set the value property: A list of snapshot policies.
-     *
+     * 
      * @param value the value value to set.
      * @return the SnapshotPoliciesList object itself.
      */
@@ -44,7 +48,7 @@ public final class SnapshotPoliciesList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

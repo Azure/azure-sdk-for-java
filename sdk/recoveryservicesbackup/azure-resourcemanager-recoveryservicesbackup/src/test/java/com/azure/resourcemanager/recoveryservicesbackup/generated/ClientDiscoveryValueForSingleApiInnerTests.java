@@ -16,50 +16,33 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientDiscoveryValueForSingleApiInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientDiscoveryValueForSingleApiInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"lyxwjkcprbnwbx\",\"display\":{\"provider\":\"tbvpysszdnru\",\"resource\":\"guhmuouqfpr\",\"operation\":\"wbnguitnwui\",\"description\":\"a\"},\"origin\":\"ufizuckyf\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"fvzwdzuhty\",\"displayName\":\"isdkfthwxmnteiw\",\"blobDuration\":\"pvkmijcmmxdcuf\"}]}}}")
-                .toObject(ClientDiscoveryValueForSingleApiInner.class);
+        ClientDiscoveryValueForSingleApiInner model = BinaryData.fromString(
+            "{\"name\":\"lyxwjkcprbnwbx\",\"display\":{\"provider\":\"tbvpysszdnru\",\"resource\":\"guhmuouqfpr\",\"operation\":\"wbnguitnwui\",\"description\":\"a\"},\"origin\":\"ufizuckyf\",\"properties\":{\"serviceSpecification\":{\"logSpecifications\":[{\"name\":\"fvzwdzuhty\",\"displayName\":\"isdkfthwxmnteiw\",\"blobDuration\":\"pvkmijcmmxdcuf\"}]}}}")
+            .toObject(ClientDiscoveryValueForSingleApiInner.class);
         Assertions.assertEquals("lyxwjkcprbnwbx", model.name());
         Assertions.assertEquals("tbvpysszdnru", model.display().provider());
         Assertions.assertEquals("guhmuouqfpr", model.display().resource());
         Assertions.assertEquals("wbnguitnwui", model.display().operation());
         Assertions.assertEquals("a", model.display().description());
         Assertions.assertEquals("ufizuckyf", model.origin());
-        Assertions
-            .assertEquals("fvzwdzuhty", model.properties().serviceSpecification().logSpecifications().get(0).name());
-        Assertions
-            .assertEquals(
-                "isdkfthwxmnteiw", model.properties().serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions
-            .assertEquals(
-                "pvkmijcmmxdcuf", model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("fvzwdzuhty",
+            model.properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("isdkfthwxmnteiw",
+            model.properties().serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("pvkmijcmmxdcuf",
+            model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientDiscoveryValueForSingleApiInner model =
-            new ClientDiscoveryValueForSingleApiInner()
-                .withName("lyxwjkcprbnwbx")
-                .withDisplay(
-                    new ClientDiscoveryDisplay()
-                        .withProvider("tbvpysszdnru")
-                        .withResource("guhmuouqfpr")
-                        .withOperation("wbnguitnwui")
-                        .withDescription("a"))
-                .withOrigin("ufizuckyf")
-                .withProperties(
-                    new ClientDiscoveryForProperties()
-                        .withServiceSpecification(
-                            new ClientDiscoveryForServiceSpecification()
-                                .withLogSpecifications(
-                                    Arrays
-                                        .asList(
-                                            new ClientDiscoveryForLogSpecification()
-                                                .withName("fvzwdzuhty")
-                                                .withDisplayName("isdkfthwxmnteiw")
-                                                .withBlobDuration("pvkmijcmmxdcuf")))));
+        ClientDiscoveryValueForSingleApiInner model = new ClientDiscoveryValueForSingleApiInner()
+            .withName("lyxwjkcprbnwbx")
+            .withDisplay(new ClientDiscoveryDisplay().withProvider("tbvpysszdnru").withResource("guhmuouqfpr")
+                .withOperation("wbnguitnwui").withDescription("a"))
+            .withOrigin("ufizuckyf").withProperties(
+                new ClientDiscoveryForProperties().withServiceSpecification(new ClientDiscoveryForServiceSpecification()
+                    .withLogSpecifications(Arrays.asList(new ClientDiscoveryForLogSpecification().withName("fvzwdzuhty")
+                        .withDisplayName("isdkfthwxmnteiw").withBlobDuration("pvkmijcmmxdcuf")))));
         model = BinaryData.fromObject(model).toObject(ClientDiscoveryValueForSingleApiInner.class);
         Assertions.assertEquals("lyxwjkcprbnwbx", model.name());
         Assertions.assertEquals("tbvpysszdnru", model.display().provider());
@@ -67,13 +50,11 @@ public final class ClientDiscoveryValueForSingleApiInnerTests {
         Assertions.assertEquals("wbnguitnwui", model.display().operation());
         Assertions.assertEquals("a", model.display().description());
         Assertions.assertEquals("ufizuckyf", model.origin());
-        Assertions
-            .assertEquals("fvzwdzuhty", model.properties().serviceSpecification().logSpecifications().get(0).name());
-        Assertions
-            .assertEquals(
-                "isdkfthwxmnteiw", model.properties().serviceSpecification().logSpecifications().get(0).displayName());
-        Assertions
-            .assertEquals(
-                "pvkmijcmmxdcuf", model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
+        Assertions.assertEquals("fvzwdzuhty",
+            model.properties().serviceSpecification().logSpecifications().get(0).name());
+        Assertions.assertEquals("isdkfthwxmnteiw",
+            model.properties().serviceSpecification().logSpecifications().get(0).displayName());
+        Assertions.assertEquals("pvkmijcmmxdcuf",
+            model.properties().serviceSpecification().logSpecifications().get(0).blobDuration());
     }
 }

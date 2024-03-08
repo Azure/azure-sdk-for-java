@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VpnClientConnectionHealth properties. */
+/**
+ * VpnClientConnectionHealth properties.
+ */
 @Fluent
 public final class VpnClientConnectionHealth {
     /*
@@ -35,13 +37,16 @@ public final class VpnClientConnectionHealth {
     @JsonProperty(value = "allocatedIpAddresses")
     private List<String> allocatedIpAddresses;
 
-    /** Creates an instance of VpnClientConnectionHealth class. */
+    /**
+     * Creates an instance of VpnClientConnectionHealth class.
+     */
     public VpnClientConnectionHealth() {
     }
 
     /**
-     * Get the totalIngressBytesTransferred property: Total of the Ingress Bytes Transferred in this P2S Vpn connection.
-     *
+     * Get the totalIngressBytesTransferred property: Total of the Ingress Bytes Transferred in this P2S Vpn
+     * connection.
+     * 
      * @return the totalIngressBytesTransferred value.
      */
     public Long totalIngressBytesTransferred() {
@@ -50,7 +55,7 @@ public final class VpnClientConnectionHealth {
 
     /**
      * Get the totalEgressBytesTransferred property: Total of the Egress Bytes Transferred in this connection.
-     *
+     * 
      * @return the totalEgressBytesTransferred value.
      */
     public Long totalEgressBytesTransferred() {
@@ -60,7 +65,7 @@ public final class VpnClientConnectionHealth {
     /**
      * Get the vpnClientConnectionsCount property: The total of p2s vpn clients connected at this time to this
      * P2SVpnGateway.
-     *
+     * 
      * @return the vpnClientConnectionsCount value.
      */
     public Integer vpnClientConnectionsCount() {
@@ -70,7 +75,7 @@ public final class VpnClientConnectionHealth {
     /**
      * Set the vpnClientConnectionsCount property: The total of p2s vpn clients connected at this time to this
      * P2SVpnGateway.
-     *
+     * 
      * @param vpnClientConnectionsCount the vpnClientConnectionsCount value to set.
      * @return the VpnClientConnectionHealth object itself.
      */
@@ -81,7 +86,7 @@ public final class VpnClientConnectionHealth {
 
     /**
      * Get the allocatedIpAddresses property: List of allocated ip addresses to the connected p2s vpn clients.
-     *
+     * 
      * @return the allocatedIpAddresses value.
      */
     public List<String> allocatedIpAddresses() {
@@ -90,7 +95,7 @@ public final class VpnClientConnectionHealth {
 
     /**
      * Set the allocatedIpAddresses property: List of allocated ip addresses to the connected p2s vpn clients.
-     *
+     * 
      * @param allocatedIpAddresses the allocatedIpAddresses value to set.
      * @return the VpnClientConnectionHealth object itself.
      */
@@ -101,7 +106,7 @@ public final class VpnClientConnectionHealth {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

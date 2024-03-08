@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.RouteMapRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of RouteMap resource. */
+/**
+ * Properties of RouteMap resource.
+ */
 @Fluent
 public final class RouteMapProperties {
     /*
@@ -37,14 +39,16 @@ public final class RouteMapProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of RouteMapProperties class. */
+    /**
+     * Creates an instance of RouteMapProperties class.
+     */
     public RouteMapProperties() {
     }
 
     /**
-     * Get the associatedInboundConnections property: List of connections which have this RoutMap associated for inbound
-     * traffic.
-     *
+     * Get the associatedInboundConnections property: List of connections which have this RoutMap associated for
+     * inbound traffic.
+     * 
      * @return the associatedInboundConnections value.
      */
     public List<String> associatedInboundConnections() {
@@ -52,9 +56,9 @@ public final class RouteMapProperties {
     }
 
     /**
-     * Set the associatedInboundConnections property: List of connections which have this RoutMap associated for inbound
-     * traffic.
-     *
+     * Set the associatedInboundConnections property: List of connections which have this RoutMap associated for
+     * inbound traffic.
+     * 
      * @param associatedInboundConnections the associatedInboundConnections value to set.
      * @return the RouteMapProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class RouteMapProperties {
     /**
      * Get the associatedOutboundConnections property: List of connections which have this RoutMap associated for
      * outbound traffic.
-     *
+     * 
      * @return the associatedOutboundConnections value.
      */
     public List<String> associatedOutboundConnections() {
@@ -76,7 +80,7 @@ public final class RouteMapProperties {
     /**
      * Set the associatedOutboundConnections property: List of connections which have this RoutMap associated for
      * outbound traffic.
-     *
+     * 
      * @param associatedOutboundConnections the associatedOutboundConnections value to set.
      * @return the RouteMapProperties object itself.
      */
@@ -87,7 +91,7 @@ public final class RouteMapProperties {
 
     /**
      * Get the rules property: List of RouteMap rules to be applied.
-     *
+     * 
      * @return the rules value.
      */
     public List<RouteMapRule> rules() {
@@ -96,7 +100,7 @@ public final class RouteMapProperties {
 
     /**
      * Set the rules property: List of RouteMap rules to be applied.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RouteMapProperties object itself.
      */
@@ -107,7 +111,7 @@ public final class RouteMapProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the RouteMap resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -116,7 +120,7 @@ public final class RouteMapProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

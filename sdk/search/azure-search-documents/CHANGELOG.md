@@ -1,6 +1,6 @@
 # Release History
 
-## 11.7.0-beta.1 (Unreleased)
+## 11.7.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,37 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 11.6.1 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+
+## 11.7.0-beta.1 (2024-02-09)
+
+### Features Added
+
+- Exposing HttpPipeline within clients.
+
+### Other Changes
+
+- Rebranding Azure Cognitive Search to Azure AI Search within the SDK.
+- Updated JavaDoc to assist with developer experience.
+- Sample added to show how to maintain a consistent sessionId across multiple requests.
+
+## 11.6.1 (2023-12-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.7` to version `1.4.8`.
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
 
 ## 11.6.0 (2023-11-13)
 

@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Whether the rule is custom or default. */
+/**
+ * Whether the rule is custom or default.
+ */
 public final class EffectiveAdminRuleKind extends ExpandableStringEnum<EffectiveAdminRuleKind> {
-    /** Static value Custom for EffectiveAdminRuleKind. */
+    /**
+     * Static value Custom for EffectiveAdminRuleKind.
+     */
     public static final EffectiveAdminRuleKind CUSTOM = fromString("Custom");
 
-    /** Static value Default for EffectiveAdminRuleKind. */
+    /**
+     * Static value Default for EffectiveAdminRuleKind.
+     */
     public static final EffectiveAdminRuleKind DEFAULT = fromString("Default");
 
     /**
      * Creates a new instance of EffectiveAdminRuleKind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class EffectiveAdminRuleKind extends ExpandableStringEnum<Effective
 
     /**
      * Creates or finds a EffectiveAdminRuleKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EffectiveAdminRuleKind.
      */
@@ -38,7 +44,7 @@ public final class EffectiveAdminRuleKind extends ExpandableStringEnum<Effective
 
     /**
      * Gets known EffectiveAdminRuleKind values.
-     *
+     * 
      * @return known EffectiveAdminRuleKind values.
      */
     public static Collection<EffectiveAdminRuleKind> values() {

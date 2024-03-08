@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Identity for the virtual machine. */
+/**
+ * Identity for the virtual machine.
+ */
 @Fluent
 public final class VirtualMachineIdentity {
     /*
@@ -37,20 +39,23 @@ public final class VirtualMachineIdentity {
     /*
      * The list of user identities associated with the Virtual Machine. The user identity dictionary key references
      * will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities;
 
-    /** Creates an instance of VirtualMachineIdentity class. */
+    /**
+     * Creates an instance of VirtualMachineIdentity class.
+     */
     public VirtualMachineIdentity() {
     }
 
     /**
      * Get the principalId property: The principal id of virtual machine identity. This property will only be provided
      * for a system assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -58,9 +63,9 @@ public final class VirtualMachineIdentity {
     }
 
     /**
-     * Get the tenantId property: The tenant id associated with the virtual machine. This property will only be provided
-     * for a system assigned identity.
-     *
+     * Get the tenantId property: The tenant id associated with the virtual machine. This property will only be
+     * provided for a system assigned identity.
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -68,10 +73,10 @@ public final class VirtualMachineIdentity {
     }
 
     /**
-     * Get the type property: The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned'
-     * includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove
-     * any identities from the virtual machine.
-     *
+     * Get the type property: The type of identity used for the virtual machine. The type 'SystemAssigned,
+     * UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type
+     * 'None' will remove any identities from the virtual machine.
+     * 
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -79,10 +84,10 @@ public final class VirtualMachineIdentity {
     }
 
     /**
-     * Set the type property: The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned'
-     * includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove
-     * any identities from the virtual machine.
-     *
+     * Set the type property: The type of identity used for the virtual machine. The type 'SystemAssigned,
+     * UserAssigned' includes both an implicitly created identity and a set of user assigned identities. The type
+     * 'None' will remove any identities from the virtual machine.
+     * 
      * @param type the type value to set.
      * @return the VirtualMachineIdentity object itself.
      */
@@ -95,7 +100,7 @@ public final class VirtualMachineIdentity {
      * Get the userAssignedIdentities property: The list of user identities associated with the Virtual Machine. The
      * user identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities() {
@@ -106,31 +111,28 @@ public final class VirtualMachineIdentity {
      * Set the userAssignedIdentities property: The list of user identities associated with the Virtual Machine. The
      * user identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the VirtualMachineIdentity object itself.
      */
-    public VirtualMachineIdentity withUserAssignedIdentities(
-        Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities) {
+    public VirtualMachineIdentity
+        withUserAssignedIdentities(Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

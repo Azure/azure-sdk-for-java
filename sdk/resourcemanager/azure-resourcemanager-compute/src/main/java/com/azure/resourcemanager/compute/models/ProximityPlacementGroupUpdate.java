@@ -7,14 +7,20 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
-/** Specifies information about the proximity placement group. */
+/**
+ * Specifies information about the proximity placement group.
+ */
 @Fluent
 public final class ProximityPlacementGroupUpdate extends UpdateResource {
-    /** Creates an instance of ProximityPlacementGroupUpdate class. */
+    /**
+     * Creates an instance of ProximityPlacementGroupUpdate class.
+     */
     public ProximityPlacementGroupUpdate() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProximityPlacementGroupUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -23,7 +29,7 @@ public final class ProximityPlacementGroupUpdate extends UpdateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

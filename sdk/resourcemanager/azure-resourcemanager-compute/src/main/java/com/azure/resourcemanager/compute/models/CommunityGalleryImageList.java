@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.CommunityGalleryImageInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Community Gallery Images operation response. */
+/**
+ * The List Community Gallery Images operation response.
+ */
 @Fluent
 public final class CommunityGalleryImageList {
     /*
@@ -20,19 +22,21 @@ public final class CommunityGalleryImageList {
     private List<CommunityGalleryImageInner> value;
 
     /*
-     * The uri to fetch the next page of community gallery images. Call ListNext() with this to fetch the next page of
+     * The URI to fetch the next page of community gallery images. Call ListNext() with this to fetch the next page of
      * community gallery images.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CommunityGalleryImageList class. */
+    /**
+     * Creates an instance of CommunityGalleryImageList class.
+     */
     public CommunityGalleryImageList() {
     }
 
     /**
      * Get the value property: A list of community gallery images.
-     *
+     * 
      * @return the value value.
      */
     public List<CommunityGalleryImageInner> value() {
@@ -41,7 +45,7 @@ public final class CommunityGalleryImageList {
 
     /**
      * Set the value property: A list of community gallery images.
-     *
+     * 
      * @param value the value value to set.
      * @return the CommunityGalleryImageList object itself.
      */
@@ -51,9 +55,9 @@ public final class CommunityGalleryImageList {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of community gallery images. Call ListNext() with this
+     * Get the nextLink property: The URI to fetch the next page of community gallery images. Call ListNext() with this
      * to fetch the next page of community gallery images.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,9 +65,9 @@ public final class CommunityGalleryImageList {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of community gallery images. Call ListNext() with this
+     * Set the nextLink property: The URI to fetch the next page of community gallery images. Call ListNext() with this
      * to fetch the next page of community gallery images.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CommunityGalleryImageList object itself.
      */
@@ -74,14 +78,13 @@ public final class CommunityGalleryImageList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model CommunityGalleryImageList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model CommunityGalleryImageList"));
         } else {
             value().forEach(e -> e.validate());
         }

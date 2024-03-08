@@ -11,7 +11,7 @@ public final class KubernetesVersionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         KubernetesVersionProperties model = BinaryData.fromString(
-            "{\"version\":\"qidybyx\",\"capabilities\":{\"supportPlan\":[\"lhaaxdbabp\"]},\"isPreview\":true,\"patchVersions\":{\"ckzywbiexzfeyue\":{\"readiness\":[{\"osType\":\"Linux\",\"osSku\":\"Windows2019\",\"ready\":true,\"errorMessage\":\"cocmnyyaztt\"}],\"upgrades\":[\"wrqpue\"]},\"dbpgnxytxhp\":{\"readiness\":[{\"osType\":\"Linux\",\"osSku\":\"Windows2022\",\"ready\":true,\"errorMessage\":\"qwalmuzyoxaepd\"}],\"upgrades\":[\"ancuxrhd\",\"bavxbniwdjswzt\"]},\"fpl\":{\"readiness\":[{\"osType\":\"Windows\",\"osSku\":\"CBLMariner\",\"ready\":false,\"errorMessage\":\"lcuhxwtctyqiklb\"},{\"osType\":\"Windows\",\"osSku\":\"CBLMariner\",\"ready\":true,\"errorMessage\":\"hvgyuguosvmk\"}],\"upgrades\":[\"xquk\"]}}}")
+            "{\"version\":\"ibnuqqkpik\",\"isPreview\":false,\"patchVersions\":{\"henbtkcxywnytn\":{\"readiness\":[{\"osType\":\"Windows\",\"osSku\":\"Windows2022\",\"ready\":true,\"errorMessage\":\"hijggme\"},{\"osType\":\"Linux\",\"osSku\":\"CBLMariner\",\"ready\":false,\"errorMessage\":\"trcvpnazzmh\"}],\"upgrades\":[\"nmpxttdb\",\"rbnlankxmyskp\"]}}}")
             .toObject(KubernetesVersionProperties.class);
     }
 

@@ -17,8 +17,8 @@ public final class NetworkSiblingSetImpl implements NetworkSiblingSet {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    NetworkSiblingSetImpl(
-        NetworkSiblingSetInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    NetworkSiblingSetImpl(NetworkSiblingSetInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

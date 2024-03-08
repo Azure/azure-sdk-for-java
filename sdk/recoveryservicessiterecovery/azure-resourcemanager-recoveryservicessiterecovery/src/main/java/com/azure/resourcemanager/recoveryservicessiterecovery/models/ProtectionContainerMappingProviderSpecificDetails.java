@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Container mapping provider specific details. */
+/**
+ * Container mapping provider specific details.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AProtectionContainerMappingDetails.class),
     @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmProtectionContainerMappingDetails.class),
-    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtProtectionContainerMappingDetails.class)
-})
+    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtProtectionContainerMappingDetails.class) })
 @Immutable
 public class ProtectionContainerMappingProviderSpecificDetails {
-    /** Creates an instance of ProtectionContainerMappingProviderSpecificDetails class. */
+    /**
+     * Creates an instance of ProtectionContainerMappingProviderSpecificDetails class.
+     */
     public ProtectionContainerMappingProviderSpecificDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

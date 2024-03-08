@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * ExpressRoutePorts Location Bandwidths
- *
- * <p>Real-time inventory of available ExpressRoute port bandwidths.
+ * 
+ * Real-time inventory of available ExpressRoute port bandwidths.
  */
 @Immutable
 public final class ExpressRoutePortsLocationBandwidths {
@@ -26,13 +26,15 @@ public final class ExpressRoutePortsLocationBandwidths {
     @JsonProperty(value = "valueInGbps", access = JsonProperty.Access.WRITE_ONLY)
     private Integer valueInGbps;
 
-    /** Creates an instance of ExpressRoutePortsLocationBandwidths class. */
+    /**
+     * Creates an instance of ExpressRoutePortsLocationBandwidths class.
+     */
     public ExpressRoutePortsLocationBandwidths() {
     }
 
     /**
      * Get the offerName property: Bandwidth descriptive name.
-     *
+     * 
      * @return the offerName value.
      */
     public String offerName() {
@@ -41,7 +43,7 @@ public final class ExpressRoutePortsLocationBandwidths {
 
     /**
      * Get the valueInGbps property: Bandwidth value in Gbps.
-     *
+     * 
      * @return the valueInGbps value.
      */
     public Integer valueInGbps() {
@@ -50,7 +52,7 @@ public final class ExpressRoutePortsLocationBandwidths {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

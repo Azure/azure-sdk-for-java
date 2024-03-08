@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Troubleshooter response. */
+/**
+ * Troubleshooter response.
+ */
 @Fluent
 public final class TroubleshooterResourceInner extends ProxyResource {
     /*
@@ -28,13 +30,15 @@ public final class TroubleshooterResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of TroubleshooterResourceInner class. */
+    /**
+     * Creates an instance of TroubleshooterResourceInner class.
+     */
     public TroubleshooterResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Troubleshooter Instance properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private TroubleshooterInstanceProperties innerProperties() {
@@ -43,7 +47,7 @@ public final class TroubleshooterResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,7 +56,7 @@ public final class TroubleshooterResourceInner extends ProxyResource {
 
     /**
      * Get the solutionId property: Solution Id to identify single troubleshooter.
-     *
+     * 
      * @return the solutionId value.
      */
     public String solutionId() {
@@ -61,7 +65,7 @@ public final class TroubleshooterResourceInner extends ProxyResource {
 
     /**
      * Set the solutionId property: Solution Id to identify single troubleshooter.
-     *
+     * 
      * @param solutionId the solutionId value to set.
      * @return the TroubleshooterResourceInner object itself.
      */
@@ -75,7 +79,7 @@ public final class TroubleshooterResourceInner extends ProxyResource {
 
     /**
      * Get the parameters property: Client input parameters to run Troubleshooter Resource.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -84,7 +88,7 @@ public final class TroubleshooterResourceInner extends ProxyResource {
 
     /**
      * Set the parameters property: Client input parameters to run Troubleshooter Resource.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the TroubleshooterResourceInner object itself.
      */
@@ -98,7 +102,7 @@ public final class TroubleshooterResourceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Status of troubleshooter provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public TroubleshooterProvisioningState provisioningState() {
@@ -107,7 +111,7 @@ public final class TroubleshooterResourceInner extends ProxyResource {
 
     /**
      * Get the steps property: List of step object.
-     *
+     * 
      * @return the steps value.
      */
     public List<Step> steps() {
@@ -116,7 +120,7 @@ public final class TroubleshooterResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

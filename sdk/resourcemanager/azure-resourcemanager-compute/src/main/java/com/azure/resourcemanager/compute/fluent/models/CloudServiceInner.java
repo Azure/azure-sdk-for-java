@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Describes the cloud service. */
+/**
+ * Describes the cloud service.
+ */
 @Fluent
 public final class CloudServiceInner extends Resource {
     /*
@@ -34,13 +36,15 @@ public final class CloudServiceInner extends Resource {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
-    /** Creates an instance of CloudServiceInner class. */
+    /**
+     * Creates an instance of CloudServiceInner class.
+     */
     public CloudServiceInner() {
     }
 
     /**
      * Get the properties property: Cloud service properties.
-     *
+     * 
      * @return the properties value.
      */
     public CloudServiceProperties properties() {
@@ -49,7 +53,7 @@ public final class CloudServiceInner extends Resource {
 
     /**
      * Set the properties property: Cloud service properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CloudServiceInner object itself.
      */
@@ -60,7 +64,7 @@ public final class CloudServiceInner extends Resource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -69,7 +73,7 @@ public final class CloudServiceInner extends Resource {
 
     /**
      * Set the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @param systemData the systemData value to set.
      * @return the CloudServiceInner object itself.
      */
@@ -81,7 +85,7 @@ public final class CloudServiceInner extends Resource {
     /**
      * Get the zones property: List of logical availability zone of the resource. List should contain only 1 zone where
      * cloud service should be provisioned. This field is optional.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -91,7 +95,7 @@ public final class CloudServiceInner extends Resource {
     /**
      * Set the zones property: List of logical availability zone of the resource. List should contain only 1 zone where
      * cloud service should be provisioned. This field is optional.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the CloudServiceInner object itself.
      */
@@ -100,14 +104,18 @@ public final class CloudServiceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CloudServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CloudServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -116,7 +124,7 @@ public final class CloudServiceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -3,7 +3,7 @@
 
 package com.azure.core.test.http;
 
-import org.apache.commons.compress.utils.IOUtils;
+import com.azure.core.test.implementation.TestingHelpers;
 import org.eclipse.jetty.server.HttpConfiguration;
 import org.eclipse.jetty.server.HttpConnectionFactory;
 import org.eclipse.jetty.server.Request;
@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 /**
  * Local server that will reply to requests based on the configured {@link HttpServlet}.
@@ -62,21 +63,21 @@ public class LocalTestServer {
         server.addConnector(this.httpConnector);
 
         SslContextFactory.Server sslContextFactory = new SslContextFactory.Server();
-        String mockKeyStore = LocalTestServer.class.getResource("/keystore.jks").toString();
+        String mockKeyStore = Objects.toString(LocalTestServer.class.getResource("/keystore.jks"), null);
         sslContextFactory.setKeyStorePath(mockKeyStore);
         sslContextFactory.setKeyStorePassword("password");
         sslContextFactory.setKeyManagerPassword("password");
         sslContextFactory.setKeyStorePath(mockKeyStore);
         sslContextFactory.setTrustStorePassword("password");
         sslContextFactory.setTrustAll(true);
-        SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory,
-            httpConnectionFactory.getProtocol());
+        SslConnectionFactory sslConnectionFactory
+            = new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
 
         HttpConfiguration httpConfiguration = new HttpConfiguration();
         httpConfiguration.addCustomizer(new SecureRequestCustomizer());
 
-        this.httpsConnector = new ServerConnector(server, sslConnectionFactory,
-            new HttpConnectionFactory(httpConfiguration));
+        this.httpsConnector
+            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpConfiguration));
         this.httpsConnector.setHost("localhost");
 
         server.addConnector(this.httpsConnector);
@@ -85,15 +86,22 @@ public class LocalTestServer {
         servletContextHandler.setContextPath("/");
         server.setHandler(servletContextHandler);
 
-        ServletHolder servletHolder = new ServletHolder(new HttpServlet() {
-            @Override
-            protected void service(HttpServletRequest req, HttpServletResponse resp)
-                throws ServletException, IOException {
-                byte[] requestBody = fullyReadRequest(req.getInputStream());
-                requestHandler.handle((Request) req, (Response) resp, requestBody);
-            }
-        });
+        ServletHolder servletHolder = new ServletHolder(new AzureTestHttpServlet(requestHandler));
         servletContextHandler.addServlet(servletHolder, "/");
+    }
+
+    private static final class AzureTestHttpServlet extends HttpServlet {
+        private final RequestHandler requestHandler;
+
+        private AzureTestHttpServlet(RequestHandler requestHandler) {
+            this.requestHandler = requestHandler;
+        }
+
+        @Override
+        protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+            byte[] requestBody = fullyReadRequest(req.getInputStream());
+            requestHandler.handle((Request) req, (Response) resp, requestBody);
+        }
     }
 
     /**
@@ -183,7 +191,7 @@ public class LocalTestServer {
 
     private static byte[] fullyReadRequest(InputStream requestBody) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        IOUtils.copy(requestBody, outputStream);
+        TestingHelpers.copy(requestBody, outputStream);
         return outputStream.toByteArray();
     }
 }

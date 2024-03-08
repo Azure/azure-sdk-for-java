@@ -7,14 +7,16 @@ import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
-import com.azure.communication.callautomation.models.events.CancelAddParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.AnswerFailed;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallTransferAccepted;
 import com.azure.communication.callautomation.models.events.CancelAddParticipantFailed;
+import com.azure.communication.callautomation.models.events.CancelAddParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
+import com.azure.communication.callautomation.models.events.CreateCallFailed;
 import com.azure.communication.callautomation.models.events.DialogCompleted;
 import com.azure.communication.callautomation.models.events.DialogConsent;
 import com.azure.communication.callautomation.models.events.DialogFailed;
@@ -37,6 +39,15 @@ import com.azure.communication.callautomation.models.events.RemoveParticipantFai
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
+import com.azure.communication.callautomation.models.events.TeamsComplianceRecordingStateChanged;
+import com.azure.communication.callautomation.models.events.TeamsRecordingStateChanged;
+import com.azure.communication.callautomation.models.events.TranscriptionFailed;
+import com.azure.communication.callautomation.models.events.TranscriptionResumed;
+import com.azure.communication.callautomation.models.events.TranscriptionStarted;
+import com.azure.communication.callautomation.models.events.TranscriptionStatus;
+import com.azure.communication.callautomation.models.events.TranscriptionStatusDetails;
+import com.azure.communication.callautomation.models.events.TranscriptionStopped;
+import com.azure.communication.callautomation.models.events.TranscriptionUpdated;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -104,6 +115,68 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
         assertNotNull(event);
         RecordingStateChanged recordingEvent = (RecordingStateChanged) event;
+        assertNotNull(recordingEvent);
+        assertEquals("serverCallId", recordingEvent.getServerCallId());
+        assertEquals("recordingId", recordingEvent.getRecordingId());
+        assertEquals(RecordingState.ACTIVE, recordingEvent.getRecordingState());
+    }
+
+    @Test
+    public void parseTeamsComplianceRecordingStateChangedEvent() {
+        String receivedEvent = "[\n"
+            + "    {\n"
+            + "        \"id\": \"bf59843a-888f-47ca-8d1c-885c1f5e71dc\",\n"
+            + "        \"source\": \"calling/recordings/serverCallId/recordingId/recordingId/TeamsComplianceRecordingStateChanged\",\n"
+            + "        \"type\": \"Microsoft.Communication.TeamsComplianceRecordingStateChanged\",\n"
+            + "        \"data\": {\n"
+            + "            \"type\": \"teamsComplianceRecordingStateChanged\",\n"
+            + "            \"recordingId\": \"recordingId\",\n"
+            + "            \"state\": \"active\",\n"
+            + "            \"startDateTime\": \"2022-08-11T23:42:45.4394211+00:00\",\n"
+            + "            \"callConnectionId\": \"callConnectionId\",\n"
+            + "            \"serverCallId\": \"serverCallId\",\n"
+            + "            \"correlationId\": \"correlationId\"\n"
+            + "        },\n"
+            + "        \"time\": \"2022-08-11T23:42:45.5346632+00:00\",\n"
+            + "        \"specversion\": \"1.0\",\n"
+            + "        \"datacontenttype\": \"application/json\",\n"
+            + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId\"\n"
+            + "    }\n"
+            + "]";
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        TeamsComplianceRecordingStateChanged recordingEvent = (TeamsComplianceRecordingStateChanged) event;
+        assertNotNull(recordingEvent);
+        assertEquals("serverCallId", recordingEvent.getServerCallId());
+        assertEquals("recordingId", recordingEvent.getRecordingId());
+        assertEquals(RecordingState.ACTIVE, recordingEvent.getRecordingState());
+    }
+
+    @Test
+    public void parseTeamsRecordingStateChangedEvent() {
+        String receivedEvent = "[\n"
+            + "    {\n"
+            + "        \"id\": \"bf59843a-888f-47ca-8d1c-885c1f5e71dc\",\n"
+            + "        \"source\": \"calling/recordings/serverCallId/recordingId/recordingId/TeamsRecordingStateChanged\",\n"
+            + "        \"type\": \"Microsoft.Communication.TeamsRecordingStateChanged\",\n"
+            + "        \"data\": {\n"
+            + "            \"type\": \"teamsRecordingStateChanged\",\n"
+            + "            \"recordingId\": \"recordingId\",\n"
+            + "            \"state\": \"active\",\n"
+            + "            \"startDateTime\": \"2022-08-11T23:42:45.4394211+00:00\",\n"
+            + "            \"callConnectionId\": \"callConnectionId\",\n"
+            + "            \"serverCallId\": \"serverCallId\",\n"
+            + "            \"correlationId\": \"correlationId\"\n"
+            + "        },\n"
+            + "        \"time\": \"2022-08-11T23:42:45.5346632+00:00\",\n"
+            + "        \"specversion\": \"1.0\",\n"
+            + "        \"datacontenttype\": \"application/json\",\n"
+            + "        \"subject\": \"calling/recordings/serverCallId/recordingId/recordingId\"\n"
+            + "    }\n"
+            + "]";
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+        assertNotNull(event);
+        TeamsRecordingStateChanged recordingEvent = (TeamsRecordingStateChanged) event;
         assertNotNull(recordingEvent);
         assertEquals("serverCallId", recordingEvent.getServerCallId());
         assertEquals("recordingId", recordingEvent.getRecordingId());
@@ -1024,5 +1097,299 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         assertEquals("Success Result", event.getResultInformation().getMessage());
         assertEquals("92e08834-b6ee-4ede-8956-9fefa27a691c", event.getDialogId());
         assertEquals("powerVirtualAgents", event.getDialogInputType().toString());
+    }
+
+    @Test
+    public void parseTranscriptionStartedEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.TranscriptionStarted\",\n"
+            + "    \"data\": {\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Transcription started successfully.\"\n"
+            + "        },\n"
+            + "        \"transcriptionUpdate\": {\n"
+            + "            \"transcriptionStatus\": \"transcriptionStarted\",\n"
+            + "            \"transcriptionStatusDetails\": \"subscriptionStarted\"\n"
+            + "        },\n"
+            + "        \"version\": \"2023-01-15-preview\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\",\n"
+            + "        \"publicEventType\": \"Microsoft.Communication.TranscriptionStarted\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+
+
+        TranscriptionStarted event = (TranscriptionStarted) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Transcription started successfully.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getTranscriptionUpdateResult());
+        assertEquals(TranscriptionStatus.TRANSCRIPTION_STARTED, event.getTranscriptionUpdateResult().getTranscriptionStatus());
+        assertEquals(TranscriptionStatusDetails.SUBSCRIPTION_STARTED, event.getTranscriptionUpdateResult().getTranscriptionStatusDetails());
+    }
+    @Test
+    public void parseTranscriptionResumedEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.TranscriptionResumed\",\n"
+            + "    \"data\": {\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Transcription resumed.\"\n"
+            + "        },\n"
+            + "        \"transcriptionUpdate\": {\n"
+            + "            \"transcriptionStatus\": \"transcriptionResumed\",\n"
+            + "            \"transcriptionStatusDetails\": \"streamConnectionReestablished\"\n"
+            + "        },\n"
+            + "        \"version\": \"2023-01-15-preview\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\",\n"
+            + "        \"publicEventType\": \"icrosoft.Communication.TranscriptionResumed\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+
+
+        TranscriptionResumed event = (TranscriptionResumed) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Transcription resumed.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getTranscriptionUpdateResult());
+        assertEquals(TranscriptionStatus.TRANSCRIPTION_RESUMED, event.getTranscriptionUpdateResult().getTranscriptionStatus());
+        assertEquals(TranscriptionStatusDetails.STREAM_CONNECTION_REESTABLISHED, event.getTranscriptionUpdateResult().getTranscriptionStatusDetails());
+    }
+    @Test
+    public void parseTranscriptionStoppedEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.TranscriptionStopped\",\n"
+            + "    \"data\": {\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Transcription stopped.\"\n"
+            + "        },\n"
+            + "        \"transcriptionUpdate\": {\n"
+            + "            \"transcriptionStatus\": \"transcriptionStopped\",\n"
+            + "            \"transcriptionStatusDetails\": \"subscriptionStopped\"\n"
+            + "        },\n"
+            + "        \"version\": \"2023-01-15-preview\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\",\n"
+            + "        \"publicEventType\": \"icrosoft.Communication.TranscriptionStopped\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+
+
+        TranscriptionStopped event = (TranscriptionStopped) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Transcription stopped.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getTranscriptionUpdateResult());
+        assertEquals(TranscriptionStatus.TRANSCRIPTION_STOPPED, event.getTranscriptionUpdateResult().getTranscriptionStatus());
+        assertEquals(TranscriptionStatusDetails.SUBSCRIPTION_STOPPED, event.getTranscriptionUpdateResult().getTranscriptionStatusDetails());
+    }
+    @Test
+    public void parseTranscriptionFailedEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.TranscriptionFailed\",\n"
+            + "    \"data\": {\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 500,\n"
+            + "            \"subCode\": 9999,\n"
+            + "            \"message\": \"Unknown internal server error.\"\n"
+            + "        },\n"
+            + "        \"transcriptionUpdate\": {\n"
+            + "            \"transcriptionStatus\": \"transcriptionFailed\",\n"
+            + "            \"transcriptionStatusDetails\": \"unspecifiedError\"\n"
+            + "        },\n"
+            + "        \"version\": \"2023-01-15-preview\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\",\n"
+            + "        \"publicEventType\": \"icrosoft.Communication.TranscriptionFailed\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+
+
+        TranscriptionFailed event = (TranscriptionFailed) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Unknown internal server error.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getTranscriptionUpdateResult());
+        assertEquals(TranscriptionStatus.TRANSCRIPTION_FAILED, event.getTranscriptionUpdateResult().getTranscriptionStatus());
+        assertEquals(TranscriptionStatusDetails.UNSPECIFIED_ERROR, event.getTranscriptionUpdateResult().getTranscriptionStatusDetails());
+    }
+
+
+    @Test
+    public void parseTranscriptionUpdatedEvent() {
+        String receivedEvent = "["
+            + " {\n"
+            + "    \"id\": \"Sanitized\",\n"
+            + "    \"source\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "    \"type\": \"Microsoft.Communication.TranscriptionUpdated\",\n"
+            + "    \"data\": {\n"
+            + "        \"resultInformation\": {\n"
+            + "            \"code\": 200,\n"
+            + "            \"subCode\": 0,\n"
+            + "            \"message\": \"Transcription updated.\"\n"
+            + "        },\n"
+            + "        \"transcriptionUpdate\": {\n"
+            + "            \"transcriptionStatus\": \"transcriptionLocaleUpdated\",\n"
+            + "            \"transcriptionStatusDetails\": \"subscriptionStarted\"\n"
+            + "        },\n"
+            + "        \"version\": \"2023-01-15-preview\",\n"
+            + "        \"dialogId\": \"92e08834-b6ee-4ede-8956-9fefa27a691c\",\n"
+            + "        \"callConnectionId\": \"491f1300-0c70-4f8c-97b4-94474f2a371b\",\n"
+            + "        \"serverCallId\": \"aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==\",\n"
+            + "        \"correlationId\": \"ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5\",\n"
+            + "        \"publicEventType\": \"Microsoft.Communication.TranscriptionUpdated\"\n"
+            + "    },\n"
+            + "    \"time\": \"2023-08-02T08:44:58.9826643+00:00\",\n"
+            + "    \"specversion\": \"1.0\",\n"
+            + "    \"datacontenttype\": \"application/json\",\n"
+            + "    \"subject\": \"calling/callConnections/491f1300-0c70-4f8c-97b4-94474f2a371b\"\n"
+            + "}]";
+
+
+        TranscriptionUpdated event = (TranscriptionUpdated) CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+        assertEquals("aHR0cHM6Ly9hcGkuZmxpZ2h0cHJveHkuc2t5cGUuY29tL2FwaS92Mi9jcC9jb252LXVzd2UtMDUtcHJvZC1ha3MuY29udi5za3lwZS5jb20vY29udi9zaXBuZWVRSGIwYUN1cmNfbmF4SjB3P2k9MTAtNjAtMzAtMTI1JmU9NjM4MjY1MTkwMDQ1MzY2NjYx==", event.getServerCallId());
+        assertEquals("491f1300-0c70-4f8c-97b4-94474f2a371b", event.getCallConnectionId());
+        assertEquals("ccadc1b4-7ea5-4d74-aebe-2c37ddc742a5", event.getCorrelationId());
+        assertEquals("Transcription updated.", event.getResultInformation().getMessage());
+
+        assertNotNull(event.getTranscriptionUpdateResult());
+        assertEquals(TranscriptionStatus.TRANSCRIPTION_LOCALE_UPDATED, event.getTranscriptionUpdateResult().getTranscriptionStatus());
+        assertEquals(TranscriptionStatusDetails.SUBSCRIPTION_STARTED, event.getTranscriptionUpdateResult().getTranscriptionStatusDetails());
+    }
+
+    @Test
+    public void parseAnswerFailedEvent() {
+        String receivedEvent = "[{\n"
+                + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+                + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+                + "\"type\": \"Microsoft.Communication.AnswerFailed\",\n"
+                + "\"data\": {\n"
+                + "\"operationContext\": \"context\",\n"
+                + "\"callConnectionId\": \"callConnectionId\",\n"
+                + "\"serverCallId\": \"serverCallId\",\n"
+                + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n"
+                + "},\n"
+                + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n"
+                + "\"specversion\": \"1.0\",\n"
+                + "\"datacontenttype\": \"application/json\",\n"
+                + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
+                + "}]";
+
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+
+        AnswerFailed answerFailed = (AnswerFailed) event;
+
+        assertNotNull(answerFailed);
+        assertEquals("serverCallId", answerFailed.getServerCallId());
+        assertEquals("callConnectionId", answerFailed.getCallConnectionId());
+
+        CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
+        callAutomationEventProcessor.attachOngoingEventProcessor(answerFailed.getCallConnectionId(),
+            eventToHandle -> {
+                assertEquals("serverCallId", eventToHandle.getServerCallId());
+                assertEquals("callConnectionId", eventToHandle.getCallConnectionId());
+            }, AnswerFailed.class);
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        callAutomationEventProcessor.detachOngoingEventProcessor(answerFailed.getCallConnectionId(), AnswerFailed.class);
+    }
+
+    @Test
+    public void parseCreateCallFailedEvent() {
+        String receivedEvent = "[{\n"
+                + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+                + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+                + "\"type\": \"Microsoft.Communication.CreateCallFailed\",\n"
+                + "\"data\": {\n"
+                + "\"operationContext\": \"context\",\n"
+                + "\"callConnectionId\": \"callConnectionId\",\n"
+                + "\"serverCallId\": \"serverCallId\",\n"
+                + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n"
+                + "},\n"
+                + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n"
+                + "\"specversion\": \"1.0\",\n"
+                + "\"datacontenttype\": \"application/json\",\n"
+                + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
+                + "}]";
+
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+
+        CreateCallFailed createCallFailed = (CreateCallFailed) event;
+
+        assertNotNull(createCallFailed);
+        assertEquals("serverCallId", createCallFailed.getServerCallId());
+        assertEquals("callConnectionId", createCallFailed.getCallConnectionId());
+
+        CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
+        callAutomationEventProcessor.attachOngoingEventProcessor(createCallFailed.getCallConnectionId(),
+            eventToHandle -> {
+                assertEquals("serverCallId", eventToHandle.getServerCallId());
+                assertEquals("callConnectionId", eventToHandle.getCallConnectionId());
+            }, CreateCallFailed.class);
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        callAutomationEventProcessor.detachOngoingEventProcessor(createCallFailed.getCallConnectionId(), CreateCallFailed.class);
     }
 }

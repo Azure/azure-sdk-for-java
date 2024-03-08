@@ -10,7 +10,6 @@ import com.azure.core.models.GeoPolygon;
 import com.azure.core.models.GeoPosition;
 import com.azure.core.util.logging.ClientLogger;
 
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,8 +17,6 @@ import java.util.Objects;
  * Helper class containing methods which encode geographic types for use in OData filters.
  */
 public final class SpatialFormatter {
-    private static final DecimalFormat COORDINATE_FORMATTER = new DecimalFormat();
-
     /*
      * This is the maximum length of a longitude-latitude pair in a geography OData expression.
      *
@@ -126,12 +123,9 @@ public final class SpatialFormatter {
             .toString();
     }
 
-    /*
-     * This method is synchronized as DecimalFormat is NOT thread-safe.
-     */
-    private static synchronized StringBuilder addPoint(StringBuilder builder, double longitude, double latitude) {
-        return builder.append(COORDINATE_FORMATTER.format(longitude))
+    private static StringBuilder addPoint(StringBuilder builder, double longitude, double latitude) {
+        return builder.append(Utility.formatCoordinate(longitude))
             .append(' ')
-            .append(COORDINATE_FORMATTER.format(latitude));
+            .append(Utility.formatCoordinate(latitude));
     }
 }

@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LinkConnectionLandingZone model. */
+/**
+ * The LinkConnectionLandingZone model.
+ */
 @Fluent
 public final class LinkConnectionLandingZone {
     /*
@@ -34,12 +36,15 @@ public final class LinkConnectionLandingZone {
     @JsonProperty(value = "sasToken")
     private SecureString sasToken;
 
-    /** Creates an instance of LinkConnectionLandingZone class. */
-    public LinkConnectionLandingZone() {}
+    /**
+     * Creates an instance of LinkConnectionLandingZone class.
+     */
+    public LinkConnectionLandingZone() {
+    }
 
     /**
      * Get the linkedService property: Linked service reference.
-     *
+     * 
      * @return the linkedService value.
      */
     public LinkedServiceReference getLinkedService() {
@@ -48,7 +53,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Set the linkedService property: Linked service reference.
-     *
+     * 
      * @param linkedService the linkedService value to set.
      * @return the LinkConnectionLandingZone object itself.
      */
@@ -59,7 +64,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Get the fileSystem property: Landing zone's file system name.
-     *
+     * 
      * @return the fileSystem value.
      */
     public String getFileSystem() {
@@ -68,7 +73,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Set the fileSystem property: Landing zone's file system name.
-     *
+     * 
      * @param fileSystem the fileSystem value to set.
      * @return the LinkConnectionLandingZone object itself.
      */
@@ -79,7 +84,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Get the folderPath property: Landing zone's folder path name.
-     *
+     * 
      * @return the folderPath value.
      */
     public String getFolderPath() {
@@ -88,7 +93,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Set the folderPath property: Landing zone's folder path name.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the LinkConnectionLandingZone object itself.
      */
@@ -99,7 +104,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Get the sasToken property: Landing zone's sas token.
-     *
+     * 
      * @return the sasToken value.
      */
     public SecureString getSasToken() {
@@ -108,7 +113,7 @@ public final class LinkConnectionLandingZone {
 
     /**
      * Set the sasToken property: Landing zone's sas token.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the LinkConnectionLandingZone object itself.
      */

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerregistry.models.OperationServiceSpecificationDefinition;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The definition of Azure Monitoring properties. */
+/**
+ * The definition of Azure Monitoring properties.
+ */
 @Fluent
 public final class OperationPropertiesDefinition {
     /*
@@ -17,13 +19,15 @@ public final class OperationPropertiesDefinition {
     @JsonProperty(value = "serviceSpecification")
     private OperationServiceSpecificationDefinition serviceSpecification;
 
-    /** Creates an instance of OperationPropertiesDefinition class. */
+    /**
+     * Creates an instance of OperationPropertiesDefinition class.
+     */
     public OperationPropertiesDefinition() {
     }
 
     /**
      * Get the serviceSpecification property: The definition of Azure Monitoring service.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public OperationServiceSpecificationDefinition serviceSpecification() {
@@ -32,19 +36,19 @@ public final class OperationPropertiesDefinition {
 
     /**
      * Set the serviceSpecification property: The definition of Azure Monitoring service.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationPropertiesDefinition object itself.
      */
-    public OperationPropertiesDefinition withServiceSpecification(
-        OperationServiceSpecificationDefinition serviceSpecification) {
+    public OperationPropertiesDefinition
+        withServiceSpecification(OperationServiceSpecificationDefinition serviceSpecification) {
         this.serviceSpecification = serviceSpecification;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

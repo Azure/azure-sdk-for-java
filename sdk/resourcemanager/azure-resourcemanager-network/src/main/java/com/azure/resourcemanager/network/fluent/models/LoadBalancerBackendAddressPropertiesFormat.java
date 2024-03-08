@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.NatRulePortMapping;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the load balancer backend addresses. */
+/**
+ * Properties of the load balancer backend addresses.
+ */
 @Fluent
 public final class LoadBalancerBackendAddressPropertiesFormat {
     /*
@@ -57,13 +59,15 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
     @JsonProperty(value = "adminState")
     private LoadBalancerBackendAddressAdminState adminState;
 
-    /** Creates an instance of LoadBalancerBackendAddressPropertiesFormat class. */
+    /**
+     * Creates an instance of LoadBalancerBackendAddressPropertiesFormat class.
+     */
     public LoadBalancerBackendAddressPropertiesFormat() {
     }
 
     /**
      * Get the virtualNetwork property: Reference to an existing virtual network.
-     *
+     * 
      * @return the virtualNetwork value.
      */
     public SubResource virtualNetwork() {
@@ -72,7 +76,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
 
     /**
      * Set the virtualNetwork property: Reference to an existing virtual network.
-     *
+     * 
      * @param virtualNetwork the virtualNetwork value to set.
      * @return the LoadBalancerBackendAddressPropertiesFormat object itself.
      */
@@ -83,7 +87,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
 
     /**
      * Get the subnet property: Reference to an existing subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -92,7 +96,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
 
     /**
      * Set the subnet property: Reference to an existing subnet.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the LoadBalancerBackendAddressPropertiesFormat object itself.
      */
@@ -103,7 +107,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
 
     /**
      * Get the ipAddress property: IP Address belonging to the referenced virtual network.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -112,7 +116,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
 
     /**
      * Set the ipAddress property: IP Address belonging to the referenced virtual network.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the LoadBalancerBackendAddressPropertiesFormat object itself.
      */
@@ -123,7 +127,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
 
     /**
      * Get the networkInterfaceIpConfiguration property: Reference to IP address defined in network interfaces.
-     *
+     * 
      * @return the networkInterfaceIpConfiguration value.
      */
     public SubResource networkInterfaceIpConfiguration() {
@@ -133,7 +137,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
     /**
      * Get the loadBalancerFrontendIpConfiguration property: Reference to the frontend ip address configuration defined
      * in regional loadbalancer.
-     *
+     * 
      * @return the loadBalancerFrontendIpConfiguration value.
      */
     public SubResource loadBalancerFrontendIpConfiguration() {
@@ -143,19 +147,19 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
     /**
      * Set the loadBalancerFrontendIpConfiguration property: Reference to the frontend ip address configuration defined
      * in regional loadbalancer.
-     *
+     * 
      * @param loadBalancerFrontendIpConfiguration the loadBalancerFrontendIpConfiguration value to set.
      * @return the LoadBalancerBackendAddressPropertiesFormat object itself.
      */
-    public LoadBalancerBackendAddressPropertiesFormat withLoadBalancerFrontendIpConfiguration(
-        SubResource loadBalancerFrontendIpConfiguration) {
+    public LoadBalancerBackendAddressPropertiesFormat
+        withLoadBalancerFrontendIpConfiguration(SubResource loadBalancerFrontendIpConfiguration) {
         this.loadBalancerFrontendIpConfiguration = loadBalancerFrontendIpConfiguration;
         return this;
     }
 
     /**
      * Get the inboundNatRulesPortMapping property: Collection of inbound NAT rule port mappings.
-     *
+     * 
      * @return the inboundNatRulesPortMapping value.
      */
     public List<NatRulePortMapping> inboundNatRulesPortMapping() {
@@ -166,7 +170,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
      * Get the adminState property: A list of administrative states which once set can override health probe so that
      * Load Balancer will always forward new connections to backend, or deny new connections and reset existing
      * connections.
-     *
+     * 
      * @return the adminState value.
      */
     public LoadBalancerBackendAddressAdminState adminState() {
@@ -177,7 +181,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
      * Set the adminState property: A list of administrative states which once set can override health probe so that
      * Load Balancer will always forward new connections to backend, or deny new connections and reset existing
      * connections.
-     *
+     * 
      * @param adminState the adminState value to set.
      * @return the LoadBalancerBackendAddressPropertiesFormat object itself.
      */
@@ -188,7 +192,7 @@ public final class LoadBalancerBackendAddressPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,7 +13,9 @@ import com.azure.resourcemanager.network.models.ReferencedPublicIpAddress;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Public IP prefix properties. */
+/**
+ * Public IP prefix properties.
+ */
 @Fluent
 public final class PublicIpPrefixPropertiesFormatInner {
     /*
@@ -76,13 +78,15 @@ public final class PublicIpPrefixPropertiesFormatInner {
     @JsonProperty(value = "natGateway")
     private NatGatewayInner natGateway;
 
-    /** Creates an instance of PublicIpPrefixPropertiesFormatInner class. */
+    /**
+     * Creates an instance of PublicIpPrefixPropertiesFormatInner class.
+     */
     public PublicIpPrefixPropertiesFormatInner() {
     }
 
     /**
      * Get the publicIpAddressVersion property: The public IP address version.
-     *
+     * 
      * @return the publicIpAddressVersion value.
      */
     public IpVersion publicIpAddressVersion() {
@@ -91,7 +95,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Set the publicIpAddressVersion property: The public IP address version.
-     *
+     * 
      * @param publicIpAddressVersion the publicIpAddressVersion value to set.
      * @return the PublicIpPrefixPropertiesFormatInner object itself.
      */
@@ -102,7 +106,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Get the ipTags property: The list of tags associated with the public IP prefix.
-     *
+     * 
      * @return the ipTags value.
      */
     public List<IpTag> ipTags() {
@@ -111,7 +115,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Set the ipTags property: The list of tags associated with the public IP prefix.
-     *
+     * 
      * @param ipTags the ipTags value to set.
      * @return the PublicIpPrefixPropertiesFormatInner object itself.
      */
@@ -122,7 +126,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Get the prefixLength property: The Length of the Public IP Prefix.
-     *
+     * 
      * @return the prefixLength value.
      */
     public Integer prefixLength() {
@@ -131,7 +135,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Set the prefixLength property: The Length of the Public IP Prefix.
-     *
+     * 
      * @param prefixLength the prefixLength value to set.
      * @return the PublicIpPrefixPropertiesFormatInner object itself.
      */
@@ -142,7 +146,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Get the ipPrefix property: The allocated Prefix.
-     *
+     * 
      * @return the ipPrefix value.
      */
     public String ipPrefix() {
@@ -151,7 +155,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Get the publicIpAddresses property: The list of all referenced PublicIPAddresses.
-     *
+     * 
      * @return the publicIpAddresses value.
      */
     public List<ReferencedPublicIpAddress> publicIpAddresses() {
@@ -161,7 +165,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
     /**
      * Get the loadBalancerFrontendIpConfiguration property: The reference to load balancer frontend IP configuration
      * associated with the public IP prefix.
-     *
+     * 
      * @return the loadBalancerFrontendIpConfiguration value.
      */
     public SubResource loadBalancerFrontendIpConfiguration() {
@@ -170,7 +174,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Get the customIpPrefix property: The customIpPrefix that this prefix is associated with.
-     *
+     * 
      * @return the customIpPrefix value.
      */
     public SubResource customIpPrefix() {
@@ -179,7 +183,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Set the customIpPrefix property: The customIpPrefix that this prefix is associated with.
-     *
+     * 
      * @param customIpPrefix the customIpPrefix value to set.
      * @return the PublicIpPrefixPropertiesFormatInner object itself.
      */
@@ -190,7 +194,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the public IP prefix resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -199,7 +203,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Get the provisioningState property: The provisioning state of the public IP prefix resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -208,7 +212,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Get the natGateway property: NatGateway of Public IP Prefix.
-     *
+     * 
      * @return the natGateway value.
      */
     public NatGatewayInner natGateway() {
@@ -217,7 +221,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Set the natGateway property: NatGateway of Public IP Prefix.
-     *
+     * 
      * @param natGateway the natGateway value to set.
      * @return the PublicIpPrefixPropertiesFormatInner object itself.
      */
@@ -228,7 +232,7 @@ public final class PublicIpPrefixPropertiesFormatInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,30 +5,36 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobCancelled event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobCancelled event.
+ */
 @Fluent
 public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData {
     /*
      * Router Job Note
      */
-    @JsonProperty(value = "note")
     private String note;
 
     /*
      * Router Job Disposition Code
      */
-    @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
-    /** Creates an instance of AcsRouterJobCancelledEventData class. */
-    public AcsRouterJobCancelledEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobCancelledEventData class.
+     */
+    public AcsRouterJobCancelledEventData() {
+    }
 
     /**
      * Get the note property: Router Job Note.
-     *
+     * 
      * @return the note value.
      */
     public String getNote() {
@@ -37,7 +43,7 @@ public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData 
 
     /**
      * Set the note property: Router Job Note.
-     *
+     * 
      * @param note the note value to set.
      * @return the AcsRouterJobCancelledEventData object itself.
      */
@@ -48,7 +54,7 @@ public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData 
 
     /**
      * Get the dispositionCode property: Router Job Disposition Code.
-     *
+     * 
      * @return the dispositionCode value.
      */
     public String getDispositionCode() {
@@ -57,7 +63,7 @@ public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData 
 
     /**
      * Set the dispositionCode property: Router Job Disposition Code.
-     *
+     * 
      * @param dispositionCode the dispositionCode value to set.
      * @return the AcsRouterJobCancelledEventData object itself.
      */
@@ -66,45 +72,114 @@ public final class AcsRouterJobCancelledEventData extends AcsRouterJobEventData 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobCancelledEventData setChannelId(String channelId) {
         super.setChannelId(channelId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
+        jsonWriter.writeStringField("channelReference", getChannelReference());
+        jsonWriter.writeStringField("channelId", getChannelId());
+        jsonWriter.writeStringField("queueId", getQueueId());
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("note", this.note);
+        jsonWriter.writeStringField("dispositionCode", this.dispositionCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRouterJobCancelledEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterJobCancelledEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterJobCancelledEventData.
+     */
+    public static AcsRouterJobCancelledEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterJobCancelledEventData deserializedAcsRouterJobCancelledEventData
+                = new AcsRouterJobCancelledEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobId".equals(fieldName)) {
+                    deserializedAcsRouterJobCancelledEventData.setJobId(reader.getString());
+                } else if ("channelReference".equals(fieldName)) {
+                    deserializedAcsRouterJobCancelledEventData.setChannelReference(reader.getString());
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedAcsRouterJobCancelledEventData.setChannelId(reader.getString());
+                } else if ("queueId".equals(fieldName)) {
+                    deserializedAcsRouterJobCancelledEventData.setQueueId(reader.getString());
+                } else if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobCancelledEventData.setLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobCancelledEventData.setTags(tags);
+                } else if ("note".equals(fieldName)) {
+                    deserializedAcsRouterJobCancelledEventData.note = reader.getString();
+                } else if ("dispositionCode".equals(fieldName)) {
+                    deserializedAcsRouterJobCancelledEventData.dispositionCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRouterJobCancelledEventData;
+        });
     }
 }

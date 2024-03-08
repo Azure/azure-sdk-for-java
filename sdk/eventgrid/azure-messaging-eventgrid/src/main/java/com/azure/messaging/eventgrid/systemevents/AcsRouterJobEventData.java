@@ -5,36 +5,41 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Schema of common properties of all Router Job events. */
+/**
+ * Schema of common properties of all Router Job events.
+ */
 @Fluent
 public class AcsRouterJobEventData extends AcsRouterEventData {
     /*
      * Router Job events Queue Id
      */
-    @JsonProperty(value = "queueId")
     private String queueId;
 
     /*
      * Router Job events Labels
      */
-    @JsonProperty(value = "labels")
     private Map<String, String> labels;
 
     /*
      * Router Jobs events Tags
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /** Creates an instance of AcsRouterJobEventData class. */
-    public AcsRouterJobEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobEventData class.
+     */
+    public AcsRouterJobEventData() {
+    }
 
     /**
      * Get the queueId property: Router Job events Queue Id.
-     *
+     * 
      * @return the queueId value.
      */
     public String getQueueId() {
@@ -43,7 +48,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
 
     /**
      * Set the queueId property: Router Job events Queue Id.
-     *
+     * 
      * @param queueId the queueId value to set.
      * @return the AcsRouterJobEventData object itself.
      */
@@ -54,7 +59,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
 
     /**
      * Get the labels property: Router Job events Labels.
-     *
+     * 
      * @return the labels value.
      */
     public Map<String, String> getLabels() {
@@ -63,7 +68,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
 
     /**
      * Set the labels property: Router Job events Labels.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the AcsRouterJobEventData object itself.
      */
@@ -74,7 +79,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
 
     /**
      * Get the tags property: Router Jobs events Tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> getTags() {
@@ -83,7 +88,7 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
 
     /**
      * Set the tags property: Router Jobs events Tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AcsRouterJobEventData object itself.
      */
@@ -92,24 +97,80 @@ public class AcsRouterJobEventData extends AcsRouterEventData {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobEventData setChannelId(String channelId) {
         super.setChannelId(channelId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
+        jsonWriter.writeStringField("channelReference", getChannelReference());
+        jsonWriter.writeStringField("channelId", getChannelId());
+        jsonWriter.writeStringField("queueId", this.queueId);
+        jsonWriter.writeMapField("labels", this.labels, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRouterJobEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterJobEventData if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterJobEventData.
+     */
+    public static AcsRouterJobEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterJobEventData deserializedAcsRouterJobEventData = new AcsRouterJobEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobId".equals(fieldName)) {
+                    deserializedAcsRouterJobEventData.setJobId(reader.getString());
+                } else if ("channelReference".equals(fieldName)) {
+                    deserializedAcsRouterJobEventData.setChannelReference(reader.getString());
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedAcsRouterJobEventData.setChannelId(reader.getString());
+                } else if ("queueId".equals(fieldName)) {
+                    deserializedAcsRouterJobEventData.queueId = reader.getString();
+                } else if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobEventData.labels = labels;
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobEventData.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRouterJobEventData;
+        });
     }
 }

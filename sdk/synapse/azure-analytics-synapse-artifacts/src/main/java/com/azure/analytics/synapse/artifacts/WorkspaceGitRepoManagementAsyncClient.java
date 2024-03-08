@@ -15,14 +15,17 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the asynchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class WorkspaceGitRepoManagementAsyncClient {
-    @Generated private final WorkspaceGitRepoManagementsImpl serviceClient;
+    @Generated
+    private final WorkspaceGitRepoManagementsImpl serviceClient;
 
     /**
      * Initializes an instance of WorkspaceGitRepoManagementAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -32,7 +35,7 @@ public final class WorkspaceGitRepoManagementAsyncClient {
 
     /**
      * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -42,14 +45,14 @@ public final class WorkspaceGitRepoManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GitHubAccessTokenResponse>> getGitHubAccessTokenWithResponse(
-            GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
+    public Mono<Response<GitHubAccessTokenResponse>>
+        getGitHubAccessTokenWithResponse(GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
         return this.serviceClient.getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId);
     }
 
     /**
      * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @param clientRequestId Can provide a guid, which is helpful for debugging and to provide better customer support.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -59,14 +62,14 @@ public final class WorkspaceGitRepoManagementAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GitHubAccessTokenResponse> getGitHubAccessToken(
-            GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
+    public Mono<GitHubAccessTokenResponse> getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest,
+        String clientRequestId) {
         return this.serviceClient.getGitHubAccessTokenAsync(gitHubAccessTokenRequest, clientRequestId);
     }
 
     /**
      * Get the GitHub access token.
-     *
+     * 
      * @param gitHubAccessTokenRequest The gitHubAccessTokenRequest parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.

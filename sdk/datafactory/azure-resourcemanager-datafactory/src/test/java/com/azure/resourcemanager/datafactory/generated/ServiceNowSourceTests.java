@@ -11,16 +11,16 @@ public final class ServiceNowSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ServiceNowSource model = BinaryData.fromString(
-            "{\"type\":\"ServiceNowSource\",\"query\":\"dataybezmyjqpd\",\"queryTimeout\":\"datadsxvk\",\"additionalColumns\":\"datappxzgjysm\",\"sourceRetryCount\":\"dataktou\",\"sourceRetryWait\":\"databwddpjsokosugr\",\"maxConcurrentConnections\":\"datazfwdmae\",\"disableMetricsCollection\":\"datahq\",\"\":{\"mhfmognn\":\"datagzmonjqnienctwb\",\"byxygubvidpsk\":\"dataxrdllrqamfjyyrfp\",\"dctgsdxjx\":\"datazssxhvzgliu\",\"yvvlgsadpvmn\":\"dataddxoatlprsrkennn\"}}")
+            "{\"type\":\"ServiceNowSource\",\"query\":\"dataqmdxcwxfmrmwd\",\"queryTimeout\":\"datapsypmthfv\",\"additionalColumns\":\"datalafcxdldhhkde\",\"sourceRetryCount\":\"datawpzhfxvl\",\"sourceRetryWait\":\"dataurhsmg\",\"maxConcurrentConnections\":\"databtuujcuavctxyrm\",\"disableMetricsCollection\":\"datahrzmy\",\"\":{\"xvotidlwmewrgu\":\"datanwa\"}}")
             .toObject(ServiceNowSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServiceNowSource model
-            = new ServiceNowSource().withSourceRetryCount("dataktou").withSourceRetryWait("databwddpjsokosugr")
-                .withMaxConcurrentConnections("datazfwdmae").withDisableMetricsCollection("datahq")
-                .withQueryTimeout("datadsxvk").withAdditionalColumns("datappxzgjysm").withQuery("dataybezmyjqpd");
+        ServiceNowSource model = new ServiceNowSource().withSourceRetryCount("datawpzhfxvl")
+            .withSourceRetryWait("dataurhsmg").withMaxConcurrentConnections("databtuujcuavctxyrm")
+            .withDisableMetricsCollection("datahrzmy").withQueryTimeout("datapsypmthfv")
+            .withAdditionalColumns("datalafcxdldhhkde").withQuery("dataqmdxcwxfmrmwd");
         model = BinaryData.fromObject(model).toObject(ServiceNowSource.class);
     }
 }

@@ -9,24 +9,27 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The desired size of the generated images. Must be one of 256x256, 512x512, or 1024x1024.
+ * The desired size of generated images.
  */
 public final class ImageSize extends ExpandableStringEnum<ImageSize> {
 
     /**
-     * Image size of 256x256.
+     * Very small image size of 256x256 pixels.
+     * Only supported with dall-e-2 models.
      */
     @Generated
     public static final ImageSize SIZE256X256 = fromString("256x256");
 
     /**
-     * Image size of 512x512.
+     * A smaller image size of 512x512 pixels.
+     * Only supported with dall-e-2 models.
      */
     @Generated
     public static final ImageSize SIZE512X512 = fromString("512x512");
 
     /**
-     * Image size of 1024x1024.
+     * A standard, square image size of 1024x1024 pixels.
+     * Supported by both dall-e-2 and dall-e-3 models.
      */
     @Generated
     public static final ImageSize SIZE1024X1024 = fromString("1024x1024");
@@ -62,4 +65,18 @@ public final class ImageSize extends ExpandableStringEnum<ImageSize> {
     public static Collection<ImageSize> values() {
         return values(ImageSize.class);
     }
+
+    /**
+     * A wider image size of 1024x1792 pixels.
+     * Only supported with dall-e-3 models.
+     */
+    @Generated
+    public static final ImageSize SIZE1792X1024 = fromString("1792x1024");
+
+    /**
+     * A taller image size of 1792x1024 pixels.
+     * Only supported with dall-e-3 models.
+     */
+    @Generated
+    public static final ImageSize SIZE1024X1792 = fromString("1024x1792");
 }

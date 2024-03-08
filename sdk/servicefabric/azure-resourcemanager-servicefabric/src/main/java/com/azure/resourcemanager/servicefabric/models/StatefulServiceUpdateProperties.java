@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The properties of a stateful service resource for patch operations. */
+/**
+ * The properties of a stateful service resource for patch operations.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceKind")
 @JsonTypeName("Stateful")
 @Fluent
@@ -49,13 +51,15 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     @JsonProperty(value = "standByReplicaKeepDuration")
     private OffsetDateTime standByReplicaKeepDuration;
 
-    /** Creates an instance of StatefulServiceUpdateProperties class. */
+    /**
+     * Creates an instance of StatefulServiceUpdateProperties class.
+     */
     public StatefulServiceUpdateProperties() {
     }
 
     /**
      * Get the targetReplicaSetSize property: The target replica set size as a number.
-     *
+     * 
      * @return the targetReplicaSetSize value.
      */
     public Integer targetReplicaSetSize() {
@@ -64,7 +68,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
 
     /**
      * Set the targetReplicaSetSize property: The target replica set size as a number.
-     *
+     * 
      * @param targetReplicaSetSize the targetReplicaSetSize value to set.
      * @return the StatefulServiceUpdateProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
 
     /**
      * Get the minReplicaSetSize property: The minimum replica set size as a number.
-     *
+     * 
      * @return the minReplicaSetSize value.
      */
     public Integer minReplicaSetSize() {
@@ -84,7 +88,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
 
     /**
      * Set the minReplicaSetSize property: The minimum replica set size as a number.
-     *
+     * 
      * @param minReplicaSetSize the minReplicaSetSize value to set.
      * @return the StatefulServiceUpdateProperties object itself.
      */
@@ -94,9 +98,9 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     }
 
     /**
-     * Get the replicaRestartWaitDuration property: The duration between when a replica goes down and when a new replica
-     * is created, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * Get the replicaRestartWaitDuration property: The duration between when a replica goes down and when a new
+     * replica is created, represented in ISO 8601 format (hh:mm:ss.s).
+     * 
      * @return the replicaRestartWaitDuration value.
      */
     public OffsetDateTime replicaRestartWaitDuration() {
@@ -104,9 +108,9 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     }
 
     /**
-     * Set the replicaRestartWaitDuration property: The duration between when a replica goes down and when a new replica
-     * is created, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * Set the replicaRestartWaitDuration property: The duration between when a replica goes down and when a new
+     * replica is created, represented in ISO 8601 format (hh:mm:ss.s).
+     * 
      * @param replicaRestartWaitDuration the replicaRestartWaitDuration value to set.
      * @return the StatefulServiceUpdateProperties object itself.
      */
@@ -118,7 +122,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     /**
      * Get the quorumLossWaitDuration property: The maximum duration for which a partition is allowed to be in a state
      * of quorum loss, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * 
      * @return the quorumLossWaitDuration value.
      */
     public OffsetDateTime quorumLossWaitDuration() {
@@ -128,7 +132,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     /**
      * Set the quorumLossWaitDuration property: The maximum duration for which a partition is allowed to be in a state
      * of quorum loss, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * 
      * @param quorumLossWaitDuration the quorumLossWaitDuration value to set.
      * @return the StatefulServiceUpdateProperties object itself.
      */
@@ -140,7 +144,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     /**
      * Get the standByReplicaKeepDuration property: The definition on how long StandBy replicas should be maintained
      * before being removed, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * 
      * @return the standByReplicaKeepDuration value.
      */
     public OffsetDateTime standByReplicaKeepDuration() {
@@ -150,7 +154,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     /**
      * Set the standByReplicaKeepDuration property: The definition on how long StandBy replicas should be maintained
      * before being removed, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * 
      * @param standByReplicaKeepDuration the standByReplicaKeepDuration value to set.
      * @return the StatefulServiceUpdateProperties object itself.
      */
@@ -159,38 +163,48 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatefulServiceUpdateProperties withPlacementConstraints(String placementConstraints) {
         super.withPlacementConstraints(placementConstraints);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StatefulServiceUpdateProperties withCorrelationScheme(
-        List<ServiceCorrelationDescription> correlationScheme) {
+    public StatefulServiceUpdateProperties
+        withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
         super.withCorrelationScheme(correlationScheme);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StatefulServiceUpdateProperties withServiceLoadMetrics(
-        List<ServiceLoadMetricDescription> serviceLoadMetrics) {
+    public StatefulServiceUpdateProperties
+        withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
         super.withServiceLoadMetrics(serviceLoadMetrics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StatefulServiceUpdateProperties withServicePlacementPolicies(
-        List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
+    public StatefulServiceUpdateProperties
+        withServicePlacementPolicies(List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
         super.withServicePlacementPolicies(servicePlacementPolicies);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatefulServiceUpdateProperties withDefaultMoveCost(MoveCost defaultMoveCost) {
         super.withDefaultMoveCost(defaultMoveCost);
@@ -199,7 +213,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

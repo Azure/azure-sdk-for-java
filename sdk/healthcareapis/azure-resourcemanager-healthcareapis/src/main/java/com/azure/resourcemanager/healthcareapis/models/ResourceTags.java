@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** List of key value pairs that describe the resource. This will overwrite the existing tags. */
+/**
+ * List of key value pairs that describe the resource. This will overwrite the existing tags.
+ */
 @Fluent
 public class ResourceTags {
     /*
@@ -20,8 +22,14 @@ public class ResourceTags {
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of ResourceTags class.
+     */
+    public ResourceTags() {
+    }
+
+    /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -30,7 +38,7 @@ public class ResourceTags {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ResourceTags object itself.
      */
@@ -41,7 +49,7 @@ public class ResourceTags {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

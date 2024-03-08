@@ -9,10 +9,14 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Determines algorithm for text extraction from PDF files in Azure blob storage. */
+/**
+ * Determines algorithm for text extraction from PDF files in Azure blob storage.
+ */
 public final class BlobIndexerPdfTextRotationAlgorithm
-        extends ExpandableStringEnum<BlobIndexerPdfTextRotationAlgorithm> {
-    /** Leverages normal text extraction. This is the default. */
+    extends ExpandableStringEnum<BlobIndexerPdfTextRotationAlgorithm> {
+    /**
+     * Leverages normal text extraction. This is the default.
+     */
     public static final BlobIndexerPdfTextRotationAlgorithm NONE = fromString("none");
 
     /**
@@ -25,15 +29,16 @@ public final class BlobIndexerPdfTextRotationAlgorithm
 
     /**
      * Creates a new instance of BlobIndexerPdfTextRotationAlgorithm value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public BlobIndexerPdfTextRotationAlgorithm() {}
+    public BlobIndexerPdfTextRotationAlgorithm() {
+    }
 
     /**
      * Creates or finds a BlobIndexerPdfTextRotationAlgorithm from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BlobIndexerPdfTextRotationAlgorithm.
      */
@@ -43,7 +48,7 @@ public final class BlobIndexerPdfTextRotationAlgorithm
 
     /**
      * Gets known BlobIndexerPdfTextRotationAlgorithm values.
-     *
+     * 
      * @return known BlobIndexerPdfTextRotationAlgorithm values.
      */
     public static Collection<BlobIndexerPdfTextRotationAlgorithm> values() {

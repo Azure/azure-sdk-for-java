@@ -11,16 +11,16 @@ public final class AzureMySqlSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMySqlSink model = BinaryData.fromString(
-            "{\"type\":\"AzureMySqlSink\",\"preCopyScript\":\"datasxjvublouelfy\",\"writeBatchSize\":\"datab\",\"writeBatchTimeout\":\"datablpdwckmnpzub\",\"sinkRetryCount\":\"datad\",\"sinkRetryWait\":\"datag\",\"maxConcurrentConnections\":\"datargngcpbshqzzlc\",\"disableMetricsCollection\":\"datamnryxnklfsw\",\"\":{\"peuqyzfdsu\":\"dataigxsyxhygczab\",\"sspcutgkm\":\"datapcdia\",\"siwzzkaeqrnglgi\":\"datasqaqgllnhg\"}}")
+            "{\"type\":\"AzureMySqlSink\",\"preCopyScript\":\"datanwhqafzgzmonj\",\"writeBatchSize\":\"dataienctwbimhfmog\",\"writeBatchTimeout\":\"datawxrdllrqamfjyyrf\",\"sinkRetryCount\":\"databyxygubvidpsk\",\"sinkRetryWait\":\"datassxh\",\"maxConcurrentConnections\":\"datagliufdctgsd\",\"disableMetricsCollection\":\"dataxkddxoatlprs\",\"\":{\"tfplgx\":\"datannnyyvvlgsadpvmn\"}}")
             .toObject(AzureMySqlSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMySqlSink model = new AzureMySqlSink().withWriteBatchSize("datab")
-            .withWriteBatchTimeout("datablpdwckmnpzub").withSinkRetryCount("datad").withSinkRetryWait("datag")
-            .withMaxConcurrentConnections("datargngcpbshqzzlc").withDisableMetricsCollection("datamnryxnklfsw")
-            .withPreCopyScript("datasxjvublouelfy");
+        AzureMySqlSink model = new AzureMySqlSink().withWriteBatchSize("dataienctwbimhfmog")
+            .withWriteBatchTimeout("datawxrdllrqamfjyyrf").withSinkRetryCount("databyxygubvidpsk")
+            .withSinkRetryWait("datassxh").withMaxConcurrentConnections("datagliufdctgsd")
+            .withDisableMetricsCollection("dataxkddxoatlprs").withPreCopyScript("datanwhqafzgzmonj");
         model = BinaryData.fromObject(model).toObject(AzureMySqlSink.class);
     }
 }

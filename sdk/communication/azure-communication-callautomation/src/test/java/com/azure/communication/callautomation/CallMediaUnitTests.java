@@ -68,6 +68,16 @@ public class CallMediaUnitTests {
     }
 
     @Test
+    public void playFileToAllWithBargeInWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playFileSource)
+            .setLoop(false)
+            .setInterruptCallMediaOperation(true)
+            .setOperationContext("operationContext");
+        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
     public void playTextWithResponseTest() {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
@@ -85,6 +95,16 @@ public class CallMediaUnitTests {
         assertEquals(response.getStatusCode(), 202);
     }
 
+    @Test
+    public void playTextToAllWithBargeInWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playTextSource)
+            .setLoop(false)
+            .setInterruptCallMediaOperation(true)
+            .setOperationContext("operationContext");
+        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+    
     @Test
     public void cancelAllOperationsWithResponse() {
         Response<Void> response = callMedia.cancelAllMediaOperationsWithResponse(Context.NONE);
@@ -192,5 +212,28 @@ public class CallMediaUnitTests {
         Response<Void> response = callMedia.stopHoldMusicWithResponse(new CommunicationUserIdentifier("id"),
             "operationalContext", Context.NONE);
         assertEquals(response.getStatusCode(), 200);
+    }
+
+    @Test
+    public void startTranscriptionWithResponse() {
+        StartTranscriptionOptions options = new StartTranscriptionOptions();
+        options.setOperationContext("operationContext");
+        options.setLocale("en-US");
+        Response<Void> response = callMedia.startTranscriptionWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void stopTranscriptionWithResponse() {
+        StopTranscriptionOptions options = new StopTranscriptionOptions();
+        options.setOperationContext("operationContext");
+        Response<Void> response = callMedia.stopTranscriptionWithResponse(options, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
+    public void updateTranscriptionWithResponse() {
+        Response<Void> response = callMedia.updateTranscriptionWithResponse("en-US", Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
     }
 }

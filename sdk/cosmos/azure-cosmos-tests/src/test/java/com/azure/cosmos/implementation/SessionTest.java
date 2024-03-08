@@ -217,7 +217,7 @@ public class SessionTest extends TestSuiteBase {
 
         // Session token validation for feed ranges query
         spyClient.clearCapturedRequests();
-        List<FeedRange> feedRanges = spyClient.getFeedRanges(getCollectionLink(isNameBased)).block();
+        List<FeedRange> feedRanges = spyClient.getFeedRanges(getCollectionLink(isNameBased), true).block();
         queryRequestOptions = new CosmosQueryRequestOptions();
         queryRequestOptions.setFeedRange(feedRanges.get(0));
         dummyState = TestUtils.createDummyQueryFeedOperationState(

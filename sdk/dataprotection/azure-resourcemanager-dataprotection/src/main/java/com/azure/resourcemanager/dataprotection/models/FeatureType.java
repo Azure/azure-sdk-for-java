@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** backup support feature type. */
+/**
+ * backup support feature type.
+ */
 public final class FeatureType extends ExpandableStringEnum<FeatureType> {
-    /** Static value Invalid for FeatureType. */
+    /**
+     * Static value Invalid for FeatureType.
+     */
     public static final FeatureType INVALID = fromString("Invalid");
 
-    /** Static value DataSourceType for FeatureType. */
+    /**
+     * Static value DataSourceType for FeatureType.
+     */
     public static final FeatureType DATA_SOURCE_TYPE = fromString("DataSourceType");
 
     /**
      * Creates a new instance of FeatureType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class FeatureType extends ExpandableStringEnum<FeatureType> {
 
     /**
      * Creates or finds a FeatureType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FeatureType.
      */
@@ -38,7 +44,7 @@ public final class FeatureType extends ExpandableStringEnum<FeatureType> {
 
     /**
      * Gets known FeatureType values.
-     *
+     * 
      * @return known FeatureType values.
      */
     public static Collection<FeatureType> values() {

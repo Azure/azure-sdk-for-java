@@ -26,7 +26,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Volume resource. */
+/**
+ * Volume resource.
+ */
 @Fluent
 public final class VolumeInner extends Resource {
     /*
@@ -53,13 +55,15 @@ public final class VolumeInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of VolumeInner class. */
+    /**
+     * Creates an instance of VolumeInner class.
+     */
     public VolumeInner() {
     }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -68,7 +72,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the zones property: Availability Zone.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -77,7 +81,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the zones property: Availability Zone.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the VolumeInner object itself.
      */
@@ -88,7 +92,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the innerProperties property: Volume properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VolumeProperties innerProperties() {
@@ -97,21 +101,25 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VolumeInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VolumeInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -120,9 +128,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the fileSystemId property: FileSystem ID
-     *
-     * <p>Unique FileSystem Identifier.
-     *
+     * 
+     * Unique FileSystem Identifier.
+     * 
      * @return the fileSystemId value.
      */
     public String fileSystemId() {
@@ -131,9 +139,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the creationToken property: Creation Token or File Path
-     *
-     * <p>A unique file path for the volume. Used when creating mount targets.
-     *
+     * 
+     * A unique file path for the volume. Used when creating mount targets.
+     * 
      * @return the creationToken value.
      */
     public String creationToken() {
@@ -142,9 +150,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the creationToken property: Creation Token or File Path
-     *
-     * <p>A unique file path for the volume. Used when creating mount targets.
-     *
+     * 
+     * A unique file path for the volume. Used when creating mount targets.
+     * 
      * @param creationToken the creationToken value to set.
      * @return the VolumeInner object itself.
      */
@@ -158,9 +166,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * 
+     * The service level of the file system.
+     * 
      * @return the serviceLevel value.
      */
     public ServiceLevel serviceLevel() {
@@ -169,9 +177,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * 
+     * The service level of the file system.
+     * 
      * @param serviceLevel the serviceLevel value to set.
      * @return the VolumeInner object itself.
      */
@@ -185,11 +193,11 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the usageThreshold property: usageThreshold
-     *
-     * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
+     * 
+     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
      * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
      * Specified in bytes.
-     *
+     * 
      * @return the usageThreshold value.
      */
     public long usageThreshold() {
@@ -198,11 +206,11 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the usageThreshold property: usageThreshold
-     *
-     * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
+     * 
+     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
      * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
      * Specified in bytes.
-     *
+     * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumeInner object itself.
      */
@@ -216,9 +224,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the exportPolicy property: exportPolicy
-     *
-     * <p>Set of export policy rules.
-     *
+     * 
+     * Set of export policy rules.
+     * 
      * @return the exportPolicy value.
      */
     public VolumePropertiesExportPolicy exportPolicy() {
@@ -227,9 +235,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the exportPolicy property: exportPolicy
-     *
-     * <p>Set of export policy rules.
-     *
+     * 
+     * Set of export policy rules.
+     * 
      * @param exportPolicy the exportPolicy value to set.
      * @return the VolumeInner object itself.
      */
@@ -243,9 +251,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the protocolTypes property: protocolTypes
-     *
-     * <p>Set of protocol types, default NFSv3, CIFS for SMB protocol.
-     *
+     * 
+     * Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * 
      * @return the protocolTypes value.
      */
     public List<String> protocolTypes() {
@@ -254,9 +262,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the protocolTypes property: protocolTypes
-     *
-     * <p>Set of protocol types, default NFSv3, CIFS for SMB protocol.
-     *
+     * 
+     * Set of protocol types, default NFSv3, CIFS for SMB protocol.
+     * 
      * @param protocolTypes the protocolTypes value to set.
      * @return the VolumeInner object itself.
      */
@@ -270,7 +278,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -279,9 +287,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the snapshotId property: Snapshot ID
-     *
-     * <p>UUID v4 or resource identifier used to identify the Snapshot.
-     *
+     * 
+     * UUID v4 or resource identifier used to identify the Snapshot.
+     * 
      * @return the snapshotId value.
      */
     public String snapshotId() {
@@ -290,9 +298,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the snapshotId property: Snapshot ID
-     *
-     * <p>UUID v4 or resource identifier used to identify the Snapshot.
-     *
+     * 
+     * UUID v4 or resource identifier used to identify the Snapshot.
+     * 
      * @param snapshotId the snapshotId value to set.
      * @return the VolumeInner object itself.
      */
@@ -307,7 +315,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the deleteBaseSnapshot property: If enabled (true) the snapshot the volume was created from will be
      * automatically deleted after the volume create operation has finished. Defaults to false.
-     *
+     * 
      * @return the deleteBaseSnapshot value.
      */
     public Boolean deleteBaseSnapshot() {
@@ -317,7 +325,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the deleteBaseSnapshot property: If enabled (true) the snapshot the volume was created from will be
      * automatically deleted after the volume create operation has finished. Defaults to false.
-     *
+     * 
      * @param deleteBaseSnapshot the deleteBaseSnapshot value to set.
      * @return the VolumeInner object itself.
      */
@@ -331,9 +339,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the backupId property: Backup ID
-     *
-     * <p>UUID v4 or resource identifier used to identify the Backup.
-     *
+     * 
+     * UUID v4 or resource identifier used to identify the Backup.
+     * 
      * @return the backupId value.
      */
     public String backupId() {
@@ -342,9 +350,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the backupId property: Backup ID
-     *
-     * <p>UUID v4 or resource identifier used to identify the Backup.
-     *
+     * 
+     * UUID v4 or resource identifier used to identify the Backup.
+     * 
      * @param backupId the backupId value to set.
      * @return the VolumeInner object itself.
      */
@@ -358,9 +366,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the baremetalTenantId property: Baremetal Tenant ID
-     *
-     * <p>Unique Baremetal Tenant Identifier.
-     *
+     * 
+     * Unique Baremetal Tenant Identifier.
+     * 
      * @return the baremetalTenantId value.
      */
     public String baremetalTenantId() {
@@ -370,7 +378,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the subnetId property: The Azure Resource URI for a delegated subnet. Must have the delegation
      * Microsoft.NetApp/volumes.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -380,7 +388,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the subnetId property: The Azure Resource URI for a delegated subnet. Must have the delegation
      * Microsoft.NetApp/volumes.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the VolumeInner object itself.
      */
@@ -394,9 +402,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the networkFeatures property: Network features
-     *
-     * <p>Network features available to the volume, or current state of update.
-     *
+     * 
+     * Network features available to the volume, or current state of update.
+     * 
      * @return the networkFeatures value.
      */
     public NetworkFeatures networkFeatures() {
@@ -405,9 +413,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the networkFeatures property: Network features
-     *
-     * <p>Network features available to the volume, or current state of update.
-     *
+     * 
+     * Network features available to the volume, or current state of update.
+     * 
      * @param networkFeatures the networkFeatures value to set.
      * @return the VolumeInner object itself.
      */
@@ -421,9 +429,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the networkSiblingSetId property: Network Sibling Set ID
-     *
-     * <p>Network Sibling Set ID for the the group of volumes sharing networking resources.
-     *
+     * 
+     * Network Sibling Set ID for the the group of volumes sharing networking resources.
+     * 
      * @return the networkSiblingSetId value.
      */
     public String networkSiblingSetId() {
@@ -432,9 +440,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the storageToNetworkProximity property: Storage to Network Proximity
-     *
-     * <p>Provides storage to network proximity information for the volume.
-     *
+     * 
+     * Provides storage to network proximity information for the volume.
+     * 
      * @return the storageToNetworkProximity value.
      */
     public VolumeStorageToNetworkProximity storageToNetworkProximity() {
@@ -443,9 +451,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the mountTargets property: mountTargets
-     *
-     * <p>List of mount targets.
-     *
+     * 
+     * List of mount targets.
+     * 
      * @return the mountTargets value.
      */
     public List<MountTargetProperties> mountTargets() {
@@ -454,8 +462,8 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection.
-     *
+     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * 
      * @return the volumeType value.
      */
     public String volumeType() {
@@ -464,8 +472,8 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection.
-     *
+     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * 
      * @param volumeType the volumeType value to set.
      * @return the VolumeInner object itself.
      */
@@ -479,9 +487,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the dataProtection property: DataProtection
-     *
-     * <p>DataProtection type volumes include an object containing details of the replication.
-     *
+     * 
+     * DataProtection type volumes include an object containing details of the replication.
+     * 
      * @return the dataProtection value.
      */
     public VolumePropertiesDataProtection dataProtection() {
@@ -490,9 +498,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the dataProtection property: DataProtection
-     *
-     * <p>DataProtection type volumes include an object containing details of the replication.
-     *
+     * 
+     * DataProtection type volumes include an object containing details of the replication.
+     * 
      * @param dataProtection the dataProtection value to set.
      * @return the VolumeInner object itself.
      */
@@ -506,7 +514,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the isRestoring property: Restoring.
-     *
+     * 
      * @return the isRestoring value.
      */
     public Boolean isRestoring() {
@@ -515,7 +523,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the isRestoring property: Restoring.
-     *
+     * 
      * @param isRestoring the isRestoring value to set.
      * @return the VolumeInner object itself.
      */
@@ -530,7 +538,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
      * directory which provides access to each of the volume's snapshots (defaults to true).
-     *
+     * 
      * @return the snapshotDirectoryVisible value.
      */
     public Boolean snapshotDirectoryVisible() {
@@ -540,7 +548,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
      * directory which provides access to each of the volume's snapshots (defaults to true).
-     *
+     * 
      * @param snapshotDirectoryVisible the snapshotDirectoryVisible value to set.
      * @return the VolumeInner object itself.
      */
@@ -555,7 +563,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the kerberosEnabled property: Describe if a volume is KerberosEnabled. To be use with swagger version
      * 2020-05-01 or later.
-     *
+     * 
      * @return the kerberosEnabled value.
      */
     public Boolean kerberosEnabled() {
@@ -565,7 +573,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the kerberosEnabled property: Describe if a volume is KerberosEnabled. To be use with swagger version
      * 2020-05-01 or later.
-     *
+     * 
      * @param kerberosEnabled the kerberosEnabled value to set.
      * @return the VolumeInner object itself.
      */
@@ -578,9 +586,9 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol or
-     * CIFS protocol.
-     *
+     * Get the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol
+     * or CIFS protocol.
+     * 
      * @return the securityStyle value.
      */
     public SecurityStyle securityStyle() {
@@ -588,9 +596,9 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol or
-     * CIFS protocol.
-     *
+     * Set the securityStyle property: The security style of volume, default unix, defaults to ntfs for dual protocol
+     * or CIFS protocol.
+     * 
      * @param securityStyle the securityStyle value to set.
      * @return the VolumeInner object itself.
      */
@@ -605,7 +613,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the smbEncryption property: Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol
      * volume. To be used with swagger version 2020-08-01 or later.
-     *
+     * 
      * @return the smbEncryption value.
      */
     public Boolean smbEncryption() {
@@ -615,7 +623,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the smbEncryption property: Enables encryption for in-flight smb3 data. Only applicable for SMB/DualProtocol
      * volume. To be used with swagger version 2020-08-01 or later.
-     *
+     * 
      * @param smbEncryption the smbEncryption value to set.
      * @return the VolumeInner object itself.
      */
@@ -629,9 +637,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
-     *
-     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * 
+     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * 
      * @return the smbAccessBasedEnumeration value.
      */
     public SmbAccessBasedEnumeration smbAccessBasedEnumeration() {
@@ -640,9 +648,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
-     *
-     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * 
+     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * 
      * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
      * @return the VolumeInner object itself.
      */
@@ -656,9 +664,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the smbNonBrowsable property: smbNonBrowsable
-     *
-     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * 
+     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * 
      * @return the smbNonBrowsable value.
      */
     public SmbNonBrowsable smbNonBrowsable() {
@@ -667,9 +675,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the smbNonBrowsable property: smbNonBrowsable
-     *
-     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * 
+     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * 
      * @param smbNonBrowsable the smbNonBrowsable value to set.
      * @return the VolumeInner object itself.
      */
@@ -684,7 +692,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the smbContinuouslyAvailable property: Enables continuously available share property for smb volume. Only
      * applicable for SMB volume.
-     *
+     * 
      * @return the smbContinuouslyAvailable value.
      */
     public Boolean smbContinuouslyAvailable() {
@@ -694,7 +702,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the smbContinuouslyAvailable property: Enables continuously available share property for smb volume. Only
      * applicable for SMB volume.
-     *
+     * 
      * @param smbContinuouslyAvailable the smbContinuouslyAvailable value to set.
      * @return the VolumeInner object itself.
      */
@@ -709,7 +717,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
-     *
+     * 
      * @return the throughputMibps value.
      */
     public Float throughputMibps() {
@@ -719,7 +727,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
-     *
+     * 
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumeInner object itself.
      */
@@ -734,7 +742,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the actualThroughputMibps property: Actual throughput in MiB/s for auto qosType volumes calculated based on
      * size and serviceLevel.
-     *
+     * 
      * @return the actualThroughputMibps value.
      */
     public Float actualThroughputMibps() {
@@ -745,7 +753,7 @@ public final class VolumeInner extends Resource {
      * Get the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if NetApp account
      * has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp,
      * Microsoft.KeyVault'.
-     *
+     * 
      * @return the encryptionKeySource value.
      */
     public EncryptionKeySource encryptionKeySource() {
@@ -756,7 +764,7 @@ public final class VolumeInner extends Resource {
      * Set the encryptionKeySource property: Source of key used to encrypt data in volume. Applicable if NetApp account
      * has encryption.keySource = 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp,
      * Microsoft.KeyVault'.
-     *
+     * 
      * @param encryptionKeySource the encryptionKeySource value to set.
      * @return the VolumeInner object itself.
      */
@@ -771,7 +779,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the keyVaultPrivateEndpointResourceId property: The resource ID of private endpoint for KeyVault. It must
      * reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'.
-     *
+     * 
      * @return the keyVaultPrivateEndpointResourceId value.
      */
     public String keyVaultPrivateEndpointResourceId() {
@@ -781,7 +789,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the keyVaultPrivateEndpointResourceId property: The resource ID of private endpoint for KeyVault. It must
      * reside in the same VNET as the volume. Only applicable if encryptionKeySource = 'Microsoft.KeyVault'.
-     *
+     * 
      * @param keyVaultPrivateEndpointResourceId the keyVaultPrivateEndpointResourceId value to set.
      * @return the VolumeInner object itself.
      */
@@ -795,7 +803,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the ldapEnabled property: Specifies whether LDAP is enabled or not for a given NFS volume.
-     *
+     * 
      * @return the ldapEnabled value.
      */
     public Boolean ldapEnabled() {
@@ -804,7 +812,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the ldapEnabled property: Specifies whether LDAP is enabled or not for a given NFS volume.
-     *
+     * 
      * @param ldapEnabled the ldapEnabled value to set.
      * @return the VolumeInner object itself.
      */
@@ -818,7 +826,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
-     *
+     * 
      * @return the coolAccess value.
      */
     public Boolean coolAccess() {
@@ -827,7 +835,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
-     *
+     * 
      * @param coolAccess the coolAccess value to set.
      * @return the VolumeInner object itself.
      */
@@ -842,7 +850,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
      * will be tiered.
-     *
+     * 
      * @return the coolnessPeriod value.
      */
     public Integer coolnessPeriod() {
@@ -852,7 +860,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
      * will be tiered.
-     *
+     * 
      * @param coolnessPeriod the coolnessPeriod value to set.
      * @return the VolumeInner object itself.
      */
@@ -865,12 +873,14 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
-     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
-     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
-     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
-     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
-     *
+     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
+     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
+     * values for this field are:
+     * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
+     * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
+     * reads.
+     * Never - No client-driven data is pulled from cool tier to standard storage.
+     * 
      * @return the coolAccessRetrievalPolicy value.
      */
     public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
@@ -878,12 +888,14 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
-     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
-     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
-     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
-     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
-     *
+     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
+     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
+     * values for this field are:
+     * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
+     * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
+     * reads.
+     * Never - No client-driven data is pulled from cool tier to standard storage.
+     * 
      * @param coolAccessRetrievalPolicy the coolAccessRetrievalPolicy value to set.
      * @return the VolumeInner object itself.
      */
@@ -901,7 +913,7 @@ public final class VolumeInner extends Resource {
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
      * read/execute to group and other users.
-     *
+     * 
      * @return the unixPermissions value.
      */
     public String unixPermissions() {
@@ -914,7 +926,7 @@ public final class VolumeInner extends Resource {
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
      * read/execute to group and other users.
-     *
+     * 
      * @param unixPermissions the unixPermissions value to set.
      * @return the VolumeInner object itself.
      */
@@ -930,7 +942,7 @@ public final class VolumeInner extends Resource {
      * Get the cloneProgress property: When a volume is being restored from another volume's snapshot, will show the
      * percentage completion of this cloning process. When this value is empty/null there is no cloning process
      * currently happening on this volume. This value will update every 5 minutes during cloning.
-     *
+     * 
      * @return the cloneProgress value.
      */
     public Integer cloneProgress() {
@@ -940,7 +952,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the fileAccessLogs property: Flag indicating whether file access logs are enabled for the volume, based on
      * active diagnostic settings present on the volume.
-     *
+     * 
      * @return the fileAccessLogs value.
      */
     public FileAccessLogs fileAccessLogs() {
@@ -949,9 +961,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the avsDataStore property: avsDataStore
-     *
-     * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
-     *
+     * 
+     * Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
+     * 
      * @return the avsDataStore value.
      */
     public AvsDataStore avsDataStore() {
@@ -960,9 +972,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the avsDataStore property: avsDataStore
-     *
-     * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
-     *
+     * 
+     * Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
+     * 
      * @param avsDataStore the avsDataStore value to set.
      * @return the VolumeInner object itself.
      */
@@ -976,9 +988,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the dataStoreResourceId property: dataStoreResourceId
-     *
-     * <p>Data store resource unique identifier.
-     *
+     * 
+     * Data store resource unique identifier.
+     * 
      * @return the dataStoreResourceId value.
      */
     public List<String> dataStoreResourceId() {
@@ -987,7 +999,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the isDefaultQuotaEnabled property: Specifies if default quota is enabled for the volume.
-     *
+     * 
      * @return the isDefaultQuotaEnabled value.
      */
     public Boolean isDefaultQuotaEnabled() {
@@ -996,7 +1008,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the isDefaultQuotaEnabled property: Specifies if default quota is enabled for the volume.
-     *
+     * 
      * @param isDefaultQuotaEnabled the isDefaultQuotaEnabled value to set.
      * @return the VolumeInner object itself.
      */
@@ -1011,7 +1023,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
      * the minimum value of 4 KiBs applies .
-     *
+     * 
      * @return the defaultUserQuotaInKiBs value.
      */
     public Long defaultUserQuotaInKiBs() {
@@ -1021,7 +1033,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
      * the minimum value of 4 KiBs applies .
-     *
+     * 
      * @param defaultUserQuotaInKiBs the defaultUserQuotaInKiBs value to set.
      * @return the VolumeInner object itself.
      */
@@ -1036,7 +1048,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the defaultGroupQuotaInKiBs property: Default group quota for volume in KiBs. If isDefaultQuotaEnabled is
      * set, the minimum value of 4 KiBs applies.
-     *
+     * 
      * @return the defaultGroupQuotaInKiBs value.
      */
     public Long defaultGroupQuotaInKiBs() {
@@ -1046,7 +1058,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the defaultGroupQuotaInKiBs property: Default group quota for volume in KiBs. If isDefaultQuotaEnabled is
      * set, the minimum value of 4 KiBs applies.
-     *
+     * 
      * @param defaultGroupQuotaInKiBs the defaultGroupQuotaInKiBs value to set.
      * @return the VolumeInner object itself.
      */
@@ -1061,7 +1073,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the maximumNumberOfFiles property: Maximum number of files allowed. Needs a service request in order to be
      * changed. Only allowed to be changed if volume quota is more than 4TiB.
-     *
+     * 
      * @return the maximumNumberOfFiles value.
      */
     public Long maximumNumberOfFiles() {
@@ -1070,7 +1082,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the volumeGroupName property: Volume Group Name.
-     *
+     * 
      * @return the volumeGroupName value.
      */
     public String volumeGroupName() {
@@ -1078,8 +1090,9 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Get the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
-     *
+     * Get the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume
+     * group.
+     * 
      * @return the capacityPoolResourceId value.
      */
     public String capacityPoolResourceId() {
@@ -1087,8 +1100,9 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume group.
-     *
+     * Set the capacityPoolResourceId property: Pool Resource Id used in case of creating a volume through volume
+     * group.
+     * 
      * @param capacityPoolResourceId the capacityPoolResourceId value to set.
      * @return the VolumeInner object itself.
      */
@@ -1102,7 +1116,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the proximityPlacementGroup property: Proximity placement group associated with the volume.
-     *
+     * 
      * @return the proximityPlacementGroup value.
      */
     public String proximityPlacementGroup() {
@@ -1111,7 +1125,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the proximityPlacementGroup property: Proximity placement group associated with the volume.
-     *
+     * 
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the VolumeInner object itself.
      */
@@ -1125,7 +1139,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the t2Network property: T2 network information.
-     *
+     * 
      * @return the t2Network value.
      */
     public String t2Network() {
@@ -1135,7 +1149,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the volumeSpecName property: Volume spec name is the application specific designation or identifier for the
      * particular volume in a volume group for e.g. data, log.
-     *
+     * 
      * @return the volumeSpecName value.
      */
     public String volumeSpecName() {
@@ -1145,7 +1159,7 @@ public final class VolumeInner extends Resource {
     /**
      * Set the volumeSpecName property: Volume spec name is the application specific designation or identifier for the
      * particular volume in a volume group for e.g. data, log.
-     *
+     * 
      * @param volumeSpecName the volumeSpecName value to set.
      * @return the VolumeInner object itself.
      */
@@ -1160,7 +1174,7 @@ public final class VolumeInner extends Resource {
     /**
      * Get the encrypted property: Specifies if the volume is encrypted or not. Only available on volumes created or
      * updated after 2022-01-01.
-     *
+     * 
      * @return the encrypted value.
      */
     public Boolean encrypted() {
@@ -1169,9 +1183,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the placementRules property: Volume placement rules
-     *
-     * <p>Application specific placement rules for the particular volume.
-     *
+     * 
+     * Application specific placement rules for the particular volume.
+     * 
      * @return the placementRules value.
      */
     public List<PlacementKeyValuePairs> placementRules() {
@@ -1180,9 +1194,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the placementRules property: Volume placement rules
-     *
-     * <p>Application specific placement rules for the particular volume.
-     *
+     * 
+     * Application specific placement rules for the particular volume.
+     * 
      * @param placementRules the placementRules value to set.
      * @return the VolumeInner object itself.
      */
@@ -1196,7 +1210,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
-     *
+     * 
      * @return the enableSubvolumes value.
      */
     public EnableSubvolumes enableSubvolumes() {
@@ -1205,7 +1219,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the enableSubvolumes property: Flag indicating whether subvolume operations are enabled on the volume.
-     *
+     * 
      * @param enableSubvolumes the enableSubvolumes value to set.
      * @return the VolumeInner object itself.
      */
@@ -1219,10 +1233,10 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the provisionedAvailabilityZone property: Provisioned Availability Zone
-     *
-     * <p>The availability zone where the volume is provisioned. This refers to the logical availability zone where the
+     * 
+     * The availability zone where the volume is provisioned. This refers to the logical availability zone where the
      * volume resides.
-     *
+     * 
      * @return the provisionedAvailabilityZone value.
      */
     public String provisionedAvailabilityZone() {
@@ -1231,9 +1245,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the isLargeVolume property: Is Large Volume
-     *
-     * <p>Specifies whether volume is a Large Volume or Regular Volume.
-     *
+     * 
+     * Specifies whether volume is a Large Volume or Regular Volume.
+     * 
      * @return the isLargeVolume value.
      */
     public Boolean isLargeVolume() {
@@ -1242,9 +1256,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the isLargeVolume property: Is Large Volume
-     *
-     * <p>Specifies whether volume is a Large Volume or Regular Volume.
-     *
+     * 
+     * Specifies whether volume is a Large Volume or Regular Volume.
+     * 
      * @param isLargeVolume the isLargeVolume value to set.
      * @return the VolumeInner object itself.
      */
@@ -1258,9 +1272,9 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the originatingResourceId property: Originating Resource Id
-     *
-     * <p>Id of the snapshot or backup that the volume is restored from.
-     *
+     * 
+     * Id of the snapshot or backup that the volume is restored from.
+     * 
      * @return the originatingResourceId value.
      */
     public String originatingResourceId() {
@@ -1268,15 +1282,25 @@ public final class VolumeInner extends Resource {
     }
 
     /**
+     * Get the inheritedSizeInBytes property: inheritedSizeInBytes
+     * 
+     * Space shared by short term clone volume with parent volume in bytes.
+     * 
+     * @return the inheritedSizeInBytes value.
+     */
+    public Long inheritedSizeInBytes() {
+        return this.innerProperties() == null ? null : this.innerProperties().inheritedSizeInBytes();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model VolumeInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model VolumeInner"));
         } else {
             innerProperties().validate();
         }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the FirewallPolicyFilterRuleCollectionAction. */
+/**
+ * Properties of the FirewallPolicyFilterRuleCollectionAction.
+ */
 @Fluent
 public final class FirewallPolicyFilterRuleCollectionAction {
     /*
@@ -16,13 +18,15 @@ public final class FirewallPolicyFilterRuleCollectionAction {
     @JsonProperty(value = "type")
     private FirewallPolicyFilterRuleCollectionActionType type;
 
-    /** Creates an instance of FirewallPolicyFilterRuleCollectionAction class. */
+    /**
+     * Creates an instance of FirewallPolicyFilterRuleCollectionAction class.
+     */
     public FirewallPolicyFilterRuleCollectionAction() {
     }
 
     /**
      * Get the type property: The type of action.
-     *
+     * 
      * @return the type value.
      */
     public FirewallPolicyFilterRuleCollectionActionType type() {
@@ -31,7 +35,7 @@ public final class FirewallPolicyFilterRuleCollectionAction {
 
     /**
      * Set the type property: The type of action.
-     *
+     * 
      * @param type the type value to set.
      * @return the FirewallPolicyFilterRuleCollectionAction object itself.
      */
@@ -42,7 +46,7 @@ public final class FirewallPolicyFilterRuleCollectionAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

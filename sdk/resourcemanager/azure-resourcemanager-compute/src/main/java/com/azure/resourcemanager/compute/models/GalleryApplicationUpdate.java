@@ -11,7 +11,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** Specifies information about the gallery Application Definition that you want to update. */
+/**
+ * Specifies information about the gallery Application Definition that you want to update.
+ */
 @Fluent
 public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
     /*
@@ -20,20 +22,24 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
     @JsonProperty(value = "properties")
     private GalleryApplicationProperties innerProperties;
 
-    /** Creates an instance of GalleryApplicationUpdate class. */
+    /**
+     * Creates an instance of GalleryApplicationUpdate class.
+     */
     public GalleryApplicationUpdate() {
     }
 
     /**
      * Get the innerProperties property: Describes the properties of a gallery Application Definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GalleryApplicationProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -43,7 +49,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
     /**
      * Get the description property: The description of this gallery Application Definition resource. This property is
      * updatable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -53,7 +59,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
     /**
      * Set the description property: The description of this gallery Application Definition resource. This property is
      * updatable.
-     *
+     * 
      * @param description the description value to set.
      * @return the GalleryApplicationUpdate object itself.
      */
@@ -67,7 +73,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
 
     /**
      * Get the eula property: The Eula agreement for the gallery Application Definition.
-     *
+     * 
      * @return the eula value.
      */
     public String eula() {
@@ -76,7 +82,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
 
     /**
      * Set the eula property: The Eula agreement for the gallery Application Definition.
-     *
+     * 
      * @param eula the eula value to set.
      * @return the GalleryApplicationUpdate object itself.
      */
@@ -90,7 +96,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
 
     /**
      * Get the privacyStatementUri property: The privacy statement uri.
-     *
+     * 
      * @return the privacyStatementUri value.
      */
     public String privacyStatementUri() {
@@ -99,7 +105,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
 
     /**
      * Set the privacyStatementUri property: The privacy statement uri.
-     *
+     * 
      * @param privacyStatementUri the privacyStatementUri value to set.
      * @return the GalleryApplicationUpdate object itself.
      */
@@ -113,7 +119,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
 
     /**
      * Get the releaseNoteUri property: The release note uri.
-     *
+     * 
      * @return the releaseNoteUri value.
      */
     public String releaseNoteUri() {
@@ -122,7 +128,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
 
     /**
      * Set the releaseNoteUri property: The release note uri.
-     *
+     * 
      * @param releaseNoteUri the releaseNoteUri value to set.
      * @return the GalleryApplicationUpdate object itself.
      */
@@ -137,7 +143,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
     /**
      * Get the endOfLifeDate property: The end of life date of the gallery Application Definition. This property can be
      * used for decommissioning purposes. This property is updatable.
-     *
+     * 
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
@@ -147,7 +153,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
     /**
      * Set the endOfLifeDate property: The end of life date of the gallery Application Definition. This property can be
      * used for decommissioning purposes. This property is updatable.
-     *
+     * 
      * @param endOfLifeDate the endOfLifeDate value to set.
      * @return the GalleryApplicationUpdate object itself.
      */
@@ -161,9 +167,8 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
 
     /**
      * Get the supportedOSType property: This property allows you to specify the supported type of the OS that
-     * application is built for. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**
-     * &lt;br&gt;&lt;br&gt; **Linux**.
-     *
+     * application is built for. Possible values are: **Windows,** **Linux.**.
+     * 
      * @return the supportedOSType value.
      */
     public OperatingSystemTypes supportedOSType() {
@@ -172,9 +177,8 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
 
     /**
      * Set the supportedOSType property: This property allows you to specify the supported type of the OS that
-     * application is built for. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**
-     * &lt;br&gt;&lt;br&gt; **Linux**.
-     *
+     * application is built for. Possible values are: **Windows,** **Linux.**.
+     * 
      * @param supportedOSType the supportedOSType value to set.
      * @return the GalleryApplicationUpdate object itself.
      */
@@ -189,7 +193,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
     /**
      * Get the customActions property: A list of custom actions that can be performed with all of the Gallery
      * Application Versions within this Gallery Application.
-     *
+     * 
      * @return the customActions value.
      */
     public List<GalleryApplicationCustomAction> customActions() {
@@ -199,7 +203,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
     /**
      * Set the customActions property: A list of custom actions that can be performed with all of the Gallery
      * Application Versions within this Gallery Application.
-     *
+     * 
      * @param customActions the customActions value to set.
      * @return the GalleryApplicationUpdate object itself.
      */
@@ -213,7 +217,7 @@ public final class GalleryApplicationUpdate extends UpdateResourceDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -10,20 +10,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * ImmediateCopyOption
- *
- * <p>Immediate copy Option.
+ * 
+ * Immediate copy Option.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("ImmediateCopyOption")
 @Immutable
 public final class ImmediateCopyOption extends CopyOption {
-    /** Creates an instance of ImmediateCopyOption class. */
+    /**
+     * Creates an instance of ImmediateCopyOption class.
+     */
     public ImmediateCopyOption() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

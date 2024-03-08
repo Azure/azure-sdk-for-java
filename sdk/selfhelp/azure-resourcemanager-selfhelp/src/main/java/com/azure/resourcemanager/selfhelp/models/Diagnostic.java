@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties returned with in an insight. */
+/**
+ * Properties returned with in an insight.
+ */
 @Fluent
 public final class Diagnostic {
     /*
@@ -35,13 +37,15 @@ public final class Diagnostic {
     @JsonProperty(value = "error")
     private Error error;
 
-    /** Creates an instance of Diagnostic class. */
+    /**
+     * Creates an instance of Diagnostic class.
+     */
     public Diagnostic() {
     }
 
     /**
      * Get the solutionId property: Solution Id.
-     *
+     * 
      * @return the solutionId value.
      */
     public String solutionId() {
@@ -50,7 +54,7 @@ public final class Diagnostic {
 
     /**
      * Set the solutionId property: Solution Id.
-     *
+     * 
      * @param solutionId the solutionId value to set.
      * @return the Diagnostic object itself.
      */
@@ -61,7 +65,7 @@ public final class Diagnostic {
 
     /**
      * Get the status property: Denotes the status of the diagnostic resource.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -70,7 +74,7 @@ public final class Diagnostic {
 
     /**
      * Set the status property: Denotes the status of the diagnostic resource.
-     *
+     * 
      * @param status the status value to set.
      * @return the Diagnostic object itself.
      */
@@ -81,7 +85,7 @@ public final class Diagnostic {
 
     /**
      * Get the insights property: The problems (if any) detected by this insight.
-     *
+     * 
      * @return the insights value.
      */
     public List<Insight> insights() {
@@ -90,7 +94,7 @@ public final class Diagnostic {
 
     /**
      * Set the insights property: The problems (if any) detected by this insight.
-     *
+     * 
      * @param insights the insights value to set.
      * @return the Diagnostic object itself.
      */
@@ -101,7 +105,7 @@ public final class Diagnostic {
 
     /**
      * Get the error property: Error definition.
-     *
+     * 
      * @return the error value.
      */
     public Error error() {
@@ -110,7 +114,7 @@ public final class Diagnostic {
 
     /**
      * Set the error property: Error definition.
-     *
+     * 
      * @param error the error value to set.
      * @return the Diagnostic object itself.
      */
@@ -121,7 +125,7 @@ public final class Diagnostic {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

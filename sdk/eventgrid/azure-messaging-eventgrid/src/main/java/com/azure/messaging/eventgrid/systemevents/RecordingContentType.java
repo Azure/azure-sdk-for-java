@@ -5,39 +5,44 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The recording content type- AudioVideo, or Audio. */
+/**
+ * The recording content type- AudioVideo, or Audio.
+ */
 public final class RecordingContentType extends ExpandableStringEnum<RecordingContentType> {
-    /** Static value AudioVideo for RecordingContentType. */
+    /**
+     * Static value AudioVideo for RecordingContentType.
+     */
     public static final RecordingContentType AUDIO_VIDEO = fromString("AudioVideo");
 
-    /** Static value Audio for RecordingContentType. */
+    /**
+     * Static value Audio for RecordingContentType.
+     */
     public static final RecordingContentType AUDIO = fromString("Audio");
 
     /**
      * Creates a new instance of RecordingContentType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public RecordingContentType() {}
+    public RecordingContentType() {
+    }
 
     /**
      * Creates or finds a RecordingContentType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecordingContentType.
      */
-    @JsonCreator
     public static RecordingContentType fromString(String name) {
         return fromString(name, RecordingContentType.class);
     }
 
     /**
      * Gets known RecordingContentType values.
-     *
+     * 
      * @return known RecordingContentType values.
      */
     public static Collection<RecordingContentType> values() {

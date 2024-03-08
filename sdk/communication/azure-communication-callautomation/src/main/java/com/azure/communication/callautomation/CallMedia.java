@@ -11,6 +11,8 @@ import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesResult;
 import com.azure.communication.callautomation.models.StartHoldMusicOptions;
+import com.azure.communication.callautomation.models.StartTranscriptionOptions;
+import com.azure.communication.callautomation.models.StopTranscriptionOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
@@ -262,5 +264,66 @@ public final class CallMedia {
                                                      String operationContext,
                                                      Context context) {
         return callMediaAsync.stopHoldMusicWithResponseInternal(targetParticipant, operationContext, context).block();
+    }
+
+    /**
+     * Starts transcription in the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void startTranscription() {
+        callMediaAsync.startTranscription().block();
+    }
+
+    /**
+     * Starts transcription in the call.
+     *
+     * @param options Options for the Start Transcription operation.
+     * @param context Context
+     * @return Response for successful start transcription request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> startTranscriptionWithResponse(StartTranscriptionOptions options, Context context) {
+        return callMediaAsync.startTranscriptionWithResponseInternal(options, context).block();
+    }
+
+    /**
+     * Stops transcription in the call.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void stopTranscription() {
+        callMediaAsync.stopTranscription().block();
+    }
+
+    /**
+     * Stops transcription in the call.
+     *
+     * @param options Options for the Stop Transcription operation.
+     * @param context Context
+     * @return Response for successful stop transcription request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> stopTranscriptionWithResponse(StopTranscriptionOptions options, Context context) {
+        return callMediaAsync.stopTranscriptionWithResponseInternal(options, context).block();
+    }
+
+    /**
+     * Updates transcription language in the call.
+     * @param locale Defines new locale for transcription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateTranscription(String locale) {
+        callMediaAsync.updateTranscription(locale).block();
+    }
+
+    /**
+     * Updates transcription language in the call.
+     *
+     * @param locale Defines new locale for transcription.
+     * @param context Context
+     * @return Response for successful update transcription request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateTranscriptionWithResponse(String locale, Context context) {
+        return callMediaAsync.updateTranscriptionWithResponseInternal(locale, context).block();
     }
 }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.Protection
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of ProtectionPolicy resources. */
+/**
+ * List of ProtectionPolicy resources.
+ */
 @Fluent
 public final class ProtectionPolicyResourceList extends ResourceList {
     /*
@@ -18,13 +20,15 @@ public final class ProtectionPolicyResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<ProtectionPolicyResourceInner> value;
 
-    /** Creates an instance of ProtectionPolicyResourceList class. */
+    /**
+     * Creates an instance of ProtectionPolicyResourceList class.
+     */
     public ProtectionPolicyResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ProtectionPolicyResourceInner> value() {
@@ -33,7 +37,7 @@ public final class ProtectionPolicyResourceList extends ResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProtectionPolicyResourceList object itself.
      */
@@ -42,7 +46,9 @@ public final class ProtectionPolicyResourceList extends ResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProtectionPolicyResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -51,7 +57,7 @@ public final class ProtectionPolicyResourceList extends ResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

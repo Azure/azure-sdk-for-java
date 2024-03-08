@@ -12,8 +12,8 @@ public final class BatchAccountKeysImpl implements BatchAccountKeys {
 
     private final com.azure.resourcemanager.batch.BatchManager serviceManager;
 
-    BatchAccountKeysImpl(
-        BatchAccountKeysInner innerObject, com.azure.resourcemanager.batch.BatchManager serviceManager) {
+    BatchAccountKeysImpl(BatchAccountKeysInner innerObject,
+        com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

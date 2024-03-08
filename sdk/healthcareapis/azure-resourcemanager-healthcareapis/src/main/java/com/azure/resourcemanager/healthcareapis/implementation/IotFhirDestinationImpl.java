@@ -62,6 +62,10 @@ public final class IotFhirDestinationImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IotFhirDestinationInner innerModel() {
         return this.innerObject;
     }
@@ -78,8 +82,8 @@ public final class IotFhirDestinationImpl
 
     private String fhirDestinationName;
 
-    public IotFhirDestinationImpl withExistingIotconnector(
-        String resourceGroupName, String workspaceName, String iotConnectorName) {
+    public IotFhirDestinationImpl withExistingIotconnector(String resourceGroupName, String workspaceName,
+        String iotConnectorName) {
         this.resourceGroupName = resourceGroupName;
         this.workspaceName = workspaceName;
         this.iotConnectorName = iotConnectorName;
@@ -87,32 +91,14 @@ public final class IotFhirDestinationImpl
     }
 
     public IotFhirDestination create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotConnectorFhirDestinations()
-                .createOrUpdate(
-                    resourceGroupName,
-                    workspaceName,
-                    iotConnectorName,
-                    fhirDestinationName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getIotConnectorFhirDestinations().createOrUpdate(
+            resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IotFhirDestination create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotConnectorFhirDestinations()
-                .createOrUpdate(
-                    resourceGroupName,
-                    workspaceName,
-                    iotConnectorName,
-                    fhirDestinationName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient().getIotConnectorFhirDestinations().createOrUpdate(
+            resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, this.innerModel(), context);
         return this;
     }
 
@@ -127,37 +113,18 @@ public final class IotFhirDestinationImpl
     }
 
     public IotFhirDestination apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotConnectorFhirDestinations()
-                .createOrUpdate(
-                    resourceGroupName,
-                    workspaceName,
-                    iotConnectorName,
-                    fhirDestinationName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getIotConnectorFhirDestinations().createOrUpdate(
+            resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public IotFhirDestination apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotConnectorFhirDestinations()
-                .createOrUpdate(
-                    resourceGroupName,
-                    workspaceName,
-                    iotConnectorName,
-                    fhirDestinationName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient().getIotConnectorFhirDestinations().createOrUpdate(
+            resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, this.innerModel(), context);
         return this;
     }
 
-    IotFhirDestinationImpl(
-        IotFhirDestinationInner innerObject,
+    IotFhirDestinationImpl(IotFhirDestinationInner innerObject,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -168,27 +135,21 @@ public final class IotFhirDestinationImpl
     }
 
     public IotFhirDestination refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotConnectorFhirDestinations()
-                .getWithResponse(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getIotConnectorFhirDestinations()
+            .getWithResponse(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IotFhirDestination refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIotConnectorFhirDestinations()
-                .getWithResponse(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getIotConnectorFhirDestinations()
+            .getWithResponse(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context)
+            .getValue();
         return this;
     }
 
-    public IotFhirDestinationImpl withResourceIdentityResolutionType(
-        IotIdentityResolutionType resourceIdentityResolutionType) {
+    public IotFhirDestinationImpl
+        withResourceIdentityResolutionType(IotIdentityResolutionType resourceIdentityResolutionType) {
         this.innerModel().withResourceIdentityResolutionType(resourceIdentityResolutionType);
         return this;
     }

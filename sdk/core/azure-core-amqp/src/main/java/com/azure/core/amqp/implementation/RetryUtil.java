@@ -44,8 +44,10 @@ public final class RetryUtil {
         switch (options.getMode()) {
             case FIXED:
                 return new FixedAmqpRetryPolicy(options);
+
             case EXPONENTIAL:
                 return new ExponentialAmqpRetryPolicy(options);
+
             default:
                 throw new IllegalArgumentException(
                     String.format(Locale.ROOT, "Mode is not supported: %s", options.getMode()));
@@ -55,6 +57,7 @@ public final class RetryUtil {
     /**
      * Given a {@link Mono} will apply the retry policy to it when the operation times out or throws a transient error.
      *
+     * @param <T> Type of value in the {@link Mono}.
      * @param source The publisher to apply the retry policy to.
      * @param retryOptions A {@link AmqpRetryOptions}.
      * @param errorMessage Text added to error logs.
@@ -66,19 +69,20 @@ public final class RetryUtil {
      *     Otherwise, propagates a {@link TimeoutException}.
      */
     public static <T> Mono<T> withRetry(Mono<T> source, AmqpRetryOptions retryOptions, String errorMessage,
-                                        boolean allowsLongOperation) {
+        boolean allowsLongOperation) {
         if (!allowsLongOperation) {
             source = source.timeout(retryOptions.getTryTimeout());
         }
-        return source.retryWhen(createRetry(retryOptions))
-            .doOnError(error -> LOGGER.error(errorMessage, error));
+        return source.retryWhen(createRetry(retryOptions)).doOnError(error -> LOGGER.error(errorMessage, error));
     }
 
     /**
      * Given a {@link Flux} will apply the retry policy to it when the operation times out.
      *
+     * @param <T> Type of value in the {@link Flux}.
      * @param source The publisher to apply the retry policy to.
-     *
+     * @param retryOptions A {@link AmqpRetryOptions}.
+     * @param timeoutMessage Text added to error logs.
      * @return A publisher that returns the results of the {@link Flux} if any of the retry attempts are successful.
      *     Otherwise, propagates a {@link TimeoutException}.
      */
@@ -91,8 +95,10 @@ public final class RetryUtil {
     /**
      * Given a {@link Mono} will apply the retry policy to it when the operation times out.
      *
+     * @param <T> Type of value in the {@link Mono}.
      * @param source The publisher to apply the retry policy to.
-     *
+     * @param retryOptions A {@link AmqpRetryOptions}.
+     * @param timeoutMessage Text added to error logs.
      * @return A publisher that returns the results of the {@link Flux} if any of the retry attempts are successful.
      *     Otherwise, propagates a {@link TimeoutException}.
      */
@@ -107,9 +113,11 @@ public final class RetryUtil {
             case FIXED:
                 retrySpec = Retry.fixedDelay(options.getMaxRetries(), delay);
                 break;
+
             case EXPONENTIAL:
                 retrySpec = Retry.backoff(options.getMaxRetries(), delay);
                 break;
+
             default:
                 LOGGER.warning("Unknown: '{}'. Using exponential delay. Delay: {}. Max Delay: {}. Max Retries: {}.",
                     options.getMode(), options.getDelay(), options.getMaxDelay(), options.getMaxRetries());

@@ -10,7 +10,19 @@ import com.azure.core.http.HttpResponse;
 import reactor.core.publisher.Mono;
 
 /**
- * Represents a {@link HttpPipelinePolicy} that doesn't do any asynchronous or synchronously blocking operations.
+ * The {@code HttpPipelineSyncPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This
+ * policy represents a synchronous operation within the HTTP pipeline, meaning it doesn't perform any asynchronous or
+ * synchronously blocking operations.
+ *
+ * <p>This class is useful when you need to perform operations in the HTTP pipeline that don't require
+ * asynchronous processing or blocking. It provides hooks to perform actions before the request is sent and after the
+ * response is received.</p>
+ *
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ * @see com.azure.core.http.HttpPipelineCallContext
  */
 public class HttpPipelineSyncPolicy implements HttpPipelinePolicy {
     /**
@@ -24,13 +36,10 @@ public class HttpPipelineSyncPolicy implements HttpPipelinePolicy {
      */
     @Override
     public final Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        return Mono.fromCallable(
-                () -> {
-                    beforeSendingRequest(context);
-                    return next;
-                })
-            .flatMap(ignored -> next.process())
-            .map(response -> afterReceivedResponse(context, response));
+        return Mono.fromCallable(() -> {
+            beforeSendingRequest(context);
+            return next;
+        }).flatMap(ignored -> next.process()).map(response -> afterReceivedResponse(context, response));
     }
 
     /**

@@ -4,35 +4,37 @@
 
 package com.azure.resourcemanager.elasticsan.generated;
 
-/** Samples for PrivateLinkResources ListByElasticSan. */
+/**
+ * Samples for PrivateLinkResources ListByElasticSan.
+ */
 public final class PrivateLinkResourcesListByElasticSanSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateLinkResources_ListByElasticSan_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * PrivateLinkResources_ListByElasticSan_MinimumSet_Gen.json
      */
     /**
      * Sample code: PrivateLinkResources_ListByElasticSan_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ElasticSanManager.
      */
     public static void privateLinkResourcesListByElasticSanMinimumSetGen(
         com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager
-            .privateLinkResources()
-            .listByElasticSanWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE);
+        manager.privateLinkResources().listByElasticSanWithResponse("resourcegroupname", "elasticsanname",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/PrivateLinkResources_ListByElasticSan_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * PrivateLinkResources_ListByElasticSan_MaximumSet_Gen.json
      */
     /**
      * Sample code: PrivateLinkResources_ListByElasticSan_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ElasticSanManager.
      */
     public static void privateLinkResourcesListByElasticSanMaximumSetGen(
         com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager
-            .privateLinkResources()
-            .listByElasticSanWithResponse("resourcegroupname", "elasticsanname", com.azure.core.util.Context.NONE);
+        manager.privateLinkResources().listByElasticSanWithResponse("resourcegroupname", "elasticsanname",
+            com.azure.core.util.Context.NONE);
     }
 }

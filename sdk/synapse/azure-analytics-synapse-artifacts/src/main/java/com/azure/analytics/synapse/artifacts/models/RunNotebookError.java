@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Run notebook error. */
+/**
+ * Run notebook error.
+ */
 @Fluent
 public final class RunNotebookError {
     /*
@@ -29,12 +31,15 @@ public final class RunNotebookError {
     @JsonProperty(value = "traceback")
     private List<String> traceback;
 
-    /** Creates an instance of RunNotebookError class. */
-    public RunNotebookError() {}
+    /**
+     * Creates an instance of RunNotebookError class.
+     */
+    public RunNotebookError() {
+    }
 
     /**
      * Get the ename property: Error name.
-     *
+     * 
      * @return the ename value.
      */
     public String getEname() {
@@ -43,7 +48,7 @@ public final class RunNotebookError {
 
     /**
      * Get the evalue property: Error message.
-     *
+     * 
      * @return the evalue value.
      */
     public String getEvalue() {
@@ -52,7 +57,7 @@ public final class RunNotebookError {
 
     /**
      * Get the traceback property: Error trace.
-     *
+     * 
      * @return the traceback value.
      */
     public List<String> getTraceback() {
@@ -61,7 +66,7 @@ public final class RunNotebookError {
 
     /**
      * Set the traceback property: Error trace.
-     *
+     * 
      * @param traceback the traceback value to set.
      * @return the RunNotebookError object itself.
      */

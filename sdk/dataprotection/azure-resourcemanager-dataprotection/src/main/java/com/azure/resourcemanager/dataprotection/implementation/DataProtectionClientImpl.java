@@ -33,6 +33,9 @@ import com.azure.resourcemanager.dataprotection.fluent.DeletedBackupInstancesCli
 import com.azure.resourcemanager.dataprotection.fluent.DppResourceGuardProxiesClient;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsOperationResultsClient;
+import com.azure.resourcemanager.dataprotection.fluent.FetchCrossRegionRestoreJobsClient;
+import com.azure.resourcemanager.dataprotection.fluent.FetchCrossRegionRestoreJobsOperationsClient;
+import com.azure.resourcemanager.dataprotection.fluent.FetchSecondaryRecoveryPointsClient;
 import com.azure.resourcemanager.dataprotection.fluent.JobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.OperationResultsClient;
 import com.azure.resourcemanager.dataprotection.fluent.OperationStatusBackupVaultContextsClient;
@@ -50,291 +53,383 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the DataProtectionClientImpl type. */
+/**
+ * Initializes a new instance of the DataProtectionClientImpl type.
+ */
 @ServiceClient(builder = DataProtectionClientBuilder.class)
 public final class DataProtectionClientImpl implements DataProtectionClient {
-    /** The ID of the target subscription. The value must be an UUID. */
+    /**
+     * The ID of the target subscription. The value must be an UUID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription. The value must be an UUID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The BackupVaultsClient object to access its operations. */
+    /**
+     * The BackupVaultsClient object to access its operations.
+     */
     private final BackupVaultsClient backupVaults;
 
     /**
      * Gets the BackupVaultsClient object to access its operations.
-     *
+     * 
      * @return the BackupVaultsClient object.
      */
     public BackupVaultsClient getBackupVaults() {
         return this.backupVaults;
     }
 
-    /** The OperationResultsClient object to access its operations. */
+    /**
+     * The OperationResultsClient object to access its operations.
+     */
     private final OperationResultsClient operationResults;
 
     /**
      * Gets the OperationResultsClient object to access its operations.
-     *
+     * 
      * @return the OperationResultsClient object.
      */
     public OperationResultsClient getOperationResults() {
         return this.operationResults;
     }
 
-    /** The OperationStatusClient object to access its operations. */
+    /**
+     * The OperationStatusClient object to access its operations.
+     */
     private final OperationStatusClient operationStatus;
 
     /**
      * Gets the OperationStatusClient object to access its operations.
-     *
+     * 
      * @return the OperationStatusClient object.
      */
     public OperationStatusClient getOperationStatus() {
         return this.operationStatus;
     }
 
-    /** The OperationStatusBackupVaultContextsClient object to access its operations. */
+    /**
+     * The OperationStatusBackupVaultContextsClient object to access its operations.
+     */
     private final OperationStatusBackupVaultContextsClient operationStatusBackupVaultContexts;
 
     /**
      * Gets the OperationStatusBackupVaultContextsClient object to access its operations.
-     *
+     * 
      * @return the OperationStatusBackupVaultContextsClient object.
      */
     public OperationStatusBackupVaultContextsClient getOperationStatusBackupVaultContexts() {
         return this.operationStatusBackupVaultContexts;
     }
 
-    /** The OperationStatusResourceGroupContextsClient object to access its operations. */
+    /**
+     * The OperationStatusResourceGroupContextsClient object to access its operations.
+     */
     private final OperationStatusResourceGroupContextsClient operationStatusResourceGroupContexts;
 
     /**
      * Gets the OperationStatusResourceGroupContextsClient object to access its operations.
-     *
+     * 
      * @return the OperationStatusResourceGroupContextsClient object.
      */
     public OperationStatusResourceGroupContextsClient getOperationStatusResourceGroupContexts() {
         return this.operationStatusResourceGroupContexts;
     }
 
-    /** The BackupVaultOperationResultsClient object to access its operations. */
+    /**
+     * The BackupVaultOperationResultsClient object to access its operations.
+     */
     private final BackupVaultOperationResultsClient backupVaultOperationResults;
 
     /**
      * Gets the BackupVaultOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the BackupVaultOperationResultsClient object.
      */
     public BackupVaultOperationResultsClient getBackupVaultOperationResults() {
         return this.backupVaultOperationResults;
     }
 
-    /** The DataProtectionsClient object to access its operations. */
+    /**
+     * The DataProtectionsClient object to access its operations.
+     */
     private final DataProtectionsClient dataProtections;
 
     /**
      * Gets the DataProtectionsClient object to access its operations.
-     *
+     * 
      * @return the DataProtectionsClient object.
      */
     public DataProtectionsClient getDataProtections() {
         return this.dataProtections;
     }
 
-    /** The DataProtectionOperationsClient object to access its operations. */
+    /**
+     * The DataProtectionOperationsClient object to access its operations.
+     */
     private final DataProtectionOperationsClient dataProtectionOperations;
 
     /**
      * Gets the DataProtectionOperationsClient object to access its operations.
-     *
+     * 
      * @return the DataProtectionOperationsClient object.
      */
     public DataProtectionOperationsClient getDataProtectionOperations() {
         return this.dataProtectionOperations;
     }
 
-    /** The BackupPoliciesClient object to access its operations. */
+    /**
+     * The BackupPoliciesClient object to access its operations.
+     */
     private final BackupPoliciesClient backupPolicies;
 
     /**
      * Gets the BackupPoliciesClient object to access its operations.
-     *
+     * 
      * @return the BackupPoliciesClient object.
      */
     public BackupPoliciesClient getBackupPolicies() {
         return this.backupPolicies;
     }
 
-    /** The BackupInstancesClient object to access its operations. */
+    /**
+     * The BackupInstancesClient object to access its operations.
+     */
     private final BackupInstancesClient backupInstances;
 
     /**
      * Gets the BackupInstancesClient object to access its operations.
-     *
+     * 
      * @return the BackupInstancesClient object.
      */
     public BackupInstancesClient getBackupInstances() {
         return this.backupInstances;
     }
 
-    /** The RecoveryPointsClient object to access its operations. */
+    /**
+     * The RecoveryPointsClient object to access its operations.
+     */
     private final RecoveryPointsClient recoveryPoints;
 
     /**
      * Gets the RecoveryPointsClient object to access its operations.
-     *
+     * 
      * @return the RecoveryPointsClient object.
      */
     public RecoveryPointsClient getRecoveryPoints() {
         return this.recoveryPoints;
     }
 
-    /** The JobsClient object to access its operations. */
+    /**
+     * The FetchSecondaryRecoveryPointsClient object to access its operations.
+     */
+    private final FetchSecondaryRecoveryPointsClient fetchSecondaryRecoveryPoints;
+
+    /**
+     * Gets the FetchSecondaryRecoveryPointsClient object to access its operations.
+     * 
+     * @return the FetchSecondaryRecoveryPointsClient object.
+     */
+    public FetchSecondaryRecoveryPointsClient getFetchSecondaryRecoveryPoints() {
+        return this.fetchSecondaryRecoveryPoints;
+    }
+
+    /**
+     * The FetchCrossRegionRestoreJobsClient object to access its operations.
+     */
+    private final FetchCrossRegionRestoreJobsClient fetchCrossRegionRestoreJobs;
+
+    /**
+     * Gets the FetchCrossRegionRestoreJobsClient object to access its operations.
+     * 
+     * @return the FetchCrossRegionRestoreJobsClient object.
+     */
+    public FetchCrossRegionRestoreJobsClient getFetchCrossRegionRestoreJobs() {
+        return this.fetchCrossRegionRestoreJobs;
+    }
+
+    /**
+     * The FetchCrossRegionRestoreJobsOperationsClient object to access its operations.
+     */
+    private final FetchCrossRegionRestoreJobsOperationsClient fetchCrossRegionRestoreJobsOperations;
+
+    /**
+     * Gets the FetchCrossRegionRestoreJobsOperationsClient object to access its operations.
+     * 
+     * @return the FetchCrossRegionRestoreJobsOperationsClient object.
+     */
+    public FetchCrossRegionRestoreJobsOperationsClient getFetchCrossRegionRestoreJobsOperations() {
+        return this.fetchCrossRegionRestoreJobsOperations;
+    }
+
+    /**
+     * The JobsClient object to access its operations.
+     */
     private final JobsClient jobs;
 
     /**
      * Gets the JobsClient object to access its operations.
-     *
+     * 
      * @return the JobsClient object.
      */
     public JobsClient getJobs() {
         return this.jobs;
     }
 
-    /** The RestorableTimeRangesClient object to access its operations. */
+    /**
+     * The RestorableTimeRangesClient object to access its operations.
+     */
     private final RestorableTimeRangesClient restorableTimeRanges;
 
     /**
      * Gets the RestorableTimeRangesClient object to access its operations.
-     *
+     * 
      * @return the RestorableTimeRangesClient object.
      */
     public RestorableTimeRangesClient getRestorableTimeRanges() {
         return this.restorableTimeRanges;
     }
 
-    /** The ExportJobsClient object to access its operations. */
+    /**
+     * The ExportJobsClient object to access its operations.
+     */
     private final ExportJobsClient exportJobs;
 
     /**
      * Gets the ExportJobsClient object to access its operations.
-     *
+     * 
      * @return the ExportJobsClient object.
      */
     public ExportJobsClient getExportJobs() {
         return this.exportJobs;
     }
 
-    /** The ExportJobsOperationResultsClient object to access its operations. */
+    /**
+     * The ExportJobsOperationResultsClient object to access its operations.
+     */
     private final ExportJobsOperationResultsClient exportJobsOperationResults;
 
     /**
      * Gets the ExportJobsOperationResultsClient object to access its operations.
-     *
+     * 
      * @return the ExportJobsOperationResultsClient object.
      */
     public ExportJobsOperationResultsClient getExportJobsOperationResults() {
         return this.exportJobsOperationResults;
     }
 
-    /** The DeletedBackupInstancesClient object to access its operations. */
+    /**
+     * The DeletedBackupInstancesClient object to access its operations.
+     */
     private final DeletedBackupInstancesClient deletedBackupInstances;
 
     /**
      * Gets the DeletedBackupInstancesClient object to access its operations.
-     *
+     * 
      * @return the DeletedBackupInstancesClient object.
      */
     public DeletedBackupInstancesClient getDeletedBackupInstances() {
         return this.deletedBackupInstances;
     }
 
-    /** The ResourceGuardsClient object to access its operations. */
+    /**
+     * The ResourceGuardsClient object to access its operations.
+     */
     private final ResourceGuardsClient resourceGuards;
 
     /**
      * Gets the ResourceGuardsClient object to access its operations.
-     *
+     * 
      * @return the ResourceGuardsClient object.
      */
     public ResourceGuardsClient getResourceGuards() {
         return this.resourceGuards;
     }
 
-    /** The DppResourceGuardProxiesClient object to access its operations. */
+    /**
+     * The DppResourceGuardProxiesClient object to access its operations.
+     */
     private final DppResourceGuardProxiesClient dppResourceGuardProxies;
 
     /**
      * Gets the DppResourceGuardProxiesClient object to access its operations.
-     *
+     * 
      * @return the DppResourceGuardProxiesClient object.
      */
     public DppResourceGuardProxiesClient getDppResourceGuardProxies() {
@@ -343,7 +438,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
 
     /**
      * Initializes an instance of DataProtectionClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -351,19 +446,14 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
      * @param subscriptionId The ID of the target subscription. The value must be an UUID.
      * @param endpoint server parameter.
      */
-    DataProtectionClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    DataProtectionClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-05-01";
+        this.apiVersion = "2023-11-01";
         this.backupVaults = new BackupVaultsClientImpl(this);
         this.operationResults = new OperationResultsClientImpl(this);
         this.operationStatus = new OperationStatusClientImpl(this);
@@ -375,6 +465,9 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
         this.backupPolicies = new BackupPoliciesClientImpl(this);
         this.backupInstances = new BackupInstancesClientImpl(this);
         this.recoveryPoints = new RecoveryPointsClientImpl(this);
+        this.fetchSecondaryRecoveryPoints = new FetchSecondaryRecoveryPointsClientImpl(this);
+        this.fetchCrossRegionRestoreJobs = new FetchCrossRegionRestoreJobsClientImpl(this);
+        this.fetchCrossRegionRestoreJobsOperations = new FetchCrossRegionRestoreJobsOperationsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
         this.restorableTimeRanges = new RestorableTimeRangesClientImpl(this);
         this.exportJobs = new ExportJobsClientImpl(this);
@@ -386,7 +479,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -395,7 +488,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -405,7 +498,7 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -415,26 +508,15 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -447,19 +529,16 @@ public final class DataProtectionClientImpl implements DataProtectionClient {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter().deserialize(errorBody, ManagementError.class,
+                            SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }

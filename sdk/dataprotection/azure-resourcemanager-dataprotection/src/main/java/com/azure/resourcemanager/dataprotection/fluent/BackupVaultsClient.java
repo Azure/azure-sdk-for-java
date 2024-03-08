@@ -16,11 +16,13 @@ import com.azure.resourcemanager.dataprotection.fluent.models.CheckNameAvailabil
 import com.azure.resourcemanager.dataprotection.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.dataprotection.models.PatchResourceRequestInput;
 
-/** An instance of this class provides access to all the operations defined in BackupVaultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupVaultsClient.
+ */
 public interface BackupVaultsClient {
     /**
      * Returns resource collection belonging to a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backupVaultResourceList as paginated response with {@link PagedIterable}.
@@ -30,7 +32,7 @@ public interface BackupVaultsClient {
 
     /**
      * Returns resource collection belonging to a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,7 +44,7 @@ public interface BackupVaultsClient {
 
     /**
      * Returns resource collection belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +56,7 @@ public interface BackupVaultsClient {
 
     /**
      * Returns resource collection belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,7 +69,7 @@ public interface BackupVaultsClient {
 
     /**
      * Returns a resource belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -77,12 +79,12 @@ public interface BackupVaultsClient {
      * @return backupVault Resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupVaultResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String vaultName, Context context);
+    Response<BackupVaultResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String vaultName,
+        Context context);
 
     /**
      * Returns a resource belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -95,7 +97,7 @@ public interface BackupVaultsClient {
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -105,12 +107,12 @@ public interface BackupVaultsClient {
      * @return the {@link SyncPoller} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters);
+    SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String vaultName, BackupVaultResourceInner parameters);
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -126,7 +128,7 @@ public interface BackupVaultsClient {
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -136,12 +138,12 @@ public interface BackupVaultsClient {
      * @return backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupVaultResourceInner createOrUpdate(
-        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters);
+    BackupVaultResourceInner createOrUpdate(String resourceGroupName, String vaultName,
+        BackupVaultResourceInner parameters);
 
     /**
      * Creates or updates a BackupVault resource belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -152,12 +154,12 @@ public interface BackupVaultsClient {
      * @return backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupVaultResourceInner createOrUpdate(
-        String resourceGroupName, String vaultName, BackupVaultResourceInner parameters, Context context);
+    BackupVaultResourceInner createOrUpdate(String resourceGroupName, String vaultName,
+        BackupVaultResourceInner parameters, Context context);
 
     /**
      * Deletes a BackupVault resource from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +172,7 @@ public interface BackupVaultsClient {
 
     /**
      * Deletes a BackupVault resource from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -184,7 +186,7 @@ public interface BackupVaultsClient {
 
     /**
      * Deletes a BackupVault resource from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,7 +198,7 @@ public interface BackupVaultsClient {
 
     /**
      * Deletes a BackupVault resource from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -209,7 +211,7 @@ public interface BackupVaultsClient {
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -219,12 +221,12 @@ public interface BackupVaultsClient {
      * @return the {@link SyncPoller} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginUpdate(
-        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters);
+    SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginUpdate(String resourceGroupName,
+        String vaultName, PatchResourceRequestInput parameters);
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -235,12 +237,12 @@ public interface BackupVaultsClient {
      * @return the {@link SyncPoller} for polling of backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginUpdate(
-        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters, Context context);
+    SyncPoller<PollResult<BackupVaultResourceInner>, BackupVaultResourceInner> beginUpdate(String resourceGroupName,
+        String vaultName, PatchResourceRequestInput parameters, Context context);
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -254,7 +256,7 @@ public interface BackupVaultsClient {
 
     /**
      * Updates a BackupVault resource belonging to a resource group. For example, updating tags for a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -265,12 +267,12 @@ public interface BackupVaultsClient {
      * @return backupVault Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupVaultResourceInner update(
-        String resourceGroupName, String vaultName, PatchResourceRequestInput parameters, Context context);
+    BackupVaultResourceInner update(String resourceGroupName, String vaultName, PatchResourceRequestInput parameters,
+        Context context);
 
     /**
      * API to check for resource name availability.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location in which uniqueness will be verified.
      * @param parameters Check name availability request.
@@ -281,12 +283,12 @@ public interface BackupVaultsClient {
      * @return checkNameAvailabilityResult along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String resourceGroupName, String location, CheckNameAvailabilityRequest parameters, Context context);
+    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String resourceGroupName,
+        String location, CheckNameAvailabilityRequest parameters, Context context);
 
     /**
      * API to check for resource name availability.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param location The location in which uniqueness will be verified.
      * @param parameters Check name availability request.
@@ -296,6 +298,6 @@ public interface BackupVaultsClient {
      * @return checkNameAvailabilityResult.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResultInner checkNameAvailability(
-        String resourceGroupName, String location, CheckNameAvailabilityRequest parameters);
+    CheckNameAvailabilityResultInner checkNameAvailability(String resourceGroupName, String location,
+        CheckNameAvailabilityRequest parameters);
 }

@@ -13,23 +13,19 @@ import org.junit.jupiter.api.Assertions;
 public final class NotificationTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NotificationTarget model =
-            BinaryData
-                .fromString(
-                    "{\"notificationChannel\":\"EmailUser\",\"receivers\":[\"ebvmgxsabkyqd\",\"ujitcjcz\",\"zevndhkrwpdappds\"]}")
-                .toObject(NotificationTarget.class);
+        NotificationTarget model = BinaryData
+            .fromString("{\"notificationChannel\":\"EmailUser\",\"receivers\":[\"kgfg\",\"bmadgak\",\"qsrxybzqqed\"]}")
+            .toObject(NotificationTarget.class);
         Assertions.assertEquals(NotificationChannel.EMAIL_USER, model.notificationChannel());
-        Assertions.assertEquals("ebvmgxsabkyqd", model.receivers().get(0));
+        Assertions.assertEquals("kgfg", model.receivers().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NotificationTarget model =
-            new NotificationTarget()
-                .withNotificationChannel(NotificationChannel.EMAIL_USER)
-                .withReceivers(Arrays.asList("ebvmgxsabkyqd", "ujitcjcz", "zevndhkrwpdappds"));
+        NotificationTarget model = new NotificationTarget().withNotificationChannel(NotificationChannel.EMAIL_USER)
+            .withReceivers(Arrays.asList("kgfg", "bmadgak", "qsrxybzqqed"));
         model = BinaryData.fromObject(model).toObject(NotificationTarget.class);
         Assertions.assertEquals(NotificationChannel.EMAIL_USER, model.notificationChannel());
-        Assertions.assertEquals("ebvmgxsabkyqd", model.receivers().get(0));
+        Assertions.assertEquals("kgfg", model.receivers().get(0));
     }
 }

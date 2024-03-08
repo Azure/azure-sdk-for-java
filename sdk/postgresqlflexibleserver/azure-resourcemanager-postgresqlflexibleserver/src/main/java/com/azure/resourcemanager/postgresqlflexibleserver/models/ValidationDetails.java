@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Details for the validation for migration. */
+/**
+ * Details for the validation for migration.
+ */
 @Fluent
 public final class ValidationDetails {
     /*
@@ -42,13 +44,15 @@ public final class ValidationDetails {
     @JsonProperty(value = "dbLevelValidationDetails")
     private List<DbLevelValidationStatus> dbLevelValidationDetails;
 
-    /** Creates an instance of ValidationDetails class. */
+    /**
+     * Creates an instance of ValidationDetails class.
+     */
     public ValidationDetails() {
     }
 
     /**
      * Get the status property: Validation status for migration.
-     *
+     * 
      * @return the status value.
      */
     public ValidationState status() {
@@ -57,7 +61,7 @@ public final class ValidationDetails {
 
     /**
      * Set the status property: Validation status for migration.
-     *
+     * 
      * @param status the status value to set.
      * @return the ValidationDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class ValidationDetails {
 
     /**
      * Get the validationStartTimeInUtc property: Validation Start date-time in UTC.
-     *
+     * 
      * @return the validationStartTimeInUtc value.
      */
     public OffsetDateTime validationStartTimeInUtc() {
@@ -77,7 +81,7 @@ public final class ValidationDetails {
 
     /**
      * Set the validationStartTimeInUtc property: Validation Start date-time in UTC.
-     *
+     * 
      * @param validationStartTimeInUtc the validationStartTimeInUtc value to set.
      * @return the ValidationDetails object itself.
      */
@@ -88,7 +92,7 @@ public final class ValidationDetails {
 
     /**
      * Get the validationEndTimeInUtc property: Validation End date-time in UTC.
-     *
+     * 
      * @return the validationEndTimeInUtc value.
      */
     public OffsetDateTime validationEndTimeInUtc() {
@@ -97,7 +101,7 @@ public final class ValidationDetails {
 
     /**
      * Set the validationEndTimeInUtc property: Validation End date-time in UTC.
-     *
+     * 
      * @param validationEndTimeInUtc the validationEndTimeInUtc value to set.
      * @return the ValidationDetails object itself.
      */
@@ -108,7 +112,7 @@ public final class ValidationDetails {
 
     /**
      * Get the serverLevelValidationDetails property: Details of server level validations.
-     *
+     * 
      * @return the serverLevelValidationDetails value.
      */
     public List<ValidationSummaryItem> serverLevelValidationDetails() {
@@ -117,19 +121,19 @@ public final class ValidationDetails {
 
     /**
      * Set the serverLevelValidationDetails property: Details of server level validations.
-     *
+     * 
      * @param serverLevelValidationDetails the serverLevelValidationDetails value to set.
      * @return the ValidationDetails object itself.
      */
-    public ValidationDetails withServerLevelValidationDetails(
-        List<ValidationSummaryItem> serverLevelValidationDetails) {
+    public ValidationDetails
+        withServerLevelValidationDetails(List<ValidationSummaryItem> serverLevelValidationDetails) {
         this.serverLevelValidationDetails = serverLevelValidationDetails;
         return this;
     }
 
     /**
      * Get the dbLevelValidationDetails property: Details of server level validations.
-     *
+     * 
      * @return the dbLevelValidationDetails value.
      */
     public List<DbLevelValidationStatus> dbLevelValidationDetails() {
@@ -138,7 +142,7 @@ public final class ValidationDetails {
 
     /**
      * Set the dbLevelValidationDetails property: Details of server level validations.
-     *
+     * 
      * @param dbLevelValidationDetails the dbLevelValidationDetails value to set.
      * @return the ValidationDetails object itself.
      */
@@ -149,7 +153,7 @@ public final class ValidationDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

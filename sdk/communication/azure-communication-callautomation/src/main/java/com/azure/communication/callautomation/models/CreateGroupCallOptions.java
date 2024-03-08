@@ -31,6 +31,16 @@ public final class CreateGroupCallOptions {
     private String operationContext;
 
     /**
+     * Media Streaming Configuration.
+     */
+    private MediaStreamingOptions mediaStreamingOptions;
+
+    /**
+     * Transcription Configuration.
+     */
+    private TranscriptionOptions transcriptionOptions;
+
+    /**
      * Display name for call source
      */
     private String sourceDisplayName;
@@ -44,11 +54,6 @@ public final class CreateGroupCallOptions {
      * AI options for the call
      */
     private CallIntelligenceOptions callIntelligenceOptions;
-
-    /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
 
     /**
      * Custom Context
@@ -124,6 +129,28 @@ public final class CreateGroupCallOptions {
     }
 
     /**
+     * Set the media streaming configuration.
+     *
+     * @param mediaStreamingOptions The media streaming configuration.
+     * @return the CreateGroupCallOptions object itself.
+     */
+    public CreateGroupCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+        this.mediaStreamingOptions = mediaStreamingOptions;
+        return this;
+    }
+
+    /**
+     * Set the transcription configuration.
+     *
+     * @param transcriptionOptions The transcription configuration.
+     * @return the CreateGroupCallOptions object itself.
+     */
+    public CreateGroupCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
+        return this;
+    }
+
+    /**
      * set display name for caller
      * @param sourceDisplayName display name for caller
      * @return the CreateGroupCallOptions object itself
@@ -173,14 +200,12 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Set the media streaming configuration.
+     * Get the Transcription configuration.
      *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the CreateCallOptions object itself.
+     * @return the transcriptionConfiguration.
      */
-    public CreateGroupCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
     }
 
     /**

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The action detail. */
+/**
+ * The action detail.
+ */
 @Fluent
 public final class ActionDetail {
     /*
@@ -46,13 +48,15 @@ public final class ActionDetail {
     @JsonProperty(value = "Detail")
     private String detail;
 
-    /** Creates an instance of ActionDetail class. */
+    /**
+     * Creates an instance of ActionDetail class.
+     */
     public ActionDetail() {
     }
 
     /**
      * Get the mechanismType property: The mechanism type.
-     *
+     * 
      * @return the mechanismType value.
      */
     public String mechanismType() {
@@ -61,7 +65,7 @@ public final class ActionDetail {
 
     /**
      * Set the mechanismType property: The mechanism type.
-     *
+     * 
      * @param mechanismType the mechanismType value to set.
      * @return the ActionDetail object itself.
      */
@@ -72,7 +76,7 @@ public final class ActionDetail {
 
     /**
      * Get the name property: The name of the action.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -81,7 +85,7 @@ public final class ActionDetail {
 
     /**
      * Set the name property: The name of the action.
-     *
+     * 
      * @param name the name value to set.
      * @return the ActionDetail object itself.
      */
@@ -92,7 +96,7 @@ public final class ActionDetail {
 
     /**
      * Get the status property: The status of the action.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -101,7 +105,7 @@ public final class ActionDetail {
 
     /**
      * Set the status property: The status of the action.
-     *
+     * 
      * @param status the status value to set.
      * @return the ActionDetail object itself.
      */
@@ -112,7 +116,7 @@ public final class ActionDetail {
 
     /**
      * Get the subState property: The substatus of the action.
-     *
+     * 
      * @return the subState value.
      */
     public String subState() {
@@ -121,7 +125,7 @@ public final class ActionDetail {
 
     /**
      * Set the subState property: The substatus of the action.
-     *
+     * 
      * @param subState the subState value to set.
      * @return the ActionDetail object itself.
      */
@@ -132,7 +136,7 @@ public final class ActionDetail {
 
     /**
      * Get the sendTime property: The send time.
-     *
+     * 
      * @return the sendTime value.
      */
     public String sendTime() {
@@ -141,7 +145,7 @@ public final class ActionDetail {
 
     /**
      * Set the sendTime property: The send time.
-     *
+     * 
      * @param sendTime the sendTime value to set.
      * @return the ActionDetail object itself.
      */
@@ -152,7 +156,7 @@ public final class ActionDetail {
 
     /**
      * Get the detail property: The detail of the friendly error message.
-     *
+     * 
      * @return the detail value.
      */
     public String detail() {
@@ -161,7 +165,7 @@ public final class ActionDetail {
 
     /**
      * Set the detail property: The detail of the friendly error message.
-     *
+     * 
      * @param detail the detail value to set.
      * @return the ActionDetail object itself.
      */
@@ -172,7 +176,7 @@ public final class ActionDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

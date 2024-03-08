@@ -10,28 +10,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * ValidateRestoreRequestObject
- *
- * <p>Validate restore request object.
+ * 
+ * Validate restore request object.
  */
 @Fluent
 public final class ValidateRestoreRequestObject {
     /*
      * AzureBackupRestoreRequest
-     *
+     * 
      * Gets or sets the restore request object.
      */
     @JsonProperty(value = "restoreRequestObject", required = true)
     private AzureBackupRestoreRequest restoreRequestObject;
 
-    /** Creates an instance of ValidateRestoreRequestObject class. */
+    /**
+     * Creates an instance of ValidateRestoreRequestObject class.
+     */
     public ValidateRestoreRequestObject() {
     }
 
     /**
      * Get the restoreRequestObject property: AzureBackupRestoreRequest
-     *
-     * <p>Gets or sets the restore request object.
-     *
+     * 
+     * Gets or sets the restore request object.
+     * 
      * @return the restoreRequestObject value.
      */
     public AzureBackupRestoreRequest restoreRequestObject() {
@@ -40,9 +42,9 @@ public final class ValidateRestoreRequestObject {
 
     /**
      * Set the restoreRequestObject property: AzureBackupRestoreRequest
-     *
-     * <p>Gets or sets the restore request object.
-     *
+     * 
+     * Gets or sets the restore request object.
+     * 
      * @param restoreRequestObject the restoreRequestObject value to set.
      * @return the ValidateRestoreRequestObject object itself.
      */
@@ -53,15 +55,13 @@ public final class ValidateRestoreRequestObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (restoreRequestObject() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property restoreRequestObject in model ValidateRestoreRequestObject"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property restoreRequestObject in model ValidateRestoreRequestObject"));
         } else {
             restoreRequestObject().validate();
         }

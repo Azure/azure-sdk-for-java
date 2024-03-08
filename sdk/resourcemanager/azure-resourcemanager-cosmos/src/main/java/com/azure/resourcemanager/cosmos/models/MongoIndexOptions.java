@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB MongoDB collection index options. */
+/**
+ * Cosmos DB MongoDB collection index options.
+ */
 @Fluent
 public final class MongoIndexOptions {
     /*
@@ -22,13 +24,15 @@ public final class MongoIndexOptions {
     @JsonProperty(value = "unique")
     private Boolean unique;
 
-    /** Creates an instance of MongoIndexOptions class. */
+    /**
+     * Creates an instance of MongoIndexOptions class.
+     */
     public MongoIndexOptions() {
     }
 
     /**
      * Get the expireAfterSeconds property: Expire after seconds.
-     *
+     * 
      * @return the expireAfterSeconds value.
      */
     public Integer expireAfterSeconds() {
@@ -37,7 +41,7 @@ public final class MongoIndexOptions {
 
     /**
      * Set the expireAfterSeconds property: Expire after seconds.
-     *
+     * 
      * @param expireAfterSeconds the expireAfterSeconds value to set.
      * @return the MongoIndexOptions object itself.
      */
@@ -48,7 +52,7 @@ public final class MongoIndexOptions {
 
     /**
      * Get the unique property: Is unique or not.
-     *
+     * 
      * @return the unique value.
      */
     public Boolean unique() {
@@ -57,7 +61,7 @@ public final class MongoIndexOptions {
 
     /**
      * Set the unique property: Is unique or not.
-     *
+     * 
      * @param unique the unique value to set.
      * @return the MongoIndexOptions object itself.
      */
@@ -68,7 +72,7 @@ public final class MongoIndexOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

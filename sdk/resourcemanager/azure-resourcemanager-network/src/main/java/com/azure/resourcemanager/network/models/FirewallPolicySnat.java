@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The private IP addresses/IP ranges to which traffic will not be SNAT. */
+/**
+ * The private IP addresses/IP ranges to which traffic will not be SNAT.
+ */
 @Fluent
 public final class FirewallPolicySnat {
     /*
@@ -23,13 +25,15 @@ public final class FirewallPolicySnat {
     @JsonProperty(value = "autoLearnPrivateRanges")
     private AutoLearnPrivateRangesMode autoLearnPrivateRanges;
 
-    /** Creates an instance of FirewallPolicySnat class. */
+    /**
+     * Creates an instance of FirewallPolicySnat class.
+     */
     public FirewallPolicySnat() {
     }
 
     /**
      * Get the privateRanges property: List of private IP addresses/IP address ranges to not be SNAT.
-     *
+     * 
      * @return the privateRanges value.
      */
     public List<String> privateRanges() {
@@ -38,7 +42,7 @@ public final class FirewallPolicySnat {
 
     /**
      * Set the privateRanges property: List of private IP addresses/IP address ranges to not be SNAT.
-     *
+     * 
      * @param privateRanges the privateRanges value to set.
      * @return the FirewallPolicySnat object itself.
      */
@@ -50,7 +54,7 @@ public final class FirewallPolicySnat {
     /**
      * Get the autoLearnPrivateRanges property: The operation mode for automatically learning private ranges to not be
      * SNAT.
-     *
+     * 
      * @return the autoLearnPrivateRanges value.
      */
     public AutoLearnPrivateRangesMode autoLearnPrivateRanges() {
@@ -60,7 +64,7 @@ public final class FirewallPolicySnat {
     /**
      * Set the autoLearnPrivateRanges property: The operation mode for automatically learning private ranges to not be
      * SNAT.
-     *
+     * 
      * @param autoLearnPrivateRanges the autoLearnPrivateRanges value to set.
      * @return the FirewallPolicySnat object itself.
      */
@@ -71,7 +75,7 @@ public final class FirewallPolicySnat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

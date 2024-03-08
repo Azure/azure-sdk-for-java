@@ -13,22 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplyRecoveryPointInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplyRecoveryPointInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"recoveryPointId\":\"nrojlpijnkr\",\"providerSpecificDetails\":{\"instanceType\":\"ApplyRecoveryPointProviderSpecificInput\"}}}")
-                .toObject(ApplyRecoveryPointInput.class);
+        ApplyRecoveryPointInput model = BinaryData.fromString(
+            "{\"properties\":{\"recoveryPointId\":\"nrojlpijnkr\",\"providerSpecificDetails\":{\"instanceType\":\"ApplyRecoveryPointProviderSpecificInput\"}}}")
+            .toObject(ApplyRecoveryPointInput.class);
         Assertions.assertEquals("nrojlpijnkr", model.properties().recoveryPointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplyRecoveryPointInput model =
-            new ApplyRecoveryPointInput()
-                .withProperties(
-                    new ApplyRecoveryPointInputProperties()
-                        .withRecoveryPointId("nrojlpijnkr")
-                        .withProviderSpecificDetails(new ApplyRecoveryPointProviderSpecificInput()));
+        ApplyRecoveryPointInput model = new ApplyRecoveryPointInput()
+            .withProperties(new ApplyRecoveryPointInputProperties().withRecoveryPointId("nrojlpijnkr")
+                .withProviderSpecificDetails(new ApplyRecoveryPointProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(ApplyRecoveryPointInput.class);
         Assertions.assertEquals("nrojlpijnkr", model.properties().recoveryPointId());
     }

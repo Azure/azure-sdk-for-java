@@ -11,29 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class Nfs3TargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Nfs3Target model =
-            BinaryData
-                .fromString(
-                    "{\"target\":\"syocogjltdtbnnha\",\"usageModel\":\"ocrkvcikh\",\"verificationTimer\":44638091,\"writeBackTimer\":703916773}")
-                .toObject(Nfs3Target.class);
-        Assertions.assertEquals("syocogjltdtbnnha", model.target());
-        Assertions.assertEquals("ocrkvcikh", model.usageModel());
-        Assertions.assertEquals(44638091, model.verificationTimer());
-        Assertions.assertEquals(703916773, model.writeBackTimer());
+        Nfs3Target model = BinaryData.fromString(
+            "{\"target\":\"taeburuvdm\",\"usageModel\":\"s\",\"verificationTimer\":28452682,\"writeBackTimer\":866846651}")
+            .toObject(Nfs3Target.class);
+        Assertions.assertEquals("taeburuvdm", model.target());
+        Assertions.assertEquals("s", model.usageModel());
+        Assertions.assertEquals(28452682, model.verificationTimer());
+        Assertions.assertEquals(866846651, model.writeBackTimer());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Nfs3Target model =
-            new Nfs3Target()
-                .withTarget("syocogjltdtbnnha")
-                .withUsageModel("ocrkvcikh")
-                .withVerificationTimer(44638091)
-                .withWriteBackTimer(703916773);
+        Nfs3Target model = new Nfs3Target().withTarget("taeburuvdm").withUsageModel("s").withVerificationTimer(28452682)
+            .withWriteBackTimer(866846651);
         model = BinaryData.fromObject(model).toObject(Nfs3Target.class);
-        Assertions.assertEquals("syocogjltdtbnnha", model.target());
-        Assertions.assertEquals("ocrkvcikh", model.usageModel());
-        Assertions.assertEquals(44638091, model.verificationTimer());
-        Assertions.assertEquals(703916773, model.writeBackTimer());
+        Assertions.assertEquals("taeburuvdm", model.target());
+        Assertions.assertEquals("s", model.usageModel());
+        Assertions.assertEquals(28452682, model.verificationTimer());
+        Assertions.assertEquals(866846651, model.writeBackTimer());
     }
 }

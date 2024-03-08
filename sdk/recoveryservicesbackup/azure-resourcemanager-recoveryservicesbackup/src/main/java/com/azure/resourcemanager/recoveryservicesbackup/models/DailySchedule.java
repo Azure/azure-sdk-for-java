@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DailySchedule model. */
+/**
+ * The DailySchedule model.
+ */
 @Fluent
 public final class DailySchedule {
     /*
@@ -18,13 +20,15 @@ public final class DailySchedule {
     @JsonProperty(value = "scheduleRunTimes")
     private List<OffsetDateTime> scheduleRunTimes;
 
-    /** Creates an instance of DailySchedule class. */
+    /**
+     * Creates an instance of DailySchedule class.
+     */
     public DailySchedule() {
     }
 
     /**
      * Get the scheduleRunTimes property: List of times of day this schedule has to be run.
-     *
+     * 
      * @return the scheduleRunTimes value.
      */
     public List<OffsetDateTime> scheduleRunTimes() {
@@ -33,7 +37,7 @@ public final class DailySchedule {
 
     /**
      * Set the scheduleRunTimes property: List of times of day this schedule has to be run.
-     *
+     * 
      * @param scheduleRunTimes the scheduleRunTimes value to set.
      * @return the DailySchedule object itself.
      */
@@ -44,7 +48,7 @@ public final class DailySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

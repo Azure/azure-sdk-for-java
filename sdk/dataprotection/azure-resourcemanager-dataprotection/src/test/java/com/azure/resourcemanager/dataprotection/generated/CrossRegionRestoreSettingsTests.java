@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class CrossRegionRestoreSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CrossRegionRestoreSettings model =
-            BinaryData.fromString("{\"state\":\"Enabled\"}").toObject(CrossRegionRestoreSettings.class);
-        Assertions.assertEquals(CrossRegionRestoreState.ENABLED, model.state());
+        CrossRegionRestoreSettings model
+            = BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(CrossRegionRestoreSettings.class);
+        Assertions.assertEquals(CrossRegionRestoreState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CrossRegionRestoreSettings model = new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED);
+        CrossRegionRestoreSettings model = new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.DISABLED);
         model = BinaryData.fromObject(model).toObject(CrossRegionRestoreSettings.class);
-        Assertions.assertEquals(CrossRegionRestoreState.ENABLED, model.state());
+        Assertions.assertEquals(CrossRegionRestoreState.DISABLED, model.state());
     }
 }

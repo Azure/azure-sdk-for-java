@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Migration source server type : OnPremises, AWS, GCP, AzureVM or PostgreSQLSingleServer. */
+/**
+ * Migration source server type : OnPremises, AWS, GCP, AzureVM or PostgreSQLSingleServer.
+ */
 public final class SourceType extends ExpandableStringEnum<SourceType> {
-    /** Static value OnPremises for SourceType. */
+    /**
+     * Static value OnPremises for SourceType.
+     */
     public static final SourceType ON_PREMISES = fromString("OnPremises");
 
-    /** Static value AWS for SourceType. */
+    /**
+     * Static value AWS for SourceType.
+     */
     public static final SourceType AWS = fromString("AWS");
 
-    /** Static value GCP for SourceType. */
+    /**
+     * Static value GCP for SourceType.
+     */
     public static final SourceType GCP = fromString("GCP");
 
-    /** Static value AzureVM for SourceType. */
+    /**
+     * Static value AzureVM for SourceType.
+     */
     public static final SourceType AZURE_VM = fromString("AzureVM");
 
-    /** Static value PostgreSQLSingleServer for SourceType. */
+    /**
+     * Static value PostgreSQLSingleServer for SourceType.
+     */
     public static final SourceType POSTGRE_SQLSINGLE_SERVER = fromString("PostgreSQLSingleServer");
 
     /**
      * Creates a new instance of SourceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
 
     /**
      * Creates or finds a SourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SourceType.
      */
@@ -47,7 +59,7 @@ public final class SourceType extends ExpandableStringEnum<SourceType> {
 
     /**
      * Gets known SourceType values.
-     *
+     * 
      * @return known SourceType values.
      */
     public static Collection<SourceType> values() {

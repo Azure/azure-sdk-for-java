@@ -656,7 +656,6 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
             cosmosContainerConfig,
             clientCacheItems(0).get,
             clientCacheItems(1))
-        SparkUtils.safeOpenConnectionInitCaches(container, (msg, e) => logWarning(msg, e))
 
         ContainerFeedRangesCache
           .getFeedRanges(container)

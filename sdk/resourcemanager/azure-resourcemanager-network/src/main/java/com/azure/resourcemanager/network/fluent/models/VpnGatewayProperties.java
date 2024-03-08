@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.VpnGatewayIpConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for VpnGateway. */
+/**
+ * Parameters for VpnGateway.
+ */
 @Fluent
 public final class VpnGatewayProperties {
     /*
@@ -69,13 +71,15 @@ public final class VpnGatewayProperties {
     @JsonProperty(value = "natRules")
     private List<VpnGatewayNatRuleInner> natRules;
 
-    /** Creates an instance of VpnGatewayProperties class. */
+    /**
+     * Creates an instance of VpnGatewayProperties class.
+     */
     public VpnGatewayProperties() {
     }
 
     /**
      * Get the virtualHub property: The VirtualHub to which the gateway belongs.
-     *
+     * 
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -84,7 +88,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Set the virtualHub property: The VirtualHub to which the gateway belongs.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Get the connections property: List of all vpn connections to the gateway.
-     *
+     * 
      * @return the connections value.
      */
     public List<VpnConnectionInner> connections() {
@@ -104,7 +108,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Set the connections property: List of all vpn connections to the gateway.
-     *
+     * 
      * @param connections the connections value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -115,7 +119,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Get the bgpSettings property: Local network gateway's BGP speaker settings.
-     *
+     * 
      * @return the bgpSettings value.
      */
     public BgpSettings bgpSettings() {
@@ -124,7 +128,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Set the bgpSettings property: Local network gateway's BGP speaker settings.
-     *
+     * 
      * @param bgpSettings the bgpSettings value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -135,7 +139,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -144,7 +148,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Get the vpnGatewayScaleUnit property: The scale unit for this vpn gateway.
-     *
+     * 
      * @return the vpnGatewayScaleUnit value.
      */
     public Integer vpnGatewayScaleUnit() {
@@ -153,7 +157,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Set the vpnGatewayScaleUnit property: The scale unit for this vpn gateway.
-     *
+     * 
      * @param vpnGatewayScaleUnit the vpnGatewayScaleUnit value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -164,7 +168,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Get the ipConfigurations property: List of all IPs configured on the gateway.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<VpnGatewayIpConfiguration> ipConfigurations() {
@@ -173,7 +177,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Get the enableBgpRouteTranslationForNat property: Enable BGP routes translation for NAT on this VpnGateway.
-     *
+     * 
      * @return the enableBgpRouteTranslationForNat value.
      */
     public Boolean enableBgpRouteTranslationForNat() {
@@ -182,7 +186,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Set the enableBgpRouteTranslationForNat property: Enable BGP routes translation for NAT on this VpnGateway.
-     *
+     * 
      * @param enableBgpRouteTranslationForNat the enableBgpRouteTranslationForNat value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -194,7 +198,7 @@ public final class VpnGatewayProperties {
     /**
      * Get the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
      * the VpnGateway.
-     *
+     * 
      * @return the isRoutingPreferenceInternet value.
      */
     public Boolean isRoutingPreferenceInternet() {
@@ -204,7 +208,7 @@ public final class VpnGatewayProperties {
     /**
      * Set the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
      * the VpnGateway.
-     *
+     * 
      * @param isRoutingPreferenceInternet the isRoutingPreferenceInternet value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -215,7 +219,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Get the natRules property: List of all the nat Rules associated with the gateway.
-     *
+     * 
      * @return the natRules value.
      */
     public List<VpnGatewayNatRuleInner> natRules() {
@@ -224,7 +228,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Set the natRules property: List of all the nat Rules associated with the gateway.
-     *
+     * 
      * @param natRules the natRules value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -235,7 +239,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

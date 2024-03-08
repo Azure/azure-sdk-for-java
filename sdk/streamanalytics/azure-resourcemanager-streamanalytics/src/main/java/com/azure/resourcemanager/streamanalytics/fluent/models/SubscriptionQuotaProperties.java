@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of the quota. */
+/**
+ * Describes the properties of the quota.
+ */
 @Immutable
 public final class SubscriptionQuotaProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionQuotaProperties.class);
-
     /*
      * The max permitted usage of this resource.
      */
@@ -27,8 +25,14 @@ public final class SubscriptionQuotaProperties {
     private Integer currentCount;
 
     /**
+     * Creates an instance of SubscriptionQuotaProperties class.
+     */
+    public SubscriptionQuotaProperties() {
+    }
+
+    /**
      * Get the maxCount property: The max permitted usage of this resource.
-     *
+     * 
      * @return the maxCount value.
      */
     public Integer maxCount() {
@@ -37,7 +41,7 @@ public final class SubscriptionQuotaProperties {
 
     /**
      * Get the currentCount property: The current usage of this resource.
-     *
+     * 
      * @return the currentCount value.
      */
     public Integer currentCount() {
@@ -46,7 +50,7 @@ public final class SubscriptionQuotaProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

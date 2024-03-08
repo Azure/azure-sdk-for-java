@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallManife
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of ApplicationGatewayWafDynamicManifest. */
+/**
+ * Properties of ApplicationGatewayWafDynamicManifest.
+ */
 @Fluent
 public final class ApplicationGatewayWafDynamicManifestPropertiesResult {
     /*
@@ -24,13 +26,15 @@ public final class ApplicationGatewayWafDynamicManifestPropertiesResult {
     @JsonProperty(value = "availableRuleSets")
     private List<ApplicationGatewayFirewallManifestRuleSet> availableRuleSets;
 
-    /** Creates an instance of ApplicationGatewayWafDynamicManifestPropertiesResult class. */
+    /**
+     * Creates an instance of ApplicationGatewayWafDynamicManifestPropertiesResult class.
+     */
     public ApplicationGatewayWafDynamicManifestPropertiesResult() {
     }
 
     /**
      * Get the innerDefaultRuleSet property: The default ruleset.
-     *
+     * 
      * @return the innerDefaultRuleSet value.
      */
     private DefaultRuleSetPropertyFormat innerDefaultRuleSet() {
@@ -39,7 +43,7 @@ public final class ApplicationGatewayWafDynamicManifestPropertiesResult {
 
     /**
      * Get the availableRuleSets property: The available rulesets.
-     *
+     * 
      * @return the availableRuleSets value.
      */
     public List<ApplicationGatewayFirewallManifestRuleSet> availableRuleSets() {
@@ -48,19 +52,19 @@ public final class ApplicationGatewayWafDynamicManifestPropertiesResult {
 
     /**
      * Set the availableRuleSets property: The available rulesets.
-     *
+     * 
      * @param availableRuleSets the availableRuleSets value to set.
      * @return the ApplicationGatewayWafDynamicManifestPropertiesResult object itself.
      */
-    public ApplicationGatewayWafDynamicManifestPropertiesResult withAvailableRuleSets(
-        List<ApplicationGatewayFirewallManifestRuleSet> availableRuleSets) {
+    public ApplicationGatewayWafDynamicManifestPropertiesResult
+        withAvailableRuleSets(List<ApplicationGatewayFirewallManifestRuleSet> availableRuleSets) {
         this.availableRuleSets = availableRuleSets;
         return this;
     }
 
     /**
      * Get the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -69,7 +73,7 @@ public final class ApplicationGatewayWafDynamicManifestPropertiesResult {
 
     /**
      * Set the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ApplicationGatewayWafDynamicManifestPropertiesResult object itself.
      */
@@ -83,7 +87,7 @@ public final class ApplicationGatewayWafDynamicManifestPropertiesResult {
 
     /**
      * Get the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -92,7 +96,7 @@ public final class ApplicationGatewayWafDynamicManifestPropertiesResult {
 
     /**
      * Set the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ApplicationGatewayWafDynamicManifestPropertiesResult object itself.
      */
@@ -106,7 +110,7 @@ public final class ApplicationGatewayWafDynamicManifestPropertiesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

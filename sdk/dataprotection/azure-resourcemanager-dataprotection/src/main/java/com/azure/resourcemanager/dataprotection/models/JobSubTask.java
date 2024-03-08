@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Details of Job's Sub Task. */
+/**
+ * Details of Job's Sub Task.
+ */
 @Fluent
 public final class JobSubTask {
     /*
@@ -44,13 +46,15 @@ public final class JobSubTask {
     @JsonProperty(value = "taskStatus", required = true)
     private String taskStatus;
 
-    /** Creates an instance of JobSubTask class. */
+    /**
+     * Creates an instance of JobSubTask class.
+     */
     public JobSubTask() {
     }
 
     /**
      * Get the additionalDetails property: Additional details of Sub Tasks.
-     *
+     * 
      * @return the additionalDetails value.
      */
     public Map<String, String> additionalDetails() {
@@ -59,7 +63,7 @@ public final class JobSubTask {
 
     /**
      * Set the additionalDetails property: Additional details of Sub Tasks.
-     *
+     * 
      * @param additionalDetails the additionalDetails value to set.
      * @return the JobSubTask object itself.
      */
@@ -70,7 +74,7 @@ public final class JobSubTask {
 
     /**
      * Get the taskId property: Task Id of the Sub Task.
-     *
+     * 
      * @return the taskId value.
      */
     public int taskId() {
@@ -79,7 +83,7 @@ public final class JobSubTask {
 
     /**
      * Set the taskId property: Task Id of the Sub Task.
-     *
+     * 
      * @param taskId the taskId value to set.
      * @return the JobSubTask object itself.
      */
@@ -90,7 +94,7 @@ public final class JobSubTask {
 
     /**
      * Get the taskName property: Name of the Sub Task.
-     *
+     * 
      * @return the taskName value.
      */
     public String taskName() {
@@ -99,7 +103,7 @@ public final class JobSubTask {
 
     /**
      * Set the taskName property: Name of the Sub Task.
-     *
+     * 
      * @param taskName the taskName value to set.
      * @return the JobSubTask object itself.
      */
@@ -110,7 +114,7 @@ public final class JobSubTask {
 
     /**
      * Get the taskProgress property: Progress of the Sub Task.
-     *
+     * 
      * @return the taskProgress value.
      */
     public String taskProgress() {
@@ -119,7 +123,7 @@ public final class JobSubTask {
 
     /**
      * Get the taskStatus property: Status of the Sub Task.
-     *
+     * 
      * @return the taskStatus value.
      */
     public String taskStatus() {
@@ -128,7 +132,7 @@ public final class JobSubTask {
 
     /**
      * Set the taskStatus property: Status of the Sub Task.
-     *
+     * 
      * @param taskStatus the taskStatus value to set.
      * @return the JobSubTask object itself.
      */
@@ -139,19 +143,17 @@ public final class JobSubTask {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (taskName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property taskName in model JobSubTask"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property taskName in model JobSubTask"));
         }
         if (taskStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property taskStatus in model JobSubTask"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property taskStatus in model JobSubTask"));
         }
     }
 

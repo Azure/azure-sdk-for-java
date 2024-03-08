@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the ListVirtualNetworks API service call. */
+/**
+ * Response for the ListVirtualNetworks API service call.
+ */
 @Fluent
 public final class VirtualNetworkListResult {
     /*
@@ -24,13 +26,15 @@ public final class VirtualNetworkListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VirtualNetworkListResult class. */
+    /**
+     * Creates an instance of VirtualNetworkListResult class.
+     */
     public VirtualNetworkListResult() {
     }
 
     /**
      * Get the value property: A list of VirtualNetwork resources in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualNetworkInner> value() {
@@ -39,7 +43,7 @@ public final class VirtualNetworkListResult {
 
     /**
      * Set the value property: A list of VirtualNetwork resources in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualNetworkListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class VirtualNetworkListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class VirtualNetworkListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualNetworkListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class VirtualNetworkListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

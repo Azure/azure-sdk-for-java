@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.network.models.SignaturesOverridesProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains all specific policy signatures overrides for the IDPS. */
+/**
+ * Contains all specific policy signatures overrides for the IDPS.
+ */
 @Fluent
 public final class SignaturesOverridesInner extends ProxyResource {
     /*
@@ -36,13 +38,15 @@ public final class SignaturesOverridesInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SignaturesOverridesProperties properties;
 
-    /** Creates an instance of SignaturesOverridesInner class. */
+    /**
+     * Creates an instance of SignaturesOverridesInner class.
+     */
     public SignaturesOverridesInner() {
     }
 
     /**
      * Get the name property: Contains the name of the resource (default).
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +55,7 @@ public final class SignaturesOverridesInner extends ProxyResource {
 
     /**
      * Set the name property: Contains the name of the resource (default).
-     *
+     * 
      * @param name the name value to set.
      * @return the SignaturesOverridesInner object itself.
      */
@@ -62,7 +66,7 @@ public final class SignaturesOverridesInner extends ProxyResource {
 
     /**
      * Get the id property: Will contain the resource id of the signature override resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -71,7 +75,7 @@ public final class SignaturesOverridesInner extends ProxyResource {
 
     /**
      * Set the id property: Will contain the resource id of the signature override resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the SignaturesOverridesInner object itself.
      */
@@ -83,7 +87,7 @@ public final class SignaturesOverridesInner extends ProxyResource {
     /**
      * Get the type property: Will contain the type of the resource:
      * Microsoft.Network/firewallPolicies/intrusionDetectionSignaturesOverrides.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -93,7 +97,7 @@ public final class SignaturesOverridesInner extends ProxyResource {
     /**
      * Set the type property: Will contain the type of the resource:
      * Microsoft.Network/firewallPolicies/intrusionDetectionSignaturesOverrides.
-     *
+     * 
      * @param type the type value to set.
      * @return the SignaturesOverridesInner object itself.
      */
@@ -104,7 +108,7 @@ public final class SignaturesOverridesInner extends ProxyResource {
 
     /**
      * Get the properties property: Will contain the properties of the resource (the actual signature overrides).
-     *
+     * 
      * @return the properties value.
      */
     public SignaturesOverridesProperties properties() {
@@ -113,7 +117,7 @@ public final class SignaturesOverridesInner extends ProxyResource {
 
     /**
      * Set the properties property: Will contain the properties of the resource (the actual signature overrides).
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SignaturesOverridesInner object itself.
      */
@@ -124,7 +128,7 @@ public final class SignaturesOverridesInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

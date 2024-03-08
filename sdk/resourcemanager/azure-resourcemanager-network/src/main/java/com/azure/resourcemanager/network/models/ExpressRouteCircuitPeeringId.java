@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ExpressRoute circuit peering identifier. */
+/**
+ * ExpressRoute circuit peering identifier.
+ */
 @Fluent
 public final class ExpressRouteCircuitPeeringId {
     /*
@@ -16,13 +18,15 @@ public final class ExpressRouteCircuitPeeringId {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ExpressRouteCircuitPeeringId class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitPeeringId class.
+     */
     public ExpressRouteCircuitPeeringId() {
     }
 
     /**
      * Get the id property: The ID of the ExpressRoute circuit peering.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class ExpressRouteCircuitPeeringId {
 
     /**
      * Set the id property: The ID of the ExpressRoute circuit peering.
-     *
+     * 
      * @param id the id value to set.
      * @return the ExpressRouteCircuitPeeringId object itself.
      */
@@ -42,7 +46,7 @@ public final class ExpressRouteCircuitPeeringId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

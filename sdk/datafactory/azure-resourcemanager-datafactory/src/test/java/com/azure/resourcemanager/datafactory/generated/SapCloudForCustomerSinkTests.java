@@ -13,18 +13,18 @@ public final class SapCloudForCustomerSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapCloudForCustomerSink model = BinaryData.fromString(
-            "{\"type\":\"SapCloudForCustomerSink\",\"writeBehavior\":\"Update\",\"httpRequestTimeout\":\"dataokfrhfafxcgjucm\",\"writeBatchSize\":\"dataxdulvue\",\"writeBatchTimeout\":\"datarxqscdbbwejrmk\",\"sinkRetryCount\":\"datae\",\"sinkRetryWait\":\"dataaillfscosf\",\"maxConcurrentConnections\":\"dataotvneteehndfpflf\",\"disableMetricsCollection\":\"datagfnaoehkgpkss\",\"\":{\"c\":\"datakwxdgc\",\"yrjwxhslrbwwkbyw\":\"datak\",\"uhuixqwogg\":\"datadhsodofsxjikyds\",\"kyft\":\"datacxdmxhuwldfa\"}}")
+            "{\"type\":\"SapCloudForCustomerSink\",\"writeBehavior\":\"Update\",\"httpRequestTimeout\":\"datagxikzvnghtknrw\",\"writeBatchSize\":\"dataysnmy\",\"writeBatchTimeout\":\"datafmlcnrapxw\",\"sinkRetryCount\":\"datapxoelfobehr\",\"sinkRetryWait\":\"dataglojjcziytf\",\"maxConcurrentConnections\":\"datavirmbr\",\"disableMetricsCollection\":\"datagnqa\",\"\":{\"dzvuhw\":\"datamsfybh\"}}")
             .toObject(SapCloudForCustomerSink.class);
         Assertions.assertEquals(SapCloudForCustomerSinkWriteBehavior.UPDATE, model.writeBehavior());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapCloudForCustomerSink model = new SapCloudForCustomerSink().withWriteBatchSize("dataxdulvue")
-            .withWriteBatchTimeout("datarxqscdbbwejrmk").withSinkRetryCount("datae").withSinkRetryWait("dataaillfscosf")
-            .withMaxConcurrentConnections("dataotvneteehndfpflf").withDisableMetricsCollection("datagfnaoehkgpkss")
-            .withWriteBehavior(SapCloudForCustomerSinkWriteBehavior.UPDATE)
-            .withHttpRequestTimeout("dataokfrhfafxcgjucm");
+        SapCloudForCustomerSink model = new SapCloudForCustomerSink().withWriteBatchSize("dataysnmy")
+            .withWriteBatchTimeout("datafmlcnrapxw").withSinkRetryCount("datapxoelfobehr")
+            .withSinkRetryWait("dataglojjcziytf").withMaxConcurrentConnections("datavirmbr")
+            .withDisableMetricsCollection("datagnqa").withWriteBehavior(SapCloudForCustomerSinkWriteBehavior.UPDATE)
+            .withHttpRequestTimeout("datagxikzvnghtknrw");
         model = BinaryData.fromObject(model).toObject(SapCloudForCustomerSink.class);
         Assertions.assertEquals(SapCloudForCustomerSinkWriteBehavior.UPDATE, model.writeBehavior());
     }

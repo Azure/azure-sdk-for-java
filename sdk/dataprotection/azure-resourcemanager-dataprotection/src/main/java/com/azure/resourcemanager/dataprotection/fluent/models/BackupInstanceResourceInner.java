@@ -12,8 +12,8 @@ import java.util.Map;
 
 /**
  * BackupInstanceResource
- *
- * <p>BackupInstance Resource.
+ * 
+ * BackupInstance Resource.
  */
 @Fluent
 public final class BackupInstanceResourceInner extends DppProxyResource {
@@ -23,13 +23,15 @@ public final class BackupInstanceResourceInner extends DppProxyResource {
     @JsonProperty(value = "properties")
     private BackupInstance properties;
 
-    /** Creates an instance of BackupInstanceResourceInner class. */
+    /**
+     * Creates an instance of BackupInstanceResourceInner class.
+     */
     public BackupInstanceResourceInner() {
     }
 
     /**
      * Get the properties property: BackupInstanceResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public BackupInstance properties() {
@@ -38,7 +40,7 @@ public final class BackupInstanceResourceInner extends DppProxyResource {
 
     /**
      * Set the properties property: BackupInstanceResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BackupInstanceResourceInner object itself.
      */
@@ -47,7 +49,9 @@ public final class BackupInstanceResourceInner extends DppProxyResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupInstanceResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -56,7 +60,7 @@ public final class BackupInstanceResourceInner extends DppProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

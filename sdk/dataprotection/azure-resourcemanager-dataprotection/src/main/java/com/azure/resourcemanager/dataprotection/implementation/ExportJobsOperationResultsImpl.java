@@ -20,22 +20,18 @@ public final class ExportJobsOperationResultsImpl implements ExportJobsOperation
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public ExportJobsOperationResultsImpl(
-        ExportJobsOperationResultsClient innerClient,
+    public ExportJobsOperationResultsImpl(ExportJobsOperationResultsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ExportJobsResult> getWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
-        Response<ExportJobsResultInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
+    public Response<ExportJobsResult> getWithResponse(String resourceGroupName, String vaultName, String operationId,
+        Context context) {
+        Response<ExportJobsResultInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ExportJobsResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;

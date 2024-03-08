@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.SecurityPartnerProviderConnectio
 import com.azure.resourcemanager.network.models.SecurityProviderName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the Security Partner Provider. */
+/**
+ * Properties of the Security Partner Provider.
+ */
 @Fluent
 public final class SecurityPartnerProviderPropertiesFormat {
     /*
@@ -38,13 +40,15 @@ public final class SecurityPartnerProviderPropertiesFormat {
     @JsonProperty(value = "virtualHub")
     private SubResource virtualHub;
 
-    /** Creates an instance of SecurityPartnerProviderPropertiesFormat class. */
+    /**
+     * Creates an instance of SecurityPartnerProviderPropertiesFormat class.
+     */
     public SecurityPartnerProviderPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the Security Partner Provider resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -53,7 +57,7 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Get the securityProviderName property: The security provider name.
-     *
+     * 
      * @return the securityProviderName value.
      */
     public SecurityProviderName securityProviderName() {
@@ -62,7 +66,7 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Set the securityProviderName property: The security provider name.
-     *
+     * 
      * @param securityProviderName the securityProviderName value to set.
      * @return the SecurityPartnerProviderPropertiesFormat object itself.
      */
@@ -73,7 +77,7 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Get the connectionStatus property: The connection status with the Security Partner Provider.
-     *
+     * 
      * @return the connectionStatus value.
      */
     public SecurityPartnerProviderConnectionStatus connectionStatus() {
@@ -82,7 +86,7 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Get the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
-     *
+     * 
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -91,7 +95,7 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Set the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the SecurityPartnerProviderPropertiesFormat object itself.
      */
@@ -102,7 +106,7 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

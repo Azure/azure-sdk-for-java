@@ -9,20 +9,26 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * The scope for the auto user
- *
- * <p>The default value is Pool. If the pool is running Windows a value of Task should be specified if stricter
- * isolation between tasks is required. For example, if the task mutates the registry in a way which could impact other
- * tasks, or if certificates have been specified on the pool which should not be accessible by normal tasks but should
- * be accessible by start tasks.
+ * 
+ * The default value is Pool. If the pool is running Windows a value of Task should be specified if stricter isolation
+ * between tasks is required. For example, if the task mutates the registry in a way which could impact other tasks, or
+ * if certificates have been specified on the pool which should not be accessible by normal tasks but should be
+ * accessible by start tasks.
  */
 public enum AutoUserScope {
-    /** Enum value Task. */
+    /**
+     * Enum value Task.
+     */
     TASK("Task"),
 
-    /** Enum value Pool. */
+    /**
+     * Enum value Pool.
+     */
     POOL("Pool");
 
-    /** The actual serialized value for a AutoUserScope instance. */
+    /**
+     * The actual serialized value for a AutoUserScope instance.
+     */
     private final String value;
 
     AutoUserScope(String value) {
@@ -31,7 +37,7 @@ public enum AutoUserScope {
 
     /**
      * Parses a serialized value to a AutoUserScope instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AutoUserScope object, or null if unable to parse.
      */
@@ -49,7 +55,9 @@ public enum AutoUserScope {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

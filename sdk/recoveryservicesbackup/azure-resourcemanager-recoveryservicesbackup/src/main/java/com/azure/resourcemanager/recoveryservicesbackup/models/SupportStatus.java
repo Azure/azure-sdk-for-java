@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Support status of feature. */
+/**
+ * Support status of feature.
+ */
 public final class SupportStatus extends ExpandableStringEnum<SupportStatus> {
-    /** Static value Invalid for SupportStatus. */
+    /**
+     * Static value Invalid for SupportStatus.
+     */
     public static final SupportStatus INVALID = fromString("Invalid");
 
-    /** Static value Supported for SupportStatus. */
+    /**
+     * Static value Supported for SupportStatus.
+     */
     public static final SupportStatus SUPPORTED = fromString("Supported");
 
-    /** Static value DefaultOFF for SupportStatus. */
+    /**
+     * Static value DefaultOFF for SupportStatus.
+     */
     public static final SupportStatus DEFAULT_OFF = fromString("DefaultOFF");
 
-    /** Static value DefaultON for SupportStatus. */
+    /**
+     * Static value DefaultON for SupportStatus.
+     */
     public static final SupportStatus DEFAULT_ON = fromString("DefaultON");
 
-    /** Static value NotSupported for SupportStatus. */
+    /**
+     * Static value NotSupported for SupportStatus.
+     */
     public static final SupportStatus NOT_SUPPORTED = fromString("NotSupported");
 
     /**
      * Creates a new instance of SupportStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class SupportStatus extends ExpandableStringEnum<SupportStatus> {
 
     /**
      * Creates or finds a SupportStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SupportStatus.
      */
@@ -47,7 +59,7 @@ public final class SupportStatus extends ExpandableStringEnum<SupportStatus> {
 
     /**
      * Gets known SupportStatus values.
-     *
+     * 
      * @return known SupportStatus values.
      */
     public static Collection<SupportStatus> values() {

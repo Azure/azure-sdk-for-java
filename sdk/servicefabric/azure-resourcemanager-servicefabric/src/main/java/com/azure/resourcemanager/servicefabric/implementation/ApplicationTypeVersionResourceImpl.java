@@ -12,10 +12,8 @@ import com.azure.resourcemanager.servicefabric.models.ApplicationTypeVersionReso
 import java.util.Collections;
 import java.util.Map;
 
-public final class ApplicationTypeVersionResourceImpl
-    implements ApplicationTypeVersionResource,
-        ApplicationTypeVersionResource.Definition,
-        ApplicationTypeVersionResource.Update {
+public final class ApplicationTypeVersionResourceImpl implements ApplicationTypeVersionResource,
+    ApplicationTypeVersionResource.Definition, ApplicationTypeVersionResource.Update {
     private ApplicationTypeVersionResourceInner innerObject;
 
     private final com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager;
@@ -98,8 +96,8 @@ public final class ApplicationTypeVersionResourceImpl
 
     private String version;
 
-    public ApplicationTypeVersionResourceImpl withExistingApplicationType(
-        String resourceGroupName, String clusterName, String applicationTypeName) {
+    public ApplicationTypeVersionResourceImpl withExistingApplicationType(String resourceGroupName, String clusterName,
+        String applicationTypeName) {
         this.resourceGroupName = resourceGroupName;
         this.clusterName = clusterName;
         this.applicationTypeName = applicationTypeName;
@@ -107,27 +105,19 @@ public final class ApplicationTypeVersionResourceImpl
     }
 
     public ApplicationTypeVersionResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypeVersions()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, applicationTypeName, version, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions().createOrUpdate(resourceGroupName,
+            clusterName, applicationTypeName, version, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ApplicationTypeVersionResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypeVersions()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, applicationTypeName, version, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions().createOrUpdate(resourceGroupName,
+            clusterName, applicationTypeName, version, this.innerModel(), context);
         return this;
     }
 
-    ApplicationTypeVersionResourceImpl(
-        String name, com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
+    ApplicationTypeVersionResourceImpl(String name,
+        com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = new ApplicationTypeVersionResourceInner();
         this.serviceManager = serviceManager;
         this.version = name;
@@ -138,27 +128,18 @@ public final class ApplicationTypeVersionResourceImpl
     }
 
     public ApplicationTypeVersionResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypeVersions()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, applicationTypeName, version, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions().createOrUpdate(resourceGroupName,
+            clusterName, applicationTypeName, version, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ApplicationTypeVersionResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypeVersions()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, applicationTypeName, version, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions().createOrUpdate(resourceGroupName,
+            clusterName, applicationTypeName, version, this.innerModel(), context);
         return this;
     }
 
-    ApplicationTypeVersionResourceImpl(
-        ApplicationTypeVersionResourceInner innerObject,
+    ApplicationTypeVersionResourceImpl(ApplicationTypeVersionResourceInner innerObject,
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -169,22 +150,14 @@ public final class ApplicationTypeVersionResourceImpl
     }
 
     public ApplicationTypeVersionResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypeVersions()
-                .getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions()
+            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, Context.NONE).getValue();
         return this;
     }
 
     public ApplicationTypeVersionResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getApplicationTypeVersions()
-                .getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getApplicationTypeVersions()
+            .getWithResponse(resourceGroupName, clusterName, applicationTypeName, version, context).getValue();
         return this;
     }
 

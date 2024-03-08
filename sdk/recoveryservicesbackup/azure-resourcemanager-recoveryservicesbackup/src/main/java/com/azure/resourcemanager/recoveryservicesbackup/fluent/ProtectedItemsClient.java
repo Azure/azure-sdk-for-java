@@ -10,12 +10,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectedItemResourceInner;
 
-/** An instance of this class provides access to all the operations defined in ProtectedItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectedItemsClient.
+ */
 public interface ProtectedItemsClient {
     /**
      * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call the GetItemOperationResult API.
-     *
+     * operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -29,19 +32,14 @@ public interface ProtectedItemsClient {
      * @return base class for backup items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectedItemResourceInner> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String filter,
-        Context context);
+    Response<ProtectedItemResourceInner> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String filter, Context context);
 
     /**
      * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call the GetItemOperationResult API.
-     *
+     * operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -53,13 +51,13 @@ public interface ProtectedItemsClient {
      * @return base class for backup items.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectedItemResourceInner get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName);
+    ProtectedItemResourceInner get(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName);
 
     /**
      * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
      * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -73,19 +71,14 @@ public interface ProtectedItemsClient {
      * @return base class for backup items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProtectedItemResourceInner> createOrUpdateWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ProtectedItemResourceInner parameters,
+    Response<ProtectedItemResourceInner> createOrUpdateWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, ProtectedItemResourceInner parameters,
         Context context);
 
     /**
      * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
      * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -98,18 +91,14 @@ public interface ProtectedItemsClient {
      * @return base class for backup items.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProtectedItemResourceInner createOrUpdate(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ProtectedItemResourceInner parameters);
+    ProtectedItemResourceInner createOrUpdate(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, ProtectedItemResourceInner parameters);
 
     /**
      * Used to disable backup of an item within a container. This is an asynchronous operation. To know the status of
-     * the request, call the GetItemOperationResult API.
-     *
+     * the
+     * request, call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -122,18 +111,14 @@ public interface ProtectedItemsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        Context context);
+    Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, Context context);
 
     /**
      * Used to disable backup of an item within a container. This is an asynchronous operation. To know the status of
-     * the request, call the GetItemOperationResult API.
-     *
+     * the
+     * request, call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -144,6 +129,6 @@ public interface ProtectedItemsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName);
+    void delete(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName);
 }

@@ -8,38 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The IPSec encryption algorithm (IKE phase 1). */
+/**
+ * The IPSec encryption algorithm (IKE phase 1).
+ */
 public final class IpsecEncryption extends ExpandableStringEnum<IpsecEncryption> {
-    /** Static value None for IpsecEncryption. */
+    /**
+     * Static value None for IpsecEncryption.
+     */
     public static final IpsecEncryption NONE = fromString("None");
 
-    /** Static value DES for IpsecEncryption. */
+    /**
+     * Static value DES for IpsecEncryption.
+     */
     public static final IpsecEncryption DES = fromString("DES");
 
-    /** Static value DES3 for IpsecEncryption. */
+    /**
+     * Static value DES3 for IpsecEncryption.
+     */
     public static final IpsecEncryption DES3 = fromString("DES3");
 
-    /** Static value AES128 for IpsecEncryption. */
+    /**
+     * Static value AES128 for IpsecEncryption.
+     */
     public static final IpsecEncryption AES128 = fromString("AES128");
 
-    /** Static value AES192 for IpsecEncryption. */
+    /**
+     * Static value AES192 for IpsecEncryption.
+     */
     public static final IpsecEncryption AES192 = fromString("AES192");
 
-    /** Static value AES256 for IpsecEncryption. */
+    /**
+     * Static value AES256 for IpsecEncryption.
+     */
     public static final IpsecEncryption AES256 = fromString("AES256");
 
-    /** Static value GCMAES128 for IpsecEncryption. */
+    /**
+     * Static value GCMAES128 for IpsecEncryption.
+     */
     public static final IpsecEncryption GCMAES128 = fromString("GCMAES128");
 
-    /** Static value GCMAES192 for IpsecEncryption. */
+    /**
+     * Static value GCMAES192 for IpsecEncryption.
+     */
     public static final IpsecEncryption GCMAES192 = fromString("GCMAES192");
 
-    /** Static value GCMAES256 for IpsecEncryption. */
+    /**
+     * Static value GCMAES256 for IpsecEncryption.
+     */
     public static final IpsecEncryption GCMAES256 = fromString("GCMAES256");
 
     /**
      * Creates a new instance of IpsecEncryption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +68,7 @@ public final class IpsecEncryption extends ExpandableStringEnum<IpsecEncryption>
 
     /**
      * Creates or finds a IpsecEncryption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IpsecEncryption.
      */
@@ -59,7 +79,7 @@ public final class IpsecEncryption extends ExpandableStringEnum<IpsecEncryption>
 
     /**
      * Gets known IpsecEncryption values.
-     *
+     * 
      * @return known IpsecEncryption values.
      */
     public static Collection<IpsecEncryption> values() {

@@ -7,20 +7,18 @@ package com.azure.resourcemanager.deviceupdate.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.models.IotHubSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IotHubSettingsTests {
-    @Test
-    public void testDeserialize() {
-        IotHubSettings model =
-            BinaryData.fromString("{\"resourceId\":\"jeiachboosfl\"}").toObject(IotHubSettings.class);
-        Assertions.assertEquals("jeiachboosfl", model.resourceId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        IotHubSettings model = BinaryData.fromString("{\"resourceId\":\"dwzjeiach\"}").toObject(IotHubSettings.class);
+        Assertions.assertEquals("dwzjeiach", model.resourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        IotHubSettings model = new IotHubSettings().withResourceId("jeiachboosfl");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        IotHubSettings model = new IotHubSettings().withResourceId("dwzjeiach");
         model = BinaryData.fromObject(model).toObject(IotHubSettings.class);
-        Assertions.assertEquals("jeiachboosfl", model.resourceId());
+        Assertions.assertEquals("dwzjeiach", model.resourceId());
     }
 }

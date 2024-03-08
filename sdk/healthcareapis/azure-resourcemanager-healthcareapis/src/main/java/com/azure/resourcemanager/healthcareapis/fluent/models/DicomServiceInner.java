@@ -6,17 +6,22 @@ package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.healthcareapis.models.CorsConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.DicomServiceAuthenticationConfiguration;
+import com.azure.resourcemanager.healthcareapis.models.Encryption;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthcareapis.models.ServiceEventState;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityIdentity;
 import com.azure.resourcemanager.healthcareapis.models.TaggedResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The description of Dicom Service. */
+/**
+ * The description of Dicom Service.
+ */
 @Fluent
 public final class DicomServiceInner extends TaggedResource {
     /*
@@ -32,15 +37,20 @@ public final class DicomServiceInner extends TaggedResource {
     private SystemData systemData;
 
     /*
-     * Setting indicating whether the service has a managed identity associated
-     * with it.
+     * Setting indicating whether the service has a managed identity associated with it.
      */
     @JsonProperty(value = "identity")
     private ServiceManagedIdentityIdentity identity;
 
     /**
+     * Creates an instance of DicomServiceInner class.
+     */
+    public DicomServiceInner() {
+    }
+
+    /**
      * Get the innerProperties property: Dicom Service configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DicomServiceProperties innerProperties() {
@@ -49,7 +59,7 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -58,7 +68,7 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Get the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @return the identity value.
      */
     public ServiceManagedIdentityIdentity identity() {
@@ -67,7 +77,7 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Set the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the DicomServiceInner object itself.
      */
@@ -76,21 +86,27 @@ public final class DicomServiceInner extends TaggedResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DicomServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DicomServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DicomServiceInner withEtag(String etag) {
         super.withEtag(etag);
@@ -99,7 +115,7 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -108,7 +124,7 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Get the authenticationConfiguration property: Dicom Service authentication configuration.
-     *
+     * 
      * @return the authenticationConfiguration value.
      */
     public DicomServiceAuthenticationConfiguration authenticationConfiguration() {
@@ -117,12 +133,12 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Set the authenticationConfiguration property: Dicom Service authentication configuration.
-     *
+     * 
      * @param authenticationConfiguration the authenticationConfiguration value to set.
      * @return the DicomServiceInner object itself.
      */
-    public DicomServiceInner withAuthenticationConfiguration(
-        DicomServiceAuthenticationConfiguration authenticationConfiguration) {
+    public DicomServiceInner
+        withAuthenticationConfiguration(DicomServiceAuthenticationConfiguration authenticationConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DicomServiceProperties();
         }
@@ -131,8 +147,31 @@ public final class DicomServiceInner extends TaggedResource {
     }
 
     /**
+     * Get the corsConfiguration property: Dicom Service Cors configuration.
+     * 
+     * @return the corsConfiguration value.
+     */
+    public CorsConfiguration corsConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().corsConfiguration();
+    }
+
+    /**
+     * Set the corsConfiguration property: Dicom Service Cors configuration.
+     * 
+     * @param corsConfiguration the corsConfiguration value to set.
+     * @return the DicomServiceInner object itself.
+     */
+    public DicomServiceInner withCorsConfiguration(CorsConfiguration corsConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DicomServiceProperties();
+        }
+        this.innerProperties().withCorsConfiguration(corsConfiguration);
+        return this;
+    }
+
+    /**
      * Get the serviceUrl property: The url of the Dicom Services.
-     *
+     * 
      * @return the serviceUrl value.
      */
     public String serviceUrl() {
@@ -142,7 +181,7 @@ public final class DicomServiceInner extends TaggedResource {
     /**
      * Get the privateEndpointConnections property: The list of private endpoint connections that are set up for this
      * resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -150,9 +189,9 @@ public final class DicomServiceInner extends TaggedResource {
     }
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -160,9 +199,9 @@ public final class DicomServiceInner extends TaggedResource {
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DicomServiceInner object itself.
      */
@@ -175,8 +214,40 @@ public final class DicomServiceInner extends TaggedResource {
     }
 
     /**
+     * Get the eventState property: DICOM Service event support status.
+     * 
+     * @return the eventState value.
+     */
+    public ServiceEventState eventState() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventState();
+    }
+
+    /**
+     * Get the encryption property: The encryption settings of the DICOM service.
+     * 
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: The encryption settings of the DICOM service.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the DicomServiceInner object itself.
+     */
+    public DicomServiceInner withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DicomServiceProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

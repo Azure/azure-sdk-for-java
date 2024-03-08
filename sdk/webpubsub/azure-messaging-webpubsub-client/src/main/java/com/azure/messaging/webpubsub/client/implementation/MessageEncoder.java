@@ -10,7 +10,7 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.webpubsub.client.implementation.models.SendEventMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.SendToGroupMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -36,15 +36,15 @@ public final class MessageEncoder {
 
     private static void updateDataForType(SendToGroupMessage message) {
         String dataType = message.getDataType();
-        if (WebPubSubDataType.BINARY.toString().equals(dataType)
-            || WebPubSubDataType.PROTOBUF.toString().equals(dataType)) {
+        if (WebPubSubDataFormat.BINARY.toString().equals(dataType)
+            || WebPubSubDataFormat.PROTOBUF.toString().equals(dataType)) {
             Object data = message.getData();
             if (data instanceof BinaryData) {
                 BinaryData content = (BinaryData) data;
                 data = Base64.getEncoder().encodeToString(content.toBytes());
                 message.setData(data);
             }
-        } else if (WebPubSubDataType.TEXT.toString().equals(dataType)) {
+        } else if (WebPubSubDataFormat.TEXT.toString().equals(dataType)) {
             Object data = message.getData();
             if (data instanceof BinaryData) {
                 BinaryData content = (BinaryData) data;
@@ -56,15 +56,15 @@ public final class MessageEncoder {
 
     private static void updateDataForType(SendEventMessage message) {
         String dataType = message.getDataType();
-        if (WebPubSubDataType.BINARY.toString().equals(dataType)
-            || WebPubSubDataType.PROTOBUF.toString().equals(dataType)) {
+        if (WebPubSubDataFormat.BINARY.toString().equals(dataType)
+            || WebPubSubDataFormat.PROTOBUF.toString().equals(dataType)) {
             Object data = message.getData();
             if (data instanceof BinaryData) {
                 BinaryData content = (BinaryData) data;
                 data = Base64.getEncoder().encodeToString(content.toBytes());
                 message.setData(data);
             }
-        } else if (WebPubSubDataType.TEXT.toString().equals(dataType)) {
+        } else if (WebPubSubDataFormat.TEXT.toString().equals(dataType)) {
             Object data = message.getData();
             if (data instanceof BinaryData) {
                 BinaryData content = (BinaryData) data;

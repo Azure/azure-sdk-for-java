@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Encapsulation method on physical ports. */
+/**
+ * Encapsulation method on physical ports.
+ */
 public final class ExpressRoutePortsEncapsulation extends ExpandableStringEnum<ExpressRoutePortsEncapsulation> {
-    /** Static value Dot1Q for ExpressRoutePortsEncapsulation. */
+    /**
+     * Static value Dot1Q for ExpressRoutePortsEncapsulation.
+     */
     public static final ExpressRoutePortsEncapsulation DOT1Q = fromString("Dot1Q");
 
-    /** Static value QinQ for ExpressRoutePortsEncapsulation. */
+    /**
+     * Static value QinQ for ExpressRoutePortsEncapsulation.
+     */
     public static final ExpressRoutePortsEncapsulation QINQ = fromString("QinQ");
 
     /**
      * Creates a new instance of ExpressRoutePortsEncapsulation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ExpressRoutePortsEncapsulation extends ExpandableStringEnum<E
 
     /**
      * Creates or finds a ExpressRoutePortsEncapsulation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExpressRoutePortsEncapsulation.
      */
@@ -38,7 +44,7 @@ public final class ExpressRoutePortsEncapsulation extends ExpandableStringEnum<E
 
     /**
      * Gets known ExpressRoutePortsEncapsulation values.
-     *
+     * 
      * @return known ExpressRoutePortsEncapsulation values.
      */
     public static Collection<ExpressRoutePortsEncapsulation> values() {

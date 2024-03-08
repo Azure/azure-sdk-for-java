@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SupportedOSDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportedOSDetails model =
-            BinaryData
-                .fromString(
-                    "{\"osName\":\"izfavkjzwf\",\"osType\":\"yay\",\"osVersions\":[{\"version\":\"zs\",\"servicePack\":\"wxrzxmdewsrsxkrp\"},{\"version\":\"jazejwwviyoyp\",\"servicePack\":\"hbrnnhjx\"}]}")
-                .toObject(SupportedOSDetails.class);
+        SupportedOSDetails model = BinaryData.fromString(
+            "{\"osName\":\"izfavkjzwf\",\"osType\":\"yay\",\"osVersions\":[{\"version\":\"zs\",\"servicePack\":\"wxrzxmdewsrsxkrp\"},{\"version\":\"jazejwwviyoyp\",\"servicePack\":\"hbrnnhjx\"}]}")
+            .toObject(SupportedOSDetails.class);
         Assertions.assertEquals("izfavkjzwf", model.osName());
         Assertions.assertEquals("yay", model.osType());
         Assertions.assertEquals("zs", model.osVersions().get(0).version());
@@ -26,15 +24,9 @@ public final class SupportedOSDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedOSDetails model =
-            new SupportedOSDetails()
-                .withOsName("izfavkjzwf")
-                .withOsType("yay")
-                .withOsVersions(
-                    Arrays
-                        .asList(
-                            new OSVersionWrapper().withVersion("zs").withServicePack("wxrzxmdewsrsxkrp"),
-                            new OSVersionWrapper().withVersion("jazejwwviyoyp").withServicePack("hbrnnhjx")));
+        SupportedOSDetails model = new SupportedOSDetails().withOsName("izfavkjzwf").withOsType("yay")
+            .withOsVersions(Arrays.asList(new OSVersionWrapper().withVersion("zs").withServicePack("wxrzxmdewsrsxkrp"),
+                new OSVersionWrapper().withVersion("jazejwwviyoyp").withServicePack("hbrnnhjx")));
         model = BinaryData.fromObject(model).toObject(SupportedOSDetails.class);
         Assertions.assertEquals("izfavkjzwf", model.osName());
         Assertions.assertEquals("yay", model.osType());

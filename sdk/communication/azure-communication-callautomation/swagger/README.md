@@ -21,14 +21,14 @@ There is one swagger for Calling management APIs.
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.1.23
+autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 ```
 
 ### Code generation settings
 ``` yaml
 tag: package-2023-10-03-preview
 require:
-    - https://github.com/Azure/azure-rest-api-specs/blob/4a12c91e35ff85ea2fbbb3b0bab0d432a68d00df/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/Azure/azure-rest-api-specs/blob/3abbcd8fe3f0527560c7db59255f654366e965d8/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -197,6 +197,18 @@ directive:
     from: ContinuousDtmfRecognitionRequest
     to: ContinuousDtmfRecognitionRequestInternal
 - rename-model:
+    from: TranscriptionConfiguration
+    to: TranscriptionConfigurationInternal
+- rename-model:
+    from: StartTranscriptionRequest
+    to: StartTranscriptionRequestInternal
+- rename-model:
+    from: StopTranscriptionRequest
+    to: StopTranscriptionRequestInternal
+- rename-model:
+    from: UpdateTranscriptionRequest
+    to: UpdateTranscriptionRequestInternal
+- rename-model:
     from: StartDialogRequest
     to: StartDialogRequestInternal
 
@@ -235,6 +247,15 @@ directive:
 - remove-model: DialogStarted
 - remove-model: DialogTransfer
 - remove-model: DialogFailed
+- remove-model: TeamsComplianceRecordingStateChanged
+- remove-model: TeamsRecordingStateChanged
+- remove-model: TranscriptionStarted
+- remove-model: TranscriptionResumed
+- remove-model: TranscriptionStopped
+- remove-model: TranscriptionUpdated
+- remove-model: TranscriptionFailed
+
+
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
@@ -355,13 +376,22 @@ directive:
     $.name = "MediaStreamingContentTypeInternal";
 ```
 
-### Rename MediaStreamingTransportType to MediaStreamingTransportType
+### Rename MediaStreamingTransportType to MediaStreamingTransportTypeInternal
 ``` yaml
 directive:
 - from: swagger-document
   where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
   transform: >
     $.name = "MediaStreamingTransportTypeInternal";
+```
+
+### Rename TranscriptionTransportType to TranscriptionTransportTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.TranscriptionTransportType["x-ms-enum"]
+  transform: >
+    $.name = "TranscriptionTransportTypeInternal";
 ```
 
 ### Rename RecognitionType to RecognitionTypeInternal

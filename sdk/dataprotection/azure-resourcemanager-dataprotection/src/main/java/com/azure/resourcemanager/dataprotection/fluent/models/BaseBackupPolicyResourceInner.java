@@ -11,28 +11,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * BaseBackupPolicyResource
- *
- * <p>BaseBackupPolicy resource.
+ * 
+ * BaseBackupPolicy resource.
  */
 @Fluent
 public final class BaseBackupPolicyResourceInner extends DppResource {
     /*
      * BaseBackupPolicy
-     *
+     * 
      * BaseBackupPolicyResource properties
      */
     @JsonProperty(value = "properties")
     private BaseBackupPolicy properties;
 
-    /** Creates an instance of BaseBackupPolicyResourceInner class. */
+    /**
+     * Creates an instance of BaseBackupPolicyResourceInner class.
+     */
     public BaseBackupPolicyResourceInner() {
     }
 
     /**
      * Get the properties property: BaseBackupPolicy
-     *
-     * <p>BaseBackupPolicyResource properties.
-     *
+     * 
+     * BaseBackupPolicyResource properties.
+     * 
      * @return the properties value.
      */
     public BaseBackupPolicy properties() {
@@ -41,9 +43,9 @@ public final class BaseBackupPolicyResourceInner extends DppResource {
 
     /**
      * Set the properties property: BaseBackupPolicy
-     *
-     * <p>BaseBackupPolicyResource properties.
-     *
+     * 
+     * BaseBackupPolicyResource properties.
+     * 
      * @param properties the properties value to set.
      * @return the BaseBackupPolicyResourceInner object itself.
      */
@@ -54,7 +56,7 @@ public final class BaseBackupPolicyResourceInner extends DppResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

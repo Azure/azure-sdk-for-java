@@ -20,6 +20,8 @@ import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
 import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.MediaStreamingContent;
 import com.azure.communication.callautomation.models.MediaStreamingTransport;
+import com.azure.communication.callautomation.models.TranscriptionOptions;
+import com.azure.communication.callautomation.models.TranscriptionTransportType;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
@@ -47,6 +49,7 @@ public class CallAutomationUnitTestBase {
     static final String CALL_INCOMING_CALL_CONTEXT = "eyJhbGciOiJub25lIiwidHlwIjoiSldUIn0.REDACTED";
     static final String CALL_OPERATION_CONTEXT = "operationContext";
     static final String MEDIA_SUBSCRIPTION_ID = "mediaSubscriptionId";
+    static final String DATA_SUBSCRIPTION_ID = "dataSubscriptionId";
     static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
 
@@ -57,19 +60,27 @@ public class CallAutomationUnitTestBase {
         MediaStreamingAudioChannel.MIXED
     );
 
+    static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION = new TranscriptionOptions(
+        "https://websocket.url.com",
+        TranscriptionTransportType.WEBSOCKET,
+        "en-US",
+        true
+    );
+
     public static String generateDownloadResult(String content) {
         return content;
     }
 
     public static String generateCallProperties(String callConnectionId, String serverCallId, String callerId,
                                                 String callerDisplayName, String targetId, String connectionState,
-                                                String subject, String callbackUri, String mediaSubscriptionId) {
+                                                String subject, String callbackUri, String mediaSubscriptionId, String dataSubscriptionId) {
         CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
             .setCallConnectionId(callConnectionId)
             .setServerCallId(serverCallId)
             .setCallbackUri(callbackUri)
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
             .setMediaSubscriptionId(mediaSubscriptionId)
+            .setDataSubscriptionId(dataSubscriptionId)
             .setSourceDisplayName(callerDisplayName)
             .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))
             );

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.healthcareapis.models.OperationResultStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties indicating the operation result of an operation on a service. */
+/**
+ * The properties indicating the operation result of an operation on a service.
+ */
 @Fluent
 public final class OperationResultsDescriptionInner {
     /*
@@ -48,8 +50,14 @@ public final class OperationResultsDescriptionInner {
     private Object properties;
 
     /**
+     * Creates an instance of OperationResultsDescriptionInner class.
+     */
+    public OperationResultsDescriptionInner() {
+    }
+
+    /**
      * Get the id property: The ID of the operation returned.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -58,7 +66,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Get the name property: The name of the operation result.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -67,7 +75,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Get the status property: The status of the operation being performed.
-     *
+     * 
      * @return the status value.
      */
     public OperationResultStatus status() {
@@ -76,7 +84,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Get the startTime property: The time that the operation was started.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -85,7 +93,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Get the endTime property: The time that the operation finished.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -94,7 +102,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Get the properties property: Additional properties of the operation result.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -103,7 +111,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Set the properties property: Additional properties of the operation result.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationResultsDescriptionInner object itself.
      */
@@ -114,7 +122,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an update mobility service request. */
+/**
+ * The properties of an update mobility service request.
+ */
 @Fluent
 public final class UpdateMobilityServiceRequestProperties {
     /*
@@ -16,13 +18,15 @@ public final class UpdateMobilityServiceRequestProperties {
     @JsonProperty(value = "runAsAccountId")
     private String runAsAccountId;
 
-    /** Creates an instance of UpdateMobilityServiceRequestProperties class. */
+    /**
+     * Creates an instance of UpdateMobilityServiceRequestProperties class.
+     */
     public UpdateMobilityServiceRequestProperties() {
     }
 
     /**
      * Get the runAsAccountId property: The CS run as account Id.
-     *
+     * 
      * @return the runAsAccountId value.
      */
     public String runAsAccountId() {
@@ -31,7 +35,7 @@ public final class UpdateMobilityServiceRequestProperties {
 
     /**
      * Set the runAsAccountId property: The CS run as account Id.
-     *
+     * 
      * @param runAsAccountId the runAsAccountId value to set.
      * @return the UpdateMobilityServiceRequestProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class UpdateMobilityServiceRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

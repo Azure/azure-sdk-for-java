@@ -5,36 +5,42 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a device telemetry event (DeviceTelemetry). */
+/**
+ * Schema of the Data property of an EventGridEvent for a device telemetry event (DeviceTelemetry).
+ */
 @Fluent
-public class DeviceTelemetryEventProperties {
+public class DeviceTelemetryEventProperties implements JsonSerializable<DeviceTelemetryEventProperties> {
     /*
      * The content of the message from the device.
      */
-    @JsonProperty(value = "body")
     private Object body;
 
     /*
      * Application properties are user-defined strings that can be added to the message. These fields are optional.
      */
-    @JsonProperty(value = "properties")
     private Map<String, String> properties;
 
     /*
      * System properties help identify contents and source of the messages.
      */
-    @JsonProperty(value = "systemProperties")
     private Map<String, String> systemProperties;
 
-    /** Creates an instance of DeviceTelemetryEventProperties class. */
-    public DeviceTelemetryEventProperties() {}
+    /**
+     * Creates an instance of DeviceTelemetryEventProperties class.
+     */
+    public DeviceTelemetryEventProperties() {
+    }
 
     /**
      * Get the body property: The content of the message from the device.
-     *
+     * 
      * @return the body value.
      */
     public Object getBody() {
@@ -43,7 +49,7 @@ public class DeviceTelemetryEventProperties {
 
     /**
      * Set the body property: The content of the message from the device.
-     *
+     * 
      * @param body the body value to set.
      * @return the DeviceTelemetryEventProperties object itself.
      */
@@ -55,7 +61,7 @@ public class DeviceTelemetryEventProperties {
     /**
      * Get the properties property: Application properties are user-defined strings that can be added to the message.
      * These fields are optional.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> getProperties() {
@@ -65,7 +71,7 @@ public class DeviceTelemetryEventProperties {
     /**
      * Set the properties property: Application properties are user-defined strings that can be added to the message.
      * These fields are optional.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeviceTelemetryEventProperties object itself.
      */
@@ -76,7 +82,7 @@ public class DeviceTelemetryEventProperties {
 
     /**
      * Get the systemProperties property: System properties help identify contents and source of the messages.
-     *
+     * 
      * @return the systemProperties value.
      */
     public Map<String, String> getSystemProperties() {
@@ -85,12 +91,55 @@ public class DeviceTelemetryEventProperties {
 
     /**
      * Set the systemProperties property: System properties help identify contents and source of the messages.
-     *
+     * 
      * @param systemProperties the systemProperties value to set.
      * @return the DeviceTelemetryEventProperties object itself.
      */
     public DeviceTelemetryEventProperties setSystemProperties(Map<String, String> systemProperties) {
         this.systemProperties = systemProperties;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("body", this.body);
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("systemProperties", this.systemProperties,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceTelemetryEventProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceTelemetryEventProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceTelemetryEventProperties.
+     */
+    public static DeviceTelemetryEventProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceTelemetryEventProperties deserializedDeviceTelemetryEventProperties
+                = new DeviceTelemetryEventProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("body".equals(fieldName)) {
+                    deserializedDeviceTelemetryEventProperties.body = reader.readUntyped();
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, String> properties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeviceTelemetryEventProperties.properties = properties;
+                } else if ("systemProperties".equals(fieldName)) {
+                    Map<String, String> systemProperties = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDeviceTelemetryEventProperties.systemProperties = systemProperties;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceTelemetryEventProperties;
+        });
     }
 }

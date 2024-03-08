@@ -7,15 +7,23 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx. */
+/**
+ * The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
+ */
 public enum CertificateFormat {
-    /** Enum value Pfx. */
+    /**
+     * Enum value Pfx.
+     */
     PFX("Pfx"),
 
-    /** Enum value Cer. */
+    /**
+     * Enum value Cer.
+     */
     CER("Cer");
 
-    /** The actual serialized value for a CertificateFormat instance. */
+    /**
+     * The actual serialized value for a CertificateFormat instance.
+     */
     private final String value;
 
     CertificateFormat(String value) {
@@ -24,7 +32,7 @@ public enum CertificateFormat {
 
     /**
      * Parses a serialized value to a CertificateFormat instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CertificateFormat object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum CertificateFormat {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

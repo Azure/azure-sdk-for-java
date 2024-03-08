@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Delete activity. */
+/**
+ * Delete activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Delete")
 @JsonFlatten
@@ -55,13 +57,16 @@ public class DeleteActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.storeSettings")
     private StoreReadSettings storeSettings;
 
-    /** Creates an instance of DeleteActivity class. */
-    public DeleteActivity() {}
+    /**
+     * Creates an instance of DeleteActivity class.
+     */
+    public DeleteActivity() {
+    }
 
     /**
      * Get the recursive property: If true, files or sub-folders under current folder path will be deleted recursively.
      * Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the recursive value.
      */
     public Object getRecursive() {
@@ -71,7 +76,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * Set the recursive property: If true, files or sub-folders under current folder path will be deleted recursively.
      * Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param recursive the recursive value to set.
      * @return the DeleteActivity object itself.
      */
@@ -83,7 +88,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * Get the maxConcurrentConnections property: The max concurrent connections to connect data source at the same
      * time.
-     *
+     * 
      * @return the maxConcurrentConnections value.
      */
     public Integer getMaxConcurrentConnections() {
@@ -93,7 +98,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * Set the maxConcurrentConnections property: The max concurrent connections to connect data source at the same
      * time.
-     *
+     * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the DeleteActivity object itself.
      */
@@ -105,7 +110,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * Get the enableLogging property: Whether to record detailed logs of delete-activity execution. Default value is
      * false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the enableLogging value.
      */
     public Object getEnableLogging() {
@@ -115,7 +120,7 @@ public class DeleteActivity extends ExecutionActivity {
     /**
      * Set the enableLogging property: Whether to record detailed logs of delete-activity execution. Default value is
      * false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param enableLogging the enableLogging value to set.
      * @return the DeleteActivity object itself.
      */
@@ -126,7 +131,7 @@ public class DeleteActivity extends ExecutionActivity {
 
     /**
      * Get the logStorageSettings property: Log storage settings customer need to provide when enableLogging is true.
-     *
+     * 
      * @return the logStorageSettings value.
      */
     public LogStorageSettings getLogStorageSettings() {
@@ -135,7 +140,7 @@ public class DeleteActivity extends ExecutionActivity {
 
     /**
      * Set the logStorageSettings property: Log storage settings customer need to provide when enableLogging is true.
-     *
+     * 
      * @param logStorageSettings the logStorageSettings value to set.
      * @return the DeleteActivity object itself.
      */
@@ -146,7 +151,7 @@ public class DeleteActivity extends ExecutionActivity {
 
     /**
      * Get the dataset property: Delete activity dataset reference.
-     *
+     * 
      * @return the dataset value.
      */
     public DatasetReference getDataset() {
@@ -155,7 +160,7 @@ public class DeleteActivity extends ExecutionActivity {
 
     /**
      * Set the dataset property: Delete activity dataset reference.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the DeleteActivity object itself.
      */
@@ -166,7 +171,7 @@ public class DeleteActivity extends ExecutionActivity {
 
     /**
      * Get the storeSettings property: Delete activity store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreReadSettings getStoreSettings() {
@@ -175,7 +180,7 @@ public class DeleteActivity extends ExecutionActivity {
 
     /**
      * Set the storeSettings property: Delete activity store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the DeleteActivity object itself.
      */
@@ -184,56 +189,72 @@ public class DeleteActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

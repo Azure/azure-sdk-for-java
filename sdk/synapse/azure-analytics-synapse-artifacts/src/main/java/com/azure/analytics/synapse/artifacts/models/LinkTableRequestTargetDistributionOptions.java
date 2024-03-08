@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The LinkTableRequestTargetDistributionOptions model. */
+/**
+ * The LinkTableRequestTargetDistributionOptions model.
+ */
 @Fluent
 public final class LinkTableRequestTargetDistributionOptions {
     /*
@@ -22,12 +24,15 @@ public final class LinkTableRequestTargetDistributionOptions {
     @JsonProperty(value = "distributionColumn")
     private String distributionColumn;
 
-    /** Creates an instance of LinkTableRequestTargetDistributionOptions class. */
-    public LinkTableRequestTargetDistributionOptions() {}
+    /**
+     * Creates an instance of LinkTableRequestTargetDistributionOptions class.
+     */
+    public LinkTableRequestTargetDistributionOptions() {
+    }
 
     /**
      * Get the type property: Target table distribution type.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -36,7 +41,7 @@ public final class LinkTableRequestTargetDistributionOptions {
 
     /**
      * Set the type property: Target table distribution type.
-     *
+     * 
      * @param type the type value to set.
      * @return the LinkTableRequestTargetDistributionOptions object itself.
      */
@@ -47,7 +52,7 @@ public final class LinkTableRequestTargetDistributionOptions {
 
     /**
      * Get the distributionColumn property: Target table distribution column.
-     *
+     * 
      * @return the distributionColumn value.
      */
     public String getDistributionColumn() {
@@ -56,7 +61,7 @@ public final class LinkTableRequestTargetDistributionOptions {
 
     /**
      * Set the distributionColumn property: Target table distribution column.
-     *
+     * 
      * @param distributionColumn the distributionColumn value to set.
      * @return the LinkTableRequestTargetDistributionOptions object itself.
      */

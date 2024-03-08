@@ -24,7 +24,9 @@ import com.azure.resourcemanager.containerservice.fluent.TrustedAccessRolesClien
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
-/** Initializes a new instance of the ContainerServiceManagementClientImpl type. */
+/**
+ * Initializes a new instance of the ContainerServiceManagementClientImpl type.
+ */
 @ServiceClient(builder = ContainerServiceManagementClientBuilder.class)
 public final class ContainerServiceManagementClientImpl extends AzureServiceClient
     implements ContainerServiceManagementClient {
@@ -37,199 +39,231 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
     /**
      * Gets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The OpenShiftManagedClustersClient object to access its operations. */
+    /**
+     * The OpenShiftManagedClustersClient object to access its operations.
+     */
     private final OpenShiftManagedClustersClient openShiftManagedClusters;
 
     /**
      * Gets the OpenShiftManagedClustersClient object to access its operations.
-     *
+     * 
      * @return the OpenShiftManagedClustersClient object.
      */
     public OpenShiftManagedClustersClient getOpenShiftManagedClusters() {
         return this.openShiftManagedClusters;
     }
 
-    /** The ContainerServicesClient object to access its operations. */
+    /**
+     * The ContainerServicesClient object to access its operations.
+     */
     private final ContainerServicesClient containerServices;
 
     /**
      * Gets the ContainerServicesClient object to access its operations.
-     *
+     * 
      * @return the ContainerServicesClient object.
      */
     public ContainerServicesClient getContainerServices() {
         return this.containerServices;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The ManagedClustersClient object to access its operations. */
+    /**
+     * The ManagedClustersClient object to access its operations.
+     */
     private final ManagedClustersClient managedClusters;
 
     /**
      * Gets the ManagedClustersClient object to access its operations.
-     *
+     * 
      * @return the ManagedClustersClient object.
      */
     public ManagedClustersClient getManagedClusters() {
         return this.managedClusters;
     }
 
-    /** The MaintenanceConfigurationsClient object to access its operations. */
+    /**
+     * The MaintenanceConfigurationsClient object to access its operations.
+     */
     private final MaintenanceConfigurationsClient maintenanceConfigurations;
 
     /**
      * Gets the MaintenanceConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the MaintenanceConfigurationsClient object.
      */
     public MaintenanceConfigurationsClient getMaintenanceConfigurations() {
         return this.maintenanceConfigurations;
     }
 
-    /** The AgentPoolsClient object to access its operations. */
+    /**
+     * The AgentPoolsClient object to access its operations.
+     */
     private final AgentPoolsClient agentPools;
 
     /**
      * Gets the AgentPoolsClient object to access its operations.
-     *
+     * 
      * @return the AgentPoolsClient object.
      */
     public AgentPoolsClient getAgentPools() {
         return this.agentPools;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** The PrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
     private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
     }
 
-    /** The ResolvePrivateLinkServiceIdsClient object to access its operations. */
+    /**
+     * The ResolvePrivateLinkServiceIdsClient object to access its operations.
+     */
     private final ResolvePrivateLinkServiceIdsClient resolvePrivateLinkServiceIds;
 
     /**
      * Gets the ResolvePrivateLinkServiceIdsClient object to access its operations.
-     *
+     * 
      * @return the ResolvePrivateLinkServiceIdsClient object.
      */
     public ResolvePrivateLinkServiceIdsClient getResolvePrivateLinkServiceIds() {
         return this.resolvePrivateLinkServiceIds;
     }
 
-    /** The SnapshotsClient object to access its operations. */
+    /**
+     * The SnapshotsClient object to access its operations.
+     */
     private final SnapshotsClient snapshots;
 
     /**
      * Gets the SnapshotsClient object to access its operations.
-     *
+     * 
      * @return the SnapshotsClient object.
      */
     public SnapshotsClient getSnapshots() {
         return this.snapshots;
     }
 
-    /** The TrustedAccessRoleBindingsClient object to access its operations. */
+    /**
+     * The TrustedAccessRoleBindingsClient object to access its operations.
+     */
     private final TrustedAccessRoleBindingsClient trustedAccessRoleBindings;
 
     /**
      * Gets the TrustedAccessRoleBindingsClient object to access its operations.
-     *
+     * 
      * @return the TrustedAccessRoleBindingsClient object.
      */
     public TrustedAccessRoleBindingsClient getTrustedAccessRoleBindings() {
         return this.trustedAccessRoleBindings;
     }
 
-    /** The TrustedAccessRolesClient object to access its operations. */
+    /**
+     * The TrustedAccessRolesClient object to access its operations.
+     */
     private final TrustedAccessRolesClient trustedAccessRoles;
 
     /**
      * Gets the TrustedAccessRolesClient object to access its operations.
-     *
+     * 
      * @return the TrustedAccessRolesClient object.
      */
     public TrustedAccessRolesClient getTrustedAccessRoles() {
@@ -238,22 +272,17 @@ public final class ContainerServiceManagementClientImpl extends AzureServiceClie
 
     /**
      * Initializes an instance of ContainerServiceManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param subscriptionId Subscription credentials which uniquely identify Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
-    ContainerServiceManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    ContainerServiceManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         super(httpPipeline, serializerAdapter, environment);
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;

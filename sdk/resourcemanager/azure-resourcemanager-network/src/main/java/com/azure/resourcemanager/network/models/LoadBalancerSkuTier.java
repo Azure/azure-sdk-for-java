@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Tier of a load balancer SKU. */
+/**
+ * Tier of a load balancer SKU.
+ */
 public final class LoadBalancerSkuTier extends ExpandableStringEnum<LoadBalancerSkuTier> {
-    /** Static value Regional for LoadBalancerSkuTier. */
+    /**
+     * Static value Regional for LoadBalancerSkuTier.
+     */
     public static final LoadBalancerSkuTier REGIONAL = fromString("Regional");
 
-    /** Static value Global for LoadBalancerSkuTier. */
+    /**
+     * Static value Global for LoadBalancerSkuTier.
+     */
     public static final LoadBalancerSkuTier GLOBAL = fromString("Global");
 
     /**
      * Creates a new instance of LoadBalancerSkuTier value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class LoadBalancerSkuTier extends ExpandableStringEnum<LoadBalancer
 
     /**
      * Creates or finds a LoadBalancerSkuTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LoadBalancerSkuTier.
      */
@@ -38,7 +44,7 @@ public final class LoadBalancerSkuTier extends ExpandableStringEnum<LoadBalancer
 
     /**
      * Gets known LoadBalancerSkuTier values.
-     *
+     * 
      * @return known LoadBalancerSkuTier values.
      */
     public static Collection<LoadBalancerSkuTier> values() {

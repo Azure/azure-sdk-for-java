@@ -93,9 +93,7 @@ public abstract class AmqpRetryPolicy {
         final Duration delay = calculateRetryDelay(retryCount, baseDelay, baseJitter, ThreadLocalRandom.current());
 
         // If delay is smaller or equal to the maximum delay, return the maximum delay.
-        return delay.compareTo(retryOptions.getMaxDelay()) <= 0
-            ? delay
-            : retryOptions.getMaxDelay();
+        return delay.compareTo(retryOptions.getMaxDelay()) <= 0 ? delay : retryOptions.getMaxDelay();
     }
 
     /**

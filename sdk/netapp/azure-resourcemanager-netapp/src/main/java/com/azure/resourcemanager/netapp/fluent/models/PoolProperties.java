@@ -11,12 +11,14 @@ import com.azure.resourcemanager.netapp.models.QosType;
 import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Pool properties. */
+/**
+ * Pool properties.
+ */
 @Fluent
 public final class PoolProperties {
     /*
      * poolId
-     *
+     * 
      * UUID v4 used to identify the Pool
      */
     @JsonProperty(value = "poolId", access = JsonProperty.Access.WRITE_ONLY)
@@ -24,7 +26,7 @@ public final class PoolProperties {
 
     /*
      * size
-     *
+     * 
      * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
      * 4398046511104).
      */
@@ -33,7 +35,7 @@ public final class PoolProperties {
 
     /*
      * serviceLevel
-     *
+     * 
      * The service level of the file system
      */
     @JsonProperty(value = "serviceLevel", required = true)
@@ -71,22 +73,24 @@ public final class PoolProperties {
 
     /*
      * encryptionType
-     *
+     * 
      * Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it.
      * This value can only be set when creating new pool.
      */
     @JsonProperty(value = "encryptionType")
     private EncryptionType encryptionType;
 
-    /** Creates an instance of PoolProperties class. */
+    /**
+     * Creates an instance of PoolProperties class.
+     */
     public PoolProperties() {
     }
 
     /**
      * Get the poolId property: poolId
-     *
-     * <p>UUID v4 used to identify the Pool.
-     *
+     * 
+     * UUID v4 used to identify the Pool.
+     * 
      * @return the poolId value.
      */
     public String poolId() {
@@ -95,10 +99,10 @@ public final class PoolProperties {
 
     /**
      * Get the size property: size
-     *
-     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 
+     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
      * 4398046511104).
-     *
+     * 
      * @return the size value.
      */
     public long size() {
@@ -107,10 +111,10 @@ public final class PoolProperties {
 
     /**
      * Set the size property: size
-     *
-     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 
+     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
      * 4398046511104).
-     *
+     * 
      * @param size the size value to set.
      * @return the PoolProperties object itself.
      */
@@ -121,9 +125,9 @@ public final class PoolProperties {
 
     /**
      * Get the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * 
+     * The service level of the file system.
+     * 
      * @return the serviceLevel value.
      */
     public ServiceLevel serviceLevel() {
@@ -132,9 +136,9 @@ public final class PoolProperties {
 
     /**
      * Set the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * 
+     * The service level of the file system.
+     * 
      * @param serviceLevel the serviceLevel value to set.
      * @return the PoolProperties object itself.
      */
@@ -145,7 +149,7 @@ public final class PoolProperties {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -154,7 +158,7 @@ public final class PoolProperties {
 
     /**
      * Get the totalThroughputMibps property: Total throughput of pool in MiB/s.
-     *
+     * 
      * @return the totalThroughputMibps value.
      */
     public Float totalThroughputMibps() {
@@ -163,7 +167,7 @@ public final class PoolProperties {
 
     /**
      * Get the utilizedThroughputMibps property: Utilized throughput of pool in MiB/s.
-     *
+     * 
      * @return the utilizedThroughputMibps value.
      */
     public Float utilizedThroughputMibps() {
@@ -172,7 +176,7 @@ public final class PoolProperties {
 
     /**
      * Get the qosType property: The qos type of the pool.
-     *
+     * 
      * @return the qosType value.
      */
     public QosType qosType() {
@@ -181,7 +185,7 @@ public final class PoolProperties {
 
     /**
      * Set the qosType property: The qos type of the pool.
-     *
+     * 
      * @param qosType the qosType value to set.
      * @return the PoolProperties object itself.
      */
@@ -192,7 +196,7 @@ public final class PoolProperties {
 
     /**
      * Get the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
-     *
+     * 
      * @return the coolAccess value.
      */
     public Boolean coolAccess() {
@@ -201,7 +205,7 @@ public final class PoolProperties {
 
     /**
      * Set the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
-     *
+     * 
      * @param coolAccess the coolAccess value to set.
      * @return the PoolProperties object itself.
      */
@@ -212,10 +216,10 @@ public final class PoolProperties {
 
     /**
      * Get the encryptionType property: encryptionType
-     *
-     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
-     * it. This value can only be set when creating new pool.
-     *
+     * 
+     * Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it.
+     * This value can only be set when creating new pool.
+     * 
      * @return the encryptionType value.
      */
     public EncryptionType encryptionType() {
@@ -224,10 +228,10 @@ public final class PoolProperties {
 
     /**
      * Set the encryptionType property: encryptionType
-     *
-     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
-     * it. This value can only be set when creating new pool.
-     *
+     * 
+     * Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it.
+     * This value can only be set when creating new pool.
+     * 
      * @param encryptionType the encryptionType value to set.
      * @return the PoolProperties object itself.
      */
@@ -238,14 +242,13 @@ public final class PoolProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceLevel() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property serviceLevel in model PoolProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property serviceLevel in model PoolProperties"));
         }
     }
 

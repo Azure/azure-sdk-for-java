@@ -6,7 +6,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -21,8 +20,6 @@ import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -42,7 +39,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class CosmosMultiHashTest extends TestSuiteBase {
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final JsonNodeFactory JSON_NODE_FACTORY_INSTANCE = JsonNodeFactory.withExactBigDecimals(true);
 
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
@@ -67,6 +63,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         ArrayList<String> paths = new ArrayList<>();
         paths.add("/city");
         paths.add("/zipcode");
+        paths.add("/areaCode"); // expecting int value type
         partitionKeyDefinition.setPaths(paths);
 
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName, partitionKeyDefinition);
@@ -86,27 +83,23 @@ public class CosmosMultiHashTest extends TestSuiteBase {
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
-    public void itemCRUD() throws Exception {
-
-        List<String> pkIds = new ArrayList<>();
-        pkIds.add("Redmond");
-        pkIds.add("98052");
+    public void itemCRUD() {
+        CityItem cityItem = new CityItem(UUID.randomUUID().toString(), "Redmond", "98052", 1);
 
         PartitionKey partitionKey =
             new PartitionKeyBuilder()
-                .add(pkIds.get(0))
-                .add(pkIds.get(1))
+                .add(cityItem.getCity())
+                .add(cityItem.getZipcode())
+                .add(cityItem.getAreaCode())
                 .build();
-        
-        String documentId = UUID.randomUUID().toString();
-        ObjectNode properties = getItem(documentId, pkIds);
-        createdMultiHashContainer.createItem(properties);
 
-        CosmosItemResponse<ObjectNode> readResponse = createdMultiHashContainer.readItem(
-            documentId, partitionKey, ObjectNode.class);
-        validateIdOfItemResponse(documentId, readResponse);
-        assertThat(readResponse.getItem().equals(properties));
-        createdMultiHashContainer.deleteItem(documentId, partitionKey, new CosmosItemRequestOptions());
+        createdMultiHashContainer.createItem(cityItem);
+
+        CosmosItemResponse<CityItem> readResponse = createdMultiHashContainer.readItem(
+            cityItem.getId(), partitionKey, CityItem.class);
+
+        assertThat(readResponse.getItem().toString()).isEqualTo(cityItem.toString());
+        createdMultiHashContainer.deleteItem(cityItem.getId(), partitionKey, new CosmosItemRequestOptions());
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -140,42 +133,32 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         }
     }
 
-    private ObjectNode getItem(String documentId, List<String> pkIds) throws JsonProcessingException {
-        String json = String.format("{ "
-                + "\"id\": \"%s\", "
-                + "\"city\": \"%s\", "
-                + "\"zipcode\": \"%s\" "
-                + "}"
-            , documentId, pkIds.get(0), pkIds.get(1));
-        return
-            OBJECT_MAPPER.readValue(json, ObjectNode.class);
-    }
-
-    private void validateItemResponse(ObjectNode itemProperties,
-                                      CosmosItemResponse<ObjectNode> createResponse) {
-        //Basic validation
-        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
-        assertThat(BridgeInternal.getProperties(createResponse).getId())
-            .as("check Resource Id")
-            .isEqualTo(itemProperties.get("id").asText());
-    }
-
-    private void validateIdOfItemResponse(String expectedId, CosmosItemResponse<ObjectNode> createResponse) {
-        //Basic validation
-        assertThat(BridgeInternal.getProperties(createResponse).getId()).isNotNull();
-        assertThat(BridgeInternal.getProperties(createResponse).getId())
-            .as("check Resource Id")
-            .isEqualTo(expectedId);
+    private void validateResponse(FeedResponse<ObjectNode> response,
+                                  List<CosmosItemIdentity> cosmosItemIdentityList) {
+        assertThat(response.getResults().size()).isEqualTo(cosmosItemIdentityList.size());
+        assertThat(
+                response
+                    .getResults()
+                    .stream()
+                    .map(item -> item.get("id").asText())
+                    .collect(Collectors.toList())
+        ).containsAll(
+                cosmosItemIdentityList
+                    .stream()
+                    .map(itemIdentity -> itemIdentity.getId())
+                    .collect(Collectors.toList())
+        );
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    private void validateDocCRUDandQuery() throws Exception {
+    private void validateDocCRUDAndQuery() throws InterruptedException {
 
-        ArrayList<ObjectNode> docs = createItems();
-        ObjectNode doc = docs.get(0);
+        ArrayList<CityItem> docs = createItems();
+        CityItem doc = docs.get(0);
 
         //Document Create - Negative tests
         //Using incomplete partition key in method params
+        logger.info("validateDocCRUDAndQuery-negative tests-using - using incomplete partition key in method params for create");
         PartitionKey partitionKey =
             new PartitionKeyBuilder()
                 .add("Redmond")
@@ -188,6 +171,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         }
 
         //Using incomplete partition key in item body
+        logger.info("validateDocCRUDAndQuery-negative tests-using - using incomplete partition key in object for create");
         ObjectNode wrongDoc = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
         wrongDoc.set("id", new TextNode(UUID.randomUUID().toString()));
         wrongDoc.set("city", new TextNode("Redmond"));
@@ -199,57 +183,54 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         }
 
         //Document Read
+        logger.info("validateDocCRUDAndQuery-document read using full partition key");
         for (int i = 0; i < docs.size(); i++) {
-            ObjectNode doc_current = docs.get(i);
+            CityItem doc_current = docs.get(i);
             partitionKey = new PartitionKeyBuilder()
-                .add(doc_current.get("city").asText())
-                .add(doc_current.get("zipcode").asText())
+                .add(doc_current.getCity())
+                .add(doc_current.getZipcode())
+                .add(doc_current.getAreaCode())
                 .build();
-            CosmosItemResponse<ObjectNode> response = createdMultiHashContainer.readItem(doc_current.get("id").asText(), partitionKey, ObjectNode.class);
-            validateItemResponse(doc_current, response);
+            CosmosItemResponse<ObjectNode> response = createdMultiHashContainer.readItem(doc_current.getId(), partitionKey, ObjectNode.class);
+            assertThat(response.getItem().get("id").asText()).isEqualTo(doc_current.getId());
         }
 
         //Document Read - Negative tests
         //Using incomplete partition key
-        PartitionKey partialPK = new PartitionKeyBuilder().add(doc.get("city").asText()).build();
+        logger.info("validateDocCRUDAndQuery-negative tests - document read using partial partition key");
+        PartitionKey partialPK = new PartitionKeyBuilder().add(doc.getCity()).build();
         try {
-            createdMultiHashContainer.readItem(doc.get("id").asText(), partialPK, ObjectNode.class);
+            createdMultiHashContainer.readItem(doc.getId(), partialPK, ObjectNode.class);
         } catch (CosmosException e) {
             assertThat(e.getStatusCode()).isEqualTo(400);
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.")).isTrue();
         }
 
         //Read Many - single item
-        List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
+        logger.info("validateDocCRUDAndQuery-readMany for single item");
         List<CosmosItemIdentity> itemList = new ArrayList<>();
-        pairList.add(Pair.of(doc.get("id").asText(),
-            new PartitionKeyBuilder().add(doc.get("city").asText()).add(doc.get("zipcode").asText()).build()));
-        PartitionKey pkToUse = new PartitionKeyBuilder().add(doc.get("city").asText()).add(doc.get("zipcode").asText()).build();
-        itemList.add(new CosmosItemIdentity(pkToUse, doc.get("id").asText()));
+        PartitionKey pkToUse = new PartitionKeyBuilder().add(doc.getCity()).add(doc.getZipcode()).add(doc.getAreaCode()).build();
+        itemList.add(new CosmosItemIdentity(pkToUse, doc.getId()));
 
         FeedResponse<ObjectNode> documentFeedResponse = createdMultiHashContainer.readMany(itemList, ObjectNode.class);
-        assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
-        assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
-            .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));
+        validateResponse(documentFeedResponse, itemList);
 
         //Read Many - several items
-        pairList = new ArrayList<>();
+        logger.info("validateDocCRUDAndQuery-readMany for multiple items");
         itemList = new ArrayList<>();
-        for (ObjectNode jsonNodes : docs) {
-            pairList.add(Pair.of(jsonNodes.get("id").asText(),
-                new PartitionKeyBuilder().add(jsonNodes.get("city").asText()).add(jsonNodes.get("zipcode").asText()).build()));
-            pkToUse = new PartitionKeyBuilder().add(jsonNodes.get("city").asText()).add(jsonNodes.get("zipcode").asText()).build();
-            itemList.add(new CosmosItemIdentity(pkToUse, jsonNodes.get("id").asText()));
+        for (CityItem cityItem : docs) {
+            pkToUse = new PartitionKeyBuilder().add(cityItem.getCity()).add(cityItem.getZipcode()).add(cityItem.getAreaCode()).build();
+            itemList.add(new CosmosItemIdentity(pkToUse, cityItem.getId()));
         }
         documentFeedResponse = createdMultiHashContainer.readMany(itemList, ObjectNode.class);
-        assertThat(documentFeedResponse.getResults().size()).isEqualTo(pairList.size());
-        assertThat(documentFeedResponse.getResults().stream().map(jsonNode -> jsonNode.get("id").textValue()).collect(Collectors.toList()))
-            .containsAll(pairList.stream().map(p -> p.getLeft()).collect(Collectors.toList()));
+        validateResponse(documentFeedResponse, itemList);
+
 
         //Negative test - read many using single item with incomplete partition key
+        logger.info("validateDocCRUDAndQuery-negative tests-readMany for single item with incomplete partition key");
         itemList = new ArrayList<>();
-        pkToUse = new PartitionKeyBuilder().add(doc.get("city").asText()).build();
-        itemList.add(new CosmosItemIdentity(pkToUse, doc.get("id").asText()));
+        pkToUse = new PartitionKeyBuilder().add(doc.getCity()).build();
+        itemList.add(new CosmosItemIdentity(pkToUse, doc.getId()));
         try {
             createdMultiHashContainer.readMany(itemList, ObjectNode.class);
         } catch (IllegalArgumentException e) {
@@ -258,10 +239,11 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         }
 
         //Negative test - read many using several items with incomplete partition keys
+        logger.info("validateDocCRUDAndQuery-negative tests-readMany for multiple items with incomplete partition key");
         itemList = new ArrayList<>();
-        for (ObjectNode jsonNodes : docs) {
-            pkToUse = new PartitionKeyBuilder().add(jsonNodes.get("city").asText()).build();
-            itemList.add(new CosmosItemIdentity(pkToUse, jsonNodes.get("id").asText()));
+        for (CityItem cityItem : docs) {
+            pkToUse = new PartitionKeyBuilder().add(cityItem.getCity()).build();
+            itemList.add(new CosmosItemIdentity(pkToUse, cityItem.getId()));
         }
         try {
             createdMultiHashContainer.readMany(itemList, ObjectNode.class);
@@ -270,42 +252,51 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.")).isTrue();
         }
 
-        //Read All
+        //Read All with full partition key
+        logger.info("validateDocCRUDAndQuery-readAll with full partition key");
         partitionKey = new PartitionKeyBuilder()
             .add("Redmond")
             .add("98053")
+            .add(1)
             .build();
+
         CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setPartitionKey(partitionKey);
         CosmosPagedIterable<ObjectNode> readAllResults =
             createdMultiHashContainer.readAllItems(cosmosQueryRequestOptions, ObjectNode.class);
         assertThat(readAllResults.stream().toArray().length).isEqualTo(2);
 
+        readAllResults = createdMultiHashContainer.readAllItems(partitionKey, ObjectNode.class);
+        assertThat(readAllResults.stream().toArray().length).isEqualTo(2);
+
         //Read All - prefix partition key
+        logger.info("validateDocCRUDAndQuery-readAll with prefix partition key");
         partialPK = new PartitionKeyBuilder().add("Redmond").build();
         cosmosQueryRequestOptions.setPartitionKey(partialPK);
         readAllResults = createdMultiHashContainer.readAllItems(cosmosQueryRequestOptions, ObjectNode.class);
         assertThat(readAllResults.stream().toArray().length).isEqualTo(3);
 
+        readAllResults = createdMultiHashContainer.readAllItems(partialPK, ObjectNode.class);
+        assertThat(readAllResults.stream().toArray().length).isEqualTo(3);
+
         //Negative test - read all with non-prefix partition key
+        logger.info("validateDocCRUDAndQuery-negative tests - readAll with non-prefix partition key");
         partialPK = new PartitionKeyBuilder().add("98053").build();
         cosmosQueryRequestOptions.setPartitionKey(partialPK);
         readAllResults = createdMultiHashContainer.readAllItems(cosmosQueryRequestOptions, ObjectNode.class);
         assertThat(readAllResults.stream().toArray().length).isEqualTo(0);
 
         //Document Upsert
-        TextNode version = new TextNode(UUID.randomUUID().toString());
-        ObjectNode doc6 = docs.get(6);
-        doc6.set("version", version);
+        logger.info("validateDocCRUDAndQuery- upserts with full partition key");
+        CityItem doc6 = docs.get(6);
+        String newVersion = doc6.getVersion() + ".1";
+        doc6.setVersion(newVersion);
         createdMultiHashContainer.upsertItem(doc6);
-        partitionKey = new PartitionKeyBuilder()
-            .add(doc6.get("city").asText())
-            .add(doc6.get("zipcode").asText())
-            .build();
-        CosmosItemResponse<ObjectNode> readResponse = createdMultiHashContainer.readItem(doc6.get("id").asText(), partitionKey, ObjectNode.class);
-        assertThat(readResponse.getItem().get("version")).isEqualTo(version);
+        CosmosItemResponse<CityItem> readResponse = createdMultiHashContainer.upsertItem(doc6);
+        assertThat(readResponse.getItem().getVersion()).isEqualTo(newVersion);
 
         //Negative test - upsert item with incomplete partition key
+        logger.info("validateDocCRUDAndQuery-upserts with incomplete partition key");
         ObjectNode badDoc = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
         badDoc.set("id", new TextNode(UUID.randomUUID().toString()));
         badDoc.set("city", new TextNode("Stonybrook"));
@@ -317,35 +308,47 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         }
 
         //Document Replace
-        ObjectNode doc5 = docs.get(5);
-        doc5.set("version", version);
+        logger.info("validateDocCRUDAndQuery-replace with full partition key");
+        CityItem doc5 = docs.get(5);
+        doc5.setVersion(newVersion);
+        String newVersionForDoc5 = doc5.getVersion() + ".1";
+        doc5.setVersion(newVersionForDoc5);
         partitionKey = new PartitionKeyBuilder()
-            .add(doc5.get("city").asText())
-            .add(doc5.get("zipcode").asText())
+            .add(doc5.getCity())
+            .add(doc5.getZipcode())
+            .add(doc5.getAreaCode())
             .build();
-        CosmosItemResponse<ObjectNode> replaceResponse = createdMultiHashContainer.replaceItem(doc5, doc5.get("id").asText(), partitionKey, new CosmosItemRequestOptions());
-        assertThat(replaceResponse.getItem().get("version")).isEqualTo(version);
+        CosmosItemResponse<CityItem> replaceResponse =
+                createdMultiHashContainer.replaceItem(doc5, doc5.getId(), partitionKey, new CosmosItemRequestOptions());
+        assertThat(replaceResponse.getItem().getVersion()).isEqualTo(newVersionForDoc5);
 
         //Delete Item
-        ObjectNode doc1 = docs.get(1);
+        logger.info("validateDocCRUDAndQuery-delete with full partition key");
+        CityItem doc1 = docs.get(1);
         CosmosItemResponse<?> deleteResponse = createdMultiHashContainer.deleteItem(doc1, new CosmosItemRequestOptions());
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
 
-        ObjectNode doc2 = docs.get(2);
-        deleteResponse = createdMultiHashContainer.deleteItem(doc2.get("id").asText(),
-            new PartitionKeyBuilder()
-                .add(doc2.get("city").asText())
-                .add(doc2.get("zipcode").asText())
-                .build(), new CosmosItemRequestOptions());
+        CityItem doc2 = docs.get(2);
+        deleteResponse = createdMultiHashContainer.deleteItem(
+                doc2.getId(),
+                new PartitionKeyBuilder()
+                    .add(doc2.getCity())
+                    .add(doc2.getZipcode())
+                    .add(doc2.getAreaCode())
+                    .build(),
+                new CosmosItemRequestOptions());
         assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
 
         //Negative test - incomplete partition key
+        logger.info("validateDocCRUDAndQuery-negative tests - delete with incomplete partition key");
         try {
-            ObjectNode doc3 = docs.get(3);
-            createdMultiHashContainer.deleteItem(doc3.get("id").asText(),
-                new PartitionKeyBuilder()
-                    .add(doc3.get("city").asText())
-                    .build(), new CosmosItemRequestOptions());
+            CityItem doc3 = docs.get(3);
+            createdMultiHashContainer.deleteItem(
+                    doc3.getId(),
+                    new PartitionKeyBuilder()
+                        .add(doc3.getCity())
+                        .build(),
+                    new CosmosItemRequestOptions());
         } catch (CosmosException e) {
             assertThat(e.getStatusCode()).isEqualTo(400);
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.")).isTrue();
@@ -353,39 +356,51 @@ public class CosmosMultiHashTest extends TestSuiteBase {
 
         //Delete by partition key - needs to be turned on at subscription level for account
         //Works with emulator
+        logger.info("validateDocCRUDAndQuery-delete by partition key with full partition key");
         deleteResponse = createdMultiHashContainer.deleteAllItemsByPartitionKey(
             new PartitionKeyBuilder()
-                .add(doc5.get("city").asText())
-                .add(doc5.get("zipcode").asText())
-                .build(), new CosmosItemRequestOptions());
+                .add(doc5.getCity())
+                .add(doc5.getZipcode())
+                .add(doc5.getAreaCode())
+                .build(),
+            new CosmosItemRequestOptions());
         assertThat(deleteResponse.getStatusCode()).isEqualTo(200);
 
         //Negative test - partial partition key
         //Can't be done since partial partitions can exist over multiple physical partitions and BE does not support
         //these distributed transaction semantics
+        logger.info("validateDocCRUDAndQuery-delete by partition key with incomplete partition key");
         try {
-            createdMultiHashContainer.deleteAllItemsByPartitionKey(new PartitionKeyBuilder()
-                .add(doc6.get("city").asText())
-                .build(), new CosmosItemRequestOptions());
+            createdMultiHashContainer.deleteAllItemsByPartitionKey(
+                new PartitionKeyBuilder()
+                    .add(doc6.getCity())
+                    .build(),
+                new CosmosItemRequestOptions());
         } catch (CosmosException e) {
             assertThat(e.getStatusCode()).isEqualTo(400);
             assertThat(e.getMessage().contains("Partition key provided either doesn't correspond to definition in the collection or doesn't match partition key field values specified in the document.")).isTrue();
         }
+
+        //delete by partition key runs as a background task, give it some time to finish
+        Thread.sleep(500);
+
+        logger.info("validateDocCRUDAndQuery-delete all items");
         deleteAllItems();
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    private void multiHashQueryTests() throws Exception {
-        ArrayList<ObjectNode> docs = createItems();
+    private void multiHashQueryTests() {
+        ArrayList<CityItem> docs = createItems();
 
         //Query Tests
         PartitionKey partitionKey;
         for (int i = 0; i < docs.size(); i++) {
-            ObjectNode doc_current = docs.get(i);
+            CityItem doc_current = docs.get(i);
             //Build the partition key
             partitionKey = new PartitionKeyBuilder()
-                .add(doc_current.get("city").asText())
-                .add(doc_current.get("zipcode").asText())
+                .add(doc_current.getCity())
+                .add(doc_current.getZipcode())
+                .add(doc_current.getAreaCode())
                 .build();
 
             //Build the query request options
@@ -393,13 +408,13 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             queryRequestOptions.setPartitionKey(partitionKey);
 
             //Run the query.
-            String query = String.format("SELECT * from c where c.id = '%s'", doc_current.get("id").asText());
+            String query = String.format("SELECT * from c where c.id = '%s'", doc_current.getId());
 
             CosmosPagedIterable<ObjectNode> feedResponseIterator =
                 createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
             assertThat(feedResponseIterator.iterator().hasNext()).isTrue();
 
-            query = String.format("SELECT * from c where c.id = '%s'", doc_current.get("id").asText());
+            query = String.format("SELECT * from c where c.id = '%s'", doc_current.getId());
             queryRequestOptions = new CosmosQueryRequestOptions();
             feedResponseIterator =
                 createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
@@ -409,6 +424,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         partitionKey = new PartitionKeyBuilder()
             .add("Redmond")
             .add("98053")
+            .add(1)
             .build();
 
         String query = "SELECT * from c";
@@ -418,16 +434,17 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
         assertThat(feedResponseIterator.stream().count()).isEqualTo(2);
 
-        query = String.format("SELECT * from c where c.city = '%s'", docs.get(2).get("city").asText());
+        query = String.format("SELECT * from c where c.city = '%s'", docs.get(2).getCity());
         queryRequestOptions = new CosmosQueryRequestOptions();
         feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
         assertThat(feedResponseIterator.stream().count()).isEqualTo(3);
 
-        query = String.format("SELECT * from c where c.city = '%s'", docs.get(0).get("city").asText());
+        query = String.format("SELECT * from c where c.city = '%s'", docs.get(0).getCity());
         partitionKey =
             new PartitionKeyBuilder()
                 .add("Redmond")
                 .add("98053")
+                .add(1)
                 .build();
         queryRequestOptions.setPartitionKey(partitionKey);
         feedResponseIterator = createdMultiHashContainer.queryItems(query, queryRequestOptions, ObjectNode.class);
@@ -469,56 +486,21 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         deleteAllItems();
     }
 
-    private ArrayList<ObjectNode> createItems() {
+    private ArrayList<CityItem> createItems() {
 
-        ArrayList<ObjectNode> docs = new ArrayList<>();
+        ArrayList<CityItem> docs = new ArrayList<>();
+        docs.add(new CityItem(UUID.randomUUID().toString(), "Redmond", "98053", 1));
+        docs.add(new CityItem(UUID.randomUUID().toString(), "Pittsburgh", "15232", 2));
+        docs.add(new CityItem(UUID.randomUUID().toString(), "Stonybrook", "11790", 3));
+        docs.add(new CityItem(UUID.randomUUID().toString(), "Stonybrook", "11794", 3));
+        docs.add(new CityItem(UUID.randomUUID().toString(), "Stonybrook", "11791", 3));
+        docs.add(new CityItem(UUID.randomUUID().toString(), "Redmond", "98053", 1));
+        docs.add(new CityItem(UUID.randomUUID().toString(), "Redmond", "12345", 1));
 
-        ObjectNode doc = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
-        doc.set("id", new TextNode(UUID.randomUUID().toString()));
-        doc.set("city", new TextNode("Redmond"));
-        doc.set("zipcode", new TextNode("98053"));
-        docs.add(doc);
-
-        ObjectNode doc1 = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
-        doc1.set("id", new TextNode(UUID.randomUUID().toString()));
-        doc1.set("city", new TextNode("Pittsburgh"));
-        doc1.set("zipcode", new TextNode("15232"));
-        docs.add(doc1);
-
-        ObjectNode doc2 = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
-        doc2.set("id", new TextNode(UUID.randomUUID().toString()));
-        doc2.set("city", new TextNode("Stonybrook"));
-        doc2.set("zipcode", new TextNode("11790"));
-        docs.add(doc2);
-
-        ObjectNode doc3 = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
-        doc3.set("id", new TextNode(UUID.randomUUID().toString()));
-        doc3.set("city", new TextNode("Stonybrook"));
-        doc3.set("zipcode", new TextNode("11794"));
-        docs.add(doc3);
-
-        ObjectNode doc4 = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
-        doc4.set("id", new TextNode(UUID.randomUUID().toString()));
-        doc4.set("city", new TextNode("Stonybrook"));
-        doc4.set("zipcode", new TextNode("11791"));
-        docs.add(doc4);
-
-        ObjectNode doc5 = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
-        doc5.set("id", new TextNode(UUID.randomUUID().toString()));
-        doc5.set("city", new TextNode("Redmond"));
-        doc5.set("zipcode", new TextNode("98053"));
-        docs.add(doc5);
-
-        ObjectNode doc6 = new ObjectNode(JSON_NODE_FACTORY_INSTANCE);
-        doc6.set("id", new TextNode(UUID.randomUUID().toString()));
-        doc6.set("city", new TextNode("Redmond"));
-        doc6.set("zipcode", new TextNode("12345"));
-        docs.add(doc6);
-
-        //Document Create
-        for (int i = 0; i < docs.size(); i++) {
-            createdMultiHashContainer.createItem(docs.get(i));
+        for (CityItem cityItem : docs) {
+            createdMultiHashContainer.createItem(cityItem);
         }
+
         return docs;
     }
 
@@ -532,7 +514,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         }
     }
 
-    private void testPartialPKContinuationToken() throws Exception {
+    private void testPartialPKContinuationToken() {
         String requestContinuation = null;
         List<ObjectNode> receivedDocuments = new ArrayList<>();
         CosmosAsyncClient asyncClient = getClientBuilder().buildAsyncClient();
@@ -564,6 +546,59 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         } while (requestContinuation != null);
         assertThat(receivedDocuments.size()).isEqualTo(3);
         asyncClient.close();
+    }
+
+    private static class CityItem {
+        private String id;
+        private String city;
+        private String zipcode;
+        private int areaCode;
+        private String version;
+
+        public CityItem(String id, String city, String zipcode, int areaCode) {
+            this.id = id;
+            this.city = city;
+            this.zipcode = zipcode;
+            this.areaCode = areaCode;
+            this.version = "v1";
+        }
+
+        public CityItem() {}
+
+        public String getId() {
+            return id;
+        }
+
+        public String getCity() {
+            return city;
+        }
+
+        public String getZipcode() {
+            return zipcode;
+        }
+
+        public int getAreaCode() {
+            return areaCode;
+        }
+
+        public String getVersion() {
+            return version;
+        }
+
+        public void setVersion(String version) {
+            this.version = version;
+        }
+
+        @Override
+        public String toString() {
+            return "CityItem{" +
+                    "id='" + id + '\'' +
+                    ", city='" + city + '\'' +
+                    ", zipcode='" + zipcode + '\'' +
+                    ", areaCode=" + areaCode +
+                    ", version='" + version + '\'' +
+                    '}';
+        }
     }
 
 }

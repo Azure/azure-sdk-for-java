@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The update parameters for scope map properties. */
+/**
+ * The update parameters for scope map properties.
+ */
 @Fluent
 public final class ScopeMapPropertiesUpdateParameters {
     /*
@@ -25,13 +27,15 @@ public final class ScopeMapPropertiesUpdateParameters {
     @JsonProperty(value = "actions")
     private List<String> actions;
 
-    /** Creates an instance of ScopeMapPropertiesUpdateParameters class. */
+    /**
+     * Creates an instance of ScopeMapPropertiesUpdateParameters class.
+     */
     public ScopeMapPropertiesUpdateParameters() {
     }
 
     /**
      * Get the description property: The user friendly description of the scope map.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -40,7 +44,7 @@ public final class ScopeMapPropertiesUpdateParameters {
 
     /**
      * Set the description property: The user friendly description of the scope map.
-     *
+     * 
      * @param description the description value to set.
      * @return the ScopeMapPropertiesUpdateParameters object itself.
      */
@@ -50,9 +54,10 @@ public final class ScopeMapPropertiesUpdateParameters {
     }
 
     /**
-     * Get the actions property: The list of scope permissions for registry artifacts. E.g.
-     * repositories/repository-name/pull, repositories/repository-name/delete.
-     *
+     * Get the actions property: The list of scope permissions for registry artifacts.
+     * E.g. repositories/repository-name/pull,
+     * repositories/repository-name/delete.
+     * 
      * @return the actions value.
      */
     public List<String> actions() {
@@ -60,9 +65,10 @@ public final class ScopeMapPropertiesUpdateParameters {
     }
 
     /**
-     * Set the actions property: The list of scope permissions for registry artifacts. E.g.
-     * repositories/repository-name/pull, repositories/repository-name/delete.
-     *
+     * Set the actions property: The list of scope permissions for registry artifacts.
+     * E.g. repositories/repository-name/pull,
+     * repositories/repository-name/delete.
+     * 
      * @param actions the actions value to set.
      * @return the ScopeMapPropertiesUpdateParameters object itself.
      */
@@ -73,7 +79,7 @@ public final class ScopeMapPropertiesUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

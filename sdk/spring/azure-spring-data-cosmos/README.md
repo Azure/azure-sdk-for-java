@@ -100,7 +100,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.40.0</version>
+    <version>3.43.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -297,7 +297,7 @@ public CosmosConfig cosmosConfig() {
 
 - Containers will be created automatically unless you don't want them to. Set `autoCreateContainer` to false in `@Container` annotation to disable auto creation of containers.
 
-- Note: By default request units assigned to newly created containers is 400. Specify different ru value to customize request units for the container created by the SDK (minimum RU value is 400).
+- Note: If you are using provisioned throughput, you can optionally specify different ru values to customize request units for the container created by the SDK. The minimum ru should be 400
 ```java readme-sample-User
 @Container(containerName = "myContainer", ru = "400")
 public class User {
@@ -620,6 +620,41 @@ private List<User> getUsersByLastName(String lastName, int pageSize) {
         content.addAll(slice.getContent());
     }
     return content;
+}
+```
+### Using Azure Cosmos DB Java SDK through Spring Data Cosmos
+- Azure-spring-data-cosmos supports using Azure Cosmos DB Java SDK through Spring Data Cosmos.
+- Users can get `CosmosClient` or `CosmosAsyncClient` bean through `ApplicationContext` and execute any operations supported by Azure Cosmos DB Java SDK.
+- Refer to [Azure Cosmos DB Java SDK samples][azure_cosmos_db_java_sdk_samples] for more information on how to execute operations.
+- Example:
+```java readme-sample-CosmosClientBeanCodeSnippet
+@SpringBootApplication
+public class CosmosClientBeanCodeSnippet {
+
+    @Autowired
+    private ApplicationContext applicationContext;
+
+    public void cosmosClientBean() {
+        CosmosClient cosmosClient = applicationContext.getBean(CosmosClient.class);
+        CosmosContainer myContainer = cosmosClient.getDatabase("myDatabase").getContainer("myContainer");
+        //  Creating a stored procedure
+        myContainer.getScripts().createStoredProcedure(
+            new CosmosStoredProcedureProperties("storedProcedureId", "function(){}"),
+            new CosmosStoredProcedureRequestOptions());
+        //  Reading a stored procedure
+        myContainer.getScripts().getStoredProcedure("storedProcedureId").read();
+    }
+
+    public void cosmosAsyncClientBean() {
+        CosmosAsyncClient cosmosAsyncClient = applicationContext.getBean(CosmosAsyncClient.class);
+        CosmosAsyncContainer myAsyncContainer = cosmosAsyncClient.getDatabase("myDatabase").getContainer("myContainer");
+        //  Creating a stored procedure
+        myAsyncContainer.getScripts().createStoredProcedure(
+            new CosmosStoredProcedureProperties("storedProcedureId", "function(){}"),
+            new CosmosStoredProcedureRequestOptions()).subscribe();
+        //  Reading a stored procedure
+        myAsyncContainer.getScripts().getStoredProcedure("storedProcedureId").read().subscribe();
+    }
 }
 ```
 
@@ -1095,5 +1130,6 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [autoscale-throughput]: https://docs.microsoft.com/azure/cosmos-db/provision-throughput-autoscale
 [spring_version_mapping]: https://aka.ms/spring/versions
 [spring_boot_supported_versions]: https://github.com/spring-projects/spring-boot/wiki/Supported-Versions
+[azure_cosmos_db_java_sdk_samples]: https://github.com/Azure-Samples/azure-cosmos-java-sql-api-samples
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2F%2Fazure-spring-data-cosmos%2FREADME.png)

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Troubleshooter Instance properties. */
+/**
+ * Troubleshooter Instance properties.
+ */
 @Fluent
 public final class TroubleshooterInstanceProperties {
     /*
@@ -40,13 +42,15 @@ public final class TroubleshooterInstanceProperties {
     @JsonProperty(value = "steps", access = JsonProperty.Access.WRITE_ONLY)
     private List<Step> steps;
 
-    /** Creates an instance of TroubleshooterInstanceProperties class. */
+    /**
+     * Creates an instance of TroubleshooterInstanceProperties class.
+     */
     public TroubleshooterInstanceProperties() {
     }
 
     /**
      * Get the solutionId property: Solution Id to identify single troubleshooter.
-     *
+     * 
      * @return the solutionId value.
      */
     public String solutionId() {
@@ -55,7 +59,7 @@ public final class TroubleshooterInstanceProperties {
 
     /**
      * Set the solutionId property: Solution Id to identify single troubleshooter.
-     *
+     * 
      * @param solutionId the solutionId value to set.
      * @return the TroubleshooterInstanceProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class TroubleshooterInstanceProperties {
 
     /**
      * Get the parameters property: Client input parameters to run Troubleshooter Resource.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -75,7 +79,7 @@ public final class TroubleshooterInstanceProperties {
 
     /**
      * Set the parameters property: Client input parameters to run Troubleshooter Resource.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the TroubleshooterInstanceProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class TroubleshooterInstanceProperties {
 
     /**
      * Get the provisioningState property: Status of troubleshooter provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public TroubleshooterProvisioningState provisioningState() {
@@ -95,7 +99,7 @@ public final class TroubleshooterInstanceProperties {
 
     /**
      * Get the steps property: List of step object.
-     *
+     * 
      * @return the steps value.
      */
     public List<Step> steps() {
@@ -104,7 +108,7 @@ public final class TroubleshooterInstanceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

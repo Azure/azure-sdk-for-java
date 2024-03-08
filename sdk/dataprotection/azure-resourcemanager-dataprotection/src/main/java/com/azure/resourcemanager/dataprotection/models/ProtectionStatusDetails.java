@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * ProtectionStatusDetails
- *
- * <p>Protection status details.
+ * 
+ * Protection status details.
  */
 @Fluent
 public final class ProtectionStatusDetails {
@@ -26,13 +26,15 @@ public final class ProtectionStatusDetails {
     @JsonProperty(value = "status")
     private Status status;
 
-    /** Creates an instance of ProtectionStatusDetails class. */
+    /**
+     * Creates an instance of ProtectionStatusDetails class.
+     */
     public ProtectionStatusDetails() {
     }
 
     /**
      * Get the errorDetails property: Specifies the protection status error of the resource.
-     *
+     * 
      * @return the errorDetails value.
      */
     public UserFacingError errorDetails() {
@@ -41,7 +43,7 @@ public final class ProtectionStatusDetails {
 
     /**
      * Set the errorDetails property: Specifies the protection status error of the resource.
-     *
+     * 
      * @param errorDetails the errorDetails value to set.
      * @return the ProtectionStatusDetails object itself.
      */
@@ -52,7 +54,7 @@ public final class ProtectionStatusDetails {
 
     /**
      * Get the status property: Specifies the protection status of the resource.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -61,7 +63,7 @@ public final class ProtectionStatusDetails {
 
     /**
      * Set the status property: Specifies the protection status of the resource.
-     *
+     * 
      * @param status the status value to set.
      * @return the ProtectionStatusDetails object itself.
      */
@@ -72,7 +74,7 @@ public final class ProtectionStatusDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

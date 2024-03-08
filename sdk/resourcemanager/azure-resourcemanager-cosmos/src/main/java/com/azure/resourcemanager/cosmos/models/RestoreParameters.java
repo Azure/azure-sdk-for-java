@@ -9,27 +9,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Parameters to indicate the information about the restore. */
+/**
+ * Parameters to indicate the information about the restore.
+ */
 @Fluent
-public final class RestoreParameters {
+public final class RestoreParameters extends RestoreParametersBase {
     /*
      * Describes the mode of the restore.
      */
     @JsonProperty(value = "restoreMode")
     private RestoreMode restoreMode;
-
-    /*
-     * The id of the restorable database account from which the restore has to be initiated. For example:
-     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}
-     */
-    @JsonProperty(value = "restoreSource")
-    private String restoreSource;
-
-    /*
-     * Time to which the account has to be restored (ISO-8601 format).
-     */
-    @JsonProperty(value = "restoreTimestampInUtc")
-    private OffsetDateTime restoreTimestampInUtc;
 
     /*
      * List of specific databases available for restore.
@@ -49,13 +38,15 @@ public final class RestoreParameters {
     @JsonProperty(value = "tablesToRestore")
     private List<String> tablesToRestore;
 
-    /** Creates an instance of RestoreParameters class. */
+    /**
+     * Creates an instance of RestoreParameters class.
+     */
     public RestoreParameters() {
     }
 
     /**
      * Get the restoreMode property: Describes the mode of the restore.
-     *
+     * 
      * @return the restoreMode value.
      */
     public RestoreMode restoreMode() {
@@ -64,7 +55,7 @@ public final class RestoreParameters {
 
     /**
      * Set the restoreMode property: Describes the mode of the restore.
-     *
+     * 
      * @param restoreMode the restoreMode value to set.
      * @return the RestoreParameters object itself.
      */
@@ -74,52 +65,8 @@ public final class RestoreParameters {
     }
 
     /**
-     * Get the restoreSource property: The id of the restorable database account from which the restore has to be
-     * initiated. For example:
-     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
-     *
-     * @return the restoreSource value.
-     */
-    public String restoreSource() {
-        return this.restoreSource;
-    }
-
-    /**
-     * Set the restoreSource property: The id of the restorable database account from which the restore has to be
-     * initiated. For example:
-     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
-     *
-     * @param restoreSource the restoreSource value to set.
-     * @return the RestoreParameters object itself.
-     */
-    public RestoreParameters withRestoreSource(String restoreSource) {
-        this.restoreSource = restoreSource;
-        return this;
-    }
-
-    /**
-     * Get the restoreTimestampInUtc property: Time to which the account has to be restored (ISO-8601 format).
-     *
-     * @return the restoreTimestampInUtc value.
-     */
-    public OffsetDateTime restoreTimestampInUtc() {
-        return this.restoreTimestampInUtc;
-    }
-
-    /**
-     * Set the restoreTimestampInUtc property: Time to which the account has to be restored (ISO-8601 format).
-     *
-     * @param restoreTimestampInUtc the restoreTimestampInUtc value to set.
-     * @return the RestoreParameters object itself.
-     */
-    public RestoreParameters withRestoreTimestampInUtc(OffsetDateTime restoreTimestampInUtc) {
-        this.restoreTimestampInUtc = restoreTimestampInUtc;
-        return this;
-    }
-
-    /**
      * Get the databasesToRestore property: List of specific databases available for restore.
-     *
+     * 
      * @return the databasesToRestore value.
      */
     public List<DatabaseRestoreResource> databasesToRestore() {
@@ -128,7 +75,7 @@ public final class RestoreParameters {
 
     /**
      * Set the databasesToRestore property: List of specific databases available for restore.
-     *
+     * 
      * @param databasesToRestore the databasesToRestore value to set.
      * @return the RestoreParameters object itself.
      */
@@ -139,7 +86,7 @@ public final class RestoreParameters {
 
     /**
      * Get the gremlinDatabasesToRestore property: List of specific gremlin databases available for restore.
-     *
+     * 
      * @return the gremlinDatabasesToRestore value.
      */
     public List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore() {
@@ -148,19 +95,19 @@ public final class RestoreParameters {
 
     /**
      * Set the gremlinDatabasesToRestore property: List of specific gremlin databases available for restore.
-     *
+     * 
      * @param gremlinDatabasesToRestore the gremlinDatabasesToRestore value to set.
      * @return the RestoreParameters object itself.
      */
-    public RestoreParameters withGremlinDatabasesToRestore(
-        List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore) {
+    public RestoreParameters
+        withGremlinDatabasesToRestore(List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore) {
         this.gremlinDatabasesToRestore = gremlinDatabasesToRestore;
         return this;
     }
 
     /**
      * Get the tablesToRestore property: List of specific tables available for restore.
-     *
+     * 
      * @return the tablesToRestore value.
      */
     public List<String> tablesToRestore() {
@@ -169,7 +116,7 @@ public final class RestoreParameters {
 
     /**
      * Set the tablesToRestore property: List of specific tables available for restore.
-     *
+     * 
      * @param tablesToRestore the tablesToRestore value to set.
      * @return the RestoreParameters object itself.
      */
@@ -179,11 +126,31 @@ public final class RestoreParameters {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RestoreParameters withRestoreSource(String restoreSource) {
+        super.withRestoreSource(restoreSource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RestoreParameters withRestoreTimestampInUtc(OffsetDateTime restoreTimestampInUtc) {
+        super.withRestoreTimestampInUtc(restoreTimestampInUtc);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (databasesToRestore() != null) {
             databasesToRestore().forEach(e -> e.validate());
         }

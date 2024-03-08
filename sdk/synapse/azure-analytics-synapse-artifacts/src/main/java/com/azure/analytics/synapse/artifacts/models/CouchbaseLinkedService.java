@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Couchbase server linked service. */
+/**
+ * Couchbase server linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Couchbase")
 @JsonFlatten
@@ -37,13 +39,16 @@ public class CouchbaseLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of CouchbaseLinkedService class. */
-    public CouchbaseLinkedService() {}
+    /**
+     * Creates an instance of CouchbaseLinkedService class.
+     */
+    public CouchbaseLinkedService() {
+    }
 
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -53,7 +58,7 @@ public class CouchbaseLinkedService extends LinkedService {
     /**
      * Set the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the CouchbaseLinkedService object itself.
      */
@@ -64,7 +69,7 @@ public class CouchbaseLinkedService extends LinkedService {
 
     /**
      * Get the credString property: The Azure key vault secret reference of credString in connection string.
-     *
+     * 
      * @return the credString value.
      */
     public AzureKeyVaultSecretReference getCredString() {
@@ -73,7 +78,7 @@ public class CouchbaseLinkedService extends LinkedService {
 
     /**
      * Set the credString property: The Azure key vault secret reference of credString in connection string.
-     *
+     * 
      * @param credString the credString value to set.
      * @return the CouchbaseLinkedService object itself.
      */
@@ -83,9 +88,9 @@ public class CouchbaseLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -93,9 +98,9 @@ public class CouchbaseLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CouchbaseLinkedService object itself.
      */
@@ -104,28 +109,36 @@ public class CouchbaseLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CouchbaseLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CouchbaseLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CouchbaseLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CouchbaseLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

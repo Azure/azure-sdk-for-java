@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for BackupInstances Get. */
+/**
+ * Samples for BackupInstances Get.
+ */
 public final class BackupInstancesGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/GetBackupInstance.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * BackupInstanceOperations/GetBackupInstance.json
      */
     /**
      * Sample code: Get BackupInstance.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getBackupInstance(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .getWithResponse(
-                "000pikumar", "PratikPrivatePreviewVault1", "testInstance1", com.azure.core.util.Context.NONE);
+        manager.backupInstances().getWithResponse("000pikumar", "PratikPrivatePreviewVault1", "testInstance1",
+            com.azure.core.util.Context.NONE);
     }
 }

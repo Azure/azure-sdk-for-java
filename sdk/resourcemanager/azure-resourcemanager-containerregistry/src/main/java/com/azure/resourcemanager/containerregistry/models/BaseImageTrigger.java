@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The trigger based on base image dependency. */
+/**
+ * The trigger based on base image dependency.
+ */
 @Fluent
 public final class BaseImageTrigger {
     /*
@@ -41,13 +43,15 @@ public final class BaseImageTrigger {
     @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of BaseImageTrigger class. */
+    /**
+     * Creates an instance of BaseImageTrigger class.
+     */
     public BaseImageTrigger() {
     }
 
     /**
      * Get the baseImageTriggerType property: The type of the auto trigger for base image dependency updates.
-     *
+     * 
      * @return the baseImageTriggerType value.
      */
     public BaseImageTriggerType baseImageTriggerType() {
@@ -56,7 +60,7 @@ public final class BaseImageTrigger {
 
     /**
      * Set the baseImageTriggerType property: The type of the auto trigger for base image dependency updates.
-     *
+     * 
      * @param baseImageTriggerType the baseImageTriggerType value to set.
      * @return the BaseImageTrigger object itself.
      */
@@ -67,7 +71,7 @@ public final class BaseImageTrigger {
 
     /**
      * Get the updateTriggerEndpoint property: The endpoint URL for receiving update triggers.
-     *
+     * 
      * @return the updateTriggerEndpoint value.
      */
     public String updateTriggerEndpoint() {
@@ -76,7 +80,7 @@ public final class BaseImageTrigger {
 
     /**
      * Set the updateTriggerEndpoint property: The endpoint URL for receiving update triggers.
-     *
+     * 
      * @param updateTriggerEndpoint the updateTriggerEndpoint value to set.
      * @return the BaseImageTrigger object itself.
      */
@@ -87,7 +91,7 @@ public final class BaseImageTrigger {
 
     /**
      * Get the updateTriggerPayloadType property: Type of Payload body for Base image update triggers.
-     *
+     * 
      * @return the updateTriggerPayloadType value.
      */
     public UpdateTriggerPayloadType updateTriggerPayloadType() {
@@ -96,7 +100,7 @@ public final class BaseImageTrigger {
 
     /**
      * Set the updateTriggerPayloadType property: Type of Payload body for Base image update triggers.
-     *
+     * 
      * @param updateTriggerPayloadType the updateTriggerPayloadType value to set.
      * @return the BaseImageTrigger object itself.
      */
@@ -107,7 +111,7 @@ public final class BaseImageTrigger {
 
     /**
      * Get the status property: The current status of trigger.
-     *
+     * 
      * @return the status value.
      */
     public TriggerStatus status() {
@@ -116,7 +120,7 @@ public final class BaseImageTrigger {
 
     /**
      * Set the status property: The current status of trigger.
-     *
+     * 
      * @param status the status value to set.
      * @return the BaseImageTrigger object itself.
      */
@@ -127,7 +131,7 @@ public final class BaseImageTrigger {
 
     /**
      * Get the name property: The name of the trigger.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -136,7 +140,7 @@ public final class BaseImageTrigger {
 
     /**
      * Set the name property: The name of the trigger.
-     *
+     * 
      * @param name the name value to set.
      * @return the BaseImageTrigger object itself.
      */
@@ -147,20 +151,17 @@ public final class BaseImageTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (baseImageTriggerType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property baseImageTriggerType in model BaseImageTrigger"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property baseImageTriggerType in model BaseImageTrigger"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model BaseImageTrigger"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model BaseImageTrigger"));
         }
     }
 

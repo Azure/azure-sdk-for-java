@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of private link resources. */
+/**
+ * A list of private link resources.
+ */
 @Fluent
 public final class PrivateLinkResourcesListResultInner {
     /*
@@ -17,13 +19,15 @@ public final class PrivateLinkResourcesListResultInner {
     @JsonProperty(value = "value")
     private List<PrivateLinkResourceInner> value;
 
-    /** Creates an instance of PrivateLinkResourcesListResultInner class. */
+    /**
+     * Creates an instance of PrivateLinkResourcesListResultInner class.
+     */
     public PrivateLinkResourcesListResultInner() {
     }
 
     /**
      * Get the value property: The collection value.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResourceInner> value() {
@@ -32,7 +36,7 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Set the value property: The collection value.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateLinkResourcesListResultInner object itself.
      */
@@ -43,7 +47,7 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

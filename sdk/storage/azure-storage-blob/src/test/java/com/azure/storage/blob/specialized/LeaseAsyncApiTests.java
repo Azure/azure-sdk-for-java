@@ -5,6 +5,8 @@ package com.azure.storage.blob.specialized;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.CoreUtils;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.BlobProperties;
@@ -16,8 +18,8 @@ import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.options.BlobChangeLeaseOptions;
 import com.azure.storage.blob.options.BlobReleaseLeaseOptions;
 import com.azure.storage.blob.options.BlobRenewLeaseOptions;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -28,7 +30,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -78,7 +79,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         return Stream.of(
             Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
-            Arguments.of(UUID.randomUUID().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
+            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
         );
     }
 
@@ -96,7 +97,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
                 .verifyError(BlobStorageException.class);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("acquireBlobLeaseDurationFailSupplier")
     public void acquireBlobLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -173,12 +174,12 @@ public class LeaseAsyncApiTests extends BlobTestBase {
             .assertNext(r -> {
                 validateBasicHeaders(r.getHeaders());
                 assertNotNull(r.getValue());
-                assertEquals(r.getValue(), leaseClient.getLeaseId());
+                assertEquals(leaseClient.getLeaseId(), r.getValue());
             })
             .verifyComplete();
 
         StepVerifier.create(bc.getProperties())
-            .assertNext(r -> assertEquals(r.getLeaseState(), LeaseStateType.LEASED))
+            .assertNext(r -> assertEquals(LeaseStateType.LEASED, r.getLeaseState()))
             .verifyComplete();
     }
 
@@ -191,7 +192,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
             .renewLeaseWithResponse(new BlobRenewLeaseOptions()), 200);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("acquireBlobLeaseDurationFailSupplier")
     public void renewBlobLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -249,7 +250,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(bc.getProperties())
-            .assertNext(r -> assertEquals(r.getLeaseState(), LeaseStateType.AVAILABLE))
+            .assertNext(r -> assertEquals(LeaseStateType.AVAILABLE, r.getLeaseState()))
             .verifyComplete();
     }
 
@@ -261,7 +262,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
             new BlobReleaseLeaseOptions()), 200);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("acquireBlobLeaseDurationFailSupplier")
     public void releaseBlobLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -346,7 +347,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
             202);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("acquireBlobLeaseDurationFailSupplier")
     public void breakBlobLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -423,7 +424,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
             new BlobChangeLeaseOptions(testResourceNamer.randomUuid())), 200);
     }
 
-    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("acquireBlobLeaseDurationFailSupplier")
     public void changeBlobLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
@@ -479,7 +480,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(leaseClient.acquireLeaseWithResponse(new BlobAcquireLeaseOptions(leaseTime)))
             .assertNext(r -> {
-                assertEquals(r.getValue(), leaseClient.getLeaseId());
+                assertEquals(leaseClient.getLeaseId(), r.getValue());
                 assertNotNull(r.getValue());
                 assertTrue(validateBasicHeaders(r.getHeaders()));
             })
@@ -497,7 +498,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         return Stream.of(
             Arguments.of(null, -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE),
             Arguments.of(null, 25, LeaseStateType.LEASED, LeaseDurationType.FIXED),
-            Arguments.of(UUID.randomUUID().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
+            Arguments.of(CoreUtils.randomUuid().toString(), -1, LeaseStateType.LEASED, LeaseDurationType.INFINITE)
         );
     }
 
@@ -572,13 +573,13 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         sleepIfRunningAgainstService(16000);
         StepVerifier.create(leaseClient.renewLeaseWithResponse(new BlobRenewLeaseOptions()))
             .assertNext(r -> {
-                assertEquals(r.getValue(), leaseClient.getLeaseId());
+                assertEquals(leaseClient.getLeaseId(), r.getValue());
                 assertTrue(validateBasicHeaders(r.getHeaders()));
             })
             .verifyComplete();
 
         StepVerifier.create(ccAsync.getProperties())
-            .assertNext(r -> assertEquals(r.getLeaseState(), LeaseStateType.LEASED))
+            .assertNext(r -> assertEquals(LeaseStateType.LEASED, r.getLeaseState()))
             .verifyComplete();
     }
 
@@ -650,7 +651,7 @@ public class LeaseAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(ccAsync.getProperties())
-            .assertNext(r ->  assertEquals(r.getLeaseState(), LeaseStateType.AVAILABLE))
+            .assertNext(r ->  assertEquals(LeaseStateType.AVAILABLE, r.getLeaseState()))
             .verifyComplete();
     }
 

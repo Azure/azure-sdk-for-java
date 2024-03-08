@@ -5,7 +5,7 @@ languages:
 products:
     - azure
     - azure-cognitive-services
-    - azure-cognitive-services
+    - azure-ai-content-safety
 urlFragment: ai-contentsafety-samples
 ---
 

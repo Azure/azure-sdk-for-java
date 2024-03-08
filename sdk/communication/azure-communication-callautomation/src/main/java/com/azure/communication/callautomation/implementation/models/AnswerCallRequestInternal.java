@@ -7,9 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The request payload for answering the call.
- */
+/** The request payload for answering the call. */
 @Fluent
 public final class AnswerCallRequestInternal {
     /*
@@ -40,7 +38,7 @@ public final class AnswerCallRequestInternal {
      * Live Transcription Configuration.
      */
     @JsonProperty(value = "transcriptionConfiguration")
-    private TranscriptionConfiguration transcriptionConfiguration;
+    private TranscriptionConfigurationInternal transcriptionConfiguration;
 
     /*
      * AI options for the call.
@@ -54,15 +52,18 @@ public final class AnswerCallRequestInternal {
     @JsonProperty(value = "answeredBy")
     private CommunicationUserIdentifierModel answeredBy;
 
-    /**
-     * Creates an instance of AnswerCallRequestInternal class.
+    /*
+     * The source caller Id, a phone number, that's will be used when inviting
+     * a pstn target.
+     * Required only when transferring call to PSTN, if this is an incoming
+     * voip call.
      */
-    public AnswerCallRequestInternal() {
-    }
+    @JsonProperty(value = "sourceCallerIdNumber")
+    private PhoneNumberIdentifierModel sourceCallerIdNumber;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
-     * 
+     *
      * @return the incomingCallContext value.
      */
     public String getIncomingCallContext() {
@@ -71,7 +72,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the incomingCallContext property: The context associated with the call.
-     * 
+     *
      * @param incomingCallContext the incomingCallContext value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -82,7 +83,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Get the callbackUri property: The callback uri.
-     * 
+     *
      * @return the callbackUri value.
      */
     public String getCallbackUri() {
@@ -91,7 +92,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the callbackUri property: The callback uri.
-     * 
+     *
      * @param callbackUri the callbackUri value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -102,7 +103,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Get the operationContext property: A customer set value used to track the answering of a call.
-     * 
+     *
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -111,7 +112,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the operationContext property: A customer set value used to track the answering of a call.
-     * 
+     *
      * @param operationContext the operationContext value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
@@ -122,7 +123,7 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
-     * 
+     *
      * @return the mediaStreamingConfiguration value.
      */
     public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
@@ -131,40 +132,40 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
-     * 
+     *
      * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal
-        setMediaStreamingConfiguration(MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
+    public AnswerCallRequestInternal setMediaStreamingConfiguration(
+            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
     }
 
     /**
      * Get the transcriptionConfiguration property: Live Transcription Configuration.
-     * 
+     *
      * @return the transcriptionConfiguration value.
      */
-    public TranscriptionConfiguration getTranscriptionConfiguration() {
+    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
         return this.transcriptionConfiguration;
     }
 
     /**
      * Set the transcriptionConfiguration property: Live Transcription Configuration.
-     * 
+     *
      * @param transcriptionConfiguration the transcriptionConfiguration value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal
-        setTranscriptionConfiguration(TranscriptionConfiguration transcriptionConfiguration) {
+    public AnswerCallRequestInternal setTranscriptionConfiguration(
+            TranscriptionConfigurationInternal transcriptionConfiguration) {
         this.transcriptionConfiguration = transcriptionConfiguration;
         return this;
     }
 
     /**
      * Get the callIntelligenceOptions property: AI options for the call.
-     * 
+     *
      * @return the callIntelligenceOptions value.
      */
     public CallIntelligenceOptionsInternal getCallIntelligenceOptions() {
@@ -173,19 +174,19 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the callIntelligenceOptions property: AI options for the call.
-     * 
+     *
      * @param callIntelligenceOptions the callIntelligenceOptions value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal
-        setCallIntelligenceOptions(CallIntelligenceOptionsInternal callIntelligenceOptions) {
+    public AnswerCallRequestInternal setCallIntelligenceOptions(
+            CallIntelligenceOptionsInternal callIntelligenceOptions) {
         this.callIntelligenceOptions = callIntelligenceOptions;
         return this;
     }
 
     /**
      * Get the answeredBy property: The identifier of the call automation entity which answers the call.
-     * 
+     *
      * @return the answeredBy value.
      */
     public CommunicationUserIdentifierModel getAnsweredBy() {
@@ -194,12 +195,34 @@ public final class AnswerCallRequestInternal {
 
     /**
      * Set the answeredBy property: The identifier of the call automation entity which answers the call.
-     * 
+     *
      * @param answeredBy the answeredBy value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
     public AnswerCallRequestInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
         this.answeredBy = answeredBy;
+        return this;
+    }
+
+    /**
+     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used when inviting a
+     * pstn target. Required only when transferring call to PSTN, if this is an incoming voip call.
+     *
+     * @return the sourceCallerIdNumber value.
+     */
+    public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
+        return this.sourceCallerIdNumber;
+    }
+
+    /**
+     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used when inviting a
+     * pstn target. Required only when transferring call to PSTN, if this is an incoming voip call.
+     *
+     * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
+     * @return the AnswerCallRequestInternal object itself.
+     */
+    public AnswerCallRequestInternal setSourceCallerIdNumber(PhoneNumberIdentifierModel sourceCallerIdNumber) {
+        this.sourceCallerIdNumber = sourceCallerIdNumber;
         return this;
     }
 }

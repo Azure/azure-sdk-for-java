@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The session state detail for a target. */
+/**
+ * The session state detail for a target.
+ */
 @Immutable
 public final class BastionSessionStateInner {
     /*
@@ -28,13 +30,15 @@ public final class BastionSessionStateInner {
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
-    /** Creates an instance of BastionSessionStateInner class. */
+    /**
+     * Creates an instance of BastionSessionStateInner class.
+     */
     public BastionSessionStateInner() {
     }
 
     /**
      * Get the sessionId property: A unique id for the session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -43,7 +47,7 @@ public final class BastionSessionStateInner {
 
     /**
      * Get the message property: Used for extra information.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -52,7 +56,7 @@ public final class BastionSessionStateInner {
 
     /**
      * Get the state property: The state of the session. Disconnected/Failed/NotFound.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -61,7 +65,7 @@ public final class BastionSessionStateInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

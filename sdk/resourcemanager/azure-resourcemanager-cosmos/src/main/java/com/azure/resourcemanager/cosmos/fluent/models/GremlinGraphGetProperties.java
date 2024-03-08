@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.GremlinGraphGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.GremlinGraphGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB Gremlin graph. */
+/**
+ * The properties of an Azure Cosmos DB Gremlin graph.
+ */
 @Fluent
 public final class GremlinGraphGetProperties {
     /*
@@ -24,13 +26,15 @@ public final class GremlinGraphGetProperties {
     @JsonProperty(value = "options")
     private GremlinGraphGetPropertiesOptions options;
 
-    /** Creates an instance of GremlinGraphGetProperties class. */
+    /**
+     * Creates an instance of GremlinGraphGetProperties class.
+     */
     public GremlinGraphGetProperties() {
     }
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public GremlinGraphGetPropertiesResource resource() {
@@ -39,7 +43,7 @@ public final class GremlinGraphGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the GremlinGraphGetProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class GremlinGraphGetProperties {
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public GremlinGraphGetPropertiesOptions options() {
@@ -59,7 +63,7 @@ public final class GremlinGraphGetProperties {
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the GremlinGraphGetProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class GremlinGraphGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

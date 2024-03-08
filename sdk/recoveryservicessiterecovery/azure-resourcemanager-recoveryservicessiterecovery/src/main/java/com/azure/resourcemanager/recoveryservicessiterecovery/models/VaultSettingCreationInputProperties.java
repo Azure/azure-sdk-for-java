@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input to create vault setting. */
+/**
+ * Input to create vault setting.
+ */
 @Fluent
 public final class VaultSettingCreationInputProperties {
     /*
@@ -22,13 +24,15 @@ public final class VaultSettingCreationInputProperties {
     @JsonProperty(value = "vmwareToAzureProviderType")
     private String vmwareToAzureProviderType;
 
-    /** Creates an instance of VaultSettingCreationInputProperties class. */
+    /**
+     * Creates an instance of VaultSettingCreationInputProperties class.
+     */
     public VaultSettingCreationInputProperties() {
     }
 
     /**
      * Get the migrationSolutionId property: The migration solution Id.
-     *
+     * 
      * @return the migrationSolutionId value.
      */
     public String migrationSolutionId() {
@@ -37,7 +41,7 @@ public final class VaultSettingCreationInputProperties {
 
     /**
      * Set the migrationSolutionId property: The migration solution Id.
-     *
+     * 
      * @param migrationSolutionId the migrationSolutionId value to set.
      * @return the VaultSettingCreationInputProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class VaultSettingCreationInputProperties {
 
     /**
      * Get the vmwareToAzureProviderType property: VMware to Azure provider type.
-     *
+     * 
      * @return the vmwareToAzureProviderType value.
      */
     public String vmwareToAzureProviderType() {
@@ -57,7 +61,7 @@ public final class VaultSettingCreationInputProperties {
 
     /**
      * Set the vmwareToAzureProviderType property: VMware to Azure provider type.
-     *
+     * 
      * @param vmwareToAzureProviderType the vmwareToAzureProviderType value to set.
      * @return the VaultSettingCreationInputProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class VaultSettingCreationInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

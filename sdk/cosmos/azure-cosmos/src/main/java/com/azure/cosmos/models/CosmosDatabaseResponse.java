@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.time.ZoneOffset;
@@ -20,13 +21,13 @@ public class CosmosDatabaseResponse extends CosmosResponse<CosmosDatabasePropert
 
     CosmosDatabaseResponse(ResourceResponse<Database> response) {
         super(response);
-        String bodyAsString = response.getBodyAsString();
-        if (StringUtils.isEmpty(bodyAsString)) {
+        ObjectNode bodyAsJson = (ObjectNode)response.getBody();
+        if (bodyAsJson == null) {
             super.setProperties(null);
         } else {
             SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
             Instant serializationStartTime = Instant.now();
-            CosmosDatabaseProperties props =  new CosmosDatabaseProperties(bodyAsString, null);
+            CosmosDatabaseProperties props =  new CosmosDatabaseProperties(bodyAsJson, null);
             Instant serializationEndTime = Instant.now();
             SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
                 serializationStartTime,

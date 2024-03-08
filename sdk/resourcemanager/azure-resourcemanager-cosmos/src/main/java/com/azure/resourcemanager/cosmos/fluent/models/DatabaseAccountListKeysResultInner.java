@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The access keys for the given database account. */
+/**
+ * The access keys for the given database account.
+ */
 @Immutable
 public final class DatabaseAccountListKeysResultInner extends DatabaseAccountListReadOnlyKeysResultInner {
     /*
@@ -22,13 +24,15 @@ public final class DatabaseAccountListKeysResultInner extends DatabaseAccountLis
     @JsonProperty(value = "secondaryMasterKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryMasterKey;
 
-    /** Creates an instance of DatabaseAccountListKeysResultInner class. */
+    /**
+     * Creates an instance of DatabaseAccountListKeysResultInner class.
+     */
     public DatabaseAccountListKeysResultInner() {
     }
 
     /**
      * Get the primaryMasterKey property: Base 64 encoded value of the primary read-write key.
-     *
+     * 
      * @return the primaryMasterKey value.
      */
     public String primaryMasterKey() {
@@ -37,7 +41,7 @@ public final class DatabaseAccountListKeysResultInner extends DatabaseAccountLis
 
     /**
      * Get the secondaryMasterKey property: Base 64 encoded value of the secondary read-write key.
-     *
+     * 
      * @return the secondaryMasterKey value.
      */
     public String secondaryMasterKey() {
@@ -46,7 +50,7 @@ public final class DatabaseAccountListKeysResultInner extends DatabaseAccountLis
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Backup state of the backed up item. */
+/**
+ * Backup state of the backed up item.
+ */
 public final class ProtectedItemState extends ExpandableStringEnum<ProtectedItemState> {
-    /** Static value Invalid for ProtectedItemState. */
+    /**
+     * Static value Invalid for ProtectedItemState.
+     */
     public static final ProtectedItemState INVALID = fromString("Invalid");
 
-    /** Static value IRPending for ProtectedItemState. */
+    /**
+     * Static value IRPending for ProtectedItemState.
+     */
     public static final ProtectedItemState IRPENDING = fromString("IRPending");
 
-    /** Static value Protected for ProtectedItemState. */
+    /**
+     * Static value Protected for ProtectedItemState.
+     */
     public static final ProtectedItemState PROTECTED = fromString("Protected");
 
-    /** Static value ProtectionError for ProtectedItemState. */
+    /**
+     * Static value ProtectionError for ProtectedItemState.
+     */
     public static final ProtectedItemState PROTECTION_ERROR = fromString("ProtectionError");
 
-    /** Static value ProtectionStopped for ProtectedItemState. */
+    /**
+     * Static value ProtectionStopped for ProtectedItemState.
+     */
     public static final ProtectedItemState PROTECTION_STOPPED = fromString("ProtectionStopped");
 
-    /** Static value ProtectionPaused for ProtectedItemState. */
+    /**
+     * Static value ProtectionPaused for ProtectedItemState.
+     */
     public static final ProtectedItemState PROTECTION_PAUSED = fromString("ProtectionPaused");
 
-    /** Static value BackupsSuspended for ProtectedItemState. */
+    /**
+     * Static value BackupsSuspended for ProtectedItemState.
+     */
     public static final ProtectedItemState BACKUPS_SUSPENDED = fromString("BackupsSuspended");
 
     /**
      * Creates a new instance of ProtectedItemState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class ProtectedItemState extends ExpandableStringEnum<ProtectedItem
 
     /**
      * Creates or finds a ProtectedItemState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProtectedItemState.
      */
@@ -53,7 +69,7 @@ public final class ProtectedItemState extends ExpandableStringEnum<ProtectedItem
 
     /**
      * Gets known ProtectedItemState values.
-     *
+     * 
      * @return known ProtectedItemState values.
      */
     public static Collection<ProtectedItemState> values() {

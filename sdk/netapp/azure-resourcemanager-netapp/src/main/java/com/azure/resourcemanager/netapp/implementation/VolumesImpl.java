@@ -50,15 +50,12 @@ public final class VolumesImpl implements Volumes {
         return Utils.mapPage(inner, inner1 -> new VolumeImpl(inner1, this.manager()));
     }
 
-    public Response<Volume> getWithResponse(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        Response<VolumeInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+    public Response<Volume> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        Response<VolumeInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VolumeImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -78,20 +75,15 @@ public final class VolumesImpl implements Volumes {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        Boolean forceDelete,
-        Context context) {
+    public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Boolean forceDelete, Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, forceDelete, context);
     }
 
-    public Volume populateAvailabilityZone(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
-        VolumeInner inner =
-            this.serviceClient().populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName);
+    public Volume populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        VolumeInner inner
+            = this.serviceClient().populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName);
         if (inner != null) {
             return new VolumeImpl(inner, this.manager());
         } else {
@@ -99,12 +91,10 @@ public final class VolumesImpl implements Volumes {
         }
     }
 
-    public Volume populateAvailabilityZone(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        VolumeInner inner =
-            this
-                .serviceClient()
-                .populateAvailabilityZone(resourceGroupName, accountName, poolName, volumeName, context);
+    public Volume populateAvailabilityZone(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        VolumeInner inner = this.serviceClient().populateAvailabilityZone(resourceGroupName, accountName, poolName,
+            volumeName, context);
         if (inner != null) {
             return new VolumeImpl(inner, this.manager());
         } else {
@@ -112,18 +102,13 @@ public final class VolumesImpl implements Volumes {
         }
     }
 
-    public void revert(
-        String resourceGroupName, String accountName, String poolName, String volumeName, VolumeRevert body) {
+    public void revert(String resourceGroupName, String accountName, String poolName, String volumeName,
+        VolumeRevert body) {
         this.serviceClient().revert(resourceGroupName, accountName, poolName, volumeName, body);
     }
 
-    public void revert(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        VolumeRevert body,
-        Context context) {
+    public void revert(String resourceGroupName, String accountName, String poolName, String volumeName,
+        VolumeRevert body, Context context) {
         this.serviceClient().revert(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
@@ -131,35 +116,33 @@ public final class VolumesImpl implements Volumes {
         this.serviceClient().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void resetCifsPassword(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    public void resetCifsPassword(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context) {
         this.serviceClient().resetCifsPassword(resourceGroupName, accountName, poolName, volumeName, context);
+    }
+
+    public void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName) {
+        this.serviceClient().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName);
+    }
+
+    public void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context) {
+        this.serviceClient().splitCloneFromParent(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public void breakFileLocks(String resourceGroupName, String accountName, String poolName, String volumeName) {
         this.serviceClient().breakFileLocks(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void breakFileLocks(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        BreakFileLocksRequest body,
-        Context context) {
+    public void breakFileLocks(String resourceGroupName, String accountName, String poolName, String volumeName,
+        BreakFileLocksRequest body, Context context) {
         this.serviceClient().breakFileLocks(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
-    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        GetGroupIdListForLdapUserRequest body) {
-        GetGroupIdListForLdapUserResponseInner inner =
-            this
-                .serviceClient()
-                .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body);
+    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(String resourceGroupName, String accountName,
+        String poolName, String volumeName, GetGroupIdListForLdapUserRequest body) {
+        GetGroupIdListForLdapUserResponseInner inner = this.serviceClient()
+            .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body);
         if (inner != null) {
             return new GetGroupIdListForLdapUserResponseImpl(inner, this.manager());
         } else {
@@ -167,17 +150,10 @@ public final class VolumesImpl implements Volumes {
         }
     }
 
-    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        GetGroupIdListForLdapUserRequest body,
-        Context context) {
-        GetGroupIdListForLdapUserResponseInner inner =
-            this
-                .serviceClient()
-                .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context);
+    public GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(String resourceGroupName, String accountName,
+        String poolName, String volumeName, GetGroupIdListForLdapUserRequest body, Context context) {
+        GetGroupIdListForLdapUserResponseInner inner = this.serviceClient()
+            .listGetGroupIdListForLdapUser(resourceGroupName, accountName, poolName, volumeName, body, context);
         if (inner != null) {
             return new GetGroupIdListForLdapUserResponseImpl(inner, this.manager());
         } else {
@@ -189,58 +165,38 @@ public final class VolumesImpl implements Volumes {
         this.serviceClient().breakReplication(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void breakReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        BreakReplicationRequest body,
-        Context context) {
+    public void breakReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        BreakReplicationRequest body, Context context) {
         this.serviceClient().breakReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
-    public void reestablishReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
+    public void reestablishReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         ReestablishReplicationRequest body) {
         this.serviceClient().reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body);
     }
 
-    public void reestablishReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        ReestablishReplicationRequest body,
-        Context context) {
-        this
-            .serviceClient()
-            .reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
+    public void reestablishReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        ReestablishReplicationRequest body, Context context) {
+        this.serviceClient().reestablishReplication(resourceGroupName, accountName, poolName, volumeName, body,
+            context);
     }
 
-    public Response<ReplicationStatus> replicationStatusWithResponse(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        Response<ReplicationStatusInner> inner =
-            this
-                .serviceClient()
-                .replicationStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
+    public Response<ReplicationStatus> replicationStatusWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
+        Response<ReplicationStatusInner> inner = this.serviceClient().replicationStatusWithResponse(resourceGroupName,
+            accountName, poolName, volumeName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ReplicationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ReplicationStatus replicationStatus(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
-        ReplicationStatusInner inner =
-            this.serviceClient().replicationStatus(resourceGroupName, accountName, poolName, volumeName);
+    public ReplicationStatus replicationStatus(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        ReplicationStatusInner inner
+            = this.serviceClient().replicationStatus(resourceGroupName, accountName, poolName, volumeName);
         if (inner != null) {
             return new ReplicationStatusImpl(inner, this.manager());
         } else {
@@ -248,17 +204,17 @@ public final class VolumesImpl implements Volumes {
         }
     }
 
-    public PagedIterable<Replication> listReplications(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
-        PagedIterable<ReplicationInner> inner =
-            this.serviceClient().listReplications(resourceGroupName, accountName, poolName, volumeName);
+    public PagedIterable<Replication> listReplications(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        PagedIterable<ReplicationInner> inner
+            = this.serviceClient().listReplications(resourceGroupName, accountName, poolName, volumeName);
         return Utils.mapPage(inner, inner1 -> new ReplicationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Replication> listReplications(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        PagedIterable<ReplicationInner> inner =
-            this.serviceClient().listReplications(resourceGroupName, accountName, poolName, volumeName, context);
+    public PagedIterable<Replication> listReplications(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        PagedIterable<ReplicationInner> inner
+            = this.serviceClient().listReplications(resourceGroupName, accountName, poolName, volumeName, context);
         return Utils.mapPage(inner, inner1 -> new ReplicationImpl(inner1, this.manager()));
     }
 
@@ -266,8 +222,8 @@ public final class VolumesImpl implements Volumes {
         this.serviceClient().resyncReplication(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void resyncReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    public void resyncReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context) {
         this.serviceClient().resyncReplication(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
@@ -275,48 +231,38 @@ public final class VolumesImpl implements Volumes {
         this.serviceClient().deleteReplication(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void deleteReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    public void deleteReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context) {
         this.serviceClient().deleteReplication(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
-    public void authorizeReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, AuthorizeRequest body) {
+    public void authorizeReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        AuthorizeRequest body) {
         this.serviceClient().authorizeReplication(resourceGroupName, accountName, poolName, volumeName, body);
     }
 
-    public void authorizeReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        AuthorizeRequest body,
-        Context context) {
+    public void authorizeReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        AuthorizeRequest body, Context context) {
         this.serviceClient().authorizeReplication(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
-    public void reInitializeReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    public void reInitializeReplication(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
         this.serviceClient().reInitializeReplication(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void reInitializeReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    public void reInitializeReplication(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
         this.serviceClient().reInitializeReplication(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
-    public void poolChange(
-        String resourceGroupName, String accountName, String poolName, String volumeName, PoolChangeRequest body) {
+    public void poolChange(String resourceGroupName, String accountName, String poolName, String volumeName,
+        PoolChangeRequest body) {
         this.serviceClient().poolChange(resourceGroupName, accountName, poolName, volumeName, body);
     }
 
-    public void poolChange(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        PoolChangeRequest body,
-        Context context) {
+    public void poolChange(String resourceGroupName, String accountName, String poolName, String volumeName,
+        PoolChangeRequest body, Context context) {
         this.serviceClient().poolChange(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
@@ -324,13 +270,8 @@ public final class VolumesImpl implements Volumes {
         this.serviceClient().relocate(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void relocate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        RelocateVolumeRequest body,
-        Context context) {
+    public void relocate(String resourceGroupName, String accountName, String poolName, String volumeName,
+        RelocateVolumeRequest body, Context context) {
         this.serviceClient().relocate(resourceGroupName, accountName, poolName, volumeName, body, context);
     }
 
@@ -338,8 +279,8 @@ public final class VolumesImpl implements Volumes {
         this.serviceClient().finalizeRelocation(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void finalizeRelocation(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    public void finalizeRelocation(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context) {
         this.serviceClient().finalizeRelocation(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
@@ -347,41 +288,31 @@ public final class VolumesImpl implements Volumes {
         this.serviceClient().revertRelocation(resourceGroupName, accountName, poolName, volumeName);
     }
 
-    public void revertRelocation(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    public void revertRelocation(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context) {
         this.serviceClient().revertRelocation(resourceGroupName, accountName, poolName, volumeName, context);
     }
 
     public Volume getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, poolName, volumeName, Context.NONE).getValue();
     }
@@ -389,33 +320,23 @@ public final class VolumesImpl implements Volumes {
     public Response<Volume> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, poolName, volumeName, context);
     }
@@ -423,33 +344,23 @@ public final class VolumesImpl implements Volumes {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         Boolean localForceDelete = null;
         this.delete(resourceGroupName, accountName, poolName, volumeName, localForceDelete, Context.NONE);
@@ -458,33 +369,23 @@ public final class VolumesImpl implements Volumes {
     public void deleteByIdWithResponse(String id, Boolean forceDelete, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         this.delete(resourceGroupName, accountName, poolName, volumeName, forceDelete, context);
     }
