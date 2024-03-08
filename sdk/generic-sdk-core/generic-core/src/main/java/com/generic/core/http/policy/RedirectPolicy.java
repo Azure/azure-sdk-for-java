@@ -3,8 +3,8 @@
 
 package com.generic.core.http.policy;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.models.HeaderName;
@@ -17,8 +17,8 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as
- * {@link HttpResponse response}.
+ * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as a
+ * {@link Response response}.
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RedirectPolicy.class);
@@ -38,7 +38,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUrls for each individual request.
         return attemptRedirect(httpRequest, next, 1, new HashSet<>());
     }
@@ -47,23 +47,21 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URL.
      */
-    private HttpResponse attemptRedirect(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
-                                         final int redirectAttempt, Set<String> attemptedRedirectUrls) {
+    private Response<?> attemptRedirect(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
+                                        final int redirectAttempt, Set<String> attemptedRedirectUrls) {
         // Make sure the context is not modified during retry, except for the URL
-        HttpResponse httpResponse = next.clone().process();
+        Response<?> response = next.clone().process();
 
-        if (redirectStrategy.shouldAttemptRedirect(httpRequest, httpResponse, redirectAttempt,
-            attemptedRedirectUrls)) {
-
-            HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
+        if (redirectStrategy.shouldAttemptRedirect(httpRequest, response, redirectAttempt, attemptedRedirectUrls)) {
+            HttpRequest redirectRequestCopy = createRedirectRequest(response);
 
             return attemptRedirect(redirectRequestCopy, next, redirectAttempt + 1, attemptedRedirectUrls);
         } else {
-            return httpResponse;
+            return response;
         }
     }
 
-    private HttpRequest createRedirectRequest(HttpResponse redirectResponse) {
+    private HttpRequest createRedirectRequest(Response<?> redirectResponse) {
         // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
         // causing it to leak your authorization token to.
         redirectResponse.getRequest().getHeaders().remove(HeaderName.AUTHORIZATION);

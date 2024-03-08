@@ -3,7 +3,7 @@
 
 package com.generic.core.http.exception;
 
-import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.Response;
 
 /**
  * The exception thrown when an unsuccessful response is received with http status code (e.g. {@code 3XX}, {@code 4XX},
@@ -18,7 +18,7 @@ public final class HttpResponseException extends RuntimeException {
     /**
      * Information about the associated HTTP response.
      */
-    private final HttpResponse response;
+    private final Response<?> response;
 
     /**
      * The type of the exception.
@@ -29,11 +29,11 @@ public final class HttpResponseException extends RuntimeException {
      * Initializes a new instance of the HttpResponseException class.
      *
      * @param message The exception message.
-     * @param response The {@link HttpResponse} received that is associated to the exception.
+     * @param response The {@link Response} received that is associated to the exception.
      * @param type The {@link HttpExceptionType type} of the exception.
      * @param value The deserialized response value.
      */
-    public HttpResponseException(final String message, final HttpResponse response, final HttpExceptionType type,
+    public HttpResponseException(final String message, final Response<?> response, final HttpExceptionType type,
                                  final Object value) {
         super(message);
 
@@ -46,11 +46,11 @@ public final class HttpResponseException extends RuntimeException {
      * Initializes a new instance of the HttpResponseException class.
      *
      * @param message The exception message.
-     * @param response The {@link HttpResponse} received that is associated to the exception.
+     * @param response The {@link Response} received that is associated to the exception.
      * @param type The {@link HttpExceptionType type} of the exception.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
-    public HttpResponseException(final String message, final HttpResponse response, final HttpExceptionType type,
+    public HttpResponseException(final String message, final Response<?> response, final HttpExceptionType type,
                                  final Throwable cause) {
         super(message, cause);
 
@@ -63,14 +63,14 @@ public final class HttpResponseException extends RuntimeException {
      * Initializes a new instance of the HttpResponseException class.
      *
      * @param message The exception message.
-     * @param response The {@link HttpResponse} received that is associated to the exception.
+     * @param response The {@link Response} received that is associated to the exception.
      * @param type The {@link HttpExceptionType type} of the exception.
      * @param value The deserialized response value.
      * @param cause The {@link Throwable} which caused the creation of this exception.
      * @param enableSuppression Whether suppression is enabled or disabled.
      * @param writableStackTrace Whether the exception stack trace will be filled in.
      */
-    public HttpResponseException(final String message, final HttpResponse response, final HttpExceptionType type,
+    public HttpResponseException(final String message, final Response<?> response, final HttpExceptionType type,
                                  final Object value, final Throwable cause, final boolean enableSuppression,
                                  final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
@@ -81,11 +81,11 @@ public final class HttpResponseException extends RuntimeException {
     }
 
     /**
-     * Gets the {@link HttpResponse} received that is associated to the exception.
+     * Gets the {@link Response} received that is associated to the exception.
      *
-     * @return The {@link HttpResponse} received that is associated to the exception.
+     * @return The {@link Response} received that is associated to the exception.
      */
-    public HttpResponse getResponse() {
+    public Response<?> getResponse() {
         return response;
     }
 

@@ -59,6 +59,7 @@
       --add-opens com.generic.core/com.generic.core.implementation.http.serializer=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.implementation.util=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.models=ALL-UNNAMED
+      --add-opens com.generic.core/com.generic.core.shared=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.util=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.util.configuration=ALL-UNNAMED
       --add-opens com.generic.core/com.generic.core.util.serializer=ALL-UNNAMED
@@ -108,7 +109,7 @@
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
-      <version>1.24.0</version>  <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
+      <version>1.24.0</version> <!-- {x-version-update;org.apache.commons:commons-compress;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

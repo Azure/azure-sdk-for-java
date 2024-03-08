@@ -3,12 +3,12 @@
 
 package com.generic.core.implementation.http;
 
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.http.rest.RestProxyImpl;
 import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.http.rest.SwaggerInterfaceParser;
 import com.generic.core.implementation.http.rest.SwaggerMethodParser;
-import com.generic.core.http.models.RequestOptions;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.lang.reflect.InvocationHandler;
@@ -23,7 +23,6 @@ import java.lang.reflect.Proxy;
  */
 public final class RestProxy implements InvocationHandler {
     private final SwaggerInterfaceParser interfaceParser;
-    private final HttpPipeline httpPipeline;
     private final RestProxyImpl restProxyImpl;
 
     /**
@@ -37,7 +36,6 @@ public final class RestProxy implements InvocationHandler {
     private RestProxy(HttpPipeline httpPipeline, ObjectSerializer serializer, SwaggerInterfaceParser interfaceParser) {
         this.interfaceParser = interfaceParser;
         this.restProxyImpl = new RestProxyImpl(httpPipeline, serializer, interfaceParser);
-        this.httpPipeline = httpPipeline;
     }
 
     /**

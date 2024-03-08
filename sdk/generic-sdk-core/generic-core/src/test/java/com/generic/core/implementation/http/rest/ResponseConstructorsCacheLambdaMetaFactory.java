@@ -5,8 +5,6 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
-import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
@@ -105,16 +103,15 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
         /**
          * Invoke the {@link Response} constructor this type represents.
          *
-         * @param decodedResponse the decoded http response
+         * @param response the decoded http response
          * @param bodyAsObject the http response content
          *
          * @return an instance of a {@link Response} implementation
          */
-        Response<?> invoke(final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
-            final HttpResponse httpResponse = decodedResponse.getSourceResponse();
-            final HttpRequest httpRequest = httpResponse.getRequest();
-            final int responseStatusCode = httpResponse.getStatusCode();
-            final Headers responseHeaders = httpResponse.getHeaders();
+        Response<?> invoke(final Response<?> response, final Object bodyAsObject) {
+            final HttpRequest httpRequest = response.getRequest();
+            final int responseStatusCode = response.getStatusCode();
+            final Headers responseHeaders = response.getHeaders();
 
             try {
                 switch (this.parameterCount) {
