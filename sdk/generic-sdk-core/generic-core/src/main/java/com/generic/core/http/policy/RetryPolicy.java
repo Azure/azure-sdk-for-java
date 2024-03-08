@@ -116,7 +116,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying using the well-known retry headers.
      */
-    Duration getWellKnownRetryDelay(Headers responseHeaders, int tryCount, Supplier<OffsetDateTime> nowSupplier) {
+    private Duration getWellKnownRetryDelay(Headers responseHeaders, int tryCount, Supplier<OffsetDateTime> nowSupplier) {
         Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(responseHeaders, nowSupplier);
         if (retryDelay != null) {
             return retryDelay;
@@ -263,10 +263,13 @@ public class RetryPolicy implements HttpPipelinePolicy {
         loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(() -> format, throwable);
     }
 
-    public Duration calculateRetryDelay(int retryAttempts) {
+    private Duration calculateRetryDelay(int retryAttempts) {
+        // Return fixed delay if it is set
         if (fixedDelay != null) {
             return fixedDelay;
         }
+
+        // Otherwise, calculate exponential delay
         long baseDelayNanos = baseDelay.toNanos();
         long maxDelayNanos = maxDelay.toNanos();
         // Introduce a small amount of jitter to base delay
@@ -275,7 +278,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return Duration.ofNanos(Math.min((1L << retryAttempts) * delayWithJitterInNanos, maxDelayNanos));
     }
 
-    boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
+    private boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
         if (requestRetryCondition.getResponse() != null) {
             int code = requestRetryCondition.getResponse().getStatusCode();
             return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
