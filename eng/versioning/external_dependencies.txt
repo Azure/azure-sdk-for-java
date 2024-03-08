@@ -26,6 +26,7 @@ com.google.code.gson:gson;2.10
 com.google.guava:guava;33.0.0-jre
 com.h2database:h2;2.2.220
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
+com.knuddels:jtokkit;1.0.0
 com.microsoft.azure:applicationinsights-core;3.4.1
 com.microsoft.azure:azure-annotations;1.7.0
 com.microsoft.azure:azure-arm-client-runtime;1.7.14
@@ -434,7 +435,3 @@ spring_com.microsoft.azure:azure;1.34.0
 
 # sdk\spring\spring-cloud-azure-service\pom.xml
 spring_redis.clients:jedis;3.8.0
-
-## Open AI
-# sdk\openai\azure-ai-openai\pom.xml
-com.knuddels:jtokkit;1.0.0

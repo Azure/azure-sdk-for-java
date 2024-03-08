@@ -39,7 +39,7 @@ public class StreamingChatSample {
     public static void main(String[] args) {
         String azureOpenaiKey = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
-        String deploymentOrModelId = "gpt-4-1106-preview";
+        String deploymentOrModelId = Configuration.getGlobalConfiguration().get("OPENAI_DEPLOYMENT_OR_MODEL_ID");
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
