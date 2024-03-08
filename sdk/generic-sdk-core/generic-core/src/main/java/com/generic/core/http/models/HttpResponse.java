@@ -4,6 +4,7 @@
 package com.generic.core.http.models;
 
 import com.generic.core.http.Response;
+import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
@@ -14,6 +15,10 @@ import java.io.IOException;
  */
 public class HttpResponse<T> implements Response<T> {
     private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
+
+    static {
+        HttpResponseAccessHelper.setAccessor(HttpResponse::setValue);
+    }
 
     private final Headers headers;
     private final HttpRequest request;
@@ -93,13 +98,13 @@ public class HttpResponse<T> implements Response<T> {
     }
 
     /**
-     * Sets the decoded body of this response as its value.
+     * Sets the value of this response.
      *
-     * @param decodedBody The decoded body.
+     * @param value The value.
      */
     @SuppressWarnings("unchecked")
-    public HttpResponse<T> setDecodedBody(Object decodedBody) {
-        this.value = (T) decodedBody;
+    private HttpResponse<T> setValue(Object value) {
+        this.value = (T) value;
 
         return this;
     }

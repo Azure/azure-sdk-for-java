@@ -14,6 +14,7 @@ import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
+import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
 import com.generic.core.implementation.util.UrlBuilder;
@@ -98,7 +99,7 @@ public abstract class RestProxyBase {
         // Response or rely on reflection to create an appropriate Response subtype.
         if (clazz.equals(Response.class)) {
             // Return the Response.
-            return ((HttpResponse<?>) response).setDecodedBody(bodyAsObject);
+            return HttpResponseAccessHelper.setValue((HttpResponse<?>) response, bodyAsObject);
         } else {
             // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
             // subtype.
