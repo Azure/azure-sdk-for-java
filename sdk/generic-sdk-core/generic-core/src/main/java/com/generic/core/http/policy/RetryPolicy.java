@@ -68,7 +68,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates {@link RetryPolicy} using ExponentialBackoffDelay strategy, defaulting to
+     * Creates {@link RetryPolicy} using exponential backoff delay, defaulting to
      * three retries, a base delay of 800 milliseconds, and a maximum delay of 8 seconds.
      */
     public RetryPolicy() {
