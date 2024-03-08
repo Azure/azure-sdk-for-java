@@ -543,7 +543,7 @@ public class Configs {
             PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE_NAME,
             firstNonNull(
                 emptyToNull(System.getenv().get(PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE_NAME)),
-                String.valueOf(DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT)));
+                String.valueOf(DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE)));
 
         return Double.parseDouble(pkBasedBloomFilterExpectedFfpRate);
     }

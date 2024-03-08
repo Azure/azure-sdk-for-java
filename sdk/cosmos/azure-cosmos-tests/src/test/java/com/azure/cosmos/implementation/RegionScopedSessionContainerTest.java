@@ -381,7 +381,7 @@ public class RegionScopedSessionContainerTest {
         @SuppressWarnings("unchecked")
         ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId = (ConcurrentHashMap<String, Long>) FieldUtils.readField(sessionContainer, "collectionNameToCollectionResourceId", true);
         @SuppressWarnings("unchecked")
-        ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress> collectionResourceIdToRegionScopedSessionTokens = (ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress>) FieldUtils.readField(sessionContainer, "collectionResourceIdToRegionScopedSessionTokens", true);
+        ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress> collectionResourceIdToRegionScopedSessionTokens = (ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress>) FieldUtils.readField(sessionContainer, "collectionResourceIdToPartitionScopedRegionLevelProgress", true);
         assertThat(collectionNameToCollectionResourceId).hasSize(1);
         assertThat(collectionResourceIdToRegionScopedSessionTokens).hasSize(1);
         assertThat(collectionNameToCollectionResourceId.get(collectionName)).isEqualTo(collectionRidAsLong);
@@ -389,7 +389,7 @@ public class RegionScopedSessionContainerTest {
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress()).isNotNull();
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId)).isNotNull();
         assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId)).isNotNull();
-        assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId).get("global").getVectorSessionToken().convertToString()).isEqualTo(sessionToken);
+        assertThat(collectionResourceIdToRegionScopedSessionTokens.get(collectionRidAsLong).getPartitionKeyRangeIdToRegionLevelProgress().get(partitionKeyRangeId).get(PartitionScopedRegionLevelProgress.GlobalProgressKey).getVectorSessionToken().convertToString()).isEqualTo(sessionToken);
 
         RxDocumentServiceRequest request2 = RxDocumentServiceRequest.create(mockDiagnosticsClientContext(),OperationType.Read, ResourceType.Document,
             collectionName + "/docs",  Utils.getUTF8Bytes(""), new HashMap<>());
