@@ -681,8 +681,31 @@ public final class OpenAIClient {
     }
 
     /**
-     * Gets chat completions for the provided chat messages. Chat completions support a wide variety of tasks and
-     * generate text that continues from or "completes" provided prompt data.
+     * Gets chat completions for the provided chat messages in streaming mode. Chat completions support a wide variety
+     * of tasks and generate text that continues from or "completes" provided prompt data.
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     * <!-- src_embed com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
+     * <pre>
+     * openAIClient.getChatCompletionsStream&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;&#41;
+     *         .stream&#40;&#41;
+     *         &#47;&#47; Remove .skip&#40;1&#41; when using Non-Azure OpenAI API
+     *         &#47;&#47; Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+     *         &#47;&#47; TODO: remove .skip&#40;1&#41; after service fixes the issue.
+     *         .skip&#40;1&#41;
+     *         .forEach&#40;chatCompletions -&gt; &#123;
+     *             ChatResponseMessage delta = chatCompletions.getChoices&#40;&#41;.get&#40;0&#41;.getDelta&#40;&#41;;
+     *             if &#40;delta.getRole&#40;&#41; != null&#41; &#123;
+     *                 System.out.println&#40;&quot;Role = &quot; + delta.getRole&#40;&#41;&#41;;
+     *             &#125;
+     *             if &#40;delta.getContent&#40;&#41; != null&#41; &#123;
+     *                 String content = delta.getContent&#40;&#41;;
+     *                 System.out.print&#40;content&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
