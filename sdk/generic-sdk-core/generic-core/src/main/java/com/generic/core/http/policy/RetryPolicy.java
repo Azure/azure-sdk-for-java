@@ -88,7 +88,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     /**
      * Creates {@link RetryPolicy} with the provided {@link RetryOptions}.
-     *
+     * <p>
+     * By default, the retry policy uses an exponential backoff delay. If both 'fixedDelay' and 'baseDelay' are null,
+     * the 'baseDelay' is set to 800 milliseconds and the 'maxDelay' if not provided is set to 8 seconds.
+     * </p>
      * @param baseDelay The base delay duration for retry.
      * @param maxDelay The max delay duration for retry.
      * @param fixedDelay The fixed delay duration between retry attempts.
@@ -99,10 +102,19 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * {@code retryAfterHeader} is not null.
      */
     RetryPolicy(Duration baseDelay, Duration maxDelay, Duration fixedDelay, int maxRetries,
-        Function<Headers, Duration> delayFromHeaders, Predicate<RequestRetryCondition> shouldRetryCondition) {
+                Function<Headers, Duration> delayFromHeaders, Predicate<RequestRetryCondition> shouldRetryCondition) {
+        if (fixedDelay == null && baseDelay == null) {
+            this.baseDelay = DEFAULT_BASE_DELAY;
+            if (maxDelay == null) {
+                this.maxDelay = DEFAULT_MAX_DELAY;
+            } else {
+                this.maxDelay = maxDelay;
+            }
+        } else {
+            this.baseDelay = baseDelay;
+            this.maxDelay = maxDelay;
+        }
         this.fixedDelay = fixedDelay;
-        this.baseDelay = baseDelay;
-        this.maxDelay = maxDelay;
         this.maxRetries = maxRetries;
         this.delayFromHeaders = delayFromHeaders;
         this.shouldRetryCondition = shouldRetryCondition;
