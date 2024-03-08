@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -18,7 +21,6 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
@@ -29,12 +31,14 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -71,7 +75,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .preferredRegions(this.readRegionMap.keySet().stream().toList());
+            .preferredRegions(new ArrayList<>(this.readRegionMap.keySet()));
 
         cosmosClientBuilderAccessor.setRegionScopedSessionCapturingEnabled(clientBuilder, true);
 
@@ -103,7 +107,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
             .key(TestConfigurations.MASTER_KEY)
-            .preferredRegions(this.readRegionMap.keySet().stream().toList());
+            .preferredRegions(new ArrayList<>(this.readRegionMap.keySet()));
 
         cosmosClientBuilderAccessor.setRegionScopedSessionCapturingEnabled(clientBuilder, true);
 
@@ -156,7 +160,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
     @Test(groups = {"multi-region"})
     public void pointReadYourPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion() throws InterruptedException {
 
-        List<String> preferredRegions = this.readRegionMap.keySet().stream().toList();
+        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
 
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -194,7 +198,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
     @Test(groups = {"multi-region"})
     public void pointReadAfterPartitionSplitAndPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion() throws InterruptedException {
 
-        List<String> preferredRegions = this.readRegionMap.keySet().stream().toList();
+        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
 
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -252,7 +256,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
     @Test(groups = {"multi-region"})
     public void pointReadYourLatestUpsert_UpsertsFromPreferredRegionReadFromPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = this.readRegionMap.keySet().stream().toList();
+        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
 
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -293,7 +297,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
     @Test(groups = {"multi-region"})
     public void queryTargetedToLogicalPartitionFollowingCreates_queryFromFirstPreferredRegionCreateInFirstPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = this.readRegionMap.keySet().stream().toList();
+        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
 
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -332,7 +336,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
     @Test(groups = {"multi-region"})
     public void crossPartitionedQueryFollowingCreates_queryFromFirstPreferredRegionCreatesInFirstPreferredRegion() throws InterruptedException {
-        List<String> preferredRegions = this.readRegionMap.keySet().stream().toList();
+        List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
         Map<String, TestObject> idToTestObjects = new HashMap<>();
 
         CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
