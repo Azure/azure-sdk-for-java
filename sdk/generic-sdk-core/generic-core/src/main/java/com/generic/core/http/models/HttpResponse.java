@@ -3,81 +3,52 @@
 
 package com.generic.core.http.models;
 
+import com.generic.core.http.Response;
+import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 
-import java.io.Closeable;
 import java.io.IOException;
 
 /**
  * The response of an {@link HttpRequest}.
  */
-public abstract class HttpResponse implements Closeable {
+public class HttpResponse<T> implements Response<T> {
+    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
+
+    static {
+        HttpResponseAccessHelper.setAccessor(HttpResponse::setValue);
+    }
+
+    private final Headers headers;
     private final HttpRequest request;
-    private BinaryData binaryData = null;
-    private final byte[] bodyBytes;
+    private final int statusCode;
+
+    private BinaryData body;
+    private T value;
 
     /**
      * Creates an instance of {@link HttpResponse}.
      *
      * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
+     * @param statusCode The response status code.
+     * @param headers The response {@link Headers}.
+     * @param value The response body.
      */
-    protected HttpResponse(HttpRequest request) {
+    public HttpResponse(HttpRequest request, int statusCode, Headers headers, T value) {
         this.request = request;
-        this.bodyBytes = null;
+        this.statusCode = statusCode;
+        this.headers = headers;
+        this.value = value;
     }
 
     /**
-     * Creates an instance of {@link HttpResponse}.
+     * Get all response {@link Headers}.
      *
-     * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
-     * @param bodyBytes The response body as a byte array.
+     * @return The response {@link Headers}.
      */
-    protected HttpResponse(HttpRequest request, byte[] bodyBytes) {
-        this.request = request;
-        this.bodyBytes = bodyBytes;
-    }
-
-    /**
-     * Get the response status code.
-     *
-     * @return The response status code.
-     */
-    public abstract int getStatusCode();
-
-    /**
-     * Lookup a response header with the provider {@link HeaderName}.
-     *
-     * @param headerName The name of the header to lookup.
-     *
-     * @return The value of the header, or {@code null} if the header doesn't exist in the response.
-     */
-    public String getHeaderValue(HeaderName headerName) {
-        return getHeaders().getValue(headerName);
-    }
-
-    /**
-     * Get all response headers.
-     *
-     * @return the response headers
-     */
-    public abstract Headers getHeaders();
-
-    /**
-     * Gets the {@link BinaryData} that represents the body of the response.
-     *
-     * <p>Subclasses should override this method.</p>
-     *
-     * @return The {@link BinaryData} response body.
-     */
-    public BinaryData getBody() {
-        // We shouldn't create multiple binary data instances for a single stream.
-        if (binaryData == null && bodyBytes != null) {
-            binaryData = BinaryData.fromBytes(bodyBytes);
-        }
-
-        return binaryData;
+    public final Headers getHeaders() {
+         return headers;
     }
 
     /**
@@ -90,8 +61,54 @@ public abstract class HttpResponse implements Closeable {
     }
 
     /**
-     * Closes the response content stream, if any.
+     * Get the response status code.
+     *
+     * @return The response status code.
      */
+    public final int getStatusCode() {
+        return statusCode;
+    }
+
+    /**
+     * Gets the value of this response.
+     *
+     * @return The value of this response.
+     */
+    public T getValue() {
+        return value;
+    }
+
+    /**
+     * Gets the {@link BinaryData} that represents the body of the response.
+     *
+     * @return The {@link BinaryData} containing the response body.
+     */
+    public BinaryData getBody() {
+        if (body == null) {
+            if (value == null) {
+                body = EMPTY_BODY;
+            } else if (value instanceof BinaryData) {
+                body = (BinaryData) value;
+            } else {
+                body = BinaryData.fromObject(value);
+            }
+        }
+
+        return body;
+    }
+
+    /**
+     * Sets the value of this response.
+     *
+     * @param value The value.
+     */
+    @SuppressWarnings("unchecked")
+    private HttpResponse<T> setValue(Object value) {
+        this.value = (T) value;
+
+        return this;
+    }
+
     @Override
     public void close() throws IOException {
     }

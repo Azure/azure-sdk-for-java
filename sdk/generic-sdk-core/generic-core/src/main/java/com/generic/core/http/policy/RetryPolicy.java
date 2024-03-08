@@ -3,8 +3,8 @@
 
 package com.generic.core.http.policy;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RetryOptions;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
@@ -83,7 +83,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     /**
      * Creates {@link RetryPolicy} with the provided {@link RetryStrategy} and default {@link ExponentialBackoffDelay} as
-     * {@link RetryStrategy}. It will use provided {@code retryAfterHeader} in {@link HttpResponse} headers for
+     * {@link RetryStrategy}. It will use provided {@code retryAfterHeader} in {@link Response} headers for
      * calculating retry delay.
      *
      * @param retryStrategy The {@link RetryStrategy} used for retries.
@@ -99,7 +99,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         return attempt(httpRequest, next, 0, null);
     }
 
@@ -148,14 +148,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private HttpResponse attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next, final int tryCount,
-        final List<Exception> suppressed) {
+    private Response<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next, final int tryCount,
+                                final List<Exception> suppressed) {
         httpRequest.getMetadata().setRetryCount(tryCount + 1);
 
-        HttpResponse httpResponse;
+        Response<?> response;
 
         try {
-            httpResponse = next.clone().process();
+            response = next.clone().process();
         } catch (RuntimeException err) {
             if (shouldRetryException(retryStrategy, err, tryCount, suppressed)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
@@ -182,14 +182,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
             }
         }
 
-        if (shouldRetryResponse(retryStrategy, httpResponse, tryCount, suppressed)) {
-            final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
+        if (shouldRetryResponse(retryStrategy, response, tryCount, suppressed)) {
+            final Duration delayDuration = determineDelayDuration(response, tryCount, retryStrategy,
                 delayFromHeaders);
 
             logRetry(tryCount, delayDuration);
 
             try {
-                httpResponse.close();
+                response.close();
             } catch (IOException e) {
                 throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
             }
@@ -206,15 +206,15 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 logRetryExhausted(tryCount);
             }
 
-            return httpResponse;
+            return response;
         }
     }
 
     /*
      * Determines the delay duration that should be waited before retrying.
      */
-    private static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
-        Function<Headers, Duration> delayFromHeaders) {
+    private static Duration determineDelayDuration(Response<?> response, int tryCount, RetryStrategy retryStrategy,
+                                                   Function<Headers, Duration> delayFromHeaders) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (delayFromHeaders == null) {
             return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy, OffsetDateTime::now);
@@ -229,8 +229,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return retryStrategy.calculateRetryDelay(tryCount);
     }
 
-    private boolean shouldRetryResponse(RetryStrategy retryStrategy, HttpResponse response, int tryCount,
-        List<Exception> retriedExceptions) {
+    private boolean shouldRetryResponse(RetryStrategy retryStrategy, Response<?> response, int tryCount,
+                                        List<Exception> retriedExceptions) {
         return tryCount < maxRetries && retryStrategy.shouldRetryCondition(
             new RequestRetryCondition(response, null, tryCount, retriedExceptions));
     }

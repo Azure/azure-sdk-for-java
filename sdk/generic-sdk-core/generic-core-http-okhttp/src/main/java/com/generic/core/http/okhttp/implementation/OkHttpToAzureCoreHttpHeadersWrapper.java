@@ -3,8 +3,8 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.models.Header;
+import com.generic.core.models.HeaderName;
 import okhttp3.Headers;
 
 import java.util.Iterator;
@@ -153,7 +153,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.
             return;
         }
 
-        coreHeaders = OkHttpResponseBase.fromOkHttpHeaders(okhttpHeaders);
+        coreHeaders = OkHttpResponse.fromOkHttpHeaders(okhttpHeaders);
         converted = true;
     }
 }

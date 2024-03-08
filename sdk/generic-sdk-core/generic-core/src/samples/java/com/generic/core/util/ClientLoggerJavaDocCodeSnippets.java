@@ -4,7 +4,6 @@
 package com.generic.core.util;
 
 import com.generic.core.http.Response;
-import com.generic.core.implementation.http.SimpleResponse;
 
 import java.io.File;
 import java.io.IOException;
@@ -141,7 +140,7 @@ public class ClientLoggerJavaDocCodeSnippets {
     }
 
     private Response<Void> getResponse() {
-        return new SimpleResponse<>(null, 200, null, null);
+        return Response.create(null, 200, null, null);
     }
 
     /**

@@ -5,10 +5,10 @@ package com.generic.core.http;
 
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.RestProxy;
-import com.generic.core.implementation.http.SimpleResponse;
 import com.generic.core.implementation.http.rest.ResponseConstructorsCache;
 import com.generic.core.models.Headers;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -42,7 +42,7 @@ public class RestProxyResponseConstructionBenchmark {
     private static final Headers HEADERS = new Headers();
 
     private static final Class<? extends Response<?>> RESPONSE_TYPE =
-        (Class<? extends Response<?>>) TypeUtil.getRawClass(TypeUtil.createParameterizedType(SimpleResponse.class,
+        (Class<? extends Response<?>>) TypeUtil.getRawClass(TypeUtil.createParameterizedType(HttpResponse.class,
             Object.class, String.class));
 
     /**
@@ -53,7 +53,7 @@ public class RestProxyResponseConstructionBenchmark {
      */
     @Benchmark
     public void directConstruction(Blackhole blackhole) {
-        blackhole.consume(new SimpleResponse<>(REQUEST, 200, HEADERS, "value"));
+        blackhole.consume(new HttpResponse<>(REQUEST, 200, HEADERS, "value"));
     }
 
     /**

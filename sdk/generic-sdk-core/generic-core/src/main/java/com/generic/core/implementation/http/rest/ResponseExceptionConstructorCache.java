@@ -3,8 +3,8 @@
 
 package com.generic.core.implementation.http.rest;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.exception.HttpResponseException;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.util.ClientLogger;
 
@@ -35,10 +35,11 @@ public final class ResponseExceptionConstructorCache {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends HttpResponseException> T invoke(ReflectiveInvoker reflectiveInvoker, String exceptionMessage,
-                                                             HttpResponse httpResponse, Object exceptionBody) {
+    public static <T extends HttpResponseException> T invoke(ReflectiveInvoker reflectiveInvoker,
+                                                             String exceptionMessage, Response<?> response,
+                                                             Object exceptionBody) {
         try {
-            return (T) reflectiveInvoker.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);
+            return (T) reflectiveInvoker.invokeWithArguments(exceptionMessage, response, exceptionBody);
         } catch (Exception exception) {
             if (exception instanceof RuntimeException) {
                 throw LOGGER.logThrowableAsError((RuntimeException) exception);

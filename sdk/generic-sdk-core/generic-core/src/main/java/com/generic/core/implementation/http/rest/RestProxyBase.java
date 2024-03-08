@@ -14,9 +14,8 @@ import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
-import com.generic.core.implementation.http.SimpleResponse;
+import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
-import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
@@ -48,7 +47,6 @@ public abstract class RestProxyBase {
     final HttpPipeline httpPipeline;
     final ObjectSerializer serializer;
     final SwaggerInterfaceParser interfaceParser;
-    final HttpResponseDecoder decoder;
 
     /**
      * Create a RestProxy.
@@ -63,7 +61,6 @@ public abstract class RestProxyBase {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
-        this.decoder = new HttpResponseDecoder(this.serializer);
     }
 
     public final Object invoke(Object proxy, final Method method, RequestOptions options,
@@ -94,33 +91,26 @@ public abstract class RestProxyBase {
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
                                        ObjectSerializer objectSerializer) throws IOException;
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
-    public Response createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
-                                   Object bodyAsObject) {
-        final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
-        final HttpResponse httpResponse = response.getSourceResponse();
-        final HttpRequest request = httpResponse.getRequest();
-        final int statusCode = httpResponse.getStatusCode();
-        final Headers headers = httpResponse.getHeaders();
+    @SuppressWarnings({"unchecked"})
+    public Response<?> createResponseIfNecessary(Response<?> response, Type entityType, Object bodyAsObject) {
+        final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
-        // Inspection of the response type needs to be performed to determine which course of action should be taken to
-        // instantiate the Response<?> from the HttpResponse.
-        //
-        // If the type is either the Response or PagedResponse interface from azure-core a new instance of either
-        // ResponseBase or PagedResponseBase can be returned.
-        if (cls.equals(Response.class)) {
-            // For Response return a new instance of SimpleResponse cast to the class.
-            return cls.cast(new SimpleResponse<>(request, statusCode, headers, bodyAsObject));
+        // Inspection of the response type needs to be performed to determine the course of action: either return the
+        // Response or rely on reflection to create an appropriate Response subtype.
+        if (clazz.equals(Response.class)) {
+            // Return the Response.
+            return HttpResponseAccessHelper.setValue((HttpResponse<?>) response, bodyAsObject);
+        } else {
+            // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
+            // subtype.
+            //
+            // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should
+            // be given a way to register their constructor as a callback method that consumes Response and the body as
+            // an Object.
+            ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz);
+
+            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
         }
-
-        // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.
-        //
-        // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should be
-        // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the body
-        // as an Object.
-        ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
-
-        return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
     }
 
     /**
@@ -208,11 +198,10 @@ public abstract class RestProxyBase {
                     request.getHeaders().set(HeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
                 }
 
-                // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
-                // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
-                // sending the request to the service. There is no memory copy that happens here. Sources like
-                // InputStream, File and Flux<ByteBuffer> will not be eagerly copied into memory until it's required
-                // by the HttpClient implementations.
+                // The request body is not read here. BinaryData lazily converts the underlying content which is then
+                // read by HttpClient implementations when sending the request to the service. There is no memory
+                // copy that happens here. Sources like InputStream or File will not be eagerly copied into memory
+                // until it's required by the HttpClient implementations.
                 request.setBody(binaryData);
 
                 return request;
@@ -241,47 +230,46 @@ public abstract class RestProxyBase {
      * Creates an HttpResponseException exception using the details provided in http response and its content.
      *
      * @param unexpectedExceptionInformation The exception holding UnexpectedException's details.
-     * @param httpResponse The http response to parse when constructing exception
-     * @param responseContent The response body to use when constructing exception
-     * @param responseDecodedContent The decoded response content to use when constructing exception
+     * @param response The http response to parse when constructing exception
+     * @param responseBody The response body to use when constructing exception
+     * @param responseDecodedBody The decoded response content to use when constructing exception
      *
      * @return The {@link HttpResponseException} created from the provided details.
      */
     public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
-                                                                       HttpResponse httpResponse,
-                                                                       byte[] responseContent,
-                                                                       Object responseDecodedContent) {
+                                                                       Response<?> response, byte[] responseBody,
+                                                                       Object responseDecodedBody) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
-            .append(httpResponse.getStatusCode())
+            .append(response.getStatusCode())
             .append(", ");
 
-        final String contentType = httpResponse.getHeaderValue(HeaderName.CONTENT_TYPE);
+        final String contentType = response.getHeaders().getValue(HeaderName.CONTENT_TYPE);
 
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = httpResponse.getHeaderValue(HeaderName.CONTENT_LENGTH);
+            String contentLength = response.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
 
             exceptionMessage.append("(").append(contentLength).append("-byte body)");
-        } else if (responseContent == null || responseContent.length == 0) {
+        } else if (responseBody == null || responseBody.length == 0) {
             exceptionMessage.append("(empty body)");
         } else {
-            exceptionMessage.append('\"').append(new String(responseContent, StandardCharsets.UTF_8)).append('\"');
+            exceptionMessage.append('\"').append(new String(responseBody, StandardCharsets.UTF_8)).append('\"');
         }
 
-        // If the decoded response content is on of these exception types there was a failure in creating the actual
+        // If the decoded response body is on of these exception types there was a failure in creating the actual
         // exception body type. In this case return an HttpResponseException to maintain the exception having a
-        // reference to the HttpResponse and information about what caused the deserialization failure.
-        if (responseDecodedContent instanceof IOException
-            || responseDecodedContent instanceof MalformedValueException
-            || responseDecodedContent instanceof IllegalStateException) {
+        // reference to the Response and information about what caused the deserialization failure.
+        if (responseDecodedBody instanceof IOException
+            || responseDecodedBody instanceof MalformedValueException
+            || responseDecodedBody instanceof IllegalStateException) {
 
-            return new HttpResponseException(exceptionMessage.toString(), httpResponse, null,
-                (Throwable) responseDecodedContent);
+            return new HttpResponseException(exceptionMessage.toString(), response, null,
+                (Throwable) responseDecodedBody);
         }
 
         HttpExceptionType exceptionType = unexpectedExceptionInformation.getExceptionType();
 
-        return new HttpResponseException(exceptionMessage.toString(), httpResponse, exceptionType,
-            responseDecodedContent);
+        return new HttpResponseException(exceptionMessage.toString(), response, exceptionType,
+            responseDecodedBody);
     }
 
     /**

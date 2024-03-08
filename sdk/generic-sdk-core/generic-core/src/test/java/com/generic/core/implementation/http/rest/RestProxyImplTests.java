@@ -10,17 +10,16 @@ import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
-import com.generic.core.http.models.RequestOptions;
+import com.generic.core.models.HeaderName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -83,7 +82,7 @@ public class RestProxyImplTests {
         private volatile boolean lastResponseClosed;
 
         @Override
-        public HttpResponse send(HttpRequest request) {
+        public Response<?> send(HttpRequest request) {
             boolean success = request.getUrl().getPath().equals("/my/url/path");
 
             if (request.getHttpMethod().equals(HttpMethod.POST)) {

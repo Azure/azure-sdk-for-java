@@ -3,8 +3,8 @@
 
 package com.generic.core.http.client;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 
 /**
  * A generic interface for sending HTTP requests and getting responses.
@@ -17,7 +17,7 @@ public interface HttpClient {
      *
      * @return The response.
      */
-    HttpResponse send(HttpRequest request);
+    Response<?> send(HttpRequest request);
 
     /**
      * Creates a new {@link HttpClient} instance.
