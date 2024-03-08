@@ -561,11 +561,6 @@ public class LocationCache {
             nextLocationInfo.readEndpoints = this.getPreferredAvailableEndpoints(nextLocationInfo.availableReadEndpointByLocation, nextLocationInfo.availableReadLocations, OperationType.Read, nextLocationInfo.writeEndpoints.get(0));
             this.lastCacheUpdateTimestamp = Instant.now();
 
-            if (!this.locationInfo.hasWritableLocationsChangedSinceClientInit) {
-                nextLocationInfo.hasWritableLocationsChangedSinceClientInit = this.evaluateWriteLocationsChange(this.locationInfo.availableWriteEndpointByLocation.keySet(), nextLocationInfo.availableWriteEndpointByLocation.keySet());
-
-            }
-
             logger.debug("updating location cache finished, new readLocations [{}], new writeLocations [{}]",
                     nextLocationInfo.readEndpoints, nextLocationInfo.writeEndpoints);
             this.locationInfo = nextLocationInfo;
@@ -621,10 +616,6 @@ public class LocationCache {
         }
 
         return new UnmodifiableList<URI>(endpoints);
-    }
-
-    private boolean evaluateWriteLocationsChange(Set<String> writeLocationsAfterDbAccountRefresh, Set<String> writeLocationsOnClientInit) {
-        return writeLocationsOnClientInit.equals(writeLocationsAfterDbAccountRefresh);
     }
 
     private UnmodifiableMap<String, URI> getEndpointByLocation(Iterable<DatabaseAccountLocation> locations,

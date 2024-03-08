@@ -252,14 +252,4 @@ public class RegionNameToRegionIdMap {
     public static int getRegionId(String regionName) {
         return normalizedRegionNameToRegionIdMappings.getOrDefault(regionName, -1);
     }
-
-    public static void main(String[] args) {
-        for (Map.Entry<String, Integer> entry : regionNameToRegionIdMappings.entrySet()) {
-            String regionNameNormalized = entry.getKey().toLowerCase(Locale.ROOT).replace(" ", "").trim();
-            int regionId = entry.getValue();
-
-            System.out.printf("put(\"%s\", %d);%n", regionNameNormalized, regionId);
-        }
-    }
-
 }

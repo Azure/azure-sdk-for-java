@@ -24,12 +24,22 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
     private final Logger logger = LoggerFactory.getLogger(RegionScopedSessionContainer.class);
 
+    // the map stores mappings b/w the collectionRid and region level progress for each physical partition
+    // in that collection
+    // PartitionScopedRegionLevelProgress has the following structure:
+    //      [pkRangeId1 -> {global: <global session token for pkRangeId1>; region1: (GLSN, LLSN, <session token only if first preferred region>); region2...}]
     private final ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress> collectionResourceIdToPartitionScopedRegionLevelProgress = new ConcurrentHashMap<>();
 
+    // bloom filter which stores an entry which corresponds to a triple of [collectionRid, EPK hash, region]
     private final PartitionKeyBasedBloomFilter partitionKeyBasedBloomFilter;
 
     private final ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
     private final ReentrantReadWriteLock.ReadLock readLock = readWriteLock.readLock();
+
+    // 1. a write lock is acquired when the collection has not been cached by the session container yet
+    // 2. the write lock is only released when the collection has been recorded along with any session specific
+    // information for a partition in that collection
+    // 3. once a collection has been recorded, thread-safe access is delegated to individual concurrent hashmaps
     private final ReentrantReadWriteLock.WriteLock writeLock = readWriteLock.writeLock();
 
     private final ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId = new ConcurrentHashMap<>();
@@ -319,7 +329,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
                 this.collectionNameToCollectionResourceId.get(collectionName) == resourceId.getUniqueDocumentCollectionId() &&
                 this.collectionResourceIdToCollectionName.get(resourceId.getUniqueDocumentCollectionId()).equals(collectionName);
             if (isKnownCollection) {
-                this.addSessionToken(request, resourceId, partitionKeyRangeId, parsedSessionToken);
+                this.addSessionTokenAndTryRecordEpkInBloomFilter(request, resourceId, partitionKeyRangeId, parsedSessionToken);
             }
         } finally {
             this.readLock.unlock();
@@ -332,7 +342,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
                     this.collectionNameToCollectionResourceId.compute(collectionName, (k, v) -> resourceId.getUniqueDocumentCollectionId());
                     this.collectionResourceIdToCollectionName.compute(resourceId.getUniqueDocumentCollectionId(), (k, v) -> collectionName);
                 }
-                this.addSessionToken(request, resourceId, partitionKeyRangeId, parsedSessionToken);
+                this.addSessionTokenAndTryRecordEpkInBloomFilter(request, resourceId, partitionKeyRangeId, parsedSessionToken);
             } finally {
                 this.writeLock.unlock();
             }
@@ -370,7 +380,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
             regionRoutedTo);
     }
 
-    private void addSessionToken(RxDocumentServiceRequest request, ResourceId resourceId, String partitionKeyRangeId, ISessionToken parsedSessionToken) {
+    private void addSessionTokenAndTryRecordEpkInBloomFilter(RxDocumentServiceRequest request, ResourceId resourceId, String partitionKeyRangeId, ISessionToken parsedSessionToken) {
 
         final Long collectionResourceId = resourceId.getUniqueDocumentCollectionId();
 
@@ -413,7 +423,6 @@ public class RegionScopedSessionContainer implements ISessionContainer {
                 regionRoutedTo);
 
         } else {
-            // populate partitionScopedRegionLevelProgress
             this.collectionResourceIdToPartitionScopedRegionLevelProgress.compute(
                 resourceId.getUniqueDocumentCollectionId(), (k, partitionScopedRegionLevelProgressAsVal) -> {
 

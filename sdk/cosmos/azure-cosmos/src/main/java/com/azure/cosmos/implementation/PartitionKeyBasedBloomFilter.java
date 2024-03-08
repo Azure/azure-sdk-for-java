@@ -23,12 +23,10 @@ public class PartitionKeyBasedBloomFilter {
     private static final double ALLOWED_FALSE_POSITIVE_RATE = Configs.getPkBasedBloomFilterExpectedFfpRate();
     private BloomFilter<PartitionKeyBasedBloomFilterType> pkBasedBloomFilter;
     private final Set<String> recordedRegions;
-    private final AtomicBoolean isBloomFilterInitialized;
     private final Funnel<PartitionKeyBasedBloomFilterType> funnel;
 
     public PartitionKeyBasedBloomFilter() {
         this.recordedRegions = ConcurrentHashMap.newKeySet();
-        this.isBloomFilterInitialized = new AtomicBoolean(false);
         this.funnel = new Funnel<PartitionKeyBasedBloomFilterType>() {
             @Override
             public void funnel(PartitionKeyBasedBloomFilterType from, PrimitiveSink into) {
@@ -65,8 +63,12 @@ public class PartitionKeyBasedBloomFilter {
 
         String normalizedRegionRoutedTo = regionRoutedTo.toLowerCase(Locale.ROOT).replace(" ", "");;
 
-        // a session token should have been received from a region to consider an EPK
-        // to also have been requested from the region
+        // 1. record region information for EPK hash only if this EPK was resolved
+        // to a different preferred region than the first preferred region
+        // 2. session token originating from the first preferred region is always
+        // merged when resolving the session token for a request, so it is not
+        // needed to also record which EPK got resolved in the first preferred region
+        // 3. this avoids the bloom filter from getting filled up in steady state
         if (!normalizedRegionRoutedTo.equals(firstPreferredWritableRegion)) {
             this.pkBasedBloomFilter.put(
                 new PartitionKeyBasedBloomFilterType(
@@ -77,6 +79,7 @@ public class PartitionKeyBasedBloomFilter {
         }
     }
 
+    // resolve which regions was a given EPK possibly saw requests resolved in (processed by the replica in that region)
     public Set<String> tryGetPossibleRegionsLogicalPartitionResolvedTo(
         Long collectionRid, PartitionKeyInternal partitionKey, PartitionKeyDefinition partitionKeyDefinition) {
 
@@ -92,6 +95,7 @@ public class PartitionKeyBasedBloomFilter {
         return regionsPartitionKeyHasProbablySeen;
     }
 
+    // below type represents a bloom filter entry
     public static class PartitionKeyBasedBloomFilterType {
 
         private final String effectivePartitionKeyString;

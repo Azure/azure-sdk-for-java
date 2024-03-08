@@ -32,23 +32,6 @@ public class PartitionScopedRegionLevelProgress {
         return this.partitionKeyRangeIdToRegionLevelProgress;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        PartitionScopedRegionLevelProgress that = (PartitionScopedRegionLevelProgress) o;
-        return Objects.equals(this.partitionKeyRangeIdToRegionLevelProgress, that.partitionKeyRangeIdToRegionLevelProgress);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(partitionKeyRangeIdToRegionLevelProgress);
-    }
-
     public void tryRecordSessionToken(ISessionToken parsedSessionToken, String partitionKeyRangeId, String firstEffectivePreferredReadableRegion, String regionRoutedTo) {
 
         this.partitionKeyRangeIdToRegionLevelProgress.compute(partitionKeyRangeId, (partitionKeyRangeIdAsKey, regionLevelProgressAsVal) -> {

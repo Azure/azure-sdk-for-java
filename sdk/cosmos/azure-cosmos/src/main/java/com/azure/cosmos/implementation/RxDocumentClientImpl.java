@@ -5004,13 +5004,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    // TODO (abhmohanty) - evaluate risk of changing return type Object -> ISessionContainer
     public ISessionContainer getSession() {
         return this.sessionContainer;
     }
 
     public void setSession(ISessionContainer sessionContainer) {
-        // this.sessionContainer = (SessionContainer) sessionContainer;
         this.sessionContainer = sessionContainer;
     }
 

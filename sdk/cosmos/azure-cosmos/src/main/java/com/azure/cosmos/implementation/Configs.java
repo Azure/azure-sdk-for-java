@@ -131,6 +131,8 @@ public class Configs {
     private static final int DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS = 500;
 
     // RegionScopedSessionContainer related constants
+    public static final String IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED_NAME = "COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED";
+    private static final boolean DEFAULT_IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED = false;
     public static final String PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT_NAME = "COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT";
     private static final int DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT = 5_000_000;
     public static final String PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE_NAME = "COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE";
@@ -175,9 +177,6 @@ public class Configs {
     private static final int DEFAULT_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
     public static final int MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
-
-    public static final String IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED_NAME = "COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED";
-    private static final boolean DEFAULT_IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED = false;
 
     public static final String TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS = "COSMOS.TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS";
 
@@ -514,14 +513,34 @@ public class Configs {
     }
 
     public static boolean isRegionScopedSessionTokenCapturingEnabled() {
-        return getBooleanValue(System.getProperty(IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED_NAME), DEFAULT_IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED);
+
+        String isRegionSessionTokenCapturingEnabled = System.getProperty(
+            IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED_NAME,
+            firstNonNull(
+                emptyToNull(System.getenv().get(IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED_NAME)),
+                String.valueOf(DEFAULT_IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED)));
+
+        return Boolean.parseBoolean(isRegionSessionTokenCapturingEnabled);
     }
 
     public static int getPkBasedBloomFilterExpectedInsertionCount() {
-        return getIntValue(System.getProperty(PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT_NAME), DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT);
+
+        String pkBasedBloomFilterExpectedInsertionCount = System.getProperty(
+            PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT_NAME,
+            firstNonNull(
+                emptyToNull(System.getenv().get(PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT_NAME)),
+                String.valueOf(DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT)));
+
+        return Integer.parseInt(pkBasedBloomFilterExpectedInsertionCount);
     }
 
     public static double getPkBasedBloomFilterExpectedFfpRate() {
-        return getDoubleValue(System.getProperty(PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE_NAME), DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE);
+        String pkBasedBloomFilterExpectedFfpRate = System.getProperty(
+            PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE_NAME,
+            firstNonNull(
+                emptyToNull(System.getenv().get(PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE_NAME)),
+                String.valueOf(DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT)));
+
+        return Double.parseDouble(pkBasedBloomFilterExpectedFfpRate);
     }
 }

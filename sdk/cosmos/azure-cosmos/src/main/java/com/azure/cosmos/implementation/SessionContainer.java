@@ -116,7 +116,6 @@ public final class SessionContainer implements ISessionContainer {
         return rangeIdToTokenMap;
     }
 
-
     public String resolveGlobalSessionToken(RxDocumentServiceRequest request) {
         ConcurrentHashMap<String, ISessionToken> partitionKeyRangeIdToTokenMap = this.getPartitionKeyRangeIdToTokenMap(request);
         if (partitionKeyRangeIdToTokenMap != null) {

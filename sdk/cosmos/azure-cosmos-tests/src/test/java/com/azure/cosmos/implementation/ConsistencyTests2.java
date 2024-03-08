@@ -8,7 +8,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.SessionConsistencyTestUtils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -349,7 +348,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             Mono.whenDelayError(task1, task2).block();
         } finally {
             safeClose(client);
-            System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
         }
     }
 
