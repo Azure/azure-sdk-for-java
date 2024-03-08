@@ -30,13 +30,18 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.TreeMap;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -63,6 +68,9 @@ class NetworkInterfaceImpl
     private NetworkSecurityGroup networkSecurityGroup;
     /** the delete option of public ip address */
     private DeleteOptions publicIpAddressDeleteOption;
+    /** the name of specified ip config name */
+    private Map<DeleteOptions, Set<String>> specifiedIpConfigNames;
+    private boolean isInUpdateIpConfigMode = false;
 
     NetworkInterfaceImpl(String name, NetworkInterfaceInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
@@ -144,18 +152,21 @@ class NetworkInterfaceImpl
 
     @Override
     public NetworkInterfaceImpl withNewPrimaryPublicIPAddress(Creatable<PublicIpAddress> creatable) {
+        this.isInUpdateIpConfigMode = true;
         this.primaryIPConfiguration().withNewPublicIpAddress(creatable);
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withNewPrimaryPublicIPAddress() {
+        this.isInUpdateIpConfigMode = true;
         this.primaryIPConfiguration().withNewPublicIpAddress();
         return this;
     }
 
     @Override
     public NetworkInterfaceImpl withNewPrimaryPublicIPAddress(String leafDnsLabel) {
+        this.isInUpdateIpConfigMode = true;
         this.primaryIPConfiguration().withNewPublicIpAddress(leafDnsLabel);
         return this;
     }
@@ -199,6 +210,7 @@ class NetworkInterfaceImpl
     public NetworkInterfaceImpl withExistingPrimaryPublicIPAddress(PublicIpAddress publicIPAddress) {
         this.primaryIPConfiguration().withExistingPublicIpAddress(publicIPAddress);
         this.primaryIPConfiguration().withPrivateIpVersion(publicIPAddress.version());
+        this.isInUpdateIpConfigMode = true;
         return this;
     }
 
@@ -255,6 +267,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NicIpConfigurationImpl defineSecondaryIPConfiguration(String name) {
+        this.isInUpdateIpConfigMode = true;
         NicIpConfigurationImpl nicIpConfiguration = prepareNewNicIPConfiguration(name);
 
         // copy application security group from primary to secondary,
@@ -271,6 +284,7 @@ class NetworkInterfaceImpl
 
     @Override
     public NicIpConfigurationImpl updateIPConfiguration(String name) {
+        this.isInUpdateIpConfigMode = true;
         return (NicIpConfigurationImpl) this.nicIPConfigurations.get(name);
     }
 
@@ -566,15 +580,45 @@ class NetworkInterfaceImpl
                 .withNetworkSecurityGroup(new NetworkSecurityGroupInner().withId(networkSecurityGroup.id()));
         }
 
-        NicIpConfigurationImpl.ensureConfigurations(this.nicIPConfigurations.values(), this.publicIpAddressDeleteOption);
+        NicIpConfigurationImpl.ensureConfigurations(this.nicIPConfigurations.values());
+
+        if (Objects.nonNull(this.specifiedIpConfigNames)) {
+            NicIpConfigurationImpl.deleteOptionConfigurations(this.nicIPConfigurations.values(), this.specifiedIpConfigNames);
+            this.isInUpdateIpConfigMode = false;
+        }
 
         // Reset and update IP configs
         this.innerModel().withIpConfigurations(innersFromWrappers(this.nicIPConfigurations.values()));
     }
 
     @Override
-    public NetworkInterfaceImpl withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions) {
-        this.publicIpAddressDeleteOption = deleteOptions;
+    public NetworkInterfaceImpl withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions, String... ipConfigNames) {
+        Set<String> ipConfigNameSet = Arrays.stream(ipConfigNames).map(ipConfigName -> ipConfigName.toLowerCase(Locale.ROOT)).collect(Collectors.toSet());
+        if (!isInCreateMode() && !isInUpdateIpConfigMode) {
+            this.nicIPConfigurations.values()
+                .stream().filter(nicIpConfiguration ->
+                    (ipConfigNameSet.isEmpty() || ipConfigNameSet.contains(nicIpConfiguration.name().toLowerCase(Locale.ROOT)))
+                        && Objects.nonNull(nicIpConfiguration.innerModel().publicIpAddress()))
+                .forEach(nicIpConfiguration -> {
+                    nicIpConfiguration.innerModel().publicIpAddress().withDeleteOption(deleteOptions);
+                });
+        } else {
+            if (Objects.isNull(this.specifiedIpConfigNames)) {
+                this.specifiedIpConfigNames = new LinkedHashMap<>();
+            }
+            if (this.specifiedIpConfigNames.containsKey(deleteOptions)) {
+                this.specifiedIpConfigNames.get(deleteOptions).addAll(ipConfigNameSet);
+            } else {
+                this.specifiedIpConfigNames.put(deleteOptions, ipConfigNameSet);
+            }
+        }
         return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl update() {
+        this.specifiedIpConfigNames = new LinkedHashMap<>();
+        this.isInUpdateIpConfigMode = false;
+        return super.update();
     }
 }

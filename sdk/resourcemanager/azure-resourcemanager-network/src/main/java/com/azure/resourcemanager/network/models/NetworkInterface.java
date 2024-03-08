@@ -262,9 +262,10 @@ public interface NetworkInterface
              * Sets delete options for public ip address.
              *
              * @param deleteOptions the delete options for primary network interfaces
-             * @return the next stage of the definition
+             * @param ipConfigNames the names of specified ip configurations
+             * @return the next stage of the update
              */
-            WithCreate withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
+            WithCreate withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions, String... ipConfigNames);
         }
 
         /**
@@ -595,9 +596,10 @@ public interface NetworkInterface
              * Sets delete options for public ip address.
              *
              * @param deleteOptions the delete options for primary network interfaces
+             * @param ipConfigNames the names of specified ip configurations
              * @return the next stage of the update
              */
-            Update withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
+            Update withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions, String... ipConfigNames);
         }
     }
 
