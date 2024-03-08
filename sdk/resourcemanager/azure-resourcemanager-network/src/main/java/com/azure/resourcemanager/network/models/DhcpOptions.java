@@ -20,13 +20,15 @@ public final class DhcpOptions {
     @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
-    /** Creates an instance of DhcpOptions class. */
+    /**
+     * Creates an instance of DhcpOptions class.
+     */
     public DhcpOptions() {
     }
 
     /**
      * Get the dnsServers property: The list of DNS servers IP addresses.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -35,7 +37,7 @@ public final class DhcpOptions {
 
     /**
      * Set the dnsServers property: The list of DNS servers IP addresses.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the DhcpOptions object itself.
      */
@@ -46,7 +48,7 @@ public final class DhcpOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -20,12 +20,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CapacityReservationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CapacityReservationsClient.
+ */
 public interface CapacityReservationsClient {
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -34,19 +36,16 @@ public interface CapacityReservationsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, String capacityReservationName, CapacityReservationInner parameters);
 
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -58,15 +57,13 @@ public interface CapacityReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
+        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
         CapacityReservationInner parameters);
 
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -78,15 +75,13 @@ public interface CapacityReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
+        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
         CapacityReservationInner parameters);
 
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -99,16 +94,13 @@ public interface CapacityReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationInner parameters,
-        Context context);
+        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
+        CapacityReservationInner parameters, Context context);
 
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -119,16 +111,13 @@ public interface CapacityReservationsClient {
      * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CapacityReservationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationInner parameters);
+    Mono<CapacityReservationInner> createOrUpdateAsync(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationInner parameters);
 
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -139,16 +128,13 @@ public interface CapacityReservationsClient {
      * @return specifies information about the capacity reservation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityReservationInner createOrUpdate(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationInner parameters);
+    CapacityReservationInner createOrUpdate(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationInner parameters);
 
     /**
      * The operation to create or update a capacity reservation. Please note some properties can be set only during
      * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -160,16 +146,12 @@ public interface CapacityReservationsClient {
      * @return specifies information about the capacity reservation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityReservationInner createOrUpdate(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationInner parameters,
-        Context context);
+    CapacityReservationInner createOrUpdate(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationInner parameters, Context context);
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -178,18 +160,15 @@ public interface CapacityReservationsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationUpdate parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, String capacityReservationName, CapacityReservationUpdate parameters);
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -201,14 +180,12 @@ public interface CapacityReservationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdateAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
+        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
         CapacityReservationUpdate parameters);
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -219,15 +196,12 @@ public interface CapacityReservationsClient {
      * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationUpdate parameters);
+    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(String resourceGroupName,
+        String capacityReservationGroupName, String capacityReservationName, CapacityReservationUpdate parameters);
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -239,16 +213,13 @@ public interface CapacityReservationsClient {
      * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationUpdate parameters,
+    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(String resourceGroupName,
+        String capacityReservationGroupName, String capacityReservationName, CapacityReservationUpdate parameters,
         Context context);
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -259,15 +230,12 @@ public interface CapacityReservationsClient {
      * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CapacityReservationInner> updateAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationUpdate parameters);
+    Mono<CapacityReservationInner> updateAsync(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationUpdate parameters);
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -278,15 +246,12 @@ public interface CapacityReservationsClient {
      * @return specifies information about the capacity reservation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityReservationInner update(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationUpdate parameters);
+    CapacityReservationInner update(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationUpdate parameters);
 
     /**
      * The operation to update a capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -298,18 +263,14 @@ public interface CapacityReservationsClient {
      * @return specifies information about the capacity reservation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityReservationInner update(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationUpdate parameters,
-        Context context);
+    CapacityReservationInner update(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationUpdate parameters, Context context);
 
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -319,14 +280,14 @@ public interface CapacityReservationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, String capacityReservationName);
 
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -336,14 +297,14 @@ public interface CapacityReservationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName);
 
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -353,14 +314,14 @@ public interface CapacityReservationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName);
 
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -371,14 +332,14 @@ public interface CapacityReservationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, Context context);
 
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -388,14 +349,14 @@ public interface CapacityReservationsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName);
+    Mono<Void> deleteAsync(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName);
 
     /**
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -410,7 +371,7 @@ public interface CapacityReservationsClient {
      * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
      * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
      * details.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -420,34 +381,32 @@ public interface CapacityReservationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName, Context context);
+    void delete(String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
+        Context context);
 
     /**
      * The operation that retrieves information about the capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
      * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
-     *     properties of the capacity reservation that is managed by the platform and can change outside of control
-     *     plane operations.
+     * properties of the capacity reservation that is managed by the platform and can change outside of control plane
+     * operations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the capacity reservation along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CapacityReservationInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
+    Mono<Response<CapacityReservationInner>> getWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, String capacityReservationName,
         CapacityReservationInstanceViewTypes expand);
 
     /**
      * The operation that retrieves information about the capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -457,18 +416,18 @@ public interface CapacityReservationsClient {
      * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CapacityReservationInner> getAsync(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName);
+    Mono<CapacityReservationInner> getAsync(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName);
 
     /**
      * The operation that retrieves information about the capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
      * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
-     *     properties of the capacity reservation that is managed by the platform and can change outside of control
-     *     plane operations.
+     * properties of the capacity reservation that is managed by the platform and can change outside of control plane
+     * operations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -476,16 +435,12 @@ public interface CapacityReservationsClient {
      * @return specifies information about the capacity reservation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CapacityReservationInner> getWithResponse(
-        String resourceGroupName,
-        String capacityReservationGroupName,
-        String capacityReservationName,
-        CapacityReservationInstanceViewTypes expand,
-        Context context);
+    Response<CapacityReservationInner> getWithResponse(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationInstanceViewTypes expand, Context context);
 
     /**
      * The operation that retrieves information about the capacity reservation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
@@ -495,13 +450,13 @@ public interface CapacityReservationsClient {
      * @return specifies information about the capacity reservation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityReservationInner get(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName);
+    CapacityReservationInner get(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName);
 
     /**
      * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
      * the response to get the next page of capacity reservations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -510,13 +465,13 @@ public interface CapacityReservationsClient {
      * @return the list capacity reservation operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<CapacityReservationInner> listByCapacityReservationGroupAsync(
-        String resourceGroupName, String capacityReservationGroupName);
+    PagedFlux<CapacityReservationInner> listByCapacityReservationGroupAsync(String resourceGroupName,
+        String capacityReservationGroupName);
 
     /**
      * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
      * the response to get the next page of capacity reservations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -525,13 +480,13 @@ public interface CapacityReservationsClient {
      * @return the list capacity reservation operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(
-        String resourceGroupName, String capacityReservationGroupName);
+    PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(String resourceGroupName,
+        String capacityReservationGroupName);
 
     /**
      * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
      * the response to get the next page of capacity reservations.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param context The context to associate with this operation.
@@ -541,6 +496,6 @@ public interface CapacityReservationsClient {
      * @return the list capacity reservation operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(
-        String resourceGroupName, String capacityReservationGroupName, Context context);
+    PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(String resourceGroupName,
+        String capacityReservationGroupName, Context context);
 }

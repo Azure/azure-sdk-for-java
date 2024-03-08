@@ -6,7 +6,11 @@ package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 
 /**
@@ -14,27 +18,28 @@ import java.time.Duration;
  * Microsoft.Media.LiveEventChannelArchiveHeartbeat event.
  */
 @Immutable
-public final class MediaLiveEventChannelArchiveHeartbeatEventData {
+public final class MediaLiveEventChannelArchiveHeartbeatEventData
+    implements JsonSerializable<MediaLiveEventChannelArchiveHeartbeatEventData> {
     /*
      * Gets the channel latency in ms.
      */
-    @JsonProperty(value = "channelLatencyMs", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String channelLatencyMs;
 
     /*
      * Gets the latency result code.
      */
-    @JsonProperty(value = "latencyResultCode", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String latencyResultCode;
-
     static final ClientLogger LOGGER = new ClientLogger(MediaLiveEventChannelArchiveHeartbeatEventData.class);
 
-    /** Creates an instance of MediaLiveEventChannelArchiveHeartbeatEventData class. */
-    public MediaLiveEventChannelArchiveHeartbeatEventData() {}
+    /**
+     * Creates an instance of MediaLiveEventChannelArchiveHeartbeatEventData class.
+     */
+    public MediaLiveEventChannelArchiveHeartbeatEventData() {
+    }
 
     /**
      * Gets the duration of channel latency.
-     *
+     * 
      * @return the duration of channel latency.
      */
     public Duration getChannelLatency() {
@@ -53,10 +58,46 @@ public final class MediaLiveEventChannelArchiveHeartbeatEventData {
 
     /**
      * Get the latencyResultCode property: Gets the latency result code.
-     *
+     * 
      * @return the latencyResultCode value.
      */
     public String getLatencyResultCode() {
         return this.latencyResultCode;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaLiveEventChannelArchiveHeartbeatEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaLiveEventChannelArchiveHeartbeatEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MediaLiveEventChannelArchiveHeartbeatEventData.
+     */
+    public static MediaLiveEventChannelArchiveHeartbeatEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaLiveEventChannelArchiveHeartbeatEventData deserializedMediaLiveEventChannelArchiveHeartbeatEventData
+                = new MediaLiveEventChannelArchiveHeartbeatEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("channelLatencyMs".equals(fieldName)) {
+                    deserializedMediaLiveEventChannelArchiveHeartbeatEventData.channelLatencyMs = reader.getString();
+                } else if ("latencyResultCode".equals(fieldName)) {
+                    deserializedMediaLiveEventChannelArchiveHeartbeatEventData.latencyResultCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaLiveEventChannelArchiveHeartbeatEventData;
+        });
     }
 }

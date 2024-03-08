@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SharedKeysOperation Regenerate. */
 public final class SharedKeysOperationRegenerateSamples {
     /*
@@ -17,6 +15,6 @@ public final class SharedKeysOperationRegenerateSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void regenerateSharedKeys(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.sharedKeysOperations().regenerateWithResponse("rg1", "workspace1", Context.NONE);
+        manager.sharedKeysOperations().regenerateWithResponse("rg1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }

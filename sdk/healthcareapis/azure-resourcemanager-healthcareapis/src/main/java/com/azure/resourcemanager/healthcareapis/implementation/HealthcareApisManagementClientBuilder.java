@@ -14,17 +14,19 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
-/** A builder for creating a new instance of the HealthcareApisManagementClientImpl type. */
-@ServiceClientBuilder(serviceClients = {HealthcareApisManagementClientImpl.class})
+/**
+ * A builder for creating a new instance of the HealthcareApisManagementClientImpl type.
+ */
+@ServiceClientBuilder(serviceClients = { HealthcareApisManagementClientImpl.class })
 public final class HealthcareApisManagementClientBuilder {
     /*
-     * The subscription identifier.
+     * The ID of the target subscription.
      */
     private String subscriptionId;
 
     /**
-     * Sets The subscription identifier.
-     *
+     * Sets The ID of the target subscription.
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the HealthcareApisManagementClientBuilder.
      */
@@ -40,7 +42,7 @@ public final class HealthcareApisManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the HealthcareApisManagementClientBuilder.
      */
@@ -56,7 +58,7 @@ public final class HealthcareApisManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the HealthcareApisManagementClientBuilder.
      */
@@ -72,7 +74,7 @@ public final class HealthcareApisManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the HealthcareApisManagementClientBuilder.
      */
@@ -88,7 +90,7 @@ public final class HealthcareApisManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the HealthcareApisManagementClientBuilder.
      */
@@ -104,7 +106,7 @@ public final class HealthcareApisManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the HealthcareApisManagementClientBuilder.
      */
@@ -115,31 +117,20 @@ public final class HealthcareApisManagementClientBuilder {
 
     /**
      * Builds an instance of HealthcareApisManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of HealthcareApisManagementClientImpl.
      */
     public HealthcareApisManagementClientImpl buildClient() {
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
-        if (endpoint == null) {
-            this.endpoint = "https://management.azure.com";
-        }
-        if (environment == null) {
-            this.environment = AzureEnvironment.AZURE;
-        }
-        if (pipeline == null) {
-            this.pipeline = new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
-        }
-        if (defaultPollInterval == null) {
-            this.defaultPollInterval = Duration.ofSeconds(30);
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = SerializerFactory.createDefaultManagementSerializerAdapter();
-        }
-        HealthcareApisManagementClientImpl client =
-            new HealthcareApisManagementClientImpl(
-                pipeline, serializerAdapter, defaultPollInterval, environment, subscriptionId, endpoint);
+        String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
+        AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline
+            : new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build();
+        Duration localDefaultPollInterval
+            = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
+        SerializerAdapter localSerializerAdapter = (serializerAdapter != null) ? serializerAdapter
+            : SerializerFactory.createDefaultManagementSerializerAdapter();
+        HealthcareApisManagementClientImpl client = new HealthcareApisManagementClientImpl(localPipeline,
+            localSerializerAdapter, localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }
 }

@@ -46,6 +46,10 @@ public final class ApplicationInsightsComponentFeatureCapability {
     @JsonProperty(value = "MeterRateFrequency", access = JsonProperty.Access.WRITE_ONLY)
     private String meterRateFrequency;
 
+    /** Creates an instance of ApplicationInsightsComponentFeatureCapability class. */
+    public ApplicationInsightsComponentFeatureCapability() {
+    }
+
     /**
      * Get the name property: The name of the capability.
      *

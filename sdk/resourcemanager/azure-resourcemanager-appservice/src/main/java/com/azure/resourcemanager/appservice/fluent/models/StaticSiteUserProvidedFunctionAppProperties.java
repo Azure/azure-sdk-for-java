@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** StaticSiteUserProvidedFunctionApp resource specific properties. */
+/**
+ * StaticSiteUserProvidedFunctionApp resource specific properties.
+ */
 @Fluent
 public final class StaticSiteUserProvidedFunctionAppProperties {
     /*
@@ -29,13 +31,15 @@ public final class StaticSiteUserProvidedFunctionAppProperties {
     @JsonProperty(value = "createdOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdOn;
 
-    /** Creates an instance of StaticSiteUserProvidedFunctionAppProperties class. */
+    /**
+     * Creates an instance of StaticSiteUserProvidedFunctionAppProperties class.
+     */
     public StaticSiteUserProvidedFunctionAppProperties() {
     }
 
     /**
      * Get the functionAppResourceId property: The resource id of the function app registered with the static site.
-     *
+     * 
      * @return the functionAppResourceId value.
      */
     public String functionAppResourceId() {
@@ -44,7 +48,7 @@ public final class StaticSiteUserProvidedFunctionAppProperties {
 
     /**
      * Set the functionAppResourceId property: The resource id of the function app registered with the static site.
-     *
+     * 
      * @param functionAppResourceId the functionAppResourceId value to set.
      * @return the StaticSiteUserProvidedFunctionAppProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class StaticSiteUserProvidedFunctionAppProperties {
 
     /**
      * Get the functionAppRegion property: The region of the function app registered with the static site.
-     *
+     * 
      * @return the functionAppRegion value.
      */
     public String functionAppRegion() {
@@ -64,7 +68,7 @@ public final class StaticSiteUserProvidedFunctionAppProperties {
 
     /**
      * Set the functionAppRegion property: The region of the function app registered with the static site.
-     *
+     * 
      * @param functionAppRegion the functionAppRegion value to set.
      * @return the StaticSiteUserProvidedFunctionAppProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class StaticSiteUserProvidedFunctionAppProperties {
 
     /**
      * Get the createdOn property: The date and time on which the function app was registered with the static site.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -84,7 +88,7 @@ public final class StaticSiteUserProvidedFunctionAppProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

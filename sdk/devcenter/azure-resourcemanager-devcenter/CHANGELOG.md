@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,211 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.6 (2023-10-23)
+
+- Azure Resource Manager DevCenter client library for Java. This package contains Microsoft Azure SDK for DevCenter Management SDK. DevCenter Management API. Package tag package-preview-2023-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.CatalogConflictError` was added
+
+* `models.SyncStats` was added
+
+* `models.CatalogSyncError` was added
+
+* `models.ParameterType` was added
+
+* `models.CustomizationTasks` was added
+
+* `models.CatalogErrorDetails` was added
+
+* `models.CustomizationTaskInputType` was added
+
+* `models.CatalogResourceValidationErrorDetails` was added
+
+* `models.IdentityType` was added
+
+* `models.EnvironmentDefinitionParameter` was added
+
+* `models.CustomerManagedKeyEncryptionKeyIdentity` was added
+
+* `models.CatalogDevBoxDefinitions` was added
+
+* `models.CustomizationTaskListResult` was added
+
+* `models.EnvironmentDefinitionListResult` was added
+
+* `models.SingleSignOnStatus` was added
+
+* `models.CustomizationTask` was added
+
+* `models.SyncErrorDetails` was added
+
+* `models.VirtualNetworkType` was added
+
+* `models.CustomerManagedKeyEncryption` was added
+
+* `models.EnvironmentDefinitions` was added
+
+* `models.CatalogSyncType` was added
+
+* `models.CatalogResourceValidationStatus` was added
+
+* `models.Encryption` was added
+
+* `models.EnvironmentDefinition` was added
+
+* `models.CustomizationTaskInput` was added
+
+* `models.CatalogConnectionState` was added
+
+#### `models.Usage` was modified
+
+* `id()` was added
+
+#### `models.DevBoxDefinition` was modified
+
+* `validationStatus()` was added
+
+#### `models.DevCenter$Update` was modified
+
+* `withEncryption(models.Encryption)` was added
+* `withDisplayName(java.lang.String)` was added
+
+#### `models.DevCenter` was modified
+
+* `displayName()` was added
+* `encryption()` was added
+
+#### `models.DevCenterUpdate` was modified
+
+* `withEncryption(models.Encryption)` was added
+* `displayName()` was added
+* `withDisplayName(java.lang.String)` was added
+* `encryption()` was added
+
+#### `models.Pool$Definition` was modified
+
+* `withDisplayName(java.lang.String)` was added
+* `withVirtualNetworkType(models.VirtualNetworkType)` was added
+* `withManagedVirtualNetworkRegions(java.util.List)` was added
+* `withSingleSignOnStatus(models.SingleSignOnStatus)` was added
+
+#### `models.Project$Definition` was modified
+
+* `withDisplayName(java.lang.String)` was added
+
+#### `models.Catalog$Update` was modified
+
+* `withSyncType(models.CatalogSyncType)` was added
+
+#### `models.EnvironmentType` was modified
+
+* `displayName()` was added
+
+#### `models.Catalog` was modified
+
+* `connectionState()` was added
+* `getSyncErrorDetails()` was added
+* `connect()` was added
+* `connect(com.azure.core.util.Context)` was added
+* `lastConnectionTime()` was added
+* `syncType()` was added
+* `getSyncErrorDetailsWithResponse(com.azure.core.util.Context)` was added
+* `lastSyncStats()` was added
+
+#### `models.DevCenter$Definition` was modified
+
+* `withDisplayName(java.lang.String)` was added
+* `withEncryption(models.Encryption)` was added
+
+#### `models.EnvironmentType$Definition` was modified
+
+* `withDisplayName(java.lang.String)` was added
+
+#### `models.Project$Update` was modified
+
+* `withDisplayName(java.lang.String)` was added
+
+#### `models.EnvironmentTypeUpdate` was modified
+
+* `displayName()` was added
+* `withDisplayName(java.lang.String)` was added
+
+#### `models.CatalogUpdate` was modified
+
+* `syncType()` was added
+* `withSyncType(models.CatalogSyncType)` was added
+
+#### `models.Project` was modified
+
+* `displayName()` was added
+
+#### `models.Catalog$Definition` was modified
+
+* `withSyncType(models.CatalogSyncType)` was added
+
+#### `models.Pool$Update` was modified
+
+* `withSingleSignOnStatus(models.SingleSignOnStatus)` was added
+* `withManagedVirtualNetworkRegions(java.util.List)` was added
+* `withDisplayName(java.lang.String)` was added
+* `withVirtualNetworkType(models.VirtualNetworkType)` was added
+
+#### `models.ProjectUpdate` was modified
+
+* `displayName()` was added
+* `withDisplayName(java.lang.String)` was added
+
+#### `models.Pool` was modified
+
+* `managedVirtualNetworkRegions()` was added
+* `singleSignOnStatus()` was added
+* `displayName()` was added
+* `devBoxCount()` was added
+* `virtualNetworkType()` was added
+
+#### `DevCenterManager` was modified
+
+* `customizationTasks()` was added
+* `environmentDefinitions()` was added
+* `catalogDevBoxDefinitions()` was added
+
+#### `models.ProjectEnvironmentType$Definition` was modified
+
+* `withDisplayName(java.lang.String)` was added
+
+#### `models.EnvironmentType$Update` was modified
+
+* `withDisplayName(java.lang.String)` was added
+
+#### `models.AllowedEnvironmentType` was modified
+
+* `displayName()` was added
+
+#### `models.Catalogs` was modified
+
+* `connect(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getSyncErrorDetailsWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getSyncErrorDetails(java.lang.String,java.lang.String,java.lang.String)` was added
+* `connect(java.lang.String,java.lang.String,java.lang.String)` was added
+
+#### `models.PoolUpdate` was modified
+
+* `withDisplayName(java.lang.String)` was added
+* `managedVirtualNetworkRegions()` was added
+* `displayName()` was added
+* `withManagedVirtualNetworkRegions(java.util.List)` was added
+* `withSingleSignOnStatus(models.SingleSignOnStatus)` was added
+* `singleSignOnStatus()` was added
+* `withVirtualNetworkType(models.VirtualNetworkType)` was added
+* `virtualNetworkType()` was added
+
+#### `models.ProjectEnvironmentType` was modified
+
+* `environmentCount()` was added
+* `displayName()` was added
 
 ## 1.0.0-beta.5 (2023-05-17)
 

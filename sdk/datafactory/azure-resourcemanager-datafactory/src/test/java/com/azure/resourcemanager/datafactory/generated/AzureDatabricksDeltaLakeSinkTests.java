@@ -11,28 +11,19 @@ import com.azure.resourcemanager.datafactory.models.AzureDatabricksDeltaLakeSink
 public final class AzureDatabricksDeltaLakeSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureDatabricksDeltaLakeSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureDatabricksDeltaLakeSink\",\"preCopyScript\":\"datanrptrqcap\",\"importSettings\":{\"type\":\"AzureDatabricksDeltaLakeImportCommand\",\"dateFormat\":\"datavowzbkrbqp\",\"timestampFormat\":\"datapujywjmohqzzkp\",\"\":{\"tjgfpqwwugfwpv\":\"datacamseiauveen\",\"ehdydyybz\":\"datacewbqaibkyeysf\"}},\"writeBatchSize\":\"dataylhdxcjqdvci\",\"writeBatchTimeout\":\"datazkui\",\"sinkRetryCount\":\"datavghvecjhbttmhne\",\"sinkRetryWait\":\"datarzieyxxidab\",\"maxConcurrentConnections\":\"dataakkn\",\"disableMetricsCollection\":\"datacseqo\",\"\":{\"jqtdjeydmeui\":\"datasfcryqrr\"}}")
-                .toObject(AzureDatabricksDeltaLakeSink.class);
+        AzureDatabricksDeltaLakeSink model = BinaryData.fromString(
+            "{\"type\":\"AzureDatabricksDeltaLakeSink\",\"preCopyScript\":\"datak\",\"importSettings\":{\"type\":\"AzureDatabricksDeltaLakeImportCommand\",\"dateFormat\":\"dataakgrwtpes\",\"timestampFormat\":\"datanmjmpceu\",\"\":{\"yhhgqys\":\"datadylv\",\"jzhvej\":\"dataju\",\"pa\":\"datajekolnylpyk\",\"heycakkonaydpdw\":\"dataaouyaanfxai\"}},\"writeBatchSize\":\"dataadzyxaanhwuqewcn\",\"writeBatchTimeout\":\"dataksfbkxfkeeqofwb\",\"sinkRetryCount\":\"datapeerwss\",\"sinkRetryWait\":\"datamrpdjrylfpdudx\",\"maxConcurrentConnections\":\"datageurie\",\"disableMetricsCollection\":\"databanfsqfhatqssnge\",\"\":{\"apynpvgyafttbet\":\"dataffgohrhjspsyh\",\"ybjku\":\"dataydtgpvnczfp\",\"zpteron\":\"datakajkyrhucbfkaqlp\"}}")
+            .toObject(AzureDatabricksDeltaLakeSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDatabricksDeltaLakeSink model =
-            new AzureDatabricksDeltaLakeSink()
-                .withWriteBatchSize("dataylhdxcjqdvci")
-                .withWriteBatchTimeout("datazkui")
-                .withSinkRetryCount("datavghvecjhbttmhne")
-                .withSinkRetryWait("datarzieyxxidab")
-                .withMaxConcurrentConnections("dataakkn")
-                .withDisableMetricsCollection("datacseqo")
-                .withPreCopyScript("datanrptrqcap")
-                .withImportSettings(
-                    new AzureDatabricksDeltaLakeImportCommand()
-                        .withDateFormat("datavowzbkrbqp")
-                        .withTimestampFormat("datapujywjmohqzzkp"));
+        AzureDatabricksDeltaLakeSink model = new AzureDatabricksDeltaLakeSink()
+            .withWriteBatchSize("dataadzyxaanhwuqewcn").withWriteBatchTimeout("dataksfbkxfkeeqofwb")
+            .withSinkRetryCount("datapeerwss").withSinkRetryWait("datamrpdjrylfpdudx")
+            .withMaxConcurrentConnections("datageurie").withDisableMetricsCollection("databanfsqfhatqssnge")
+            .withPreCopyScript("datak").withImportSettings(new AzureDatabricksDeltaLakeImportCommand()
+                .withDateFormat("dataakgrwtpes").withTimestampFormat("datanmjmpceu"));
         model = BinaryData.fromObject(model).toObject(AzureDatabricksDeltaLakeSink.class);
     }
 }

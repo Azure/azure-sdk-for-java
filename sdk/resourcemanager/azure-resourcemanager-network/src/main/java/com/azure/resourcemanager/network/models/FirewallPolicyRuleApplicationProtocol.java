@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the application rule protocol. */
+/**
+ * Properties of the application rule protocol.
+ */
 @Fluent
 public final class FirewallPolicyRuleApplicationProtocol {
     /*
@@ -22,13 +24,15 @@ public final class FirewallPolicyRuleApplicationProtocol {
     @JsonProperty(value = "port")
     private Integer port;
 
-    /** Creates an instance of FirewallPolicyRuleApplicationProtocol class. */
+    /**
+     * Creates an instance of FirewallPolicyRuleApplicationProtocol class.
+     */
     public FirewallPolicyRuleApplicationProtocol() {
     }
 
     /**
      * Get the protocolType property: Protocol type.
-     *
+     * 
      * @return the protocolType value.
      */
     public FirewallPolicyRuleApplicationProtocolType protocolType() {
@@ -37,19 +41,19 @@ public final class FirewallPolicyRuleApplicationProtocol {
 
     /**
      * Set the protocolType property: Protocol type.
-     *
+     * 
      * @param protocolType the protocolType value to set.
      * @return the FirewallPolicyRuleApplicationProtocol object itself.
      */
-    public FirewallPolicyRuleApplicationProtocol withProtocolType(
-        FirewallPolicyRuleApplicationProtocolType protocolType) {
+    public FirewallPolicyRuleApplicationProtocol
+        withProtocolType(FirewallPolicyRuleApplicationProtocolType protocolType) {
         this.protocolType = protocolType;
         return this;
     }
 
     /**
      * Get the port property: Port number for the protocol, cannot be greater than 64000.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -58,7 +62,7 @@ public final class FirewallPolicyRuleApplicationProtocol {
 
     /**
      * Set the port property: Port number for the protocol, cannot be greater than 64000.
-     *
+     * 
      * @param port the port value to set.
      * @return the FirewallPolicyRuleApplicationProtocol object itself.
      */
@@ -69,7 +73,7 @@ public final class FirewallPolicyRuleApplicationProtocol {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

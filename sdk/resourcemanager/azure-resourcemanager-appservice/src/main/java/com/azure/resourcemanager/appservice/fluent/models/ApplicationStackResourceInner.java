@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.StackMajorVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ARM resource for a ApplicationStack. */
+/**
+ * ARM resource for a ApplicationStack.
+ */
 @Fluent
 public final class ApplicationStackResourceInner extends ProxyOnlyResource {
     /*
@@ -19,20 +21,24 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private ApplicationStack innerProperties;
 
-    /** Creates an instance of ApplicationStackResourceInner class. */
+    /**
+     * Creates an instance of ApplicationStackResourceInner class.
+     */
     public ApplicationStackResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationStack innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationStackResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +47,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the name property: Application stack name.
-     *
+     * 
      * @return the name value.
      */
     public String namePropertiesName() {
@@ -50,7 +56,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the name property: Application stack name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationStackResourceInner object itself.
      */
@@ -64,7 +70,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the display property: Application stack display name.
-     *
+     * 
      * @return the display value.
      */
     public String display() {
@@ -73,7 +79,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the display property: Application stack display name.
-     *
+     * 
      * @param display the display value to set.
      * @return the ApplicationStackResourceInner object itself.
      */
@@ -87,7 +93,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the dependency property: Application stack dependency.
-     *
+     * 
      * @return the dependency value.
      */
     public String dependency() {
@@ -96,7 +102,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the dependency property: Application stack dependency.
-     *
+     * 
      * @param dependency the dependency value to set.
      * @return the ApplicationStackResourceInner object itself.
      */
@@ -110,7 +116,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the majorVersions property: List of major versions available.
-     *
+     * 
      * @return the majorVersions value.
      */
     public List<StackMajorVersion> majorVersions() {
@@ -119,7 +125,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the majorVersions property: List of major versions available.
-     *
+     * 
      * @param majorVersions the majorVersions value to set.
      * @return the ApplicationStackResourceInner object itself.
      */
@@ -133,7 +139,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the frameworks property: List of frameworks associated with application stack.
-     *
+     * 
      * @return the frameworks value.
      */
     public List<ApplicationStack> frameworks() {
@@ -142,7 +148,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
 
     /**
      * Set the frameworks property: List of frameworks associated with application stack.
-     *
+     * 
      * @param frameworks the frameworks value to set.
      * @return the ApplicationStackResourceInner object itself.
      */
@@ -157,7 +163,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
     /**
      * Get the isDeprecated property: &lt;code&gt;true&lt;/code&gt; if this is the stack is deprecated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDeprecated value.
      */
     public List<ApplicationStack> isDeprecated() {
@@ -167,7 +173,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
     /**
      * Set the isDeprecated property: &lt;code&gt;true&lt;/code&gt; if this is the stack is deprecated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param isDeprecated the isDeprecated value to set.
      * @return the ApplicationStackResourceInner object itself.
      */
@@ -181,7 +187,7 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

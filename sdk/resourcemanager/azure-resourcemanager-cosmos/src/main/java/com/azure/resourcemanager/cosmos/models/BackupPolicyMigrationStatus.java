@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the status of migration between backup policy types. */
+/**
+ * Describes the status of migration between backup policy types.
+ */
 public final class BackupPolicyMigrationStatus extends ExpandableStringEnum<BackupPolicyMigrationStatus> {
-    /** Static value Invalid for BackupPolicyMigrationStatus. */
+    /**
+     * Static value Invalid for BackupPolicyMigrationStatus.
+     */
     public static final BackupPolicyMigrationStatus INVALID = fromString("Invalid");
 
-    /** Static value InProgress for BackupPolicyMigrationStatus. */
+    /**
+     * Static value InProgress for BackupPolicyMigrationStatus.
+     */
     public static final BackupPolicyMigrationStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Completed for BackupPolicyMigrationStatus. */
+    /**
+     * Static value Completed for BackupPolicyMigrationStatus.
+     */
     public static final BackupPolicyMigrationStatus COMPLETED = fromString("Completed");
 
-    /** Static value Failed for BackupPolicyMigrationStatus. */
+    /**
+     * Static value Failed for BackupPolicyMigrationStatus.
+     */
     public static final BackupPolicyMigrationStatus FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of BackupPolicyMigrationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class BackupPolicyMigrationStatus extends ExpandableStringEnum<Back
 
     /**
      * Creates or finds a BackupPolicyMigrationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackupPolicyMigrationStatus.
      */
@@ -44,7 +54,7 @@ public final class BackupPolicyMigrationStatus extends ExpandableStringEnum<Back
 
     /**
      * Gets known BackupPolicyMigrationStatus values.
-     *
+     * 
      * @return known BackupPolicyMigrationStatus values.
      */
     public static Collection<BackupPolicyMigrationStatus> values() {

@@ -17,13 +17,13 @@ public final class ScheduleInnerTests {
         ScheduleInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Updating\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"vaytdwkqbrq\",\"timeZone\":\"paxh\",\"state\":\"Disabled\"},\"id\":\"livpdt\",\"name\":\"irqtdqoa\",\"type\":\"oruzfgsquyfxrxx\"}")
+                    "{\"properties\":{\"provisioningState\":\"Succeeded\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"nrpxehuw\",\"timeZone\":\"k\",\"state\":\"Enabled\"},\"id\":\"fmviklby\",\"name\":\"vkhbejdznx\",\"type\":\"vdsrhnjiv\"}")
                 .toObject(ScheduleInner.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("vaytdwkqbrq", model.time());
-        Assertions.assertEquals("paxh", model.timeZone());
-        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("nrpxehuw", model.time());
+        Assertions.assertEquals("k", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,14 +32,14 @@ public final class ScheduleInnerTests {
             new ScheduleInner()
                 .withTypePropertiesType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("vaytdwkqbrq")
-                .withTimeZone("paxh")
-                .withState(ScheduleEnableStatus.DISABLED);
+                .withTime("nrpxehuw")
+                .withTimeZone("k")
+                .withState(ScheduleEnableStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleInner.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("vaytdwkqbrq", model.time());
-        Assertions.assertEquals("paxh", model.timeZone());
-        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("nrpxehuw", model.time());
+        Assertions.assertEquals("k", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
     }
 }

@@ -10,68 +10,49 @@ import com.azure.resourcemanager.datafactory.models.AzureStorageLinkedService;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceResource;
 import java.io.IOException;
 
-/** Samples for LinkedServices CreateOrUpdate. */
+/**
+ * Samples for LinkedServices CreateOrUpdate.
+ */
 public final class LinkedServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Create.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Create
+     * .json
      */
     /**
      * Sample code: LinkedServices_Create.
-     *
+     * 
      * @param manager Entry point to DataFactoryManager.
      */
     public static void linkedServicesCreate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        manager
-            .linkedServices()
-            .define("exampleLinkedService")
+        manager.linkedServices().define("exampleLinkedService")
             .withExistingFactory("exampleResourceGroup", "exampleFactoryName")
-            .withProperties(
-                new AzureStorageLinkedService()
-                    .withConnectionString(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize(
-                                "{\"type\":\"SecureString\",\"value\":\"DefaultEndpointsProtocol=https;AccountName=examplestorageaccount;AccountKey=<storage"
-                                    + " key>\"}",
-                                Object.class,
-                                SerializerEncoding.JSON)))
+            .withProperties(new AzureStorageLinkedService()
+                .withConnectionString(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
+                    "{\"type\":\"SecureString\",\"value\":\"DefaultEndpointsProtocol=https;AccountName=examplestorageaccount;AccountKey=<storage key>\"}",
+                    Object.class, SerializerEncoding.JSON)))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Update.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/LinkedServices_Update
+     * .json
      */
     /**
      * Sample code: LinkedServices_Update.
-     *
+     * 
      * @param manager Entry point to DataFactoryManager.
      */
     public static void linkedServicesUpdate(com.azure.resourcemanager.datafactory.DataFactoryManager manager)
         throws IOException {
-        LinkedServiceResource resource =
-            manager
-                .linkedServices()
-                .getWithResponse(
-                    "exampleResourceGroup",
-                    "exampleFactoryName",
-                    "exampleLinkedService",
-                    null,
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withProperties(
-                new AzureStorageLinkedService()
-                    .withDescription("Example description")
-                    .withConnectionString(
-                        SerializerFactory
-                            .createDefaultManagementSerializerAdapter()
-                            .deserialize(
-                                "{\"type\":\"SecureString\",\"value\":\"DefaultEndpointsProtocol=https;AccountName=examplestorageaccount;AccountKey=<storage"
-                                    + " key>\"}",
-                                Object.class,
-                                SerializerEncoding.JSON)))
+        LinkedServiceResource resource = manager.linkedServices().getWithResponse("exampleResourceGroup",
+            "exampleFactoryName", "exampleLinkedService", null, com.azure.core.util.Context.NONE).getValue();
+        resource.update().withProperties(new AzureStorageLinkedService().withDescription("Example description")
+            .withConnectionString(SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
+                "{\"type\":\"SecureString\",\"value\":\"DefaultEndpointsProtocol=https;AccountName=examplestorageaccount;AccountKey=<storage key>\"}",
+                Object.class, SerializerEncoding.JSON)))
             .apply();
     }
 }

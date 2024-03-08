@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * DataProtection
- *
- * <p>DataProtection type volumes include an object containing details of the replication.
+ * 
+ * DataProtection type volumes include an object containing details of the replication.
  */
 @Fluent
 public final class VolumePatchPropertiesDataProtection {
@@ -26,13 +26,15 @@ public final class VolumePatchPropertiesDataProtection {
     @JsonProperty(value = "snapshot")
     private VolumeSnapshotProperties snapshot;
 
-    /** Creates an instance of VolumePatchPropertiesDataProtection class. */
+    /**
+     * Creates an instance of VolumePatchPropertiesDataProtection class.
+     */
     public VolumePatchPropertiesDataProtection() {
     }
 
     /**
      * Get the backup property: Backup Properties.
-     *
+     * 
      * @return the backup value.
      */
     public VolumeBackupProperties backup() {
@@ -41,7 +43,7 @@ public final class VolumePatchPropertiesDataProtection {
 
     /**
      * Set the backup property: Backup Properties.
-     *
+     * 
      * @param backup the backup value to set.
      * @return the VolumePatchPropertiesDataProtection object itself.
      */
@@ -52,7 +54,7 @@ public final class VolumePatchPropertiesDataProtection {
 
     /**
      * Get the snapshot property: Snapshot properties.
-     *
+     * 
      * @return the snapshot value.
      */
     public VolumeSnapshotProperties snapshot() {
@@ -61,7 +63,7 @@ public final class VolumePatchPropertiesDataProtection {
 
     /**
      * Set the snapshot property: Snapshot properties.
-     *
+     * 
      * @param snapshot the snapshot value to set.
      * @return the VolumePatchPropertiesDataProtection object itself.
      */
@@ -72,7 +74,7 @@ public final class VolumePatchPropertiesDataProtection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,21 +6,25 @@ package com.azure.resourcemanager.nginx.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationPackage;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NginxConfigurationPackageTests {
-    @Test
-    public void testDeserialize() {
-        NginxConfigurationPackage model =
-            BinaryData.fromString("{\"data\":\"czdzev\"}").toObject(NginxConfigurationPackage.class);
-        Assertions.assertEquals("czdzev", model.data());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NginxConfigurationPackage model
+            = BinaryData.fromString("{\"data\":\"guhmuouqfpr\",\"protectedFiles\":[\"bngui\",\"nwui\",\"gazxuf\"]}")
+                .toObject(NginxConfigurationPackage.class);
+        Assertions.assertEquals("guhmuouqfpr", model.data());
+        Assertions.assertEquals("bngui", model.protectedFiles().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        NginxConfigurationPackage model = new NginxConfigurationPackage().withData("czdzev");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NginxConfigurationPackage model = new NginxConfigurationPackage().withData("guhmuouqfpr")
+            .withProtectedFiles(Arrays.asList("bngui", "nwui", "gazxuf"));
         model = BinaryData.fromObject(model).toObject(NginxConfigurationPackage.class);
-        Assertions.assertEquals("czdzev", model.data());
+        Assertions.assertEquals("guhmuouqfpr", model.data());
+        Assertions.assertEquals("bngui", model.protectedFiles().get(0));
     }
 }

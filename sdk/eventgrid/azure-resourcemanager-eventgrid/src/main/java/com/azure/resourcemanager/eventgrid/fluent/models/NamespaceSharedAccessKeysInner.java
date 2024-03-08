@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Shared access keys of the Namespace. */
+/**
+ * Shared access keys of the Namespace.
+ */
 @Fluent
 public final class NamespaceSharedAccessKeysInner {
     /*
@@ -22,13 +24,15 @@ public final class NamespaceSharedAccessKeysInner {
     @JsonProperty(value = "key2")
     private String key2;
 
-    /** Creates an instance of NamespaceSharedAccessKeysInner class. */
+    /**
+     * Creates an instance of NamespaceSharedAccessKeysInner class.
+     */
     public NamespaceSharedAccessKeysInner() {
     }
 
     /**
      * Get the key1 property: Shared access key1 for the namespace.
-     *
+     * 
      * @return the key1 value.
      */
     public String key1() {
@@ -37,7 +41,7 @@ public final class NamespaceSharedAccessKeysInner {
 
     /**
      * Set the key1 property: Shared access key1 for the namespace.
-     *
+     * 
      * @param key1 the key1 value to set.
      * @return the NamespaceSharedAccessKeysInner object itself.
      */
@@ -48,7 +52,7 @@ public final class NamespaceSharedAccessKeysInner {
 
     /**
      * Get the key2 property: Shared access key2 for the namespace.
-     *
+     * 
      * @return the key2 value.
      */
     public String key2() {
@@ -57,7 +61,7 @@ public final class NamespaceSharedAccessKeysInner {
 
     /**
      * Set the key2 property: Shared access key2 for the namespace.
-     *
+     * 
      * @param key2 the key2 value to set.
      * @return the NamespaceSharedAccessKeysInner object itself.
      */
@@ -68,7 +72,7 @@ public final class NamespaceSharedAccessKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

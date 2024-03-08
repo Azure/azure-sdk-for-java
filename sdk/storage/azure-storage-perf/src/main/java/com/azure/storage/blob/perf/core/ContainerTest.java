@@ -3,16 +3,14 @@
 
 package com.azure.storage.blob.perf.core;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
-
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 public abstract class ContainerTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
-    protected static final String CONTAINER_NAME = "perfstress-" + UUID.randomUUID();
+    protected static final String CONTAINER_NAME = "perfstress-" + CoreUtils.randomUuid();
 
     protected final BlobContainerClient blobContainerClient;
     protected final BlobContainerAsyncClient blobContainerAsyncClient;

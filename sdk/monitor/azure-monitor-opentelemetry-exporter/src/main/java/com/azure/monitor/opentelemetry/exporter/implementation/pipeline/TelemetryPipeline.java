@@ -36,15 +36,15 @@ public class TelemetryPipeline {
     private static final HttpHeaderName LOCATION =  HttpHeaderName.fromString("Location");
 
     private final HttpPipeline pipeline;
-    private final StatsbeatModule statsbeatModule;
+    private final Runnable statsbeatShutdown;
 
     // key is connectionString, value is redirectUrl
     private final Map<String, URL> redirectCache =
         Collections.synchronizedMap(new BoundedHashMap<>(100));
 
-    public TelemetryPipeline(HttpPipeline pipeline, StatsbeatModule statsbeatModule) {
+    public TelemetryPipeline(HttpPipeline pipeline, Runnable statsbeatShutdown) {
         this.pipeline = pipeline;
-        this.statsbeatModule = statsbeatModule;
+        this.statsbeatShutdown = statsbeatShutdown;
     }
 
     public CompletableResultCode send(
@@ -150,10 +150,10 @@ public class TelemetryPipeline {
             result.succeed();
         } else {
             if (responseCode == 400
-                && statsbeatModule != null
+                && statsbeatShutdown != null
                 && telemetryPipelineResponse.isInvalidInstrumentationKey()) {
                 LOGGER.verbose("400 status code is returned for an invalid instrumentation key. Shutting down Statsbeat.");
-                statsbeatModule.shutdown();
+                statsbeatShutdown.run();
             }
             result.fail();
         }

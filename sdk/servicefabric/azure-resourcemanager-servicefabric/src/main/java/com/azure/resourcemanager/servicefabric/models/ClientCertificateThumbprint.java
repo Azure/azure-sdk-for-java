@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the client certificate details using thumbprint. */
+/**
+ * Describes the client certificate details using thumbprint.
+ */
 @Fluent
 public final class ClientCertificateThumbprint {
     /*
@@ -24,14 +26,16 @@ public final class ClientCertificateThumbprint {
     @JsonProperty(value = "certificateThumbprint", required = true)
     private String certificateThumbprint;
 
-    /** Creates an instance of ClientCertificateThumbprint class. */
+    /**
+     * Creates an instance of ClientCertificateThumbprint class.
+     */
     public ClientCertificateThumbprint() {
     }
 
     /**
      * Get the isAdmin property: Indicates if the client certificate has admin access to the cluster. Non admin clients
      * can perform only read only operations on the cluster.
-     *
+     * 
      * @return the isAdmin value.
      */
     public boolean isAdmin() {
@@ -41,7 +45,7 @@ public final class ClientCertificateThumbprint {
     /**
      * Set the isAdmin property: Indicates if the client certificate has admin access to the cluster. Non admin clients
      * can perform only read only operations on the cluster.
-     *
+     * 
      * @param isAdmin the isAdmin value to set.
      * @return the ClientCertificateThumbprint object itself.
      */
@@ -52,7 +56,7 @@ public final class ClientCertificateThumbprint {
 
     /**
      * Get the certificateThumbprint property: The thumbprint of the client certificate.
-     *
+     * 
      * @return the certificateThumbprint value.
      */
     public String certificateThumbprint() {
@@ -61,7 +65,7 @@ public final class ClientCertificateThumbprint {
 
     /**
      * Set the certificateThumbprint property: The thumbprint of the client certificate.
-     *
+     * 
      * @param certificateThumbprint the certificateThumbprint value to set.
      * @return the ClientCertificateThumbprint object itself.
      */
@@ -72,15 +76,13 @@ public final class ClientCertificateThumbprint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (certificateThumbprint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property certificateThumbprint in model ClientCertificateThumbprint"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property certificateThumbprint in model ClientCertificateThumbprint"));
         }
     }
 

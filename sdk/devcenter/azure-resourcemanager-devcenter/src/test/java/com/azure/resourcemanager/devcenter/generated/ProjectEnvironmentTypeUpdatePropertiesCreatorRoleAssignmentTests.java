@@ -16,7 +16,7 @@ public final class ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignmentTe
         ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model =
             BinaryData
                 .fromString(
-                    "{\"roles\":{\"azqugxywpmueefj\":{\"roleName\":\"ermclfplphoxuscr\",\"description\":\"bgyepsbj\"},\"tcc\":{\"roleName\":\"fqkquj\",\"description\":\"suyonobglaocq\"},\"hl\":{\"roleName\":\"yudxytlmoy\",\"description\":\"vwfudwpzntxhd\"},\"ca\":{\"roleName\":\"jbhckfrlhr\",\"description\":\"bkyvp\"}}}")
+                    "{\"roles\":{\"tfolhbnx\":{\"roleName\":\"awjoyaqcslyjp\",\"description\":\"idzyexznelixhnr\"},\"gylgqgitxmedjvcs\":{\"roleName\":\"alaulppggdtpnapn\",\"description\":\"ropuhpigv\"}}}")
                 .toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
     }
 
@@ -24,20 +24,12 @@ public final class ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignmentTe
     public void testSerialize() throws Exception {
         ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model =
             new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
-                .withRoles(
-                    mapOf(
-                        "azqugxywpmueefj",
-                        new EnvironmentRole(),
-                        "tcc",
-                        new EnvironmentRole(),
-                        "hl",
-                        new EnvironmentRole(),
-                        "ca",
-                        new EnvironmentRole()));
+                .withRoles(mapOf("tfolhbnx", new EnvironmentRole(), "gylgqgitxmedjvcs", new EnvironmentRole()));
         model =
             BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -21,6 +21,10 @@ public final class WorkbookTemplateInner extends WorkbookTemplateResource {
     @JsonProperty(value = "properties")
     private WorkbookTemplateProperties innerProperties;
 
+    /** Creates an instance of WorkbookTemplateInner class. */
+    public WorkbookTemplateInner() {
+    }
+
     /**
      * Get the innerProperties property: Metadata describing a workbook template for an Azure resource.
      *

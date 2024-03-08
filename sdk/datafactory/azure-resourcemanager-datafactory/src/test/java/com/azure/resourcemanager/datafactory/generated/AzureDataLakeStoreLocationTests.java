@@ -10,17 +10,15 @@ import com.azure.resourcemanager.datafactory.models.AzureDataLakeStoreLocation;
 public final class AzureDataLakeStoreLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureDataLakeStoreLocation model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureDataLakeStoreLocation\",\"folderPath\":\"datapoyryefqmwovyzt\",\"fileName\":\"datanomfpbjceegvyiez\",\"\":{\"ehyh\":\"datatnjillukk\",\"fvulxfaryr\":\"datamjodu\",\"jqwahoyi\":\"datajlgdez\",\"ovbooqbmdqrxy\":\"dataaxqvjweiwtczkddn\"}}")
-                .toObject(AzureDataLakeStoreLocation.class);
+        AzureDataLakeStoreLocation model = BinaryData.fromString(
+            "{\"type\":\"AzureDataLakeStoreLocation\",\"folderPath\":\"datapoyryefqmwovyzt\",\"fileName\":\"datanomfpbjceegvyiez\",\"\":{\"ehyh\":\"datatnjillukk\",\"fvulxfaryr\":\"datamjodu\",\"jqwahoyi\":\"datajlgdez\",\"ovbooqbmdqrxy\":\"dataaxqvjweiwtczkddn\"}}")
+            .toObject(AzureDataLakeStoreLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureDataLakeStoreLocation model =
-            new AzureDataLakeStoreLocation().withFolderPath("datapoyryefqmwovyzt").withFileName("datanomfpbjceegvyiez");
+        AzureDataLakeStoreLocation model = new AzureDataLakeStoreLocation().withFolderPath("datapoyryefqmwovyzt")
+            .withFileName("datanomfpbjceegvyiez");
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreLocation.class);
     }
 }

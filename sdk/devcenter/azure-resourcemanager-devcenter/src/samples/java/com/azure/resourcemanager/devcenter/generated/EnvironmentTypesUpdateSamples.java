@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for EnvironmentTypes Update. */
 public final class EnvironmentTypesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/EnvironmentTypes_Patch.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/EnvironmentTypes_Patch.json
      */
     /**
      * Sample code: EnvironmentTypes_Update.
@@ -24,9 +24,10 @@ public final class EnvironmentTypesUpdateSamples {
                 .environmentTypes()
                 .getWithResponse("rg1", "Contoso", "DevTest", com.azure.core.util.Context.NONE)
                 .getValue();
-        resource.update().withTags(mapOf("Owner", "superuser")).apply();
+        resource.update().withTags(mapOf("Owner", "superuser")).withDisplayName("Dev").apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

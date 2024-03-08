@@ -14,6 +14,12 @@ public final class ListMetricEnrichmentStatusOptions {
     private Integer skip;
 
     /**
+     * Creates an instance of ListMetricEnrichmentStatusOptions.
+     */
+    public ListMetricEnrichmentStatusOptions() {
+    }
+
+    /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
      * @return The max page size value.

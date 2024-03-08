@@ -5,24 +5,32 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Schema for all properties of Recording Storage Information. */
+/**
+ * Schema for all properties of Recording Storage Information.
+ */
 @Fluent
-public final class AcsRecordingStorageInfoProperties {
+public final class AcsRecordingStorageInfoProperties implements JsonSerializable<AcsRecordingStorageInfoProperties> {
     /*
      * List of details of recording chunks information
      */
-    @JsonProperty(value = "recordingChunks")
     private List<AcsRecordingChunkInfoProperties> recordingChunks;
 
-    /** Creates an instance of AcsRecordingStorageInfoProperties class. */
-    public AcsRecordingStorageInfoProperties() {}
+    /**
+     * Creates an instance of AcsRecordingStorageInfoProperties class.
+     */
+    public AcsRecordingStorageInfoProperties() {
+    }
 
     /**
      * Get the recordingChunks property: List of details of recording chunks information.
-     *
+     * 
      * @return the recordingChunks value.
      */
     public List<AcsRecordingChunkInfoProperties> getRecordingChunks() {
@@ -31,12 +39,49 @@ public final class AcsRecordingStorageInfoProperties {
 
     /**
      * Set the recordingChunks property: List of details of recording chunks information.
-     *
+     * 
      * @param recordingChunks the recordingChunks value to set.
      * @return the AcsRecordingStorageInfoProperties object itself.
      */
     public AcsRecordingStorageInfoProperties setRecordingChunks(List<AcsRecordingChunkInfoProperties> recordingChunks) {
         this.recordingChunks = recordingChunks;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("recordingChunks", this.recordingChunks,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRecordingStorageInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRecordingStorageInfoProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRecordingStorageInfoProperties.
+     */
+    public static AcsRecordingStorageInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRecordingStorageInfoProperties deserializedAcsRecordingStorageInfoProperties
+                = new AcsRecordingStorageInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recordingChunks".equals(fieldName)) {
+                    List<AcsRecordingChunkInfoProperties> recordingChunks
+                        = reader.readArray(reader1 -> AcsRecordingChunkInfoProperties.fromJson(reader1));
+                    deserializedAcsRecordingStorageInfoProperties.recordingChunks = recordingChunks;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRecordingStorageInfoProperties;
+        });
     }
 }

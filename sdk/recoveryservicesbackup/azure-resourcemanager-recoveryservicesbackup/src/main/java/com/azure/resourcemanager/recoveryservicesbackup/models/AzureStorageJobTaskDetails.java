@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure storage workload specific job task details. */
+/**
+ * Azure storage workload specific job task details.
+ */
 @Fluent
 public final class AzureStorageJobTaskDetails {
     /*
@@ -22,13 +24,15 @@ public final class AzureStorageJobTaskDetails {
     @JsonProperty(value = "status")
     private String status;
 
-    /** Creates an instance of AzureStorageJobTaskDetails class. */
+    /**
+     * Creates an instance of AzureStorageJobTaskDetails class.
+     */
     public AzureStorageJobTaskDetails() {
     }
 
     /**
      * Get the taskId property: The task display name.
-     *
+     * 
      * @return the taskId value.
      */
     public String taskId() {
@@ -37,7 +41,7 @@ public final class AzureStorageJobTaskDetails {
 
     /**
      * Set the taskId property: The task display name.
-     *
+     * 
      * @param taskId the taskId value to set.
      * @return the AzureStorageJobTaskDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class AzureStorageJobTaskDetails {
 
     /**
      * Get the status property: The status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -57,7 +61,7 @@ public final class AzureStorageJobTaskDetails {
 
     /**
      * Set the status property: The status.
-     *
+     * 
      * @param status the status value to set.
      * @return the AzureStorageJobTaskDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class AzureStorageJobTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

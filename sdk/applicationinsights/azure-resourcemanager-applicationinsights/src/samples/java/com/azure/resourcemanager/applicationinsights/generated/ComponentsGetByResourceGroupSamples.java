@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Components GetByResourceGroup. */
 public final class ComponentsGetByResourceGroupSamples {
     /*
@@ -17,6 +15,8 @@ public final class ComponentsGetByResourceGroupSamples {
      * @param manager Entry point to ApplicationInsightsManager.
      */
     public static void componentGet(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
-        manager.components().getByResourceGroupWithResponse("my-resource-group", "my-component", Context.NONE);
+        manager
+            .components()
+            .getByResourceGroupWithResponse("my-resource-group", "my-component", com.azure.core.util.Context.NONE);
     }
 }

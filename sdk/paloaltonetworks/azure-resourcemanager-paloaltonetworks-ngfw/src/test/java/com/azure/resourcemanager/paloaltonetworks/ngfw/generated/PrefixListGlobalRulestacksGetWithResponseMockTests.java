@@ -30,44 +30,30 @@ public final class PrefixListGlobalRulestacksGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"description\":\"smgbzahgxqdl\",\"prefixList\":[\"tlt\",\"ap\"],\"etag\":\"tz\",\"auditComment\":\"tbhjmznnbsoqe\",\"provisioningState\":\"Updating\"},\"id\":\"rvlagunbtgfebwln\",\"name\":\"mhyreeudz\",\"type\":\"av\"}";
+        String responseStr
+            = "{\"properties\":{\"description\":\"c\",\"prefixList\":[\"zvxnqmhrp\"],\"etag\":\"df\",\"auditComment\":\"kois\",\"provisioningState\":\"Failed\"},\"id\":\"f\",\"name\":\"xuifmcsypobkdqz\",\"type\":\"dzsylollgtrczz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrefixListGlobalRulestackResource response =
-            manager
-                .prefixListGlobalRulestacks()
-                .getWithResponse("aosrxuz", "oamktcq", com.azure.core.util.Context.NONE)
-                .getValue();
+        PrefixListGlobalRulestackResource response = manager.prefixListGlobalRulestacks()
+            .getWithResponse("lhkgmnsghp", "ycphdrwjjkhvyo", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("smgbzahgxqdl", response.description());
-        Assertions.assertEquals("tlt", response.prefixList().get(0));
-        Assertions.assertEquals("tz", response.etag());
-        Assertions.assertEquals("tbhjmznnbsoqe", response.auditComment());
+        Assertions.assertEquals("c", response.description());
+        Assertions.assertEquals("zvxnqmhrp", response.prefixList().get(0));
+        Assertions.assertEquals("df", response.etag());
+        Assertions.assertEquals("kois", response.auditComment());
     }
 }

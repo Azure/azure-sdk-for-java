@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devcenter.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.devcenter.fluent.models.PoolUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** The pool properties for partial update. Properties not provided in the update request will not be changed. */
@@ -161,6 +162,104 @@ public final class PoolUpdate extends TrackedResourceUpdate {
             this.innerProperties = new PoolUpdateProperties();
         }
         this.innerProperties().withStopOnDisconnect(stopOnDisconnect);
+        return this;
+    }
+
+    /**
+     * Get the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with single sign on
+     * enabled. The also requires that single sign on be enabled on the tenant.
+     *
+     * @return the singleSignOnStatus value.
+     */
+    public SingleSignOnStatus singleSignOnStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().singleSignOnStatus();
+    }
+
+    /**
+     * Set the singleSignOnStatus property: Indicates whether Dev Boxes in this pool are created with single sign on
+     * enabled. The also requires that single sign on be enabled on the tenant.
+     *
+     * @param singleSignOnStatus the singleSignOnStatus value to set.
+     * @return the PoolUpdate object itself.
+     */
+    public PoolUpdate withSingleSignOnStatus(SingleSignOnStatus singleSignOnStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolUpdateProperties();
+        }
+        this.innerProperties().withSingleSignOnStatus(singleSignOnStatus);
+        return this;
+    }
+
+    /**
+     * Get the displayName property: The display name of the pool.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The display name of the pool.
+     *
+     * @param displayName the displayName value to set.
+     * @return the PoolUpdate object itself.
+     */
+    public PoolUpdate withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolUpdateProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
+    }
+
+    /**
+     * Get the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by Microsoft or a
+     * customer provided network.
+     *
+     * @return the virtualNetworkType value.
+     */
+    public VirtualNetworkType virtualNetworkType() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkType();
+    }
+
+    /**
+     * Set the virtualNetworkType property: Indicates whether the pool uses a Virtual Network managed by Microsoft or a
+     * customer provided network.
+     *
+     * @param virtualNetworkType the virtualNetworkType value to set.
+     * @return the PoolUpdate object itself.
+     */
+    public PoolUpdate withVirtualNetworkType(VirtualNetworkType virtualNetworkType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolUpdateProperties();
+        }
+        this.innerProperties().withVirtualNetworkType(virtualNetworkType);
+        return this;
+    }
+
+    /**
+     * Get the managedVirtualNetworkRegions property: The regions of the managed virtual network (required when
+     * managedNetworkType is Managed).
+     *
+     * @return the managedVirtualNetworkRegions value.
+     */
+    public List<String> managedVirtualNetworkRegions() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedVirtualNetworkRegions();
+    }
+
+    /**
+     * Set the managedVirtualNetworkRegions property: The regions of the managed virtual network (required when
+     * managedNetworkType is Managed).
+     *
+     * @param managedVirtualNetworkRegions the managedVirtualNetworkRegions value to set.
+     * @return the PoolUpdate object itself.
+     */
+    public PoolUpdate withManagedVirtualNetworkRegions(List<String> managedVirtualNetworkRegions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolUpdateProperties();
+        }
+        this.innerProperties().withManagedVirtualNetworkRegions(managedVirtualNetworkRegions);
         return this;
     }
 

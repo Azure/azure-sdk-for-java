@@ -7,18 +7,28 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SiteRuntimeState. */
+/**
+ * Defines values for SiteRuntimeState.
+ */
 public enum SiteRuntimeState {
-    /** Enum value READY. */
+    /**
+     * Enum value READY.
+     */
     READY("READY"),
 
-    /** Enum value STOPPED. */
+    /**
+     * Enum value STOPPED.
+     */
     STOPPED("STOPPED"),
 
-    /** Enum value UNKNOWN. */
+    /**
+     * Enum value UNKNOWN.
+     */
     UNKNOWN("UNKNOWN");
 
-    /** The actual serialized value for a SiteRuntimeState instance. */
+    /**
+     * The actual serialized value for a SiteRuntimeState instance.
+     */
     private final String value;
 
     SiteRuntimeState(String value) {
@@ -27,7 +37,7 @@ public enum SiteRuntimeState {
 
     /**
      * Parses a serialized value to a SiteRuntimeState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SiteRuntimeState object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum SiteRuntimeState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.ContainerAppProvisioningState
 import com.azure.resourcemanager.appservice.models.Template;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ContainerApp resource specific properties. */
+/**
+ * ContainerApp resource specific properties.
+ */
 @Fluent
 public final class ContainerAppProperties {
     /*
@@ -49,13 +51,15 @@ public final class ContainerAppProperties {
     @JsonProperty(value = "template")
     private Template template;
 
-    /** Creates an instance of ContainerAppProperties class. */
+    /**
+     * Creates an instance of ContainerAppProperties class.
+     */
     public ContainerAppProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the Container App.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ContainerAppProvisioningState provisioningState() {
@@ -64,7 +68,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the kubeEnvironmentId property: Resource ID of the Container App's KubeEnvironment.
-     *
+     * 
      * @return the kubeEnvironmentId value.
      */
     public String kubeEnvironmentId() {
@@ -73,7 +77,7 @@ public final class ContainerAppProperties {
 
     /**
      * Set the kubeEnvironmentId property: Resource ID of the Container App's KubeEnvironment.
-     *
+     * 
      * @param kubeEnvironmentId the kubeEnvironmentId value to set.
      * @return the ContainerAppProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the latestRevisionName property: Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionName value.
      */
     public String latestRevisionName() {
@@ -93,7 +97,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the latestRevisionFqdn property: Fully Qualified Domain Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionFqdn value.
      */
     public String latestRevisionFqdn() {
@@ -102,7 +106,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     public Configuration configuration() {
@@ -111,7 +115,7 @@ public final class ContainerAppProperties {
 
     /**
      * Set the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the ContainerAppProperties object itself.
      */
@@ -122,7 +126,7 @@ public final class ContainerAppProperties {
 
     /**
      * Get the template property: Container App versioned application definition.
-     *
+     * 
      * @return the template value.
      */
     public Template template() {
@@ -131,7 +135,7 @@ public final class ContainerAppProperties {
 
     /**
      * Set the template property: Container App versioned application definition.
-     *
+     * 
      * @param template the template value to set.
      * @return the ContainerAppProperties object itself.
      */
@@ -142,7 +146,7 @@ public final class ContainerAppProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

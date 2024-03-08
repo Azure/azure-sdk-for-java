@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CDC policy recurrence details. */
+/**
+ * CDC policy recurrence details.
+ */
 @Fluent
 public final class MapperPolicyRecurrence {
     /*
@@ -22,13 +24,15 @@ public final class MapperPolicyRecurrence {
     @JsonProperty(value = "interval")
     private Integer interval;
 
-    /** Creates an instance of MapperPolicyRecurrence class. */
+    /**
+     * Creates an instance of MapperPolicyRecurrence class.
+     */
     public MapperPolicyRecurrence() {
     }
 
     /**
      * Get the frequency property: Frequency of period in terms of 'Hour', 'Minute' or 'Second'.
-     *
+     * 
      * @return the frequency value.
      */
     public FrequencyType frequency() {
@@ -37,7 +41,7 @@ public final class MapperPolicyRecurrence {
 
     /**
      * Set the frequency property: Frequency of period in terms of 'Hour', 'Minute' or 'Second'.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the MapperPolicyRecurrence object itself.
      */
@@ -48,7 +52,7 @@ public final class MapperPolicyRecurrence {
 
     /**
      * Get the interval property: Actual interval value as per chosen frequency.
-     *
+     * 
      * @return the interval value.
      */
     public Integer interval() {
@@ -57,7 +61,7 @@ public final class MapperPolicyRecurrence {
 
     /**
      * Set the interval property: Actual interval value as per chosen frequency.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the MapperPolicyRecurrence object itself.
      */
@@ -68,7 +72,7 @@ public final class MapperPolicyRecurrence {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -17,3 +17,4 @@ stages:
           SubscriptionConfigurations:
             - $(sub-config-communication-int-test-resources-common)
             - $(sub-config-communication-int-test-resources-java)
+            - $(sub-config-communication-sms-int-test-resources)

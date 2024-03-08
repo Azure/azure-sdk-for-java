@@ -23,11 +23,6 @@ import java.util.List;
 @Immutable
 public final class PatternReplaceTokenFilter extends TokenFilter {
     /*
-     * Identifies the concrete type of the token filter.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.PatternReplaceTokenFilter";
-
-    /*
      * A regular expression pattern.
      */
     private final String pattern;
@@ -39,7 +34,7 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
 
     /**
      * Creates an instance of PatternReplaceTokenFilter class.
-     *
+     * 
      * @param name the name value to set.
      * @param pattern the pattern value to set.
      * @param replacement the replacement value to set.
@@ -52,7 +47,7 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
 
     /**
      * Get the pattern property: A regular expression pattern.
-     *
+     * 
      * @return the pattern value.
      */
     public String getPattern() {
@@ -61,7 +56,7 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
 
     /**
      * Get the replacement property: The replacement text.
-     *
+     * 
      * @return the replacement value.
      */
     public String getReplacement() {
@@ -71,7 +66,7 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.PatternReplaceTokenFilter");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("pattern", this.pattern);
         jsonWriter.writeStringField("replacement", this.replacement);
@@ -80,69 +75,62 @@ public final class PatternReplaceTokenFilter extends TokenFilter {
 
     /**
      * Reads an instance of PatternReplaceTokenFilter from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PatternReplaceTokenFilter if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the PatternReplaceTokenFilter.
      */
     public static PatternReplaceTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    boolean patternFound = false;
-                    String pattern = null;
-                    boolean replacementFound = false;
-                    String replacement = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean patternFound = false;
+            String pattern = null;
+            boolean replacementFound = false;
+            String replacement = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("pattern".equals(fieldName)) {
-                            pattern = reader.getString();
-                            patternFound = true;
-                        } else if ("replacement".equals(fieldName)) {
-                            replacement = reader.getString();
-                            replacementFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("@odata.type".equals(fieldName)) {
+                    String odataType = reader.getString();
+                    if (!"#Microsoft.Azure.Search.PatternReplaceTokenFilter".equals(odataType)) {
+                        throw new IllegalStateException(
+                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternReplaceTokenFilter'. The found '@odata.type' was '"
+                                + odataType + "'.");
                     }
-                    if (nameFound && patternFound && replacementFound) {
-                        PatternReplaceTokenFilter deserializedPatternReplaceTokenFilter =
-                                new PatternReplaceTokenFilter(name, pattern, replacement);
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("pattern".equals(fieldName)) {
+                    pattern = reader.getString();
+                    patternFound = true;
+                } else if ("replacement".equals(fieldName)) {
+                    replacement = reader.getString();
+                    replacementFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && patternFound && replacementFound) {
+                return new PatternReplaceTokenFilter(name, pattern, replacement);
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!patternFound) {
+                missingProperties.add("pattern");
+            }
+            if (!replacementFound) {
+                missingProperties.add("replacement");
+            }
 
-                        return deserializedPatternReplaceTokenFilter;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-                    if (!patternFound) {
-                        missingProperties.add("pattern");
-                    }
-                    if (!replacementFound) {
-                        missingProperties.add("replacement");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

@@ -15,25 +15,22 @@ import org.junit.jupiter.api.Assertions;
 public final class BatchPoolIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BatchPoolIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"vkg\":{\"principalId\":\"tvcof\",\"clientId\":\"f\"},\"sgsahmkycgr\":{\"principalId\":\"bgdknnqv\",\"clientId\":\"znqntoru\"}}}")
-                .toObject(BatchPoolIdentity.class);
-        Assertions.assertEquals(PoolIdentityType.USER_ASSIGNED, model.type());
+        BatchPoolIdentity model = BinaryData.fromString(
+            "{\"type\":\"None\",\"userAssignedIdentities\":{\"dxrbuukzcle\":{\"principalId\":\"kfzbeyvpnqicvi\",\"clientId\":\"kjj\"},\"qa\":{\"principalId\":\"hmlwpaztzpo\",\"clientId\":\"cckwyfzqwhxxbu\"},\"obqwcsdbnwdcfh\":{\"principalId\":\"feqztppriol\",\"clientId\":\"rjaltolmncw\"}}}")
+            .toObject(BatchPoolIdentity.class);
+        Assertions.assertEquals(PoolIdentityType.NONE, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BatchPoolIdentity model =
-            new BatchPoolIdentity()
-                .withType(PoolIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf("vkg", new UserAssignedIdentities(), "sgsahmkycgr", new UserAssignedIdentities()));
+        BatchPoolIdentity model = new BatchPoolIdentity().withType(PoolIdentityType.NONE)
+            .withUserAssignedIdentities(mapOf("dxrbuukzcle", new UserAssignedIdentities(), "qa",
+                new UserAssignedIdentities(), "obqwcsdbnwdcfh", new UserAssignedIdentities()));
         model = BinaryData.fromObject(model).toObject(BatchPoolIdentity.class);
-        Assertions.assertEquals(PoolIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(PoolIdentityType.NONE, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

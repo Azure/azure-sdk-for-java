@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ValidateResponseError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the result of resource validation. */
+/**
+ * Describes the result of resource validation.
+ */
 @Fluent
 public final class ValidateResponseInner {
     /*
@@ -23,13 +25,15 @@ public final class ValidateResponseInner {
     @JsonProperty(value = "error")
     private ValidateResponseError error;
 
-    /** Creates an instance of ValidateResponseInner class. */
+    /**
+     * Creates an instance of ValidateResponseInner class.
+     */
     public ValidateResponseInner() {
     }
 
     /**
      * Get the status property: Result of validation.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -38,7 +42,7 @@ public final class ValidateResponseInner {
 
     /**
      * Set the status property: Result of validation.
-     *
+     * 
      * @param status the status value to set.
      * @return the ValidateResponseInner object itself.
      */
@@ -49,7 +53,7 @@ public final class ValidateResponseInner {
 
     /**
      * Get the error property: Error details for the case when validation fails.
-     *
+     * 
      * @return the error value.
      */
     public ValidateResponseError error() {
@@ -58,7 +62,7 @@ public final class ValidateResponseInner {
 
     /**
      * Set the error property: Error details for the case when validation fails.
-     *
+     * 
      * @param error the error value to set.
      * @return the ValidateResponseInner object itself.
      */
@@ -69,7 +73,7 @@ public final class ValidateResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

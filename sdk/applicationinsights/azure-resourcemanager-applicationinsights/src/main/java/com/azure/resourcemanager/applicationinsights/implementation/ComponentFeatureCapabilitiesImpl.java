@@ -27,16 +27,6 @@ public final class ComponentFeatureCapabilitiesImpl implements ComponentFeatureC
         this.serviceManager = serviceManager;
     }
 
-    public ApplicationInsightsComponentFeatureCapabilities get(String resourceGroupName, String resourceName) {
-        ApplicationInsightsComponentFeatureCapabilitiesInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new ApplicationInsightsComponentFeatureCapabilitiesImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApplicationInsightsComponentFeatureCapabilities> getWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<ApplicationInsightsComponentFeatureCapabilitiesInner> inner =
@@ -47,6 +37,16 @@ public final class ComponentFeatureCapabilitiesImpl implements ComponentFeatureC
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationInsightsComponentFeatureCapabilitiesImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationInsightsComponentFeatureCapabilities get(String resourceGroupName, String resourceName) {
+        ApplicationInsightsComponentFeatureCapabilitiesInner inner =
+            this.serviceClient().get(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new ApplicationInsightsComponentFeatureCapabilitiesImpl(inner, this.manager());
         } else {
             return null;
         }

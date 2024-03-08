@@ -16,23 +16,33 @@ public final class PrivateLinkScopesResourceTests {
         PrivateLinkScopesResource model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"pfhyhl\",\"tags\":{\"atuokthfuiu\":\"mopjmc\",\"zydagfuaxbezyiuo\":\"odsfcpkvxodpuozm\"},\"id\":\"ktwh\",\"name\":\"dxwzywqsmbsurexi\",\"type\":\"o\"}")
+                    "{\"location\":\"lfltka\",\"tags\":{\"akggkfpag\":\"efkdlf\",\"lyls\":\"owpulpq\",\"agxsdszuemps\":\"xkqjnsjervt\",\"nqicvinvkjjxdxrb\":\"zkfzbeyv\"},\"id\":\"ukzclewyhmlwpaz\",\"name\":\"zpof\",\"type\":\"cckwyfzqwhxxbu\"}")
                 .toObject(PrivateLinkScopesResource.class);
-        Assertions.assertEquals("pfhyhl", model.location());
-        Assertions.assertEquals("mopjmc", model.tags().get("atuokthfuiu"));
+        Assertions.assertEquals("lfltka", model.location());
+        Assertions.assertEquals("efkdlf", model.tags().get("akggkfpag"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PrivateLinkScopesResource model =
             new PrivateLinkScopesResource()
-                .withLocation("pfhyhl")
-                .withTags(mapOf("atuokthfuiu", "mopjmc", "zydagfuaxbezyiuo", "odsfcpkvxodpuozm"));
+                .withLocation("lfltka")
+                .withTags(
+                    mapOf(
+                        "akggkfpag",
+                        "efkdlf",
+                        "lyls",
+                        "owpulpq",
+                        "agxsdszuemps",
+                        "xkqjnsjervt",
+                        "nqicvinvkjjxdxrb",
+                        "zkfzbeyv"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkScopesResource.class);
-        Assertions.assertEquals("pfhyhl", model.location());
-        Assertions.assertEquals("mopjmc", model.tags().get("atuokthfuiu"));
+        Assertions.assertEquals("lfltka", model.location());
+        Assertions.assertEquals("efkdlf", model.tags().get("akggkfpag"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

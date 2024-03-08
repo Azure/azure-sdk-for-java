@@ -35,7 +35,7 @@ public final class PoliciesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"xwhydtluvv\",\"status\":\"Disabled\",\"factName\":\"EnvironmentTemplate\",\"factData\":\"nuyemlowuo\",\"threshold\":\"lxlnwyrmo\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2021-09-03T13:57:41Z\",\"provisioningState\":\"okzkltr\",\"uniqueIdentifier\":\"wtdvrfmvli\"},\"location\":\"cvjdrqcrjidhft\",\"tags\":{\"ojbf\":\"hdxlw\",\"fnjyix\":\"zd\"},\"id\":\"afr\",\"name\":\"tqxmbj\",\"type\":\"oum\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"vlzw\",\"status\":\"Disabled\",\"factName\":\"UserOwnedLabVmCountInSubnet\",\"factData\":\"lkzazmgok\",\"threshold\":\"gjqafkmkrokzr\",\"evaluatorType\":\"MaxValuePolicy\",\"createdDate\":\"2020-12-24T11:56:22Z\",\"provisioningState\":\"pqrtvaoznqni\",\"uniqueIdentifier\":\"ezeagmceituuge\"},\"location\":\"hfpjstlzmbls\",\"tags\":{\"yrle\":\"eolctaebf\",\"gdxzvsgeafgfoseh\":\"jcustbvtq\",\"aaeskyfjlpze\":\"lzsxezppkk\"},\"id\":\"toyrplixlajml\",\"name\":\"pq\",\"type\":\"evhamfowg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,22 +67,23 @@ public final class PoliciesListMockTests {
             manager
                 .policies()
                 .list(
-                    "ixqcahyhxalybxaw",
-                    "ijpodtblxpkkwj",
-                    "jodqhykincn",
-                    "emehllizh",
-                    "eumoqod",
-                    2091021160,
-                    "dppyibngqlady",
+                    "jctibpvbkae",
+                    "xsmzygdf",
+                    "akw",
+                    "eivmak",
+                    "hysowljuxlkbect",
+                    1481062094,
+                    "fjmskdchmaiu",
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cvjdrqcrjidhft", response.iterator().next().location());
-        Assertions.assertEquals("hdxlw", response.iterator().next().tags().get("ojbf"));
-        Assertions.assertEquals("xwhydtluvv", response.iterator().next().description());
+        Assertions.assertEquals("hfpjstlzmbls", response.iterator().next().location());
+        Assertions.assertEquals("eolctaebf", response.iterator().next().tags().get("yrle"));
+        Assertions.assertEquals("vlzw", response.iterator().next().description());
         Assertions.assertEquals(PolicyStatus.DISABLED, response.iterator().next().status());
-        Assertions.assertEquals(PolicyFactName.ENVIRONMENT_TEMPLATE, response.iterator().next().factName());
-        Assertions.assertEquals("nuyemlowuo", response.iterator().next().factData());
-        Assertions.assertEquals("lxlnwyrmo", response.iterator().next().threshold());
+        Assertions
+            .assertEquals(PolicyFactName.USER_OWNED_LAB_VM_COUNT_IN_SUBNET, response.iterator().next().factName());
+        Assertions.assertEquals("lkzazmgok", response.iterator().next().factData());
+        Assertions.assertEquals("gjqafkmkrokzr", response.iterator().next().threshold());
         Assertions.assertEquals(PolicyEvaluatorType.MAX_VALUE_POLICY, response.iterator().next().evaluatorType());
     }
 }

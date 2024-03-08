@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the connection monitor endpoint scope item. */
+/**
+ * Describes the connection monitor endpoint scope item.
+ */
 @Fluent
 public final class ConnectionMonitorEndpointScopeItem {
     /*
@@ -16,14 +18,16 @@ public final class ConnectionMonitorEndpointScopeItem {
     @JsonProperty(value = "address")
     private String address;
 
-    /** Creates an instance of ConnectionMonitorEndpointScopeItem class. */
+    /**
+     * Creates an instance of ConnectionMonitorEndpointScopeItem class.
+     */
     public ConnectionMonitorEndpointScopeItem() {
     }
 
     /**
      * Get the address property: The address of the endpoint item. Supported types are IPv4/IPv6 subnet mask or
      * IPv4/IPv6 IP address.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -33,7 +37,7 @@ public final class ConnectionMonitorEndpointScopeItem {
     /**
      * Set the address property: The address of the endpoint item. Supported types are IPv4/IPv6 subnet mask or
      * IPv4/IPv6 IP address.
-     *
+     * 
      * @param address the address value to set.
      * @return the ConnectionMonitorEndpointScopeItem object itself.
      */
@@ -44,7 +48,7 @@ public final class ConnectionMonitorEndpointScopeItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

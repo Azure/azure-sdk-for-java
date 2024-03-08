@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the filter values possibles for a given column. */
+/**
+ * Describes the filter values possibles for a given column.
+ */
 @Fluent
 public final class SignatureOverridesFilterValuesQuery {
     /*
@@ -16,13 +18,15 @@ public final class SignatureOverridesFilterValuesQuery {
     @JsonProperty(value = "filterName")
     private String filterName;
 
-    /** Creates an instance of SignatureOverridesFilterValuesQuery class. */
+    /**
+     * Creates an instance of SignatureOverridesFilterValuesQuery class.
+     */
     public SignatureOverridesFilterValuesQuery() {
     }
 
     /**
      * Get the filterName property: Describes the name of the column which values will be returned.
-     *
+     * 
      * @return the filterName value.
      */
     public String filterName() {
@@ -31,7 +35,7 @@ public final class SignatureOverridesFilterValuesQuery {
 
     /**
      * Set the filterName property: Describes the name of the column which values will be returned.
-     *
+     * 
      * @param filterName the filterName value to set.
      * @return the SignatureOverridesFilterValuesQuery object itself.
      */
@@ -42,7 +46,7 @@ public final class SignatureOverridesFilterValuesQuery {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

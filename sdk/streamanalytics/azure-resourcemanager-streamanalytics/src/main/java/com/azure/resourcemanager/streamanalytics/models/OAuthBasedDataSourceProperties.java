@@ -5,50 +5,50 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties that are associated with data sources that use OAuth as their authentication model. */
+/**
+ * The properties that are associated with data sources that use OAuth as their authentication model.
+ */
 @Fluent
 public class OAuthBasedDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OAuthBasedDataSourceProperties.class);
-
     /*
-     * A refresh token that can be used to obtain a valid access token that can
-     * then be used to authenticate with the data source. A valid refresh token
-     * is currently only obtainable via the Azure Portal. It is recommended to
-     * put a dummy string value here when creating the data source and then
-     * going to the Azure Portal to authenticate the data source which will
-     * update this property with a valid refresh token. Required on PUT
-     * (CreateOrReplace) requests.
+     * A refresh token that can be used to obtain a valid access token that can then be used to authenticate with the
+     * data source. A valid refresh token is currently only obtainable via the Azure Portal. It is recommended to put a
+     * dummy string value here when creating the data source and then going to the Azure Portal to authenticate the
+     * data source which will update this property with a valid refresh token. Required on PUT (CreateOrReplace)
+     * requests.
      */
     @JsonProperty(value = "refreshToken")
     private String refreshToken;
 
     /*
-     * The user principal name (UPN) of the user that was used to obtain the
-     * refresh token. Use this property to help remember which user was used to
-     * obtain the refresh token.
+     * The user principal name (UPN) of the user that was used to obtain the refresh token. Use this property to help
+     * remember which user was used to obtain the refresh token.
      */
     @JsonProperty(value = "tokenUserPrincipalName")
     private String tokenUserPrincipalName;
 
     /*
-     * The user display name of the user that was used to obtain the refresh
-     * token. Use this property to help remember which user was used to obtain
-     * the refresh token.
+     * The user display name of the user that was used to obtain the refresh token. Use this property to help remember
+     * which user was used to obtain the refresh token.
      */
     @JsonProperty(value = "tokenUserDisplayName")
     private String tokenUserDisplayName;
 
     /**
+     * Creates an instance of OAuthBasedDataSourceProperties class.
+     */
+    public OAuthBasedDataSourceProperties() {
+    }
+
+    /**
      * Get the refreshToken property: A refresh token that can be used to obtain a valid access token that can then be
      * used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure
      * Portal. It is recommended to put a dummy string value here when creating the data source and then going to the
-     * Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required
-     * on PUT (CreateOrReplace) requests.
-     *
+     * Azure Portal to authenticate the data source which will update this property with a valid refresh token.
+     * Required on PUT (CreateOrReplace) requests.
+     * 
      * @return the refreshToken value.
      */
     public String refreshToken() {
@@ -59,9 +59,9 @@ public class OAuthBasedDataSourceProperties {
      * Set the refreshToken property: A refresh token that can be used to obtain a valid access token that can then be
      * used to authenticate with the data source. A valid refresh token is currently only obtainable via the Azure
      * Portal. It is recommended to put a dummy string value here when creating the data source and then going to the
-     * Azure Portal to authenticate the data source which will update this property with a valid refresh token. Required
-     * on PUT (CreateOrReplace) requests.
-     *
+     * Azure Portal to authenticate the data source which will update this property with a valid refresh token.
+     * Required on PUT (CreateOrReplace) requests.
+     * 
      * @param refreshToken the refreshToken value to set.
      * @return the OAuthBasedDataSourceProperties object itself.
      */
@@ -73,7 +73,7 @@ public class OAuthBasedDataSourceProperties {
     /**
      * Get the tokenUserPrincipalName property: The user principal name (UPN) of the user that was used to obtain the
      * refresh token. Use this property to help remember which user was used to obtain the refresh token.
-     *
+     * 
      * @return the tokenUserPrincipalName value.
      */
     public String tokenUserPrincipalName() {
@@ -83,7 +83,7 @@ public class OAuthBasedDataSourceProperties {
     /**
      * Set the tokenUserPrincipalName property: The user principal name (UPN) of the user that was used to obtain the
      * refresh token. Use this property to help remember which user was used to obtain the refresh token.
-     *
+     * 
      * @param tokenUserPrincipalName the tokenUserPrincipalName value to set.
      * @return the OAuthBasedDataSourceProperties object itself.
      */
@@ -95,7 +95,7 @@ public class OAuthBasedDataSourceProperties {
     /**
      * Get the tokenUserDisplayName property: The user display name of the user that was used to obtain the refresh
      * token. Use this property to help remember which user was used to obtain the refresh token.
-     *
+     * 
      * @return the tokenUserDisplayName value.
      */
     public String tokenUserDisplayName() {
@@ -105,7 +105,7 @@ public class OAuthBasedDataSourceProperties {
     /**
      * Set the tokenUserDisplayName property: The user display name of the user that was used to obtain the refresh
      * token. Use this property to help remember which user was used to obtain the refresh token.
-     *
+     * 
      * @param tokenUserDisplayName the tokenUserDisplayName value to set.
      * @return the OAuthBasedDataSourceProperties object itself.
      */
@@ -116,7 +116,7 @@ public class OAuthBasedDataSourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

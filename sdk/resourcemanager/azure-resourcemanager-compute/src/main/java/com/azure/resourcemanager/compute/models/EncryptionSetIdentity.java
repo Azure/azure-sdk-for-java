@@ -40,13 +40,16 @@ public final class EncryptionSetIdentity {
     /*
      * The list of user identities associated with the disk encryption set. The user identity dictionary key references
      * will be ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities;
 
-    /** Creates an instance of EncryptionSetIdentity class. */
+    /**
+     * Creates an instance of EncryptionSetIdentity class.
+     */
     public EncryptionSetIdentity() {
     }
 
@@ -55,7 +58,7 @@ public final class EncryptionSetIdentity {
      * supported for new creations. Disk Encryption Sets can be updated with Identity type None during migration of
      * subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the
      * keys.
-     *
+     * 
      * @return the type value.
      */
     public DiskEncryptionSetIdentityType type() {
@@ -67,7 +70,7 @@ public final class EncryptionSetIdentity {
      * supported for new creations. Disk Encryption Sets can be updated with Identity type None during migration of
      * subscription to a new Azure Active Directory tenant; it will cause the encrypted resources to lose access to the
      * keys.
-     *
+     * 
      * @param type the type value to set.
      * @return the EncryptionSetIdentity object itself.
      */
@@ -80,7 +83,7 @@ public final class EncryptionSetIdentity {
      * Get the principalId property: The object id of the Managed Identity Resource. This will be sent to the RP from
      * ARM via the x-ms-identity-principal-id header in the PUT request if the resource has a systemAssigned(implicit)
      * identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -90,7 +93,7 @@ public final class EncryptionSetIdentity {
     /**
      * Get the tenantId property: The tenant id of the Managed Identity Resource. This will be sent to the RP from ARM
      * via the x-ms-client-tenant-id header in the PUT request if the resource has a systemAssigned(implicit) identity.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -98,10 +101,10 @@ public final class EncryptionSetIdentity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The list of user identities associated with the disk encryption set. The
-     * user identity dictionary key references will be ARM resource ids in the form:
+     * Get the userAssignedIdentities property: The list of user identities associated with the disk encryption set.
+     * The user identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities() {
@@ -109,34 +112,31 @@ public final class EncryptionSetIdentity {
     }
 
     /**
-     * Set the userAssignedIdentities property: The list of user identities associated with the disk encryption set. The
-     * user identity dictionary key references will be ARM resource ids in the form:
+     * Set the userAssignedIdentities property: The list of user identities associated with the disk encryption set.
+     * The user identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the EncryptionSetIdentity object itself.
      */
-    public EncryptionSetIdentity withUserAssignedIdentities(
-        Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities) {
+    public EncryptionSetIdentity
+        withUserAssignedIdentities(Map<String, VirtualMachineIdentityUserAssignedIdentities> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

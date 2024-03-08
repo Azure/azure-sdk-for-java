@@ -19,17 +19,18 @@ public final class MonitoringTagRulesPropertiesTests {
         MonitoringTagRulesProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Deleted\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":true,\"filteringTags\":[{\"name\":\"dptkoenkouk\",\"value\":\"udwtiukbl\",\"action\":\"Exclude\"},{\"name\":\"pocipazyxoegu\",\"value\":\"jnpiucgyg\",\"action\":\"Include\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"pmr\",\"value\":\"izcdrqjsd\",\"action\":\"Exclude\"},{\"name\":\"fyhxde\",\"value\":\"jzicwifsjt\",\"action\":\"Exclude\"},{\"name\":\"bishcbkhajdeyea\",\"value\":\"p\",\"action\":\"Include\"},{\"name\":\"lpbuxwgipwhonowk\",\"value\":\"hwankixzbinjepu\",\"action\":\"Include\"}]}}")
+                    "{\"provisioningState\":\"Creating\",\"logRules\":{\"sendAadLogs\":false,\"sendSubscriptionLogs\":false,\"sendResourceLogs\":true,\"filteringTags\":[{\"name\":\"cattpngjcrcczsq\",\"value\":\"hvmdajvnysounq\",\"action\":\"Include\"}]},\"metricRules\":{\"filteringTags\":[{\"name\":\"upfh\",\"value\":\"ltrpmopj\",\"action\":\"Include\"}]},\"automuting\":false}")
                 .toObject(MonitoringTagRulesProperties.class);
         Assertions.assertEquals(false, model.logRules().sendAadLogs());
         Assertions.assertEquals(false, model.logRules().sendSubscriptionLogs());
         Assertions.assertEquals(true, model.logRules().sendResourceLogs());
-        Assertions.assertEquals("dptkoenkouk", model.logRules().filteringTags().get(0).name());
-        Assertions.assertEquals("udwtiukbl", model.logRules().filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.EXCLUDE, model.logRules().filteringTags().get(0).action());
-        Assertions.assertEquals("pmr", model.metricRules().filteringTags().get(0).name());
-        Assertions.assertEquals("izcdrqjsd", model.metricRules().filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.EXCLUDE, model.metricRules().filteringTags().get(0).action());
+        Assertions.assertEquals("cattpngjcrcczsq", model.logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("hvmdajvnysounq", model.logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.INCLUDE, model.logRules().filteringTags().get(0).action());
+        Assertions.assertEquals("upfh", model.metricRules().filteringTags().get(0).name());
+        Assertions.assertEquals("ltrpmopj", model.metricRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.INCLUDE, model.metricRules().filteringTags().get(0).action());
+        Assertions.assertEquals(false, model.automuting());
     }
 
     @org.junit.jupiter.api.Test
@@ -45,12 +46,8 @@ public final class MonitoringTagRulesPropertiesTests {
                             Arrays
                                 .asList(
                                     new FilteringTag()
-                                        .withName("dptkoenkouk")
-                                        .withValue("udwtiukbl")
-                                        .withAction(TagAction.EXCLUDE),
-                                    new FilteringTag()
-                                        .withName("pocipazyxoegu")
-                                        .withValue("jnpiucgyg")
+                                        .withName("cattpngjcrcczsq")
+                                        .withValue("hvmdajvnysounq")
                                         .withAction(TagAction.INCLUDE))))
                 .withMetricRules(
                     new MetricRules()
@@ -58,30 +55,20 @@ public final class MonitoringTagRulesPropertiesTests {
                             Arrays
                                 .asList(
                                     new FilteringTag()
-                                        .withName("pmr")
-                                        .withValue("izcdrqjsd")
-                                        .withAction(TagAction.EXCLUDE),
-                                    new FilteringTag()
-                                        .withName("fyhxde")
-                                        .withValue("jzicwifsjt")
-                                        .withAction(TagAction.EXCLUDE),
-                                    new FilteringTag()
-                                        .withName("bishcbkhajdeyea")
-                                        .withValue("p")
-                                        .withAction(TagAction.INCLUDE),
-                                    new FilteringTag()
-                                        .withName("lpbuxwgipwhonowk")
-                                        .withValue("hwankixzbinjepu")
-                                        .withAction(TagAction.INCLUDE))));
+                                        .withName("upfh")
+                                        .withValue("ltrpmopj")
+                                        .withAction(TagAction.INCLUDE))))
+                .withAutomuting(false);
         model = BinaryData.fromObject(model).toObject(MonitoringTagRulesProperties.class);
         Assertions.assertEquals(false, model.logRules().sendAadLogs());
         Assertions.assertEquals(false, model.logRules().sendSubscriptionLogs());
         Assertions.assertEquals(true, model.logRules().sendResourceLogs());
-        Assertions.assertEquals("dptkoenkouk", model.logRules().filteringTags().get(0).name());
-        Assertions.assertEquals("udwtiukbl", model.logRules().filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.EXCLUDE, model.logRules().filteringTags().get(0).action());
-        Assertions.assertEquals("pmr", model.metricRules().filteringTags().get(0).name());
-        Assertions.assertEquals("izcdrqjsd", model.metricRules().filteringTags().get(0).value());
-        Assertions.assertEquals(TagAction.EXCLUDE, model.metricRules().filteringTags().get(0).action());
+        Assertions.assertEquals("cattpngjcrcczsq", model.logRules().filteringTags().get(0).name());
+        Assertions.assertEquals("hvmdajvnysounq", model.logRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.INCLUDE, model.logRules().filteringTags().get(0).action());
+        Assertions.assertEquals("upfh", model.metricRules().filteringTags().get(0).name());
+        Assertions.assertEquals("ltrpmopj", model.metricRules().filteringTags().get(0).value());
+        Assertions.assertEquals(TagAction.INCLUDE, model.metricRules().filteringTags().get(0).action());
+        Assertions.assertEquals(false, model.automuting());
     }
 }

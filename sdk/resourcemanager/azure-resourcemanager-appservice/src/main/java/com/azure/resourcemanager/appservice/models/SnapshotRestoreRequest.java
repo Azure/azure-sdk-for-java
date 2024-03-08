@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.SnapshotRestoreRequestProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details about app recovery operation. */
+/**
+ * Details about app recovery operation.
+ */
 @Fluent
 public final class SnapshotRestoreRequest extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SnapshotRestoreRequestProperties innerProperties;
 
-    /** Creates an instance of SnapshotRestoreRequest class. */
+    /**
+     * Creates an instance of SnapshotRestoreRequest class.
+     */
     public SnapshotRestoreRequest() {
     }
 
     /**
      * Get the innerProperties property: SnapshotRestoreRequest resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SnapshotRestoreRequestProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnapshotRestoreRequest withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
     /**
      * Get the snapshotTime property: Point in time in which the app restore should be done, formatted as a DateTime
      * string.
-     *
+     * 
      * @return the snapshotTime value.
      */
     public String snapshotTime() {
@@ -50,7 +56,7 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
     /**
      * Set the snapshotTime property: Point in time in which the app restore should be done, formatted as a DateTime
      * string.
-     *
+     * 
      * @param snapshotTime the snapshotTime value to set.
      * @return the SnapshotRestoreRequest object itself.
      */
@@ -65,7 +71,7 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
     /**
      * Get the recoverySource property: Optional. Specifies the web app that snapshot contents will be retrieved from.
      * If empty, the targeted web app will be used as the source.
-     *
+     * 
      * @return the recoverySource value.
      */
     public SnapshotRecoverySource recoverySource() {
@@ -75,7 +81,7 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
     /**
      * Set the recoverySource property: Optional. Specifies the web app that snapshot contents will be retrieved from.
      * If empty, the targeted web app will be used as the source.
-     *
+     * 
      * @param recoverySource the recoverySource value to set.
      * @return the SnapshotRestoreRequest object itself.
      */
@@ -90,7 +96,7 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
     /**
      * Get the overwrite property: If &lt;code&gt;true&lt;/code&gt; the restore operation can overwrite source app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the overwrite value.
      */
     public Boolean overwrite() {
@@ -100,7 +106,7 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
     /**
      * Set the overwrite property: If &lt;code&gt;true&lt;/code&gt; the restore operation can overwrite source app;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param overwrite the overwrite value to set.
      * @return the SnapshotRestoreRequest object itself.
      */
@@ -114,7 +120,7 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
 
     /**
      * Get the recoverConfiguration property: If true, site configuration, in addition to content, will be reverted.
-     *
+     * 
      * @return the recoverConfiguration value.
      */
     public Boolean recoverConfiguration() {
@@ -123,7 +129,7 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
 
     /**
      * Set the recoverConfiguration property: If true, site configuration, in addition to content, will be reverted.
-     *
+     * 
      * @param recoverConfiguration the recoverConfiguration value to set.
      * @return the SnapshotRestoreRequest object itself.
      */
@@ -137,8 +143,9 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
 
     /**
      * Get the ignoreConflictingHostNames property: If true, custom hostname conflicts will be ignored when recovering
-     * to a target web app. This setting is only necessary when RecoverConfiguration is enabled.
-     *
+     * to a target web app.
+     * This setting is only necessary when RecoverConfiguration is enabled.
+     * 
      * @return the ignoreConflictingHostNames value.
      */
     public Boolean ignoreConflictingHostNames() {
@@ -147,8 +154,9 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
 
     /**
      * Set the ignoreConflictingHostNames property: If true, custom hostname conflicts will be ignored when recovering
-     * to a target web app. This setting is only necessary when RecoverConfiguration is enabled.
-     *
+     * to a target web app.
+     * This setting is only necessary when RecoverConfiguration is enabled.
+     * 
      * @param ignoreConflictingHostNames the ignoreConflictingHostNames value to set.
      * @return the SnapshotRestoreRequest object itself.
      */
@@ -162,7 +170,7 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
 
     /**
      * Get the useDRSecondary property: If true, the snapshot is retrieved from DRSecondary endpoint.
-     *
+     * 
      * @return the useDRSecondary value.
      */
     public Boolean useDRSecondary() {
@@ -171,7 +179,7 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
 
     /**
      * Set the useDRSecondary property: If true, the snapshot is retrieved from DRSecondary endpoint.
-     *
+     * 
      * @param useDRSecondary the useDRSecondary value to set.
      * @return the SnapshotRestoreRequest object itself.
      */
@@ -185,7 +193,7 @@ public final class SnapshotRestoreRequest extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

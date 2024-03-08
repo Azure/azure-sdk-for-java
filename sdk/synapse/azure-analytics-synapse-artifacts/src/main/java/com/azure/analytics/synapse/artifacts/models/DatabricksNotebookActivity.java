@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** DatabricksNotebook activity. */
+/**
+ * DatabricksNotebook activity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DatabricksNotebook")
 @JsonFlatten
@@ -38,13 +40,16 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties.libraries")
     private List<Map<String, Object>> libraries;
 
-    /** Creates an instance of DatabricksNotebookActivity class. */
-    public DatabricksNotebookActivity() {}
+    /**
+     * Creates an instance of DatabricksNotebookActivity class.
+     */
+    public DatabricksNotebookActivity() {
+    }
 
     /**
-     * Get the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
-     * must begin with a slash. Type: string (or Expression with resultType string).
-     *
+     * Get the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This
+     * path must begin with a slash. Type: string (or Expression with resultType string).
+     * 
      * @return the notebookPath value.
      */
     public Object getNotebookPath() {
@@ -52,9 +57,9 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     }
 
     /**
-     * Set the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
-     * must begin with a slash. Type: string (or Expression with resultType string).
-     *
+     * Set the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This
+     * path must begin with a slash. Type: string (or Expression with resultType string).
+     * 
      * @param notebookPath the notebookPath value to set.
      * @return the DatabricksNotebookActivity object itself.
      */
@@ -66,7 +71,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /**
      * Get the baseParameters property: Base parameters to be used for each run of this job.If the notebook takes a
      * parameter that is not specified, the default value from the notebook will be used.
-     *
+     * 
      * @return the baseParameters value.
      */
     public Map<String, Object> getBaseParameters() {
@@ -76,7 +81,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
     /**
      * Set the baseParameters property: Base parameters to be used for each run of this job.If the notebook takes a
      * parameter that is not specified, the default value from the notebook will be used.
-     *
+     * 
      * @param baseParameters the baseParameters value to set.
      * @return the DatabricksNotebookActivity object itself.
      */
@@ -87,7 +92,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
 
     /**
      * Get the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @return the libraries value.
      */
     public List<Map<String, Object>> getLibraries() {
@@ -96,7 +101,7 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
 
     /**
      * Set the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @param libraries the libraries value to set.
      * @return the DatabricksNotebookActivity object itself.
      */
@@ -105,56 +110,72 @@ public class DatabricksNotebookActivity extends ExecutionActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksNotebookActivity setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksNotebookActivity setPolicy(ActivityPolicy policy) {
         super.setPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksNotebookActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksNotebookActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksNotebookActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksNotebookActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksNotebookActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksNotebookActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

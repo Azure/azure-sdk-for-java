@@ -58,6 +58,6 @@ public final class WebPubSubCustomCertificatesDeleteWithResponseMockTests {
 
         manager
             .webPubSubCustomCertificates()
-            .deleteWithResponse("ttgplucfotangcf", "nykzcugswvxwlm", "qwm", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("quhuxylrj", "m", "ygjbmzyospspsh", com.azure.core.util.Context.NONE);
     }
 }

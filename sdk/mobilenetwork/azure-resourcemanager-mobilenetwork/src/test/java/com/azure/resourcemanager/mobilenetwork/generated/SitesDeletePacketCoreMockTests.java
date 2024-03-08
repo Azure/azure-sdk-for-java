@@ -61,10 +61,11 @@ public final class SitesDeletePacketCoreMockTests {
         manager
             .sites()
             .deletePacketCore(
-                "lidftujwjj",
-                "fwbeqrkuorh",
-                "ssruqnmdvhazcvj",
-                new SiteDeletePacketCore().withPacketCore(new PacketCoreControlPlaneResourceId().withId("iqswbqer")),
+                "tp",
+                "wxqcsehchkhufmpq",
+                "mqyjgy",
+                new SiteDeletePacketCore()
+                    .withPacketCore(new PacketCoreControlPlaneResourceId().withId("ulodsaeuzanhsfnh")),
                 com.azure.core.util.Context.NONE);
     }
 }

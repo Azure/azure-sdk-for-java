@@ -5,7 +5,7 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.util.Map;
+import java.util.List;
 
 /**
  * Request options for Create ExceptionPolicy.
@@ -16,13 +16,13 @@ public final class CreateExceptionPolicyOptions {
     /**
      * The Id of the exception policy
      */
-    private final String id;
+    private final String exceptionPolicyId;
 
     /**
      * (Optional) A dictionary collection of exception rules on the exception
      * policy. Key is the Id of each exception rule.
      */
-    private final Map<String, ExceptionRule> exceptionRules;
+    private final List<ExceptionRule> exceptionRules;
 
     /**
      * (Optional) The name of the exception policy.
@@ -31,11 +31,11 @@ public final class CreateExceptionPolicyOptions {
 
     /**
      * Constructor for CreateExceptionPolicyOptions
-     * @param id ExceptionPolicy id
+     * @param exceptionPolicyId ExceptionPolicy id
      * @param exceptionRules Map of exception rules with a string key
      */
-    public CreateExceptionPolicyOptions(String id, Map<String, ExceptionRule> exceptionRules) {
-        this.id = id;
+    public CreateExceptionPolicyOptions(String exceptionPolicyId, List<ExceptionRule> exceptionRules) {
+        this.exceptionPolicyId = exceptionPolicyId;
         this.exceptionRules = exceptionRules;
     }
 
@@ -53,15 +53,15 @@ public final class CreateExceptionPolicyOptions {
      * Returns id of ExceptionPolicy.
      * @return id
      */
-    public String getId() {
-        return this.id;
+    public String getExceptionPolicyId() {
+        return this.exceptionPolicyId;
     }
 
     /**
      * Returns Exception Rules.
      * @return exceptionRules.
      */
-    public Map<String, ExceptionRule> getExceptionRules() {
+    public List<ExceptionRule> getExceptionRules() {
         return this.exceptionRules;
     }
 

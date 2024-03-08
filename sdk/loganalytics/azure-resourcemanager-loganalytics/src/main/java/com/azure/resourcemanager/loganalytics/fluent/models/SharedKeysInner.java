@@ -22,6 +22,10 @@ public final class SharedKeysInner {
     @JsonProperty(value = "secondarySharedKey")
     private String secondarySharedKey;
 
+    /** Creates an instance of SharedKeysInner class. */
+    public SharedKeysInner() {
+    }
+
     /**
      * Get the primarySharedKey property: The primary shared key of a workspace.
      *

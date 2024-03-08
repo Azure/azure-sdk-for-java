@@ -21,6 +21,9 @@ class PartitionMetadataSpec extends UnitSpec {
     None,
     UUID.randomUUID().toString,
     useGatewayMode = false,
+    proactiveConnectionInitialization = None,
+    proactiveConnectionInitializationDurationInSeconds = 120,
+    httpConnectionPoolSize = 1000,
     useEventualConsistency = true,
     enableClientTelemetry = false,
     disableTcpConnectionEndpointRediscovery = false,
@@ -29,7 +32,9 @@ class PartitionMetadataSpec extends UnitSpec {
     subscriptionId = None,
     tenantId = None,
     resourceGroupName = None,
-    azureEnvironment = AzureEnvironment.AZURE)
+    azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+    sparkEnvironmentInfo = ""
+  )
 
   private[this] val contCfg = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
   private[this] val lLsn = rnd.nextInt(10000000) + 10
@@ -59,6 +64,9 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -67,7 +75,9 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = ""
+    )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt(10000000) + 1
@@ -136,6 +146,9 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -144,7 +157,9 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = ""
+    )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt(10000000) + 1
@@ -213,6 +228,9 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -221,7 +239,9 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = ""
+    )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt(10000000) + 10
@@ -272,6 +292,9 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -280,7 +303,9 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = ""
+    )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val latestLsn = rnd.nextInt(10000000) + 10
@@ -326,6 +351,9 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -334,7 +362,9 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = ""
+    )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -374,6 +404,9 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -382,7 +415,9 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = ""
+    )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -422,6 +457,9 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -430,7 +468,9 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = ""
+    )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -470,6 +510,9 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -478,7 +521,9 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = ""
+    )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -518,6 +563,9 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -526,7 +574,9 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = ""
+    )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -566,6 +616,9 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -574,7 +627,9 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = ""
+    )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)
@@ -631,6 +686,9 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
+      httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
       disableTcpConnectionEndpointRediscovery = false,
@@ -639,7 +697,9 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE)
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
+      sparkEnvironmentInfo = ""
+    )
 
     val containerConfig = CosmosContainerConfig(UUID.randomUUID().toString, UUID.randomUUID().toString)
     val normalizedRange = NormalizedRange(UUID.randomUUID().toString, UUID.randomUUID().toString)

@@ -18,42 +18,42 @@ public final class DatadogHostInnerTests {
         DatadogHostInner model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"jaeq\",\"aliases\":[\"jbasvmsmjqulngs\",\"tnb\"],\"apps\":[\"zgcwrw\",\"lxxwrljdouskc\",\"vkocrcjdkwtn\"],\"meta\":{\"agentVersion\":\"njbiksqrglssain\",\"installMethod\":{\"tool\":\"wnzlljfmppeeb\",\"toolVersion\":\"gxsabkyq\",\"installerVersion\":\"ujitcjcz\"},\"logsAgent\":{\"transport\":\"vndhkrwpdapp\"}}}")
+                    "{\"name\":\"bacphejko\",\"aliases\":[\"qgoulznd\",\"i\",\"wyqkgfgibm\"],\"apps\":[\"akeqs\",\"xybz\"],\"meta\":{\"agentVersion\":\"dqytbciqfouflmm\",\"installMethod\":{\"tool\":\"smodmgloug\",\"toolVersion\":\"kwtmutduqktapspw\",\"installerVersion\":\"uertumk\"},\"logsAgent\":{\"transport\":\"vqwhbmdgbbjfd\"}}}")
                 .toObject(DatadogHostInner.class);
-        Assertions.assertEquals("jaeq", model.name());
-        Assertions.assertEquals("jbasvmsmjqulngs", model.aliases().get(0));
-        Assertions.assertEquals("zgcwrw", model.apps().get(0));
-        Assertions.assertEquals("njbiksqrglssain", model.meta().agentVersion());
-        Assertions.assertEquals("wnzlljfmppeeb", model.meta().installMethod().tool());
-        Assertions.assertEquals("gxsabkyq", model.meta().installMethod().toolVersion());
-        Assertions.assertEquals("ujitcjcz", model.meta().installMethod().installerVersion());
-        Assertions.assertEquals("vndhkrwpdapp", model.meta().logsAgent().transport());
+        Assertions.assertEquals("bacphejko", model.name());
+        Assertions.assertEquals("qgoulznd", model.aliases().get(0));
+        Assertions.assertEquals("akeqs", model.apps().get(0));
+        Assertions.assertEquals("dqytbciqfouflmm", model.meta().agentVersion());
+        Assertions.assertEquals("smodmgloug", model.meta().installMethod().tool());
+        Assertions.assertEquals("kwtmutduqktapspw", model.meta().installMethod().toolVersion());
+        Assertions.assertEquals("uertumk", model.meta().installMethod().installerVersion());
+        Assertions.assertEquals("vqwhbmdgbbjfd", model.meta().logsAgent().transport());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DatadogHostInner model =
             new DatadogHostInner()
-                .withName("jaeq")
-                .withAliases(Arrays.asList("jbasvmsmjqulngs", "tnb"))
-                .withApps(Arrays.asList("zgcwrw", "lxxwrljdouskc", "vkocrcjdkwtn"))
+                .withName("bacphejko")
+                .withAliases(Arrays.asList("qgoulznd", "i", "wyqkgfgibm"))
+                .withApps(Arrays.asList("akeqs", "xybz"))
                 .withMeta(
                     new DatadogHostMetadata()
-                        .withAgentVersion("njbiksqrglssain")
+                        .withAgentVersion("dqytbciqfouflmm")
                         .withInstallMethod(
                             new DatadogInstallMethod()
-                                .withTool("wnzlljfmppeeb")
-                                .withToolVersion("gxsabkyq")
-                                .withInstallerVersion("ujitcjcz"))
-                        .withLogsAgent(new DatadogLogsAgent().withTransport("vndhkrwpdapp")));
+                                .withTool("smodmgloug")
+                                .withToolVersion("kwtmutduqktapspw")
+                                .withInstallerVersion("uertumk"))
+                        .withLogsAgent(new DatadogLogsAgent().withTransport("vqwhbmdgbbjfd")));
         model = BinaryData.fromObject(model).toObject(DatadogHostInner.class);
-        Assertions.assertEquals("jaeq", model.name());
-        Assertions.assertEquals("jbasvmsmjqulngs", model.aliases().get(0));
-        Assertions.assertEquals("zgcwrw", model.apps().get(0));
-        Assertions.assertEquals("njbiksqrglssain", model.meta().agentVersion());
-        Assertions.assertEquals("wnzlljfmppeeb", model.meta().installMethod().tool());
-        Assertions.assertEquals("gxsabkyq", model.meta().installMethod().toolVersion());
-        Assertions.assertEquals("ujitcjcz", model.meta().installMethod().installerVersion());
-        Assertions.assertEquals("vndhkrwpdapp", model.meta().logsAgent().transport());
+        Assertions.assertEquals("bacphejko", model.name());
+        Assertions.assertEquals("qgoulznd", model.aliases().get(0));
+        Assertions.assertEquals("akeqs", model.apps().get(0));
+        Assertions.assertEquals("dqytbciqfouflmm", model.meta().agentVersion());
+        Assertions.assertEquals("smodmgloug", model.meta().installMethod().tool());
+        Assertions.assertEquals("kwtmutduqktapspw", model.meta().installMethod().toolVersion());
+        Assertions.assertEquals("uertumk", model.meta().installMethod().installerVersion());
+        Assertions.assertEquals("vqwhbmdgbbjfd", model.meta().logsAgent().transport());
     }
 }

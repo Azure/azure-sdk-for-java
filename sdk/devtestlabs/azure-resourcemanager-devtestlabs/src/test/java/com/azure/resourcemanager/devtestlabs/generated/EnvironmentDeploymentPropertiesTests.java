@@ -16,26 +16,26 @@ public final class EnvironmentDeploymentPropertiesTests {
         EnvironmentDeploymentProperties model =
             BinaryData
                 .fromString(
-                    "{\"armTemplateId\":\"tso\",\"parameters\":[{\"name\":\"enxpmyyefr\",\"value\":\"pdnqqskawaoqvmmb\"},{\"name\":\"qfr\",\"value\":\"lkzmegnitgvkxl\"}]}")
+                    "{\"armTemplateId\":\"ysux\",\"parameters\":[{\"name\":\"ntvlwijpsttexo\",\"value\":\"pwcyyufmhr\"},{\"name\":\"cuwmqsp\",\"value\":\"dqzh\"}]}")
                 .toObject(EnvironmentDeploymentProperties.class);
-        Assertions.assertEquals("tso", model.armTemplateId());
-        Assertions.assertEquals("enxpmyyefr", model.parameters().get(0).name());
-        Assertions.assertEquals("pdnqqskawaoqvmmb", model.parameters().get(0).value());
+        Assertions.assertEquals("ysux", model.armTemplateId());
+        Assertions.assertEquals("ntvlwijpsttexo", model.parameters().get(0).name());
+        Assertions.assertEquals("pwcyyufmhr", model.parameters().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EnvironmentDeploymentProperties model =
             new EnvironmentDeploymentProperties()
-                .withArmTemplateId("tso")
+                .withArmTemplateId("ysux")
                 .withParameters(
                     Arrays
                         .asList(
-                            new ArmTemplateParameterProperties().withName("enxpmyyefr").withValue("pdnqqskawaoqvmmb"),
-                            new ArmTemplateParameterProperties().withName("qfr").withValue("lkzmegnitgvkxl")));
+                            new ArmTemplateParameterProperties().withName("ntvlwijpsttexo").withValue("pwcyyufmhr"),
+                            new ArmTemplateParameterProperties().withName("cuwmqsp").withValue("dqzh")));
         model = BinaryData.fromObject(model).toObject(EnvironmentDeploymentProperties.class);
-        Assertions.assertEquals("tso", model.armTemplateId());
-        Assertions.assertEquals("enxpmyyefr", model.parameters().get(0).name());
-        Assertions.assertEquals("pdnqqskawaoqvmmb", model.parameters().get(0).value());
+        Assertions.assertEquals("ysux", model.armTemplateId());
+        Assertions.assertEquals("ntvlwijpsttexo", model.parameters().get(0).name());
+        Assertions.assertEquals("pwcyyufmhr", model.parameters().get(0).value());
     }
 }

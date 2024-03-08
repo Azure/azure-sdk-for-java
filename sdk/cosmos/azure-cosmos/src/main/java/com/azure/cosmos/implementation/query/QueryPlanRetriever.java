@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RuntimeConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
@@ -27,7 +28,6 @@ import java.util.function.BiFunction;
 import java.util.function.Supplier;
 
 class QueryPlanRetriever {
-
     private final static
     ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
@@ -77,8 +77,9 @@ class QueryPlanRetriever {
         queryPlanRequest.useGatewayMode = true;
         queryPlanRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(sqlQuerySpec));
 
-        CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig =
-            qryOptAccessor.getEndToEndOperationLatencyPolicyConfig(nonNullRequestOptions);
+        CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = qryOptAccessor
+            .getImpl(nonNullRequestOptions)
+            .getEndToEndOperationLatencyConfig();
         if (end2EndConfig != null) {
             queryPlanRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(end2EndConfig);
         }
@@ -91,7 +92,9 @@ class QueryPlanRetriever {
                 return BackoffRetryUtility.executeRetry(() ->
                     queryClient.executeQueryAsync(req).flatMap(rxDocumentServiceResponse -> {
                         PartitionedQueryExecutionInfo partitionedQueryExecutionInfo =
-                            new PartitionedQueryExecutionInfo(rxDocumentServiceResponse.getResponseBodyAsByteArray(), rxDocumentServiceResponse.getGatewayHttpRequestTimeline());
+                            new PartitionedQueryExecutionInfo(
+                                (ObjectNode)rxDocumentServiceResponse.getResponseBody(),
+                                rxDocumentServiceResponse.getGatewayHttpRequestTimeline());
                         return Mono.just(partitionedQueryExecutionInfo);
 
                     }), retryPolicyInstance);

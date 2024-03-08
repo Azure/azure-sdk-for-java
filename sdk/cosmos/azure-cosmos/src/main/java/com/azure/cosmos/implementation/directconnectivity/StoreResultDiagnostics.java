@@ -138,7 +138,7 @@ public class StoreResultDiagnostics {
 
     public String getStorePhysicalAddressEscapedAuthority() {
         return storePhysicalAddress != null
-            ? String.format("%s_%d", storePhysicalAddress.getURI().getHost(), storePhysicalAddress.getURI().getPort())
+            ? storePhysicalAddress.getURI().getHost() + "_" +  storePhysicalAddress.getURI().getPort()
             : null;
     }
 

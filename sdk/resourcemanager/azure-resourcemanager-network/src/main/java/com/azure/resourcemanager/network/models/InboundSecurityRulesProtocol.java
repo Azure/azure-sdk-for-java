@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Protocol. This should be either TCP or UDP. */
+/**
+ * Protocol. This should be either TCP or UDP.
+ */
 public final class InboundSecurityRulesProtocol extends ExpandableStringEnum<InboundSecurityRulesProtocol> {
-    /** Static value TCP for InboundSecurityRulesProtocol. */
+    /**
+     * Static value TCP for InboundSecurityRulesProtocol.
+     */
     public static final InboundSecurityRulesProtocol TCP = fromString("TCP");
 
-    /** Static value UDP for InboundSecurityRulesProtocol. */
+    /**
+     * Static value UDP for InboundSecurityRulesProtocol.
+     */
     public static final InboundSecurityRulesProtocol UDP = fromString("UDP");
 
     /**
      * Creates a new instance of InboundSecurityRulesProtocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class InboundSecurityRulesProtocol extends ExpandableStringEnum<Inb
 
     /**
      * Creates or finds a InboundSecurityRulesProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InboundSecurityRulesProtocol.
      */
@@ -38,7 +44,7 @@ public final class InboundSecurityRulesProtocol extends ExpandableStringEnum<Inb
 
     /**
      * Gets known InboundSecurityRulesProtocol values.
-     *
+     * 
      * @return known InboundSecurityRulesProtocol values.
      */
     public static Collection<InboundSecurityRulesProtocol> values() {

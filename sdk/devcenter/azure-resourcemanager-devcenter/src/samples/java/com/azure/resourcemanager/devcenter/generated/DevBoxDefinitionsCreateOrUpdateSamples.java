@@ -11,7 +11,7 @@ import com.azure.resourcemanager.devcenter.models.Sku;
 /** Samples for DevBoxDefinitions CreateOrUpdate. */
 public final class DevBoxDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevBoxDefinitions_Create.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/DevBoxDefinitions_Create.json
      */
     /**
      * Sample code: DevBoxDefinitions_Create.

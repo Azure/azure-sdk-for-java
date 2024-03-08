@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.AppServicePlanInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of App Service plans. */
+/**
+ * Collection of App Service plans.
+ */
 @Fluent
 public final class AppServicePlanCollection {
     /*
@@ -25,13 +27,15 @@ public final class AppServicePlanCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AppServicePlanCollection class. */
+    /**
+     * Creates an instance of AppServicePlanCollection class.
+     */
     public AppServicePlanCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<AppServicePlanInner> value() {
@@ -40,7 +44,7 @@ public final class AppServicePlanCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the AppServicePlanCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class AppServicePlanCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class AppServicePlanCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model AppServicePlanCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model AppServicePlanCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

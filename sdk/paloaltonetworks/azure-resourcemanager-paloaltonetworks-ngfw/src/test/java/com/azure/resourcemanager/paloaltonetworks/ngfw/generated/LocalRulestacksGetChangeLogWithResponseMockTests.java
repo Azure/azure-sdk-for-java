@@ -30,43 +30,29 @@ public final class LocalRulestacksGetChangeLogWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"changes\":[\"qzolxrzvhqjw\",\"rhtgvgzpcrrkol\"],\"lastCommitted\":\"2021-01-02T13:01:04Z\",\"lastModified\":\"2021-03-17T00:53:20Z\"}";
+        String responseStr
+            = "{\"changes\":[\"epkpe\"],\"lastCommitted\":\"2021-06-28T20:48:42Z\",\"lastModified\":\"2021-07-29T17:20:07Z\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Changelog response =
-            manager
-                .localRulestacks()
-                .getChangeLogWithResponse("ikyju", "k", com.azure.core.util.Context.NONE)
-                .getValue();
+        Changelog response = manager.localRulestacks()
+            .getChangeLogWithResponse("kzxuiz", "y", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("qzolxrzvhqjw", response.changes().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-02T13:01:04Z"), response.lastCommitted());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T00:53:20Z"), response.lastModified());
+        Assertions.assertEquals("epkpe", response.changes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-28T20:48:42Z"), response.lastCommitted());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-29T17:20:07Z"), response.lastModified());
     }
 }

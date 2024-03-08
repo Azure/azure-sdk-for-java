@@ -55,7 +55,7 @@ public interface MachineExtension {
     MachineExtensionProperties properties();
 
     /**
-     * Gets the systemData property: The system meta data relating to this resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -96,11 +96,13 @@ public interface MachineExtension {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The MachineExtension definition stages. */
     interface DefinitionStages {
         /** The first stage of the MachineExtension definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the MachineExtension definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -119,6 +121,7 @@ public interface MachineExtension {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the MachineExtension definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -130,6 +133,7 @@ public interface MachineExtension {
              */
             WithCreate withExistingMachine(String resourceGroupName, String machineName);
         }
+
         /**
          * The stage of the MachineExtension definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -150,6 +154,7 @@ public interface MachineExtension {
              */
             MachineExtension create(Context context);
         }
+
         /** The stage of the MachineExtension definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -160,6 +165,7 @@ public interface MachineExtension {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the MachineExtension definition allowing to specify properties. */
         interface WithProperties {
             /**
@@ -171,6 +177,7 @@ public interface MachineExtension {
             WithCreate withProperties(MachineExtensionProperties properties);
         }
     }
+
     /**
      * Begins update for the MachineExtension resource.
      *
@@ -179,7 +186,16 @@ public interface MachineExtension {
     MachineExtension.Update update();
 
     /** The template for MachineExtension update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithForceUpdateTag,
+            UpdateStages.WithPublisher,
+            UpdateStages.WithType,
+            UpdateStages.WithTypeHandlerVersion,
+            UpdateStages.WithEnableAutomaticUpgrade,
+            UpdateStages.WithAutoUpgradeMinorVersion,
+            UpdateStages.WithSettings,
+            UpdateStages.WithProtectedSettings {
         /**
          * Executes the update request.
          *
@@ -195,6 +211,7 @@ public interface MachineExtension {
          */
         MachineExtension apply(Context context);
     }
+
     /** The MachineExtension update stages. */
     interface UpdateStages {
         /** The stage of the MachineExtension update allowing to specify tags. */
@@ -207,17 +224,106 @@ public interface MachineExtension {
              */
             Update withTags(Map<String, String> tags);
         }
-        /** The stage of the MachineExtension update allowing to specify properties. */
-        interface WithProperties {
+
+        /** The stage of the MachineExtension update allowing to specify forceUpdateTag. */
+        interface WithForceUpdateTag {
             /**
-             * Specifies the properties property: Describes Machine Extension Update Properties..
+             * Specifies the forceUpdateTag property: How the extension handler should be forced to update even if the
+             * extension configuration has not changed..
              *
-             * @param properties Describes Machine Extension Update Properties.
+             * @param forceUpdateTag How the extension handler should be forced to update even if the extension
+             *     configuration has not changed.
              * @return the next definition stage.
              */
-            Update withProperties(MachineExtensionUpdateProperties properties);
+            Update withForceUpdateTag(String forceUpdateTag);
+        }
+
+        /** The stage of the MachineExtension update allowing to specify publisher. */
+        interface WithPublisher {
+            /**
+             * Specifies the publisher property: The name of the extension handler publisher..
+             *
+             * @param publisher The name of the extension handler publisher.
+             * @return the next definition stage.
+             */
+            Update withPublisher(String publisher);
+        }
+
+        /** The stage of the MachineExtension update allowing to specify type. */
+        interface WithType {
+            /**
+             * Specifies the type property: Specifies the type of the extension; an example is "CustomScriptExtension"..
+             *
+             * @param type Specifies the type of the extension; an example is "CustomScriptExtension".
+             * @return the next definition stage.
+             */
+            Update withType(String type);
+        }
+
+        /** The stage of the MachineExtension update allowing to specify typeHandlerVersion. */
+        interface WithTypeHandlerVersion {
+            /**
+             * Specifies the typeHandlerVersion property: Specifies the version of the script handler..
+             *
+             * @param typeHandlerVersion Specifies the version of the script handler.
+             * @return the next definition stage.
+             */
+            Update withTypeHandlerVersion(String typeHandlerVersion);
+        }
+
+        /** The stage of the MachineExtension update allowing to specify enableAutomaticUpgrade. */
+        interface WithEnableAutomaticUpgrade {
+            /**
+             * Specifies the enableAutomaticUpgrade property: Indicates whether the extension should be automatically
+             * upgraded by the platform if there is a newer version available..
+             *
+             * @param enableAutomaticUpgrade Indicates whether the extension should be automatically upgraded by the
+             *     platform if there is a newer version available.
+             * @return the next definition stage.
+             */
+            Update withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade);
+        }
+
+        /** The stage of the MachineExtension update allowing to specify autoUpgradeMinorVersion. */
+        interface WithAutoUpgradeMinorVersion {
+            /**
+             * Specifies the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor
+             * version if one is available at deployment time. Once deployed, however, the extension will not upgrade
+             * minor versions unless redeployed, even with this property set to true..
+             *
+             * @param autoUpgradeMinorVersion Indicates whether the extension should use a newer minor version if one is
+             *     available at deployment time. Once deployed, however, the extension will not upgrade minor versions
+             *     unless redeployed, even with this property set to true.
+             * @return the next definition stage.
+             */
+            Update withAutoUpgradeMinorVersion(Boolean autoUpgradeMinorVersion);
+        }
+
+        /** The stage of the MachineExtension update allowing to specify settings. */
+        interface WithSettings {
+            /**
+             * Specifies the settings property: Json formatted public settings for the extension..
+             *
+             * @param settings Json formatted public settings for the extension.
+             * @return the next definition stage.
+             */
+            Update withSettings(Map<String, Object> settings);
+        }
+
+        /** The stage of the MachineExtension update allowing to specify protectedSettings. */
+        interface WithProtectedSettings {
+            /**
+             * Specifies the protectedSettings property: The extension can contain either protectedSettings or
+             * protectedSettingsFromKeyVault or no protected settings at all..
+             *
+             * @param protectedSettings The extension can contain either protectedSettings or
+             *     protectedSettingsFromKeyVault or no protected settings at all.
+             * @return the next definition stage.
+             */
+            Update withProtectedSettings(Map<String, Object> protectedSettings);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

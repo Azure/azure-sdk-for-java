@@ -12,17 +12,15 @@ import java.util.Map;
 public final class FormatWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FormatWriteSettings model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"FormatWriteSettings\",\"\":{\"pbvdlkpzd\":\"dataspqvxzicurufn\",\"nbtqejfq\":\"dataiywwenvxuhzixr\"}}")
-                .toObject(FormatWriteSettings.class);
+        FormatWriteSettings model = BinaryData.fromString(
+            "{\"type\":\"FormatWriteSettings\",\"\":{\"mszobtneltnbyvbg\":\"datapbpqe\",\"azfvx\":\"datadrumududwecdsyb\",\"eqly\":\"datakwv\"}}")
+            .toObject(FormatWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FormatWriteSettings model =
-            new FormatWriteSettings().withAdditionalProperties(mapOf("type", "FormatWriteSettings"));
+        FormatWriteSettings model
+            = new FormatWriteSettings().withAdditionalProperties(mapOf("type", "FormatWriteSettings"));
         model = BinaryData.fromObject(model).toObject(FormatWriteSettings.class);
     }
 

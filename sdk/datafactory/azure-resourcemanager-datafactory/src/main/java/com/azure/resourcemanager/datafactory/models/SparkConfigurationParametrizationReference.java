@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Spark configuration reference. */
+/**
+ * Spark configuration reference.
+ */
 @Fluent
 public final class SparkConfigurationParametrizationReference {
     /*
@@ -23,13 +25,15 @@ public final class SparkConfigurationParametrizationReference {
     @JsonProperty(value = "referenceName", required = true)
     private Object referenceName;
 
-    /** Creates an instance of SparkConfigurationParametrizationReference class. */
+    /**
+     * Creates an instance of SparkConfigurationParametrizationReference class.
+     */
     public SparkConfigurationParametrizationReference() {
     }
 
     /**
      * Get the type property: Spark configuration reference type.
-     *
+     * 
      * @return the type value.
      */
     public SparkConfigurationReferenceType type() {
@@ -38,7 +42,7 @@ public final class SparkConfigurationParametrizationReference {
 
     /**
      * Set the type property: Spark configuration reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the SparkConfigurationParametrizationReference object itself.
      */
@@ -50,7 +54,7 @@ public final class SparkConfigurationParametrizationReference {
     /**
      * Get the referenceName property: Reference spark configuration name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the referenceName value.
      */
     public Object referenceName() {
@@ -60,7 +64,7 @@ public final class SparkConfigurationParametrizationReference {
     /**
      * Set the referenceName property: Reference spark configuration name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the SparkConfigurationParametrizationReference object itself.
      */
@@ -71,21 +75,17 @@ public final class SparkConfigurationParametrizationReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model SparkConfigurationParametrizationReference"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property type in model SparkConfigurationParametrizationReference"));
         }
         if (referenceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property referenceName in model SparkConfigurationParametrizationReference"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property referenceName in model SparkConfigurationParametrizationReference"));
         }
     }
 

@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.fluent.models.GlobalParameterResourceInner;
 
-/** An instance of this class provides access to all the operations defined in GlobalParametersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GlobalParametersClient.
+ */
 public interface GlobalParametersClient {
     /**
      * Lists Global parameters.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface GlobalParametersClient {
 
     /**
      * Lists Global parameters.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -38,12 +40,12 @@ public interface GlobalParametersClient {
      * @return a list of Global parameters as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GlobalParameterResourceInner> listByFactory(
-        String resourceGroupName, String factoryName, Context context);
+    PagedIterable<GlobalParameterResourceInner> listByFactory(String resourceGroupName, String factoryName,
+        Context context);
 
     /**
      * Gets a Global parameter.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
@@ -54,12 +56,12 @@ public interface GlobalParametersClient {
      * @return a Global parameter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GlobalParameterResourceInner> getWithResponse(
-        String resourceGroupName, String factoryName, String globalParameterName, Context context);
+    Response<GlobalParameterResourceInner> getWithResponse(String resourceGroupName, String factoryName,
+        String globalParameterName, Context context);
 
     /**
      * Gets a Global parameter.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
@@ -73,7 +75,7 @@ public interface GlobalParametersClient {
 
     /**
      * Creates or updates a Global parameter.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
@@ -85,16 +87,12 @@ public interface GlobalParametersClient {
      * @return global parameters resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GlobalParameterResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String globalParameterName,
-        GlobalParameterResourceInner defaultParameter,
-        Context context);
+    Response<GlobalParameterResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
+        String globalParameterName, GlobalParameterResourceInner defaultParameter, Context context);
 
     /**
      * Creates or updates a Global parameter.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
@@ -105,15 +103,12 @@ public interface GlobalParametersClient {
      * @return global parameters resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GlobalParameterResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String globalParameterName,
-        GlobalParameterResourceInner defaultParameter);
+    GlobalParameterResourceInner createOrUpdate(String resourceGroupName, String factoryName,
+        String globalParameterName, GlobalParameterResourceInner defaultParameter);
 
     /**
      * Deletes a Global parameter.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.
@@ -124,12 +119,12 @@ public interface GlobalParametersClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String globalParameterName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String globalParameterName,
+        Context context);
 
     /**
      * Deletes a Global parameter.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param globalParameterName The global parameter name.

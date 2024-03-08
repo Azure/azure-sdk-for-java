@@ -6,21 +6,29 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** The GremlinGraphGetPropertiesOptions model. */
+/**
+ * The GremlinGraphGetPropertiesOptions model.
+ */
 @Fluent
 public final class GremlinGraphGetPropertiesOptions extends OptionsResource {
-    /** Creates an instance of GremlinGraphGetPropertiesOptions class. */
+    /**
+     * Creates an instance of GremlinGraphGetPropertiesOptions class.
+     */
     public GremlinGraphGetPropertiesOptions() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinGraphGetPropertiesOptions withThroughput(Integer throughput) {
         super.withThroughput(throughput);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinGraphGetPropertiesOptions withAutoscaleSettings(AutoscaleSettings autoscaleSettings) {
         super.withAutoscaleSettings(autoscaleSettings);
@@ -29,7 +37,7 @@ public final class GremlinGraphGetPropertiesOptions extends OptionsResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

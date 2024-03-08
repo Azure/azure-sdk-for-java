@@ -56,6 +56,6 @@ public final class DevBoxDefinitionsDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.devBoxDefinitions().delete("ubgq", "brta", "metttwgd", com.azure.core.util.Context.NONE);
+        manager.devBoxDefinitions().delete("ccbi", "ds", "uwc", com.azure.core.util.Context.NONE);
     }
 }

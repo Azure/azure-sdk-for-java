@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the connection monitor endpoint scope. */
+/**
+ * Describes the connection monitor endpoint scope.
+ */
 @Fluent
 public final class ConnectionMonitorEndpointScope {
     /*
@@ -23,13 +25,15 @@ public final class ConnectionMonitorEndpointScope {
     @JsonProperty(value = "exclude")
     private List<ConnectionMonitorEndpointScopeItem> exclude;
 
-    /** Creates an instance of ConnectionMonitorEndpointScope class. */
+    /**
+     * Creates an instance of ConnectionMonitorEndpointScope class.
+     */
     public ConnectionMonitorEndpointScope() {
     }
 
     /**
      * Get the include property: List of items which needs to be included to the endpoint scope.
-     *
+     * 
      * @return the include value.
      */
     public List<ConnectionMonitorEndpointScopeItem> include() {
@@ -38,7 +42,7 @@ public final class ConnectionMonitorEndpointScope {
 
     /**
      * Set the include property: List of items which needs to be included to the endpoint scope.
-     *
+     * 
      * @param include the include value to set.
      * @return the ConnectionMonitorEndpointScope object itself.
      */
@@ -49,7 +53,7 @@ public final class ConnectionMonitorEndpointScope {
 
     /**
      * Get the exclude property: List of items which needs to be excluded from the endpoint scope.
-     *
+     * 
      * @return the exclude value.
      */
     public List<ConnectionMonitorEndpointScopeItem> exclude() {
@@ -58,7 +62,7 @@ public final class ConnectionMonitorEndpointScope {
 
     /**
      * Set the exclude property: List of items which needs to be excluded from the endpoint scope.
-     *
+     * 
      * @param exclude the exclude value to set.
      * @return the ConnectionMonitorEndpointScope object itself.
      */
@@ -69,7 +73,7 @@ public final class ConnectionMonitorEndpointScope {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

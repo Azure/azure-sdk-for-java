@@ -5,6 +5,7 @@ package com.azure.cosmos.test.implementation.faultinjection;
 
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestArgs;
 
@@ -15,16 +16,17 @@ import java.util.stream.Collectors;
 
 public class FaultInjectionConditionInternal {
     private final String containerResourceId;
-
+    private final String containerName;
     private OperationType operationType;
     private List<URI> regionEndpoints;
     private List<URI> physicalAddresses;
     private List<IFaultInjectionConditionValidator> validators;
 
-    public FaultInjectionConditionInternal(String containerResourceId) {
+    public FaultInjectionConditionInternal(String containerResourceId, String containerName) {
         this.containerResourceId = containerResourceId;
+        this.containerName = containerName;
         this.validators = new ArrayList<>();
-        this.validators.add(new ContainerValidator(this.containerResourceId));
+        this.validators.add(new ContainerValidator(this.containerResourceId, this.containerName));
     }
 
     public OperationType getOperationType() {
@@ -140,25 +142,65 @@ public class FaultInjectionConditionInternal {
     static class ContainerValidator implements IFaultInjectionConditionValidator {
 
         private final String containerResourceId;
-        ContainerValidator(String containerResourceId) {
+        private final String containerName;
+        ContainerValidator(String containerResourceId, String containerName) {
             this.containerResourceId = containerResourceId;
+            this.containerName = containerName;
         }
 
         @Override
         public boolean isApplicable(String ruleId, FaultInjectionRequestArgs requestArgs) {
-            boolean isApplicable =
-                StringUtils.equals(this.containerResourceId, requestArgs.getCollectionRid());
+            // collection read does not have collectionRid being defined, so need to filter by collection name
+            boolean isApplicable = isApplicableContainerRid(requestArgs) || isApplicableCollectionRead(requestArgs);
             if (!isApplicable) {
-                requestArgs.getServiceRequest().faultInjectionRequestContext
-                    .recordFaultInjectionRuleEvaluation(requestArgs.getTransportRequestId(),
-                        String.format(
-                            "%s [ContainerRid mismatch: Expected [%s], Actual [%s]]",
-                            ruleId,
-                            containerResourceId,
-                            requestArgs.getCollectionRid()));
+                if (this.isCollectionRead(requestArgs)) {
+                    requestArgs.getServiceRequest().faultInjectionRequestContext
+                        .recordFaultInjectionRuleEvaluation(requestArgs.getTransportRequestId(),
+                            String.format(
+                                "%s [CollectionName mismatch: Expected [%s], Actual [%s]]",
+                                ruleId,
+                                containerName,
+                                this.getCollectionNameForCollectionRead(requestArgs.getServiceRequest().getResourceAddress())));
+                } else {
+                    requestArgs.getServiceRequest().faultInjectionRequestContext
+                        .recordFaultInjectionRuleEvaluation(requestArgs.getTransportRequestId(),
+                            String.format(
+                                "%s [ContainerRid mismatch: Expected [%s], Actual [%s]]",
+                                ruleId,
+                                containerResourceId,
+                                requestArgs.getCollectionRid()));
+                }
             }
 
-            return isApplicable;        }
+            return isApplicable;
+        }
+
+        private boolean isApplicableContainerRid(FaultInjectionRequestArgs requestArgs) {
+            return StringUtils.equals(this.containerResourceId, requestArgs.getCollectionRid());
+        }
+
+        private boolean isApplicableCollectionRead(FaultInjectionRequestArgs requestArgs) {
+            if (this.isCollectionRead(requestArgs)) {
+                String collectionName = getCollectionNameForCollectionRead(requestArgs.getServiceRequest().getResourceAddress());
+                return this.containerName.equals(collectionName);
+            }
+
+            return false;
+        }
+
+        private boolean isCollectionRead(FaultInjectionRequestArgs requestArgs) {
+            return requestArgs.getServiceRequest().getResourceType() == ResourceType.DocumentCollection
+                && requestArgs.getServiceRequest().getOperationType() == OperationType.Read;
+        }
+
+        private String getCollectionNameForCollectionRead(String resourceAddress) {
+            if (resourceAddress != null) {
+                String trimmedResourceFullName = Utils.trimBeginningAndEndingSlashes(resourceAddress);
+                return trimmedResourceFullName.split("/")[3];
+            }
+
+            return null;
+        }
     }
 
     static class AddressValidator implements IFaultInjectionConditionValidator {

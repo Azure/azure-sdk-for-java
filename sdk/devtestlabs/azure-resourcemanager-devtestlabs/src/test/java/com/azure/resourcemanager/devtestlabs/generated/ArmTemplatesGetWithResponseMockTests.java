@@ -31,7 +31,7 @@ public final class ArmTemplatesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"displayName\":\"dbztjhqtfbov\",\"description\":\"nkbw\",\"publisher\":\"njuhpsprkzya\",\"icon\":\"ia\",\"contents\":\"dataxnafbw\",\"createdDate\":\"2021-11-28T07:10:31Z\",\"parametersValueFilesInfo\":[],\"enabled\":true},\"location\":\"ovmaonurjtum\",\"tags\":{\"cmslclblyjxltbs\":\"hpv\",\"f\":\"uscv\",\"cydrtceukdqkk\":\"igctmgxuupbezq\",\"chillcecf\":\"ihztgeqmgqzgwldo\"},\"id\":\"huwaoaguhic\",\"name\":\"llizs\",\"type\":\"ac\"}";
+            "{\"properties\":{\"displayName\":\"qodkadppyibngql\",\"description\":\"ywrxw\",\"publisher\":\"dtluvvadswzsn\",\"icon\":\"emlowuowhl\",\"contents\":\"datanwyrmouv\",\"createdDate\":\"2021-09-03T13:57:41Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"zkltrfowtdvrfmv\",\"parametersValueInfo\":\"datahcvjdrqc\"},{\"fileName\":\"idhftu\",\"parametersValueInfo\":\"datahdxlw\"}],\"enabled\":false},\"location\":\"bfqz\",\"tags\":{\"fratqxmbjroumzz\":\"njyixh\",\"jtpusllywpvtiotz\":\"valqjrhuzgfxo\"},\"id\":\"pdbollg\",\"name\":\"yfqiuasig\",\"type\":\"owsocnequygdjbo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,15 +63,15 @@ public final class ArmTemplatesGetWithResponseMockTests {
             manager
                 .armTemplates()
                 .getWithResponse(
-                    "gzyvnee",
-                    "aifghtmoqqt",
-                    "ffhzbkrkjjjavfq",
-                    "vhnqo",
-                    "wdogiyetesyp",
+                    "smaklixqcahy",
+                    "xalybxawoijpo",
+                    "tblxpkkwjdjodqhy",
+                    "incnr",
+                    "mehllizhceu",
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ovmaonurjtum", response.location());
-        Assertions.assertEquals("hpv", response.tags().get("cmslclblyjxltbs"));
+        Assertions.assertEquals("bfqz", response.location());
+        Assertions.assertEquals("njyixh", response.tags().get("fratqxmbjroumzz"));
     }
 }

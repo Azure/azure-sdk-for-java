@@ -7,7 +7,7 @@ package com.azure.resourcemanager.webpubsub.generated;
 /** Samples for WebPubSubReplicas Restart. */
 public final class WebPubSubReplicasRestartSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_Restart.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_Restart.json
      */
     /**
      * Sample code: WebPubSubReplicas_Restart.

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Oracle Service Cloud linked service. */
+/**
+ * Oracle Service Cloud linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("OracleServiceCloud")
 @JsonFlatten
@@ -64,12 +66,15 @@ public class OracleServiceCloudLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of OracleServiceCloudLinkedService class. */
-    public OracleServiceCloudLinkedService() {}
+    /**
+     * Creates an instance of OracleServiceCloudLinkedService class.
+     */
+    public OracleServiceCloudLinkedService() {
+    }
 
     /**
      * Get the host property: The URL of the Oracle Service Cloud instance.
-     *
+     * 
      * @return the host value.
      */
     public Object getHost() {
@@ -78,7 +83,7 @@ public class OracleServiceCloudLinkedService extends LinkedService {
 
     /**
      * Set the host property: The URL of the Oracle Service Cloud instance.
-     *
+     * 
      * @param host the host value to set.
      * @return the OracleServiceCloudLinkedService object itself.
      */
@@ -89,7 +94,7 @@ public class OracleServiceCloudLinkedService extends LinkedService {
 
     /**
      * Get the username property: The user name that you use to access Oracle Service Cloud server.
-     *
+     * 
      * @return the username value.
      */
     public Object getUsername() {
@@ -98,7 +103,7 @@ public class OracleServiceCloudLinkedService extends LinkedService {
 
     /**
      * Set the username property: The user name that you use to access Oracle Service Cloud server.
-     *
+     * 
      * @param username the username value to set.
      * @return the OracleServiceCloudLinkedService object itself.
      */
@@ -109,7 +114,7 @@ public class OracleServiceCloudLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password corresponding to the user name that you provided in the username key.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -118,7 +123,7 @@ public class OracleServiceCloudLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password corresponding to the user name that you provided in the username key.
-     *
+     * 
      * @param password the password value to set.
      * @return the OracleServiceCloudLinkedService object itself.
      */
@@ -130,7 +135,7 @@ public class OracleServiceCloudLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object getUseEncryptedEndpoints() {
@@ -140,7 +145,7 @@ public class OracleServiceCloudLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the OracleServiceCloudLinkedService object itself.
      */
@@ -153,7 +158,7 @@ public class OracleServiceCloudLinkedService extends LinkedService {
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object getUseHostVerification() {
@@ -164,7 +169,7 @@ public class OracleServiceCloudLinkedService extends LinkedService {
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the OracleServiceCloudLinkedService object itself.
      */
@@ -174,9 +179,9 @@ public class OracleServiceCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * 
      * @return the usePeerVerification value.
      */
     public Object getUsePeerVerification() {
@@ -184,9 +189,9 @@ public class OracleServiceCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the OracleServiceCloudLinkedService object itself.
      */
@@ -196,9 +201,9 @@ public class OracleServiceCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -206,9 +211,9 @@ public class OracleServiceCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the OracleServiceCloudLinkedService object itself.
      */
@@ -217,28 +222,36 @@ public class OracleServiceCloudLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OracleServiceCloudLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OracleServiceCloudLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OracleServiceCloudLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OracleServiceCloudLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

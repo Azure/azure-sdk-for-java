@@ -19,11 +19,14 @@ public final class SharedPrivateLinkResourceListResult {
     private List<SharedPrivateLinkResourceInner> value;
 
     /*
-     * The URL to get the next set of shared private link resources, if there
-     * are any.
+     * The URL to get the next set of shared private link resources, if there are any.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of SharedPrivateLinkResourceListResult class. */
+    public SharedPrivateLinkResourceListResult() {
+    }
 
     /**
      * Get the value property: The list of Shared Private Link Resources.

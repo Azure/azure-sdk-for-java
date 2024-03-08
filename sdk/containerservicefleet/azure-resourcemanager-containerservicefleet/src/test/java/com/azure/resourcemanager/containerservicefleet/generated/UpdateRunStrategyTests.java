@@ -17,11 +17,11 @@ public final class UpdateRunStrategyTests {
         UpdateRunStrategy model =
             BinaryData
                 .fromString(
-                    "{\"stages\":[{\"name\":\"hvmdajvnysounq\",\"groups\":[{\"name\":\"noae\"}],\"afterStageWaitInSeconds\":1901274446}]}")
+                    "{\"stages\":[{\"name\":\"seiphe\",\"groups\":[{\"name\":\"okeyyienj\"},{\"name\":\"dlwtgrhpdj\"}],\"afterStageWaitInSeconds\":523400535}]}")
                 .toObject(UpdateRunStrategy.class);
-        Assertions.assertEquals("hvmdajvnysounq", model.stages().get(0).name());
-        Assertions.assertEquals("noae", model.stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1901274446, model.stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("seiphe", model.stages().get(0).name());
+        Assertions.assertEquals("okeyyienj", model.stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(523400535, model.stages().get(0).afterStageWaitInSeconds());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,12 +32,16 @@ public final class UpdateRunStrategyTests {
                     Arrays
                         .asList(
                             new UpdateStage()
-                                .withName("hvmdajvnysounq")
-                                .withGroups(Arrays.asList(new UpdateGroup().withName("noae")))
-                                .withAfterStageWaitInSeconds(1901274446)));
+                                .withName("seiphe")
+                                .withGroups(
+                                    Arrays
+                                        .asList(
+                                            new UpdateGroup().withName("okeyyienj"),
+                                            new UpdateGroup().withName("dlwtgrhpdj")))
+                                .withAfterStageWaitInSeconds(523400535)));
         model = BinaryData.fromObject(model).toObject(UpdateRunStrategy.class);
-        Assertions.assertEquals("hvmdajvnysounq", model.stages().get(0).name());
-        Assertions.assertEquals("noae", model.stages().get(0).groups().get(0).name());
-        Assertions.assertEquals(1901274446, model.stages().get(0).afterStageWaitInSeconds());
+        Assertions.assertEquals("seiphe", model.stages().get(0).name());
+        Assertions.assertEquals("okeyyienj", model.stages().get(0).groups().get(0).name());
+        Assertions.assertEquals(523400535, model.stages().get(0).afterStageWaitInSeconds());
     }
 }

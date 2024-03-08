@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The path of the Dynamics AX OData entity. */
+/**
+ * The path of the Dynamics AX OData entity.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DynamicsAXResource")
 @JsonFlatten
@@ -24,13 +26,16 @@ public class DynamicsAXResourceDataset extends Dataset {
     @JsonProperty(value = "typeProperties.path", required = true)
     private Object path;
 
-    /** Creates an instance of DynamicsAXResourceDataset class. */
-    public DynamicsAXResourceDataset() {}
+    /**
+     * Creates an instance of DynamicsAXResourceDataset class.
+     */
+    public DynamicsAXResourceDataset() {
+    }
 
     /**
      * Get the path property: The path of the Dynamics AX OData entity. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the path value.
      */
     public Object getPath() {
@@ -40,7 +45,7 @@ public class DynamicsAXResourceDataset extends Dataset {
     /**
      * Set the path property: The path of the Dynamics AX OData entity. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param path the path value to set.
      * @return the DynamicsAXResourceDataset object itself.
      */
@@ -49,49 +54,63 @@ public class DynamicsAXResourceDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsAXResourceDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsAXResourceDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsAXResourceDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsAXResourceDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsAXResourceDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsAXResourceDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsAXResourceDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

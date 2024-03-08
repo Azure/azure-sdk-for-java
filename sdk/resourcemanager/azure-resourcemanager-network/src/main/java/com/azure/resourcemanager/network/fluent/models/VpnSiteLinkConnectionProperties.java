@@ -15,7 +15,9 @@ import com.azure.resourcemanager.network.models.VpnLinkConnectionMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for VpnConnection. */
+/**
+ * Parameters for VpnConnection.
+ */
 @Fluent
 public final class VpnSiteLinkConnectionProperties {
     /*
@@ -126,13 +128,15 @@ public final class VpnSiteLinkConnectionProperties {
     @JsonProperty(value = "egressNatRules")
     private List<SubResource> egressNatRules;
 
-    /** Creates an instance of VpnSiteLinkConnectionProperties class. */
+    /**
+     * Creates an instance of VpnSiteLinkConnectionProperties class.
+     */
     public VpnSiteLinkConnectionProperties() {
     }
 
     /**
      * Get the vpnSiteLink property: Id of the connected vpn site link.
-     *
+     * 
      * @return the vpnSiteLink value.
      */
     public SubResource vpnSiteLink() {
@@ -141,7 +145,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the vpnSiteLink property: Id of the connected vpn site link.
-     *
+     * 
      * @param vpnSiteLink the vpnSiteLink value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -152,7 +156,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the routingWeight property: Routing weight for vpn connection.
-     *
+     * 
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
@@ -161,7 +165,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the routingWeight property: Routing weight for vpn connection.
-     *
+     * 
      * @param routingWeight the routingWeight value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -172,7 +176,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the vpnLinkConnectionMode property: Vpn link connection mode.
-     *
+     * 
      * @return the vpnLinkConnectionMode value.
      */
     public VpnLinkConnectionMode vpnLinkConnectionMode() {
@@ -181,7 +185,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the vpnLinkConnectionMode property: Vpn link connection mode.
-     *
+     * 
      * @param vpnLinkConnectionMode the vpnLinkConnectionMode value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -192,7 +196,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the connectionStatus property: The connection status.
-     *
+     * 
      * @return the connectionStatus value.
      */
     public VpnConnectionStatus connectionStatus() {
@@ -201,7 +205,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the vpnConnectionProtocolType property: Connection protocol used for this connection.
-     *
+     * 
      * @return the vpnConnectionProtocolType value.
      */
     public VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType() {
@@ -210,19 +214,19 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the vpnConnectionProtocolType property: Connection protocol used for this connection.
-     *
+     * 
      * @param vpnConnectionProtocolType the vpnConnectionProtocolType value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
-    public VpnSiteLinkConnectionProperties withVpnConnectionProtocolType(
-        VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType) {
+    public VpnSiteLinkConnectionProperties
+        withVpnConnectionProtocolType(VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType) {
         this.vpnConnectionProtocolType = vpnConnectionProtocolType;
         return this;
     }
 
     /**
      * Get the ingressBytesTransferred property: Ingress bytes transferred.
-     *
+     * 
      * @return the ingressBytesTransferred value.
      */
     public Long ingressBytesTransferred() {
@@ -231,7 +235,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the egressBytesTransferred property: Egress bytes transferred.
-     *
+     * 
      * @return the egressBytesTransferred value.
      */
     public Long egressBytesTransferred() {
@@ -240,7 +244,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the connectionBandwidth property: Expected bandwidth in MBPS.
-     *
+     * 
      * @return the connectionBandwidth value.
      */
     public Integer connectionBandwidth() {
@@ -249,7 +253,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the connectionBandwidth property: Expected bandwidth in MBPS.
-     *
+     * 
      * @param connectionBandwidth the connectionBandwidth value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -260,7 +264,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the sharedKey property: SharedKey for the vpn connection.
-     *
+     * 
      * @return the sharedKey value.
      */
     public String sharedKey() {
@@ -269,7 +273,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the sharedKey property: SharedKey for the vpn connection.
-     *
+     * 
      * @param sharedKey the sharedKey value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -280,7 +284,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the enableBgp property: EnableBgp flag.
-     *
+     * 
      * @return the enableBgp value.
      */
     public Boolean enableBgp() {
@@ -289,7 +293,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the enableBgp property: EnableBgp flag.
-     *
+     * 
      * @param enableBgp the enableBgp value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -300,7 +304,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the vpnGatewayCustomBgpAddresses property: vpnGatewayCustomBgpAddresses used by this connection.
-     *
+     * 
      * @return the vpnGatewayCustomBgpAddresses value.
      */
     public List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses() {
@@ -309,19 +313,19 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the vpnGatewayCustomBgpAddresses property: vpnGatewayCustomBgpAddresses used by this connection.
-     *
+     * 
      * @param vpnGatewayCustomBgpAddresses the vpnGatewayCustomBgpAddresses value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
-    public VpnSiteLinkConnectionProperties withVpnGatewayCustomBgpAddresses(
-        List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses) {
+    public VpnSiteLinkConnectionProperties
+        withVpnGatewayCustomBgpAddresses(List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses) {
         this.vpnGatewayCustomBgpAddresses = vpnGatewayCustomBgpAddresses;
         return this;
     }
 
     /**
      * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
+     * 
      * @return the usePolicyBasedTrafficSelectors value.
      */
     public Boolean usePolicyBasedTrafficSelectors() {
@@ -330,7 +334,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
+     * 
      * @param usePolicyBasedTrafficSelectors the usePolicyBasedTrafficSelectors value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -341,7 +345,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     *
+     * 
      * @return the ipsecPolicies value.
      */
     public List<IpsecPolicy> ipsecPolicies() {
@@ -350,7 +354,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     *
+     * 
      * @param ipsecPolicies the ipsecPolicies value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -361,7 +365,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the enableRateLimiting property: EnableBgp flag.
-     *
+     * 
      * @return the enableRateLimiting value.
      */
     public Boolean enableRateLimiting() {
@@ -370,7 +374,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the enableRateLimiting property: EnableBgp flag.
-     *
+     * 
      * @param enableRateLimiting the enableRateLimiting value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -381,7 +385,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
+     * 
      * @return the useLocalAzureIpAddress value.
      */
     public Boolean useLocalAzureIpAddress() {
@@ -390,7 +394,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
+     * 
      * @param useLocalAzureIpAddress the useLocalAzureIpAddress value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -401,7 +405,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN site link connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -410,7 +414,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the ingressNatRules property: List of ingress NatRules.
-     *
+     * 
      * @return the ingressNatRules value.
      */
     public List<SubResource> ingressNatRules() {
@@ -419,7 +423,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the ingressNatRules property: List of ingress NatRules.
-     *
+     * 
      * @param ingressNatRules the ingressNatRules value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -430,7 +434,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the egressNatRules property: List of egress NatRules.
-     *
+     * 
      * @return the egressNatRules value.
      */
     public List<SubResource> egressNatRules() {
@@ -439,7 +443,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the egressNatRules property: List of egress NatRules.
-     *
+     * 
      * @param egressNatRules the egressNatRules value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -450,7 +454,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

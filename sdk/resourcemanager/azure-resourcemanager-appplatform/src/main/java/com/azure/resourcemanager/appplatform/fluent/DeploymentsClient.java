@@ -23,13 +23,15 @@ import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DeploymentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeploymentsClient.
+ */
 public interface DeploymentsClient {
     /**
      * Get a Deployment and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -39,14 +41,14 @@ public interface DeploymentsClient {
      * @return a Deployment and its properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DeploymentResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<Response<DeploymentResourceInner>> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName);
 
     /**
      * Get a Deployment and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -56,14 +58,32 @@ public interface DeploymentsClient {
      * @return a Deployment and its properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<DeploymentResourceInner> getAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Get a Deployment and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Deployment and its properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DeploymentResourceInner> getWithResponse(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, Context context);
+
+    /**
+     * Get a Deployment and its properties.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -76,28 +96,10 @@ public interface DeploymentsClient {
     DeploymentResourceInner get(String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
-     * Get a Deployment and its properties.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Deployment and its properties along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
-
-    /**
      * Create a new Deployment or update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -108,18 +110,14 @@ public interface DeploymentsClient {
      * @return deployment resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceInner deploymentResource);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, DeploymentResourceInner deploymentResource);
 
     /**
      * Create a new Deployment or update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -131,17 +129,14 @@ public interface DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
+        String resourceGroupName, String serviceName, String appName, String deploymentName,
         DeploymentResourceInner deploymentResource);
 
     /**
      * Create a new Deployment or update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -153,17 +148,14 @@ public interface DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
+        String resourceGroupName, String serviceName, String appName, String deploymentName,
         DeploymentResourceInner deploymentResource);
 
     /**
      * Create a new Deployment or update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -176,18 +168,14 @@ public interface DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceInner deploymentResource,
-        Context context);
+        String resourceGroupName, String serviceName, String appName, String deploymentName,
+        DeploymentResourceInner deploymentResource, Context context);
 
     /**
      * Create a new Deployment or update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -198,18 +186,14 @@ public interface DeploymentsClient {
      * @return deployment resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceInner deploymentResource);
+    Mono<DeploymentResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, DeploymentResourceInner deploymentResource);
 
     /**
      * Create a new Deployment or update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -220,18 +204,14 @@ public interface DeploymentsClient {
      * @return deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceInner deploymentResource);
+    DeploymentResourceInner createOrUpdate(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, DeploymentResourceInner deploymentResource);
 
     /**
      * Create a new Deployment or update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -243,19 +223,14 @@ public interface DeploymentsClient {
      * @return deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceInner deploymentResource,
-        Context context);
+    DeploymentResourceInner createOrUpdate(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, DeploymentResourceInner deploymentResource, Context context);
 
     /**
      * Operation to delete a Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -265,14 +240,14 @@ public interface DeploymentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName);
 
     /**
      * Operation to delete a Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -282,14 +257,14 @@ public interface DeploymentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Operation to delete a Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -299,14 +274,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Operation to delete a Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -317,14 +292,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, Context context);
 
     /**
      * Operation to delete a Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -338,9 +313,9 @@ public interface DeploymentsClient {
 
     /**
      * Operation to delete a Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -353,9 +328,9 @@ public interface DeploymentsClient {
 
     /**
      * Operation to delete a Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -369,9 +344,9 @@ public interface DeploymentsClient {
 
     /**
      * Operation to update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -382,18 +357,14 @@ public interface DeploymentsClient {
      * @return deployment resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceInner deploymentResource);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, DeploymentResourceInner deploymentResource);
 
     /**
      * Operation to update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -404,18 +375,14 @@ public interface DeploymentsClient {
      * @return the {@link PollerFlux} for polling of deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceInner deploymentResource);
+    PollerFlux<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdateAsync(String resourceGroupName,
+        String serviceName, String appName, String deploymentName, DeploymentResourceInner deploymentResource);
 
     /**
      * Operation to update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -426,18 +393,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceInner deploymentResource);
+    SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(String resourceGroupName,
+        String serviceName, String appName, String deploymentName, DeploymentResourceInner deploymentResource);
 
     /**
      * Operation to update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -449,19 +412,15 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceInner deploymentResource,
+    SyncPoller<PollResult<DeploymentResourceInner>, DeploymentResourceInner> beginUpdate(String resourceGroupName,
+        String serviceName, String appName, String deploymentName, DeploymentResourceInner deploymentResource,
         Context context);
 
     /**
      * Operation to update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -472,18 +431,14 @@ public interface DeploymentsClient {
      * @return deployment resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentResourceInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceInner deploymentResource);
+    Mono<DeploymentResourceInner> updateAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, DeploymentResourceInner deploymentResource);
 
     /**
      * Operation to update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -494,18 +449,14 @@ public interface DeploymentsClient {
      * @return deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentResourceInner update(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
+    DeploymentResourceInner update(String resourceGroupName, String serviceName, String appName, String deploymentName,
         DeploymentResourceInner deploymentResource);
 
     /**
      * Operation to update an exiting Deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -517,19 +468,14 @@ public interface DeploymentsClient {
      * @return deployment resource payload.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentResourceInner update(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DeploymentResourceInner deploymentResource,
-        Context context);
+    DeploymentResourceInner update(String resourceGroupName, String serviceName, String appName, String deploymentName,
+        DeploymentResourceInner deploymentResource, Context context);
 
     /**
      * Handles requests to list all resources in an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param version Version of the deployments to be listed.
@@ -537,49 +483,49 @@ public interface DeploymentsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DeploymentResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String appName, List<String> version);
+    PagedFlux<DeploymentResourceInner> listAsync(String resourceGroupName, String serviceName, String appName,
+        List<String> version);
 
     /**
      * Handles requests to list all resources in an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentResourceInner> listAsync(String resourceGroupName, String serviceName, String appName);
 
     /**
      * Handles requests to list all resources in an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentResourceInner> list(String resourceGroupName, String serviceName, String appName);
 
     /**
      * Handles requests to list all resources in an App.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param version Version of the deployments to be listed.
@@ -588,82 +534,84 @@ public interface DeploymentsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentResourceInner> list(
-        String resourceGroupName, String serviceName, String appName, List<String> version, Context context);
+    PagedIterable<DeploymentResourceInner> list(String resourceGroupName, String serviceName, String appName,
+        List<String> version, Context context);
 
     /**
      * List deployments for a certain service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param version Version of the deployments to be listed.
+     * @param expand The expand expression to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DeploymentResourceInner> listForClusterAsync(
-        String resourceGroupName, String serviceName, List<String> version);
+    PagedFlux<DeploymentResourceInner> listForClusterAsync(String resourceGroupName, String serviceName,
+        List<String> version, String expand);
 
     /**
      * List deployments for a certain service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DeploymentResourceInner> listForClusterAsync(String resourceGroupName, String serviceName);
 
     /**
      * List deployments for a certain service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DeploymentResourceInner> listForCluster(String resourceGroupName, String serviceName);
 
     /**
      * List deployments for a certain service.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param version Version of the deployments to be listed.
+     * @param expand The expand expression to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of App resources and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentResourceInner> listForCluster(
-        String resourceGroupName, String serviceName, List<String> version, Context context);
+    PagedIterable<DeploymentResourceInner> listForCluster(String resourceGroupName, String serviceName,
+        List<String> version, String expand, Context context);
 
     /**
      * Start the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -673,14 +621,14 @@ public interface DeploymentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName);
 
     /**
      * Start the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -690,14 +638,14 @@ public interface DeploymentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginStartAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Start the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -707,14 +655,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Start the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -725,14 +673,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStart(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, Context context);
 
     /**
      * Start the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -746,9 +694,9 @@ public interface DeploymentsClient {
 
     /**
      * Start the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -761,9 +709,9 @@ public interface DeploymentsClient {
 
     /**
      * Start the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -777,9 +725,9 @@ public interface DeploymentsClient {
 
     /**
      * Stop the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -789,14 +737,14 @@ public interface DeploymentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Stop the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -806,14 +754,14 @@ public interface DeploymentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginStopAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Stop the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -823,14 +771,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Stop the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -841,14 +789,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStop(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, Context context);
 
     /**
      * Stop the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -862,9 +810,9 @@ public interface DeploymentsClient {
 
     /**
      * Stop the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -877,9 +825,9 @@ public interface DeploymentsClient {
 
     /**
      * Stop the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -893,9 +841,9 @@ public interface DeploymentsClient {
 
     /**
      * Restart the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -905,14 +853,14 @@ public interface DeploymentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<Response<Flux<ByteBuffer>>> restartWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName);
 
     /**
      * Restart the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -922,14 +870,14 @@ public interface DeploymentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginRestartAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    PollerFlux<PollResult<Void>, Void> beginRestartAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Restart the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -939,14 +887,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Restart the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -957,14 +905,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestart(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, Context context);
 
     /**
      * Restart the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -978,9 +926,9 @@ public interface DeploymentsClient {
 
     /**
      * Restart the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -993,9 +941,9 @@ public interface DeploymentsClient {
 
     /**
      * Restart the deployment.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1009,9 +957,9 @@ public interface DeploymentsClient {
 
     /**
      * Enable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1022,18 +970,14 @@ public interface DeploymentsClient {
      * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> enableRemoteDebuggingWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        RemoteDebuggingPayload remoteDebuggingPayload);
+    Mono<Response<Flux<ByteBuffer>>> enableRemoteDebuggingWithResponseAsync(String resourceGroupName,
+        String serviceName, String appName, String deploymentName, RemoteDebuggingPayload remoteDebuggingPayload);
 
     /**
      * Enable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1045,39 +989,48 @@ public interface DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebuggingAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
+        String resourceGroupName, String serviceName, String appName, String deploymentName,
         RemoteDebuggingPayload remoteDebuggingPayload);
 
     /**
      * Enable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
-     * @param remoteDebuggingPayload Parameters for enable remote debugging.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebuggingAsync(
+        String resourceGroupName, String serviceName, String appName, String deploymentName);
+
+    /**
+     * Enable remote debugging.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of remote debugging config.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebugging(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        RemoteDebuggingPayload remoteDebuggingPayload);
+    SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner>
+        beginEnableRemoteDebugging(String resourceGroupName, String serviceName, String appName, String deploymentName);
 
     /**
      * Enable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1090,18 +1043,14 @@ public interface DeploymentsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<RemoteDebuggingInner>, RemoteDebuggingInner> beginEnableRemoteDebugging(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        RemoteDebuggingPayload remoteDebuggingPayload,
-        Context context);
+        String resourceGroupName, String serviceName, String appName, String deploymentName,
+        RemoteDebuggingPayload remoteDebuggingPayload, Context context);
 
     /**
      * Enable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1112,18 +1061,14 @@ public interface DeploymentsClient {
      * @return remote debugging config on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RemoteDebuggingInner> enableRemoteDebuggingAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        RemoteDebuggingPayload remoteDebuggingPayload);
+    Mono<RemoteDebuggingInner> enableRemoteDebuggingAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, RemoteDebuggingPayload remoteDebuggingPayload);
 
     /**
      * Enable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1133,36 +1078,14 @@ public interface DeploymentsClient {
      * @return remote debugging config on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RemoteDebuggingInner> enableRemoteDebuggingAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<RemoteDebuggingInner> enableRemoteDebuggingAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Enable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @param remoteDebuggingPayload Parameters for enable remote debugging.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote debugging config.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RemoteDebuggingInner enableRemoteDebugging(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        RemoteDebuggingPayload remoteDebuggingPayload);
-
-    /**
-     * Enable remote debugging.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1172,14 +1095,14 @@ public interface DeploymentsClient {
      * @return remote debugging config.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RemoteDebuggingInner enableRemoteDebugging(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    RemoteDebuggingInner enableRemoteDebugging(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Enable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1191,19 +1114,14 @@ public interface DeploymentsClient {
      * @return remote debugging config.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RemoteDebuggingInner enableRemoteDebugging(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        RemoteDebuggingPayload remoteDebuggingPayload,
-        Context context);
+    RemoteDebuggingInner enableRemoteDebugging(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, RemoteDebuggingPayload remoteDebuggingPayload, Context context);
 
     /**
      * Disable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1213,14 +1131,14 @@ public interface DeploymentsClient {
      * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> disableRemoteDebuggingWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<Response<Flux<ByteBuffer>>> disableRemoteDebuggingWithResponseAsync(String resourceGroupName,
+        String serviceName, String appName, String deploymentName);
 
     /**
      * Disable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1235,9 +1153,9 @@ public interface DeploymentsClient {
 
     /**
      * Disable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1252,9 +1170,9 @@ public interface DeploymentsClient {
 
     /**
      * Disable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1270,9 +1188,9 @@ public interface DeploymentsClient {
 
     /**
      * Disable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1282,14 +1200,14 @@ public interface DeploymentsClient {
      * @return remote debugging config on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RemoteDebuggingInner> disableRemoteDebuggingAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<RemoteDebuggingInner> disableRemoteDebuggingAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Disable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1299,14 +1217,14 @@ public interface DeploymentsClient {
      * @return remote debugging config.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RemoteDebuggingInner disableRemoteDebugging(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    RemoteDebuggingInner disableRemoteDebugging(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Disable remote debugging.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1317,14 +1235,14 @@ public interface DeploymentsClient {
      * @return remote debugging config.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RemoteDebuggingInner disableRemoteDebugging(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+    RemoteDebuggingInner disableRemoteDebugging(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, Context context);
 
     /**
      * Get remote debugging config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1334,14 +1252,14 @@ public interface DeploymentsClient {
      * @return remote debugging config along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RemoteDebuggingInner>> getRemoteDebuggingConfigWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<Response<RemoteDebuggingInner>> getRemoteDebuggingConfigWithResponseAsync(String resourceGroupName,
+        String serviceName, String appName, String deploymentName);
 
     /**
      * Get remote debugging config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1351,31 +1269,14 @@ public interface DeploymentsClient {
      * @return remote debugging config on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RemoteDebuggingInner> getRemoteDebuggingConfigAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<RemoteDebuggingInner> getRemoteDebuggingConfigAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName);
 
     /**
      * Get remote debugging config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote debugging config.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RemoteDebuggingInner getRemoteDebuggingConfig(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
-
-    /**
-     * Get remote debugging config.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1386,14 +1287,31 @@ public interface DeploymentsClient {
      * @return remote debugging config along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RemoteDebuggingInner> getRemoteDebuggingConfigWithResponse(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+    Response<RemoteDebuggingInner> getRemoteDebuggingConfigWithResponse(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, Context context);
+
+    /**
+     * Get remote debugging config.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote debugging config.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RemoteDebuggingInner getRemoteDebuggingConfig(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Get deployment log file URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1403,14 +1321,14 @@ public interface DeploymentsClient {
      * @return deployment log file URL along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LogFileUrlResponseInner>> getLogFileUrlWithResponseAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<Response<LogFileUrlResponseInner>> getLogFileUrlWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName);
 
     /**
      * Get deployment log file URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1420,31 +1338,14 @@ public interface DeploymentsClient {
      * @return deployment log file URL on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LogFileUrlResponseInner> getLogFileUrlAsync(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
+    Mono<LogFileUrlResponseInner> getLogFileUrlAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Get deployment log file URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param deploymentName The name of the Deployment resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment log file URL.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LogFileUrlResponseInner getLogFileUrl(
-        String resourceGroupName, String serviceName, String appName, String deploymentName);
-
-    /**
-     * Get deployment log file URL.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1455,14 +1356,31 @@ public interface DeploymentsClient {
      * @return deployment log file URL along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LogFileUrlResponseInner> getLogFileUrlWithResponse(
-        String resourceGroupName, String serviceName, String appName, String deploymentName, Context context);
+    Response<LogFileUrlResponseInner> getLogFileUrlWithResponse(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, Context context);
+
+    /**
+     * Get deployment log file URL.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param appName The name of the App resource.
+     * @param deploymentName The name of the Deployment resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment log file URL.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LogFileUrlResponseInner getLogFileUrl(String resourceGroupName, String serviceName, String appName,
+        String deploymentName);
 
     /**
      * Generate Heap Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1473,18 +1391,14 @@ public interface DeploymentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> generateHeapDumpWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters);
+    Mono<Response<Flux<ByteBuffer>>> generateHeapDumpWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, DiagnosticParameters diagnosticParameters);
 
     /**
      * Generate Heap Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1495,18 +1409,14 @@ public interface DeploymentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginGenerateHeapDumpAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters);
+    PollerFlux<PollResult<Void>, Void> beginGenerateHeapDumpAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, DiagnosticParameters diagnosticParameters);
 
     /**
      * Generate Heap Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1517,18 +1427,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginGenerateHeapDump(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters);
+    SyncPoller<PollResult<Void>, Void> beginGenerateHeapDump(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, DiagnosticParameters diagnosticParameters);
 
     /**
      * Generate Heap Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1540,19 +1446,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginGenerateHeapDump(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginGenerateHeapDump(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, DiagnosticParameters diagnosticParameters, Context context);
 
     /**
      * Generate Heap Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1563,18 +1464,14 @@ public interface DeploymentsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> generateHeapDumpAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters);
+    Mono<Void> generateHeapDumpAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, DiagnosticParameters diagnosticParameters);
 
     /**
      * Generate Heap Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1584,18 +1481,14 @@ public interface DeploymentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void generateHeapDump(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
+    void generateHeapDump(String resourceGroupName, String serviceName, String appName, String deploymentName,
         DiagnosticParameters diagnosticParameters);
 
     /**
      * Generate Heap Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1606,19 +1499,14 @@ public interface DeploymentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void generateHeapDump(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters,
-        Context context);
+    void generateHeapDump(String resourceGroupName, String serviceName, String appName, String deploymentName,
+        DiagnosticParameters diagnosticParameters, Context context);
 
     /**
      * Generate Thread Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1629,18 +1517,14 @@ public interface DeploymentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> generateThreadDumpWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters);
+    Mono<Response<Flux<ByteBuffer>>> generateThreadDumpWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, DiagnosticParameters diagnosticParameters);
 
     /**
      * Generate Thread Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1651,18 +1535,14 @@ public interface DeploymentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginGenerateThreadDumpAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters);
+    PollerFlux<PollResult<Void>, Void> beginGenerateThreadDumpAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, DiagnosticParameters diagnosticParameters);
 
     /**
      * Generate Thread Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1673,18 +1553,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginGenerateThreadDump(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters);
+    SyncPoller<PollResult<Void>, Void> beginGenerateThreadDump(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, DiagnosticParameters diagnosticParameters);
 
     /**
      * Generate Thread Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1696,19 +1572,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginGenerateThreadDump(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginGenerateThreadDump(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, DiagnosticParameters diagnosticParameters, Context context);
 
     /**
      * Generate Thread Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1719,18 +1590,14 @@ public interface DeploymentsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> generateThreadDumpAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters);
+    Mono<Void> generateThreadDumpAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, DiagnosticParameters diagnosticParameters);
 
     /**
      * Generate Thread Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1740,18 +1607,14 @@ public interface DeploymentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void generateThreadDump(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
+    void generateThreadDump(String resourceGroupName, String serviceName, String appName, String deploymentName,
         DiagnosticParameters diagnosticParameters);
 
     /**
      * Generate Thread Dump.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1762,19 +1625,14 @@ public interface DeploymentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void generateThreadDump(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters,
-        Context context);
+    void generateThreadDump(String resourceGroupName, String serviceName, String appName, String deploymentName,
+        DiagnosticParameters diagnosticParameters, Context context);
 
     /**
      * Start JFR.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1785,18 +1643,14 @@ public interface DeploymentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> startJfrWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters);
+    Mono<Response<Flux<ByteBuffer>>> startJfrWithResponseAsync(String resourceGroupName, String serviceName,
+        String appName, String deploymentName, DiagnosticParameters diagnosticParameters);
 
     /**
      * Start JFR.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1807,18 +1661,14 @@ public interface DeploymentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginStartJfrAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters);
+    PollerFlux<PollResult<Void>, Void> beginStartJfrAsync(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, DiagnosticParameters diagnosticParameters);
 
     /**
      * Start JFR.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1829,18 +1679,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartJfr(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters);
+    SyncPoller<PollResult<Void>, Void> beginStartJfr(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, DiagnosticParameters diagnosticParameters);
 
     /**
      * Start JFR.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1852,19 +1698,14 @@ public interface DeploymentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginStartJfr(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginStartJfr(String resourceGroupName, String serviceName, String appName,
+        String deploymentName, DiagnosticParameters diagnosticParameters, Context context);
 
     /**
      * Start JFR.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1875,18 +1716,14 @@ public interface DeploymentsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> startJfrAsync(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
+    Mono<Void> startJfrAsync(String resourceGroupName, String serviceName, String appName, String deploymentName,
         DiagnosticParameters diagnosticParameters);
 
     /**
      * Start JFR.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1896,18 +1733,14 @@ public interface DeploymentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void startJfr(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
+    void startJfr(String resourceGroupName, String serviceName, String appName, String deploymentName,
         DiagnosticParameters diagnosticParameters);
 
     /**
      * Start JFR.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param deploymentName The name of the Deployment resource.
@@ -1918,11 +1751,6 @@ public interface DeploymentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void startJfr(
-        String resourceGroupName,
-        String serviceName,
-        String appName,
-        String deploymentName,
-        DiagnosticParameters diagnosticParameters,
-        Context context);
+    void startJfr(String resourceGroupName, String serviceName, String appName, String deploymentName,
+        DiagnosticParameters diagnosticParameters, Context context);
 }

@@ -15,7 +15,29 @@ import reactor.core.publisher.Mono;
 import java.net.MalformedURLException;
 
 /**
- * The pipeline policy that adds a given port to each {@link HttpRequest}.
+ * The {@code PortPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is used
+ * to add a specific port to each {@link HttpRequest}.
+ *
+ * <p>This class is useful when you need to set a specific port for all requests in a pipeline. It ensures that the
+ * port is set correctly for each request.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, a {@code PortPolicy} is created with a port of 8080 and an overwrite flag set to true. The
+ * policy can then be added to the pipeline. Once added to the pipeline, all requests will have their port set to 8080
+ * by the {@code PortPolicy}.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.PortPolicy.constructor -->
+ * <pre>
+ * PortPolicy portPolicy = new PortPolicy&#40;8080, true&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.PortPolicy.constructor -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public class PortPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(PortPolicy.class);
@@ -28,15 +50,13 @@ public class PortPolicy implements HttpPipelinePolicy {
         protected void beforeSendingRequest(HttpPipelineCallContext context) {
             final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             if (overwrite || urlBuilder.getPort() == null) {
-                LOGGER.atVerbose()
-                    .addKeyValue("port", port)
-                    .log("Changing host");
+                LOGGER.atVerbose().addKeyValue("port", port).log("Changing host");
 
                 try {
                     context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
                 } catch (MalformedURLException e) {
-                    throw LOGGER.logExceptionAsError(new
-                        RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
+                    throw LOGGER.logExceptionAsError(
+                        new RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
                 }
             }
         }

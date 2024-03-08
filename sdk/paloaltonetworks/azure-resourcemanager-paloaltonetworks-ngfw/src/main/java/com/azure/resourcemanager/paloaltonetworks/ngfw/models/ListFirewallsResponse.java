@@ -7,25 +7,27 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.ListFirewallsResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of ListFirewallsResponse. */
+/**
+ * An immutable client-side representation of ListFirewallsResponse.
+ */
 public interface ListFirewallsResponse {
     /**
      * Gets the value property: firewalls list.
-     *
+     * 
      * @return the value value.
      */
     List<String> value();
 
     /**
      * Gets the nextLink property: next link.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
 
     /**
      * Gets the inner com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.ListFirewallsResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ListFirewallsResponseInner innerModel();

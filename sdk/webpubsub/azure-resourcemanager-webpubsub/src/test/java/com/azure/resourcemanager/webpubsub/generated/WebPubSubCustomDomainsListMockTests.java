@@ -32,7 +32,7 @@ public final class WebPubSubCustomDomainsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"domainName\":\"jiuqhibtozi\",\"customCertificate\":{\"id\":\"wjedmurrxxgew\"}},\"id\":\"ktvqylkmqpzoy\",\"name\":\"lfbcgwgcl\",\"type\":\"xoe\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Moving\",\"domainName\":\"pzvuqdflvo\",\"customCertificate\":{\"id\":\"yp\"}},\"id\":\"ubcpzgpxti\",\"name\":\"hjknidibg\",\"type\":\"jxgpnrhgovfg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class WebPubSubCustomDomainsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<CustomDomain> response =
-            manager.webPubSubCustomDomains().list("ibuz", "hdugneiknpg", com.azure.core.util.Context.NONE);
+            manager.webPubSubCustomDomains().list("munjdxvglnkvx", "xpaglqivbgkc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jiuqhibtozi", response.iterator().next().domainName());
-        Assertions.assertEquals("wjedmurrxxgew", response.iterator().next().customCertificate().id());
+        Assertions.assertEquals("pzvuqdflvo", response.iterator().next().domainName());
+        Assertions.assertEquals("yp", response.iterator().next().customCertificate().id());
     }
 }

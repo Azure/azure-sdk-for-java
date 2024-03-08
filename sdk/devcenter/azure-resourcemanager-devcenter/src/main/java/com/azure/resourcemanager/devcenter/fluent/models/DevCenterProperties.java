@@ -4,13 +4,14 @@
 
 package com.azure.resourcemanager.devcenter.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.devcenter.models.Encryption;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the devcenter. */
-@Immutable
-public final class DevCenterProperties {
+@Fluent
+public final class DevCenterProperties extends DevCenterUpdateProperties {
     /*
      * The provisioning state of the resource.
      */
@@ -45,11 +46,27 @@ public final class DevCenterProperties {
         return this.devCenterUri;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DevCenterProperties withEncryption(Encryption encryption) {
+        super.withEncryption(encryption);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DevCenterProperties withDisplayName(String displayName) {
+        super.withDisplayName(displayName);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
     }
 }

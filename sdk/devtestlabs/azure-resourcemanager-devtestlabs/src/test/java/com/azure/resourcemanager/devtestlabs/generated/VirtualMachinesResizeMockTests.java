@@ -60,10 +60,10 @@ public final class VirtualMachinesResizeMockTests {
         manager
             .virtualMachines()
             .resize(
-                "gpomxpu",
-                "dtsdfjy",
-                "esocwiqbuou",
-                new ResizeLabVirtualMachineProperties().withSize("py"),
+                "dubewgzy",
+                "baduvecovsdq",
+                "zrtdbakr",
+                new ResizeLabVirtualMachineProperties().withSize("mz"),
                 com.azure.core.util.Context.NONE);
     }
 }

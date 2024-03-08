@@ -15,7 +15,9 @@ import com.azure.resourcemanager.network.models.VpnLinkConnectionMode;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VpnSiteLinkConnection Resource. */
+/**
+ * VpnSiteLinkConnection Resource.
+ */
 @Fluent
 public final class VpnSiteLinkConnectionInner extends SubResource {
     /*
@@ -42,13 +44,15 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of VpnSiteLinkConnectionInner class. */
+    /**
+     * Creates an instance of VpnSiteLinkConnectionInner class.
+     */
     public VpnSiteLinkConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the VPN site link connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VpnSiteLinkConnectionProperties innerProperties() {
@@ -58,7 +62,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +72,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -79,7 +83,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -88,14 +92,16 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnSiteLinkConnectionInner withId(String id) {
         super.withId(id);
@@ -104,7 +110,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the vpnSiteLink property: Id of the connected vpn site link.
-     *
+     * 
      * @return the vpnSiteLink value.
      */
     public SubResource vpnSiteLink() {
@@ -113,7 +119,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the vpnSiteLink property: Id of the connected vpn site link.
-     *
+     * 
      * @param vpnSiteLink the vpnSiteLink value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -127,7 +133,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the routingWeight property: Routing weight for vpn connection.
-     *
+     * 
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
@@ -136,7 +142,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the routingWeight property: Routing weight for vpn connection.
-     *
+     * 
      * @param routingWeight the routingWeight value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -150,7 +156,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the vpnLinkConnectionMode property: Vpn link connection mode.
-     *
+     * 
      * @return the vpnLinkConnectionMode value.
      */
     public VpnLinkConnectionMode vpnLinkConnectionMode() {
@@ -159,7 +165,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the vpnLinkConnectionMode property: Vpn link connection mode.
-     *
+     * 
      * @param vpnLinkConnectionMode the vpnLinkConnectionMode value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -173,7 +179,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the connectionStatus property: The connection status.
-     *
+     * 
      * @return the connectionStatus value.
      */
     public VpnConnectionStatus connectionStatus() {
@@ -182,7 +188,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the vpnConnectionProtocolType property: Connection protocol used for this connection.
-     *
+     * 
      * @return the vpnConnectionProtocolType value.
      */
     public VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType() {
@@ -191,12 +197,12 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the vpnConnectionProtocolType property: Connection protocol used for this connection.
-     *
+     * 
      * @param vpnConnectionProtocolType the vpnConnectionProtocolType value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
-    public VpnSiteLinkConnectionInner withVpnConnectionProtocolType(
-        VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType) {
+    public VpnSiteLinkConnectionInner
+        withVpnConnectionProtocolType(VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VpnSiteLinkConnectionProperties();
         }
@@ -206,7 +212,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the ingressBytesTransferred property: Ingress bytes transferred.
-     *
+     * 
      * @return the ingressBytesTransferred value.
      */
     public Long ingressBytesTransferred() {
@@ -215,7 +221,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the egressBytesTransferred property: Egress bytes transferred.
-     *
+     * 
      * @return the egressBytesTransferred value.
      */
     public Long egressBytesTransferred() {
@@ -224,7 +230,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the connectionBandwidth property: Expected bandwidth in MBPS.
-     *
+     * 
      * @return the connectionBandwidth value.
      */
     public Integer connectionBandwidth() {
@@ -233,7 +239,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the connectionBandwidth property: Expected bandwidth in MBPS.
-     *
+     * 
      * @param connectionBandwidth the connectionBandwidth value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -247,7 +253,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the sharedKey property: SharedKey for the vpn connection.
-     *
+     * 
      * @return the sharedKey value.
      */
     public String sharedKey() {
@@ -256,7 +262,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the sharedKey property: SharedKey for the vpn connection.
-     *
+     * 
      * @param sharedKey the sharedKey value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -270,7 +276,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the enableBgp property: EnableBgp flag.
-     *
+     * 
      * @return the enableBgp value.
      */
     public Boolean enableBgp() {
@@ -279,7 +285,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the enableBgp property: EnableBgp flag.
-     *
+     * 
      * @param enableBgp the enableBgp value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -293,7 +299,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the vpnGatewayCustomBgpAddresses property: vpnGatewayCustomBgpAddresses used by this connection.
-     *
+     * 
      * @return the vpnGatewayCustomBgpAddresses value.
      */
     public List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses() {
@@ -302,12 +308,12 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the vpnGatewayCustomBgpAddresses property: vpnGatewayCustomBgpAddresses used by this connection.
-     *
+     * 
      * @param vpnGatewayCustomBgpAddresses the vpnGatewayCustomBgpAddresses value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
-    public VpnSiteLinkConnectionInner withVpnGatewayCustomBgpAddresses(
-        List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses) {
+    public VpnSiteLinkConnectionInner
+        withVpnGatewayCustomBgpAddresses(List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VpnSiteLinkConnectionProperties();
         }
@@ -317,7 +323,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
+     * 
      * @return the usePolicyBasedTrafficSelectors value.
      */
     public Boolean usePolicyBasedTrafficSelectors() {
@@ -326,7 +332,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
+     * 
      * @param usePolicyBasedTrafficSelectors the usePolicyBasedTrafficSelectors value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -340,7 +346,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     *
+     * 
      * @return the ipsecPolicies value.
      */
     public List<IpsecPolicy> ipsecPolicies() {
@@ -349,7 +355,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     *
+     * 
      * @param ipsecPolicies the ipsecPolicies value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -363,7 +369,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the enableRateLimiting property: EnableBgp flag.
-     *
+     * 
      * @return the enableRateLimiting value.
      */
     public Boolean enableRateLimiting() {
@@ -372,7 +378,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the enableRateLimiting property: EnableBgp flag.
-     *
+     * 
      * @param enableRateLimiting the enableRateLimiting value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -386,7 +392,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
+     * 
      * @return the useLocalAzureIpAddress value.
      */
     public Boolean useLocalAzureIpAddress() {
@@ -395,7 +401,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
+     * 
      * @param useLocalAzureIpAddress the useLocalAzureIpAddress value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -409,7 +415,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN site link connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -418,7 +424,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the ingressNatRules property: List of ingress NatRules.
-     *
+     * 
      * @return the ingressNatRules value.
      */
     public List<SubResource> ingressNatRules() {
@@ -427,7 +433,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the ingressNatRules property: List of ingress NatRules.
-     *
+     * 
      * @param ingressNatRules the ingressNatRules value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -441,7 +447,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Get the egressNatRules property: List of egress NatRules.
-     *
+     * 
      * @return the egressNatRules value.
      */
     public List<SubResource> egressNatRules() {
@@ -450,7 +456,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Set the egressNatRules property: List of egress NatRules.
-     *
+     * 
      * @param egressNatRules the egressNatRules value to set.
      * @return the VpnSiteLinkConnectionInner object itself.
      */
@@ -464,7 +470,7 @@ public final class VpnSiteLinkConnectionInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

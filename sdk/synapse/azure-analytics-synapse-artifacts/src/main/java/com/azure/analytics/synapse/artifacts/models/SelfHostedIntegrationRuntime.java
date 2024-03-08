@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Self-hosted integration runtime. */
+/**
+ * Self-hosted integration runtime.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SelfHosted")
 @JsonFlatten
@@ -22,12 +24,15 @@ public class SelfHostedIntegrationRuntime extends IntegrationRuntime {
     @JsonProperty(value = "typeProperties.linkedInfo")
     private LinkedIntegrationRuntimeType linkedInfo;
 
-    /** Creates an instance of SelfHostedIntegrationRuntime class. */
-    public SelfHostedIntegrationRuntime() {}
+    /**
+     * Creates an instance of SelfHostedIntegrationRuntime class.
+     */
+    public SelfHostedIntegrationRuntime() {
+    }
 
     /**
      * Get the linkedInfo property: Linked integration runtime type from data factory.
-     *
+     * 
      * @return the linkedInfo value.
      */
     public LinkedIntegrationRuntimeType getLinkedInfo() {
@@ -36,7 +41,7 @@ public class SelfHostedIntegrationRuntime extends IntegrationRuntime {
 
     /**
      * Set the linkedInfo property: Linked integration runtime type from data factory.
-     *
+     * 
      * @param linkedInfo the linkedInfo value to set.
      * @return the SelfHostedIntegrationRuntime object itself.
      */
@@ -45,7 +50,9 @@ public class SelfHostedIntegrationRuntime extends IntegrationRuntime {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SelfHostedIntegrationRuntime setDescription(String description) {
         super.setDescription(description);

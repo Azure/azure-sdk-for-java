@@ -92,6 +92,14 @@ public final class DatastoreImpl implements Datastore, Datastore.Definition, Dat
         return this.innerModel().customResourceName();
     }
 
+    public Long capacityGB() {
+        return this.innerModel().capacityGB();
+    }
+
+    public Long freeSpaceGB() {
+        return this.innerModel().freeSpaceGB();
+    }
+
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }

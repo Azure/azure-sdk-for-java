@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.PostgreSqlSource;
 public final class PostgreSqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PostgreSqlSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"PostgreSqlSource\",\"query\":\"datavhjkwfolpj\",\"queryTimeout\":\"datapahvoiranxqnz\",\"additionalColumns\":\"datavnldtqykz\",\"sourceRetryCount\":\"datadoqrejl\",\"sourceRetryWait\":\"datan\",\"maxConcurrentConnections\":\"dataicyozryoxmfrxf\",\"disableMetricsCollection\":\"datacjialvchfumlfgm\",\"\":{\"ipklfwn\":\"dataxko\",\"dkvljitbnhg\":\"datafkbqlrtffsw\",\"abgsdxtwqqukgo\":\"datarvlarozswmucr\",\"ksltunrwxsqvx\":\"datalvjgsk\"}}")
-                .toObject(PostgreSqlSource.class);
+        PostgreSqlSource model = BinaryData.fromString(
+            "{\"type\":\"PostgreSqlSource\",\"query\":\"datandsjpui\",\"queryTimeout\":\"datavrp\",\"additionalColumns\":\"datagdptfxoffckejxom\",\"sourceRetryCount\":\"datauqwxxynttrn\",\"sourceRetryWait\":\"datavximgns\",\"maxConcurrentConnections\":\"datacxuyzrnngnmf\",\"disableMetricsCollection\":\"datawfoummdomvditp\",\"\":{\"dfhsfnoczefgfq\":\"datalwlirapqhs\",\"jntiqbxzeiudogqf\":\"datae\"}}")
+            .toObject(PostgreSqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PostgreSqlSource model =
-            new PostgreSqlSource()
-                .withSourceRetryCount("datadoqrejl")
-                .withSourceRetryWait("datan")
-                .withMaxConcurrentConnections("dataicyozryoxmfrxf")
-                .withDisableMetricsCollection("datacjialvchfumlfgm")
-                .withQueryTimeout("datapahvoiranxqnz")
-                .withAdditionalColumns("datavnldtqykz")
-                .withQuery("datavhjkwfolpj");
+        PostgreSqlSource model
+            = new PostgreSqlSource().withSourceRetryCount("datauqwxxynttrn").withSourceRetryWait("datavximgns")
+                .withMaxConcurrentConnections("datacxuyzrnngnmf").withDisableMetricsCollection("datawfoummdomvditp")
+                .withQueryTimeout("datavrp").withAdditionalColumns("datagdptfxoffckejxom").withQuery("datandsjpui");
         model = BinaryData.fromObject(model).toObject(PostgreSqlSource.class);
     }
 }

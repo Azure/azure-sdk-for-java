@@ -33,7 +33,7 @@ public final class SkusListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"n\",\"locations\":[\"ketwzhhzjhfjmhv\",\"muvgp\",\"uneqsxvmhf\"],\"capabilities\":[{\"name\":\"yihsasbhudypohyu\",\"value\":\"slynsqyrpfoo\"}],\"name\":\"rlttymsjnygqdnfw\",\"tier\":\"Basic\",\"size\":\"gtilax\",\"family\":\"fhqlyvi\",\"capacity\":2065118929}]}";
+            "{\"value\":[{\"resourceType\":\"gsnnf\",\"locations\":[\"tefypococtfjgti\"],\"capabilities\":[{\"name\":\"zuyt\",\"value\":\"mlmuowol\"},{\"name\":\"uir\",\"value\":\"ionszonwp\"}],\"name\":\"gajinnixjawrtmj\",\"tier\":\"Basic\",\"size\":\"ccxlzhcoxovnek\",\"family\":\"nlusfnrd\",\"capacity\":1290692047}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,12 +61,12 @@ public final class SkusListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DevCenterSku> response = manager.skus().list(1669449046, com.azure.core.util.Context.NONE);
+        PagedIterable<DevCenterSku> response = manager.skus().list(1565849312, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rlttymsjnygqdnfw", response.iterator().next().name());
+        Assertions.assertEquals("gajinnixjawrtmj", response.iterator().next().name());
         Assertions.assertEquals(SkuTier.BASIC, response.iterator().next().tier());
-        Assertions.assertEquals("gtilax", response.iterator().next().size());
-        Assertions.assertEquals("fhqlyvi", response.iterator().next().family());
-        Assertions.assertEquals(2065118929, response.iterator().next().capacity());
+        Assertions.assertEquals("ccxlzhcoxovnek", response.iterator().next().size());
+        Assertions.assertEquals("nlusfnrd", response.iterator().next().family());
+        Assertions.assertEquals(1290692047, response.iterator().next().capacity());
     }
 }

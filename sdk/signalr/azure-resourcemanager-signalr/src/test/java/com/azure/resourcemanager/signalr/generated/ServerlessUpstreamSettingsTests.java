@@ -19,14 +19,14 @@ public final class ServerlessUpstreamSettingsTests {
         ServerlessUpstreamSettings model =
             BinaryData
                 .fromString(
-                    "{\"templates\":[{\"hubPattern\":\"qwjygvja\",\"eventPattern\":\"blmhvkzuhb\",\"categoryPattern\":\"vyhgs\",\"urlTemplate\":\"pbyrqufegxu\",\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"hlmctlpdngitvgb\"}}},{\"hubPattern\":\"rixkwmyijejve\",\"eventPattern\":\"hbpnaixexccbd\",\"categoryPattern\":\"ax\",\"urlTemplate\":\"cexdrrvqa\",\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"pwijnhy\"}}},{\"hubPattern\":\"vfycxzb\",\"eventPattern\":\"oowvrv\",\"categoryPattern\":\"gjqppy\",\"urlTemplate\":\"s\",\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"yhgfipnsx\"}}},{\"hubPattern\":\"cwaekrrjre\",\"eventPattern\":\"xt\",\"categoryPattern\":\"umh\",\"urlTemplate\":\"glikkxwslolb\",\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"m\"}}}]}")
+                    "{\"templates\":[{\"hubPattern\":\"ddhcratizzr\",\"eventPattern\":\"asxifto\",\"categoryPattern\":\"yzhftwesgogczh\",\"urlTemplate\":\"nnxk\",\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{\"resource\":\"mossxkkgthrrghxj\"}}},{\"hubPattern\":\"hqxvcxgfrpdsofbs\",\"eventPattern\":\"nsvbuswdv\",\"categoryPattern\":\"ybycnunvj\",\"urlTemplate\":\"rtkfawnopq\",\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{\"resource\":\"rtxdyuxzejnt\"}}},{\"hubPattern\":\"ewgioilqukrydxt\",\"eventPattern\":\"ieoxorggufhyaomt\",\"categoryPattern\":\"hhavgrvkffovjz\",\"urlTemplate\":\"pjbi\",\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{\"resource\":\"umvfclu\"}}}]}")
                 .toObject(ServerlessUpstreamSettings.class);
-        Assertions.assertEquals("qwjygvja", model.templates().get(0).hubPattern());
-        Assertions.assertEquals("blmhvkzuhb", model.templates().get(0).eventPattern());
-        Assertions.assertEquals("vyhgs", model.templates().get(0).categoryPattern());
-        Assertions.assertEquals("pbyrqufegxu", model.templates().get(0).urlTemplate());
-        Assertions.assertEquals(UpstreamAuthType.NONE, model.templates().get(0).auth().type());
-        Assertions.assertEquals("hlmctlpdngitvgb", model.templates().get(0).auth().managedIdentity().resource());
+        Assertions.assertEquals("ddhcratizzr", model.templates().get(0).hubPattern());
+        Assertions.assertEquals("asxifto", model.templates().get(0).eventPattern());
+        Assertions.assertEquals("yzhftwesgogczh", model.templates().get(0).categoryPattern());
+        Assertions.assertEquals("nnxk", model.templates().get(0).urlTemplate());
+        Assertions.assertEquals(UpstreamAuthType.MANAGED_IDENTITY, model.templates().get(0).auth().type());
+        Assertions.assertEquals("mossxkkgthrrghxj", model.templates().get(0).auth().managedIdentity().resource());
     }
 
     @org.junit.jupiter.api.Test
@@ -37,48 +37,40 @@ public final class ServerlessUpstreamSettingsTests {
                     Arrays
                         .asList(
                             new UpstreamTemplate()
-                                .withHubPattern("qwjygvja")
-                                .withEventPattern("blmhvkzuhb")
-                                .withCategoryPattern("vyhgs")
-                                .withUrlTemplate("pbyrqufegxu")
+                                .withHubPattern("ddhcratizzr")
+                                .withEventPattern("asxifto")
+                                .withCategoryPattern("yzhftwesgogczh")
+                                .withUrlTemplate("nnxk")
                                 .withAuth(
                                     new UpstreamAuthSettings()
-                                        .withType(UpstreamAuthType.NONE)
+                                        .withType(UpstreamAuthType.MANAGED_IDENTITY)
                                         .withManagedIdentity(
-                                            new ManagedIdentitySettings().withResource("hlmctlpdngitvgb"))),
+                                            new ManagedIdentitySettings().withResource("mossxkkgthrrghxj"))),
                             new UpstreamTemplate()
-                                .withHubPattern("rixkwmyijejve")
-                                .withEventPattern("hbpnaixexccbd")
-                                .withCategoryPattern("ax")
-                                .withUrlTemplate("cexdrrvqa")
+                                .withHubPattern("hqxvcxgfrpdsofbs")
+                                .withEventPattern("nsvbuswdv")
+                                .withCategoryPattern("ybycnunvj")
+                                .withUrlTemplate("rtkfawnopq")
                                 .withAuth(
                                     new UpstreamAuthSettings()
-                                        .withType(UpstreamAuthType.NONE)
-                                        .withManagedIdentity(new ManagedIdentitySettings().withResource("pwijnhy"))),
+                                        .withType(UpstreamAuthType.MANAGED_IDENTITY)
+                                        .withManagedIdentity(
+                                            new ManagedIdentitySettings().withResource("rtxdyuxzejnt"))),
                             new UpstreamTemplate()
-                                .withHubPattern("vfycxzb")
-                                .withEventPattern("oowvrv")
-                                .withCategoryPattern("gjqppy")
-                                .withUrlTemplate("s")
+                                .withHubPattern("ewgioilqukrydxt")
+                                .withEventPattern("ieoxorggufhyaomt")
+                                .withCategoryPattern("hhavgrvkffovjz")
+                                .withUrlTemplate("pjbi")
                                 .withAuth(
                                     new UpstreamAuthSettings()
-                                        .withType(UpstreamAuthType.NONE)
-                                        .withManagedIdentity(new ManagedIdentitySettings().withResource("yhgfipnsx"))),
-                            new UpstreamTemplate()
-                                .withHubPattern("cwaekrrjre")
-                                .withEventPattern("xt")
-                                .withCategoryPattern("umh")
-                                .withUrlTemplate("glikkxwslolb")
-                                .withAuth(
-                                    new UpstreamAuthSettings()
-                                        .withType(UpstreamAuthType.NONE)
-                                        .withManagedIdentity(new ManagedIdentitySettings().withResource("m")))));
+                                        .withType(UpstreamAuthType.MANAGED_IDENTITY)
+                                        .withManagedIdentity(new ManagedIdentitySettings().withResource("umvfclu")))));
         model = BinaryData.fromObject(model).toObject(ServerlessUpstreamSettings.class);
-        Assertions.assertEquals("qwjygvja", model.templates().get(0).hubPattern());
-        Assertions.assertEquals("blmhvkzuhb", model.templates().get(0).eventPattern());
-        Assertions.assertEquals("vyhgs", model.templates().get(0).categoryPattern());
-        Assertions.assertEquals("pbyrqufegxu", model.templates().get(0).urlTemplate());
-        Assertions.assertEquals(UpstreamAuthType.NONE, model.templates().get(0).auth().type());
-        Assertions.assertEquals("hlmctlpdngitvgb", model.templates().get(0).auth().managedIdentity().resource());
+        Assertions.assertEquals("ddhcratizzr", model.templates().get(0).hubPattern());
+        Assertions.assertEquals("asxifto", model.templates().get(0).eventPattern());
+        Assertions.assertEquals("yzhftwesgogczh", model.templates().get(0).categoryPattern());
+        Assertions.assertEquals("nnxk", model.templates().get(0).urlTemplate());
+        Assertions.assertEquals(UpstreamAuthType.MANAGED_IDENTITY, model.templates().get(0).auth().type());
+        Assertions.assertEquals("mossxkkgthrrghxj", model.templates().get(0).auth().managedIdentity().resource());
     }
 }

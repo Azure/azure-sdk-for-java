@@ -6,6 +6,7 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationInner;
+import com.azure.resourcemanager.servicenetworking.models.AssociationProperties;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 import java.util.HashMap;
@@ -15,32 +16,30 @@ import org.junit.jupiter.api.Assertions;
 public final class AssociationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssociationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"eju\"},\"provisioningState\":\"Canceled\"},\"location\":\"wrlyxwjkcprb\",\"tags\":{\"ysszdnrujqguh\":\"xgjvtbv\"},\"id\":\"uouq\",\"name\":\"prwzwbnguitnwui\",\"type\":\"gazxuf\"}")
-                .toObject(AssociationInner.class);
-        Assertions.assertEquals("wrlyxwjkcprb", model.location());
-        Assertions.assertEquals("xgjvtbv", model.tags().get("ysszdnrujqguh"));
-        Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("eju", model.subnet().id());
+        AssociationInner model = BinaryData.fromString(
+            "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"ktapspwgcuertu\"},\"provisioningState\":\"Updating\"},\"location\":\"svqwhbmdgbbjfd\",\"tags\":{\"fpfpsalgbquxigj\":\"bmbexppbhtqqro\",\"lnerkujysvleju\":\"jgzjaoyfhrtx\",\"kcprbnw\":\"fqawrlyxw\"},\"id\":\"xgjvtbv\",\"name\":\"ysszdnrujqguh\",\"type\":\"uouq\"}")
+            .toObject(AssociationInner.class);
+        Assertions.assertEquals("svqwhbmdgbbjfd", model.location());
+        Assertions.assertEquals("bmbexppbhtqqro", model.tags().get("fpfpsalgbquxigj"));
+        Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
+        Assertions.assertEquals("ktapspwgcuertu", model.properties().subnet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssociationInner model =
-            new AssociationInner()
-                .withLocation("wrlyxwjkcprb")
-                .withTags(mapOf("ysszdnrujqguh", "xgjvtbv"))
-                .withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnet().withId("eju"));
+        AssociationInner model = new AssociationInner().withLocation("svqwhbmdgbbjfd")
+            .withTags(
+                mapOf("fpfpsalgbquxigj", "bmbexppbhtqqro", "lnerkujysvleju", "jgzjaoyfhrtx", "kcprbnw", "fqawrlyxw"))
+            .withProperties(new AssociationProperties().withAssociationType(AssociationType.SUBNETS)
+                .withSubnet(new AssociationSubnet().withId("ktapspwgcuertu")));
         model = BinaryData.fromObject(model).toObject(AssociationInner.class);
-        Assertions.assertEquals("wrlyxwjkcprb", model.location());
-        Assertions.assertEquals("xgjvtbv", model.tags().get("ysszdnrujqguh"));
-        Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("eju", model.subnet().id());
+        Assertions.assertEquals("svqwhbmdgbbjfd", model.location());
+        Assertions.assertEquals("bmbexppbhtqqro", model.tags().get("fpfpsalgbquxigj"));
+        Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
+        Assertions.assertEquals("ktapspwgcuertu", model.properties().subnet().id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

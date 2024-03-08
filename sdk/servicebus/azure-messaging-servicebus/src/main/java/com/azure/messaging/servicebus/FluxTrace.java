@@ -60,7 +60,7 @@ final class FluxTrace extends FluxOperator<ServiceBusMessageContext, ServiceBusM
                 return;
             }
 
-            Context span = instrumentation.instrumentProcess("ServiceBus.process", message.getMessage(), Context.NONE);
+            Context span = instrumentation.startProcessInstrumentation("ServiceBus.process", message.getMessage(), Context.NONE);
             message.getMessage().setContext(span);
             AutoCloseable scope = tracer.makeSpanCurrent(span);
             try {

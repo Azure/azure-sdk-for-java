@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkSubnetUsageParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkSubnetUsageParameter model =
-            BinaryData
-                .fromString("{\"virtualNetworkArmResourceId\":\"qblylsyxkqj\"}")
+        VirtualNetworkSubnetUsageParameter model
+            = BinaryData.fromString("{\"virtualNetworkArmResourceId\":\"rtawcoezb\"}")
                 .toObject(VirtualNetworkSubnetUsageParameter.class);
-        Assertions.assertEquals("qblylsyxkqj", model.virtualNetworkArmResourceId());
+        Assertions.assertEquals("rtawcoezb", model.virtualNetworkArmResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkSubnetUsageParameter model =
-            new VirtualNetworkSubnetUsageParameter().withVirtualNetworkArmResourceId("qblylsyxkqj");
+        VirtualNetworkSubnetUsageParameter model
+            = new VirtualNetworkSubnetUsageParameter().withVirtualNetworkArmResourceId("rtawcoezb");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkSubnetUsageParameter.class);
-        Assertions.assertEquals("qblylsyxkqj", model.virtualNetworkArmResourceId());
+        Assertions.assertEquals("rtawcoezb", model.virtualNetworkArmResourceId());
     }
 }

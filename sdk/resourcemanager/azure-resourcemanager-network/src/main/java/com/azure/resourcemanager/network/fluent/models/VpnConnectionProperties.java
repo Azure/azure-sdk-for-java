@@ -15,7 +15,9 @@ import com.azure.resourcemanager.network.models.VpnConnectionStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for VpnConnection. */
+/**
+ * Parameters for VpnConnection.
+ */
 @Fluent
 public final class VpnConnectionProperties {
     /*
@@ -132,13 +134,15 @@ public final class VpnConnectionProperties {
     @JsonProperty(value = "routingConfiguration")
     private RoutingConfiguration routingConfiguration;
 
-    /** Creates an instance of VpnConnectionProperties class. */
+    /**
+     * Creates an instance of VpnConnectionProperties class.
+     */
     public VpnConnectionProperties() {
     }
 
     /**
      * Get the remoteVpnSite property: Id of the connected vpn site.
-     *
+     * 
      * @return the remoteVpnSite value.
      */
     public SubResource remoteVpnSite() {
@@ -147,7 +151,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the remoteVpnSite property: Id of the connected vpn site.
-     *
+     * 
      * @param remoteVpnSite the remoteVpnSite value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -158,7 +162,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the routingWeight property: Routing weight for vpn connection.
-     *
+     * 
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
@@ -167,7 +171,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the routingWeight property: Routing weight for vpn connection.
-     *
+     * 
      * @param routingWeight the routingWeight value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -178,7 +182,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the dpdTimeoutSeconds property: DPD timeout in seconds for vpn connection.
-     *
+     * 
      * @return the dpdTimeoutSeconds value.
      */
     public Integer dpdTimeoutSeconds() {
@@ -187,7 +191,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the dpdTimeoutSeconds property: DPD timeout in seconds for vpn connection.
-     *
+     * 
      * @param dpdTimeoutSeconds the dpdTimeoutSeconds value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -198,7 +202,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the connectionStatus property: The connection status.
-     *
+     * 
      * @return the connectionStatus value.
      */
     public VpnConnectionStatus connectionStatus() {
@@ -207,7 +211,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the vpnConnectionProtocolType property: Connection protocol used for this connection.
-     *
+     * 
      * @return the vpnConnectionProtocolType value.
      */
     public VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType() {
@@ -216,19 +220,19 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the vpnConnectionProtocolType property: Connection protocol used for this connection.
-     *
+     * 
      * @param vpnConnectionProtocolType the vpnConnectionProtocolType value to set.
      * @return the VpnConnectionProperties object itself.
      */
-    public VpnConnectionProperties withVpnConnectionProtocolType(
-        VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType) {
+    public VpnConnectionProperties
+        withVpnConnectionProtocolType(VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType) {
         this.vpnConnectionProtocolType = vpnConnectionProtocolType;
         return this;
     }
 
     /**
      * Get the ingressBytesTransferred property: Ingress bytes transferred.
-     *
+     * 
      * @return the ingressBytesTransferred value.
      */
     public Long ingressBytesTransferred() {
@@ -237,7 +241,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the egressBytesTransferred property: Egress bytes transferred.
-     *
+     * 
      * @return the egressBytesTransferred value.
      */
     public Long egressBytesTransferred() {
@@ -246,7 +250,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the connectionBandwidth property: Expected bandwidth in MBPS.
-     *
+     * 
      * @return the connectionBandwidth value.
      */
     public Integer connectionBandwidth() {
@@ -255,7 +259,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the connectionBandwidth property: Expected bandwidth in MBPS.
-     *
+     * 
      * @param connectionBandwidth the connectionBandwidth value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -266,7 +270,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the sharedKey property: SharedKey for the vpn connection.
-     *
+     * 
      * @return the sharedKey value.
      */
     public String sharedKey() {
@@ -275,7 +279,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the sharedKey property: SharedKey for the vpn connection.
-     *
+     * 
      * @param sharedKey the sharedKey value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -286,7 +290,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the enableBgp property: EnableBgp flag.
-     *
+     * 
      * @return the enableBgp value.
      */
     public Boolean enableBgp() {
@@ -295,7 +299,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the enableBgp property: EnableBgp flag.
-     *
+     * 
      * @param enableBgp the enableBgp value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -306,7 +310,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
+     * 
      * @return the usePolicyBasedTrafficSelectors value.
      */
     public Boolean usePolicyBasedTrafficSelectors() {
@@ -315,7 +319,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
+     * 
      * @param usePolicyBasedTrafficSelectors the usePolicyBasedTrafficSelectors value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -326,7 +330,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     *
+     * 
      * @return the ipsecPolicies value.
      */
     public List<IpsecPolicy> ipsecPolicies() {
@@ -335,7 +339,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     *
+     * 
      * @param ipsecPolicies the ipsecPolicies value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -346,7 +350,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
+     * 
      * @return the trafficSelectorPolicies value.
      */
     public List<TrafficSelectorPolicy> trafficSelectorPolicies() {
@@ -355,7 +359,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the trafficSelectorPolicies property: The Traffic Selector Policies to be considered by this connection.
-     *
+     * 
      * @param trafficSelectorPolicies the trafficSelectorPolicies value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -366,7 +370,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the enableRateLimiting property: EnableBgp flag.
-     *
+     * 
      * @return the enableRateLimiting value.
      */
     public Boolean enableRateLimiting() {
@@ -375,7 +379,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the enableRateLimiting property: EnableBgp flag.
-     *
+     * 
      * @param enableRateLimiting the enableRateLimiting value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -386,7 +390,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the enableInternetSecurity property: Enable internet security.
-     *
+     * 
      * @return the enableInternetSecurity value.
      */
     public Boolean enableInternetSecurity() {
@@ -395,7 +399,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the enableInternetSecurity property: Enable internet security.
-     *
+     * 
      * @param enableInternetSecurity the enableInternetSecurity value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -406,7 +410,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
+     * 
      * @return the useLocalAzureIpAddress value.
      */
     public Boolean useLocalAzureIpAddress() {
@@ -415,7 +419,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
+     * 
      * @param useLocalAzureIpAddress the useLocalAzureIpAddress value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -426,7 +430,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -435,7 +439,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the vpnLinkConnections property: List of all vpn site link connections to the gateway.
-     *
+     * 
      * @return the vpnLinkConnections value.
      */
     public List<VpnSiteLinkConnectionInner> vpnLinkConnections() {
@@ -444,7 +448,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the vpnLinkConnections property: List of all vpn site link connections to the gateway.
-     *
+     * 
      * @param vpnLinkConnections the vpnLinkConnections value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -456,7 +460,7 @@ public final class VpnConnectionProperties {
     /**
      * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @return the routingConfiguration value.
      */
     public RoutingConfiguration routingConfiguration() {
@@ -466,7 +470,7 @@ public final class VpnConnectionProperties {
     /**
      * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @param routingConfiguration the routingConfiguration value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -477,7 +481,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

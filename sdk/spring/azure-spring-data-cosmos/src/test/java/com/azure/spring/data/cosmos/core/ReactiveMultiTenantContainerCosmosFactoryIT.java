@@ -94,21 +94,21 @@ public class ReactiveMultiTenantContainerCosmosFactoryIT {
         // Create testContainer1 and add TEST_PERSON_1 to it
         cosmosFactory.manuallySetContainerName = testContainer1;
         reactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
-        reactiveCosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class).block();
+        reactiveCosmosTemplate.deleteAll(reactiveCosmosTemplate.getContainerNameOverride(personInfo.getContainerName()), Person.class).block();
         assertThat(cosmosFactory.overrideContainerName()).isEqualTo(testContainer1);
         reactiveCosmosTemplate.insert(TEST_PERSON_1, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_1))).block();
 
         // Create testContainer1 and add TEST_PERSON_2 to it
         cosmosFactory.manuallySetContainerName = testContainer2;
         reactiveCosmosTemplate.createContainerIfNotExists(personInfo).block();
-        reactiveCosmosTemplate.deleteAll(personInfo.getContainerName(), Person.class).block();
+        reactiveCosmosTemplate.deleteAll(reactiveCosmosTemplate.getContainerNameOverride(personInfo.getContainerName()), Person.class).block();
         assertThat(cosmosFactory.overrideContainerName()).isEqualTo(testContainer2);
         reactiveCosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2))).block();
 
         // Check that testContainer2 has the correct contents
         List<Person> expectedResultsContainer2 = new ArrayList<>();
         expectedResultsContainer2.add(TEST_PERSON_2);
-        Flux<Person> fluxDB2 = reactiveCosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
+        Flux<Person> fluxDB2 = reactiveCosmosTemplate.findAll(reactiveCosmosTemplate.getContainerNameOverride(personInfo.getContainerName()), Person.class);
         StepVerifier.create(fluxDB2).expectNextCount(1).verifyComplete();
         List<Person> resultDB2 = new ArrayList<>();
         fluxDB2.toIterable().forEach(resultDB2::add);
@@ -118,7 +118,7 @@ public class ReactiveMultiTenantContainerCosmosFactoryIT {
         cosmosFactory.manuallySetContainerName = testContainer1;
         List<Person> expectedResultsContainer1 = new ArrayList<>();
         expectedResultsContainer1.add(TEST_PERSON_1);
-        Flux<Person> fluxDB1 = reactiveCosmosTemplate.findAll(personInfo.getContainerName(), Person.class);
+        Flux<Person> fluxDB1 = reactiveCosmosTemplate.findAll(reactiveCosmosTemplate.getContainerNameOverride(personInfo.getContainerName()), Person.class);
         StepVerifier.create(fluxDB1).expectNextCount(1).verifyComplete();
         List<Person> resultDB1 = new ArrayList<>();
         fluxDB1.toIterable().forEach(resultDB1::add);

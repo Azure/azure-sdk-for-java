@@ -3,12 +3,10 @@
 
 package com.azure.communication.jobrouter.implementation.converters;
 
-import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.LabelValueConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValueConstructorProxy;
 import com.azure.communication.jobrouter.implementation.models.CancelExceptionActionInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionActionInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
-import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyItemInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionRuleInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionTriggerInternal;
 import com.azure.communication.jobrouter.implementation.models.ManualReclassifyExceptionActionInternal;
@@ -19,23 +17,17 @@ import com.azure.communication.jobrouter.models.CancelExceptionAction;
 import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.ExceptionAction;
 import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.ExceptionPolicyItem;
 import com.azure.communication.jobrouter.models.ExceptionRule;
 import com.azure.communication.jobrouter.models.ExceptionTrigger;
 import com.azure.communication.jobrouter.models.ManualReclassifyExceptionAction;
 import com.azure.communication.jobrouter.models.QueueLengthExceptionTrigger;
 import com.azure.communication.jobrouter.models.ReclassifyExceptionAction;
-import com.azure.communication.jobrouter.models.UpdateExceptionPolicyOptions;
 import com.azure.communication.jobrouter.models.WaitTimeExceptionTrigger;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
-import com.azure.core.util.ETag;
-import reactor.core.publisher.Flux;
 
-import java.util.HashMap;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -43,79 +35,58 @@ import java.util.stream.Collectors;
  */
 public class ExceptionPolicyAdapter {
     /**
-     * Converts {@link CreateExceptionPolicyOptions} to {@link ExceptionPolicyInternal}.
+     * Converts {@link CreateExceptionPolicyOptions} to {@link ExceptionPolicy}.
      * @param createExceptionPolicyOptions
      * @return exception policy.
      */
     public static ExceptionPolicyInternal convertCreateOptionsToExceptionPolicy(CreateExceptionPolicyOptions createExceptionPolicyOptions) {
         return new ExceptionPolicyInternal()
             .setName(createExceptionPolicyOptions.getName())
-            .setExceptionRules(convertExceptionRulesToInternal(createExceptionPolicyOptions.getExceptionRules()));
+            .setExceptionRules(createExceptionPolicyOptions.getExceptionRules()
+                .stream().map(rule -> convertExceptionRule(rule))
+                .collect(Collectors.toList()));
     }
 
-    /**
-     * Converts {@link UpdateExceptionPolicyOptions} to {@link ExceptionPolicyInternal}.
-     * @param updateExceptionPolicyOptions
-     * @return exception policy.
-     */
-    public static ExceptionPolicyInternal convertUpdateOptionsToExceptionPolicy(UpdateExceptionPolicyOptions updateExceptionPolicyOptions) {
-        return new ExceptionPolicyInternal()
-            .setName(updateExceptionPolicyOptions.getName())
-            .setExceptionRules(convertExceptionRulesToInternal(updateExceptionPolicyOptions.getExceptionRules()));
-    }
-
-    public static PagedFlux<ExceptionPolicyItem> convertPagedFluxToPublic(PagedFlux<ExceptionPolicyItemInternal> internalPagedFlux) {
-        final Function<PagedResponse<ExceptionPolicyItemInternal>, PagedResponse<ExceptionPolicyItem>> responseMapper
-            = internalResponse -> new PagedResponseBase<Void, ExceptionPolicyItem>(internalResponse.getRequest(),
-            internalResponse.getStatusCode(),
-            internalResponse.getHeaders(),
-            internalResponse.getValue()
-                .stream()
-                .map(internal -> new ExceptionPolicyItem()
-                    .setExceptionPolicy(ExceptionPolicyConstructorProxy.create(internal.getExceptionPolicy()))
-                    .setEtag(new ETag(internal.getEtag())))
-                .collect(Collectors.toList()),
-            internalResponse.getContinuationToken(),
-            null);
-
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<ExceptionPolicyItemInternal>> flux = (continuationToken == null)
-                ? internalPagedFlux.byPage()
-                : internalPagedFlux.byPage(continuationToken);
-            return flux.map(responseMapper);
-        });
-    }
-
-    public static Map<String, ExceptionRuleInternal> convertExceptionRulesToInternal(Map<String, ExceptionRule> rules) {
-        return rules != null ? rules.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey, entry -> new ExceptionRuleInternal()
-                .setTrigger(convertExceptionTriggerToInternal(entry.getValue().getTrigger()))
-                .setActions(entry.getValue().getActions().entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey,
-                        actions -> convertExceptionActionToInternal(actions.getValue()))))))
-            : new HashMap<>();
-    }
-
-    public static Map<String, ExceptionRule> convertExceptionRulesToPublic(Map<String, ExceptionRuleInternal> rules) {
-        return rules != null ? rules.entrySet().stream()
-            .collect(Collectors.toMap(Map.Entry::getKey,
-                entry -> new ExceptionRule(convertExceptionTriggerToPublic(entry.getValue().getTrigger()),
-                entry.getValue().getActions().entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey,
-                        actions -> convertExceptionActionToPublic(actions.getValue()))))))
-            : new HashMap<>();
-    }
-
-    public static ExceptionTriggerInternal convertExceptionTriggerToInternal(ExceptionTrigger trigger) {
-        if (trigger instanceof QueueLengthExceptionTrigger) {
-            QueueLengthExceptionTrigger queueLength = (QueueLengthExceptionTrigger) trigger;
-            return new QueueLengthExceptionTriggerInternal().setThreshold(queueLength.getThreshold());
-        } else if (trigger instanceof WaitTimeExceptionTrigger) {
-            WaitTimeExceptionTrigger waitTime = (WaitTimeExceptionTrigger) trigger;
-            return new WaitTimeExceptionTriggerInternal().setThresholdSeconds(waitTime.getThresholdSeconds());
+    private static ExceptionTriggerInternal convertExceptionTrigger(ExceptionTrigger exceptionTrigger) {
+        ExceptionTriggerInternal exceptionTriggerInternal = null;
+        if (exceptionTrigger.getClass() == QueueLengthExceptionTrigger.class) {
+            QueueLengthExceptionTrigger queueLengthExceptionTrigger = (QueueLengthExceptionTrigger) exceptionTrigger;
+            exceptionTriggerInternal = new QueueLengthExceptionTriggerInternal(queueLengthExceptionTrigger.getThreshold());
+        } else if (exceptionTrigger.getClass() == WaitTimeExceptionTrigger.class) {
+            WaitTimeExceptionTrigger waitTimeExceptionTrigger = (WaitTimeExceptionTrigger) exceptionTrigger;
+            exceptionTriggerInternal = new WaitTimeExceptionTriggerInternal(waitTimeExceptionTrigger.getThreshold().getSeconds());
         }
+        return exceptionTriggerInternal;
+    }
 
-        return null;
+    private static ExceptionActionInternal convertExceptionAction(ExceptionAction exceptionAction) {
+        ExceptionActionInternal exceptionActionInternal = null;
+        if (exceptionAction.getClass() == CancelExceptionAction.class) {
+            CancelExceptionAction cancelExceptionAction = (CancelExceptionAction) exceptionAction;
+            exceptionActionInternal = new CancelExceptionActionInternal()
+                .setNote(cancelExceptionAction.getNote())
+                .setDispositionCode(cancelExceptionAction.getDispositionCode());
+        } else if (exceptionAction.getClass() == ManualReclassifyExceptionAction.class) {
+            ManualReclassifyExceptionAction manualReclassifyExceptionAction = (ManualReclassifyExceptionAction) exceptionAction;
+            exceptionActionInternal = new ManualReclassifyExceptionActionInternal()
+                .setPriority(manualReclassifyExceptionAction.getPriority())
+                .setQueueId(manualReclassifyExceptionAction.getQueueId())
+                .setWorkerSelectors(manualReclassifyExceptionAction.getWorkerSelectors()
+                    .stream()
+                    .map(ws -> LabelSelectorAdapter.convertWorkerSelectorToInternal(ws))
+                    .collect(Collectors.toList()));
+        }
+        return exceptionActionInternal;
+    }
+
+    private static ExceptionRuleInternal convertExceptionRule(ExceptionRule exceptionRule) {
+        String id = exceptionRule.getId();
+        ExceptionTriggerInternal exceptionTriggerInternal = convertExceptionTrigger(exceptionRule.getTrigger());
+        List<ExceptionActionInternal> exceptionActionInternalList = exceptionRule.getActions()
+            .stream()
+            .map(action -> convertExceptionAction(action))
+            .collect(Collectors.toList());
+        return new ExceptionRuleInternal(id, exceptionTriggerInternal, exceptionActionInternalList);
     }
 
     public static ExceptionTrigger convertExceptionTriggerToPublic(ExceptionTriggerInternal trigger) {
@@ -124,31 +95,7 @@ public class ExceptionPolicyAdapter {
             return new QueueLengthExceptionTrigger(queueLength.getThreshold());
         } else if (trigger instanceof WaitTimeExceptionTriggerInternal) {
             WaitTimeExceptionTriggerInternal waitTime = (WaitTimeExceptionTriggerInternal) trigger;
-            return new WaitTimeExceptionTrigger(waitTime.getThresholdSeconds());
-        }
-
-        return null;
-    }
-
-    public static ExceptionActionInternal convertExceptionActionToInternal(ExceptionAction action) {
-        if (action instanceof CancelExceptionAction) {
-            CancelExceptionAction cancel = (CancelExceptionAction) action;
-            return new CancelExceptionActionInternal()
-                .setNote(cancel.getNote())
-                .setDispositionCode(cancel.getDispositionCode());
-        } else if (action instanceof ManualReclassifyExceptionAction) {
-            ManualReclassifyExceptionAction manualReclassify = (ManualReclassifyExceptionAction) action;
-            return new ManualReclassifyExceptionActionInternal()
-                .setPriority(manualReclassify.getPriority())
-                .setQueueId(manualReclassify.getQueueId())
-                .setWorkerSelectors(manualReclassify.getWorkerSelectors().stream()
-                    .map(LabelSelectorAdapter::convertWorkerSelectorToInternal).collect(Collectors.toList()));
-        } else if (action instanceof ReclassifyExceptionAction) {
-            ReclassifyExceptionAction reclassify = (ReclassifyExceptionAction) action;
-            return new ReclassifyExceptionActionInternal()
-                .setClassificationPolicyId(reclassify.getClassificationPolicyId())
-                .setLabelsToUpsert(reclassify.getLabelsToUpsert().entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue())));
+            return new WaitTimeExceptionTrigger(Duration.ofSeconds((long) waitTime.getThresholdSeconds()));
         }
 
         return null;
@@ -172,9 +119,32 @@ public class ExceptionPolicyAdapter {
             return new ReclassifyExceptionAction()
                 .setClassificationPolicyId(reclassify.getClassificationPolicyId())
                 .setLabelsToUpsert(reclassify.getLabelsToUpsert().entrySet().stream()
-                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> LabelValueConstructorProxy.create(entry.getValue()))));
+                    .collect(Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
         }
 
         return null;
+    }
+
+    public static List<ExceptionRule> convertExceptionRulesToPublic(List<ExceptionRuleInternal> rules) {
+        return rules != null ? rules.stream()
+            .map(rule -> {
+                ExceptionTrigger trigger = convertExceptionTriggerToPublic(rule.getTrigger());
+                List<ExceptionAction> actions = rule.getActions().stream()
+                    .map(action -> convertExceptionActionToPublic(action))
+                    .collect(Collectors.toList());
+                return new ExceptionRule(rule.getId(), trigger, actions);
+            })
+            .collect(Collectors.toList()) : new ArrayList<ExceptionRule>();
+    }
+
+    public static ExceptionPolicyInternal convertExceptionPolicyToInternal(ExceptionPolicy exceptionPolicy) {
+        return new ExceptionPolicyInternal()
+            .setEtag(exceptionPolicy.getEtag())
+            .setId(exceptionPolicy.getId())
+            .setName(exceptionPolicy.getName())
+            .setExceptionRules(exceptionPolicy.getExceptionRules().stream()
+                .map(exceptionRule -> convertExceptionRule(exceptionRule))
+                .collect(Collectors.toList())
+            );
     }
 }

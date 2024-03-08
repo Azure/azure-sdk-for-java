@@ -55,7 +55,7 @@ class Mappings {
     }
 
     @Nullable
-    private static String convertToString(Object value, AttributeType type) {
+    public static String convertToString(Object value, AttributeType type) {
         switch (type) {
             case STRING:
             case BOOLEAN:

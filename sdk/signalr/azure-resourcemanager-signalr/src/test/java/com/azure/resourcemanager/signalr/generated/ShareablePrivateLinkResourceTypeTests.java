@@ -15,28 +15,28 @@ public final class ShareablePrivateLinkResourceTypeTests {
         ShareablePrivateLinkResourceType model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"miccwrwfscjfnyn\",\"properties\":{\"description\":\"ujiz\",\"groupId\":\"oqytibyowbblgy\",\"type\":\"utp\"}}")
+                    "{\"name\":\"t\",\"properties\":{\"description\":\"gxobfirclnp\",\"groupId\":\"iayz\",\"type\":\"ykhyawfvjlboxqvk\"}}")
                 .toObject(ShareablePrivateLinkResourceType.class);
-        Assertions.assertEquals("miccwrwfscjfnyn", model.name());
-        Assertions.assertEquals("ujiz", model.properties().description());
-        Assertions.assertEquals("oqytibyowbblgy", model.properties().groupId());
-        Assertions.assertEquals("utp", model.properties().type());
+        Assertions.assertEquals("t", model.name());
+        Assertions.assertEquals("gxobfirclnp", model.properties().description());
+        Assertions.assertEquals("iayz", model.properties().groupId());
+        Assertions.assertEquals("ykhyawfvjlboxqvk", model.properties().type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ShareablePrivateLinkResourceType model =
             new ShareablePrivateLinkResourceType()
-                .withName("miccwrwfscjfnyn")
+                .withName("t")
                 .withProperties(
                     new ShareablePrivateLinkResourceProperties()
-                        .withDescription("ujiz")
-                        .withGroupId("oqytibyowbblgy")
-                        .withType("utp"));
+                        .withDescription("gxobfirclnp")
+                        .withGroupId("iayz")
+                        .withType("ykhyawfvjlboxqvk"));
         model = BinaryData.fromObject(model).toObject(ShareablePrivateLinkResourceType.class);
-        Assertions.assertEquals("miccwrwfscjfnyn", model.name());
-        Assertions.assertEquals("ujiz", model.properties().description());
-        Assertions.assertEquals("oqytibyowbblgy", model.properties().groupId());
-        Assertions.assertEquals("utp", model.properties().type());
+        Assertions.assertEquals("t", model.name());
+        Assertions.assertEquals("gxobfirclnp", model.properties().description());
+        Assertions.assertEquals("iayz", model.properties().groupId());
+        Assertions.assertEquals("ykhyawfvjlboxqvk", model.properties().type());
     }
 }

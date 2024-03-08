@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlDatabaseCreateUpdatePro
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to create and update Cosmos DB SQL database. */
+/**
+ * Parameters to create and update Cosmos DB SQL database.
+ */
 @Fluent
 public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
     @JsonProperty(value = "properties", required = true)
     private SqlDatabaseCreateUpdateProperties innerProperties = new SqlDatabaseCreateUpdateProperties();
 
-    /** Creates an instance of SqlDatabaseCreateUpdateParameters class. */
+    /**
+     * Creates an instance of SqlDatabaseCreateUpdateParameters class.
+     */
     public SqlDatabaseCreateUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB SQL database.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlDatabaseCreateUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDatabaseCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
 
     /**
      * Get the resource property: The standard JSON format of a SQL database.
-     *
+     * 
      * @return the resource value.
      */
     public SqlDatabaseResource resource() {
@@ -57,7 +65,7 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
 
     /**
      * Set the resource property: The standard JSON format of a SQL database.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlDatabaseCreateUpdateParameters object itself.
      */
@@ -72,7 +80,7 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -82,7 +90,7 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the SqlDatabaseCreateUpdateParameters object itself.
      */
@@ -96,17 +104,15 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SqlDatabaseCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model SqlDatabaseCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

@@ -4,13 +4,13 @@
 package com.azure.data.appconfiguration.implementation;
 
 
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
@@ -44,7 +44,7 @@ public class CreateSnapshotUtilClient {
         this.service = service;
     }
 
-    public PollerFlux<PollResult, ConfigurationSnapshot> beginCreateSnapshot(String name,
+    public PollerFlux<PollOperationDetails, ConfigurationSnapshot> beginCreateSnapshot(String name,
         ConfigurationSnapshot snapshot) {
         try {
             return new PollerFlux<>(
@@ -54,7 +54,7 @@ public class CreateSnapshotUtilClient {
                         .map(response -> {
                             final Map<String, String> pollResponse = new HashMap<>();
                             pollResponse.put("id", response.getDeserializedHeaders().getOperationLocation());
-                            return BinaryData.fromObject(pollResponse).toObject(PollResult.class);
+                            return BinaryData.fromObject(pollResponse).toObject(PollOperationDetails.class);
                         })),
                 pollingOperation(
                     operationId -> service.getOperationDetailsWithResponseAsync(name, Context.NONE)),
@@ -70,7 +70,7 @@ public class CreateSnapshotUtilClient {
         }
     }
 
-    public SyncPoller<PollResult, ConfigurationSnapshot> beginCreateSnapshot(String name,
+    public SyncPoller<PollOperationDetails, ConfigurationSnapshot> beginCreateSnapshot(String name,
         ConfigurationSnapshot snapshot, Context context) {
         try {
             final Context finalContext = getNotNullContext(context);
@@ -93,8 +93,8 @@ public class CreateSnapshotUtilClient {
     }
 
     // Activation operation
-    private Function<PollingContext<PollResult>, Mono<PollResult>>
-        activationOperation(Mono<PollResult> operationResult) {
+    private Function<PollingContext<PollOperationDetails>, Mono<PollOperationDetails>>
+        activationOperation(Mono<PollOperationDetails> operationResult) {
         return pollingContext -> {
             try {
                 return operationResult;
@@ -104,7 +104,7 @@ public class CreateSnapshotUtilClient {
         };
     }
 
-    private Function<PollingContext<PollResult>, PollResult>
+    private Function<PollingContext<PollOperationDetails>, PollOperationDetails>
         activationOperationSync(String name, ConfigurationSnapshot snapshot, Context context) {
         return pollingContext -> {
             try {
@@ -113,7 +113,7 @@ public class CreateSnapshotUtilClient {
                     service.createSnapshotWithResponse(name, snapshot, finalContext);
                 final Map<String, String> pollResponse = new HashMap<>();
                 pollResponse.put("id", snapshotWithResponse.getDeserializedHeaders().getOperationLocation());
-                return BinaryData.fromObject(pollResponse).toObject(PollResult.class);
+                return BinaryData.fromObject(pollResponse).toObject(PollOperationDetails.class);
             } catch (RuntimeException ex) {
                 throw LOGGER.logExceptionAsError(ex);
             }
@@ -121,11 +121,11 @@ public class CreateSnapshotUtilClient {
     }
 
     // Polling operation
-    private Function<PollingContext<PollResult>, Mono<PollResponse<PollResult>>>
+    private Function<PollingContext<PollOperationDetails>, Mono<PollResponse<PollOperationDetails>>>
         pollingOperation(Function<String, Mono<Response<OperationDetails>>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<PollResult> pollResponse =
+                final PollResponse<PollOperationDetails> pollResponse =
                     pollingContext.getLatestResponse();
                 final String operationId = pollResponse.getValue().getOperationId();
                 return pollingFunction.apply(operationId)
@@ -137,11 +137,11 @@ public class CreateSnapshotUtilClient {
         };
     }
 
-    private Function<PollingContext<PollResult>, PollResponse<PollResult>>
+    private Function<PollingContext<PollOperationDetails>, PollResponse<PollOperationDetails>>
         pollingOperationSync(Function<String, Response<OperationDetails>> pollingFunction) {
         return pollingContext -> {
             try {
-                final PollResponse<PollResult> pollResponse =
+                final PollResponse<PollOperationDetails> pollResponse =
                     pollingContext.getLatestResponse();
                 return processResponse(pollingFunction.apply(pollResponse.getValue().getOperationId()), pollResponse);
             } catch (RuntimeException ex) {
@@ -151,7 +151,7 @@ public class CreateSnapshotUtilClient {
     }
 
     // Fetching operation
-    private Function<PollingContext<PollResult>,
+    private Function<PollingContext<PollOperationDetails>,
                         Mono<ConfigurationSnapshot>> fetchingOperation(
         Function<String, Mono<ConfigurationSnapshot>> fetchingFunction) {
         return pollingContext -> {
@@ -164,7 +164,7 @@ public class CreateSnapshotUtilClient {
         };
     }
 
-    private Function<PollingContext<PollResult>, ConfigurationSnapshot> fetchingOperationSync(
+    private Function<PollingContext<PollOperationDetails>, ConfigurationSnapshot> fetchingOperationSync(
         Function<String, ConfigurationSnapshot> fetchingFunction) {
         return pollingContext -> {
             try {
@@ -176,9 +176,9 @@ public class CreateSnapshotUtilClient {
         };
     }
 
-    private PollResponse<PollResult> processResponse(
+    private PollResponse<PollOperationDetails> processResponse(
         Response<OperationDetails> response,
-        PollResponse<PollResult> operationResultPollResponse) {
+        PollResponse<PollOperationDetails> operationResultPollResponse) {
         LongRunningOperationStatus status;
         State state = response.getValue().getStatus();
         if (NOT_STARTED.equals(state) || RUNNING.equals(state)) {

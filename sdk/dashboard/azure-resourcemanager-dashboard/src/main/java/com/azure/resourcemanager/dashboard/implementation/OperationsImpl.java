@@ -19,8 +19,8 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.dashboard.DashboardManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.dashboard.DashboardManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.dashboard.DashboardManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

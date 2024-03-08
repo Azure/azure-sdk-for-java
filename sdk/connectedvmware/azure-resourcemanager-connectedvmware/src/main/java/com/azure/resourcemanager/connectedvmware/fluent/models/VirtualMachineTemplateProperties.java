@@ -8,12 +8,13 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.connectedvmware.models.FirmwareType;
 import com.azure.resourcemanager.connectedvmware.models.NetworkInterface;
 import com.azure.resourcemanager.connectedvmware.models.OsType;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.azure.resourcemanager.connectedvmware.models.VirtualDisk;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the resource properties. */
+/** Describes the properties of a Virtual Machine Template. */
 @Fluent
 public final class VirtualMachineTemplateProperties {
     /*
@@ -127,10 +128,14 @@ public final class VirtualMachineTemplateProperties {
     private List<ResourceStatus> statuses;
 
     /*
-     * Gets or sets the provisioning state.
+     * Gets the provisioning state.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
+
+    /** Creates an instance of VirtualMachineTemplateProperties class. */
+    public VirtualMachineTemplateProperties() {
+    }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
@@ -332,11 +337,11 @@ public final class VirtualMachineTemplateProperties {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

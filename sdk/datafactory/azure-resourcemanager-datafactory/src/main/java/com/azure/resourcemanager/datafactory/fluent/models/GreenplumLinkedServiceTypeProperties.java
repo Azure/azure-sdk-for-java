@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Greenplum Database linked service properties. */
+/**
+ * Greenplum Database linked service properties.
+ */
 @Fluent
 public final class GreenplumLinkedServiceTypeProperties {
     /*
@@ -30,14 +32,16 @@ public final class GreenplumLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
-    /** Creates an instance of GreenplumLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of GreenplumLinkedServiceTypeProperties class.
+     */
     public GreenplumLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -47,7 +51,7 @@ public final class GreenplumLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the GreenplumLinkedServiceTypeProperties object itself.
      */
@@ -58,7 +62,7 @@ public final class GreenplumLinkedServiceTypeProperties {
 
     /**
      * Get the pwd property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the pwd value.
      */
     public AzureKeyVaultSecretReference pwd() {
@@ -67,7 +71,7 @@ public final class GreenplumLinkedServiceTypeProperties {
 
     /**
      * Set the pwd property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param pwd the pwd value to set.
      * @return the GreenplumLinkedServiceTypeProperties object itself.
      */
@@ -77,9 +81,9 @@ public final class GreenplumLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string.
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
     public String encryptedCredential() {
@@ -87,9 +91,9 @@ public final class GreenplumLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string.
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the GreenplumLinkedServiceTypeProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class GreenplumLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

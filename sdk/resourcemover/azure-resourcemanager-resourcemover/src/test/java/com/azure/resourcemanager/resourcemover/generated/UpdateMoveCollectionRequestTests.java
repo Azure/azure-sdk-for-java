@@ -18,31 +18,32 @@ public final class UpdateMoveCollectionRequestTests {
         UpdateMoveCollectionRequest model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"rkdtmlxh\":\"my\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"jtxukcdm\",\"tenantId\":\"rcryuanzwuxzdxta\"}}")
+                    "{\"tags\":{\"qs\":\"ygjofjdd\"},\"identity\":{\"type\":\"UserAssigned\",\"principalId\":\"ewnwreitjzyfl\",\"tenantId\":\"arhmofcqhsmy\"}}")
                 .toObject(UpdateMoveCollectionRequest.class);
-        Assertions.assertEquals("my", model.tags().get("rkdtmlxh"));
+        Assertions.assertEquals("ygjofjdd", model.tags().get("qs"));
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("jtxukcdm", model.identity().principalId());
-        Assertions.assertEquals("rcryuanzwuxzdxta", model.identity().tenantId());
+        Assertions.assertEquals("ewnwreitjzyfl", model.identity().principalId());
+        Assertions.assertEquals("arhmofcqhsmy", model.identity().tenantId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         UpdateMoveCollectionRequest model =
             new UpdateMoveCollectionRequest()
-                .withTags(mapOf("rkdtmlxh", "my"))
+                .withTags(mapOf("qs", "ygjofjdd"))
                 .withIdentity(
                     new Identity()
                         .withType(ResourceIdentityType.USER_ASSIGNED)
-                        .withPrincipalId("jtxukcdm")
-                        .withTenantId("rcryuanzwuxzdxta"));
+                        .withPrincipalId("ewnwreitjzyfl")
+                        .withTenantId("arhmofcqhsmy"));
         model = BinaryData.fromObject(model).toObject(UpdateMoveCollectionRequest.class);
-        Assertions.assertEquals("my", model.tags().get("rkdtmlxh"));
+        Assertions.assertEquals("ygjofjdd", model.tags().get("qs"));
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("jtxukcdm", model.identity().principalId());
-        Assertions.assertEquals("rcryuanzwuxzdxta", model.identity().tenantId());
+        Assertions.assertEquals("ewnwreitjzyfl", model.identity().principalId());
+        Assertions.assertEquals("arhmofcqhsmy", model.identity().tenantId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -30,44 +30,31 @@ public final class PreRulesResetCountersWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"priority\":\"epu\",\"ruleStackName\":\"vyjtcvu\",\"ruleListName\":\"asiz\",\"firewallName\":\"sfuughtuqfecjx\",\"ruleName\":\"gtuhxuicbu\"}";
+        String responseStr
+            = "{\"priority\":\"owftptnuwjtks\",\"ruleStackName\":\"gcgqyhleseyqrhvy\",\"ruleListName\":\"dotjvdk\",\"firewallName\":\"swskuk\",\"ruleName\":\"asbvw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RuleCounterReset response =
-            manager
-                .preRules()
-                .resetCountersWithResponse("nlusfnrd", "jxtxrdc", "tjvidt", com.azure.core.util.Context.NONE)
-                .getValue();
+        RuleCounterReset response = manager.preRules()
+            .resetCountersWithResponse("gsjgkzzlta", "hbzffovwmbjlzqs", "zpgvdwnapfd", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("vyjtcvu", response.ruleStackName());
-        Assertions.assertEquals("asiz", response.ruleListName());
-        Assertions.assertEquals("sfuughtuqfecjx", response.firewallName());
-        Assertions.assertEquals("gtuhxuicbu", response.ruleName());
+        Assertions.assertEquals("gcgqyhleseyqrhvy", response.ruleStackName());
+        Assertions.assertEquals("dotjvdk", response.ruleListName());
+        Assertions.assertEquals("swskuk", response.firewallName());
+        Assertions.assertEquals("asbvw", response.ruleName());
     }
 }

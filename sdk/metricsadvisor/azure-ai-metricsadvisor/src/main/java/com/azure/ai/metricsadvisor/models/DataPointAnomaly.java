@@ -24,6 +24,12 @@ public final class DataPointAnomaly {
     private Double value;
     private Double expectedValue;
 
+    /**
+     * Creates a new instance of DataPointAnomaly.
+     */
+    public DataPointAnomaly() {
+    }
+
     static {
         AnomalyHelper.setAccessor(new AnomalyHelper.AnomalyAccessor() {
             @Override

@@ -22,6 +22,10 @@ public final class MetricName {
     @JsonProperty(value = "localizedValue")
     private String localizedValue;
 
+    /** Creates an instance of MetricName class. */
+    public MetricName() {
+    }
+
     /**
      * Get the value property: The system name of the metric.
      *

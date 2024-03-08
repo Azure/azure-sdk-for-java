@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.StorageMigrationOptionsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Options for app content migration. */
+/**
+ * Options for app content migration.
+ */
 @Fluent
 public final class StorageMigrationOptions extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private StorageMigrationOptionsProperties innerProperties;
 
-    /** Creates an instance of StorageMigrationOptions class. */
+    /**
+     * Creates an instance of StorageMigrationOptions class.
+     */
     public StorageMigrationOptions() {
     }
 
     /**
      * Get the innerProperties property: StorageMigrationOptions resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StorageMigrationOptionsProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StorageMigrationOptions withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
 
     /**
      * Get the azurefilesConnectionString property: AzureFiles connection string.
-     *
+     * 
      * @return the azurefilesConnectionString value.
      */
     public String azurefilesConnectionString() {
@@ -48,7 +54,7 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
 
     /**
      * Set the azurefilesConnectionString property: AzureFiles connection string.
-     *
+     * 
      * @param azurefilesConnectionString the azurefilesConnectionString value to set.
      * @return the StorageMigrationOptions object itself.
      */
@@ -62,7 +68,7 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
 
     /**
      * Get the azurefilesShare property: AzureFiles share.
-     *
+     * 
      * @return the azurefilesShare value.
      */
     public String azurefilesShare() {
@@ -71,7 +77,7 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
 
     /**
      * Set the azurefilesShare property: AzureFiles share.
-     *
+     * 
      * @param azurefilesShare the azurefilesShare value to set.
      * @return the StorageMigrationOptions object itself.
      */
@@ -86,7 +92,7 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
     /**
      * Get the switchSiteAfterMigration property: &lt;code&gt;true&lt;/code&gt;if the app should be switched over;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the switchSiteAfterMigration value.
      */
     public Boolean switchSiteAfterMigration() {
@@ -96,7 +102,7 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
     /**
      * Set the switchSiteAfterMigration property: &lt;code&gt;true&lt;/code&gt;if the app should be switched over;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param switchSiteAfterMigration the switchSiteAfterMigration value to set.
      * @return the StorageMigrationOptions object itself.
      */
@@ -109,9 +115,9 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Get the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during copy
-     * operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * Get the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during
+     * copy operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * 
      * @return the blockWriteAccessToSite value.
      */
     public Boolean blockWriteAccessToSite() {
@@ -119,9 +125,9 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
     }
 
     /**
-     * Set the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during copy
-     * operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * Set the blockWriteAccessToSite property: &lt;code&gt;true&lt;/code&gt; if the app should be read only during
+     * copy operation; otherwise, &lt;code&gt;false&lt;/code&gt;.
+     * 
      * @param blockWriteAccessToSite the blockWriteAccessToSite value to set.
      * @return the StorageMigrationOptions object itself.
      */
@@ -135,7 +141,7 @@ public final class StorageMigrationOptions extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

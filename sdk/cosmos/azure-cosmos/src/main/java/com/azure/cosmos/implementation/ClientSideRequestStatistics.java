@@ -141,7 +141,15 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.excludedRegions = null;
         activityId = request.getActivityId().toString();
 
-        this.requestPayloadSizeInBytes = request.getContentLength();
+        if (request.getContentLength() > 0) {
+            this.requestPayloadSizeInBytes = request.getContentLength();
+        } else if (storeResultDiagnostics != null && storeResultDiagnostics.getStoreResponseDiagnostics() != null) {
+            this.requestPayloadSizeInBytes = storeResultDiagnostics
+                .getStoreResponseDiagnostics()
+                .getRntbdRequestLength();
+        } else {
+            this.requestPayloadSizeInBytes = 0;
+        }
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
@@ -677,6 +685,12 @@ public class ClientSideRequestStatistics {
                 generator.writeObjectField("systemInformation", systemInformation);
             } catch (Exception e) {
                 // Error while evaluating system information, do nothing
+            }
+
+            long diagnosticsProviderFatalErrorExecutionCount =
+                DiagnosticsProviderJvmFatalErrorMapper.getMapper().getMapperExecutionCount();
+            if (diagnosticsProviderFatalErrorExecutionCount > 0) {
+                generator.writeNumberField("jvmFatalErrorMapperExecutionCount", diagnosticsProviderFatalErrorExecutionCount);
             }
 
             generator.writeObjectField("clientCfgs", statistics.diagnosticsClientConfig);

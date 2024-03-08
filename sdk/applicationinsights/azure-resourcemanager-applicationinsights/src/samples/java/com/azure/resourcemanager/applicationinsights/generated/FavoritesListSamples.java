@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Favorites List. */
 public final class FavoritesListSamples {
     /*
@@ -19,6 +17,7 @@ public final class FavoritesListSamples {
     public static void favoritesList(com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .favorites()
-            .listWithResponse("my-resource-group", "my-ai-component", null, null, null, null, Context.NONE);
+            .listWithResponse(
+                "my-resource-group", "my-ai-component", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

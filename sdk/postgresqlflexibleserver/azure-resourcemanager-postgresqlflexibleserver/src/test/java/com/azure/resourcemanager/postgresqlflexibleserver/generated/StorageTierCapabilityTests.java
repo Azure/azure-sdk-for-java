@@ -10,11 +10,10 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.StorageTierCapa
 public final class StorageTierCapabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageTierCapability model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"q\",\"tierName\":\"ids\",\"iops\":2625716572119326025,\"isBaseline\":true,\"status\":\"laocqxtccmg\"}")
-                .toObject(StorageTierCapability.class);
+        StorageTierCapability model = BinaryData
+            .fromString(
+                "{\"name\":\"jzzvdud\",\"iops\":621270176,\"status\":\"Visible\",\"reason\":\"hotwmcynpwlbjnp\"}")
+            .toObject(StorageTierCapability.class);
     }
 
     @org.junit.jupiter.api.Test

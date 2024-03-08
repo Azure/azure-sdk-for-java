@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The allowed permission. */
+/**
+ * The allowed permission.
+ */
 public final class PermissionType extends ExpandableStringEnum<PermissionType> {
-    /** Static value Publisher for PermissionType. */
+    /**
+     * Static value Publisher for PermissionType.
+     */
     public static final PermissionType PUBLISHER = fromString("Publisher");
 
-    /** Static value Subscriber for PermissionType. */
+    /**
+     * Static value Subscriber for PermissionType.
+     */
     public static final PermissionType SUBSCRIBER = fromString("Subscriber");
 
     /**
      * Creates a new instance of PermissionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class PermissionType extends ExpandableStringEnum<PermissionType> {
 
     /**
      * Creates or finds a PermissionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PermissionType.
      */
@@ -38,7 +44,7 @@ public final class PermissionType extends ExpandableStringEnum<PermissionType> {
 
     /**
      * Gets known PermissionType values.
-     *
+     * 
      * @return known PermissionType values.
      */
     public static Collection<PermissionType> values() {

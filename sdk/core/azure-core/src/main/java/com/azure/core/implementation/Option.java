@@ -3,6 +3,8 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -10,7 +12,9 @@ import java.util.Objects;
  * The Option type to describe tri-state. Every Option instance is in one of the three states: a state representing a
  * non-null-value, null-value, or no-value.
  *
- * <p><strong>Code sample</strong></p>
+ * <p>
+ * <strong>Code sample</strong>
+ * </p>
  * <!-- src_embed com.azure.core.util.Option -->
  * <pre>
  * &#47;&#47; An Option with non-null-value.
@@ -46,6 +50,7 @@ import java.util.Objects;
  * @param <T> The value type.
  */
 public final class Option<T> {
+    private static final ClientLogger LOGGER = new ClientLogger(Option.class);
     private static final Option<?> UNINITIALIZED = new Option<>();
     private static final Option<?> EMPTY = new Option<>(null);
     private final boolean isInitialized;
@@ -107,7 +112,7 @@ public final class Option<T> {
      */
     public T getValue() {
         if (!this.isInitialized) {
-            throw new NoSuchElementException("No value initialized");
+            throw LOGGER.logExceptionAsError(new NoSuchElementException("No value initialized"));
         }
         return this.value;
     }
@@ -155,7 +160,6 @@ public final class Option<T> {
         }
         return Objects.hashCode(value);
     }
-
 
     private Option() {
         this.isInitialized = false;

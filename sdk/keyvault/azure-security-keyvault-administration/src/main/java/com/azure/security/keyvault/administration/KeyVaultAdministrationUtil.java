@@ -42,9 +42,6 @@ import com.azure.security.keyvault.administration.models.SetRoleDefinitionOption
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -313,8 +310,8 @@ class KeyVaultAdministrationUtil {
 
             return new KeyVaultRestoreOperation(restoreOperation.getStatus(), restoreOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(restoreOperation.getError()), restoreOperation.getJobId(),
-                longToOffsetDateTime(restoreOperation.getStartTime()),
-                longToOffsetDateTime(restoreOperation.getEndTime()));
+                restoreOperation.getStartTime(),
+                restoreOperation.getEndTime());
         } else if (operation instanceof SelectiveKeyRestoreOperation) {
             SelectiveKeyRestoreOperation selectiveKeyRestoreOperation = (SelectiveKeyRestoreOperation) operation;
 
@@ -322,24 +319,19 @@ class KeyVaultAdministrationUtil {
                 selectiveKeyRestoreOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(selectiveKeyRestoreOperation.getError()),
                 selectiveKeyRestoreOperation.getJobId(),
-                longToOffsetDateTime(selectiveKeyRestoreOperation.getStartTime()),
-                longToOffsetDateTime(selectiveKeyRestoreOperation.getEndTime()));
+                selectiveKeyRestoreOperation.getStartTime(),
+                selectiveKeyRestoreOperation.getEndTime());
         } else if (operation instanceof FullBackupOperation) {
             FullBackupOperation fullBackupOperation = (FullBackupOperation) operation;
 
             return new KeyVaultBackupOperation(fullBackupOperation.getStatus(), fullBackupOperation.getStatusDetails(),
                 createKeyVaultErrorFromError(fullBackupOperation.getError()), fullBackupOperation.getJobId(),
-                longToOffsetDateTime(fullBackupOperation.getStartTime()),
-                longToOffsetDateTime(fullBackupOperation.getEndTime()),
+                fullBackupOperation.getStartTime(),
+                fullBackupOperation.getEndTime(),
                 fullBackupOperation.getAzureStorageBlobContainerUri());
         } else {
             throw new UnsupportedOperationException();
         }
-    }
-
-    static OffsetDateTime longToOffsetDateTime(Long epochInSeconds) {
-        return epochInSeconds == null ? null
-            : OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochInSeconds), ZoneOffset.UTC);
     }
 
     static Context enableSyncRestProxy(Context context) {

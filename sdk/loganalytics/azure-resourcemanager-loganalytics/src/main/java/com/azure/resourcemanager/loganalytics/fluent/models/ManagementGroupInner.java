@@ -17,6 +17,10 @@ public final class ManagementGroupInner {
     @JsonProperty(value = "properties")
     private ManagementGroupProperties innerProperties;
 
+    /** Creates an instance of ManagementGroupInner class. */
+    public ManagementGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the management group.
      *

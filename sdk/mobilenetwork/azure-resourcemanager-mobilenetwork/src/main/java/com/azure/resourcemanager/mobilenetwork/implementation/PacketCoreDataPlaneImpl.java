@@ -13,6 +13,7 @@ import com.azure.resourcemanager.mobilenetwork.models.PacketCoreDataPlane;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 public final class PacketCoreDataPlaneImpl
@@ -56,6 +57,15 @@ public final class PacketCoreDataPlaneImpl
 
     public InterfaceProperties userPlaneAccessInterface() {
         return this.innerModel().userPlaneAccessInterface();
+    }
+
+    public List<String> userPlaneAccessVirtualIpv4Addresses() {
+        List<String> inner = this.innerModel().userPlaneAccessVirtualIpv4Addresses();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -207,6 +217,12 @@ public final class PacketCoreDataPlaneImpl
             this.updateParameters.withTags(tags);
             return this;
         }
+    }
+
+    public PacketCoreDataPlaneImpl withUserPlaneAccessVirtualIpv4Addresses(
+        List<String> userPlaneAccessVirtualIpv4Addresses) {
+        this.innerModel().withUserPlaneAccessVirtualIpv4Addresses(userPlaneAccessVirtualIpv4Addresses);
+        return this;
     }
 
     private boolean isInCreateMode() {

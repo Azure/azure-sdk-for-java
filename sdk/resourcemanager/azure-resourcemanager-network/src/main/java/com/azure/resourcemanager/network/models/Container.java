@@ -7,14 +7,20 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 
-/** Reference to container resource in remote resource provider. */
+/**
+ * Reference to container resource in remote resource provider.
+ */
 @Fluent
 public final class Container extends SubResource {
-    /** Creates an instance of Container class. */
+    /**
+     * Creates an instance of Container class.
+     */
     public Container() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withId(String id) {
         super.withId(id);
@@ -23,7 +29,7 @@ public final class Container extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -15,8 +15,7 @@ import java.util.List;
 @Fluent
 public final class SavedSearchInner extends ProxyResource {
     /*
-     * The ETag of the saved search. To override an existing saved search, use
-     * "*" or specify the current Etag
+     * The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag
      */
     @JsonProperty(value = "etag")
     private String etag;
@@ -26,6 +25,10 @@ public final class SavedSearchInner extends ProxyResource {
      */
     @JsonProperty(value = "properties", required = true)
     private SavedSearchProperties innerProperties = new SavedSearchProperties();
+
+    /** Creates an instance of SavedSearchInner class. */
+    public SavedSearchInner() {
+    }
 
     /**
      * Get the etag property: The ETag of the saved search. To override an existing saved search, use "*" or specify the

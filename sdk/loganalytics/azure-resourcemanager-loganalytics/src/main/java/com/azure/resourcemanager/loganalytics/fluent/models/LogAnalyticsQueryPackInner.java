@@ -20,6 +20,10 @@ public final class LogAnalyticsQueryPackInner extends QueryPacksResource {
     @JsonProperty(value = "properties", required = true)
     private LogAnalyticsQueryPackProperties innerProperties = new LogAnalyticsQueryPackProperties();
 
+    /** Creates an instance of LogAnalyticsQueryPackInner class. */
+    public LogAnalyticsQueryPackInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties that define a Log Analytics QueryPack resource.
      *

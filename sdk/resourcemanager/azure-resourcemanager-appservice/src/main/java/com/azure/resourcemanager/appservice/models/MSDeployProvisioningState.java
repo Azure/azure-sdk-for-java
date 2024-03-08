@@ -7,24 +7,38 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Provisioning state. */
+/**
+ * Provisioning state.
+ */
 public enum MSDeployProvisioningState {
-    /** Enum value accepted. */
+    /**
+     * Enum value accepted.
+     */
     ACCEPTED("accepted"),
 
-    /** Enum value running. */
+    /**
+     * Enum value running.
+     */
     RUNNING("running"),
 
-    /** Enum value succeeded. */
+    /**
+     * Enum value succeeded.
+     */
     SUCCEEDED("succeeded"),
 
-    /** Enum value failed. */
+    /**
+     * Enum value failed.
+     */
     FAILED("failed"),
 
-    /** Enum value canceled. */
+    /**
+     * Enum value canceled.
+     */
     CANCELED("canceled");
 
-    /** The actual serialized value for a MSDeployProvisioningState instance. */
+    /**
+     * The actual serialized value for a MSDeployProvisioningState instance.
+     */
     private final String value;
 
     MSDeployProvisioningState(String value) {
@@ -33,7 +47,7 @@ public enum MSDeployProvisioningState {
 
     /**
      * Parses a serialized value to a MSDeployProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MSDeployProvisioningState object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum MSDeployProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

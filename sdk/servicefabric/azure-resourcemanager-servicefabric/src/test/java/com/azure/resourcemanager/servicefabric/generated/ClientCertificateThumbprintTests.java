@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ClientCertificateThumbprintTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClientCertificateThumbprint model =
-            BinaryData
-                .fromString("{\"isAdmin\":false,\"certificateThumbprint\":\"ofjdde\"}")
+        ClientCertificateThumbprint model
+            = BinaryData.fromString("{\"isAdmin\":false,\"certificateThumbprint\":\"ofjdde\"}")
                 .toObject(ClientCertificateThumbprint.class);
         Assertions.assertEquals(false, model.isAdmin());
         Assertions.assertEquals("ofjdde", model.certificateThumbprint());
@@ -21,8 +20,8 @@ public final class ClientCertificateThumbprintTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientCertificateThumbprint model =
-            new ClientCertificateThumbprint().withIsAdmin(false).withCertificateThumbprint("ofjdde");
+        ClientCertificateThumbprint model
+            = new ClientCertificateThumbprint().withIsAdmin(false).withCertificateThumbprint("ofjdde");
         model = BinaryData.fromObject(model).toObject(ClientCertificateThumbprint.class);
         Assertions.assertEquals(false, model.isAdmin());
         Assertions.assertEquals("ofjdde", model.certificateThumbprint());

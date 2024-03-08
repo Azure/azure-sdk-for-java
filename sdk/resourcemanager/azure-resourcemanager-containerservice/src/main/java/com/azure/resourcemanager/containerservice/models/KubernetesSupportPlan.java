@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Different support tiers for AKS managed clusters. */
+/**
+ * Different support tiers for AKS managed clusters.
+ */
 public final class KubernetesSupportPlan extends ExpandableStringEnum<KubernetesSupportPlan> {
-    /** Static value KubernetesOfficial for KubernetesSupportPlan. */
+    /**
+     * Static value KubernetesOfficial for KubernetesSupportPlan.
+     */
     public static final KubernetesSupportPlan KUBERNETES_OFFICIAL = fromString("KubernetesOfficial");
 
-    /** Static value AKSLongTermSupport for KubernetesSupportPlan. */
+    /**
+     * Static value AKSLongTermSupport for KubernetesSupportPlan.
+     */
     public static final KubernetesSupportPlan AKSLONG_TERM_SUPPORT = fromString("AKSLongTermSupport");
 
     /**
      * Creates a new instance of KubernetesSupportPlan value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class KubernetesSupportPlan extends ExpandableStringEnum<Kubernetes
 
     /**
      * Creates or finds a KubernetesSupportPlan from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KubernetesSupportPlan.
      */
@@ -38,7 +44,7 @@ public final class KubernetesSupportPlan extends ExpandableStringEnum<Kubernetes
 
     /**
      * Gets known KubernetesSupportPlan values.
-     *
+     * 
      * @return known KubernetesSupportPlan values.
      */
     public static Collection<KubernetesSupportPlan> values() {

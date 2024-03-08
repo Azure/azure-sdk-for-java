@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Connector properties of a CDC table in terms of name / value pairs. */
+/**
+ * Connector properties of a CDC table in terms of name / value pairs.
+ */
 @Fluent
 public final class MapperDslConnectorProperties {
     /*
@@ -22,13 +24,15 @@ public final class MapperDslConnectorProperties {
     @JsonProperty(value = "value")
     private Object value;
 
-    /** Creates an instance of MapperDslConnectorProperties class. */
+    /**
+     * Creates an instance of MapperDslConnectorProperties class.
+     */
     public MapperDslConnectorProperties() {
     }
 
     /**
      * Get the name property: Name of the property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class MapperDslConnectorProperties {
 
     /**
      * Set the name property: Name of the property.
-     *
+     * 
      * @param name the name value to set.
      * @return the MapperDslConnectorProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class MapperDslConnectorProperties {
 
     /**
      * Get the value property: Value of the property.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -57,7 +61,7 @@ public final class MapperDslConnectorProperties {
 
     /**
      * Set the value property: Value of the property.
-     *
+     * 
      * @param value the value value to set.
      * @return the MapperDslConnectorProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class MapperDslConnectorProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

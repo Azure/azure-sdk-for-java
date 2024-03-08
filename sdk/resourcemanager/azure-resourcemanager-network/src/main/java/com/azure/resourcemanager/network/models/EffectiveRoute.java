@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Effective Route. */
+/**
+ * Effective Route.
+ */
 @Fluent
 public final class EffectiveRoute {
     /*
@@ -53,13 +55,15 @@ public final class EffectiveRoute {
     @JsonProperty(value = "nextHopType")
     private RouteNextHopType nextHopType;
 
-    /** Creates an instance of EffectiveRoute class. */
+    /**
+     * Creates an instance of EffectiveRoute class.
+     */
     public EffectiveRoute() {
     }
 
     /**
      * Get the name property: The name of the user defined route. This is optional.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +72,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the name property: The name of the user defined route. This is optional.
-     *
+     * 
      * @param name the name value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -80,7 +84,7 @@ public final class EffectiveRoute {
     /**
      * Get the disableBgpRoutePropagation property: If true, on-premises routes are not propagated to the network
      * interfaces in the subnet.
-     *
+     * 
      * @return the disableBgpRoutePropagation value.
      */
     public Boolean disableBgpRoutePropagation() {
@@ -90,7 +94,7 @@ public final class EffectiveRoute {
     /**
      * Set the disableBgpRoutePropagation property: If true, on-premises routes are not propagated to the network
      * interfaces in the subnet.
-     *
+     * 
      * @param disableBgpRoutePropagation the disableBgpRoutePropagation value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -101,7 +105,7 @@ public final class EffectiveRoute {
 
     /**
      * Get the source property: Who created the route.
-     *
+     * 
      * @return the source value.
      */
     public EffectiveRouteSource source() {
@@ -110,7 +114,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the source property: Who created the route.
-     *
+     * 
      * @param source the source value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -121,7 +125,7 @@ public final class EffectiveRoute {
 
     /**
      * Get the state property: The value of effective route.
-     *
+     * 
      * @return the state value.
      */
     public EffectiveRouteState state() {
@@ -130,7 +134,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the state property: The value of effective route.
-     *
+     * 
      * @param state the state value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -141,7 +145,7 @@ public final class EffectiveRoute {
 
     /**
      * Get the addressPrefix property: The address prefixes of the effective routes in CIDR notation.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public List<String> addressPrefix() {
@@ -150,7 +154,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the addressPrefix property: The address prefixes of the effective routes in CIDR notation.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -161,7 +165,7 @@ public final class EffectiveRoute {
 
     /**
      * Get the nextHopIpAddress property: The IP address of the next hop of the effective route.
-     *
+     * 
      * @return the nextHopIpAddress value.
      */
     public List<String> nextHopIpAddress() {
@@ -170,7 +174,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the nextHopIpAddress property: The IP address of the next hop of the effective route.
-     *
+     * 
      * @param nextHopIpAddress the nextHopIpAddress value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -181,7 +185,7 @@ public final class EffectiveRoute {
 
     /**
      * Get the nextHopType property: The type of Azure hop the packet should be sent to.
-     *
+     * 
      * @return the nextHopType value.
      */
     public RouteNextHopType nextHopType() {
@@ -190,7 +194,7 @@ public final class EffectiveRoute {
 
     /**
      * Set the nextHopType property: The type of Azure hop the packet should be sent to.
-     *
+     * 
      * @param nextHopType the nextHopType value to set.
      * @return the EffectiveRoute object itself.
      */
@@ -201,7 +205,7 @@ public final class EffectiveRoute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

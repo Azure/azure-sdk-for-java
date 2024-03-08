@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CrossRegionRestoreSettings model. */
+/**
+ * The CrossRegionRestoreSettings model.
+ */
 @Fluent
 public final class CrossRegionRestoreSettings {
     /*
@@ -16,13 +18,15 @@ public final class CrossRegionRestoreSettings {
     @JsonProperty(value = "state")
     private CrossRegionRestoreState state;
 
-    /** Creates an instance of CrossRegionRestoreSettings class. */
+    /**
+     * Creates an instance of CrossRegionRestoreSettings class.
+     */
     public CrossRegionRestoreSettings() {
     }
 
     /**
      * Get the state property: CrossRegionRestore state.
-     *
+     * 
      * @return the state value.
      */
     public CrossRegionRestoreState state() {
@@ -31,7 +35,7 @@ public final class CrossRegionRestoreSettings {
 
     /**
      * Set the state property: CrossRegionRestore state.
-     *
+     * 
      * @param state the state value to set.
      * @return the CrossRegionRestoreSettings object itself.
      */
@@ -42,7 +46,7 @@ public final class CrossRegionRestoreSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

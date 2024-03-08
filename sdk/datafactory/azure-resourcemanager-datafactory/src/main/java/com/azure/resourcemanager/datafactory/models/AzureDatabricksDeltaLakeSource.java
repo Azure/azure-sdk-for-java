@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Azure Databricks Delta Lake source. */
+/**
+ * A copy activity Azure Databricks Delta Lake source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDatabricksDeltaLakeSource")
 @Fluent
@@ -26,14 +28,16 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
     @JsonProperty(value = "exportSettings")
     private AzureDatabricksDeltaLakeExportCommand exportSettings;
 
-    /** Creates an instance of AzureDatabricksDeltaLakeSource class. */
+    /**
+     * Creates an instance of AzureDatabricksDeltaLakeSource class.
+     */
     public AzureDatabricksDeltaLakeSource() {
     }
 
     /**
      * Get the query property: Azure Databricks Delta Lake Sql query. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the query value.
      */
     public Object query() {
@@ -43,7 +47,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
     /**
      * Set the query property: Azure Databricks Delta Lake Sql query. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param query the query value to set.
      * @return the AzureDatabricksDeltaLakeSource object itself.
      */
@@ -54,7 +58,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
 
     /**
      * Get the exportSettings property: Azure Databricks Delta Lake export settings.
-     *
+     * 
      * @return the exportSettings value.
      */
     public AzureDatabricksDeltaLakeExportCommand exportSettings() {
@@ -63,7 +67,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
 
     /**
      * Set the exportSettings property: Azure Databricks Delta Lake export settings.
-     *
+     * 
      * @param exportSettings the exportSettings value to set.
      * @return the AzureDatabricksDeltaLakeSource object itself.
      */
@@ -72,28 +76,36 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeSource withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeSource withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeSource withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -102,7 +114,7 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

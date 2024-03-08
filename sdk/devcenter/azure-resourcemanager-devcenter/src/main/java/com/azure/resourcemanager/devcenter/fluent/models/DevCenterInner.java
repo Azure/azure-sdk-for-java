@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.devcenter.models.Encryption;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -105,6 +106,54 @@ public final class DevCenterInner extends Resource {
      */
     public String devCenterUri() {
         return this.innerProperties() == null ? null : this.innerProperties().devCenterUri();
+    }
+
+    /**
+     * Get the encryption property: Encryption settings to be used for server-side encryption for proprietary content
+     * (such as catalogs, logs, customizations).
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Encryption settings to be used for server-side encryption for proprietary content
+     * (such as catalogs, logs, customizations).
+     *
+     * @param encryption the encryption value to set.
+     * @return the DevCenterInner object itself.
+     */
+    public DevCenterInner withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DevCenterProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the displayName property: The display name of the devcenter.
+     *
+     * @return the displayName value.
+     */
+    public String displayName() {
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
+    }
+
+    /**
+     * Set the displayName property: The display name of the devcenter.
+     *
+     * @param displayName the displayName value to set.
+     * @return the DevCenterInner object itself.
+     */
+    public DevCenterInner withDisplayName(String displayName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DevCenterProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
+        return this;
     }
 
     /**

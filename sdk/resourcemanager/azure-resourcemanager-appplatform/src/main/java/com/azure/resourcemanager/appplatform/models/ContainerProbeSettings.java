@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container liveness and readiness probe settings. */
+/**
+ * Container liveness and readiness probe settings.
+ */
 @Fluent
 public final class ContainerProbeSettings {
     /*
@@ -17,8 +19,14 @@ public final class ContainerProbeSettings {
     private Boolean disableProbe;
 
     /**
+     * Creates an instance of ContainerProbeSettings class.
+     */
+    public ContainerProbeSettings() {
+    }
+
+    /**
      * Get the disableProbe property: Indicates whether disable the liveness and readiness probe.
-     *
+     * 
      * @return the disableProbe value.
      */
     public Boolean disableProbe() {
@@ -27,7 +35,7 @@ public final class ContainerProbeSettings {
 
     /**
      * Set the disableProbe property: Indicates whether disable the liveness and readiness probe.
-     *
+     * 
      * @param disableProbe the disableProbe value to set.
      * @return the ContainerProbeSettings object itself.
      */
@@ -38,7 +46,7 @@ public final class ContainerProbeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

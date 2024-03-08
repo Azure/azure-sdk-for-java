@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about the retry policy for an event subscription. */
+/**
+ * Information about the retry policy for an event subscription.
+ */
 @Fluent
 public final class RetryPolicy {
     /*
@@ -22,13 +24,15 @@ public final class RetryPolicy {
     @JsonProperty(value = "eventTimeToLiveInMinutes")
     private Integer eventTimeToLiveInMinutes;
 
-    /** Creates an instance of RetryPolicy class. */
+    /**
+     * Creates an instance of RetryPolicy class.
+     */
     public RetryPolicy() {
     }
 
     /**
      * Get the maxDeliveryAttempts property: Maximum number of delivery retry attempts for events.
-     *
+     * 
      * @return the maxDeliveryAttempts value.
      */
     public Integer maxDeliveryAttempts() {
@@ -37,7 +41,7 @@ public final class RetryPolicy {
 
     /**
      * Set the maxDeliveryAttempts property: Maximum number of delivery retry attempts for events.
-     *
+     * 
      * @param maxDeliveryAttempts the maxDeliveryAttempts value to set.
      * @return the RetryPolicy object itself.
      */
@@ -48,7 +52,7 @@ public final class RetryPolicy {
 
     /**
      * Get the eventTimeToLiveInMinutes property: Time To Live (in minutes) for events.
-     *
+     * 
      * @return the eventTimeToLiveInMinutes value.
      */
     public Integer eventTimeToLiveInMinutes() {
@@ -57,7 +61,7 @@ public final class RetryPolicy {
 
     /**
      * Set the eventTimeToLiveInMinutes property: Time To Live (in minutes) for events.
-     *
+     * 
      * @param eventTimeToLiveInMinutes the eventTimeToLiveInMinutes value to set.
      * @return the RetryPolicy object itself.
      */
@@ -68,7 +72,7 @@ public final class RetryPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

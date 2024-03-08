@@ -55,11 +55,10 @@ public final class ManagementGroupsClientImpl implements ManagementGroupsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
-    private interface ManagementGroupsService {
+    public interface ManagementGroupsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/managementGroups")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/managementGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<WorkspaceListManagementGroupsResult>> list(

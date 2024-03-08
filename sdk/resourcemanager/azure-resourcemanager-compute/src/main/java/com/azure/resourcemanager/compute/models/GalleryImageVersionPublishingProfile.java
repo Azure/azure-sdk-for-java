@@ -8,66 +8,84 @@ import com.azure.core.annotation.Fluent;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The publishing profile of a gallery image Version. */
+/**
+ * The publishing profile of a gallery image Version.
+ */
 @Fluent
 public final class GalleryImageVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
-    /** Creates an instance of GalleryImageVersionPublishingProfile class. */
+    /**
+     * Creates an instance of GalleryImageVersionPublishingProfile class.
+     */
     public GalleryImageVersionPublishingProfile() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageVersionPublishingProfile withTargetRegions(List<TargetRegion> targetRegions) {
         super.withTargetRegions(targetRegions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageVersionPublishingProfile withReplicaCount(Integer replicaCount) {
         super.withReplicaCount(replicaCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageVersionPublishingProfile withExcludeFromLatest(Boolean excludeFromLatest) {
         super.withExcludeFromLatest(excludeFromLatest);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageVersionPublishingProfile withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
         super.withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageVersionPublishingProfile withStorageAccountType(StorageAccountType storageAccountType) {
         super.withStorageAccountType(storageAccountType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryImageVersionPublishingProfile withReplicationMode(ReplicationMode replicationMode) {
         super.withReplicationMode(replicationMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public GalleryImageVersionPublishingProfile withTargetExtendedLocations(
-        List<GalleryTargetExtendedLocation> targetExtendedLocations) {
+    public GalleryImageVersionPublishingProfile
+        withTargetExtendedLocations(List<GalleryTargetExtendedLocation> targetExtendedLocations) {
         super.withTargetExtendedLocations(targetExtendedLocations);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

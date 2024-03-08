@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The related metadata items for the function. */
+/**
+ * The related metadata items for the function.
+ */
 @Fluent
 public final class MetadataFunctionRelated {
     /*
@@ -41,12 +43,15 @@ public final class MetadataFunctionRelated {
     @JsonProperty(value = "workspaces")
     private List<String> workspaces;
 
-    /** Creates an instance of MetadataFunctionRelated class. */
-    public MetadataFunctionRelated() {}
+    /**
+     * Creates an instance of MetadataFunctionRelated class.
+     */
+    public MetadataFunctionRelated() {
+    }
 
     /**
      * Get the tables property: The related tables for the function.
-     *
+     * 
      * @return the tables value.
      */
     public List<String> getTables() {
@@ -55,7 +60,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Set the tables property: The related tables for the function.
-     *
+     * 
      * @param tables the tables value to set.
      * @return the MetadataFunctionRelated object itself.
      */
@@ -66,7 +71,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Get the solutions property: The related Log Analytics solutions for the function.
-     *
+     * 
      * @return the solutions value.
      */
     public List<String> getSolutions() {
@@ -75,7 +80,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Set the solutions property: The related Log Analytics solutions for the function.
-     *
+     * 
      * @param solutions the solutions value to set.
      * @return the MetadataFunctionRelated object itself.
      */
@@ -86,7 +91,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Get the resourceTypes property: The related resource types for the function.
-     *
+     * 
      * @return the resourceTypes value.
      */
     public List<String> getResourceTypes() {
@@ -95,7 +100,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Set the resourceTypes property: The related resource types for the function.
-     *
+     * 
      * @param resourceTypes the resourceTypes value to set.
      * @return the MetadataFunctionRelated object itself.
      */
@@ -106,7 +111,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Get the categories property: The related categories for the function.
-     *
+     * 
      * @return the categories value.
      */
     public List<String> getCategories() {
@@ -115,7 +120,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Set the categories property: The related categories for the function.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the MetadataFunctionRelated object itself.
      */
@@ -126,7 +131,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Get the workspaces property: The related workspaces for the function.
-     *
+     * 
      * @return the workspaces value.
      */
     public List<String> getWorkspaces() {
@@ -135,7 +140,7 @@ public final class MetadataFunctionRelated {
 
     /**
      * Set the workspaces property: The related workspaces for the function.
-     *
+     * 
      * @param workspaces the workspaces value to set.
      * @return the MetadataFunctionRelated object itself.
      */
@@ -143,11 +148,4 @@ public final class MetadataFunctionRelated {
         this.workspaces = workspaces;
         return this;
     }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {}
 }

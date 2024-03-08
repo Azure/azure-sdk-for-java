@@ -11,20 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupProperties model =
-            BinaryData
-                .fromString(
-                    "{\"backupId\":\"r\",\"creationDate\":\"2021-06-25T23:16:19Z\",\"provisioningState\":\"squyfxrxxlep\",\"size\":589149955906359493,\"label\":\"jezwlwnw\",\"backupType\":\"Manual\",\"failureReason\":\"cvydypatdoo\",\"volumeName\":\"jkniodko\",\"useExistingSnapshot\":false}")
-                .toObject(BackupProperties.class);
-        Assertions.assertEquals("jezwlwnw", model.label());
-        Assertions.assertEquals(false, model.useExistingSnapshot());
+        BackupProperties model = BinaryData.fromString(
+            "{\"backupId\":\"qkgh\",\"creationDate\":\"2021-11-17T03:58:19Z\",\"provisioningState\":\"zwmk\",\"size\":1102306209532433694,\"label\":\"pjorwkqnyhg\",\"backupType\":\"Manual\",\"failureReason\":\"jivfxzsjabib\",\"volumeResourceId\":\"ystawfsdjpvkvp\",\"useExistingSnapshot\":true,\"snapshotName\":\"kzbzkdvncjabudu\",\"backupPolicyResourceId\":\"kakmokzh\"}")
+            .toObject(BackupProperties.class);
+        Assertions.assertEquals("pjorwkqnyhg", model.label());
+        Assertions.assertEquals("ystawfsdjpvkvp", model.volumeResourceId());
+        Assertions.assertEquals(true, model.useExistingSnapshot());
+        Assertions.assertEquals("kzbzkdvncjabudu", model.snapshotName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupProperties model = new BackupProperties().withLabel("jezwlwnw").withUseExistingSnapshot(false);
+        BackupProperties model = new BackupProperties().withLabel("pjorwkqnyhg").withVolumeResourceId("ystawfsdjpvkvp")
+            .withUseExistingSnapshot(true).withSnapshotName("kzbzkdvncjabudu");
         model = BinaryData.fromObject(model).toObject(BackupProperties.class);
-        Assertions.assertEquals("jezwlwnw", model.label());
-        Assertions.assertEquals(false, model.useExistingSnapshot());
+        Assertions.assertEquals("pjorwkqnyhg", model.label());
+        Assertions.assertEquals("ystawfsdjpvkvp", model.volumeResourceId());
+        Assertions.assertEquals(true, model.useExistingSnapshot());
+        Assertions.assertEquals("kzbzkdvncjabudu", model.snapshotName());
     }
 }

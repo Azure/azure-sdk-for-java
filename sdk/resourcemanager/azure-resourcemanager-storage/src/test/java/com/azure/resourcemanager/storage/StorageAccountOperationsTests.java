@@ -7,6 +7,8 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.SkuName;
@@ -184,5 +186,532 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertEquals(MinimumTlsVersion.TLS1_1, storageAccount.minimumTlsVersion());
         Assertions.assertFalse(storageAccount.isBlobPublicAccessAllowed());
         Assertions.assertFalse(storageAccount.isSharedKeyAccessAllowed());
+    }
+
+    @Test
+    public void canAllowCrossTenantReplicationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .disallowCrossTenantReplication()
+                .create();
+
+        Assertions.assertFalse(storageAccount.isAllowCrossTenantReplication());
+
+        storageAccount.update()
+            .allowCrossTenantReplication()
+            .apply();
+
+        Assertions.assertTrue(storageAccount.isAllowCrossTenantReplication());
+    }
+
+    @Test
+    public void canDisallowCrossTenantReplicationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .create();
+
+        Assertions.assertTrue(storageAccount.isAllowCrossTenantReplication());
+
+        storageAccount.update()
+            .disallowCrossTenantReplication()
+            .apply();
+
+        Assertions.assertFalse(storageAccount.isAllowCrossTenantReplication());
+    }
+
+    @Test
+    public void canEnableDefaultToOAuthAuthenticationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .create();
+
+        Assertions.assertFalse(storageAccount.isDefaultToOAuthAuthentication());
+
+        storageAccount.update()
+            .enableDefaultToOAuthAuthentication()
+            .apply();
+
+        Assertions.assertTrue(storageAccount.isDefaultToOAuthAuthentication());
+    }
+
+    @Test
+    public void canDisableDefaultToOAuthAuthenticationOnStorageAccount() {
+        StorageAccount storageAccount =
+            storageManager
+                .storageAccounts()
+                .define(saName)
+                .withRegion(Region.US_EAST2)
+                .withNewResourceGroup(rgName)
+                .withSku(StorageAccountSkuType.STANDARD_LRS)
+                .enableDefaultToOAuthAuthentication()
+                .create();
+
+        Assertions.assertTrue(storageAccount.isDefaultToOAuthAuthentication());
+
+        storageAccount.update()
+            .disableDefaultToOAuthAuthentication()
+            .apply();
+
+        Assertions.assertFalse(storageAccount.isDefaultToOAuthAuthentication());
+    }
+
+    @Test
+    public void createStorageAccountWithSystemAssigned() {
+
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateStorageAccountWithSystemAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .create();
+        Assertions.assertNull(storageAccount.innerModel().identity());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update().withSystemAssignedManagedServiceIdentity().apply();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+
+    @Test
+    public void updateStorageAccountWithoutSystemAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update().withoutSystemAssignedManagedServiceIdentity().apply();
+        Assertions.assertEquals(IdentityType.NONE, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void createStorageAccountWithNewUserAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+
+        Creatable<com.azure.resourcemanager.msi.models.Identity> identityCreatable =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName);
+
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withNewUserAssignedManagedServiceIdentity(identityCreatable)
+            .create();
+
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateStorageAccountWithNewUserAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+
+        Creatable<com.azure.resourcemanager.msi.models.Identity> identityCreatable =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName);
+
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .create();
+
+        Assertions.assertNull(storageAccount.innerModel().identity());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update()
+            .withNewUserAssignedManagedServiceIdentity(identityCreatable).apply();
+
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void createStorageAccountWithExistUserAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .create();
+
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateStorageAccountWithExistUserAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .create();
+
+        Assertions.assertNull(storageAccount.innerModel().identity());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update()
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity).apply();
+
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateStorageAccountWithoutUserAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .create();
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update().withoutUserAssignedManagedServiceIdentity(defaultIdentity.id()).apply();
+        Assertions.assertEquals(IdentityType.NONE, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateIdentityFromSystemUserAssignedToSystemAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .create();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update().withoutUserAssignedManagedServiceIdentity(defaultIdentity.id()).apply();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateIdentityFromSystemUserAssignedToUserAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .create();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update().withoutSystemAssignedManagedServiceIdentity().apply();
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateIdentityFromSystemUserAssignedToNone() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .create();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update().withoutSystemAssignedManagedServiceIdentity()
+            .withoutUserAssignedManagedServiceIdentity(defaultIdentity.id()).apply();
+        Assertions.assertEquals(IdentityType.NONE, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateIdentityFromSystemAssignedToUserAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update()
+            .withoutSystemAssignedManagedServiceIdentity()
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .apply();
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateIdentityFromUserAssignedToSystemAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .create();
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update()
+            .withSystemAssignedManagedServiceIdentity()
+            .withoutUserAssignedManagedServiceIdentity(defaultIdentity.id())
+            .apply();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateIdentityFromUserAssignedToSystemUserAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .create();
+        Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update().withSystemAssignedManagedServiceIdentity().apply();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateIdentityFromSystemAssignedToSystemUserAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertTrue(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+
+        storageAccount.update().withExistingUserAssignedManagedServiceIdentity(defaultIdentity).apply();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
+    }
+
+    @Test
+    public void updateIdentityFromNoneToSystemUserAssigned() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        com.azure.resourcemanager.msi.models.Identity defaultIdentity =
+            msiManager
+                .identities()
+                .define(generateRandomResourceName("javacsmmsi", 15))
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .create();
+
+        storageAccount.update()
+            .withSystemAssignedManagedServiceIdentity()
+            .withExistingUserAssignedManagedServiceIdentity(defaultIdentity)
+            .apply();
+        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, storageAccount.innerModel().identity().type());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityPrincipalId());
+        Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
+        Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
 }

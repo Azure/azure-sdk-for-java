@@ -49,22 +49,6 @@ public interface ApiKeysClient {
      * @param resourceName The name of the Application Insights component resource.
      * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
      *     component.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties that define an API key of an Application Insights Component.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentApiKeyInner create(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties);
-
-    /**
-     * Create an API Key of an Application Insights component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
-     *     component.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,18 +60,20 @@ public interface ApiKeysClient {
         String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties, Context context);
 
     /**
-     * Delete an API Key of an Application Insights component.
+     * Create an API Key of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @param keyId The API Key ID. This is unique within a Application Insights component.
+     * @param apiKeyProperties Properties that need to be specified to create an API key of a Application Insights
+     *     component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties that define an API key of an Application Insights Component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentApiKeyInner delete(String resourceGroupName, String resourceName, String keyId);
+    ApplicationInsightsComponentApiKeyInner create(
+        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties);
 
     /**
      * Delete an API Key of an Application Insights component.
@@ -106,7 +92,7 @@ public interface ApiKeysClient {
         String resourceGroupName, String resourceName, String keyId, Context context);
 
     /**
-     * Get the API Key for this key id.
+     * Delete an API Key of an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
@@ -114,10 +100,10 @@ public interface ApiKeysClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API Key for this key id.
+     * @return properties that define an API key of an Application Insights Component.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInsightsComponentApiKeyInner get(String resourceGroupName, String resourceName, String keyId);
+    ApplicationInsightsComponentApiKeyInner delete(String resourceGroupName, String resourceName, String keyId);
 
     /**
      * Get the API Key for this key id.
@@ -134,4 +120,18 @@ public interface ApiKeysClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ApplicationInsightsComponentApiKeyInner> getWithResponse(
         String resourceGroupName, String resourceName, String keyId, Context context);
+
+    /**
+     * Get the API Key for this key id.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param keyId The API Key ID. This is unique within a Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the API Key for this key id.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApplicationInsightsComponentApiKeyInner get(String resourceGroupName, String resourceName, String keyId);
 }

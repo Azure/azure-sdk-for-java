@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SetVariable activity properties. */
+/**
+ * SetVariable activity properties.
+ */
 @Fluent
 public final class SetVariableActivityTypeProperties {
     /*
@@ -28,13 +30,15 @@ public final class SetVariableActivityTypeProperties {
     @JsonProperty(value = "setSystemVariable")
     private Boolean setSystemVariable;
 
-    /** Creates an instance of SetVariableActivityTypeProperties class. */
+    /**
+     * Creates an instance of SetVariableActivityTypeProperties class.
+     */
     public SetVariableActivityTypeProperties() {
     }
 
     /**
      * Get the variableName property: Name of the variable whose value needs to be set.
-     *
+     * 
      * @return the variableName value.
      */
     public String variableName() {
@@ -43,7 +47,7 @@ public final class SetVariableActivityTypeProperties {
 
     /**
      * Set the variableName property: Name of the variable whose value needs to be set.
-     *
+     * 
      * @param variableName the variableName value to set.
      * @return the SetVariableActivityTypeProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class SetVariableActivityTypeProperties {
 
     /**
      * Get the value property: Value to be set. Could be a static value or Expression.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -63,7 +67,7 @@ public final class SetVariableActivityTypeProperties {
 
     /**
      * Set the value property: Value to be set. Could be a static value or Expression.
-     *
+     * 
      * @param value the value value to set.
      * @return the SetVariableActivityTypeProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class SetVariableActivityTypeProperties {
 
     /**
      * Get the setSystemVariable property: If set to true, it sets the pipeline run return value.
-     *
+     * 
      * @return the setSystemVariable value.
      */
     public Boolean setSystemVariable() {
@@ -83,7 +87,7 @@ public final class SetVariableActivityTypeProperties {
 
     /**
      * Set the setSystemVariable property: If set to true, it sets the pipeline run return value.
-     *
+     * 
      * @param setSystemVariable the setSystemVariable value to set.
      * @return the SetVariableActivityTypeProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class SetVariableActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

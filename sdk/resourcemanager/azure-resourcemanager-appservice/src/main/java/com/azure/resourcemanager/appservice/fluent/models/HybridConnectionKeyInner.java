@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Hybrid Connection key contract. This has the send key name and value for a Hybrid Connection. */
+/**
+ * Hybrid Connection key contract. This has the send key name and value for a Hybrid Connection.
+ */
 @Fluent
 public final class HybridConnectionKeyInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class HybridConnectionKeyInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private HybridConnectionKeyProperties innerProperties;
 
-    /** Creates an instance of HybridConnectionKeyInner class. */
+    /**
+     * Creates an instance of HybridConnectionKeyInner class.
+     */
     public HybridConnectionKeyInner() {
     }
 
     /**
      * Get the innerProperties property: HybridConnectionKey resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HybridConnectionKeyProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HybridConnectionKeyInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class HybridConnectionKeyInner extends ProxyOnlyResource {
 
     /**
      * Get the sendKeyName property: The name of the send key.
-     *
+     * 
      * @return the sendKeyName value.
      */
     public String sendKeyName() {
@@ -48,7 +54,7 @@ public final class HybridConnectionKeyInner extends ProxyOnlyResource {
 
     /**
      * Get the sendKeyValue property: The value of the send key.
-     *
+     * 
      * @return the sendKeyValue value.
      */
     public String sendKeyValue() {
@@ -57,7 +63,7 @@ public final class HybridConnectionKeyInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

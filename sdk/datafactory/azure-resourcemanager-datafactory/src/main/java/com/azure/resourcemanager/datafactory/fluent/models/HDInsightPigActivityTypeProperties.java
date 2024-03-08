@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** HDInsight Pig activity properties. */
+/**
+ * HDInsight Pig activity properties.
+ */
 @Fluent
 public final class HDInsightPigActivityTypeProperties {
     /*
@@ -52,13 +54,15 @@ public final class HDInsightPigActivityTypeProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> defines;
 
-    /** Creates an instance of HDInsightPigActivityTypeProperties class. */
+    /**
+     * Creates an instance of HDInsightPigActivityTypeProperties class.
+     */
     public HDInsightPigActivityTypeProperties() {
     }
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @return the storageLinkedServices value.
      */
     public List<LinkedServiceReference> storageLinkedServices() {
@@ -67,12 +71,12 @@ public final class HDInsightPigActivityTypeProperties {
 
     /**
      * Set the storageLinkedServices property: Storage linked service references.
-     *
+     * 
      * @param storageLinkedServices the storageLinkedServices value to set.
      * @return the HDInsightPigActivityTypeProperties object itself.
      */
-    public HDInsightPigActivityTypeProperties withStorageLinkedServices(
-        List<LinkedServiceReference> storageLinkedServices) {
+    public HDInsightPigActivityTypeProperties
+        withStorageLinkedServices(List<LinkedServiceReference> storageLinkedServices) {
         this.storageLinkedServices = storageLinkedServices;
         return this;
     }
@@ -80,7 +84,7 @@ public final class HDInsightPigActivityTypeProperties {
     /**
      * Get the arguments property: User specified arguments to HDInsightActivity. Type: array (or Expression with
      * resultType array).
-     *
+     * 
      * @return the arguments value.
      */
     public Object arguments() {
@@ -90,7 +94,7 @@ public final class HDInsightPigActivityTypeProperties {
     /**
      * Set the arguments property: User specified arguments to HDInsightActivity. Type: array (or Expression with
      * resultType array).
-     *
+     * 
      * @param arguments the arguments value to set.
      * @return the HDInsightPigActivityTypeProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class HDInsightPigActivityTypeProperties {
 
     /**
      * Get the getDebugInfo property: Debug info option.
-     *
+     * 
      * @return the getDebugInfo value.
      */
     public HDInsightActivityDebugInfoOption getDebugInfo() {
@@ -110,7 +114,7 @@ public final class HDInsightPigActivityTypeProperties {
 
     /**
      * Set the getDebugInfo property: Debug info option.
-     *
+     * 
      * @param getDebugInfo the getDebugInfo value to set.
      * @return the HDInsightPigActivityTypeProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class HDInsightPigActivityTypeProperties {
 
     /**
      * Get the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the scriptPath value.
      */
     public Object scriptPath() {
@@ -130,7 +134,7 @@ public final class HDInsightPigActivityTypeProperties {
 
     /**
      * Set the scriptPath property: Script path. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param scriptPath the scriptPath value to set.
      * @return the HDInsightPigActivityTypeProperties object itself.
      */
@@ -141,7 +145,7 @@ public final class HDInsightPigActivityTypeProperties {
 
     /**
      * Get the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @return the scriptLinkedService value.
      */
     public LinkedServiceReference scriptLinkedService() {
@@ -150,7 +154,7 @@ public final class HDInsightPigActivityTypeProperties {
 
     /**
      * Set the scriptLinkedService property: Script linked service reference.
-     *
+     * 
      * @param scriptLinkedService the scriptLinkedService value to set.
      * @return the HDInsightPigActivityTypeProperties object itself.
      */
@@ -161,7 +165,7 @@ public final class HDInsightPigActivityTypeProperties {
 
     /**
      * Get the defines property: Allows user to specify defines for Pig job request.
-     *
+     * 
      * @return the defines value.
      */
     public Map<String, Object> defines() {
@@ -170,7 +174,7 @@ public final class HDInsightPigActivityTypeProperties {
 
     /**
      * Set the defines property: Allows user to specify defines for Pig job request.
-     *
+     * 
      * @param defines the defines value to set.
      * @return the HDInsightPigActivityTypeProperties object itself.
      */
@@ -181,7 +185,7 @@ public final class HDInsightPigActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Disable protection input. */
+/**
+ * Disable protection input.
+ */
 @Fluent
 public final class DisableProtectionInput {
     /*
@@ -17,13 +19,15 @@ public final class DisableProtectionInput {
     @JsonProperty(value = "properties", required = true)
     private DisableProtectionInputProperties properties;
 
-    /** Creates an instance of DisableProtectionInput class. */
+    /**
+     * Creates an instance of DisableProtectionInput class.
+     */
     public DisableProtectionInput() {
     }
 
     /**
      * Get the properties property: Disable protection input properties.
-     *
+     * 
      * @return the properties value.
      */
     public DisableProtectionInputProperties properties() {
@@ -32,7 +36,7 @@ public final class DisableProtectionInput {
 
     /**
      * Set the properties property: Disable protection input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DisableProtectionInput object itself.
      */
@@ -43,15 +47,13 @@ public final class DisableProtectionInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model DisableProtectionInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model DisableProtectionInput"));
         } else {
             properties().validate();
         }

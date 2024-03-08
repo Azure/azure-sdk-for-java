@@ -14,26 +14,26 @@ public final class ServiceImpactingEventIncidentPropertiesTests {
         ServiceImpactingEventIncidentProperties model =
             BinaryData
                 .fromString(
-                    "{\"title\":\"idf\",\"service\":\"wdzuhtymwisd\",\"region\":\"thwxmnteiwaopvkm\",\"incidentType\":\"c\"}")
+                    "{\"title\":\"chcbonqvpkvlrxnj\",\"service\":\"seiphe\",\"region\":\"lokeyy\",\"incidentType\":\"nj\"}")
                 .toObject(ServiceImpactingEventIncidentProperties.class);
-        Assertions.assertEquals("idf", model.title());
-        Assertions.assertEquals("wdzuhtymwisd", model.service());
-        Assertions.assertEquals("thwxmnteiwaopvkm", model.region());
-        Assertions.assertEquals("c", model.incidentType());
+        Assertions.assertEquals("chcbonqvpkvlrxnj", model.title());
+        Assertions.assertEquals("seiphe", model.service());
+        Assertions.assertEquals("lokeyy", model.region());
+        Assertions.assertEquals("nj", model.incidentType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServiceImpactingEventIncidentProperties model =
             new ServiceImpactingEventIncidentProperties()
-                .withTitle("idf")
-                .withService("wdzuhtymwisd")
-                .withRegion("thwxmnteiwaopvkm")
-                .withIncidentType("c");
+                .withTitle("chcbonqvpkvlrxnj")
+                .withService("seiphe")
+                .withRegion("lokeyy")
+                .withIncidentType("nj");
         model = BinaryData.fromObject(model).toObject(ServiceImpactingEventIncidentProperties.class);
-        Assertions.assertEquals("idf", model.title());
-        Assertions.assertEquals("wdzuhtymwisd", model.service());
-        Assertions.assertEquals("thwxmnteiwaopvkm", model.region());
-        Assertions.assertEquals("c", model.incidentType());
+        Assertions.assertEquals("chcbonqvpkvlrxnj", model.title());
+        Assertions.assertEquals("seiphe", model.service());
+        Assertions.assertEquals("lokeyy", model.region());
+        Assertions.assertEquals("nj", model.incidentType());
     }
 }

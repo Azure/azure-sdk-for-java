@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,102 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-10-27)
+
+- Azure Resource Manager ApplicationInsights client library for Java. This package contains Microsoft Azure SDK for ApplicationInsights Management SDK. Composite Swagger for Application Insights Management Client. Package tag package-2022-06-15-java. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.ComponentLinkedStorageAccounts` was removed
+
+* `models.ComponentLinkedStorageAccounts$Update` was removed
+
+* `models.ComponentLinkedStorageAccounts$DefinitionStages` was removed
+
+* `models.ComponentLinkedStorageAccountsOperations` was removed
+
+* `models.ComponentLinkedStorageAccountsPatch` was removed
+
+* `models.StorageType` was removed
+
+* `models.ComponentLinkedStorageAccounts$Definition` was removed
+
+* `models.ComponentLinkedStorageAccounts$UpdateStages` was removed
+
+#### `models.Workbooks` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.WebTests` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.WorkbookErrorDefinition` was modified
+
+* `getInnerError()` was removed
+
+#### `models.MyWorkbooks` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `ApplicationInsightsManager` was modified
+
+* `componentLinkedStorageAccountsOperations()` was removed
+
+#### `models.Components` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+#### `models.WorkbookTemplates` was modified
+
+* `deleteWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.WorkbookInnerErrorTrace` was added
+
+* `models.WebTestPropertiesRequest` was added
+
+* `models.WebTestPropertiesValidationRules` was added
+
+* `models.HeaderField` was added
+
+* `models.WebTestPropertiesValidationRulesContentValidation` was added
+
+#### `models.Workbooks` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.WebTests` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.WorkbookErrorDefinition` was modified
+
+* `getInnererror()` was added
+
+#### `models.WebTest` was modified
+
+* `validationRules()` was added
+* `request()` was added
+
+#### `models.MyWorkbooks` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.WebTest$Definition` was modified
+
+* `withValidationRules(models.WebTestPropertiesValidationRules)` was added
+* `withRequest(models.WebTestPropertiesRequest)` was added
+
+#### `models.Components` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.WorkbookTemplates` was modified
+
+* `deleteByResourceGroupWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 ## 1.0.0-beta.5 (2022-06-09)
 

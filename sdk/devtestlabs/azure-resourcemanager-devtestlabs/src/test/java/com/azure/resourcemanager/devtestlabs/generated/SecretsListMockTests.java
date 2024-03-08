@@ -32,7 +32,7 @@ public final class SecretsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"value\":\"qgsdr\",\"provisioningState\":\"ttjxophgerhsmvgo\",\"uniqueIdentifier\":\"wzm\"},\"location\":\"ilrixysf\",\"tags\":{\"aedrympmlqoin\":\"sqywwwmhkru\",\"njdiqfliejhpcl\":\"zduewihapfjii\",\"bv\":\"iedfsbwcei\",\"zp\":\"ipbwxgooo\"},\"id\":\"admskx\",\"name\":\"npd\",\"type\":\"zigjsugswhgsaodk\"}]}";
+            "{\"value\":[{\"properties\":{\"value\":\"bdjnxume\",\"provisioningState\":\"qontwhymxymulw\",\"uniqueIdentifier\":\"qtow\"},\"location\":\"h\",\"tags\":{\"squbfajcywh\":\"coybaj\",\"up\":\"qwmchqohtfxc\",\"vwtiwsmosa\":\"kiymjzpwd\",\"ltassaekewna\":\"nhqnampp\"},\"id\":\"eajbkajlcyizyddc\",\"name\":\"xo\",\"type\":\"krvfsxxbydes\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,17 +64,17 @@ public final class SecretsListMockTests {
             manager
                 .secrets()
                 .list(
-                    "n",
-                    "ybff",
-                    "jfiimreoa",
-                    "sqtaadusrexxfa",
-                    "sqwudohzilfmnli",
-                    1515454636,
-                    "simsfeypofqpmb",
+                    "eypdvrbk",
+                    "rdkdkgaw",
+                    "wjxildfkcefeyg",
+                    "q",
+                    "jo",
+                    1682420680,
+                    "fmn",
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ilrixysf", response.iterator().next().location());
-        Assertions.assertEquals("sqywwwmhkru", response.iterator().next().tags().get("aedrympmlqoin"));
-        Assertions.assertEquals("qgsdr", response.iterator().next().value());
+        Assertions.assertEquals("h", response.iterator().next().location());
+        Assertions.assertEquals("coybaj", response.iterator().next().tags().get("squbfajcywh"));
+        Assertions.assertEquals("bdjnxume", response.iterator().next().value());
     }
 }

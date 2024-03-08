@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Break replication request. */
+/**
+ * Break replication request.
+ */
 @Fluent
 public final class BreakReplicationRequest {
     /*
@@ -16,14 +18,16 @@ public final class BreakReplicationRequest {
     @JsonProperty(value = "forceBreakReplication")
     private Boolean forceBreakReplication;
 
-    /** Creates an instance of BreakReplicationRequest class. */
+    /**
+     * Creates an instance of BreakReplicationRequest class.
+     */
     public BreakReplicationRequest() {
     }
 
     /**
      * Get the forceBreakReplication property: If replication is in status transferring and you want to force break the
      * replication, set to true.
-     *
+     * 
      * @return the forceBreakReplication value.
      */
     public Boolean forceBreakReplication() {
@@ -33,7 +37,7 @@ public final class BreakReplicationRequest {
     /**
      * Set the forceBreakReplication property: If replication is in status transferring and you want to force break the
      * replication, set to true.
-     *
+     * 
      * @param forceBreakReplication the forceBreakReplication value to set.
      * @return the BreakReplicationRequest object itself.
      */
@@ -44,7 +48,7 @@ public final class BreakReplicationRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

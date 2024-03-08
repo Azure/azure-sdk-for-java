@@ -32,40 +32,30 @@ public final class UsagesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"usages\":{\"value\":158859960,\"usagesType\":\"Combined\"},\"unit\":\"xhcr\",\"name\":{\"value\":\"hjtckwhd\",\"localizedValue\":\"ifiyipjxsqwpgrj\"},\"resourceType\":\"norcjxvsnbyxqab\",\"quotaPeriod\":\"ocpcy\",\"isQuotaApplicable\":false,\"properties\":\"datazafb\"},\"id\":\"jjgpb\",\"name\":\"oq\",\"type\":\"jmkljavbqidtqajz\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"usages\":{\"value\":380753695,\"usagesType\":\"Combined\"},\"unit\":\"gfycc\",\"name\":{\"value\":\"wmdwzjeiachboo\",\"localizedValue\":\"lnrosfqp\"},\"resourceType\":\"ehzzvypyqrim\",\"quotaPeriod\":\"npvswjdkirso\",\"isQuotaApplicable\":false,\"properties\":\"datahc\"},\"id\":\"mnoh\",\"name\":\"t\",\"type\":\"kwh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        QuotaManager manager =
-            QuotaManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        QuotaManager manager = QuotaManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<CurrentUsagesBase> response = manager.usages().list("wjdk", com.azure.core.util.Context.NONE);
+        PagedIterable<CurrentUsagesBase> response
+            = manager.usages().list("fsrpymzidnse", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(158859960, response.iterator().next().properties().usages().value());
+        Assertions.assertEquals(380753695, response.iterator().next().properties().usages().value());
         Assertions.assertEquals(UsagesTypes.COMBINED, response.iterator().next().properties().usages().usagesType());
-        Assertions.assertEquals("hjtckwhd", response.iterator().next().properties().name().value());
-        Assertions.assertEquals("norcjxvsnbyxqab", response.iterator().next().properties().resourceType());
+        Assertions.assertEquals("wmdwzjeiachboo", response.iterator().next().properties().name().value());
+        Assertions.assertEquals("ehzzvypyqrim", response.iterator().next().properties().resourceType());
     }
 }

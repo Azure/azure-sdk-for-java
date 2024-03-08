@@ -11,6 +11,7 @@ import com.azure.resourcemanager.resourcehealth.models.EventPropertiesArticle;
 import com.azure.resourcemanager.resourcehealth.models.EventPropertiesRecommendedActions;
 import com.azure.resourcemanager.resourcehealth.models.EventSourceValues;
 import com.azure.resourcemanager.resourcehealth.models.EventStatusValues;
+import com.azure.resourcemanager.resourcehealth.models.EventSubTypeValues;
 import com.azure.resourcemanager.resourcehealth.models.EventTypeValues;
 import com.azure.resourcemanager.resourcehealth.models.Faq;
 import com.azure.resourcemanager.resourcehealth.models.Impact;
@@ -28,6 +29,12 @@ public final class EventProperties {
      */
     @JsonProperty(value = "eventType")
     private EventTypeValues eventType;
+
+    /*
+     * Sub type of the event. Currently used to determine retirement communications for health advisory events
+     */
+    @JsonProperty(value = "eventSubType")
+    private EventSubTypeValues eventSubType;
 
     /*
      * Source of event.
@@ -193,6 +200,24 @@ public final class EventProperties {
     @JsonProperty(value = "impactType")
     private String impactType;
 
+    /*
+     * Unique identifier for planned maintenance event.
+     */
+    @JsonProperty(value = "maintenanceId")
+    private String maintenanceId;
+
+    /*
+     * The type of planned maintenance event.
+     */
+    @JsonProperty(value = "maintenanceType")
+    private String maintenanceType;
+
+    /*
+     * Azure Resource Graph query to fetch the affected resources from their existing Azure Resource Graph locations.
+     */
+    @JsonProperty(value = "argQuery")
+    private String argQuery;
+
     /** Creates an instance of EventProperties class. */
     public EventProperties() {
     }
@@ -214,6 +239,28 @@ public final class EventProperties {
      */
     public EventProperties withEventType(EventTypeValues eventType) {
         this.eventType = eventType;
+        return this;
+    }
+
+    /**
+     * Get the eventSubType property: Sub type of the event. Currently used to determine retirement communications for
+     * health advisory events.
+     *
+     * @return the eventSubType value.
+     */
+    public EventSubTypeValues eventSubType() {
+        return this.eventSubType;
+    }
+
+    /**
+     * Set the eventSubType property: Sub type of the event. Currently used to determine retirement communications for
+     * health advisory events.
+     *
+     * @param eventSubType the eventSubType value to set.
+     * @return the EventProperties object itself.
+     */
+    public EventProperties withEventSubType(EventSubTypeValues eventSubType) {
+        this.eventSubType = eventSubType;
         return this;
     }
 
@@ -762,6 +809,68 @@ public final class EventProperties {
      */
     public EventProperties withImpactType(String impactType) {
         this.impactType = impactType;
+        return this;
+    }
+
+    /**
+     * Get the maintenanceId property: Unique identifier for planned maintenance event.
+     *
+     * @return the maintenanceId value.
+     */
+    public String maintenanceId() {
+        return this.maintenanceId;
+    }
+
+    /**
+     * Set the maintenanceId property: Unique identifier for planned maintenance event.
+     *
+     * @param maintenanceId the maintenanceId value to set.
+     * @return the EventProperties object itself.
+     */
+    public EventProperties withMaintenanceId(String maintenanceId) {
+        this.maintenanceId = maintenanceId;
+        return this;
+    }
+
+    /**
+     * Get the maintenanceType property: The type of planned maintenance event.
+     *
+     * @return the maintenanceType value.
+     */
+    public String maintenanceType() {
+        return this.maintenanceType;
+    }
+
+    /**
+     * Set the maintenanceType property: The type of planned maintenance event.
+     *
+     * @param maintenanceType the maintenanceType value to set.
+     * @return the EventProperties object itself.
+     */
+    public EventProperties withMaintenanceType(String maintenanceType) {
+        this.maintenanceType = maintenanceType;
+        return this;
+    }
+
+    /**
+     * Get the argQuery property: Azure Resource Graph query to fetch the affected resources from their existing Azure
+     * Resource Graph locations.
+     *
+     * @return the argQuery value.
+     */
+    public String argQuery() {
+        return this.argQuery;
+    }
+
+    /**
+     * Set the argQuery property: Azure Resource Graph query to fetch the affected resources from their existing Azure
+     * Resource Graph locations.
+     *
+     * @param argQuery the argQuery value to set.
+     * @return the EventProperties object itself.
+     */
+    public EventProperties withArgQuery(String argQuery) {
+        this.argQuery = argQuery;
         return this;
     }
 

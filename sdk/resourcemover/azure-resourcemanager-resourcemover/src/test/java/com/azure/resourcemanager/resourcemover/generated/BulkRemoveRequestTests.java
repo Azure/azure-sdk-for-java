@@ -16,23 +16,23 @@ public final class BulkRemoveRequestTests {
         BulkRemoveRequest model =
             BinaryData
                 .fromString(
-                    "{\"validateOnly\":false,\"moveResources\":[\"u\"],\"moveResourceInputType\":\"MoveResourceId\"}")
+                    "{\"validateOnly\":true,\"moveResources\":[\"gwdkcglhsl\"],\"moveResourceInputType\":\"MoveResourceSourceId\"}")
                 .toObject(BulkRemoveRequest.class);
-        Assertions.assertEquals(false, model.validateOnly());
-        Assertions.assertEquals("u", model.moveResources().get(0));
-        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
+        Assertions.assertEquals(true, model.validateOnly());
+        Assertions.assertEquals("gwdkcglhsl", model.moveResources().get(0));
+        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID, model.moveResourceInputType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BulkRemoveRequest model =
             new BulkRemoveRequest()
-                .withValidateOnly(false)
-                .withMoveResources(Arrays.asList("u"))
-                .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_ID);
+                .withValidateOnly(true)
+                .withMoveResources(Arrays.asList("gwdkcglhsl"))
+                .withMoveResourceInputType(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID);
         model = BinaryData.fromObject(model).toObject(BulkRemoveRequest.class);
-        Assertions.assertEquals(false, model.validateOnly());
-        Assertions.assertEquals("u", model.moveResources().get(0));
-        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_ID, model.moveResourceInputType());
+        Assertions.assertEquals(true, model.validateOnly());
+        Assertions.assertEquals("gwdkcglhsl", model.moveResources().get(0));
+        Assertions.assertEquals(MoveResourceInputType.MOVE_RESOURCE_SOURCE_ID, model.moveResourceInputType());
     }
 }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.fluent.models.WorkflowRunActionInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of workflow run actions. */
+/**
+ * The list of workflow run actions.
+ */
 @Fluent
 public final class WorkflowRunActionListResult {
     /*
@@ -24,13 +26,15 @@ public final class WorkflowRunActionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of WorkflowRunActionListResult class. */
+    /**
+     * Creates an instance of WorkflowRunActionListResult class.
+     */
     public WorkflowRunActionListResult() {
     }
 
     /**
      * Get the value property: A list of workflow run actions.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkflowRunActionInner> value() {
@@ -39,7 +43,7 @@ public final class WorkflowRunActionListResult {
 
     /**
      * Set the value property: A list of workflow run actions.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkflowRunActionListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class WorkflowRunActionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class WorkflowRunActionListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the WorkflowRunActionListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class WorkflowRunActionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

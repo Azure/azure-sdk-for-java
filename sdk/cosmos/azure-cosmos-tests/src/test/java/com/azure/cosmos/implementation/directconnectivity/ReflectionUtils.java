@@ -434,8 +434,8 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static AtomicReference<Uri.HealthStatus> getHealthStatus(Uri uri) {
-        return get(AtomicReference.class, uri, "healthStatus");
+    public static AtomicReference<Uri.HealthStatusAndDiagnosticStringTuple> getHealthStatus(Uri uri) {
+        return get(AtomicReference.class, uri, "healthStatusTuple");
     }
 
     @SuppressWarnings("unchecked")

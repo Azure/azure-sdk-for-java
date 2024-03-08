@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log settings. */
+/**
+ * Log settings.
+ */
 @Fluent
 public final class LogSettings {
     /*
@@ -28,13 +30,16 @@ public final class LogSettings {
     @JsonProperty(value = "logLocationSettings", required = true)
     private LogLocationSettings logLocationSettings;
 
-    /** Creates an instance of LogSettings class. */
-    public LogSettings() {}
+    /**
+     * Creates an instance of LogSettings class.
+     */
+    public LogSettings() {
+    }
 
     /**
      * Get the enableCopyActivityLog property: Specifies whether to enable copy activity log. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the enableCopyActivityLog value.
      */
     public Object getEnableCopyActivityLog() {
@@ -44,7 +49,7 @@ public final class LogSettings {
     /**
      * Set the enableCopyActivityLog property: Specifies whether to enable copy activity log. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param enableCopyActivityLog the enableCopyActivityLog value to set.
      * @return the LogSettings object itself.
      */
@@ -55,7 +60,7 @@ public final class LogSettings {
 
     /**
      * Get the copyActivityLogSettings property: Specifies settings for copy activity log.
-     *
+     * 
      * @return the copyActivityLogSettings value.
      */
     public CopyActivityLogSettings getCopyActivityLogSettings() {
@@ -64,7 +69,7 @@ public final class LogSettings {
 
     /**
      * Set the copyActivityLogSettings property: Specifies settings for copy activity log.
-     *
+     * 
      * @param copyActivityLogSettings the copyActivityLogSettings value to set.
      * @return the LogSettings object itself.
      */
@@ -75,7 +80,7 @@ public final class LogSettings {
 
     /**
      * Get the logLocationSettings property: Log location settings customer needs to provide when enabling log.
-     *
+     * 
      * @return the logLocationSettings value.
      */
     public LogLocationSettings getLogLocationSettings() {
@@ -84,7 +89,7 @@ public final class LogSettings {
 
     /**
      * Set the logLocationSettings property: Log location settings customer needs to provide when enabling log.
-     *
+     * 
      * @param logLocationSettings the logLocationSettings value to set.
      * @return the LogSettings object itself.
      */

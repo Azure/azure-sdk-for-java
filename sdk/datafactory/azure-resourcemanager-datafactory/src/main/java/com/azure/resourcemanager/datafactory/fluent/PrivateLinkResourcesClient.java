@@ -10,11 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.fluent.models.PrivateLinkResourcesWrapperInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public interface PrivateLinkResourcesClient {
     /**
      * Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -24,12 +26,12 @@ public interface PrivateLinkResourcesClient {
      * @return the private link resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourcesWrapperInner> getWithResponse(
-        String resourceGroupName, String factoryName, Context context);
+    Response<PrivateLinkResourcesWrapperInner> getWithResponse(String resourceGroupName, String factoryName,
+        Context context);
 
     /**
      * Gets the private link resources.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.models.SsisAccessCredential;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SSIS package execution log location properties. */
+/**
+ * SSIS package execution log location properties.
+ */
 @Fluent
 public final class SsisLogLocationTypeProperties {
     /*
@@ -24,13 +26,15 @@ public final class SsisLogLocationTypeProperties {
     @JsonProperty(value = "logRefreshInterval")
     private Object logRefreshInterval;
 
-    /** Creates an instance of SsisLogLocationTypeProperties class. */
+    /**
+     * Creates an instance of SsisLogLocationTypeProperties class.
+     */
     public SsisLogLocationTypeProperties() {
     }
 
     /**
      * Get the accessCredential property: The package execution log access credential.
-     *
+     * 
      * @return the accessCredential value.
      */
     public SsisAccessCredential accessCredential() {
@@ -39,7 +43,7 @@ public final class SsisLogLocationTypeProperties {
 
     /**
      * Set the accessCredential property: The package execution log access credential.
-     *
+     * 
      * @param accessCredential the accessCredential value to set.
      * @return the SsisLogLocationTypeProperties object itself.
      */
@@ -52,7 +56,7 @@ public final class SsisLogLocationTypeProperties {
      * Get the logRefreshInterval property: Specifies the interval to refresh log. The default interval is 5 minutes.
      * Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the logRefreshInterval value.
      */
     public Object logRefreshInterval() {
@@ -63,7 +67,7 @@ public final class SsisLogLocationTypeProperties {
      * Set the logRefreshInterval property: Specifies the interval to refresh log. The default interval is 5 minutes.
      * Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param logRefreshInterval the logRefreshInterval value to set.
      * @return the SsisLogLocationTypeProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class SsisLogLocationTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

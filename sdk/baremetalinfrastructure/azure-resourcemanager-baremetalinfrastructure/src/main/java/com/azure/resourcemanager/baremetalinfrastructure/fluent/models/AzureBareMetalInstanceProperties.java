@@ -13,35 +13,35 @@ import com.azure.resourcemanager.baremetalinfrastructure.models.OSProfile;
 import com.azure.resourcemanager.baremetalinfrastructure.models.StorageProfile;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of an AzureBareMetal instance. */
+/** Describes the properties of an Azure Bare Metal Instance. */
 @Fluent
 public final class AzureBareMetalInstanceProperties {
     /*
-     * Specifies the hardware settings for the AzureBareMetal instance.
+     * Specifies the hardware settings for the Azure Bare Metal Instance.
      */
     @JsonProperty(value = "hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /*
-     * Specifies the storage settings for the AzureBareMetal instance disks.
+     * Specifies the storage settings for the Azure Bare Metal Instance disks.
      */
     @JsonProperty(value = "storageProfile")
     private StorageProfile storageProfile;
 
     /*
-     * Specifies the operating system settings for the AzureBareMetal instance.
+     * Specifies the operating system settings for the Azure Bare Metal Instance.
      */
     @JsonProperty(value = "osProfile")
     private OSProfile osProfile;
 
     /*
-     * Specifies the network settings for the AzureBareMetal instance.
+     * Specifies the network settings for the Azure Bare Metal Instance.
      */
     @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
-     * Specifies the AzureBareMetal instance unique ID.
+     * Specifies the Azure Bare Metal Instance unique ID.
      */
     @JsonProperty(value = "azureBareMetalInstanceId", access = JsonProperty.Access.WRITE_ONLY)
     private String azureBareMetalInstanceId;
@@ -59,7 +59,7 @@ public final class AzureBareMetalInstanceProperties {
     private String proximityPlacementGroup;
 
     /*
-     * Hardware revision of an AzureBareMetal instance
+     * Hardware revision of an Azure Bare Metal Instance
      */
     @JsonProperty(value = "hwRevision", access = JsonProperty.Access.WRITE_ONLY)
     private String hwRevision;
@@ -81,7 +81,7 @@ public final class AzureBareMetalInstanceProperties {
     }
 
     /**
-     * Get the hardwareProfile property: Specifies the hardware settings for the AzureBareMetal instance.
+     * Get the hardwareProfile property: Specifies the hardware settings for the Azure Bare Metal Instance.
      *
      * @return the hardwareProfile value.
      */
@@ -90,7 +90,7 @@ public final class AzureBareMetalInstanceProperties {
     }
 
     /**
-     * Set the hardwareProfile property: Specifies the hardware settings for the AzureBareMetal instance.
+     * Set the hardwareProfile property: Specifies the hardware settings for the Azure Bare Metal Instance.
      *
      * @param hardwareProfile the hardwareProfile value to set.
      * @return the AzureBareMetalInstanceProperties object itself.
@@ -101,7 +101,7 @@ public final class AzureBareMetalInstanceProperties {
     }
 
     /**
-     * Get the storageProfile property: Specifies the storage settings for the AzureBareMetal instance disks.
+     * Get the storageProfile property: Specifies the storage settings for the Azure Bare Metal Instance disks.
      *
      * @return the storageProfile value.
      */
@@ -110,7 +110,7 @@ public final class AzureBareMetalInstanceProperties {
     }
 
     /**
-     * Set the storageProfile property: Specifies the storage settings for the AzureBareMetal instance disks.
+     * Set the storageProfile property: Specifies the storage settings for the Azure Bare Metal Instance disks.
      *
      * @param storageProfile the storageProfile value to set.
      * @return the AzureBareMetalInstanceProperties object itself.
@@ -121,7 +121,7 @@ public final class AzureBareMetalInstanceProperties {
     }
 
     /**
-     * Get the osProfile property: Specifies the operating system settings for the AzureBareMetal instance.
+     * Get the osProfile property: Specifies the operating system settings for the Azure Bare Metal Instance.
      *
      * @return the osProfile value.
      */
@@ -130,7 +130,7 @@ public final class AzureBareMetalInstanceProperties {
     }
 
     /**
-     * Set the osProfile property: Specifies the operating system settings for the AzureBareMetal instance.
+     * Set the osProfile property: Specifies the operating system settings for the Azure Bare Metal Instance.
      *
      * @param osProfile the osProfile value to set.
      * @return the AzureBareMetalInstanceProperties object itself.
@@ -141,7 +141,7 @@ public final class AzureBareMetalInstanceProperties {
     }
 
     /**
-     * Get the networkProfile property: Specifies the network settings for the AzureBareMetal instance.
+     * Get the networkProfile property: Specifies the network settings for the Azure Bare Metal Instance.
      *
      * @return the networkProfile value.
      */
@@ -150,7 +150,7 @@ public final class AzureBareMetalInstanceProperties {
     }
 
     /**
-     * Set the networkProfile property: Specifies the network settings for the AzureBareMetal instance.
+     * Set the networkProfile property: Specifies the network settings for the Azure Bare Metal Instance.
      *
      * @param networkProfile the networkProfile value to set.
      * @return the AzureBareMetalInstanceProperties object itself.
@@ -161,7 +161,7 @@ public final class AzureBareMetalInstanceProperties {
     }
 
     /**
-     * Get the azureBareMetalInstanceId property: Specifies the AzureBareMetal instance unique ID.
+     * Get the azureBareMetalInstanceId property: Specifies the Azure Bare Metal Instance unique ID.
      *
      * @return the azureBareMetalInstanceId value.
      */
@@ -188,7 +188,7 @@ public final class AzureBareMetalInstanceProperties {
     }
 
     /**
-     * Get the hwRevision property: Hardware revision of an AzureBareMetal instance.
+     * Get the hwRevision property: Hardware revision of an Azure Bare Metal Instance.
      *
      * @return the hwRevision value.
      */

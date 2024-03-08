@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.SybaseSource;
 public final class SybaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SybaseSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SybaseSource\",\"query\":\"datapccfwq\",\"queryTimeout\":\"dataouqyzxzjehdklvqt\",\"additionalColumns\":\"dataoc\",\"sourceRetryCount\":\"dataetctjh\",\"sourceRetryWait\":\"datamoazsjsuevfvnn\",\"maxConcurrentConnections\":\"dataccvxqbxgq\",\"disableMetricsCollection\":\"datawnriwxe\",\"\":{\"xsvzwbktalobxl\":\"datavwqldil\"}}")
-                .toObject(SybaseSource.class);
+        SybaseSource model = BinaryData.fromString(
+            "{\"type\":\"SybaseSource\",\"query\":\"databro\",\"queryTimeout\":\"datamufaz\",\"additionalColumns\":\"datawzbew\",\"sourceRetryCount\":\"datasspe\",\"sourceRetryWait\":\"datajhwpn\",\"maxConcurrentConnections\":\"dataoucjzbovuvmdzdqt\",\"disableMetricsCollection\":\"dataguajsrdecbowkh\",\"\":{\"sujx\":\"datafllpdn\",\"aeykueat\":\"dataueqljzkhn\",\"ahvlzgsqwiubgb\":\"datatnprnshln\",\"cuxuxaihheg\":\"datatjyisjscuwylukt\"}}")
+            .toObject(SybaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SybaseSource model =
-            new SybaseSource()
-                .withSourceRetryCount("dataetctjh")
-                .withSourceRetryWait("datamoazsjsuevfvnn")
-                .withMaxConcurrentConnections("dataccvxqbxgq")
-                .withDisableMetricsCollection("datawnriwxe")
-                .withQueryTimeout("dataouqyzxzjehdklvqt")
-                .withAdditionalColumns("dataoc")
-                .withQuery("datapccfwq");
+        SybaseSource model = new SybaseSource().withSourceRetryCount("datasspe").withSourceRetryWait("datajhwpn")
+            .withMaxConcurrentConnections("dataoucjzbovuvmdzdqt").withDisableMetricsCollection("dataguajsrdecbowkh")
+            .withQueryTimeout("datamufaz").withAdditionalColumns("datawzbew").withQuery("databro");
         model = BinaryData.fromObject(model).toObject(SybaseSource.class);
     }
 }

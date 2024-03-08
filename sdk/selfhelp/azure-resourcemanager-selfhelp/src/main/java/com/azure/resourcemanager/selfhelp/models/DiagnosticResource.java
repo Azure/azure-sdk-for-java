@@ -10,97 +10,111 @@ import com.azure.resourcemanager.selfhelp.fluent.models.DiagnosticResourceInner;
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of DiagnosticResource. */
+/**
+ * An immutable client-side representation of DiagnosticResource.
+ */
 public interface DiagnosticResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the globalParameters property: Global parameters that can be passed to all solutionIds.
-     *
+     * Gets the globalParameters property: Global parameters is an optional map which can be used to add key and value
+     * to request body to improve the diagnostics results.
+     * 
      * @return the globalParameters value.
      */
     Map<String, String> globalParameters();
 
     /**
      * Gets the insights property: SolutionIds that are needed to be invoked.
-     *
+     * 
      * @return the insights value.
      */
     List<DiagnosticInvocation> insights();
 
     /**
      * Gets the acceptedAt property: Diagnostic Request Accepted time.
-     *
+     * 
      * @return the acceptedAt value.
      */
     String acceptedAt();
 
     /**
      * Gets the provisioningState property: Status of diagnostic provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
-    ProvisioningState provisioningState();
+    DiagnosticProvisioningState provisioningState();
 
     /**
      * Gets the diagnostics property: Array of Diagnostics.
-     *
+     * 
      * @return the diagnostics value.
      */
     List<Diagnostic> diagnostics();
 
     /**
      * Gets the inner com.azure.resourcemanager.selfhelp.fluent.models.DiagnosticResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     DiagnosticResourceInner innerModel();
 
-    /** The entirety of the DiagnosticResource definition. */
+    /**
+     * The entirety of the DiagnosticResource definition.
+     */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
     }
-    /** The DiagnosticResource definition stages. */
+
+    /**
+     * The DiagnosticResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the DiagnosticResource definition. */
+        /**
+         * The first stage of the DiagnosticResource definition.
+         */
         interface Blank extends WithScope {
         }
-        /** The stage of the DiagnosticResource definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the DiagnosticResource definition allowing to specify parent resource.
+         */
         interface WithScope {
             /**
              * Specifies scope.
-             *
-             * @param scope This is an extension resource provider and only resource level extension is supported at the
-             *     moment.
+             * 
+             * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+             * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
              * @return the next definition stage.
              */
             WithCreate withExistingScope(String scope);
         }
+
         /**
          * The stage of the DiagnosticResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -108,50 +122,59 @@ public interface DiagnosticResource {
         interface WithCreate extends DefinitionStages.WithGlobalParameters, DefinitionStages.WithInsights {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             DiagnosticResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             DiagnosticResource create(Context context);
         }
-        /** The stage of the DiagnosticResource definition allowing to specify globalParameters. */
+
+        /**
+         * The stage of the DiagnosticResource definition allowing to specify globalParameters.
+         */
         interface WithGlobalParameters {
             /**
-             * Specifies the globalParameters property: Global parameters that can be passed to all solutionIds..
-             *
-             * @param globalParameters Global parameters that can be passed to all solutionIds.
+             * Specifies the globalParameters property: Global parameters is an optional map which can be used to add
+             * key and value to request body to improve the diagnostics results.
+             * 
+             * @param globalParameters Global parameters is an optional map which can be used to add key and value to
+             * request body to improve the diagnostics results.
              * @return the next definition stage.
              */
             WithCreate withGlobalParameters(Map<String, String> globalParameters);
         }
-        /** The stage of the DiagnosticResource definition allowing to specify insights. */
+
+        /**
+         * The stage of the DiagnosticResource definition allowing to specify insights.
+         */
         interface WithInsights {
             /**
              * Specifies the insights property: SolutionIds that are needed to be invoked..
-             *
+             * 
              * @param insights SolutionIds that are needed to be invoked.
              * @return the next definition stage.
              */
             WithCreate withInsights(List<DiagnosticInvocation> insights);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     DiagnosticResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

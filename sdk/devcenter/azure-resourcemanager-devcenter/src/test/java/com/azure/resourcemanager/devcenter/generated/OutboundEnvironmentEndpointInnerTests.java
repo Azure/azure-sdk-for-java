@@ -13,7 +13,7 @@ public final class OutboundEnvironmentEndpointInnerTests {
         OutboundEnvironmentEndpointInner model =
             BinaryData
                 .fromString(
-                    "{\"category\":\"zkdvncja\",\"endpoints\":[{\"domainName\":\"r\",\"description\":\"akmokzhjjklf\",\"endpointDetails\":[]},{\"domainName\":\"uwqlgzrfzeey\",\"description\":\"izikayuhq\",\"endpointDetails\":[]},{\"domainName\":\"sybbqwr\",\"description\":\"ldgmfpgvmpip\",\"endpointDetails\":[]}]}")
+                    "{\"category\":\"zwiivwzjbhyzs\",\"endpoints\":[{\"domainName\":\"ambtrnegvm\",\"description\":\"uqeqv\",\"endpointDetails\":[{\"port\":2031178559},{\"port\":608775789},{\"port\":900352978}]},{\"domainName\":\"kdmflvestmjlx\",\"description\":\"ilozapeewchpxlk\",\"endpointDetails\":[{\"port\":1788111588},{\"port\":1984241161},{\"port\":463707796}]}]}")
                 .toObject(OutboundEnvironmentEndpointInner.class);
     }
 

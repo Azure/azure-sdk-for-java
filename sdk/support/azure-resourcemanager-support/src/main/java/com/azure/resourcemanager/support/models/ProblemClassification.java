@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.support.models;
 
 import com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner;
+import java.util.List;
 
 /** An immutable client-side representation of ProblemClassification. */
 public interface ProblemClassification {
@@ -35,6 +36,14 @@ public interface ProblemClassification {
      * @return the displayName value.
      */
     String displayName();
+
+    /**
+     * Gets the secondaryConsentEnabled property: This property indicates whether secondary consent is present for
+     * problem classification.
+     *
+     * @return the secondaryConsentEnabled value.
+     */
+    List<SecondaryConsentEnabled> secondaryConsentEnabled();
 
     /**
      * Gets the inner com.azure.resourcemanager.support.fluent.models.ProblemClassificationInner object.

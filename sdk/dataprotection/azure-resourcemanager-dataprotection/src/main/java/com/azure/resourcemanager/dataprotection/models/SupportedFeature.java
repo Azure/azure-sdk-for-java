@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Elements class for feature request. */
+/**
+ * Elements class for feature request.
+ */
 @Fluent
 public final class SupportedFeature {
     /*
@@ -29,13 +31,15 @@ public final class SupportedFeature {
     @JsonProperty(value = "exposureControlledFeatures")
     private List<String> exposureControlledFeatures;
 
-    /** Creates an instance of SupportedFeature class. */
+    /**
+     * Creates an instance of SupportedFeature class.
+     */
     public SupportedFeature() {
     }
 
     /**
      * Get the featureName property: support feature type.
-     *
+     * 
      * @return the featureName value.
      */
     public String featureName() {
@@ -44,7 +48,7 @@ public final class SupportedFeature {
 
     /**
      * Set the featureName property: support feature type.
-     *
+     * 
      * @param featureName the featureName value to set.
      * @return the SupportedFeature object itself.
      */
@@ -55,7 +59,7 @@ public final class SupportedFeature {
 
     /**
      * Get the supportStatus property: feature support status.
-     *
+     * 
      * @return the supportStatus value.
      */
     public FeatureSupportStatus supportStatus() {
@@ -64,7 +68,7 @@ public final class SupportedFeature {
 
     /**
      * Set the supportStatus property: feature support status.
-     *
+     * 
      * @param supportStatus the supportStatus value to set.
      * @return the SupportedFeature object itself.
      */
@@ -75,7 +79,7 @@ public final class SupportedFeature {
 
     /**
      * Get the exposureControlledFeatures property: support feature type.
-     *
+     * 
      * @return the exposureControlledFeatures value.
      */
     public List<String> exposureControlledFeatures() {
@@ -84,7 +88,7 @@ public final class SupportedFeature {
 
     /**
      * Set the exposureControlledFeatures property: support feature type.
-     *
+     * 
      * @param exposureControlledFeatures the exposureControlledFeatures value to set.
      * @return the SupportedFeature object itself.
      */
@@ -95,7 +99,7 @@ public final class SupportedFeature {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

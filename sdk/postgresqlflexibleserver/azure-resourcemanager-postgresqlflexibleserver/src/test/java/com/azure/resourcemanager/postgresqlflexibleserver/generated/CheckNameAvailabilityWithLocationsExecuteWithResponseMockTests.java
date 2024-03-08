@@ -32,46 +32,32 @@ public final class CheckNameAvailabilityWithLocationsExecuteWithResponseMockTest
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"name\":\"njwmwkpnbsazejj\",\"type\":\"kagfhsxtt\",\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"faazpxdtnkdmkqjj\"}";
+        String responseStr
+            = "{\"name\":\"ilaxhn\",\"type\":\"qlyvijo\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"oyzunbixxr\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PostgreSqlManager manager =
-            PostgreSqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PostgreSqlManager manager = PostgreSqlManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        NameAvailability response =
-            manager
-                .checkNameAvailabilityWithLocations()
-                .executeWithResponse(
-                    "felfktg",
-                    new CheckNameAvailabilityRequest().withName("crpw").withType("eznoig"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        NameAvailability response = manager.checkNameAvailabilityWithLocations()
+            .executeWithResponse("pohyuemslynsqyr",
+                new CheckNameAvailabilityRequest().withName("oobrlttyms").withType("ygqdnfwqzdz"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(true, response.nameAvailable());
+        Assertions.assertEquals(false, response.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("faazpxdtnkdmkqjj", response.message());
+        Assertions.assertEquals("oyzunbixxr", response.message());
     }
 }

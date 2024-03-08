@@ -8,37 +8,55 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Resource type used for verification. */
+/**
+ * Resource type used for verification.
+ */
 public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckNameResourceTypes> {
-    /** Static value Site for CheckNameResourceTypes. */
+    /**
+     * Static value Site for CheckNameResourceTypes.
+     */
     public static final CheckNameResourceTypes SITE = fromString("Site");
 
-    /** Static value Slot for CheckNameResourceTypes. */
+    /**
+     * Static value Slot for CheckNameResourceTypes.
+     */
     public static final CheckNameResourceTypes SLOT = fromString("Slot");
 
-    /** Static value HostingEnvironment for CheckNameResourceTypes. */
+    /**
+     * Static value HostingEnvironment for CheckNameResourceTypes.
+     */
     public static final CheckNameResourceTypes HOSTING_ENVIRONMENT = fromString("HostingEnvironment");
 
-    /** Static value PublishingUser for CheckNameResourceTypes. */
+    /**
+     * Static value PublishingUser for CheckNameResourceTypes.
+     */
     public static final CheckNameResourceTypes PUBLISHING_USER = fromString("PublishingUser");
 
-    /** Static value Microsoft.Web/sites for CheckNameResourceTypes. */
+    /**
+     * Static value Microsoft.Web/sites for CheckNameResourceTypes.
+     */
     public static final CheckNameResourceTypes MICROSOFT_WEB_SITES = fromString("Microsoft.Web/sites");
 
-    /** Static value Microsoft.Web/sites/slots for CheckNameResourceTypes. */
+    /**
+     * Static value Microsoft.Web/sites/slots for CheckNameResourceTypes.
+     */
     public static final CheckNameResourceTypes MICROSOFT_WEB_SITES_SLOTS = fromString("Microsoft.Web/sites/slots");
 
-    /** Static value Microsoft.Web/hostingEnvironments for CheckNameResourceTypes. */
-    public static final CheckNameResourceTypes MICROSOFT_WEB_HOSTING_ENVIRONMENTS =
-        fromString("Microsoft.Web/hostingEnvironments");
+    /**
+     * Static value Microsoft.Web/hostingEnvironments for CheckNameResourceTypes.
+     */
+    public static final CheckNameResourceTypes MICROSOFT_WEB_HOSTING_ENVIRONMENTS
+        = fromString("Microsoft.Web/hostingEnvironments");
 
-    /** Static value Microsoft.Web/publishingUsers for CheckNameResourceTypes. */
-    public static final CheckNameResourceTypes MICROSOFT_WEB_PUBLISHING_USERS =
-        fromString("Microsoft.Web/publishingUsers");
+    /**
+     * Static value Microsoft.Web/publishingUsers for CheckNameResourceTypes.
+     */
+    public static final CheckNameResourceTypes MICROSOFT_WEB_PUBLISHING_USERS
+        = fromString("Microsoft.Web/publishingUsers");
 
     /**
      * Creates a new instance of CheckNameResourceTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -47,7 +65,7 @@ public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckName
 
     /**
      * Creates or finds a CheckNameResourceTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CheckNameResourceTypes.
      */
@@ -58,7 +76,7 @@ public final class CheckNameResourceTypes extends ExpandableStringEnum<CheckName
 
     /**
      * Gets known CheckNameResourceTypes values.
-     *
+     * 
      * @return known CheckNameResourceTypes values.
      */
     public static Collection<CheckNameResourceTypes> values() {

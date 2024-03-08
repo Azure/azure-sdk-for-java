@@ -10,23 +10,16 @@ import com.azure.resourcemanager.datafactory.models.TypeConversionSettings;
 public final class TypeConversionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TypeConversionSettings model =
-            BinaryData
-                .fromString(
-                    "{\"allowDataTruncation\":\"datalwlzekygnep\",\"treatBooleanAsNumber\":\"datauxqdrph\",\"dateTimeFormat\":\"dataxjqranpztlach\",\"dateTimeOffsetFormat\":\"datazsfutaapbrwv\",\"timeSpanFormat\":\"datav\",\"culture\":\"datahsorca\"}")
-                .toObject(TypeConversionSettings.class);
+        TypeConversionSettings model = BinaryData.fromString(
+            "{\"allowDataTruncation\":\"dataiblybx\",\"treatBooleanAsNumber\":\"datazknkffzdy\",\"dateTimeFormat\":\"datani\",\"dateTimeOffsetFormat\":\"datat\",\"timeSpanFormat\":\"datadedlmfw\",\"culture\":\"datafg\"}")
+            .toObject(TypeConversionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TypeConversionSettings model =
-            new TypeConversionSettings()
-                .withAllowDataTruncation("datalwlzekygnep")
-                .withTreatBooleanAsNumber("datauxqdrph")
-                .withDateTimeFormat("dataxjqranpztlach")
-                .withDateTimeOffsetFormat("datazsfutaapbrwv")
-                .withTimeSpanFormat("datav")
-                .withCulture("datahsorca");
+        TypeConversionSettings model = new TypeConversionSettings().withAllowDataTruncation("dataiblybx")
+            .withTreatBooleanAsNumber("datazknkffzdy").withDateTimeFormat("datani").withDateTimeOffsetFormat("datat")
+            .withTimeSpanFormat("datadedlmfw").withCulture("datafg");
         model = BinaryData.fromObject(model).toObject(TypeConversionSettings.class);
     }
 }

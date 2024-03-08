@@ -5,31 +5,38 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadDeleted event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadDeleted event.
+ */
 @Fluent
 public final class AcsChatThreadDeletedEventData extends AcsChatThreadEventInThreadBaseProperties {
     /*
      * The communication identifier of the user who deleted the thread
      */
-    @JsonProperty(value = "deletedByCommunicationIdentifier")
     private CommunicationIdentifierModel deletedByCommunicationIdentifier;
 
     /*
      * The deletion time of the thread
      */
-    @JsonProperty(value = "deleteTime")
     private OffsetDateTime deleteTime;
 
-    /** Creates an instance of AcsChatThreadDeletedEventData class. */
-    public AcsChatThreadDeletedEventData() {}
+    /**
+     * Creates an instance of AcsChatThreadDeletedEventData class.
+     */
+    public AcsChatThreadDeletedEventData() {
+    }
 
     /**
      * Get the deletedByCommunicationIdentifier property: The communication identifier of the user who deleted the
      * thread.
-     *
+     * 
      * @return the deletedByCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getDeletedByCommunicationIdentifier() {
@@ -39,19 +46,19 @@ public final class AcsChatThreadDeletedEventData extends AcsChatThreadEventInThr
     /**
      * Set the deletedByCommunicationIdentifier property: The communication identifier of the user who deleted the
      * thread.
-     *
+     * 
      * @param deletedByCommunicationIdentifier the deletedByCommunicationIdentifier value to set.
      * @return the AcsChatThreadDeletedEventData object itself.
      */
-    public AcsChatThreadDeletedEventData setDeletedByCommunicationIdentifier(
-            CommunicationIdentifierModel deletedByCommunicationIdentifier) {
+    public AcsChatThreadDeletedEventData
+        setDeletedByCommunicationIdentifier(CommunicationIdentifierModel deletedByCommunicationIdentifier) {
         this.deletedByCommunicationIdentifier = deletedByCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the deleteTime property: The deletion time of the thread.
-     *
+     * 
      * @return the deleteTime value.
      */
     public OffsetDateTime getDeleteTime() {
@@ -60,7 +67,7 @@ public final class AcsChatThreadDeletedEventData extends AcsChatThreadEventInThr
 
     /**
      * Set the deleteTime property: The deletion time of the thread.
-     *
+     * 
      * @param deleteTime the deleteTime value to set.
      * @return the AcsChatThreadDeletedEventData object itself.
      */
@@ -69,31 +76,93 @@ public final class AcsChatThreadDeletedEventData extends AcsChatThreadEventInThr
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadDeletedEventData setCreateTime(OffsetDateTime createTime) {
         super.setCreateTime(createTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadDeletedEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadDeletedEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadDeletedEventData setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transactionId", getTransactionId());
+        jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("createTime",
+            getCreateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreateTime()));
+        jsonWriter.writeNumberField("version", getVersion());
+        jsonWriter.writeJsonField("deletedByCommunicationIdentifier", this.deletedByCommunicationIdentifier);
+        jsonWriter.writeStringField("deleteTime",
+            this.deleteTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deleteTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsChatThreadDeletedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsChatThreadDeletedEventData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsChatThreadDeletedEventData.
+     */
+    public static AcsChatThreadDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatThreadDeletedEventData deserializedAcsChatThreadDeletedEventData
+                = new AcsChatThreadDeletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transactionId".equals(fieldName)) {
+                    deserializedAcsChatThreadDeletedEventData.setTransactionId(reader.getString());
+                } else if ("threadId".equals(fieldName)) {
+                    deserializedAcsChatThreadDeletedEventData.setThreadId(reader.getString());
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedAcsChatThreadDeletedEventData.setCreateTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("version".equals(fieldName)) {
+                    deserializedAcsChatThreadDeletedEventData.setVersion(reader.getNullable(JsonReader::getLong));
+                } else if ("deletedByCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatThreadDeletedEventData.deletedByCommunicationIdentifier
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("deleteTime".equals(fieldName)) {
+                    deserializedAcsChatThreadDeletedEventData.deleteTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsChatThreadDeletedEventData;
+        });
     }
 }

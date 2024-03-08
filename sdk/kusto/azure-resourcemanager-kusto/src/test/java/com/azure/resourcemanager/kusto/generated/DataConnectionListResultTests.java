@@ -16,9 +16,9 @@ public final class DataConnectionListResultTests {
         DataConnectionListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"zxnfaaz\",\"id\":\"xdtnkdmkqjjlw\",\"name\":\"envrkpyouaibrebq\",\"type\":\"aysjkixqtnqttez\"},{\"kind\":\"DataConnection\",\"location\":\"fffiak\",\"id\":\"jpqqmted\",\"name\":\"tmmjihyeozph\",\"type\":\"wau\"}]}")
+                    "{\"value\":[{\"kind\":\"DataConnection\",\"location\":\"ehvbbxurip\",\"id\":\"tfnhtbaxkgxywr\",\"name\":\"kpyklyhp\",\"type\":\"uodpv\"},{\"kind\":\"DataConnection\",\"location\":\"udlgzibthostgkts\",\"id\":\"vdxec\",\"name\":\"zedqbcvhzlhplo\",\"type\":\"qkdlw\"},{\"kind\":\"DataConnection\",\"location\":\"fbumlkx\",\"id\":\"rqjfsmlm\",\"name\":\"txhwgfws\",\"type\":\"tawc\"}]}")
                 .toObject(DataConnectionListResult.class);
-        Assertions.assertEquals("zxnfaaz", model.value().get(0).location());
+        Assertions.assertEquals("ehvbbxurip", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,9 +28,10 @@ public final class DataConnectionListResultTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new DataConnectionInner().withLocation("zxnfaaz"),
-                            new DataConnectionInner().withLocation("fffiak")));
+                            new DataConnectionInner().withLocation("ehvbbxurip"),
+                            new DataConnectionInner().withLocation("udlgzibthostgkts"),
+                            new DataConnectionInner().withLocation("fbumlkx")));
         model = BinaryData.fromObject(model).toObject(DataConnectionListResult.class);
-        Assertions.assertEquals("zxnfaaz", model.value().get(0).location());
+        Assertions.assertEquals("ehvbbxurip", model.value().get(0).location());
     }
 }

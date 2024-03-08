@@ -30,7 +30,7 @@ public final class CapabilitiesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"publisher\":\"oqouicybxarzgszu\",\"targetType\":\"x\",\"description\":\"q\",\"parametersSchema\":\"idoamciodhkha\",\"urn\":\"khnzbonlw\"},\"id\":\"toego\",\"name\":\"dwbwhkszzcmrvexz\",\"type\":\"vbtqgsfraoyzk\"}";
+            "{\"properties\":{\"publisher\":\"mhairsbrgzdwmsw\",\"targetType\":\"pqwd\",\"description\":\"gicccnxqhuex\",\"parametersSchema\":\"ttlstvlzywemhz\",\"urn\":\"csdtclusiypbs\"},\"id\":\"gytguslfead\",\"name\":\"ygqukyhejh\",\"type\":\"isxgfp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class CapabilitiesGetWithResponseMockTests {
             manager
                 .capabilities()
                 .getWithResponse(
-                    "oefki",
-                    "rvtp",
-                    "qujmqlgkf",
-                    "tndoaongbjc",
-                    "tujitcjedft",
-                    "waezkojvd",
+                    "rmaequ",
+                    "ah",
+                    "icslfaoq",
+                    "piyylhalnswhccsp",
+                    "kaivwit",
+                    "scywuggwoluhc",
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }

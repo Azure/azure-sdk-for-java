@@ -25,6 +25,10 @@ public final class OperationsList {
     @JsonProperty(value = "value", required = true)
     private List<OperationInner> value;
 
+    /** Creates an instance of OperationsList class. */
+    public OperationsList() {
+    }
+
     /**
      * Get the nextLink property: Url to follow for getting next page of operations.
      *

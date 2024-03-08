@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Set of data with rendering instructions. */
+/**
+ * Set of data with rendering instructions.
+ */
 @Fluent
 public final class DiagnosticData {
     /*
@@ -22,13 +24,15 @@ public final class DiagnosticData {
     @JsonProperty(value = "renderingProperties")
     private Rendering renderingProperties;
 
-    /** Creates an instance of DiagnosticData class. */
+    /**
+     * Creates an instance of DiagnosticData class.
+     */
     public DiagnosticData() {
     }
 
     /**
      * Get the table property: Data in table form.
-     *
+     * 
      * @return the table value.
      */
     public DataTableResponseObject table() {
@@ -37,7 +41,7 @@ public final class DiagnosticData {
 
     /**
      * Set the table property: Data in table form.
-     *
+     * 
      * @param table the table value to set.
      * @return the DiagnosticData object itself.
      */
@@ -48,7 +52,7 @@ public final class DiagnosticData {
 
     /**
      * Get the renderingProperties property: Properties that describe how the table should be rendered.
-     *
+     * 
      * @return the renderingProperties value.
      */
     public Rendering renderingProperties() {
@@ -57,7 +61,7 @@ public final class DiagnosticData {
 
     /**
      * Set the renderingProperties property: Properties that describe how the table should be rendered.
-     *
+     * 
      * @param renderingProperties the renderingProperties value to set.
      * @return the DiagnosticData object itself.
      */
@@ -68,7 +72,7 @@ public final class DiagnosticData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

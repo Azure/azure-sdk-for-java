@@ -57,7 +57,8 @@ private class ItemsTable(override val sparkSession: SparkSession,
         CosmosConfig.getEffectiveConfig(databaseName, containerName, this.effectiveUserConfig).asJava),
       logicalWriteInfo.schema(),
       containerStateHandles,
-      diagnosticsConfig
+      diagnosticsConfig,
+      sparkEnvironmentInfo
     )
   }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The workflow run trigger. */
+/**
+ * The workflow run trigger.
+ */
 @Fluent
 public final class WorkflowRunTrigger {
     /*
@@ -95,13 +97,15 @@ public final class WorkflowRunTrigger {
     @JsonProperty(value = "trackedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private Object trackedProperties;
 
-    /** Creates an instance of WorkflowRunTrigger class. */
+    /**
+     * Creates an instance of WorkflowRunTrigger class.
+     */
     public WorkflowRunTrigger() {
     }
 
     /**
      * Get the name property: Gets the name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -110,7 +114,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the inputs property: Gets the inputs.
-     *
+     * 
      * @return the inputs value.
      */
     public Object inputs() {
@@ -119,7 +123,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the inputsLink property: Gets the link to inputs.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -128,7 +132,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the outputs property: Gets the outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public Object outputs() {
@@ -137,7 +141,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the outputsLink property: Gets the link to outputs.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -146,7 +150,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the scheduledTime property: Gets the scheduled time.
-     *
+     * 
      * @return the scheduledTime value.
      */
     public OffsetDateTime scheduledTime() {
@@ -155,7 +159,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the startTime property: Gets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -164,7 +168,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the endTime property: Gets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -173,7 +177,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -182,7 +186,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the correlation property: The run correlation.
-     *
+     * 
      * @return the correlation value.
      */
     public Correlation correlation() {
@@ -191,7 +195,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Set the correlation property: The run correlation.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowRunTrigger object itself.
      */
@@ -202,7 +206,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the code property: Gets the code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -211,7 +215,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -220,7 +224,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -229,7 +233,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Get the trackedProperties property: Gets the tracked properties.
-     *
+     * 
      * @return the trackedProperties value.
      */
     public Object trackedProperties() {
@@ -238,7 +242,7 @@ public final class WorkflowRunTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

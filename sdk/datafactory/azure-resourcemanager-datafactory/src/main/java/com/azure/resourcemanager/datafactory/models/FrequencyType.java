@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Frequency of period in terms of 'Hour', 'Minute' or 'Second'. */
+/**
+ * Frequency of period in terms of 'Hour', 'Minute' or 'Second'.
+ */
 public final class FrequencyType extends ExpandableStringEnum<FrequencyType> {
-    /** Static value Hour for FrequencyType. */
+    /**
+     * Static value Hour for FrequencyType.
+     */
     public static final FrequencyType HOUR = fromString("Hour");
 
-    /** Static value Minute for FrequencyType. */
+    /**
+     * Static value Minute for FrequencyType.
+     */
     public static final FrequencyType MINUTE = fromString("Minute");
 
-    /** Static value Second for FrequencyType. */
+    /**
+     * Static value Second for FrequencyType.
+     */
     public static final FrequencyType SECOND = fromString("Second");
 
     /**
      * Creates a new instance of FrequencyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class FrequencyType extends ExpandableStringEnum<FrequencyType> {
 
     /**
      * Creates or finds a FrequencyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FrequencyType.
      */
@@ -41,7 +49,7 @@ public final class FrequencyType extends ExpandableStringEnum<FrequencyType> {
 
     /**
      * Gets known FrequencyType values.
-     *
+     * 
      * @return known FrequencyType values.
      */
     public static Collection<FrequencyType> values() {

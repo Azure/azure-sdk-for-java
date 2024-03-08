@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.Capacity;
 import com.azure.resourcemanager.loganalytics.models.Cluster;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
@@ -30,7 +29,7 @@ public final class ClustersUpdateSamples {
         Cluster resource =
             manager
                 .clusters()
-                .getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", Context.NONE)
+                .getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -48,13 +47,14 @@ public final class ClustersUpdateSamples {
                     .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
             .withKeyVaultProperties(
                 new KeyVaultProperties()
-                    .withKeyVaultUri("https://aztest2170.vault.azure.net")
-                    .withKeyName("aztest2170cert")
-                    .withKeyVersion("654ft6c4e63845cbb50fd6fg51540429")
+                    .withKeyVaultUri("fakeTokenPlaceholder")
+                    .withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder")
                     .withKeyRsaSize(1024))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

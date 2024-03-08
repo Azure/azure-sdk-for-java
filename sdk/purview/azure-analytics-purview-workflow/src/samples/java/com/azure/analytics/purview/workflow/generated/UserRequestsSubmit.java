@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.workflow.generated;
 
-import com.azure.analytics.purview.workflow.PurviewWorkflowClient;
-import com.azure.analytics.purview.workflow.PurviewWorkflowClientBuilder;
+import com.azure.analytics.purview.workflow.UserRequestsClient;
+import com.azure.analytics.purview.workflow.UserRequestsClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -14,18 +14,17 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class UserRequestsSubmit {
     public static void main(String[] args) {
-        PurviewWorkflowClient purviewWorkflowClient =
-                new PurviewWorkflowClientBuilder()
+        UserRequestsClient userRequestsClient =
+                new UserRequestsClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.submituserrequests.userrequestssubmit
+        // BEGIN:com.azure.analytics.purview.workflow.generated.userrequestssubmit.userrequestssubmit
         BinaryData userRequestsPayload =
                 BinaryData.fromString(
                         "{\"comment\":\"Thanks!\",\"operations\":[{\"type\":\"CreateTerm\",\"payload\":{\"glossaryTerm\":{\"name\":\"term\",\"anchor\":{\"glossaryGuid\":\"20031e20-b4df-4a66-a61d-1b0716f3fa48\"},\"nickName\":\"term\",\"status\":\"Approved\"}}}]}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response =
-                purviewWorkflowClient.submitUserRequestsWithResponse(userRequestsPayload, requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.submituserrequests.userrequestssubmit
+        Response<BinaryData> response = userRequestsClient.submitWithResponse(userRequestsPayload, requestOptions);
+        // END:com.azure.analytics.purview.workflow.generated.userrequestssubmit.userrequestssubmit
     }
 }

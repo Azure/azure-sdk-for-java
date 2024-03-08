@@ -9,28 +9,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * AdhocBasedTaggingCriteria
- *
- * <p>Adhoc backup tagging criteria.
+ * 
+ * Adhoc backup tagging criteria.
  */
 @Fluent
 public final class AdhocBasedTaggingCriteria {
     /*
      * RetentionTag
-     *
+     * 
      * Retention tag information
      */
     @JsonProperty(value = "tagInfo")
     private RetentionTag tagInfo;
 
-    /** Creates an instance of AdhocBasedTaggingCriteria class. */
+    /**
+     * Creates an instance of AdhocBasedTaggingCriteria class.
+     */
     public AdhocBasedTaggingCriteria() {
     }
 
     /**
      * Get the tagInfo property: RetentionTag
-     *
-     * <p>Retention tag information.
-     *
+     * 
+     * Retention tag information.
+     * 
      * @return the tagInfo value.
      */
     public RetentionTag tagInfo() {
@@ -39,9 +41,9 @@ public final class AdhocBasedTaggingCriteria {
 
     /**
      * Set the tagInfo property: RetentionTag
-     *
-     * <p>Retention tag information.
-     *
+     * 
+     * Retention tag information.
+     * 
      * @param tagInfo the tagInfo value to set.
      * @return the AdhocBasedTaggingCriteria object itself.
      */
@@ -52,7 +54,7 @@ public final class AdhocBasedTaggingCriteria {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

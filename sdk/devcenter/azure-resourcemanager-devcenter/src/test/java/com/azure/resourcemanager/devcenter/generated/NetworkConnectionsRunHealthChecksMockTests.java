@@ -56,6 +56,6 @@ public final class NetworkConnectionsRunHealthChecksMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.networkConnections().runHealthChecks("gydcw", "oxjumvqqo", com.azure.core.util.Context.NONE);
+        manager.networkConnections().runHealthChecks("pjrtws", "hv", com.azure.core.util.Context.NONE);
     }
 }

@@ -10,27 +10,17 @@ import com.azure.resourcemanager.datafactory.models.SapOdpSource;
 public final class SapOdpSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapOdpSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SapOdpSource\",\"extractionMode\":\"datalug\",\"subscriberProcess\":\"datau\",\"selection\":\"dataypliotgtlan\",\"projection\":\"datakvlxsycqqdoxooxu\",\"queryTimeout\":\"datafqoobwxctkveq\",\"additionalColumns\":\"dataedw\",\"sourceRetryCount\":\"dataqcjreryp\",\"sourceRetryWait\":\"datayqxeyzqnupsi\",\"maxConcurrentConnections\":\"datalxvaovssibnv\",\"disableMetricsCollection\":\"datavi\",\"\":{\"iyo\":\"databmzwlej\",\"xzdbntop\":\"datanbualr\",\"lgsxkyboysquyg\":\"dataabndwcfmzmqmg\",\"stwcyigrhfevxy\":\"datakh\"}}")
-                .toObject(SapOdpSource.class);
+        SapOdpSource model = BinaryData.fromString(
+            "{\"type\":\"SapOdpSource\",\"extractionMode\":\"datajjticly\",\"subscriberProcess\":\"dataduxbungmpn\",\"selection\":\"datatgucdfxglrcj\",\"projection\":\"dataoaz\",\"queryTimeout\":\"datazjc\",\"additionalColumns\":\"dataza\",\"sourceRetryCount\":\"dataoyrqjo\",\"sourceRetryWait\":\"datalnyhzes\",\"maxConcurrentConnections\":\"datadcloqpgzdbo\",\"disableMetricsCollection\":\"datapphfmzeufjzqaqe\",\"\":{\"qcthgqyvaoaz\":\"dataygqcwzytom\",\"cqafnv\":\"datakyk\"}}")
+            .toObject(SapOdpSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapOdpSource model =
-            new SapOdpSource()
-                .withSourceRetryCount("dataqcjreryp")
-                .withSourceRetryWait("datayqxeyzqnupsi")
-                .withMaxConcurrentConnections("datalxvaovssibnv")
-                .withDisableMetricsCollection("datavi")
-                .withQueryTimeout("datafqoobwxctkveq")
-                .withAdditionalColumns("dataedw")
-                .withExtractionMode("datalug")
-                .withSubscriberProcess("datau")
-                .withSelection("dataypliotgtlan")
-                .withProjection("datakvlxsycqqdoxooxu");
+        SapOdpSource model = new SapOdpSource().withSourceRetryCount("dataoyrqjo").withSourceRetryWait("datalnyhzes")
+            .withMaxConcurrentConnections("datadcloqpgzdbo").withDisableMetricsCollection("datapphfmzeufjzqaqe")
+            .withQueryTimeout("datazjc").withAdditionalColumns("dataza").withExtractionMode("datajjticly")
+            .withSubscriberProcess("dataduxbungmpn").withSelection("datatgucdfxglrcj").withProjection("dataoaz");
         model = BinaryData.fromObject(model).toObject(SapOdpSource.class);
     }
 }

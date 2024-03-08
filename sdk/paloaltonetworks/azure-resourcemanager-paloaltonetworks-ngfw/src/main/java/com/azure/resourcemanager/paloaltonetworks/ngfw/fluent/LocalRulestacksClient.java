@@ -24,11 +24,13 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.AdvSecurityObjectT
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.LocalRulestackResourceUpdate;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.SecurityServicesTypeEnum;
 
-/** An instance of this class provides access to all the operations defined in LocalRulestacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LocalRulestacksClient.
+ */
 public interface LocalRulestacksClient {
     /**
      * List LocalRulestackResource resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a LocalRulestackResource list operation as paginated response with {@link PagedIterable}.
@@ -38,7 +40,7 @@ public interface LocalRulestacksClient {
 
     /**
      * List LocalRulestackResource resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -50,7 +52,7 @@ public interface LocalRulestacksClient {
 
     /**
      * List LocalRulestackResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,7 +64,7 @@ public interface LocalRulestacksClient {
 
     /**
      * List LocalRulestackResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -75,7 +77,7 @@ public interface LocalRulestacksClient {
 
     /**
      * Get a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -85,12 +87,12 @@ public interface LocalRulestacksClient {
      * @return a LocalRulestackResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LocalRulestackResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String localRulestackName, Context context);
+    Response<LocalRulestackResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String localRulestackName, Context context);
 
     /**
      * Get a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -103,7 +105,7 @@ public interface LocalRulestacksClient {
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -113,12 +115,12 @@ public interface LocalRulestacksClient {
      * @return the {@link SyncPoller} for polling of paloAltoNetworks LocalRulestack.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<LocalRulestackResourceInner>, LocalRulestackResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource);
+    SyncPoller<PollResult<LocalRulestackResourceInner>, LocalRulestackResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource);
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -134,7 +136,7 @@ public interface LocalRulestacksClient {
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -144,12 +146,12 @@ public interface LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource);
+    LocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
+        LocalRulestackResourceInner resource);
 
     /**
      * Create a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param resource Resource create parameters.
@@ -160,12 +162,12 @@ public interface LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceInner resource, Context context);
+    LocalRulestackResourceInner createOrUpdate(String resourceGroupName, String localRulestackName,
+        LocalRulestackResourceInner resource, Context context);
 
     /**
      * Update a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param properties The resource properties to be updated.
@@ -176,12 +178,12 @@ public interface LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LocalRulestackResourceInner> updateWithResponse(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceUpdate properties, Context context);
+    Response<LocalRulestackResourceInner> updateWithResponse(String resourceGroupName, String localRulestackName,
+        LocalRulestackResourceUpdate properties, Context context);
 
     /**
      * Update a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param properties The resource properties to be updated.
@@ -191,12 +193,12 @@ public interface LocalRulestacksClient {
      * @return paloAltoNetworks LocalRulestack.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LocalRulestackResourceInner update(
-        String resourceGroupName, String localRulestackName, LocalRulestackResourceUpdate properties);
+    LocalRulestackResourceInner update(String resourceGroupName, String localRulestackName,
+        LocalRulestackResourceUpdate properties);
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,7 +211,7 @@ public interface LocalRulestacksClient {
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -219,12 +221,12 @@ public interface LocalRulestacksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
+        Context context);
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +238,7 @@ public interface LocalRulestacksClient {
 
     /**
      * Delete a LocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -249,7 +251,7 @@ public interface LocalRulestacksClient {
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,7 +264,7 @@ public interface LocalRulestacksClient {
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -272,12 +274,12 @@ public interface LocalRulestacksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCommit(
-        String resourceGroupName, String localRulestackName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginCommit(String resourceGroupName, String localRulestackName,
+        Context context);
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -289,7 +291,7 @@ public interface LocalRulestacksClient {
 
     /**
      * Commit rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -302,7 +304,7 @@ public interface LocalRulestacksClient {
 
     /**
      * Get changelog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -312,12 +314,12 @@ public interface LocalRulestacksClient {
      * @return changelog along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ChangelogInner> getChangeLogWithResponse(
-        String resourceGroupName, String localRulestackName, Context context);
+    Response<ChangelogInner> getChangeLogWithResponse(String resourceGroupName, String localRulestackName,
+        Context context);
 
     /**
      * Get changelog.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -330,7 +332,7 @@ public interface LocalRulestacksClient {
 
     /**
      * support info for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param email email address on behalf of which this API called.
@@ -341,12 +343,12 @@ public interface LocalRulestacksClient {
      * @return support information for the resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SupportInfoInner> getSupportInfoWithResponse(
-        String resourceGroupName, String localRulestackName, String email, Context context);
+    Response<SupportInfoInner> getSupportInfoWithResponse(String resourceGroupName, String localRulestackName,
+        String email, Context context);
 
     /**
      * support info for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,7 +361,7 @@ public interface LocalRulestacksClient {
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -372,17 +374,12 @@ public interface LocalRulestacksClient {
      * @return the list of advanced security objects along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AdvSecurityObjectListResponseInner> listAdvancedSecurityObjectsWithResponse(
-        String resourceGroupName,
-        String localRulestackName,
-        AdvSecurityObjectTypeEnum type,
-        String skip,
-        Integer top,
-        Context context);
+    Response<AdvSecurityObjectListResponseInner> listAdvancedSecurityObjectsWithResponse(String resourceGroupName,
+        String localRulestackName, AdvSecurityObjectTypeEnum type, String skip, Integer top, Context context);
 
     /**
      * Get the list of advanced security objects.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -392,12 +389,12 @@ public interface LocalRulestacksClient {
      * @return the list of advanced security objects.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AdvSecurityObjectListResponseInner listAdvancedSecurityObjects(
-        String resourceGroupName, String localRulestackName, AdvSecurityObjectTypeEnum type);
+    AdvSecurityObjectListResponseInner listAdvancedSecurityObjects(String resourceGroupName, String localRulestackName,
+        AdvSecurityObjectTypeEnum type);
 
     /**
      * List of AppIds for LocalRulestack ApiVersion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param appIdVersion The appIdVersion parameter.
@@ -411,18 +408,12 @@ public interface LocalRulestacksClient {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListAppIdResponseInner> listAppIdsWithResponse(
-        String resourceGroupName,
-        String localRulestackName,
-        String appIdVersion,
-        String appPrefix,
-        String skip,
-        Integer top,
-        Context context);
+    Response<ListAppIdResponseInner> listAppIdsWithResponse(String resourceGroupName, String localRulestackName,
+        String appIdVersion, String appPrefix, String skip, Integer top, Context context);
 
     /**
      * List of AppIds for LocalRulestack ApiVersion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -435,7 +426,7 @@ public interface LocalRulestacksClient {
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param skip The skip parameter.
@@ -447,12 +438,12 @@ public interface LocalRulestacksClient {
      * @return countries Response Object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CountriesResponseInner> listCountriesWithResponse(
-        String resourceGroupName, String localRulestackName, String skip, Integer top, Context context);
+    Response<CountriesResponseInner> listCountriesWithResponse(String resourceGroupName, String localRulestackName,
+        String skip, Integer top, Context context);
 
     /**
      * List of countries for Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -465,7 +456,7 @@ public interface LocalRulestacksClient {
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -475,12 +466,12 @@ public interface LocalRulestacksClient {
      * @return list firewalls response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ListFirewallsResponseInner> listFirewallsWithResponse(
-        String resourceGroupName, String localRulestackName, Context context);
+    Response<ListFirewallsResponseInner> listFirewallsWithResponse(String resourceGroupName, String localRulestackName,
+        Context context);
 
     /**
      * List of Firewalls associated with Rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -493,7 +484,7 @@ public interface LocalRulestacksClient {
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param skip The skip parameter.
@@ -505,12 +496,12 @@ public interface LocalRulestacksClient {
      * @return predefined url categories response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PredefinedUrlCategoriesResponseInner> listPredefinedUrlCategoriesWithResponse(
-        String resourceGroupName, String localRulestackName, String skip, Integer top, Context context);
+    Response<PredefinedUrlCategoriesResponseInner> listPredefinedUrlCategoriesWithResponse(String resourceGroupName,
+        String localRulestackName, String skip, Integer top, Context context);
 
     /**
      * List predefined URL categories for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -519,12 +510,12 @@ public interface LocalRulestacksClient {
      * @return predefined url categories response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PredefinedUrlCategoriesResponseInner listPredefinedUrlCategories(
-        String resourceGroupName, String localRulestackName);
+    PredefinedUrlCategoriesResponseInner listPredefinedUrlCategories(String resourceGroupName,
+        String localRulestackName);
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -537,17 +528,12 @@ public interface LocalRulestacksClient {
      * @return security services list response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityServicesResponseInner> listSecurityServicesWithResponse(
-        String resourceGroupName,
-        String localRulestackName,
-        SecurityServicesTypeEnum type,
-        String skip,
-        Integer top,
-        Context context);
+    Response<SecurityServicesResponseInner> listSecurityServicesWithResponse(String resourceGroupName,
+        String localRulestackName, SecurityServicesTypeEnum type, String skip, Integer top, Context context);
 
     /**
      * List the security services for rulestack.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param type The type parameter.
@@ -557,12 +543,12 @@ public interface LocalRulestacksClient {
      * @return security services list response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityServicesResponseInner listSecurityServices(
-        String resourceGroupName, String localRulestackName, SecurityServicesTypeEnum type);
+    SecurityServicesResponseInner listSecurityServices(String resourceGroupName, String localRulestackName,
+        SecurityServicesTypeEnum type);
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -576,7 +562,7 @@ public interface LocalRulestacksClient {
 
     /**
      * Revert rulestack configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

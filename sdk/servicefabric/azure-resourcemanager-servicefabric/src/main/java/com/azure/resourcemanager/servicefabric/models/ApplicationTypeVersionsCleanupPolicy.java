@@ -7,7 +7,9 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ApplicationTypeVersionsCleanupPolicy model. */
+/**
+ * The ApplicationTypeVersionsCleanupPolicy model.
+ */
 @Fluent
 public final class ApplicationTypeVersionsCleanupPolicy {
     /*
@@ -16,13 +18,15 @@ public final class ApplicationTypeVersionsCleanupPolicy {
     @JsonProperty(value = "maxUnusedVersionsToKeep", required = true)
     private long maxUnusedVersionsToKeep;
 
-    /** Creates an instance of ApplicationTypeVersionsCleanupPolicy class. */
+    /**
+     * Creates an instance of ApplicationTypeVersionsCleanupPolicy class.
+     */
     public ApplicationTypeVersionsCleanupPolicy() {
     }
 
     /**
      * Get the maxUnusedVersionsToKeep property: Number of unused versions per application type to keep.
-     *
+     * 
      * @return the maxUnusedVersionsToKeep value.
      */
     public long maxUnusedVersionsToKeep() {
@@ -31,7 +35,7 @@ public final class ApplicationTypeVersionsCleanupPolicy {
 
     /**
      * Set the maxUnusedVersionsToKeep property: Number of unused versions per application type to keep.
-     *
+     * 
      * @param maxUnusedVersionsToKeep the maxUnusedVersionsToKeep value to set.
      * @return the ApplicationTypeVersionsCleanupPolicy object itself.
      */
@@ -42,7 +46,7 @@ public final class ApplicationTypeVersionsCleanupPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

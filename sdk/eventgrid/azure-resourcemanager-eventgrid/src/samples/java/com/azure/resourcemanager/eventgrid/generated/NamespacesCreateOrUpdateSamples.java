@@ -9,31 +9,30 @@ import com.azure.resourcemanager.eventgrid.models.TopicSpacesConfigurationState;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Namespaces CreateOrUpdate. */
+/**
+ * Samples for Namespaces CreateOrUpdate.
+ */
 public final class NamespacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Namespaces_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * Namespaces_CreateOrUpdate.json
      */
     /**
      * Sample code: Namespaces_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void namespacesCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .namespaces()
-            .define("exampleNamespaceName1")
-            .withRegion("westus")
-            .withExistingResourceGroup("examplerg")
+        manager.namespaces().define("exampleNamespaceName1").withRegion("westus").withExistingResourceGroup("examplerg")
             .withTags(mapOf("tag1", "value11", "tag2", "value22"))
-            .withTopicSpacesConfiguration(
-                new TopicSpacesConfiguration()
-                    .withState(TopicSpacesConfigurationState.ENABLED)
-                    .withRouteTopicResourceId(
-                        "/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"))
+            .withTopicSpacesConfiguration(new TopicSpacesConfiguration()
+                .withState(TopicSpacesConfigurationState.ENABLED).withRouteTopicResourceId(
+                    "/subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampleTopic1"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

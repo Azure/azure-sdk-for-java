@@ -8,23 +8,92 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current device status. */
+/**
+ * The component resource deployment status.
+ */
 public final class Status extends ExpandableStringEnum<Status> {
-    /** Static value Unknown for Status. */
+    /**
+     * Static value Unknown for Status.
+     */
     public static final Status UNKNOWN = fromString("Unknown");
 
-    /** Static value NotRegistered for Status. */
-    public static final Status NOT_REGISTERED = fromString("NotRegistered");
+    /**
+     * Static value Deployed for Status.
+     */
+    public static final Status DEPLOYED = fromString("Deployed");
 
-    /** Static value Registered for Status. */
-    public static final Status REGISTERED = fromString("Registered");
+    /**
+     * Static value Uninstalled for Status.
+     */
+    public static final Status UNINSTALLED = fromString("Uninstalled");
 
-    /** Static value Deleted for Status. */
-    public static final Status DELETED = fromString("Deleted");
+    /**
+     * Static value Superseded for Status.
+     */
+    public static final Status SUPERSEDED = fromString("Superseded");
+
+    /**
+     * Static value Failed for Status.
+     */
+    public static final Status FAILED = fromString("Failed");
+
+    /**
+     * Static value Uninstalling for Status.
+     */
+    public static final Status UNINSTALLING = fromString("Uninstalling");
+
+    /**
+     * Static value Pending-Install for Status.
+     */
+    public static final Status PENDING_INSTALL = fromString("Pending-Install");
+
+    /**
+     * Static value Pending-Upgrade for Status.
+     */
+    public static final Status PENDING_UPGRADE = fromString("Pending-Upgrade");
+
+    /**
+     * Static value Pending-Rollback for Status.
+     */
+    public static final Status PENDING_ROLLBACK = fromString("Pending-Rollback");
+
+    /**
+     * Static value Downloading for Status.
+     */
+    public static final Status DOWNLOADING = fromString("Downloading");
+
+    /**
+     * Static value Installing for Status.
+     */
+    public static final Status INSTALLING = fromString("Installing");
+
+    /**
+     * Static value Reinstalling for Status.
+     */
+    public static final Status REINSTALLING = fromString("Reinstalling");
+
+    /**
+     * Static value Rollingback for Status.
+     */
+    public static final Status ROLLINGBACK = fromString("Rollingback");
+
+    /**
+     * Static value Upgrading for Status.
+     */
+    public static final Status UPGRADING = fromString("Upgrading");
+
+    /**
+     * Creates a new instance of Status value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Status() {
+    }
 
     /**
      * Creates or finds a Status from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Status.
      */
@@ -35,7 +104,7 @@ public final class Status extends ExpandableStringEnum<Status> {
 
     /**
      * Gets known Status values.
-     *
+     * 
      * @return known Status values.
      */
     public static Collection<Status> values() {

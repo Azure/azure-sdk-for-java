@@ -10,8 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.OperationExtendedInfo;
 public final class OperationExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationExtendedInfo model =
-            BinaryData.fromString("{\"objectType\":\"OperationExtendedInfo\"}").toObject(OperationExtendedInfo.class);
+        OperationExtendedInfo model
+            = BinaryData.fromString("{\"objectType\":\"OperationExtendedInfo\"}").toObject(OperationExtendedInfo.class);
     }
 
     @org.junit.jupiter.api.Test

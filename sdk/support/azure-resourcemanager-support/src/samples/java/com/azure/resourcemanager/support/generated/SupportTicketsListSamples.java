@@ -7,7 +7,7 @@ package com.azure.resourcemanager.support.generated;
 /** Samples for SupportTickets List. */
 public final class SupportTicketsListSamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListSupportTicketsServiceIdEqualsForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsServiceIdEqualsForSubscription.json
      */
     /**
      * Sample code: List support tickets with a certain service id for a subscription.
@@ -20,7 +20,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsCreatedOnOrAfterAndInOpenStateBySubscription.json
      */
     /**
      * Sample code: List support tickets created on or after a certain date and in open state for a subscription.
@@ -35,7 +35,36 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsInUpdatingStateBySubscription.json
+     */
+    /**
+     * Sample code: List support tickets in updating state for a subscription.
+     *
+     * @param manager Entry point to SupportManager.
+     */
+    public static void listSupportTicketsInUpdatingStateForASubscription(
+        com.azure.resourcemanager.support.SupportManager manager) {
+        manager.supportTickets().list(null, "status eq 'Updating'", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsCreatedOnOrAfterAndInUpdatingStateBySubscription.json
+     */
+    /**
+     * Sample code: List support tickets created on or after a certain date and in updating state for a subscription.
+     *
+     * @param manager Entry point to SupportManager.
+     */
+    public static void listSupportTicketsCreatedOnOrAfterACertainDateAndInUpdatingStateForASubscription(
+        com.azure.resourcemanager.support.SupportManager manager) {
+        manager
+            .supportTickets()
+            .list(
+                null, "createdDate ge 2020-03-10T22:08:51Z and status eq 'Updating'", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsProblemClassificationIdEqualsForSubscription.json
      */
     /**
      * Sample code: List support tickets with a certain problem classification id for a subscription.
@@ -53,7 +82,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListSupportTicketsBySubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsBySubscription.json
      */
     /**
      * Sample code: List support tickets for a subscription.
@@ -65,7 +94,7 @@ public final class SupportTicketsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/ListSupportTicketsInOpenStateBySubscription.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/ListSupportTicketsInOpenStateBySubscription.json
      */
     /**
      * Sample code: List support tickets in open state for a subscription.

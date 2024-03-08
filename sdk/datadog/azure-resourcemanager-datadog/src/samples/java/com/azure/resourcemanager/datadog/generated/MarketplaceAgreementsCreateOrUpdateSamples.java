@@ -7,7 +7,7 @@ package com.azure.resourcemanager.datadog.generated;
 /** Samples for MarketplaceAgreements CreateOrUpdate. */
 public final class MarketplaceAgreementsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2021-03-01/examples/MarketplaceAgreements_Create.json
+     * x-ms-original-file: specification/datadog/resource-manager/Microsoft.Datadog/stable/2023-01-01/examples/MarketplaceAgreements_Create.json
      */
     /**
      * Sample code: MarketplaceAgreements_CreateOrUpdate.

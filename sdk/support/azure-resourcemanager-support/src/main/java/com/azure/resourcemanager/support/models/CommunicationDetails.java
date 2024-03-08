@@ -85,11 +85,13 @@ public interface CommunicationDetails {
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
+
     /** The CommunicationDetails definition stages. */
     interface DefinitionStages {
         /** The first stage of the CommunicationDetails definition. */
         interface Blank extends WithParentResource {
         }
+
         /** The stage of the CommunicationDetails definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -100,6 +102,7 @@ public interface CommunicationDetails {
              */
             WithCreate withExistingSupportTicket(String supportTicketName);
         }
+
         /**
          * The stage of the CommunicationDetails definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -121,6 +124,7 @@ public interface CommunicationDetails {
              */
             CommunicationDetails create(Context context);
         }
+
         /** The stage of the CommunicationDetails definition allowing to specify sender. */
         interface WithSender {
             /**
@@ -132,6 +136,7 @@ public interface CommunicationDetails {
              */
             WithCreate withSender(String sender);
         }
+
         /** The stage of the CommunicationDetails definition allowing to specify subject. */
         interface WithSubject {
             /**
@@ -142,6 +147,7 @@ public interface CommunicationDetails {
              */
             WithCreate withSubject(String subject);
         }
+
         /** The stage of the CommunicationDetails definition allowing to specify body. */
         interface WithBody {
             /**
@@ -153,6 +159,7 @@ public interface CommunicationDetails {
             WithCreate withBody(String body);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

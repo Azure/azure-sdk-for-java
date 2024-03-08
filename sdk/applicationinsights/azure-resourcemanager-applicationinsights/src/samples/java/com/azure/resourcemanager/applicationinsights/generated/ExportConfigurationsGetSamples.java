@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExportConfigurations Get. */
 public final class ExportConfigurationsGetSamples {
     /*
@@ -20,6 +18,7 @@ public final class ExportConfigurationsGetSamples {
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .exportConfigurations()
-            .getWithResponse("my-resource-group", "my-component", "uGOoki0jQsyEs3IdQ83Q4QsNr4=", Context.NONE);
+            .getWithResponse(
+                "my-resource-group", "my-component", "uGOoki0jQsyEs3IdQ83Q4QsNr4=", com.azure.core.util.Context.NONE);
     }
 }

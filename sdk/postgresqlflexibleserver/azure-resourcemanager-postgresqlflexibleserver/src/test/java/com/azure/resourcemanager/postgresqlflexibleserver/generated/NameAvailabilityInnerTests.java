@@ -12,26 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class NameAvailabilityInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NameAvailabilityInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"lns\",\"type\":\"bxwyjsflhhcaa\",\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"sxyawjoyaqcs\"}")
-                .toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals(true, model.nameAvailable());
+        NameAvailabilityInner model = BinaryData.fromString(
+            "{\"name\":\"fhyhltrpmopjmcma\",\"type\":\"okth\",\"nameAvailable\":false,\"reason\":\"AlreadyExists\",\"message\":\"dsfcpkvxodpuoz\"}")
+            .toObject(NameAvailabilityInner.class);
+        Assertions.assertEquals(false, model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("sxyawjoyaqcs", model.message());
+        Assertions.assertEquals("dsfcpkvxodpuoz", model.message());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NameAvailabilityInner model =
-            new NameAvailabilityInner()
-                .withNameAvailable(true)
-                .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS)
-                .withMessage("sxyawjoyaqcs");
+        NameAvailabilityInner model = new NameAvailabilityInner().withNameAvailable(false)
+            .withReason(CheckNameAvailabilityReason.ALREADY_EXISTS).withMessage("dsfcpkvxodpuoz");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityInner.class);
-        Assertions.assertEquals(true, model.nameAvailable());
+        Assertions.assertEquals(false, model.nameAvailable());
         Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, model.reason());
-        Assertions.assertEquals("sxyawjoyaqcs", model.message());
+        Assertions.assertEquals("dsfcpkvxodpuoz", model.message());
     }
 }

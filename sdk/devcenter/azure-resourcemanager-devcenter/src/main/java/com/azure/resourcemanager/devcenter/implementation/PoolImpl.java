@@ -15,7 +15,9 @@ import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 import com.azure.resourcemanager.devcenter.models.Pool;
 import com.azure.resourcemanager.devcenter.models.PoolUpdate;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
+import com.azure.resourcemanager.devcenter.models.SingleSignOnStatus;
 import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
+import com.azure.resourcemanager.devcenter.models.VirtualNetworkType;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +69,10 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
         }
     }
 
+    public Integer devBoxCount() {
+        return this.innerModel().devBoxCount();
+    }
+
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
@@ -89,6 +95,27 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
 
     public StopOnDisconnectConfiguration stopOnDisconnect() {
         return this.innerModel().stopOnDisconnect();
+    }
+
+    public SingleSignOnStatus singleSignOnStatus() {
+        return this.innerModel().singleSignOnStatus();
+    }
+
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
+    public VirtualNetworkType virtualNetworkType() {
+        return this.innerModel().virtualNetworkType();
+    }
+
+    public List<String> managedVirtualNetworkRegions() {
+        List<String> inner = this.innerModel().managedVirtualNetworkRegions();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -274,6 +301,46 @@ public final class PoolImpl implements Pool, Pool.Definition, Pool.Update {
             return this;
         } else {
             this.updateBody.withStopOnDisconnect(stopOnDisconnect);
+            return this;
+        }
+    }
+
+    public PoolImpl withSingleSignOnStatus(SingleSignOnStatus singleSignOnStatus) {
+        if (isInCreateMode()) {
+            this.innerModel().withSingleSignOnStatus(singleSignOnStatus);
+            return this;
+        } else {
+            this.updateBody.withSingleSignOnStatus(singleSignOnStatus);
+            return this;
+        }
+    }
+
+    public PoolImpl withDisplayName(String displayName) {
+        if (isInCreateMode()) {
+            this.innerModel().withDisplayName(displayName);
+            return this;
+        } else {
+            this.updateBody.withDisplayName(displayName);
+            return this;
+        }
+    }
+
+    public PoolImpl withVirtualNetworkType(VirtualNetworkType virtualNetworkType) {
+        if (isInCreateMode()) {
+            this.innerModel().withVirtualNetworkType(virtualNetworkType);
+            return this;
+        } else {
+            this.updateBody.withVirtualNetworkType(virtualNetworkType);
+            return this;
+        }
+    }
+
+    public PoolImpl withManagedVirtualNetworkRegions(List<String> managedVirtualNetworkRegions) {
+        if (isInCreateMode()) {
+            this.innerModel().withManagedVirtualNetworkRegions(managedVirtualNetworkRegions);
+            return this;
+        } else {
+            this.updateBody.withManagedVirtualNetworkRegions(managedVirtualNetworkRegions);
             return this;
         }
     }

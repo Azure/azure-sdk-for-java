@@ -13,8 +13,7 @@ public final class SecurityServicesResponseImpl implements SecurityServicesRespo
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    SecurityServicesResponseImpl(
-        SecurityServicesResponseInner innerObject,
+    SecurityServicesResponseImpl(SecurityServicesResponseInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

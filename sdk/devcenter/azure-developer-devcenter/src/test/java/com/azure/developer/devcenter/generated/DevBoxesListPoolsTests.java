@@ -7,21 +7,29 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
+import com.azure.developer.devcenter.DevCenterClientTestBase;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.util.Map;
 
 public final class DevBoxesListPoolsTests extends DevCenterClientTestBase {
     @Test
     @Disabled
     public void testDevBoxesListPoolsTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listPools("myProject", requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listPools(projectName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"LargeDevWorkStationPool\",\"hardwareProfile\":{\"memoryGB\":32,\"vCPUs\":8},\"hibernateSupport\":\"Enabled\",\"imageReference\":{\"name\":\"DevImage\",\"publishedDate\":\"2022-03-01T00:13:23.323Z\",\"version\":\"1.0.0\"},\"location\":\"centralus\",\"osType\":\"Windows\",\"storageProfile\":{\"osDisk\":{\"diskSizeGB\":1024}}}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+
+        int numberOfPools = 0;
+        for (BinaryData data: response) {
+            numberOfPools++;
+            Map<String, Object> pool = data.toObject(new TypeReference<Map<String, Object>>() {});
+            Assertions.assertEquals(pool.get("name"), poolName);
+        }
+
+        Assertions.assertEquals(1, numberOfPools);
     }
 }

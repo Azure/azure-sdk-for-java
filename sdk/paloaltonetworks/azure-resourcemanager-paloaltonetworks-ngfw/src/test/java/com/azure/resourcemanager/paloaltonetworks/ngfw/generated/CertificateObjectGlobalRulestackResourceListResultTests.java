@@ -14,57 +14,34 @@ import org.junit.jupiter.api.Assertions;
 public final class CertificateObjectGlobalRulestackResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertificateObjectGlobalRulestackResourceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"urzafb\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"gpbtoqcjmklj\",\"description\":\"bqidtqaj\",\"etag\":\"ulpkudjkrl\",\"provisioningState\":\"Failed\"},\"id\":\"hfepgzgqex\",\"name\":\"locx\",\"type\":\"c\"},{\"properties\":{\"certificateSignerResourceId\":\"ierhhbcsglummaj\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"odxobnbdxkqpxok\",\"description\":\"ionpimexg\",\"etag\":\"xgcp\",\"provisioningState\":\"Succeeded\"},\"id\":\"aajrm\",\"name\":\"djwzrlov\",\"type\":\"clwhijcoejctbz\"},{\"properties\":{\"certificateSignerResourceId\":\"s\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"cbkbfkg\",\"description\":\"dkexxppofm\",\"etag\":\"x\",\"provisioningState\":\"Failed\"},\"id\":\"gddtocj\",\"name\":\"xhvpmoue\",\"type\":\"hd\"},{\"properties\":{\"certificateSignerResourceId\":\"i\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"ojnxqbzvdd\",\"description\":\"wndeicbtwnp\",\"etag\":\"oqvuhr\",\"provisioningState\":\"Deleting\"},\"id\":\"cyddglmjthjqk\",\"name\":\"pyeicxm\",\"type\":\"ciwqvhk\"}],\"nextLink\":\"xuigdtopbobj\"}")
-                .toObject(CertificateObjectGlobalRulestackResourceListResult.class);
-        Assertions.assertEquals("urzafb", model.value().get(0).certificateSignerResourceId());
-        Assertions.assertEquals(BooleanEnum.TRUE, model.value().get(0).certificateSelfSigned());
-        Assertions.assertEquals("gpbtoqcjmklj", model.value().get(0).auditComment());
-        Assertions.assertEquals("bqidtqaj", model.value().get(0).description());
-        Assertions.assertEquals("ulpkudjkrl", model.value().get(0).etag());
-        Assertions.assertEquals("xuigdtopbobj", model.nextLink());
+        CertificateObjectGlobalRulestackResourceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"certificateSignerResourceId\":\"yyien\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"lwtgrhpdj\",\"description\":\"umasxazjpq\",\"etag\":\"gual\",\"provisioningState\":\"Accepted\"},\"id\":\"hejjz\",\"name\":\"v\",\"type\":\"udgwdslfho\"},{\"properties\":{\"certificateSignerResourceId\":\"mcy\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"lbjnpgacftadehx\",\"description\":\"tyfsoppusuesn\",\"etag\":\"dejbavo\",\"provisioningState\":\"Deleting\"},\"id\":\"mohctb\",\"name\":\"vudwx\",\"type\":\"ndnvo\"}],\"nextLink\":\"ujjugwdkcglh\"}")
+            .toObject(CertificateObjectGlobalRulestackResourceListResult.class);
+        Assertions.assertEquals("yyien", model.value().get(0).certificateSignerResourceId());
+        Assertions.assertEquals(BooleanEnum.FALSE, model.value().get(0).certificateSelfSigned());
+        Assertions.assertEquals("lwtgrhpdj", model.value().get(0).auditComment());
+        Assertions.assertEquals("umasxazjpq", model.value().get(0).description());
+        Assertions.assertEquals("gual", model.value().get(0).etag());
+        Assertions.assertEquals("ujjugwdkcglh", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertificateObjectGlobalRulestackResourceListResult model =
-            new CertificateObjectGlobalRulestackResourceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CertificateObjectGlobalRulestackResourceInner()
-                                .withCertificateSignerResourceId("urzafb")
-                                .withCertificateSelfSigned(BooleanEnum.TRUE)
-                                .withAuditComment("gpbtoqcjmklj")
-                                .withDescription("bqidtqaj")
-                                .withEtag("ulpkudjkrl"),
-                            new CertificateObjectGlobalRulestackResourceInner()
-                                .withCertificateSignerResourceId("ierhhbcsglummaj")
-                                .withCertificateSelfSigned(BooleanEnum.TRUE)
-                                .withAuditComment("odxobnbdxkqpxok")
-                                .withDescription("ionpimexg")
-                                .withEtag("xgcp"),
-                            new CertificateObjectGlobalRulestackResourceInner()
-                                .withCertificateSignerResourceId("s")
-                                .withCertificateSelfSigned(BooleanEnum.TRUE)
-                                .withAuditComment("cbkbfkg")
-                                .withDescription("dkexxppofm")
-                                .withEtag("x"),
-                            new CertificateObjectGlobalRulestackResourceInner()
-                                .withCertificateSignerResourceId("i")
-                                .withCertificateSelfSigned(BooleanEnum.FALSE)
-                                .withAuditComment("ojnxqbzvdd")
-                                .withDescription("wndeicbtwnp")
-                                .withEtag("oqvuhr")))
-                .withNextLink("xuigdtopbobj");
+        CertificateObjectGlobalRulestackResourceListResult model
+            = new CertificateObjectGlobalRulestackResourceListResult().withValue(Arrays.asList(
+                new CertificateObjectGlobalRulestackResourceInner().withCertificateSignerResourceId("yyien")
+                    .withCertificateSelfSigned(BooleanEnum.FALSE).withAuditComment("lwtgrhpdj")
+                    .withDescription("umasxazjpq").withEtag("gual"),
+                new CertificateObjectGlobalRulestackResourceInner().withCertificateSignerResourceId("mcy")
+                    .withCertificateSelfSigned(BooleanEnum.TRUE).withAuditComment("lbjnpgacftadehx")
+                    .withDescription("tyfsoppusuesn").withEtag("dejbavo")))
+                .withNextLink("ujjugwdkcglh");
         model = BinaryData.fromObject(model).toObject(CertificateObjectGlobalRulestackResourceListResult.class);
-        Assertions.assertEquals("urzafb", model.value().get(0).certificateSignerResourceId());
-        Assertions.assertEquals(BooleanEnum.TRUE, model.value().get(0).certificateSelfSigned());
-        Assertions.assertEquals("gpbtoqcjmklj", model.value().get(0).auditComment());
-        Assertions.assertEquals("bqidtqaj", model.value().get(0).description());
-        Assertions.assertEquals("ulpkudjkrl", model.value().get(0).etag());
-        Assertions.assertEquals("xuigdtopbobj", model.nextLink());
+        Assertions.assertEquals("yyien", model.value().get(0).certificateSignerResourceId());
+        Assertions.assertEquals(BooleanEnum.FALSE, model.value().get(0).certificateSelfSigned());
+        Assertions.assertEquals("lwtgrhpdj", model.value().get(0).auditComment());
+        Assertions.assertEquals("umasxazjpq", model.value().get(0).description());
+        Assertions.assertEquals("gual", model.value().get(0).etag());
+        Assertions.assertEquals("ujjugwdkcglh", model.nextLink());
     }
 }

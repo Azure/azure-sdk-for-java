@@ -31,7 +31,7 @@ public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"groupId\":\"cxmjpbyephmg\",\"privateLinkResourceId\":\"vljvrc\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"i\",\"status\":\"Timeout\"},\"id\":\"hnp\",\"name\":\"myqwcab\",\"type\":\"nuilee\"}";
+            "{\"properties\":{\"groupId\":\"mkfqlwxldy\",\"privateLinkResourceId\":\"alsygao\",\"provisioningState\":\"Succeeded\",\"requestMessage\":\"nnbmjksibjgsjj\",\"status\":\"Disconnected\"},\"id\":\"mr\",\"name\":\"ad\",\"type\":\"yqegx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class SignalRSharedPrivateLinkResourcesCreateOrUpdateMockTests {
         SharedPrivateLinkResource response =
             manager
                 .signalRSharedPrivateLinkResources()
-                .define("z")
-                .withExistingSignalR("ufypiv", "sbbjpmcu")
-                .withGroupId("mifoxxkub")
-                .withPrivateLinkResourceId("phavpmhbrb")
-                .withRequestMessage("ovpbbttefjoknssq")
+                .define("lz")
+                .withExistingSignalR("zjknyuxg", "ttxpnrupza")
+                .withGroupId("rdixt")
+                .withPrivateLinkResourceId("ekidswyskb")
+                .withRequestMessage("gllukkutvlxhrpqh")
                 .create();
 
-        Assertions.assertEquals("cxmjpbyephmg", response.groupId());
-        Assertions.assertEquals("vljvrc", response.privateLinkResourceId());
-        Assertions.assertEquals("i", response.requestMessage());
+        Assertions.assertEquals("mkfqlwxldy", response.groupId());
+        Assertions.assertEquals("alsygao", response.privateLinkResourceId());
+        Assertions.assertEquals("nnbmjksibjgsjj", response.requestMessage());
     }
 }

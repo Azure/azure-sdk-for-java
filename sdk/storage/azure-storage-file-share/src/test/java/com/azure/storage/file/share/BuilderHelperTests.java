@@ -72,7 +72,7 @@ public class BuilderHelperTests {
 
         StepVerifier.create(BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, null, REQUEST_RETRY_OPTIONS,
                     null, httpLogOptions, clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(),
-                    Configuration.NONE, new ClientLogger("foo"))
+                    Configuration.NONE, null, new ClientLogger("foo"))
             .send(request(ENDPOINT)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -146,7 +146,7 @@ public class BuilderHelperTests {
 
         StepVerifier.create(BuilderHelper.buildPipeline(CREDENTIALS, null, null, null, null, new RequestRetryOptions(),
                     null, httpLogOptions, clientOptions, httpClient, new ArrayList<>(), new ArrayList<>(),
-                    Configuration.NONE, new ClientLogger("foo"))
+                    Configuration.NONE, null, new ClientLogger("foo"))
             .send(request(ENDPOINT)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -243,7 +243,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null,
             null, null, new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(),
             new ClientOptions().setHeaders(headers), new ClientOptionsHeadersTestClient(headers), new ArrayList<>(),
-            new ArrayList<>(), Configuration.NONE, new ClientLogger("foo"));
+            new ArrayList<>(), Configuration.NONE, null, new ClientLogger("foo"));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))

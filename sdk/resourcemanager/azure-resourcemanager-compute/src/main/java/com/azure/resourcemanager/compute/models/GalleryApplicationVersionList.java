@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.GalleryApplicationVersion
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Gallery Application version operation response. */
+/**
+ * The List Gallery Application version operation response.
+ */
 @Fluent
 public final class GalleryApplicationVersionList {
     /*
@@ -26,13 +28,15 @@ public final class GalleryApplicationVersionList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of GalleryApplicationVersionList class. */
+    /**
+     * Creates an instance of GalleryApplicationVersionList class.
+     */
     public GalleryApplicationVersionList() {
     }
 
     /**
      * Get the value property: A list of gallery Application Versions.
-     *
+     * 
      * @return the value value.
      */
     public List<GalleryApplicationVersionInner> value() {
@@ -41,7 +45,7 @@ public final class GalleryApplicationVersionList {
 
     /**
      * Set the value property: A list of gallery Application Versions.
-     *
+     * 
      * @param value the value value to set.
      * @return the GalleryApplicationVersionList object itself.
      */
@@ -53,7 +57,7 @@ public final class GalleryApplicationVersionList {
     /**
      * Get the nextLink property: The uri to fetch the next page of gallery Application Versions. Call ListNext() with
      * this to fetch the next page of gallery Application Versions.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +67,7 @@ public final class GalleryApplicationVersionList {
     /**
      * Set the nextLink property: The uri to fetch the next page of gallery Application Versions. Call ListNext() with
      * this to fetch the next page of gallery Application Versions.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the GalleryApplicationVersionList object itself.
      */
@@ -74,15 +78,13 @@ public final class GalleryApplicationVersionList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model GalleryApplicationVersionList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model GalleryApplicationVersionList"));
         } else {
             value().forEach(e -> e.validate());
         }

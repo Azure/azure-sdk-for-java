@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CommunicationServiceResourceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommunicationServiceResourceUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"linkedDomains\":[\"jvtbvpyss\",\"dnrujqguhmuouqfp\"]},\"identity\":{\"principalId\":\"20621513-db88-4b7f-a7ee-abec1fd88523\",\"tenantId\":\"3ae1224e-91c7-46a3-a17f-686d13f9768b\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"tnwu\":{\"principalId\":\"f3402b40-b15e-4336-9c50-6d601822fea6\",\"clientId\":\"802ef009-31dd-4797-bd29-4abe2b1cb140\"}}},\"tags\":{\"x\":\"a\",\"hr\":\"fizuckyf\"}}")
-                .toObject(CommunicationServiceResourceUpdate.class);
+        CommunicationServiceResourceUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"linkedDomains\":[\"jvtbvpyss\",\"dnrujqguhmuouqfp\"]},\"identity\":{\"principalId\":\"51901feb-bc28-41a5-a7c6-f4eebc3d2566\",\"tenantId\":\"e97f6445-65e2-45aa-a746-a642218ffb13\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"tnwu\":{\"principalId\":\"2b601cee-d688-4cc6-8cfc-aaa8f3e38af9\",\"clientId\":\"81a43ba3-be08-4adb-a815-cabb740eed27\"}}},\"tags\":{\"x\":\"a\",\"hr\":\"fizuckyf\"}}")
+            .toObject(CommunicationServiceResourceUpdate.class);
         Assertions.assertEquals("a", model.tags().get("x"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals("jvtbvpyss", model.linkedDomains().get(0));
@@ -29,13 +27,10 @@ public final class CommunicationServiceResourceUpdateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommunicationServiceResourceUpdate model =
-            new CommunicationServiceResourceUpdate()
-                .withTags(mapOf("x", "a", "hr", "fizuckyf"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf("tnwu", new UserAssignedIdentity())))
+        CommunicationServiceResourceUpdate model
+            = new CommunicationServiceResourceUpdate().withTags(mapOf("x", "a", "hr", "fizuckyf"))
+                .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("tnwu", new UserAssignedIdentity())))
                 .withLinkedDomains(Arrays.asList("jvtbvpyss", "dnrujqguhmuouqfp"));
         model = BinaryData.fromObject(model).toObject(CommunicationServiceResourceUpdate.class);
         Assertions.assertEquals("a", model.tags().get("x"));

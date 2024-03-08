@@ -68,7 +68,8 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
   //scalastyle:off multiple.string.literals
   protected val tableName: String = s"com.azure.cosmos.spark.items.${clientConfig.accountName}." +
     s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}"
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
+  protected val sparkEnvironmentInfo: String = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(sparkSession))
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
   //scalastyle:on multiple.string.literals
 
   override def name(): String = tableName
@@ -98,7 +99,8 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
           effectiveOptions).asJava),
       schema(),
       containerStateHandles,
-      diagnosticsConfig)
+      diagnosticsConfig,
+      sparkEnvironmentInfo)
   }
 
   override def schema(): StructType = {
@@ -106,14 +108,18 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
     Loan(
       List[Option[CosmosClientCacheItem]](
         Some(CosmosClientCache(
-          CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
+          CosmosClientConfiguration(
+            effectiveUserConfig,
+            useEventualConsistency = readConfig.forceEventualConsistency,
+            sparkEnvironmentInfo),
           None,
           calledFrom
         )),
         ThroughputControlHelper.getThroughputControlClientCacheItem(
           effectiveUserConfig,
           calledFrom,
-          None)
+          None,
+          sparkEnvironmentInfo)
       ))
       .to(clientCacheItems => userProvidedSchema.getOrElse(this.inferSchema(clientCacheItems(0).get, clientCacheItems(1), effectiveUserConfig)))
   }
@@ -136,13 +142,17 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
       List[Option[CosmosClientCacheItem]](
         Some(
           CosmosClientCache(
-            CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
+            CosmosClientConfiguration(
+              effectiveUserConfig,
+              useEventualConsistency = readConfig.forceEventualConsistency,
+              sparkEnvironmentInfo),
             None,
             calledFrom)),
         ThroughputControlHelper.getThroughputControlClientCacheItem(
           effectiveUserConfig,
           calledFrom,
-          None)
+          None,
+          sparkEnvironmentInfo)
       ))
       .to(clientCacheItems => {
         val container =

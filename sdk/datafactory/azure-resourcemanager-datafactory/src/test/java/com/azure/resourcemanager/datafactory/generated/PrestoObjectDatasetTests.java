@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrestoObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrestoObjectDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"PrestoObject\",\"typeProperties\":{\"tableName\":\"dataarluobbvalq\",\"table\":\"dataknyujxysvclfjy\",\"schema\":\"datavildlfflle\"},\"description\":\"mtxfqpfi\",\"structure\":\"datacgbfou\",\"schema\":\"databpgcryvidbz\",\"linkedServiceName\":{\"referenceName\":\"ylbvj\",\"parameters\":{\"xjftecgprz\":\"datangw\",\"dq\":\"dataqm\"}},\"parameters\":{\"xoyxuuco\":{\"type\":\"String\",\"defaultValue\":\"datayqhaat\"}},\"annotations\":[\"datayruxrzhhlh\",\"datavmgsbpgmncrv\",\"datapi\",\"dataoromppzsauqmeu\"],\"folder\":{\"name\":\"fcmpuaiugoceqtl\"},\"\":{\"ncfunlakgixhqjqh\":\"datajymwiccu\"}}")
-                .toObject(PrestoObjectDataset.class);
+        PrestoObjectDataset model = BinaryData.fromString(
+            "{\"type\":\"PrestoObject\",\"typeProperties\":{\"tableName\":\"dataarluobbvalq\",\"table\":\"dataknyujxysvclfjy\",\"schema\":\"datavildlfflle\"},\"description\":\"mtxfqpfi\",\"structure\":\"datacgbfou\",\"schema\":\"databpgcryvidbz\",\"linkedServiceName\":{\"referenceName\":\"ylbvj\",\"parameters\":{\"xjftecgprz\":\"datangw\",\"dq\":\"dataqm\"}},\"parameters\":{\"xoyxuuco\":{\"type\":\"String\",\"defaultValue\":\"datayqhaat\"}},\"annotations\":[\"datayruxrzhhlh\",\"datavmgsbpgmncrv\",\"datapi\",\"dataoromppzsauqmeu\"],\"folder\":{\"name\":\"fcmpuaiugoceqtl\"},\"\":{\"ncfunlakgixhqjqh\":\"datajymwiccu\"}}")
+            .toObject(PrestoObjectDataset.class);
         Assertions.assertEquals("mtxfqpfi", model.description());
         Assertions.assertEquals("ylbvj", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.STRING, model.parameters().get("xoyxuuco").type());
@@ -31,24 +29,15 @@ public final class PrestoObjectDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrestoObjectDataset model =
-            new PrestoObjectDataset()
-                .withDescription("mtxfqpfi")
-                .withStructure("datacgbfou")
-                .withSchema("databpgcryvidbz")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("ylbvj")
-                        .withParameters(mapOf("xjftecgprz", "datangw", "dq", "dataqm")))
-                .withParameters(
-                    mapOf(
-                        "xoyxuuco",
-                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datayqhaat")))
-                .withAnnotations(Arrays.asList("datayruxrzhhlh", "datavmgsbpgmncrv", "datapi", "dataoromppzsauqmeu"))
-                .withFolder(new DatasetFolder().withName("fcmpuaiugoceqtl"))
-                .withTableName("dataarluobbvalq")
-                .withTable("dataknyujxysvclfjy")
-                .withSchemaTypePropertiesSchema("datavildlfflle");
+        PrestoObjectDataset model = new PrestoObjectDataset().withDescription("mtxfqpfi").withStructure("datacgbfou")
+            .withSchema("databpgcryvidbz")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ylbvj")
+                .withParameters(mapOf("xjftecgprz", "datangw", "dq", "dataqm")))
+            .withParameters(mapOf("xoyxuuco",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datayqhaat")))
+            .withAnnotations(Arrays.asList("datayruxrzhhlh", "datavmgsbpgmncrv", "datapi", "dataoromppzsauqmeu"))
+            .withFolder(new DatasetFolder().withName("fcmpuaiugoceqtl")).withTableName("dataarluobbvalq")
+            .withTable("dataknyujxysvclfjy").withSchemaTypePropertiesSchema("datavildlfflle");
         model = BinaryData.fromObject(model).toObject(PrestoObjectDataset.class);
         Assertions.assertEquals("mtxfqpfi", model.description());
         Assertions.assertEquals("ylbvj", model.linkedServiceName().referenceName());

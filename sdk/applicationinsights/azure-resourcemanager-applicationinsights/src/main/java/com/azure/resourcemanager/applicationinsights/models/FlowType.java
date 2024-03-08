@@ -8,10 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FlowType. */
+/**
+ * Used by the Application Insights system to determine what kind of flow this component was created by. This is to be
+ * set to 'Bluefield' when creating/updating a component via the REST API.
+ */
 public final class FlowType extends ExpandableStringEnum<FlowType> {
     /** Static value Bluefield for FlowType. */
     public static final FlowType BLUEFIELD = fromString("Bluefield");
+
+    /**
+     * Creates a new instance of FlowType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FlowType() {
+    }
 
     /**
      * Creates or finds a FlowType from its string representation.

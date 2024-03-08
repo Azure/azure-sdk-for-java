@@ -38,6 +38,10 @@ public final class ClusterPatch {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ClusterPatch class. */
+    public ClusterPatch() {
+    }
+
     /**
      * Get the innerProperties property: Log Analytics cluster properties.
      *

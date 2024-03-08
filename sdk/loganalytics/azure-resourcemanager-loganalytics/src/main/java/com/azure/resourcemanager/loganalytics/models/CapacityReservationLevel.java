@@ -7,7 +7,7 @@ package com.azure.resourcemanager.loganalytics.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CapacityReservationLevel. */
+/** The capacity reservation level in GB for this workspace, when CapacityReservation sku is selected. */
 public enum CapacityReservationLevel {
     /** Enum value 100. */
     ONE_ZERO_ZERO(100),

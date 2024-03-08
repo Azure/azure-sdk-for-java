@@ -55,22 +55,13 @@ public final class ComponentsImpl implements Components {
         return Utils.mapPage(inner, inner1 -> new ApplicationInsightsComponentImpl(inner1, this.manager()));
     }
 
-    public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
-        this.serviceClient().delete(resourceGroupName, resourceName);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, context);
     }
 
-    public ApplicationInsightsComponent getByResourceGroup(String resourceGroupName, String resourceName) {
-        ApplicationInsightsComponentInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new ApplicationInsightsComponentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void deleteByResourceGroup(String resourceGroupName, String resourceName) {
+        this.serviceClient().delete(resourceGroupName, resourceName);
     }
 
     public Response<ApplicationInsightsComponent> getByResourceGroupWithResponse(
@@ -88,10 +79,11 @@ public final class ComponentsImpl implements Components {
         }
     }
 
-    public ComponentPurgeResponse purge(String resourceGroupName, String resourceName, ComponentPurgeBody body) {
-        ComponentPurgeResponseInner inner = this.serviceClient().purge(resourceGroupName, resourceName, body);
+    public ApplicationInsightsComponent getByResourceGroup(String resourceGroupName, String resourceName) {
+        ApplicationInsightsComponentInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
         if (inner != null) {
-            return new ComponentPurgeResponseImpl(inner, this.manager());
+            return new ApplicationInsightsComponentImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -112,11 +104,10 @@ public final class ComponentsImpl implements Components {
         }
     }
 
-    public ComponentPurgeStatusResponse getPurgeStatus(String resourceGroupName, String resourceName, String purgeId) {
-        ComponentPurgeStatusResponseInner inner =
-            this.serviceClient().getPurgeStatus(resourceGroupName, resourceName, purgeId);
+    public ComponentPurgeResponse purge(String resourceGroupName, String resourceName, ComponentPurgeBody body) {
+        ComponentPurgeResponseInner inner = this.serviceClient().purge(resourceGroupName, resourceName, body);
         if (inner != null) {
-            return new ComponentPurgeStatusResponseImpl(inner, this.manager());
+            return new ComponentPurgeResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -132,6 +123,16 @@ public final class ComponentsImpl implements Components {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ComponentPurgeStatusResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ComponentPurgeStatusResponse getPurgeStatus(String resourceGroupName, String resourceName, String purgeId) {
+        ComponentPurgeStatusResponseInner inner =
+            this.serviceClient().getPurgeStatus(resourceGroupName, resourceName, purgeId);
+        if (inner != null) {
+            return new ComponentPurgeStatusResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -191,7 +192,7 @@ public final class ComponentsImpl implements Components {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, resourceName, Context.NONE);
+        this.deleteByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
@@ -210,7 +211,7 @@ public final class ComponentsImpl implements Components {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'components'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, resourceName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, resourceName, context);
     }
 
     private ComponentsClient serviceClient() {

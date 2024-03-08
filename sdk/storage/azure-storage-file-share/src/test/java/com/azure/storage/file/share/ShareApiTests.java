@@ -8,10 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAccessPolicy;
 import com.azure.storage.file.share.models.ShareAccessTier;
+import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
@@ -39,8 +42,6 @@ import com.azure.storage.file.share.options.ShareSetMetadataOptions;
 import com.azure.storage.file.share.options.ShareSetPropertiesOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIf;
-import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -153,7 +154,7 @@ public class ShareApiTests extends FileShareTestBase {
             201);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createShareWithArgsSupplier")
     public void createShareWithArgs(Map<String, String> metadata, Integer quota, ShareAccessTier accessTier) {
@@ -181,7 +182,7 @@ public class ShareApiTests extends FileShareTestBase {
             Arguments.of(testMetadata, 6000, ShareErrorCode.INVALID_HEADER_VALUE));
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20221102ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2022-11-02")
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void createDirectoryAndFileTrailingDot(boolean allowTrailingDot) {
@@ -221,7 +222,7 @@ public class ShareApiTests extends FileShareTestBase {
 
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void createFileAndDirectoryOAuth() {
         primaryShareClient.create();
@@ -263,7 +264,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(secondResponse.getStatusCode(), 409);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
     @ParameterizedTest
     @MethodSource("createIfNotExistsShareWithArgsSupplier")
     public void createIfNotExistsShareWithArgs(Map<String, String> metadata, Integer quota,
@@ -363,7 +364,7 @@ public class ShareApiTests extends FileShareTestBase {
             primaryShareClient.deleteWithResponse(new ShareDeleteOptions(), null, null));
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void deleteShareLease() {
         primaryShareClient.create();
@@ -423,7 +424,7 @@ public class ShareApiTests extends FileShareTestBase {
             primaryShareClient.deleteIfExistsWithResponse(new ShareDeleteOptions(), null, null));
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void deleteIfExistsShareLease() {
         primaryShareClient.create();
@@ -458,7 +459,7 @@ public class ShareApiTests extends FileShareTestBase {
         client.create();
         Response<Boolean> initialResponse = client.deleteIfExistsWithResponse(null, null, null);
         // Calling delete again after garbage collection is completed
-        sleepIfRecord(45000);
+        sleepIfRunningAgainstService(45000);
         Response<Boolean> secondResponse = client.deleteIfExistsWithResponse(null, null, null);
 
         FileShareTestHelper.assertResponseStatusCode(initialResponse, 202);
@@ -478,7 +479,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(getPropertiesResponse.getValue().getQuota(), 1);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void getPropertiesLease() {
         primaryShareClient.create();
@@ -488,7 +489,7 @@ public class ShareApiTests extends FileShareTestBase {
             null, null), 200);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void getPropertiesLeaseError() {
         primaryShareClient.create();
@@ -504,7 +505,7 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void getPropertiesOAuthError() {
         primaryShareClient.create();
@@ -515,7 +516,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertThrows(ShareStorageException.class, shareClient::getProperties);
     }
 
-    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @PlaybackOnly
     @ParameterizedTest
     @MethodSource("com.azure.storage.file.share.FileShareTestHelper#getPropertiesPremiumSupplier")
     public void getPropertiesPremium(String protocol, ShareRootSquash rootSquash) {
@@ -536,7 +537,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(shareProperties.getRootSquash(), rootSquash);
     }
 
-    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
+    @PlaybackOnly
     @Test
     public void setPremiumProperties() {
         List<ShareRootSquash> rootSquashes = Arrays.asList(
@@ -601,7 +602,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(id1.getAccessPolicy().getPermissions(), identifier2.getAccessPolicy().getPermissions());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void setAccessPolicyLease() {
         primaryShareClient.create();
@@ -649,7 +650,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(id.getAccessPolicy().getPermissions(), identifier.getAccessPolicy().getPermissions());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void getAccessPolicyLease() {
         primaryShareClient.create();
@@ -688,7 +689,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(getQuotaAfterResponse.getQuota(), 2);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
     @Test
     public void setPropertiesAccessTier() {
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
@@ -709,7 +710,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(getAccessTierAfterResponse.getAccessTierTransitionState(), "pending-from-hot");
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void setPropertiesLease() {
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
@@ -722,7 +723,7 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(setAccessTierResponse, 200);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void setPropertiesLeaseError() {
         primaryShareClient.createWithResponse(new ShareCreateOptions().setAccessTier(ShareAccessTier.HOT), null, null);
@@ -756,7 +757,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(metadataAfterSet, getMetadataAfterResponse.getMetadata());
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void setMetadataLease() {
         primaryShareClient.createWithResponse(null, 1, null, null);
@@ -796,7 +797,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(resp.getValue().getShareUsageInGB(), gigabytes);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void getStatisticsLease() {
         primaryShareClient.create();
@@ -806,7 +807,7 @@ public class ShareApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(resp, 200);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20200210ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2020-02-10")
     @Test
     public void getStatisticsLeaseError() {
         primaryShareClient.create();
@@ -1103,7 +1104,7 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(permission, FILE_PERMISSION);
     }
 
-    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210410ServiceVersion")
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void createAndGetPermissionOAuth() {
         primaryShareClient.create();
@@ -1169,5 +1170,73 @@ public class ShareApiTests extends FileShareTestBase {
         assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
     }
 
+    @Test
+    public void defaultAudience() {
+        primaryShareClient.create();
+        ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder().shareName(shareName)
+            .shareTokenIntent(ShareTokenIntent.BACKUP))
+            .audience(null) // should default to "https://storage.azure.com/"
+            .buildClient();
 
+        String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
+            + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
+            + "188441444-3053964)S:NO_ACCESS_CONTROL";
+
+        String infoPermission = aadShareClient.createPermission(permission);
+        assertNotNull(infoPermission);
+    }
+
+    @Test
+    public void storageAccountAudience() {
+        primaryShareClient.create();
+        ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
+            .shareName(shareName)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .audience(ShareAudience.createShareServiceAccountAudience(primaryShareClient.getAccountName()))
+            .buildClient();
+
+        String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
+            + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
+            + "188441444-3053964)S:NO_ACCESS_CONTROL";
+
+        String infoPermission = aadShareClient.createPermission(permission);
+        assertNotNull(infoPermission);
+    }
+
+    @Test
+    public void audienceError() {
+        primaryShareClient.create();
+        ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
+            .shareName(shareName)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .audience(ShareAudience.createShareServiceAccountAudience("badaudience"))
+            .buildClient();
+
+        String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
+            + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
+            + "188441444-3053964)S:NO_ACCESS_CONTROL";
+
+        ShareStorageException e = assertThrows(ShareStorageException.class, () ->
+            aadShareClient.createPermission(permission));
+        assertEquals(ShareErrorCode.AUTHENTICATION_FAILED, e.getErrorCode());
+    }
+    @Test
+    public void audienceFromString() {
+        String url = String.format("https://%s.file.core.windows.net/", primaryShareClient.getAccountName());
+        ShareAudience audience = ShareAudience.fromString(url);
+
+        primaryShareClient.create();
+        ShareClient aadShareClient = getOAuthShareClientBuilder(new ShareClientBuilder())
+            .shareName(shareName)
+            .shareTokenIntent(ShareTokenIntent.BACKUP)
+            .audience(audience)
+            .buildClient();
+
+        String permission = "O:S-1-5-21-2127521184-1604012920-1887927527-21560751G:S-1-5-21-2127521184-"
+            + "1604012920-1887927527-513D:AI(A;;FA;;;SY)(A;;FA;;;BA)(A;;0x1200a9;;;S-1-5-21-397955417-626881126-"
+            + "188441444-3053964)S:NO_ACCESS_CONTROL";
+
+        String infoPermission = aadShareClient.createPermission(permission);
+        assertNotNull(infoPermission);
+    }
 }

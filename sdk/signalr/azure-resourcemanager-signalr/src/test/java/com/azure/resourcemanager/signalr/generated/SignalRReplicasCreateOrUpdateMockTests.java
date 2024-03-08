@@ -35,7 +35,7 @@ public final class SignalRReplicasCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"sku\":{\"name\":\"ejyfdvlvhbwrnfx\",\"tier\":\"Basic\",\"size\":\"pqthehnmnaoya\",\"family\":\"coeqswankltytm\",\"capacity\":1217879659},\"properties\":{\"provisioningState\":\"Succeeded\"},\"location\":\"hdrlktg\",\"tags\":{\"eeczgfbu\":\"gguxhemlwyw\",\"ycsxzu\":\"klelssxb\"},\"id\":\"ksrl\",\"name\":\"mdesqp\",\"type\":\"pvmjcdoewbid\"}";
+            "{\"sku\":{\"name\":\"xltbsjuscvsf\",\"tier\":\"Premium\",\"size\":\"tmgxuupbezqcc\",\"family\":\"rtceukdqkkyihzt\",\"capacity\":277174049},\"properties\":{\"provisioningState\":\"Succeeded\",\"regionEndpointEnabled\":\"gwldo\",\"resourceStopped\":\"hillce\"},\"location\":\"ehuwaoa\",\"tags\":{\"lizst\":\"icq\"},\"id\":\"csjvhrwef\",\"name\":\"kwqejpmvsseh\",\"type\":\"epwamcxtcz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,18 +66,26 @@ public final class SignalRReplicasCreateOrUpdateMockTests {
         Replica response =
             manager
                 .signalRReplicas()
-                .define("crse")
-                .withRegion("omkxf")
-                .withExistingSignalR("hcecybmrqbr", "bbmpxdlvykfre")
-                .withTags(mapOf("pwpgddei", "bhdyir", "muikjcjcaztbws", "awzovgkk"))
-                .withSku(new ResourceSku().withName("jksghudg").withTier(SignalRSkuTier.FREE).withCapacity(1760793907))
+                .define("xkyctwwgzwx")
+                .withRegion("idbz")
+                .withExistingSignalR("kiexhajlfnthiq", "yuttdiygbpvnwswm")
+                .withTags(mapOf("nkbw", "qtfbovn", "ccxnafbwqroohtuo", "tnjuhpsprkzyaupi"))
+                .withSku(
+                    new ResourceSku()
+                        .withName("mecvogygzyvneeza")
+                        .withTier(SignalRSkuTier.FREE)
+                        .withCapacity(1220341853))
+                .withRegionEndpointEnabled("hnqoewdo")
+                .withResourceStopped("yetesy")
                 .create();
 
-        Assertions.assertEquals("hdrlktg", response.location());
-        Assertions.assertEquals("gguxhemlwyw", response.tags().get("eeczgfbu"));
-        Assertions.assertEquals("ejyfdvlvhbwrnfx", response.sku().name());
-        Assertions.assertEquals(SignalRSkuTier.BASIC, response.sku().tier());
-        Assertions.assertEquals(1217879659, response.sku().capacity());
+        Assertions.assertEquals("ehuwaoa", response.location());
+        Assertions.assertEquals("icq", response.tags().get("lizst"));
+        Assertions.assertEquals("xltbsjuscvsf", response.sku().name());
+        Assertions.assertEquals(SignalRSkuTier.PREMIUM, response.sku().tier());
+        Assertions.assertEquals(277174049, response.sku().capacity());
+        Assertions.assertEquals("gwldo", response.regionEndpointEnabled());
+        Assertions.assertEquals("hillce", response.resourceStopped());
     }
 
     // Use "Map.of" if available

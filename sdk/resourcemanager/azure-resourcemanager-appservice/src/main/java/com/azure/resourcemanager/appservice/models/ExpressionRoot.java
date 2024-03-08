@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The expression root. */
+/**
+ * The expression root.
+ */
 @Fluent
 public final class ExpressionRoot extends Expression {
     /*
@@ -17,13 +19,15 @@ public final class ExpressionRoot extends Expression {
     @JsonProperty(value = "path")
     private String path;
 
-    /** Creates an instance of ExpressionRoot class. */
+    /**
+     * Creates an instance of ExpressionRoot class.
+     */
     public ExpressionRoot() {
     }
 
     /**
      * Get the path property: The path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -32,7 +36,7 @@ public final class ExpressionRoot extends Expression {
 
     /**
      * Set the path property: The path.
-     *
+     * 
      * @param path the path value to set.
      * @return the ExpressionRoot object itself.
      */
@@ -41,28 +45,36 @@ public final class ExpressionRoot extends Expression {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressionRoot withText(String text) {
         super.withText(text);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressionRoot withValue(Object value) {
         super.withValue(value);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressionRoot withSubexpressions(List<Expression> subexpressions) {
         super.withSubexpressions(subexpressions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressionRoot withError(AzureResourceErrorInfo error) {
         super.withError(error);
@@ -71,7 +83,7 @@ public final class ExpressionRoot extends Expression {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

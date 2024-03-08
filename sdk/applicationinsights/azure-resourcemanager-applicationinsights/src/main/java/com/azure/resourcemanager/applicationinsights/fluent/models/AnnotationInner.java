@@ -47,6 +47,10 @@ public final class AnnotationInner {
     @JsonProperty(value = "RelatedAnnotation")
     private String relatedAnnotation;
 
+    /** Creates an instance of AnnotationInner class. */
+    public AnnotationInner() {
+    }
+
     /**
      * Get the annotationName property: Name of annotation.
      *

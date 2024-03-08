@@ -8,21 +8,29 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes how a Domains resource is being managed. */
+/**
+ * Describes how a Domains resource is being managed.
+ */
 public final class DomainManagement extends ExpandableStringEnum<DomainManagement> {
-    /** Static value AzureManaged for DomainManagement. */
+    /**
+     * Static value AzureManaged for DomainManagement.
+     */
     public static final DomainManagement AZURE_MANAGED = fromString("AzureManaged");
 
-    /** Static value CustomerManaged for DomainManagement. */
+    /**
+     * Static value CustomerManaged for DomainManagement.
+     */
     public static final DomainManagement CUSTOMER_MANAGED = fromString("CustomerManaged");
 
-    /** Static value CustomerManagedInExchangeOnline for DomainManagement. */
-    public static final DomainManagement CUSTOMER_MANAGED_IN_EXCHANGE_ONLINE =
-        fromString("CustomerManagedInExchangeOnline");
+    /**
+     * Static value CustomerManagedInExchangeOnline for DomainManagement.
+     */
+    public static final DomainManagement CUSTOMER_MANAGED_IN_EXCHANGE_ONLINE
+        = fromString("CustomerManagedInExchangeOnline");
 
     /**
      * Creates a new instance of DomainManagement value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +39,7 @@ public final class DomainManagement extends ExpandableStringEnum<DomainManagemen
 
     /**
      * Creates or finds a DomainManagement from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DomainManagement.
      */
@@ -42,7 +50,7 @@ public final class DomainManagement extends ExpandableStringEnum<DomainManagemen
 
     /**
      * Gets known DomainManagement values.
-     *
+     * 
      * @return known DomainManagement values.
      */
     public static Collection<DomainManagement> values() {

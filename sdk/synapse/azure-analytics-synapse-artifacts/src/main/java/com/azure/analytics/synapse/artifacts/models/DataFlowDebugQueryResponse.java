@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response body structure of data flow query for data preview, statistics or expression preview. */
+/**
+ * Response body structure of data flow query for data preview, statistics or expression preview.
+ */
 @Fluent
 public final class DataFlowDebugQueryResponse {
     /*
@@ -16,12 +18,15 @@ public final class DataFlowDebugQueryResponse {
     @JsonProperty(value = "runId")
     private String runId;
 
-    /** Creates an instance of DataFlowDebugQueryResponse class. */
-    public DataFlowDebugQueryResponse() {}
+    /**
+     * Creates an instance of DataFlowDebugQueryResponse class.
+     */
+    public DataFlowDebugQueryResponse() {
+    }
 
     /**
      * Get the runId property: The run ID of data flow debug session.
-     *
+     * 
      * @return the runId value.
      */
     public String getRunId() {
@@ -30,7 +35,7 @@ public final class DataFlowDebugQueryResponse {
 
     /**
      * Set the runId property: The run ID of data flow debug session.
-     *
+     * 
      * @param runId the runId value to set.
      * @return the DataFlowDebugQueryResponse object itself.
      */

@@ -20,7 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Pipeline resource type. */
+/**
+ * Pipeline resource type.
+ */
 @Fluent
 public final class PipelineResourceInner extends SubResource {
     /*
@@ -50,15 +52,18 @@ public final class PipelineResourceInner extends SubResource {
     /*
      * Pipeline resource type.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of PipelineResourceInner class. */
+    /**
+     * Creates an instance of PipelineResourceInner class.
+     */
     public PipelineResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the pipeline.
-     *
+     * 
      * @return the innerProperties value.
      */
     private Pipeline innerProperties() {
@@ -67,7 +72,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -76,7 +81,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -85,7 +90,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -94,7 +99,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the additionalProperties property: Pipeline resource type.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -104,7 +109,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Set the additionalProperties property: Pipeline resource type.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the PipelineResourceInner object itself.
      */
@@ -121,7 +126,9 @@ public final class PipelineResourceInner extends SubResource {
         additionalProperties.put(key, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PipelineResourceInner withId(String id) {
         super.withId(id);
@@ -130,7 +137,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the description property: The description of the pipeline.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -139,7 +146,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Set the description property: The description of the pipeline.
-     *
+     * 
      * @param description the description value to set.
      * @return the PipelineResourceInner object itself.
      */
@@ -153,7 +160,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the activities property: List of activities in pipeline.
-     *
+     * 
      * @return the activities value.
      */
     public List<Activity> activities() {
@@ -162,7 +169,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Set the activities property: List of activities in pipeline.
-     *
+     * 
      * @param activities the activities value to set.
      * @return the PipelineResourceInner object itself.
      */
@@ -176,7 +183,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the parameters property: List of parameters for pipeline.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, ParameterSpecification> parameters() {
@@ -185,7 +192,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Set the parameters property: List of parameters for pipeline.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the PipelineResourceInner object itself.
      */
@@ -199,7 +206,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the variables property: List of variables for pipeline.
-     *
+     * 
      * @return the variables value.
      */
     public Map<String, VariableSpecification> variables() {
@@ -208,7 +215,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Set the variables property: List of variables for pipeline.
-     *
+     * 
      * @param variables the variables value to set.
      * @return the PipelineResourceInner object itself.
      */
@@ -222,7 +229,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the concurrency property: The max number of concurrent runs for the pipeline.
-     *
+     * 
      * @return the concurrency value.
      */
     public Integer concurrency() {
@@ -231,7 +238,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Set the concurrency property: The max number of concurrent runs for the pipeline.
-     *
+     * 
      * @param concurrency the concurrency value to set.
      * @return the PipelineResourceInner object itself.
      */
@@ -245,7 +252,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the annotations property: List of tags that can be used for describing the Pipeline.
-     *
+     * 
      * @return the annotations value.
      */
     public List<Object> annotations() {
@@ -254,7 +261,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Set the annotations property: List of tags that can be used for describing the Pipeline.
-     *
+     * 
      * @param annotations the annotations value to set.
      * @return the PipelineResourceInner object itself.
      */
@@ -268,7 +275,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the runDimensions property: Dimensions emitted by Pipeline.
-     *
+     * 
      * @return the runDimensions value.
      */
     public Map<String, Object> runDimensions() {
@@ -277,7 +284,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Set the runDimensions property: Dimensions emitted by Pipeline.
-     *
+     * 
      * @param runDimensions the runDimensions value to set.
      * @return the PipelineResourceInner object itself.
      */
@@ -292,7 +299,7 @@ public final class PipelineResourceInner extends SubResource {
     /**
      * Get the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
      * level.
-     *
+     * 
      * @return the folder value.
      */
     public PipelineFolder folder() {
@@ -302,7 +309,7 @@ public final class PipelineResourceInner extends SubResource {
     /**
      * Set the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
      * level.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the PipelineResourceInner object itself.
      */
@@ -316,7 +323,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Get the policy property: Pipeline Policy.
-     *
+     * 
      * @return the policy value.
      */
     public PipelinePolicy policy() {
@@ -325,7 +332,7 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Set the policy property: Pipeline Policy.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the PipelineResourceInner object itself.
      */
@@ -339,15 +346,13 @@ public final class PipelineResourceInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model PipelineResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model PipelineResourceInner"));
         } else {
             innerProperties().validate();
         }

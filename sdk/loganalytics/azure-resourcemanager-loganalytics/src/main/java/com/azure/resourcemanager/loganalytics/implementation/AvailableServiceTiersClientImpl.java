@@ -52,11 +52,10 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
      */
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
-    private interface AvailableServiceTiersService {
+    public interface AvailableServiceTiersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/availableServiceTiers")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/availableServiceTiers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<List<AvailableServiceTierInner>>> listByWorkspace(
@@ -188,21 +187,6 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the available service tiers for the workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AvailableServiceTierInner> listByWorkspace(String resourceGroupName, String workspaceName) {
-        return listByWorkspaceAsync(resourceGroupName, workspaceName).block();
-    }
-
-    /**
-     * Gets the available service tiers for the workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -213,5 +197,20 @@ public final class AvailableServiceTiersClientImpl implements AvailableServiceTi
     public Response<List<AvailableServiceTierInner>> listByWorkspaceWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         return listByWorkspaceWithResponseAsync(resourceGroupName, workspaceName, context).block();
+    }
+
+    /**
+     * Gets the available service tiers for the workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the available service tiers for the workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<AvailableServiceTierInner> listByWorkspace(String resourceGroupName, String workspaceName) {
+        return listByWorkspaceWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
     }
 }

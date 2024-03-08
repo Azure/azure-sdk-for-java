@@ -19,12 +19,15 @@ public final class SparkJobDefinitionFolder {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of SparkJobDefinitionFolder class. */
-    public SparkJobDefinitionFolder() {}
+    /**
+     * Creates an instance of SparkJobDefinitionFolder class.
+     */
+    public SparkJobDefinitionFolder() {
+    }
 
     /**
      * Get the name property: The name of the folder that this Spark job definition is in.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -33,7 +36,7 @@ public final class SparkJobDefinitionFolder {
 
     /**
      * Set the name property: The name of the folder that this Spark job definition is in.
-     *
+     * 
      * @param name the name value to set.
      * @return the SparkJobDefinitionFolder object itself.
      */

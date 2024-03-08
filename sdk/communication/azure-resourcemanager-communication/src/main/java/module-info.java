@@ -10,10 +10,6 @@ module com.azure.resourcemanager.communication {
     exports com.azure.resourcemanager.communication.fluent.models;
     exports com.azure.resourcemanager.communication.models;
 
-    opens com.azure.resourcemanager.communication.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.communication.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.communication.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.communication.models to com.azure.core, com.fasterxml.jackson.databind;
 }

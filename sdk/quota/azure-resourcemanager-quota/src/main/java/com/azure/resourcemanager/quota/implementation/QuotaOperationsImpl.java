@@ -19,8 +19,8 @@ public final class QuotaOperationsImpl implements QuotaOperations {
 
     private final com.azure.resourcemanager.quota.QuotaManager serviceManager;
 
-    public QuotaOperationsImpl(
-        QuotaOperationsClient innerClient, com.azure.resourcemanager.quota.QuotaManager serviceManager) {
+    public QuotaOperationsImpl(QuotaOperationsClient innerClient,
+        com.azure.resourcemanager.quota.QuotaManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

@@ -35,7 +35,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionCondition;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
@@ -70,7 +69,7 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.fail;
 
-public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
+public class ExcludedRegionWithFaultInjectionTests extends FaultInjectionTestBase {
 
     private CosmosAsyncClient cosmosAsyncClient;
     private CosmosAsyncContainer cosmosAsyncContainer;
@@ -1099,9 +1098,9 @@ public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseFirstRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
-                            this.chooseFirstRegion.apply(this.preferredRegions)
+                            HttpConstants.StatusCodes.CREATED,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
                     )),
                 },
                 {
@@ -1159,9 +1158,9 @@ public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseFirstRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                        HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                        HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
-                        this.chooseFirstRegion.apply(this.preferredRegions)
+                        HttpConstants.StatusCodes.OK,
+                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        this.chooseAllRegions.apply(this.preferredRegions)
                     )),
                 },
                 {
@@ -1224,9 +1223,9 @@ public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseFirstRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
-                            this.chooseFirstRegion.apply(this.preferredRegions)
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
                     )),
                 },
                 {
@@ -1266,9 +1265,9 @@ public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseFirstRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
-                            this.chooseFirstRegion.apply(this.preferredRegions)
+                            HttpConstants.StatusCodes.CREATED,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
                     )),
                 },
                 {
@@ -1308,9 +1307,9 @@ public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseFirstRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
-                            this.chooseFirstRegion.apply(this.preferredRegions)
+                            HttpConstants.StatusCodes.NO_CONTENT,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
                     )),
                 },
                 {
@@ -1350,9 +1349,9 @@ public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseFirstRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
-                            this.chooseFirstRegion.apply(this.preferredRegions)
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseAllRegions.apply(this.preferredRegions)
                     )),
                 },
                 {
@@ -1668,9 +1667,10 @@ public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseLastRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
-                            this.chooseFirstRegion.apply(this.preferredRegions)
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            2,
+                            this.chooseFirstTwoRegions.apply(this.preferredRegions)
                     ))
                 },
                 {
@@ -1689,9 +1689,10 @@ public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseLastRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
-                            this.chooseFirstRegion.apply(this.preferredRegions)
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            2,
+                            this.chooseFirstTwoRegions.apply(this.preferredRegions)
                     ))
                 },
                 {
@@ -2035,9 +2036,9 @@ public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseLastRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
-                            this.chooseFirstRegion.apply(this.preferredRegions)
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseFirstTwoRegions.apply(this.preferredRegions)
                     ))
                 },
                 {
@@ -2055,9 +2056,9 @@ public class ExcludedRegionWithFaultInjectionTests extends TestSuiteBase {
                             this.chooseLastRegion.apply(this.preferredRegions)
                         ))
                         .withExpectedResultAfterMutation(new ExpectedResult(
-                            HttpConstants.StatusCodes.SERVICE_UNAVAILABLE,
-                            HttpConstants.SubStatusCodes.SERVER_GENERATED_503,
-                            this.chooseFirstRegion.apply(this.preferredRegions)
+                            HttpConstants.StatusCodes.OK,
+                            HttpConstants.SubStatusCodes.UNKNOWN,
+                            this.chooseFirstTwoRegions.apply(this.preferredRegions)
                     ))
                 },
                 {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.hybridcontainerservice.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The upgrade properties. */
+/**
+ * The upgrade properties.
+ */
 @Immutable
 public final class ProvisionedClusterPoolUpgradeProfileProperties {
     /*
@@ -22,13 +24,15 @@ public final class ProvisionedClusterPoolUpgradeProfileProperties {
     @JsonProperty(value = "isPreview", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isPreview;
 
-    /** Creates an instance of ProvisionedClusterPoolUpgradeProfileProperties class. */
+    /**
+     * Creates an instance of ProvisionedClusterPoolUpgradeProfileProperties class.
+     */
     public ProvisionedClusterPoolUpgradeProfileProperties() {
     }
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -37,7 +41,7 @@ public final class ProvisionedClusterPoolUpgradeProfileProperties {
 
     /**
      * Get the isPreview property: Whether the Kubernetes version is currently in preview.
-     *
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -46,7 +50,7 @@ public final class ProvisionedClusterPoolUpgradeProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

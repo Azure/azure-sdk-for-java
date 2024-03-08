@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the resource properties. */
+/** Specifies the network interfaces of the virtual machine. */
 @Fluent
 public final class NetworkProfile {
     /*
@@ -16,6 +16,10 @@ public final class NetworkProfile {
      */
     @JsonProperty(value = "networkInterfaces")
     private List<NetworkInterface> networkInterfaces;
+
+    /** Creates an instance of NetworkProfile class. */
+    public NetworkProfile() {
+    }
 
     /**
      * Get the networkInterfaces property: Gets or sets the list of network interfaces associated with the virtual

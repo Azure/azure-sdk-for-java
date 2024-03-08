@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Deployment resource specific properties. */
+/**
+ * Deployment resource specific properties.
+ */
 @Fluent
 public final class DeploymentProperties {
     /*
@@ -65,13 +67,15 @@ public final class DeploymentProperties {
     @JsonProperty(value = "details")
     private String details;
 
-    /** Creates an instance of DeploymentProperties class. */
+    /**
+     * Creates an instance of DeploymentProperties class.
+     */
     public DeploymentProperties() {
     }
 
     /**
      * Get the status property: Deployment status.
-     *
+     * 
      * @return the status value.
      */
     public Integer status() {
@@ -80,7 +84,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the status property: Deployment status.
-     *
+     * 
      * @param status the status value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -91,7 +95,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the message property: Details about deployment status.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -100,7 +104,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the message property: Details about deployment status.
-     *
+     * 
      * @param message the message value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -111,7 +115,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the author property: Who authored the deployment.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -120,7 +124,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the author property: Who authored the deployment.
-     *
+     * 
      * @param author the author value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -131,7 +135,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the deployer property: Who performed the deployment.
-     *
+     * 
      * @return the deployer value.
      */
     public String deployer() {
@@ -140,7 +144,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the deployer property: Who performed the deployment.
-     *
+     * 
      * @param deployer the deployer value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -151,7 +155,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the authorEmail property: Author email.
-     *
+     * 
      * @return the authorEmail value.
      */
     public String authorEmail() {
@@ -160,7 +164,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the authorEmail property: Author email.
-     *
+     * 
      * @param authorEmail the authorEmail value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -171,7 +175,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the startTime property: Start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -180,7 +184,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the startTime property: Start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -191,7 +195,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the endTime property: End time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -200,7 +204,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the endTime property: End time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -211,7 +215,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the active property: True if deployment is currently active, false if completed and null if not started.
-     *
+     * 
      * @return the active value.
      */
     public Boolean active() {
@@ -220,7 +224,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the active property: True if deployment is currently active, false if completed and null if not started.
-     *
+     * 
      * @param active the active value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -231,7 +235,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the details property: Details on deployment.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -240,7 +244,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the details property: Details on deployment.
-     *
+     * 
      * @param details the details value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -251,7 +255,7 @@ public final class DeploymentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

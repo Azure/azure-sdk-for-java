@@ -242,7 +242,7 @@ public class TelemetryItemExporterTest {
     // https://www.w3.org/TR/baggage/
     @Test
     public void initOtelResourceAttributesTest() {
-        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
             "otel.resource.attributes",
             "key1=value%201,key2=value2,key3=value%203"));
         Resource resource = ResourceConfiguration.createEnvironmentResource(config);
@@ -255,7 +255,7 @@ public class TelemetryItemExporterTest {
 
     @Test
     public void otelResourceAttributeTest() {
-        ConfigProperties config = DefaultConfigProperties.createForTest(singletonMap(
+        ConfigProperties config = DefaultConfigProperties.create(singletonMap(
             "otel.resource.attributes",
             "key1=value1,key2=value2,key3=value3"));
         Resource environmentResource = ResourceConfiguration.createEnvironmentResource(config);

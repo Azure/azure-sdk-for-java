@@ -25,6 +25,10 @@ public final class ResourcePoolsList {
     @JsonProperty(value = "value", required = true)
     private List<ResourcePoolInner> value;
 
+    /** Creates an instance of ResourcePoolsList class. */
+    public ResourcePoolsList() {
+    }
+
     /**
      * Get the nextLink property: Url to follow for getting next page of ResourcePools.
      *

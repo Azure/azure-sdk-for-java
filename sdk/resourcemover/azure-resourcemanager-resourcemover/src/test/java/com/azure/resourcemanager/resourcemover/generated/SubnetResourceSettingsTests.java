@@ -15,23 +15,23 @@ public final class SubnetResourceSettingsTests {
         SubnetResourceSettings model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"lvmezyvshxmzsbbz\",\"addressPrefix\":\"gigr\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"burvjxxjnspy\"}}")
+                    "{\"name\":\"rzpwvlqdqgbiq\",\"addressPrefix\":\"ihkaetcktvfc\",\"networkSecurityGroup\":{\"sourceArmResourceId\":\"fsnkymuctq\"}}")
                 .toObject(SubnetResourceSettings.class);
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.name());
-        Assertions.assertEquals("gigr", model.addressPrefix());
-        Assertions.assertEquals("burvjxxjnspy", model.networkSecurityGroup().sourceArmResourceId());
+        Assertions.assertEquals("rzpwvlqdqgbiq", model.name());
+        Assertions.assertEquals("ihkaetcktvfc", model.addressPrefix());
+        Assertions.assertEquals("fsnkymuctq", model.networkSecurityGroup().sourceArmResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubnetResourceSettings model =
             new SubnetResourceSettings()
-                .withName("lvmezyvshxmzsbbz")
-                .withAddressPrefix("gigr")
-                .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("burvjxxjnspy"));
+                .withName("rzpwvlqdqgbiq")
+                .withAddressPrefix("ihkaetcktvfc")
+                .withNetworkSecurityGroup(new NsgReference().withSourceArmResourceId("fsnkymuctq"));
         model = BinaryData.fromObject(model).toObject(SubnetResourceSettings.class);
-        Assertions.assertEquals("lvmezyvshxmzsbbz", model.name());
-        Assertions.assertEquals("gigr", model.addressPrefix());
-        Assertions.assertEquals("burvjxxjnspy", model.networkSecurityGroup().sourceArmResourceId());
+        Assertions.assertEquals("rzpwvlqdqgbiq", model.name());
+        Assertions.assertEquals("ihkaetcktvfc", model.addressPrefix());
+        Assertions.assertEquals("fsnkymuctq", model.networkSecurityGroup().sourceArmResourceId());
     }
 }

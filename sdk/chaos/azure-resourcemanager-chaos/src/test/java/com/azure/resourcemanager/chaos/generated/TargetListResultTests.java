@@ -13,7 +13,7 @@ public final class TargetListResultTests {
         TargetListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"location\":\"xllrxcyjm\",\"properties\":{\"hhyxxrw\":\"datadsuvarmywdmjsjqb\"},\"id\":\"yc\",\"name\":\"duhpk\",\"type\":\"kgymareqnajxqug\"},{\"location\":\"ycubeddgs\",\"properties\":{\"i\":\"datafwqmzqalkrmn\"},\"id\":\"pxacqqudfn\",\"name\":\"yxbaaabjyvayf\",\"type\":\"imrzrtuzqog\"}],\"nextLink\":\"xnevfdnwn\"}")
+                    "{\"value\":[{\"location\":\"dgssofwqmzqal\",\"properties\":{\"byxbaaabjy\":\"datamnjijpxacqqudf\",\"zrtuzq\":\"dataayffim\"},\"id\":\"gsexne\",\"name\":\"fdnw\",\"type\":\"wmewzsyy\"},{\"location\":\"zsoibjudpfrxtr\",\"properties\":{\"ubpaxhe\":\"datazvaytdwkqbr\"},\"id\":\"iilivpdtiirqtd\",\"name\":\"oaxoruzfgsqu\",\"type\":\"fxrxxle\"},{\"location\":\"amxjezwlw\",\"properties\":{\"ooaojkniodkooebw\":\"dataxuqlcvydypat\",\"infwjlfltkacjve\":\"dataujhemmsbvdkcrodt\",\"ggkfpagaowpul\":\"datakdlfoa\",\"sjervti\":\"dataqblylsyxkqj\"},\"id\":\"gxsds\",\"name\":\"uem\",\"type\":\"sbzkf\"}],\"nextLink\":\"eyvpnqicvinvkj\"}")
                 .toObject(TargetListResult.class);
     }
 

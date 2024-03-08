@@ -7,7 +7,9 @@ package com.azure.resourcemanager.nginx.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NginxStorageAccount model. */
+/**
+ * The NginxStorageAccount model.
+ */
 @Fluent
 public final class NginxStorageAccount {
     /*
@@ -22,13 +24,15 @@ public final class NginxStorageAccount {
     @JsonProperty(value = "containerName")
     private String containerName;
 
-    /** Creates an instance of NginxStorageAccount class. */
+    /**
+     * Creates an instance of NginxStorageAccount class.
+     */
     public NginxStorageAccount() {
     }
 
     /**
      * Get the accountName property: The accountName property.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -37,7 +41,7 @@ public final class NginxStorageAccount {
 
     /**
      * Set the accountName property: The accountName property.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the NginxStorageAccount object itself.
      */
@@ -48,7 +52,7 @@ public final class NginxStorageAccount {
 
     /**
      * Get the containerName property: The containerName property.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -57,7 +61,7 @@ public final class NginxStorageAccount {
 
     /**
      * Set the containerName property: The containerName property.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the NginxStorageAccount object itself.
      */
@@ -68,7 +72,7 @@ public final class NginxStorageAccount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

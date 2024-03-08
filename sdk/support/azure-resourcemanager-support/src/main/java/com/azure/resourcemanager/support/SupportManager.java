@@ -24,17 +24,37 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.support.fluent.MicrosoftSupport;
+import com.azure.resourcemanager.support.implementation.ChatTranscriptsImpl;
+import com.azure.resourcemanager.support.implementation.ChatTranscriptsNoSubscriptionsImpl;
 import com.azure.resourcemanager.support.implementation.CommunicationsImpl;
+import com.azure.resourcemanager.support.implementation.CommunicationsNoSubscriptionsImpl;
+import com.azure.resourcemanager.support.implementation.FileWorkspacesImpl;
+import com.azure.resourcemanager.support.implementation.FileWorkspacesNoSubscriptionsImpl;
+import com.azure.resourcemanager.support.implementation.FilesImpl;
+import com.azure.resourcemanager.support.implementation.FilesNoSubscriptionsImpl;
 import com.azure.resourcemanager.support.implementation.MicrosoftSupportBuilder;
 import com.azure.resourcemanager.support.implementation.OperationsImpl;
 import com.azure.resourcemanager.support.implementation.ProblemClassificationsImpl;
 import com.azure.resourcemanager.support.implementation.ServicesImpl;
+import com.azure.resourcemanager.support.implementation.SupportTicketChatTranscriptsNoSubscriptionsImpl;
+import com.azure.resourcemanager.support.implementation.SupportTicketCommunicationsNoSubscriptionsImpl;
 import com.azure.resourcemanager.support.implementation.SupportTicketsImpl;
+import com.azure.resourcemanager.support.implementation.SupportTicketsNoSubscriptionsImpl;
+import com.azure.resourcemanager.support.models.ChatTranscripts;
+import com.azure.resourcemanager.support.models.ChatTranscriptsNoSubscriptions;
 import com.azure.resourcemanager.support.models.Communications;
+import com.azure.resourcemanager.support.models.CommunicationsNoSubscriptions;
+import com.azure.resourcemanager.support.models.FileWorkspaces;
+import com.azure.resourcemanager.support.models.FileWorkspacesNoSubscriptions;
+import com.azure.resourcemanager.support.models.Files;
+import com.azure.resourcemanager.support.models.FilesNoSubscriptions;
 import com.azure.resourcemanager.support.models.Operations;
 import com.azure.resourcemanager.support.models.ProblemClassifications;
 import com.azure.resourcemanager.support.models.Services;
+import com.azure.resourcemanager.support.models.SupportTicketChatTranscriptsNoSubscriptions;
+import com.azure.resourcemanager.support.models.SupportTicketCommunicationsNoSubscriptions;
 import com.azure.resourcemanager.support.models.SupportTickets;
+import com.azure.resourcemanager.support.models.SupportTicketsNoSubscriptions;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -52,7 +72,27 @@ public final class SupportManager {
 
     private SupportTickets supportTickets;
 
+    private SupportTicketsNoSubscriptions supportTicketsNoSubscriptions;
+
     private Communications communications;
+
+    private CommunicationsNoSubscriptions communicationsNoSubscriptions;
+
+    private SupportTicketCommunicationsNoSubscriptions supportTicketCommunicationsNoSubscriptions;
+
+    private ChatTranscripts chatTranscripts;
+
+    private SupportTicketChatTranscriptsNoSubscriptions supportTicketChatTranscriptsNoSubscriptions;
+
+    private ChatTranscriptsNoSubscriptions chatTranscriptsNoSubscriptions;
+
+    private FileWorkspaces fileWorkspaces;
+
+    private FileWorkspacesNoSubscriptions fileWorkspacesNoSubscriptions;
+
+    private Files files;
+
+    private FilesNoSubscriptions filesNoSubscriptions;
 
     private final MicrosoftSupport clientObject;
 
@@ -219,7 +259,7 @@ public final class SupportManager {
                 .append("-")
                 .append("com.azure.resourcemanager.support")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -326,6 +366,19 @@ public final class SupportManager {
     }
 
     /**
+     * Gets the resource collection API of SupportTicketsNoSubscriptions.
+     *
+     * @return Resource collection API of SupportTicketsNoSubscriptions.
+     */
+    public SupportTicketsNoSubscriptions supportTicketsNoSubscriptions() {
+        if (this.supportTicketsNoSubscriptions == null) {
+            this.supportTicketsNoSubscriptions =
+                new SupportTicketsNoSubscriptionsImpl(clientObject.getSupportTicketsNoSubscriptions(), this);
+        }
+        return supportTicketsNoSubscriptions;
+    }
+
+    /**
      * Gets the resource collection API of Communications. It manages CommunicationDetails.
      *
      * @return Resource collection API of Communications.
@@ -338,8 +391,125 @@ public final class SupportManager {
     }
 
     /**
-     * @return Wrapped service client MicrosoftSupport providing direct access to the underlying auto-generated API
-     *     implementation, based on Azure REST API.
+     * Gets the resource collection API of CommunicationsNoSubscriptions.
+     *
+     * @return Resource collection API of CommunicationsNoSubscriptions.
+     */
+    public CommunicationsNoSubscriptions communicationsNoSubscriptions() {
+        if (this.communicationsNoSubscriptions == null) {
+            this.communicationsNoSubscriptions =
+                new CommunicationsNoSubscriptionsImpl(clientObject.getCommunicationsNoSubscriptions(), this);
+        }
+        return communicationsNoSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of SupportTicketCommunicationsNoSubscriptions.
+     *
+     * @return Resource collection API of SupportTicketCommunicationsNoSubscriptions.
+     */
+    public SupportTicketCommunicationsNoSubscriptions supportTicketCommunicationsNoSubscriptions() {
+        if (this.supportTicketCommunicationsNoSubscriptions == null) {
+            this.supportTicketCommunicationsNoSubscriptions =
+                new SupportTicketCommunicationsNoSubscriptionsImpl(
+                    clientObject.getSupportTicketCommunicationsNoSubscriptions(), this);
+        }
+        return supportTicketCommunicationsNoSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of ChatTranscripts.
+     *
+     * @return Resource collection API of ChatTranscripts.
+     */
+    public ChatTranscripts chatTranscripts() {
+        if (this.chatTranscripts == null) {
+            this.chatTranscripts = new ChatTranscriptsImpl(clientObject.getChatTranscripts(), this);
+        }
+        return chatTranscripts;
+    }
+
+    /**
+     * Gets the resource collection API of SupportTicketChatTranscriptsNoSubscriptions.
+     *
+     * @return Resource collection API of SupportTicketChatTranscriptsNoSubscriptions.
+     */
+    public SupportTicketChatTranscriptsNoSubscriptions supportTicketChatTranscriptsNoSubscriptions() {
+        if (this.supportTicketChatTranscriptsNoSubscriptions == null) {
+            this.supportTicketChatTranscriptsNoSubscriptions =
+                new SupportTicketChatTranscriptsNoSubscriptionsImpl(
+                    clientObject.getSupportTicketChatTranscriptsNoSubscriptions(), this);
+        }
+        return supportTicketChatTranscriptsNoSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of ChatTranscriptsNoSubscriptions.
+     *
+     * @return Resource collection API of ChatTranscriptsNoSubscriptions.
+     */
+    public ChatTranscriptsNoSubscriptions chatTranscriptsNoSubscriptions() {
+        if (this.chatTranscriptsNoSubscriptions == null) {
+            this.chatTranscriptsNoSubscriptions =
+                new ChatTranscriptsNoSubscriptionsImpl(clientObject.getChatTranscriptsNoSubscriptions(), this);
+        }
+        return chatTranscriptsNoSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of FileWorkspaces.
+     *
+     * @return Resource collection API of FileWorkspaces.
+     */
+    public FileWorkspaces fileWorkspaces() {
+        if (this.fileWorkspaces == null) {
+            this.fileWorkspaces = new FileWorkspacesImpl(clientObject.getFileWorkspaces(), this);
+        }
+        return fileWorkspaces;
+    }
+
+    /**
+     * Gets the resource collection API of FileWorkspacesNoSubscriptions.
+     *
+     * @return Resource collection API of FileWorkspacesNoSubscriptions.
+     */
+    public FileWorkspacesNoSubscriptions fileWorkspacesNoSubscriptions() {
+        if (this.fileWorkspacesNoSubscriptions == null) {
+            this.fileWorkspacesNoSubscriptions =
+                new FileWorkspacesNoSubscriptionsImpl(clientObject.getFileWorkspacesNoSubscriptions(), this);
+        }
+        return fileWorkspacesNoSubscriptions;
+    }
+
+    /**
+     * Gets the resource collection API of Files. It manages FileDetails.
+     *
+     * @return Resource collection API of Files.
+     */
+    public Files files() {
+        if (this.files == null) {
+            this.files = new FilesImpl(clientObject.getFiles(), this);
+        }
+        return files;
+    }
+
+    /**
+     * Gets the resource collection API of FilesNoSubscriptions.
+     *
+     * @return Resource collection API of FilesNoSubscriptions.
+     */
+    public FilesNoSubscriptions filesNoSubscriptions() {
+        if (this.filesNoSubscriptions == null) {
+            this.filesNoSubscriptions = new FilesNoSubscriptionsImpl(clientObject.getFilesNoSubscriptions(), this);
+        }
+        return filesNoSubscriptions;
+    }
+
+    /**
+     * Gets wrapped service client MicrosoftSupport providing direct access to the underlying auto-generated API
+     * implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client MicrosoftSupport.
      */
     public MicrosoftSupport serviceClient() {
         return this.clientObject;

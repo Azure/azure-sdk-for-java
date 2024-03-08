@@ -12,8 +12,8 @@ public final class DetectorResponseImpl implements DetectorResponse {
 
     private final com.azure.resourcemanager.batch.BatchManager serviceManager;
 
-    DetectorResponseImpl(
-        DetectorResponseInner innerObject, com.azure.resourcemanager.batch.BatchManager serviceManager) {
+    DetectorResponseImpl(DetectorResponseInner innerObject,
+        com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

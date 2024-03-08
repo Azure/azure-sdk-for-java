@@ -30,6 +30,12 @@ public final class MetricSeriesData {
      */
     private List<Double> metricValues;
 
+    /**
+     * Creates a new instance of MetricSeriesData.
+     */
+    public MetricSeriesData() {
+    }
+
     static {
         MetricSeriesDataHelper.setAccessor(new MetricSeriesDataHelper.MetricSeriesDataAccessor() {
             @Override

@@ -38,6 +38,10 @@ public final class StorageInsightProperties {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private StorageInsightStatus status;
 
+    /** Creates an instance of StorageInsightProperties class. */
+    public StorageInsightProperties() {
+    }
+
     /**
      * Get the containers property: The names of the blob containers that the workspace should read.
      *

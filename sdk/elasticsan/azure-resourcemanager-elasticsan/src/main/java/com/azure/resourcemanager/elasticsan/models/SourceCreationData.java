@@ -7,7 +7,9 @@ package com.azure.resourcemanager.elasticsan.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data source used when creating the volume. */
+/**
+ * Data source used when creating the volume.
+ */
 @Fluent
 public final class SourceCreationData {
     /*
@@ -17,19 +19,21 @@ public final class SourceCreationData {
     private VolumeCreateOption createSource;
 
     /*
-     * If createOption is Copy, this is the ARM id of the source snapshot or disk. If createOption is Restore, this is
-     * the ARM-like id of the source disk restore point.
+     * Fully qualified resource ID for the resource. E.g.
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
      */
-    @JsonProperty(value = "sourceUri")
-    private String sourceUri;
+    @JsonProperty(value = "sourceId")
+    private String sourceId;
 
-    /** Creates an instance of SourceCreationData class. */
+    /**
+     * Creates an instance of SourceCreationData class.
+     */
     public SourceCreationData() {
     }
 
     /**
      * Get the createSource property: This enumerates the possible sources of a volume creation.
-     *
+     * 
      * @return the createSource value.
      */
     public VolumeCreateOption createSource() {
@@ -38,7 +42,7 @@ public final class SourceCreationData {
 
     /**
      * Set the createSource property: This enumerates the possible sources of a volume creation.
-     *
+     * 
      * @param createSource the createSource value to set.
      * @return the SourceCreationData object itself.
      */
@@ -48,30 +52,30 @@ public final class SourceCreationData {
     }
 
     /**
-     * Get the sourceUri property: If createOption is Copy, this is the ARM id of the source snapshot or disk. If
-     * createOption is Restore, this is the ARM-like id of the source disk restore point.
-     *
-     * @return the sourceUri value.
+     * Get the sourceId property: Fully qualified resource ID for the resource. E.g.
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     * 
+     * @return the sourceId value.
      */
-    public String sourceUri() {
-        return this.sourceUri;
+    public String sourceId() {
+        return this.sourceId;
     }
 
     /**
-     * Set the sourceUri property: If createOption is Copy, this is the ARM id of the source snapshot or disk. If
-     * createOption is Restore, this is the ARM-like id of the source disk restore point.
-     *
-     * @param sourceUri the sourceUri value to set.
+     * Set the sourceId property: Fully qualified resource ID for the resource. E.g.
+     * "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}".
+     * 
+     * @param sourceId the sourceId value to set.
      * @return the SourceCreationData object itself.
      */
-    public SourceCreationData withSourceUri(String sourceUri) {
-        this.sourceUri = sourceUri;
+    public SourceCreationData withSourceId(String sourceId) {
+        this.sourceId = sourceId;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

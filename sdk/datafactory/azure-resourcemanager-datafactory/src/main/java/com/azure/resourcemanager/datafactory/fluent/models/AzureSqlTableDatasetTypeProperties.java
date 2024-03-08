@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure SQL dataset properties. */
+/**
+ * Azure SQL dataset properties.
+ */
 @Fluent
 public final class AzureSqlTableDatasetTypeProperties {
     /*
@@ -28,14 +30,16 @@ public final class AzureSqlTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
-    /** Creates an instance of AzureSqlTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of AzureSqlTableDatasetTypeProperties class.
+     */
     public AzureSqlTableDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -45,7 +49,7 @@ public final class AzureSqlTableDatasetTypeProperties {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the AzureSqlTableDatasetTypeProperties object itself.
      */
@@ -57,7 +61,7 @@ public final class AzureSqlTableDatasetTypeProperties {
     /**
      * Get the schema property: The schema name of the Azure SQL database. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schema() {
@@ -67,7 +71,7 @@ public final class AzureSqlTableDatasetTypeProperties {
     /**
      * Set the schema property: The schema name of the Azure SQL database. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the AzureSqlTableDatasetTypeProperties object itself.
      */
@@ -79,7 +83,7 @@ public final class AzureSqlTableDatasetTypeProperties {
     /**
      * Get the table property: The table name of the Azure SQL database. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -89,7 +93,7 @@ public final class AzureSqlTableDatasetTypeProperties {
     /**
      * Set the table property: The table name of the Azure SQL database. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureSqlTableDatasetTypeProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class AzureSqlTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

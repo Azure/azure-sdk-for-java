@@ -31,6 +31,36 @@ public final class EventImpactedResourceProperties {
     private String targetRegion;
 
     /*
+     * Resource name of the impacted resource.
+     */
+    @JsonProperty(value = "resourceName", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceName;
+
+    /*
+     * Resource group name of the impacted resource.
+     */
+    @JsonProperty(value = "resourceGroup", access = JsonProperty.Access.WRITE_ONLY)
+    private String resourceGroup;
+
+    /*
+     * Status of the impacted resource.
+     */
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    private String status;
+
+    /*
+     * Start time of maintenance for the impacted resource.
+     */
+    @JsonProperty(value = "maintenanceStartTime", access = JsonProperty.Access.WRITE_ONLY)
+    private String maintenanceStartTime;
+
+    /*
+     * End time of maintenance for the impacted resource.
+     */
+    @JsonProperty(value = "maintenanceEndTime", access = JsonProperty.Access.WRITE_ONLY)
+    private String maintenanceEndTime;
+
+    /*
      * Additional information.
      */
     @JsonProperty(value = "info")
@@ -65,6 +95,51 @@ public final class EventImpactedResourceProperties {
      */
     public String targetRegion() {
         return this.targetRegion;
+    }
+
+    /**
+     * Get the resourceName property: Resource name of the impacted resource.
+     *
+     * @return the resourceName value.
+     */
+    public String resourceName() {
+        return this.resourceName;
+    }
+
+    /**
+     * Get the resourceGroup property: Resource group name of the impacted resource.
+     *
+     * @return the resourceGroup value.
+     */
+    public String resourceGroup() {
+        return this.resourceGroup;
+    }
+
+    /**
+     * Get the status property: Status of the impacted resource.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.status;
+    }
+
+    /**
+     * Get the maintenanceStartTime property: Start time of maintenance for the impacted resource.
+     *
+     * @return the maintenanceStartTime value.
+     */
+    public String maintenanceStartTime() {
+        return this.maintenanceStartTime;
+    }
+
+    /**
+     * Get the maintenanceEndTime property: End time of maintenance for the impacted resource.
+     *
+     * @return the maintenanceEndTime value.
+     */
+    public String maintenanceEndTime() {
+        return this.maintenanceEndTime;
     }
 
     /**

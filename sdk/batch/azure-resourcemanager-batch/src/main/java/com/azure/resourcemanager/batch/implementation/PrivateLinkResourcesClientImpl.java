@@ -30,23 +30,28 @@ import com.azure.resourcemanager.batch.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.batch.models.ListPrivateLinkResourcesResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public final class PrivateLinkResourcesClientImpl implements PrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final BatchManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateLinkResourcesClientImpl(BatchManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(PrivateLinkResourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,73 +62,57 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @Host("{$host}")
     @ServiceInterface(name = "BatchManagementClien")
     public interface PrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/privateLinkResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ListPrivateLinkResourcesResult>> listByBatchAccount(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ListPrivateLinkResourcesResult>> listByBatchAccount(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("maxresults") Integer maxresults,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("maxresults") Integer maxresults,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/privateLinkResources/{privateLinkResourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Batch/batchAccounts/{accountName}/privateLinkResources/{privateLinkResourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateLinkResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @PathParam("privateLinkResourceName") String privateLinkResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListPrivateLinkResourcesResult>> listByBatchAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the private link resources in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listByBatchAccountSinglePageAsync(
-        String resourceGroupName, String accountName, Integer maxresults) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listByBatchAccountSinglePageAsync(String resourceGroupName,
+        String accountName, Integer maxresults) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -135,32 +124,16 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByBatchAccount(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            maxresults,
-                            accept,
-                            context))
-            .<PagedResponse<PrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByBatchAccount(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, accountName, this.client.getApiVersion(), maxresults, accept, context))
+            .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the private link resources in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
@@ -168,23 +141,19 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listByBatchAccountSinglePageAsync(
-        String resourceGroupName, String accountName, Integer maxresults, Context context) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listByBatchAccountSinglePageAsync(String resourceGroupName,
+        String accountName, Integer maxresults, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -196,29 +165,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByBatchAccount(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                maxresults,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByBatchAccount(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                accountName, this.client.getApiVersion(), maxresults, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the private link resources in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
@@ -228,16 +183,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listByBatchAccountAsync(
-        String resourceGroupName, String accountName, Integer maxresults) {
-        return new PagedFlux<>(
-            () -> listByBatchAccountSinglePageAsync(resourceGroupName, accountName, maxresults),
+    private PagedFlux<PrivateLinkResourceInner> listByBatchAccountAsync(String resourceGroupName, String accountName,
+        Integer maxresults) {
+        return new PagedFlux<>(() -> listByBatchAccountSinglePageAsync(resourceGroupName, accountName, maxresults),
             nextLink -> listByBatchAccountNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the private link resources in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -248,14 +202,13 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PrivateLinkResourceInner> listByBatchAccountAsync(String resourceGroupName, String accountName) {
         final Integer maxresults = null;
-        return new PagedFlux<>(
-            () -> listByBatchAccountSinglePageAsync(resourceGroupName, accountName, maxresults),
+        return new PagedFlux<>(() -> listByBatchAccountSinglePageAsync(resourceGroupName, accountName, maxresults),
             nextLink -> listByBatchAccountNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the private link resources in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
@@ -266,8 +219,8 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return values returned by the List operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceInner> listByBatchAccountAsync(
-        String resourceGroupName, String accountName, Integer maxresults, Context context) {
+    private PagedFlux<PrivateLinkResourceInner> listByBatchAccountAsync(String resourceGroupName, String accountName,
+        Integer maxresults, Context context) {
         return new PagedFlux<>(
             () -> listByBatchAccountSinglePageAsync(resourceGroupName, accountName, maxresults, context),
             nextLink -> listByBatchAccountNextSinglePageAsync(nextLink, context));
@@ -275,7 +228,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Lists all of the private link resources in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -291,7 +244,7 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Lists all of the private link resources in the specified account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param maxresults The maximum number of items to return in the response.
@@ -302,14 +255,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return values returned by the List operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceInner> listByBatchAccount(
-        String resourceGroupName, String accountName, Integer maxresults, Context context) {
+    public PagedIterable<PrivateLinkResourceInner> listByBatchAccount(String resourceGroupName, String accountName,
+        Integer maxresults, Context context) {
         return new PagedIterable<>(listByBatchAccountAsync(resourceGroupName, accountName, maxresults, context));
     }
 
     /**
      * Gets information about the specified private link resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param privateLinkResourceName The private link resource name. This must be unique within the account.
@@ -317,22 +270,18 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified private link resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String privateLinkResourceName) {
+    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String privateLinkResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -342,30 +291,19 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            privateLinkResourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, privateLinkResourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified private link resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param privateLinkResourceName The private link resource name. This must be unique within the account.
@@ -374,22 +312,18 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified private link resource along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String privateLinkResourceName, Context context) {
+    private Mono<Response<PrivateLinkResourceInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String privateLinkResourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -399,27 +333,18 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         if (privateLinkResourceName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateLinkResourceName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                privateLinkResourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            privateLinkResourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets information about the specified private link resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param privateLinkResourceName The private link resource name. This must be unique within the account.
@@ -429,15 +354,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return information about the specified private link resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateLinkResourceInner> getAsync(
-        String resourceGroupName, String accountName, String privateLinkResourceName) {
+    private Mono<PrivateLinkResourceInner> getAsync(String resourceGroupName, String accountName,
+        String privateLinkResourceName) {
         return getWithResponseAsync(resourceGroupName, accountName, privateLinkResourceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets information about the specified private link resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param privateLinkResourceName The private link resource name. This must be unique within the account.
@@ -448,14 +373,14 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
      * @return information about the specified private link resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String accountName, String privateLinkResourceName, Context context) {
+    public Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String accountName,
+        String privateLinkResourceName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, privateLinkResourceName, context).block();
     }
 
     /**
      * Gets information about the specified private link resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param privateLinkResourceName The private link resource name. This must be unique within the account.
@@ -471,14 +396,15 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateLinkResourceInner>> listByBatchAccountNextSinglePageAsync(String nextLink) {
@@ -486,63 +412,45 @@ public final class PrivateLinkResourcesClientImpl implements PrivateLinkResource
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByBatchAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PrivateLinkResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PrivateLinkResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return values returned by the List operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceInner>> listByBatchAccountNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PrivateLinkResourceInner>> listByBatchAccountNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByBatchAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByBatchAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

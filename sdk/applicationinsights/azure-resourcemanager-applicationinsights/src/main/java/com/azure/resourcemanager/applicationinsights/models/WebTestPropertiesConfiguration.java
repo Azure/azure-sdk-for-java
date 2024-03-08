@@ -16,6 +16,10 @@ public final class WebTestPropertiesConfiguration {
     @JsonProperty(value = "WebTest")
     private String webTest;
 
+    /** Creates an instance of WebTestPropertiesConfiguration class. */
+    public WebTestPropertiesConfiguration() {
+    }
+
     /**
      * Get the webTest property: The XML specification of a WebTest to run against an application.
      *

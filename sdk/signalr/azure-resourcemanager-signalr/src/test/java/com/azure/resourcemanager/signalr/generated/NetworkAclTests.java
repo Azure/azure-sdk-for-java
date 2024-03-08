@@ -16,10 +16,10 @@ public final class NetworkAclTests {
         NetworkAcl model =
             BinaryData
                 .fromString(
-                    "{\"allow\":[\"ServerConnection\"],\"deny\":[\"ServerConnection\",\"ClientConnection\",\"ServerConnection\"]}")
+                    "{\"allow\":[\"ServerConnection\"],\"deny\":[\"ClientConnection\",\"Trace\",\"RESTAPI\",\"ServerConnection\"]}")
                 .toObject(NetworkAcl.class);
         Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.deny().get(0));
+        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -30,11 +30,12 @@ public final class NetworkAclTests {
                 .withDeny(
                     Arrays
                         .asList(
-                            SignalRRequestType.SERVER_CONNECTION,
                             SignalRRequestType.CLIENT_CONNECTION,
+                            SignalRRequestType.TRACE,
+                            SignalRRequestType.RESTAPI,
                             SignalRRequestType.SERVER_CONNECTION));
         model = BinaryData.fromObject(model).toObject(NetworkAcl.class);
         Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.allow().get(0));
-        Assertions.assertEquals(SignalRRequestType.SERVER_CONNECTION, model.deny().get(0));
+        Assertions.assertEquals(SignalRRequestType.CLIENT_CONNECTION, model.deny().get(0));
     }
 }

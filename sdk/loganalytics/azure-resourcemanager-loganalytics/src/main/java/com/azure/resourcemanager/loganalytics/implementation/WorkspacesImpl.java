@@ -47,25 +47,12 @@ public final class WorkspacesImpl implements Workspaces {
         return Utils.mapPage(inner, inner1 -> new WorkspaceImpl(inner1, this.manager()));
     }
 
-    public void delete(String resourceGroupName, String workspaceName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, force);
-    }
-
     public void delete(String resourceGroupName, String workspaceName) {
         this.serviceClient().delete(resourceGroupName, workspaceName);
     }
 
     public void delete(String resourceGroupName, String workspaceName, Boolean force, Context context) {
         this.serviceClient().delete(resourceGroupName, workspaceName, force, context);
-    }
-
-    public Workspace getByResourceGroup(String resourceGroupName, String workspaceName) {
-        WorkspaceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return new WorkspaceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<Workspace> getByResourceGroupWithResponse(
@@ -78,6 +65,15 @@ public final class WorkspacesImpl implements Workspaces {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WorkspaceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Workspace getByResourceGroup(String resourceGroupName, String workspaceName) {
+        WorkspaceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new WorkspaceImpl(inner, this.manager());
         } else {
             return null;
         }

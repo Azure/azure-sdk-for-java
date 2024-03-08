@@ -38,7 +38,7 @@ public final class PacketCoreControlPlanesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Canceled\",\"installation\":{\"desiredState\":\"Installed\",\"state\":\"Reinstalling\",\"reinstallRequired\":\"Required\",\"reasons\":[\"NoSlices\",\"NoPacketCoreDataPlane\",\"NoPacketCoreDataPlane\",\"NoAttachedDataNetworks\"],\"operation\":{\"id\":\"jtkbusqogsfika\"}},\"sites\":[{\"id\":\"ansharujtjiqxfz\"}],\"platform\":{\"type\":\"AKS-HCI\",\"azureStackEdgeDevice\":{\"id\":\"ttvwkpqh\"},\"azureStackEdgeDevices\":[{\"id\":\"nuygbqeqqekewvnq\"},{\"id\":\"cdlguauc\"}],\"azureStackHciCluster\":{\"id\":\"djwnlaxpunjqi\"},\"connectedCluster\":{\"id\":\"zvvitacgxmfcs\"},\"customLocation\":{\"id\":\"rxhtvso\"}},\"coreNetworkTechnology\":\"5GC\",\"version\":\"ntsj\",\"installedVersion\":\"rsxypruuu\",\"rollbackVersion\":\"nchrszizoyu\",\"controlPlaneAccessInterface\":{\"name\":\"yetnd\",\"ipv4Address\":\"fqyggagflnlgmtr\",\"ipv4Subnet\":\"hzjmucftbyrp\",\"ipv4Gateway\":\"ohkpigqfu\"},\"sku\":\"G0\",\"ueMtu\":1931491413,\"localDiagnosticsAccess\":{\"authenticationType\":\"AAD\",\"httpsServerCertificate\":{\"certificateUrl\":\"kwklsnoxaxmq\",\"provisioning\":{\"state\":\"NotProvisioned\",\"reason\":\"hjnhgwydyynfsvk\"}}},\"diagnosticsUpload\":{\"storageAccountContainerUrl\":\"bvqt\"},\"interopSettings\":\"dataarfdlpukhpyrnei\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"khnmgbrou\":{\"principalId\":\"86ce3af5-1108-4980-bcc6-96888e4e62c0\",\"clientId\":\"42b8a20b-203f-463e-9bf6-bc0617261a75\"},\"bhfhpfpazjzoy\":{\"principalId\":\"008c79cf-fa53-4a1d-a01e-887a59156594\",\"clientId\":\"c72190d2-6107-4e7a-9160-8096ee2d9525\"},\"hpdulon\":{\"principalId\":\"61effec2-2432-4161-aca7-fbdf214ed29e\",\"clientId\":\"43fb8f75-27f0-43ad-816b-4e26d58b5223\"}}},\"location\":\"cnpqwteht\",\"tags\":{\"duugwbsre\":\"rhrljyoogwxhn\"},\"id\":\"rfqkfuar\",\"name\":\"nlvhhtklnvnafvv\",\"type\":\"yfedevjbo\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"installation\":{\"desiredState\":\"Uninstalled\",\"state\":\"Uninstalling\",\"reinstallRequired\":\"NotRequired\",\"reasons\":[\"ControlPlaneAccessInterfaceHasChanged\",\"PublicLandMobileNetworkIdentifierHasChanged\"],\"operation\":{\"id\":\"ftbyrplro\"}},\"sites\":[{\"id\":\"pigqfusuckzmkw\"},{\"id\":\"lsnoxaxmqeqalh\"},{\"id\":\"jnhgwydyyn\"}],\"platform\":{\"type\":\"AKS-HCI\",\"azureStackEdgeDevice\":{\"id\":\"khgb\"},\"azureStackEdgeDevices\":[{\"id\":\"anarfdlpukhpyrne\"}],\"azureStackHciCluster\":{\"id\":\"jcpeogkhnmg\"},\"connectedCluster\":{\"id\":\"ouxddbhfhpfpazj\"},\"customLocation\":{\"id\":\"ywjxh\"}},\"coreNetworkTechnology\":\"EPC\",\"version\":\"ontacnpq\",\"installedVersion\":\"ehtuevrhr\",\"rollbackVersion\":\"yoogw\",\"controlPlaneAccessInterface\":{\"name\":\"nsduugwbsre\",\"ipv4Address\":\"fqkfuarenl\",\"ipv4Subnet\":\"htkln\",\"ipv4Gateway\":\"afvvk\"},\"controlPlaneAccessVirtualIpv4Addresses\":[\"devjb\"],\"sku\":\"G5\",\"ueMtu\":1265182150,\"localDiagnosticsAccess\":{\"authenticationType\":\"Password\",\"httpsServerCertificate\":{\"certificateUrl\":\"y\",\"provisioning\":{\"state\":\"Failed\",\"reason\":\"minqcym\"}}},\"diagnosticsUpload\":{\"storageAccountContainerUrl\":\"ngnbdxxew\"},\"eventHub\":{\"id\":\"invudbch\",\"reportingInterval\":1149033945},\"signaling\":{\"nasReroute\":{\"macroMmeGroupId\":529081403}},\"interopSettings\":\"datacrqctmxxdtddmflh\"},\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"zna\":{\"principalId\":\"7c4bab26-15ba-4f97-9865-71054339e390\",\"clientId\":\"53e38b90-0915-4c3e-bf75-45c7231ff445\"}}},\"location\":\"bannovvoxczytp\",\"tags\":{\"uuxvnsasbcry\":\"wvroevytlyokrrr\",\"izrxklob\":\"o\",\"vevfxz\":\"xnazpmkml\",\"bzxliohrdddtfgxq\":\"pj\"},\"id\":\"awpcbbnzqcykn\",\"name\":\"p\",\"type\":\"ofyuicd\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -69,33 +69,37 @@ public final class PacketCoreControlPlanesListMockTests {
         PagedIterable<PacketCoreControlPlane> response =
             manager.packetCoreControlPlanes().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cnpqwteht", response.iterator().next().location());
-        Assertions.assertEquals("rhrljyoogwxhn", response.iterator().next().tags().get("duugwbsre"));
-        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, response.iterator().next().identity().type());
+        Assertions.assertEquals("bannovvoxczytp", response.iterator().next().location());
+        Assertions.assertEquals("wvroevytlyokrrr", response.iterator().next().tags().get("uuxvnsasbcry"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
         Assertions
-            .assertEquals(DesiredInstallationState.INSTALLED, response.iterator().next().installation().desiredState());
-        Assertions.assertEquals("ansharujtjiqxfz", response.iterator().next().sites().get(0).id());
+            .assertEquals(
+                DesiredInstallationState.UNINSTALLED, response.iterator().next().installation().desiredState());
+        Assertions.assertEquals("pigqfusuckzmkw", response.iterator().next().sites().get(0).id());
         Assertions.assertEquals(PlatformType.AKS_HCI, response.iterator().next().platform().type());
-        Assertions.assertEquals("ttvwkpqh", response.iterator().next().platform().azureStackEdgeDevice().id());
-        Assertions.assertEquals("djwnlaxpunjqi", response.iterator().next().platform().azureStackHciCluster().id());
-        Assertions.assertEquals("zvvitacgxmfcs", response.iterator().next().platform().connectedCluster().id());
-        Assertions.assertEquals("rxhtvso", response.iterator().next().platform().customLocation().id());
-        Assertions.assertEquals(CoreNetworkType.FIVE_GC, response.iterator().next().coreNetworkTechnology());
-        Assertions.assertEquals("ntsj", response.iterator().next().version());
-        Assertions.assertEquals("yetnd", response.iterator().next().controlPlaneAccessInterface().name());
-        Assertions
-            .assertEquals("fqyggagflnlgmtr", response.iterator().next().controlPlaneAccessInterface().ipv4Address());
-        Assertions.assertEquals("hzjmucftbyrp", response.iterator().next().controlPlaneAccessInterface().ipv4Subnet());
-        Assertions.assertEquals("ohkpigqfu", response.iterator().next().controlPlaneAccessInterface().ipv4Gateway());
-        Assertions.assertEquals(BillingSku.G0, response.iterator().next().sku());
-        Assertions.assertEquals(1931491413, response.iterator().next().ueMtu());
-        Assertions
-            .assertEquals(
-                AuthenticationType.AAD, response.iterator().next().localDiagnosticsAccess().authenticationType());
+        Assertions.assertEquals("khgb", response.iterator().next().platform().azureStackEdgeDevice().id());
+        Assertions.assertEquals("jcpeogkhnmg", response.iterator().next().platform().azureStackHciCluster().id());
+        Assertions.assertEquals("ouxddbhfhpfpazj", response.iterator().next().platform().connectedCluster().id());
+        Assertions.assertEquals("ywjxh", response.iterator().next().platform().customLocation().id());
+        Assertions.assertEquals(CoreNetworkType.EPC, response.iterator().next().coreNetworkTechnology());
+        Assertions.assertEquals("ontacnpq", response.iterator().next().version());
+        Assertions.assertEquals("nsduugwbsre", response.iterator().next().controlPlaneAccessInterface().name());
+        Assertions.assertEquals("fqkfuarenl", response.iterator().next().controlPlaneAccessInterface().ipv4Address());
+        Assertions.assertEquals("htkln", response.iterator().next().controlPlaneAccessInterface().ipv4Subnet());
+        Assertions.assertEquals("afvvk", response.iterator().next().controlPlaneAccessInterface().ipv4Gateway());
+        Assertions.assertEquals("devjb", response.iterator().next().controlPlaneAccessVirtualIpv4Addresses().get(0));
+        Assertions.assertEquals(BillingSku.G5, response.iterator().next().sku());
+        Assertions.assertEquals(1265182150, response.iterator().next().ueMtu());
         Assertions
             .assertEquals(
-                "kwklsnoxaxmq",
-                response.iterator().next().localDiagnosticsAccess().httpsServerCertificate().certificateUrl());
-        Assertions.assertEquals("bvqt", response.iterator().next().diagnosticsUpload().storageAccountContainerUrl());
+                AuthenticationType.PASSWORD, response.iterator().next().localDiagnosticsAccess().authenticationType());
+        Assertions
+            .assertEquals(
+                "y", response.iterator().next().localDiagnosticsAccess().httpsServerCertificate().certificateUrl());
+        Assertions
+            .assertEquals("ngnbdxxew", response.iterator().next().diagnosticsUpload().storageAccountContainerUrl());
+        Assertions.assertEquals("invudbch", response.iterator().next().eventHub().id());
+        Assertions.assertEquals(1149033945, response.iterator().next().eventHub().reportingInterval());
+        Assertions.assertEquals(529081403, response.iterator().next().signaling().nasReroute().macroMmeGroupId());
     }
 }

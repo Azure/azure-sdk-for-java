@@ -8,22 +8,30 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The recovery point type. */
+/**
+ * The recovery point type.
+ */
 public final class HyperVReplicaAzureRpRecoveryPointType
     extends ExpandableStringEnum<HyperVReplicaAzureRpRecoveryPointType> {
-    /** Static value Latest for HyperVReplicaAzureRpRecoveryPointType. */
+    /**
+     * Static value Latest for HyperVReplicaAzureRpRecoveryPointType.
+     */
     public static final HyperVReplicaAzureRpRecoveryPointType LATEST = fromString("Latest");
 
-    /** Static value LatestApplicationConsistent for HyperVReplicaAzureRpRecoveryPointType. */
-    public static final HyperVReplicaAzureRpRecoveryPointType LATEST_APPLICATION_CONSISTENT =
-        fromString("LatestApplicationConsistent");
+    /**
+     * Static value LatestApplicationConsistent for HyperVReplicaAzureRpRecoveryPointType.
+     */
+    public static final HyperVReplicaAzureRpRecoveryPointType LATEST_APPLICATION_CONSISTENT
+        = fromString("LatestApplicationConsistent");
 
-    /** Static value LatestProcessed for HyperVReplicaAzureRpRecoveryPointType. */
+    /**
+     * Static value LatestProcessed for HyperVReplicaAzureRpRecoveryPointType.
+     */
     public static final HyperVReplicaAzureRpRecoveryPointType LATEST_PROCESSED = fromString("LatestProcessed");
 
     /**
      * Creates a new instance of HyperVReplicaAzureRpRecoveryPointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +40,7 @@ public final class HyperVReplicaAzureRpRecoveryPointType
 
     /**
      * Creates or finds a HyperVReplicaAzureRpRecoveryPointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HyperVReplicaAzureRpRecoveryPointType.
      */
@@ -43,7 +51,7 @@ public final class HyperVReplicaAzureRpRecoveryPointType
 
     /**
      * Gets known HyperVReplicaAzureRpRecoveryPointType values.
-     *
+     * 
      * @return known HyperVReplicaAzureRpRecoveryPointType values.
      */
     public static Collection<HyperVReplicaAzureRpRecoveryPointType> values() {

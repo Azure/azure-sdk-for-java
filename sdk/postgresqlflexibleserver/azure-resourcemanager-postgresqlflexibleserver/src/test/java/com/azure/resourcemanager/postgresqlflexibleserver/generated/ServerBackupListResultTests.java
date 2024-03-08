@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerBackupListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerBackupListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-08-18T11:52:54Z\",\"source\":\"hkryhtn\"},\"id\":\"czwlokjyem\",\"name\":\"kvnipjoxz\",\"type\":\"nchgej\"}],\"nextLink\":\"odmailzyd\"}")
-                .toObject(ServerBackupListResult.class);
+        ServerBackupListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"backupType\":\"Full\",\"completedTime\":\"2021-08-18T11:52:54Z\",\"source\":\"hkryhtn\"},\"id\":\"czwlokjyem\",\"name\":\"kvnipjoxz\",\"type\":\"nchgej\"}],\"nextLink\":\"odmailzyd\"}")
+            .toObject(ServerBackupListResult.class);
         Assertions.assertEquals(Origin.FULL, model.value().get(0).backupType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-18T11:52:54Z"), model.value().get(0).completedTime());
         Assertions.assertEquals("hkryhtn", model.value().get(0).source());
@@ -28,16 +26,10 @@ public final class ServerBackupListResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerBackupListResult model =
-            new ServerBackupListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ServerBackupInner()
-                                .withBackupType(Origin.FULL)
-                                .withCompletedTime(OffsetDateTime.parse("2021-08-18T11:52:54Z"))
-                                .withSource("hkryhtn")))
-                .withNextLink("odmailzyd");
+        ServerBackupListResult model = new ServerBackupListResult()
+            .withValue(Arrays.asList(new ServerBackupInner().withBackupType(Origin.FULL)
+                .withCompletedTime(OffsetDateTime.parse("2021-08-18T11:52:54Z")).withSource("hkryhtn")))
+            .withNextLink("odmailzyd");
         model = BinaryData.fromObject(model).toObject(ServerBackupListResult.class);
         Assertions.assertEquals(Origin.FULL, model.value().get(0).backupType());
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-18T11:52:54Z"), model.value().get(0).completedTime());

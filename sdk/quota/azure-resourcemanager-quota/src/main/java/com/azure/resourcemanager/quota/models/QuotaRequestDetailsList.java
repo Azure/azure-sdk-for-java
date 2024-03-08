@@ -9,7 +9,9 @@ import com.azure.resourcemanager.quota.fluent.models.QuotaRequestDetailsInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Quota request information. */
+/**
+ * Quota request information.
+ */
 @Fluent
 public final class QuotaRequestDetailsList {
     /*
@@ -24,13 +26,15 @@ public final class QuotaRequestDetailsList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of QuotaRequestDetailsList class. */
+    /**
+     * Creates an instance of QuotaRequestDetailsList class.
+     */
     public QuotaRequestDetailsList() {
     }
 
     /**
      * Get the value property: Quota request details.
-     *
+     * 
      * @return the value value.
      */
     public List<QuotaRequestDetailsInner> value() {
@@ -39,7 +43,7 @@ public final class QuotaRequestDetailsList {
 
     /**
      * Set the value property: Quota request details.
-     *
+     * 
      * @param value the value value to set.
      * @return the QuotaRequestDetailsList object itself.
      */
@@ -49,9 +53,9 @@ public final class QuotaRequestDetailsList {
     }
 
     /**
-     * Get the nextLink property: The URI for fetching the next page of quota limits. When there are no more pages, this
-     * string is null.
-     *
+     * Get the nextLink property: The URI for fetching the next page of quota limits. When there are no more pages,
+     * this string is null.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,9 +63,9 @@ public final class QuotaRequestDetailsList {
     }
 
     /**
-     * Set the nextLink property: The URI for fetching the next page of quota limits. When there are no more pages, this
-     * string is null.
-     *
+     * Set the nextLink property: The URI for fetching the next page of quota limits. When there are no more pages,
+     * this string is null.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the QuotaRequestDetailsList object itself.
      */
@@ -72,7 +76,7 @@ public final class QuotaRequestDetailsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

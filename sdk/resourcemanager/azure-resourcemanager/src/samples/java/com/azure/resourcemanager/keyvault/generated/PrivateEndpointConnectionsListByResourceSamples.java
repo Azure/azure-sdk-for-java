@@ -7,7 +7,7 @@ package com.azure.resourcemanager.keyvault.generated;
 /** Samples for PrivateEndpointConnections ListByResource. */
 public final class PrivateEndpointConnectionsListByResourceSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/listPrivateEndpointConnection.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-07-01/examples/listPrivateEndpointConnection.json
      */
     /**
      * Sample code: KeyVaultListPrivateEndpointConnection.

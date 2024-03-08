@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.SqlTriggerGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB trigger. */
+/**
+ * An Azure Cosmos DB trigger.
+ */
 @Fluent
 public final class SqlTriggerGetResultsInner extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class SqlTriggerGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private SqlTriggerGetProperties innerProperties;
 
-    /** Creates an instance of SqlTriggerGetResultsInner class. */
+    /**
+     * Creates an instance of SqlTriggerGetResultsInner class.
+     */
     public SqlTriggerGetResultsInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB trigger.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlTriggerGetProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlTriggerGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlTriggerGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class SqlTriggerGetResultsInner extends ArmResourceProperties {
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public SqlTriggerGetPropertiesResource resource() {
@@ -57,7 +65,7 @@ public final class SqlTriggerGetResultsInner extends ArmResourceProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlTriggerGetResultsInner object itself.
      */
@@ -71,7 +79,7 @@ public final class SqlTriggerGetResultsInner extends ArmResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

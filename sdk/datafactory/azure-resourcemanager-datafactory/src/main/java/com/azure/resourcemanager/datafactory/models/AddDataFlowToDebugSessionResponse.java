@@ -6,18 +6,20 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.resourcemanager.datafactory.fluent.models.AddDataFlowToDebugSessionResponseInner;
 
-/** An immutable client-side representation of AddDataFlowToDebugSessionResponse. */
+/**
+ * An immutable client-side representation of AddDataFlowToDebugSessionResponse.
+ */
 public interface AddDataFlowToDebugSessionResponse {
     /**
      * Gets the jobVersion property: The ID of data flow debug job version.
-     *
+     * 
      * @return the jobVersion value.
      */
     String jobVersion();
 
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.AddDataFlowToDebugSessionResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     AddDataFlowToDebugSessionResponseInner innerModel();

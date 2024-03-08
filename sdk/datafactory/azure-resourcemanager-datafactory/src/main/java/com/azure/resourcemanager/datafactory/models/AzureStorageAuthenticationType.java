@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type used for authentication. Type: string. */
+/**
+ * The type used for authentication. Type: string.
+ */
 public final class AzureStorageAuthenticationType extends ExpandableStringEnum<AzureStorageAuthenticationType> {
-    /** Static value Anonymous for AzureStorageAuthenticationType. */
+    /**
+     * Static value Anonymous for AzureStorageAuthenticationType.
+     */
     public static final AzureStorageAuthenticationType ANONYMOUS = fromString("Anonymous");
 
-    /** Static value AccountKey for AzureStorageAuthenticationType. */
+    /**
+     * Static value AccountKey for AzureStorageAuthenticationType.
+     */
     public static final AzureStorageAuthenticationType ACCOUNT_KEY = fromString("AccountKey");
 
-    /** Static value SasUri for AzureStorageAuthenticationType. */
+    /**
+     * Static value SasUri for AzureStorageAuthenticationType.
+     */
     public static final AzureStorageAuthenticationType SAS_URI = fromString("SasUri");
 
-    /** Static value ServicePrincipal for AzureStorageAuthenticationType. */
+    /**
+     * Static value ServicePrincipal for AzureStorageAuthenticationType.
+     */
     public static final AzureStorageAuthenticationType SERVICE_PRINCIPAL = fromString("ServicePrincipal");
 
-    /** Static value Msi for AzureStorageAuthenticationType. */
+    /**
+     * Static value Msi for AzureStorageAuthenticationType.
+     */
     public static final AzureStorageAuthenticationType MSI = fromString("Msi");
 
     /**
      * Creates a new instance of AzureStorageAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class AzureStorageAuthenticationType extends ExpandableStringEnum<A
 
     /**
      * Creates or finds a AzureStorageAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureStorageAuthenticationType.
      */
@@ -47,7 +59,7 @@ public final class AzureStorageAuthenticationType extends ExpandableStringEnum<A
 
     /**
      * Gets known AzureStorageAuthenticationType values.
-     *
+     * 
      * @return known AzureStorageAuthenticationType values.
      */
     public static Collection<AzureStorageAuthenticationType> values() {

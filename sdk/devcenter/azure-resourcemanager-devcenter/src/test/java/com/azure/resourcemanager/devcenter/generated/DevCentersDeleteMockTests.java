@@ -56,6 +56,6 @@ public final class DevCentersDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.devCenters().delete("ob", "pg", com.azure.core.util.Context.NONE);
+        manager.devCenters().delete("vjlboxqvk", "lmxhomdyn", com.azure.core.util.Context.NONE);
     }
 }

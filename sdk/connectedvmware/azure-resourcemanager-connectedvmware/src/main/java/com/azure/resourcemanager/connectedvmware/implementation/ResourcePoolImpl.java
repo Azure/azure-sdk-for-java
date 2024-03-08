@@ -9,6 +9,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.connectedvmware.fluent.models.ResourcePoolInner;
 import com.azure.resourcemanager.connectedvmware.models.ExtendedLocation;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourcePatch;
 import com.azure.resourcemanager.connectedvmware.models.ResourcePool;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
@@ -102,8 +103,42 @@ public final class ResourcePoolImpl implements ResourcePool, ResourcePool.Defini
         return this.innerModel().memLimitMB();
     }
 
+    public Long memOverallUsageGB() {
+        return this.innerModel().memOverallUsageGB();
+    }
+
+    public Long memCapacityGB() {
+        return this.innerModel().memCapacityGB();
+    }
+
+    public Long cpuOverallUsageMHz() {
+        return this.innerModel().cpuOverallUsageMHz();
+    }
+
+    public Long cpuCapacityMHz() {
+        return this.innerModel().cpuCapacityMHz();
+    }
+
     public String customResourceName() {
         return this.innerModel().customResourceName();
+    }
+
+    public List<String> datastoreIds() {
+        List<String> inner = this.innerModel().datastoreIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<String> networkIds() {
+        List<String> inner = this.innerModel().networkIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public List<ResourceStatus> statuses() {
@@ -115,7 +150,7 @@ public final class ResourcePoolImpl implements ResourcePool, ResourcePool.Defini
         }
     }
 
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
     }
 

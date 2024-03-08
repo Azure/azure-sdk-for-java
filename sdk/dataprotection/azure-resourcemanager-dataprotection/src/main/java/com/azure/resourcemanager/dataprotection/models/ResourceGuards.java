@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ResourceGuards. */
+/**
+ * Resource collection API of ResourceGuards.
+ */
 public interface ResourceGuards {
     /**
      * Returns ResourceGuards collection belonging to a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ResourceGuard resources as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface ResourceGuards {
 
     /**
      * Returns ResourceGuards collection belonging to a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface ResourceGuards {
 
     /**
      * Returns ResourceGuards collection belonging to a ResourceGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +45,7 @@ public interface ResourceGuards {
 
     /**
      * Returns ResourceGuards collection belonging to a ResourceGroup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,7 +57,7 @@ public interface ResourceGuards {
 
     /**
      * Returns a ResourceGuard belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @param context The context to associate with this operation.
@@ -64,12 +66,12 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response body along with {@link Response}.
      */
-    Response<ResourceGuardResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceGuardsName, Context context);
+    Response<ResourceGuardResource> getByResourceGroupWithResponse(String resourceGroupName, String resourceGuardsName,
+        Context context);
 
     /**
      * Returns a ResourceGuard belonging to a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,7 +83,7 @@ public interface ResourceGuards {
 
     /**
      * Deletes a ResourceGuard resource from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @param context The context to associate with this operation.
@@ -90,12 +92,12 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String resourceGuardsName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String resourceGuardsName,
+        Context context);
 
     /**
      * Deletes a ResourceGuard resource from the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The name of ResourceGuard.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -107,7 +109,7 @@ public interface ResourceGuards {
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,42 +117,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DppBaseResource> getDisableSoftDeleteRequestsObjects(
-        String resourceGroupName, String resourceGuardsName);
+    PagedIterable<DppBaseResource> getDisableSoftDeleteRequestsObjects(String resourceGroupName,
+        String resourceGuardsName);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<DppBaseResource> getDisableSoftDeleteRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context);
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<DppBaseResource> getDeleteResourceGuardProxyRequestsObjects(
-        String resourceGroupName, String resourceGuardsName);
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
@@ -159,13 +132,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DppBaseResource> getDeleteResourceGuardProxyRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context);
+    PagedIterable<DppBaseResource> getDisableSoftDeleteRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,42 +146,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DppBaseResource> getBackupSecurityPinRequestsObjects(
-        String resourceGroupName, String resourceGuardsName);
+    PagedIterable<DppBaseResource> getDeleteResourceGuardProxyRequestsObjects(String resourceGroupName,
+        String resourceGuardsName);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<DppBaseResource> getBackupSecurityPinRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context);
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<DppBaseResource> getDeleteProtectedItemRequestsObjects(
-        String resourceGroupName, String resourceGuardsName);
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
@@ -217,13 +161,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DppBaseResource> getDeleteProtectedItemRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context);
+    PagedIterable<DppBaseResource> getDeleteResourceGuardProxyRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,42 +175,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DppBaseResource> getUpdateProtectionPolicyRequestsObjects(
-        String resourceGroupName, String resourceGuardsName);
+    PagedIterable<DppBaseResource> getBackupSecurityPinRequestsObjects(String resourceGroupName,
+        String resourceGuardsName);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<DppBaseResource> getUpdateProtectionPolicyRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context);
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceGuardsName The resourceGuardsName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<DppBaseResource> getUpdateProtectedItemRequestsObjects(
-        String resourceGroupName, String resourceGuardsName);
-
-    /**
-     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
-     * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param context The context to associate with this operation.
@@ -275,13 +190,100 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<DppBaseResource> getUpdateProtectedItemRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context);
+    PagedIterable<DppBaseResource> getBackupSecurityPinRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<DppBaseResource> getDeleteProtectedItemRequestsObjects(String resourceGroupName,
+        String resourceGuardsName);
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<DppBaseResource> getDeleteProtectedItemRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context);
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<DppBaseResource> getUpdateProtectionPolicyRequestsObjects(String resourceGroupName,
+        String resourceGuardsName);
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<DppBaseResource> getUpdateProtectionPolicyRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context);
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<DppBaseResource> getUpdateProtectedItemRequestsObjects(String resourceGroupName,
+        String resourceGuardsName);
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceGuardsName The resourceGuardsName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base for all lists of V2 resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<DppBaseResource> getUpdateProtectedItemRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context);
+
+    /**
+     * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
+     * resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -291,13 +293,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
-    Response<DppBaseResource> getDefaultDisableSoftDeleteRequestsObjectWithResponse(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context);
+    Response<DppBaseResource> getDefaultDisableSoftDeleteRequestsObjectWithResponse(String resourceGroupName,
+        String resourceGuardsName, String requestName, Context context);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -306,13 +308,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace.
      */
-    DppBaseResource getDefaultDisableSoftDeleteRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName);
+    DppBaseResource getDefaultDisableSoftDeleteRequestsObject(String resourceGroupName, String resourceGuardsName,
+        String requestName);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -322,13 +324,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
-    Response<DppBaseResource> getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context);
+    Response<DppBaseResource> getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(String resourceGroupName,
+        String resourceGuardsName, String requestName, Context context);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -337,13 +339,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace.
      */
-    DppBaseResource getDefaultDeleteResourceGuardProxyRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName);
+    DppBaseResource getDefaultDeleteResourceGuardProxyRequestsObject(String resourceGroupName,
+        String resourceGuardsName, String requestName);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -353,13 +355,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
-    Response<DppBaseResource> getDefaultBackupSecurityPinRequestsObjectWithResponse(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context);
+    Response<DppBaseResource> getDefaultBackupSecurityPinRequestsObjectWithResponse(String resourceGroupName,
+        String resourceGuardsName, String requestName, Context context);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -368,13 +370,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace.
      */
-    DppBaseResource getDefaultBackupSecurityPinRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName);
+    DppBaseResource getDefaultBackupSecurityPinRequestsObject(String resourceGroupName, String resourceGuardsName,
+        String requestName);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -384,13 +386,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
-    Response<DppBaseResource> getDefaultDeleteProtectedItemRequestsObjectWithResponse(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context);
+    Response<DppBaseResource> getDefaultDeleteProtectedItemRequestsObjectWithResponse(String resourceGroupName,
+        String resourceGuardsName, String requestName, Context context);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -399,13 +401,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace.
      */
-    DppBaseResource getDefaultDeleteProtectedItemRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName);
+    DppBaseResource getDefaultDeleteProtectedItemRequestsObject(String resourceGroupName, String resourceGuardsName,
+        String requestName);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -415,13 +417,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
-    Response<DppBaseResource> getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context);
+    Response<DppBaseResource> getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(String resourceGroupName,
+        String resourceGuardsName, String requestName, Context context);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -430,13 +432,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace.
      */
-    DppBaseResource getDefaultUpdateProtectionPolicyRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName);
+    DppBaseResource getDefaultUpdateProtectionPolicyRequestsObject(String resourceGroupName, String resourceGuardsName,
+        String requestName);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -446,13 +448,13 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace along with {@link Response}.
      */
-    Response<DppBaseResource> getDefaultUpdateProtectedItemRequestsObjectWithResponse(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context);
+    Response<DppBaseResource> getDefaultUpdateProtectedItemRequestsObjectWithResponse(String resourceGroupName,
+        String resourceGuardsName, String requestName, Context context);
 
     /**
      * Returns collection of operation request objects for a critical operation protected by the given ResourceGuard
      * resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceGuardsName The resourceGuardsName parameter.
      * @param requestName The requestName parameter.
@@ -461,12 +463,12 @@ public interface ResourceGuards {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base resource under Microsoft.DataProtection provider namespace.
      */
-    DppBaseResource getDefaultUpdateProtectedItemRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName);
+    DppBaseResource getDefaultUpdateProtectedItemRequestsObject(String resourceGroupName, String resourceGuardsName,
+        String requestName);
 
     /**
      * Returns a ResourceGuard belonging to a resource group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -477,7 +479,7 @@ public interface ResourceGuards {
 
     /**
      * Returns a ResourceGuard belonging to a resource group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -489,7 +491,7 @@ public interface ResourceGuards {
 
     /**
      * Deletes a ResourceGuard resource from the resource group.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -499,7 +501,7 @@ public interface ResourceGuards {
 
     /**
      * Deletes a ResourceGuard resource from the resource group.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -511,7 +513,7 @@ public interface ResourceGuards {
 
     /**
      * Begins definition for a new ResourceGuardResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ResourceGuardResource definition.
      */

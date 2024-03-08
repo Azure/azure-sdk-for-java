@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for ProjectEnvironmentTypes CreateOrUpdate. */
 public final class ProjectEnvironmentTypesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/ProjectEnvironmentTypes_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/ProjectEnvironmentTypes_Put.json
      */
     /**
      * Sample code: ProjectEnvironmentTypes_CreateOrUpdate.
@@ -51,6 +51,7 @@ public final class ProjectEnvironmentTypesCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

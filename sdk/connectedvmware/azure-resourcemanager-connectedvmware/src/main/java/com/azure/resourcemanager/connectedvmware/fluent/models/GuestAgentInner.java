@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.connectedvmware.models.GuestCredential;
 import com.azure.resourcemanager.connectedvmware.models.HttpProxyConfiguration;
 import com.azure.resourcemanager.connectedvmware.models.ProvisioningAction;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -25,10 +26,14 @@ public final class GuestAgentInner extends ProxyResource {
     private GuestAgentProperties innerProperties = new GuestAgentProperties();
 
     /*
-     * The system data.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of GuestAgentInner class. */
+    public GuestAgentInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
@@ -40,7 +45,7 @@ public final class GuestAgentInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: The system data.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -77,6 +82,31 @@ public final class GuestAgentInner extends ProxyResource {
             this.innerProperties = new GuestAgentProperties();
         }
         this.innerProperties().withCredentials(credentials);
+        return this;
+    }
+
+    /**
+     * Get the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
+     * to, if any.
+     *
+     * @return the privateLinkScopeResourceId value.
+     */
+    public String privateLinkScopeResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkScopeResourceId();
+    }
+
+    /**
+     * Set the privateLinkScopeResourceId property: The resource id of the private link scope this machine is assigned
+     * to, if any.
+     *
+     * @param privateLinkScopeResourceId the privateLinkScopeResourceId value to set.
+     * @return the GuestAgentInner object itself.
+     */
+    public GuestAgentInner withPrivateLinkScopeResourceId(String privateLinkScopeResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GuestAgentProperties();
+        }
+        this.innerProperties().withPrivateLinkScopeResourceId(privateLinkScopeResourceId);
         return this;
     }
 
@@ -154,11 +184,11 @@ public final class GuestAgentInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 

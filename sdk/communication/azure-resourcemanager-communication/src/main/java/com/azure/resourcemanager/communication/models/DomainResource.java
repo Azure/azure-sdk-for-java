@@ -10,153 +10,160 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.communication.fluent.models.DomainResourceInner;
 import java.util.Map;
 
-/** An immutable client-side representation of DomainResource. */
+/**
+ * An immutable client-side representation of DomainResource.
+ */
 public interface DomainResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: The geo-location where the resource lives.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     DomainsProvisioningState provisioningState();
 
     /**
      * Gets the dataLocation property: The location where the Domains resource data is stored at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     String dataLocation();
 
     /**
      * Gets the fromSenderDomain property: P2 sender domain that is displayed to the email recipients [RFC 5322].
-     *
+     * 
      * @return the fromSenderDomain value.
      */
     String fromSenderDomain();
 
     /**
      * Gets the mailFromSenderDomain property: P1 sender domain that is present on the email envelope [RFC 5321].
-     *
+     * 
      * @return the mailFromSenderDomain value.
      */
     String mailFromSenderDomain();
 
     /**
      * Gets the domainManagement property: Describes how a Domains resource is being managed.
-     *
+     * 
      * @return the domainManagement value.
      */
     DomainManagement domainManagement();
 
     /**
      * Gets the verificationStates property: List of VerificationStatusRecord.
-     *
+     * 
      * @return the verificationStates value.
      */
     DomainPropertiesVerificationStates verificationStates();
 
     /**
      * Gets the verificationRecords property: List of DnsRecord.
-     *
+     * 
      * @return the verificationRecords value.
      */
     DomainPropertiesVerificationRecords verificationRecords();
 
     /**
      * Gets the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @return the userEngagementTracking value.
      */
     UserEngagementTracking userEngagementTracking();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.communication.fluent.models.DomainResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     DomainResourceInner innerModel();
 
-    /** The entirety of the DomainResource definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithLocation,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithCreate {
+    /**
+     * The entirety of the DomainResource definition.
+     */
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithLocation,
+        DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The DomainResource definition stages. */
+    /**
+     * The DomainResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the DomainResource definition. */
+        /**
+         * The first stage of the DomainResource definition.
+         */
         interface Blank extends WithLocation {
         }
 
-        /** The stage of the DomainResource definition allowing to specify location. */
+        /**
+         * The stage of the DomainResource definition allowing to specify location.
+         */
         interface WithLocation {
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
@@ -164,18 +171,20 @@ public interface DomainResource {
 
             /**
              * Specifies the region for the resource.
-             *
+             * 
              * @param location The geo-location where the resource lives.
              * @return the next definition stage.
              */
             WithParentResource withRegion(String location);
         }
 
-        /** The stage of the DomainResource definition allowing to specify parent resource. */
+        /**
+         * The stage of the DomainResource definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, emailServiceName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param emailServiceName The name of the EmailService resource.
              * @return the next definition stage.
@@ -187,54 +196,58 @@ public interface DomainResource {
          * The stage of the DomainResource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithDomainManagement,
-                DefinitionStages.WithUserEngagementTracking {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithDomainManagement,
+            DefinitionStages.WithUserEngagementTracking {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             DomainResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             DomainResource create(Context context);
         }
 
-        /** The stage of the DomainResource definition allowing to specify tags. */
+        /**
+         * The stage of the DomainResource definition allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Resource tags..
-             *
+             * 
              * @param tags Resource tags.
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
         }
 
-        /** The stage of the DomainResource definition allowing to specify domainManagement. */
+        /**
+         * The stage of the DomainResource definition allowing to specify domainManagement.
+         */
         interface WithDomainManagement {
             /**
              * Specifies the domainManagement property: Describes how a Domains resource is being managed..
-             *
+             * 
              * @param domainManagement Describes how a Domains resource is being managed.
              * @return the next definition stage.
              */
             WithCreate withDomainManagement(DomainManagement domainManagement);
         }
 
-        /** The stage of the DomainResource definition allowing to specify userEngagementTracking. */
+        /**
+         * The stage of the DomainResource definition allowing to specify userEngagementTracking.
+         */
         interface WithUserEngagementTracking {
             /**
              * Specifies the userEngagementTracking property: Describes whether user engagement tracking is enabled or
              * disabled..
-             *
+             * 
              * @param userEngagementTracking Describes whether user engagement tracking is enabled or disabled.
              * @return the next definition stage.
              */
@@ -244,49 +257,57 @@ public interface DomainResource {
 
     /**
      * Begins update for the DomainResource resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     DomainResource.Update update();
 
-    /** The template for DomainResource update. */
+    /**
+     * The template for DomainResource update.
+     */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithUserEngagementTracking {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         DomainResource apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         DomainResource apply(Context context);
     }
 
-    /** The DomainResource update stages. */
+    /**
+     * The DomainResource update stages.
+     */
     interface UpdateStages {
-        /** The stage of the DomainResource update allowing to specify tags. */
+        /**
+         * The stage of the DomainResource update allowing to specify tags.
+         */
         interface WithTags {
             /**
              * Specifies the tags property: Tags of the service which is a list of key value pairs that describe the
              * resource..
-             *
+             * 
              * @param tags Tags of the service which is a list of key value pairs that describe the resource.
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
         }
 
-        /** The stage of the DomainResource update allowing to specify userEngagementTracking. */
+        /**
+         * The stage of the DomainResource update allowing to specify userEngagementTracking.
+         */
         interface WithUserEngagementTracking {
             /**
              * Specifies the userEngagementTracking property: Describes whether user engagement tracking is enabled or
              * disabled..
-             *
+             * 
              * @param userEngagementTracking Describes whether user engagement tracking is enabled or disabled.
              * @return the next definition stage.
              */
@@ -296,14 +317,14 @@ public interface DomainResource {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     DomainResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -311,9 +332,9 @@ public interface DomainResource {
 
     /**
      * Initiate Verification
-     *
-     * <p>Initiate verification of DNS record.
-     *
+     * 
+     * Initiate verification of DNS record.
+     * 
      * @param parameters Type of verification to be initiated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -323,9 +344,9 @@ public interface DomainResource {
 
     /**
      * Initiate Verification
-     *
-     * <p>Initiate verification of DNS record.
-     *
+     * 
+     * Initiate verification of DNS record.
+     * 
      * @param parameters Type of verification to be initiated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,9 +357,9 @@ public interface DomainResource {
 
     /**
      * Cancel Verification
-     *
-     * <p>Cancel verification of DNS record.
-     *
+     * 
+     * Cancel verification of DNS record.
+     * 
      * @param parameters Type of verification to be canceled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -348,9 +369,9 @@ public interface DomainResource {
 
     /**
      * Cancel Verification
-     *
-     * <p>Cancel verification of DNS record.
-     *
+     * 
+     * Cancel verification of DNS record.
+     * 
      * @param parameters Type of verification to be canceled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

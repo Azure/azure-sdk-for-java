@@ -12,26 +12,22 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupRestoreFilesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupRestoreFiles model =
-            BinaryData
-                .fromString(
-                    "{\"fileList\":[\"ieoxorggufhyaomt\",\"ghhavgrvkffo\",\"jzhpjbibgjmfx\"],\"restoreFilePath\":\"vfcluyovwxnbkfe\",\"destinationVolumeId\":\"zxscyhwzdgirujb\"}")
-                .toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("ieoxorggufhyaomt", model.fileList().get(0));
-        Assertions.assertEquals("vfcluyovwxnbkfe", model.restoreFilePath());
-        Assertions.assertEquals("zxscyhwzdgirujb", model.destinationVolumeId());
+        BackupRestoreFiles model = BinaryData.fromString(
+            "{\"fileList\":[\"onbzoggculapzwy\",\"pgogtqxepny\",\"b\",\"uajlyj\"],\"restoreFilePath\":\"vofqzhvfc\",\"destinationVolumeId\":\"byfmowuxr\"}")
+            .toObject(BackupRestoreFiles.class);
+        Assertions.assertEquals("onbzoggculapzwy", model.fileList().get(0));
+        Assertions.assertEquals("vofqzhvfc", model.restoreFilePath());
+        Assertions.assertEquals("byfmowuxr", model.destinationVolumeId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupRestoreFiles model =
-            new BackupRestoreFiles()
-                .withFileList(Arrays.asList("ieoxorggufhyaomt", "ghhavgrvkffo", "jzhpjbibgjmfx"))
-                .withRestoreFilePath("vfcluyovwxnbkfe")
-                .withDestinationVolumeId("zxscyhwzdgirujb");
+        BackupRestoreFiles model
+            = new BackupRestoreFiles().withFileList(Arrays.asList("onbzoggculapzwy", "pgogtqxepny", "b", "uajlyj"))
+                .withRestoreFilePath("vofqzhvfc").withDestinationVolumeId("byfmowuxr");
         model = BinaryData.fromObject(model).toObject(BackupRestoreFiles.class);
-        Assertions.assertEquals("ieoxorggufhyaomt", model.fileList().get(0));
-        Assertions.assertEquals("vfcluyovwxnbkfe", model.restoreFilePath());
-        Assertions.assertEquals("zxscyhwzdgirujb", model.destinationVolumeId());
+        Assertions.assertEquals("onbzoggculapzwy", model.fileList().get(0));
+        Assertions.assertEquals("vofqzhvfc", model.restoreFilePath());
+        Assertions.assertEquals("byfmowuxr", model.destinationVolumeId());
     }
 }

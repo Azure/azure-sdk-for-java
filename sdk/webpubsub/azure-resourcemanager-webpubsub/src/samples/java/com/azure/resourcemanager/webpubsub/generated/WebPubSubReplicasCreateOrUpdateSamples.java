@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for WebPubSubReplicas CreateOrUpdate. */
 public final class WebPubSubReplicasCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_CreateOrUpdate.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_CreateOrUpdate.json
      */
     /**
      * Sample code: WebPubSubReplicas_CreateOrUpdate.
@@ -27,9 +27,11 @@ public final class WebPubSubReplicasCreateOrUpdateSamples {
             .withExistingWebPubSub("myResourceGroup", "myWebPubSubService")
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withSku(new ResourceSku().withName("Premium_P1").withTier(WebPubSubSkuTier.PREMIUM).withCapacity(1))
+            .withResourceStopped("false")
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

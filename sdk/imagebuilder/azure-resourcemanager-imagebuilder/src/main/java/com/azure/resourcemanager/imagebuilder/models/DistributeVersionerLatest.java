@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Generates version number that will be latest based on existing version numbers. */
+/**
+ * Generates version number that will be latest based on existing version numbers.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "scheme")
 @JsonTypeName("Latest")
 @Fluent
@@ -21,14 +23,16 @@ public final class DistributeVersionerLatest extends DistributeVersioner {
     @JsonProperty(value = "major")
     private Integer major;
 
-    /** Creates an instance of DistributeVersionerLatest class. */
+    /**
+     * Creates an instance of DistributeVersionerLatest class.
+     */
     public DistributeVersionerLatest() {
     }
 
     /**
      * Get the major property: Major version for the generated version number. Determine what is "latest" based on
      * versions with this value as the major version. -1 is equivalent to leaving it unset.
-     *
+     * 
      * @return the major value.
      */
     public Integer major() {
@@ -38,7 +42,7 @@ public final class DistributeVersionerLatest extends DistributeVersioner {
     /**
      * Set the major property: Major version for the generated version number. Determine what is "latest" based on
      * versions with this value as the major version. -1 is equivalent to leaving it unset.
-     *
+     * 
      * @param major the major value to set.
      * @return the DistributeVersionerLatest object itself.
      */
@@ -49,7 +53,7 @@ public final class DistributeVersionerLatest extends DistributeVersioner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

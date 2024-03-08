@@ -55,7 +55,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-appconfiguration</artifactId>
-  <version>1.4.7</version>
+  <version>1.5.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -461,7 +461,7 @@ String snapshotName = "{snapshotName}";
 List<ConfigurationSettingsFilter> filters = new ArrayList<>();
 // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
 filters.add(new ConfigurationSettingsFilter("Test*"));
-SyncPoller<PollResult, ConfigurationSnapshot> poller =
+SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
     configurationClient.beginCreateSnapshot(snapshotName, new ConfigurationSnapshot(filters), Context.NONE);
 poller.setPollInterval(Duration.ofSeconds(10));
 poller.waitForCompletion();

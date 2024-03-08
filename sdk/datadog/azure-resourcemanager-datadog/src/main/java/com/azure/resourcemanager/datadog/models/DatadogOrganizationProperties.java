@@ -7,23 +7,26 @@ package com.azure.resourcemanager.datadog.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Datadog organization properties. */
+/**
+ * Specify the Datadog organization name. In the case of linking to existing organizations, Id, ApiKey, and
+ * Applicationkey is required as well.
+ */
 @Fluent
 public final class DatadogOrganizationProperties {
     /*
      * Name of the Datadog organization.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Id of the Datadog organization.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "id")
     private String id;
 
     /*
-     * The auth code used to linking to an existing datadog organization.
+     * The auth code used to linking to an existing Datadog organization.
      */
     @JsonProperty(value = "linkingAuthCode")
     private String linkingAuthCode;
@@ -35,7 +38,7 @@ public final class DatadogOrganizationProperties {
     private String linkingClientId;
 
     /*
-     * The redirect uri for linking.
+     * The redirect URI for linking.
      */
     @JsonProperty(value = "redirectUri")
     private String redirectUri;
@@ -58,6 +61,13 @@ public final class DatadogOrganizationProperties {
     @JsonProperty(value = "enterpriseAppId")
     private String enterpriseAppId;
 
+    /*
+     * The configuration which describes the state of cloud security posture management. This collects configuration
+     * information for all resources in a subscription and track conformance to industry benchmarks.
+     */
+    @JsonProperty(value = "cspm")
+    private Boolean cspm;
+
     /** Creates an instance of DatadogOrganizationProperties class. */
     public DatadogOrganizationProperties() {
     }
@@ -72,6 +82,17 @@ public final class DatadogOrganizationProperties {
     }
 
     /**
+     * Set the name property: Name of the Datadog organization.
+     *
+     * @param name the name value to set.
+     * @return the DatadogOrganizationProperties object itself.
+     */
+    public DatadogOrganizationProperties withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the id property: Id of the Datadog organization.
      *
      * @return the id value.
@@ -81,7 +102,18 @@ public final class DatadogOrganizationProperties {
     }
 
     /**
-     * Get the linkingAuthCode property: The auth code used to linking to an existing datadog organization.
+     * Set the id property: Id of the Datadog organization.
+     *
+     * @param id the id value to set.
+     * @return the DatadogOrganizationProperties object itself.
+     */
+    public DatadogOrganizationProperties withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the linkingAuthCode property: The auth code used to linking to an existing Datadog organization.
      *
      * @return the linkingAuthCode value.
      */
@@ -90,7 +122,7 @@ public final class DatadogOrganizationProperties {
     }
 
     /**
-     * Set the linkingAuthCode property: The auth code used to linking to an existing datadog organization.
+     * Set the linkingAuthCode property: The auth code used to linking to an existing Datadog organization.
      *
      * @param linkingAuthCode the linkingAuthCode value to set.
      * @return the DatadogOrganizationProperties object itself.
@@ -123,7 +155,7 @@ public final class DatadogOrganizationProperties {
     }
 
     /**
-     * Get the redirectUri property: The redirect uri for linking.
+     * Get the redirectUri property: The redirect URI for linking.
      *
      * @return the redirectUri value.
      */
@@ -132,7 +164,7 @@ public final class DatadogOrganizationProperties {
     }
 
     /**
-     * Set the redirectUri property: The redirect uri for linking.
+     * Set the redirectUri property: The redirect URI for linking.
      *
      * @param redirectUri the redirectUri value to set.
      * @return the DatadogOrganizationProperties object itself.
@@ -199,6 +231,30 @@ public final class DatadogOrganizationProperties {
      */
     public DatadogOrganizationProperties withEnterpriseAppId(String enterpriseAppId) {
         this.enterpriseAppId = enterpriseAppId;
+        return this;
+    }
+
+    /**
+     * Get the cspm property: The configuration which describes the state of cloud security posture management. This
+     * collects configuration information for all resources in a subscription and track conformance to industry
+     * benchmarks.
+     *
+     * @return the cspm value.
+     */
+    public Boolean cspm() {
+        return this.cspm;
+    }
+
+    /**
+     * Set the cspm property: The configuration which describes the state of cloud security posture management. This
+     * collects configuration information for all resources in a subscription and track conformance to industry
+     * benchmarks.
+     *
+     * @param cspm the cspm value to set.
+     * @return the DatadogOrganizationProperties object itself.
+     */
+    public DatadogOrganizationProperties withCspm(Boolean cspm) {
+        this.cspm = cspm;
         return this;
     }
 

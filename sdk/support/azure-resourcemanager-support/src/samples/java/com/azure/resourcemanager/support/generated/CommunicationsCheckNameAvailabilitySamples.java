@@ -10,7 +10,7 @@ import com.azure.resourcemanager.support.models.Type;
 /** Samples for Communications CheckNameAvailability. */
 public final class CommunicationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/stable/2020-04-01/examples/CheckNameAvailabilityForSupportTicketCommunication.json
+     * x-ms-original-file: specification/support/resource-manager/Microsoft.Support/preview/2022-09-01-preview/examples/CheckNameAvailabilityForSupportTicketCommunication.json
      */
     /**
      * Sample code: Checks whether name is available for Communication resource.

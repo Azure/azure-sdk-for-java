@@ -32,48 +32,32 @@ public final class EmailServicesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataLocation\":\"xogaokonzmnsikv\"},\"location\":\"qzeqqkdltfzxm\",\"tags\":{\"dkwobdagx\":\"hgure\"},\"id\":\"ibqdxbxwakbogqx\",\"name\":\"dlkzgxhuri\",\"type\":\"lbpodxunk\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataLocation\":\"qxwbpokulpiu\"},\"location\":\"aasipqi\",\"tags\":{\"rpqlp\":\"yuq\",\"auvfbtkuwhhmhyk\":\"wcciuqgbdbu\",\"hkoymkcdyhbp\":\"joxafnndlpi\"},\"id\":\"kpw\",\"name\":\"reqnovvqfov\",\"type\":\"jxywsuws\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CommunicationManager manager =
-            CommunicationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        EmailServiceResource response =
-            manager
-                .emailServices()
-                .define("mnvdfzn")
-                .withRegion("hh")
-                .withExistingResourceGroup("mcwyhzdxssadb")
-                .withTags(mapOf("wjmy", "zdzucerscdntnevf", "s", "tdss", "emwabnet", "tmweriofzpyq", "d", "hhszh"))
-                .withDataLocation("dvxzbncblylpst")
-                .create();
+        EmailServiceResource response = manager.emailServices().define("gkopkwhojvpajqgx").withRegion("oz")
+            .withExistingResourceGroup("mquxvypo").withTags(mapOf("dd", "helxprglya", "rjxgciqib", "kcbcue",
+                "sdqrhzoymibmrq", "hos", "dtmhrkwofyyvoqa", "ibahwflus"))
+            .withDataLocation("cmbqfqvmk").create();
 
-        Assertions.assertEquals("qzeqqkdltfzxm", response.location());
-        Assertions.assertEquals("hgure", response.tags().get("dkwobdagx"));
-        Assertions.assertEquals("xogaokonzmnsikv", response.dataLocation());
+        Assertions.assertEquals("aasipqi", response.location());
+        Assertions.assertEquals("yuq", response.tags().get("rpqlp"));
+        Assertions.assertEquals("qxwbpokulpiu", response.dataLocation());
     }
 
     // Use "Map.of" if available

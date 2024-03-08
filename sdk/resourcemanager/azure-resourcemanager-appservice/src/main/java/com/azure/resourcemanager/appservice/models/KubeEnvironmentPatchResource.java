@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.KubeEnvironmentPatchResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ARM resource for a KubeEnvironment when patching. */
+/**
+ * ARM resource for a KubeEnvironment when patching.
+ */
 @Fluent
 public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private KubeEnvironmentPatchResourceProperties innerProperties;
 
-    /** Creates an instance of KubeEnvironmentPatchResource class. */
+    /**
+     * Creates an instance of KubeEnvironmentPatchResource class.
+     */
     public KubeEnvironmentPatchResource() {
     }
 
     /**
      * Get the innerProperties property: KubeEnvironmentPatchResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private KubeEnvironmentPatchResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KubeEnvironmentPatchResource withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Kubernetes Environment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public KubeEnvironmentProvisioningState provisioningState() {
@@ -48,7 +54,7 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
 
     /**
      * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
-     *
+     * 
      * @return the deploymentErrors value.
      */
     public String deploymentErrors() {
@@ -57,7 +63,7 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
 
     /**
      * Get the internalLoadBalancerEnabled property: Only visible within Vnet/Subnet.
-     *
+     * 
      * @return the internalLoadBalancerEnabled value.
      */
     public Boolean internalLoadBalancerEnabled() {
@@ -66,7 +72,7 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
 
     /**
      * Set the internalLoadBalancerEnabled property: Only visible within Vnet/Subnet.
-     *
+     * 
      * @param internalLoadBalancerEnabled the internalLoadBalancerEnabled value to set.
      * @return the KubeEnvironmentPatchResource object itself.
      */
@@ -80,7 +86,7 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
 
     /**
      * Get the defaultDomain property: Default Domain Name for the cluster.
-     *
+     * 
      * @return the defaultDomain value.
      */
     public String defaultDomain() {
@@ -89,7 +95,7 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
 
     /**
      * Get the staticIp property: Static IP of the KubeEnvironment.
-     *
+     * 
      * @return the staticIp value.
      */
     public String staticIp() {
@@ -98,7 +104,7 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
 
     /**
      * Set the staticIp property: Static IP of the KubeEnvironment.
-     *
+     * 
      * @param staticIp the staticIp value to set.
      * @return the KubeEnvironmentPatchResource object itself.
      */
@@ -111,9 +117,10 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the arcConfiguration property: Cluster configuration which determines the ARC cluster components types. Eg:
-     * Choosing between BuildService kind, FrontEnd Service ArtifactsStorageType etc.
-     *
+     * Get the arcConfiguration property: Cluster configuration which determines the ARC cluster
+     * components types. Eg: Choosing between BuildService kind,
+     * FrontEnd Service ArtifactsStorageType etc.
+     * 
      * @return the arcConfiguration value.
      */
     public ArcConfiguration arcConfiguration() {
@@ -121,9 +128,10 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the arcConfiguration property: Cluster configuration which determines the ARC cluster components types. Eg:
-     * Choosing between BuildService kind, FrontEnd Service ArtifactsStorageType etc.
-     *
+     * Set the arcConfiguration property: Cluster configuration which determines the ARC cluster
+     * components types. Eg: Choosing between BuildService kind,
+     * FrontEnd Service ArtifactsStorageType etc.
+     * 
      * @param arcConfiguration the arcConfiguration value to set.
      * @return the KubeEnvironmentPatchResource object itself.
      */
@@ -136,9 +144,10 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to a
-     * destination. Currently only "log-analytics" is supported.
-     *
+     * Get the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
+     * app logs to a destination. Currently only "log-analytics" is
+     * supported.
+     * 
      * @return the appLogsConfiguration value.
      */
     public AppLogsConfiguration appLogsConfiguration() {
@@ -146,9 +155,10 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
     }
 
     /**
-     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export app logs to a
-     * destination. Currently only "log-analytics" is supported.
-     *
+     * Set the appLogsConfiguration property: Cluster configuration which enables the log daemon to export
+     * app logs to a destination. Currently only "log-analytics" is
+     * supported.
+     * 
      * @param appLogsConfiguration the appLogsConfiguration value to set.
      * @return the KubeEnvironmentPatchResource object itself.
      */
@@ -163,7 +173,7 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
     /**
      * Get the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
      * Dapr Instrumentation Key and VNET Configuration.
-     *
+     * 
      * @return the containerAppsConfiguration value.
      */
     public ContainerAppsConfiguration containerAppsConfiguration() {
@@ -173,12 +183,12 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
     /**
      * Set the containerAppsConfiguration property: Cluster configuration for Container Apps Environments to configure
      * Dapr Instrumentation Key and VNET Configuration.
-     *
+     * 
      * @param containerAppsConfiguration the containerAppsConfiguration value to set.
      * @return the KubeEnvironmentPatchResource object itself.
      */
-    public KubeEnvironmentPatchResource withContainerAppsConfiguration(
-        ContainerAppsConfiguration containerAppsConfiguration) {
+    public KubeEnvironmentPatchResource
+        withContainerAppsConfiguration(ContainerAppsConfiguration containerAppsConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new KubeEnvironmentPatchResourceProperties();
         }
@@ -188,7 +198,7 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
 
     /**
      * Get the aksResourceId property: The aksResourceID property.
-     *
+     * 
      * @return the aksResourceId value.
      */
     public String aksResourceId() {
@@ -197,7 +207,7 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
 
     /**
      * Set the aksResourceId property: The aksResourceID property.
-     *
+     * 
      * @param aksResourceId the aksResourceId value to set.
      * @return the KubeEnvironmentPatchResource object itself.
      */
@@ -211,7 +221,7 @@ public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

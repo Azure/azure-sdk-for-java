@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.SubvolumeInfoInner;
 import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
@@ -25,6 +26,10 @@ public final class SubvolumeInfoImpl implements SubvolumeInfo, SubvolumeInfo.Def
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String path() {
@@ -67,8 +72,8 @@ public final class SubvolumeInfoImpl implements SubvolumeInfo, SubvolumeInfo.Def
 
     private SubvolumePatchRequest updateBody;
 
-    public SubvolumeInfoImpl withExistingVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    public SubvolumeInfoImpl withExistingVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
         this.poolName = poolName;
@@ -77,28 +82,14 @@ public final class SubvolumeInfoImpl implements SubvolumeInfo, SubvolumeInfo.Def
     }
 
     public SubvolumeInfo create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSubvolumes()
-                .create(
-                    resourceGroupName,
-                    accountName,
-                    poolName,
-                    volumeName,
-                    subvolumeName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getSubvolumes().create(resourceGroupName, accountName,
+            poolName, volumeName, subvolumeName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SubvolumeInfo create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSubvolumes()
-                .create(
-                    resourceGroupName, accountName, poolName, volumeName, subvolumeName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getSubvolumes().create(resourceGroupName, accountName,
+            poolName, volumeName, subvolumeName, this.innerModel(), context);
         return this;
     }
 
@@ -114,25 +105,19 @@ public final class SubvolumeInfoImpl implements SubvolumeInfo, SubvolumeInfo.Def
     }
 
     public SubvolumeInfo apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSubvolumes()
-                .update(resourceGroupName, accountName, poolName, volumeName, subvolumeName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getSubvolumes().update(resourceGroupName, accountName,
+            poolName, volumeName, subvolumeName, updateBody, Context.NONE);
         return this;
     }
 
     public SubvolumeInfo apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSubvolumes()
-                .update(resourceGroupName, accountName, poolName, volumeName, subvolumeName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient().getSubvolumes().update(resourceGroupName, accountName,
+            poolName, volumeName, subvolumeName, updateBody, context);
         return this;
     }
 
-    SubvolumeInfoImpl(
-        SubvolumeInfoInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    SubvolumeInfoImpl(SubvolumeInfoInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -143,35 +128,26 @@ public final class SubvolumeInfoImpl implements SubvolumeInfo, SubvolumeInfo.Def
     }
 
     public SubvolumeInfo refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSubvolumes()
-                .getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSubvolumes()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SubvolumeInfo refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSubvolumes()
-                .getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSubvolumes()
+            .getWithResponse(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context).getValue();
         return this;
     }
 
     public SubvolumeModel getMetadata() {
-        return serviceManager
-            .subvolumes()
-            .getMetadata(resourceGroupName, accountName, poolName, volumeName, subvolumeName);
+        return serviceManager.subvolumes().getMetadata(resourceGroupName, accountName, poolName, volumeName,
+            subvolumeName);
     }
 
     public SubvolumeModel getMetadata(Context context) {
-        return serviceManager
-            .subvolumes()
-            .getMetadata(resourceGroupName, accountName, poolName, volumeName, subvolumeName, context);
+        return serviceManager.subvolumes().getMetadata(resourceGroupName, accountName, poolName, volumeName,
+            subvolumeName, context);
     }
 
     public SubvolumeInfoImpl withPath(String path) {

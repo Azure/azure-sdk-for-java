@@ -31,46 +31,32 @@ public final class PrivateEndpointConnectionsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{\"id\":\"vjayvblmhvkzu\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"vyhgs\",\"actionsRequired\":\"byrqufeg\"},\"groupIds\":[\"wz\"]},\"id\":\"nhlmctlpdng\",\"name\":\"tvgbmhrixkwmy\",\"type\":\"jejveg\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{\"id\":\"ehtwdwrft\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"yrcdlbhshfwprac\",\"actionsRequired\":\"wity\"},\"groupIds\":[\"vxccedcp\",\"md\",\"odn\"]},\"id\":\"xltjcvnhltiu\",\"name\":\"cxnavv\",\"type\":\"xqi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ElasticSanManager manager =
-            ElasticSanManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ElasticSanManager manager = ElasticSanManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateEndpointConnection response =
-            manager
-                .privateEndpointConnections()
-                .getWithResponse("x", "v", "kkgll", com.azure.core.util.Context.NONE)
-                .getValue();
+        PrivateEndpointConnection response = manager.privateEndpointConnections()
+            .getWithResponse("fgytguslfeadcyg", "ukyhejhzis", "gfpelolppvksrpqv", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.PENDING, response.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("vyhgs", response.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("byrqufeg", response.privateLinkServiceConnectionState().actionsRequired());
-        Assertions.assertEquals("wz", response.groupIds().get(0));
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
+            response.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("yrcdlbhshfwprac", response.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("wity", response.privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("vxccedcp", response.groupIds().get(0));
     }
 }

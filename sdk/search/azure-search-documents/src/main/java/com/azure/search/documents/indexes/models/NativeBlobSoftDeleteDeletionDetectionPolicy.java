@@ -18,56 +18,50 @@ import java.io.IOException;
  */
 @Immutable
 public final class NativeBlobSoftDeleteDeletionDetectionPolicy extends DataDeletionDetectionPolicy {
-    /*
-     * Identifies the concrete type of the data deletion detection policy.
+    /**
+     * Creates an instance of NativeBlobSoftDeleteDeletionDetectionPolicy class.
      */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy";
-
-    /** Creates an instance of NativeBlobSoftDeleteDeletionDetectionPolicy class. */
-    public NativeBlobSoftDeleteDeletionDetectionPolicy() {}
+    public NativeBlobSoftDeleteDeletionDetectionPolicy() {
+    }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type",
+            "#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy");
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of NativeBlobSoftDeleteDeletionDetectionPolicy from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of NativeBlobSoftDeleteDeletionDetectionPolicy if the JsonReader was pointing to an instance
-     *     of it, or null if it was pointing to JSON null.
+     * of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing the polymorphic discriminator.
      * @throws IOException If an error occurs while reading the NativeBlobSoftDeleteDeletionDetectionPolicy.
      */
     public static NativeBlobSoftDeleteDeletionDetectionPolicy fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    NativeBlobSoftDeleteDeletionDetectionPolicy
-                            deserializedNativeBlobSoftDeleteDeletionDetectionPolicy =
-                                    new NativeBlobSoftDeleteDeletionDetectionPolicy();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            NativeBlobSoftDeleteDeletionDetectionPolicy deserializedNativeBlobSoftDeleteDeletionDetectionPolicy
+                = new NativeBlobSoftDeleteDeletionDetectionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("@odata.type".equals(fieldName)) {
+                    String odataType = reader.getString();
+                    if (!"#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy".equals(odataType)) {
+                        throw new IllegalStateException(
+                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.NativeBlobSoftDeleteDeletionDetectionPolicy'. The found '@odata.type' was '"
+                                + odataType + "'.");
                     }
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedNativeBlobSoftDeleteDeletionDetectionPolicy;
-                });
+            return deserializedNativeBlobSoftDeleteDeletionDetectionPolicy;
+        });
     }
 }

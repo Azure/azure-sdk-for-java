@@ -10,10 +10,6 @@ module com.azure.resourcemanager.servicenetworking {
     exports com.azure.resourcemanager.servicenetworking.fluent.models;
     exports com.azure.resourcemanager.servicenetworking.models;
 
-    opens com.azure.resourcemanager.servicenetworking.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.servicenetworking.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.servicenetworking.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.servicenetworking.models to com.azure.core, com.fasterxml.jackson.databind;
 }

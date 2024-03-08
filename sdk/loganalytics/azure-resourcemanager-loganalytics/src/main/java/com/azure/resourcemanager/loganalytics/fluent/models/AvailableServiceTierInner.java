@@ -42,18 +42,20 @@ public final class AvailableServiceTierInner {
     private Long defaultRetention;
 
     /*
-     * The capacity reservation level in GB per day. Returned for the Capacity
-     * Reservation Service Tier.
+     * The capacity reservation level in GB per day. Returned for the Capacity Reservation Service Tier.
      */
     @JsonProperty(value = "capacityReservationLevel", access = JsonProperty.Access.WRITE_ONLY)
     private Long capacityReservationLevel;
 
     /*
-     * Time when the sku was last updated for the workspace. Returned for the
-     * Capacity Reservation Service Tier.
+     * Time when the sku was last updated for the workspace. Returned for the Capacity Reservation Service Tier.
      */
     @JsonProperty(value = "lastSkuUpdate", access = JsonProperty.Access.WRITE_ONLY)
     private String lastSkuUpdate;
+
+    /** Creates an instance of AvailableServiceTierInner class. */
+    public AvailableServiceTierInner() {
+    }
 
     /**
      * Get the serviceTier property: The name of the Service Tier.

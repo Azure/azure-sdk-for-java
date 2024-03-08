@@ -13,34 +13,32 @@ import org.junit.jupiter.api.Assertions;
 public final class FqdnListGlobalRulestackResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FqdnListGlobalRulestackResourceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"cfvmmco\",\"fqdnList\":[],\"etag\":\"sxlzevgbmqj\",\"auditComment\":\"bcypmi\",\"provisioningState\":\"Deleted\"},\"id\":\"zuvccfwnfnbacfio\",\"name\":\"l\",\"type\":\"bxetqgtzxdpn\"}],\"nextLink\":\"qqwx\"}")
-                .toObject(FqdnListGlobalRulestackResourceListResult.class);
-        Assertions.assertEquals("cfvmmco", model.value().get(0).description());
-        Assertions.assertEquals("sxlzevgbmqj", model.value().get(0).etag());
-        Assertions.assertEquals("bcypmi", model.value().get(0).auditComment());
-        Assertions.assertEquals("qqwx", model.nextLink());
+        FqdnListGlobalRulestackResourceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"jh\",\"fqdnList\":[\"daj\",\"nysounqe\"],\"etag\":\"noae\",\"auditComment\":\"fhyhltrpmopjmcma\",\"provisioningState\":\"Deleted\"},\"id\":\"thfuiuaodsfcpkvx\",\"name\":\"dpuozmyz\",\"type\":\"dagfuaxbezyiuok\"},{\"properties\":{\"description\":\"whrdxwzywqsmbsu\",\"fqdnList\":[\"xim\"],\"etag\":\"yocf\",\"auditComment\":\"ksymd\",\"provisioningState\":\"Failed\"},\"id\":\"kiiuxhqyudxor\",\"name\":\"qn\",\"type\":\"poczvyifqrvkdvjs\"}],\"nextLink\":\"rm\"}")
+            .toObject(FqdnListGlobalRulestackResourceListResult.class);
+        Assertions.assertEquals("jh", model.value().get(0).description());
+        Assertions.assertEquals("daj", model.value().get(0).fqdnList().get(0));
+        Assertions.assertEquals("noae", model.value().get(0).etag());
+        Assertions.assertEquals("fhyhltrpmopjmcma", model.value().get(0).auditComment());
+        Assertions.assertEquals("rm", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FqdnListGlobalRulestackResourceListResult model =
-            new FqdnListGlobalRulestackResourceListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new FqdnListGlobalRulestackResourceInner()
-                                .withDescription("cfvmmco")
-                                .withFqdnList(Arrays.asList())
-                                .withEtag("sxlzevgbmqj")
-                                .withAuditComment("bcypmi")))
-                .withNextLink("qqwx");
+        FqdnListGlobalRulestackResourceListResult model
+            = new FqdnListGlobalRulestackResourceListResult()
+                .withValue(Arrays.asList(
+                    new FqdnListGlobalRulestackResourceInner().withDescription("jh")
+                        .withFqdnList(Arrays.asList("daj", "nysounqe")).withEtag("noae")
+                        .withAuditComment("fhyhltrpmopjmcma"),
+                    new FqdnListGlobalRulestackResourceInner().withDescription("whrdxwzywqsmbsu")
+                        .withFqdnList(Arrays.asList("xim")).withEtag("yocf").withAuditComment("ksymd")))
+                .withNextLink("rm");
         model = BinaryData.fromObject(model).toObject(FqdnListGlobalRulestackResourceListResult.class);
-        Assertions.assertEquals("cfvmmco", model.value().get(0).description());
-        Assertions.assertEquals("sxlzevgbmqj", model.value().get(0).etag());
-        Assertions.assertEquals("bcypmi", model.value().get(0).auditComment());
-        Assertions.assertEquals("qqwx", model.nextLink());
+        Assertions.assertEquals("jh", model.value().get(0).description());
+        Assertions.assertEquals("daj", model.value().get(0).fqdnList().get(0));
+        Assertions.assertEquals("noae", model.value().get(0).etag());
+        Assertions.assertEquals("fhyhltrpmopjmcma", model.value().get(0).auditComment());
+        Assertions.assertEquals("rm", model.nextLink());
     }
 }

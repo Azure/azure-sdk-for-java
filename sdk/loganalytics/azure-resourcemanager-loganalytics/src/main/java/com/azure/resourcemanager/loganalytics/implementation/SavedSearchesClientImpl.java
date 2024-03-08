@@ -54,11 +54,10 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "OperationalInsightsM")
-    private interface SavedSearchesService {
+    public interface SavedSearchesService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -72,8 +71,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SavedSearchInner>> createOrUpdate(
@@ -89,8 +87,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches/{savedSearchId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SavedSearchInner>> get(
@@ -105,8 +102,7 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights"
-                + "/workspaces/{workspaceName}/savedSearches")
+            "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/Microsoft.OperationalInsights/workspaces/{workspaceName}/savedSearches")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SavedSearchesListResultInner>> listByWorkspace(
@@ -244,21 +240,6 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String workspaceName, String savedSearchId) {
-        deleteAsync(resourceGroupName, workspaceName, savedSearchId).block();
-    }
-
-    /**
-     * Deletes the specified saved search in a given workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param savedSearchId The id of the saved search.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -269,6 +250,21 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String savedSearchId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, workspaceName, savedSearchId, context).block();
+    }
+
+    /**
+     * Deletes the specified saved search in a given workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param savedSearchId The id of the saved search.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String workspaceName, String savedSearchId) {
+        deleteWithResponse(resourceGroupName, workspaceName, savedSearchId, Context.NONE);
     }
 
     /**
@@ -423,24 +419,6 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
      * @param parameters The parameters required to save a search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return value object for saved search results.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SavedSearchInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String savedSearchId, SavedSearchInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, workspaceName, savedSearchId, parameters).block();
-    }
-
-    /**
-     * Creates or updates a saved search for a given workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param savedSearchId The id of the saved search.
-     * @param parameters The parameters required to save a search.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -456,6 +434,25 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, savedSearchId, parameters, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a saved search for a given workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param savedSearchId The id of the saved search.
+     * @param parameters The parameters required to save a search.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return value object for saved search results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SavedSearchInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String savedSearchId, SavedSearchInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, workspaceName, savedSearchId, parameters, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -589,22 +586,6 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param savedSearchId The id of the saved search.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified saved search for a given workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SavedSearchInner get(String resourceGroupName, String workspaceName, String savedSearchId) {
-        return getAsync(resourceGroupName, workspaceName, savedSearchId).block();
-    }
-
-    /**
-     * Gets the specified saved search for a given workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param savedSearchId The id of the saved search.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -615,6 +596,22 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
     public Response<SavedSearchInner> getWithResponse(
         String resourceGroupName, String workspaceName, String savedSearchId, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, savedSearchId, context).block();
+    }
+
+    /**
+     * Gets the specified saved search for a given workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param savedSearchId The id of the saved search.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified saved search for a given workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SavedSearchInner get(String resourceGroupName, String workspaceName, String savedSearchId) {
+        return getWithResponse(resourceGroupName, workspaceName, savedSearchId, Context.NONE).getValue();
     }
 
     /**
@@ -736,21 +733,6 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the saved searches for a given Log Analytics Workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SavedSearchesListResultInner listByWorkspace(String resourceGroupName, String workspaceName) {
-        return listByWorkspaceAsync(resourceGroupName, workspaceName).block();
-    }
-
-    /**
-     * Gets the saved searches for a given Log Analytics Workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -761,5 +743,20 @@ public final class SavedSearchesClientImpl implements SavedSearchesClient {
     public Response<SavedSearchesListResultInner> listByWorkspaceWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         return listByWorkspaceWithResponseAsync(resourceGroupName, workspaceName, context).block();
+    }
+
+    /**
+     * Gets the saved searches for a given Log Analytics Workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the saved searches for a given Log Analytics Workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SavedSearchesListResultInner listByWorkspace(String resourceGroupName, String workspaceName) {
+        return listByWorkspaceWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
     }
 }

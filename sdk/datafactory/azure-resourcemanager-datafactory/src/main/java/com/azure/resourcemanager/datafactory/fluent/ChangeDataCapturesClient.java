@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.fluent.models.ChangeDataCaptureResourceInner;
 
-/** An instance of this class provides access to all the operations defined in ChangeDataCapturesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ChangeDataCapturesClient.
+ */
 public interface ChangeDataCapturesClient {
     /**
      * Lists all resources of type change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface ChangeDataCapturesClient {
 
     /**
      * Lists all resources of type change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -38,18 +40,18 @@ public interface ChangeDataCapturesClient {
      * @return a list of change data capture resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ChangeDataCaptureResourceInner> listByFactory(
-        String resourceGroupName, String factoryName, Context context);
+    PagedIterable<ChangeDataCaptureResourceInner> listByFactory(String resourceGroupName, String factoryName,
+        Context context);
 
     /**
      * Creates or updates a change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
      * @param changeDataCapture Change data capture resource definition.
      * @param ifMatch ETag of the change data capture entity. Should only be specified for update, for which it should
-     *     match existing entity or can be * for unconditional update.
+     * match existing entity or can be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -57,17 +59,13 @@ public interface ChangeDataCapturesClient {
      * @return change data capture resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ChangeDataCaptureResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        ChangeDataCaptureResourceInner changeDataCapture,
-        String ifMatch,
+    Response<ChangeDataCaptureResourceInner> createOrUpdateWithResponse(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, ChangeDataCaptureResourceInner changeDataCapture, String ifMatch,
         Context context);
 
     /**
      * Creates or updates a change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -78,20 +76,17 @@ public interface ChangeDataCapturesClient {
      * @return change data capture resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ChangeDataCaptureResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        ChangeDataCaptureResourceInner changeDataCapture);
+    ChangeDataCaptureResourceInner createOrUpdate(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, ChangeDataCaptureResourceInner changeDataCapture);
 
     /**
      * Gets a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
      * @param ifNoneMatch ETag of the change data capture entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * the existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -99,16 +94,12 @@ public interface ChangeDataCapturesClient {
      * @return a change data capture along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ChangeDataCaptureResourceInner> getWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String changeDataCaptureName,
-        String ifNoneMatch,
-        Context context);
+    Response<ChangeDataCaptureResourceInner> getWithResponse(String resourceGroupName, String factoryName,
+        String changeDataCaptureName, String ifNoneMatch, Context context);
 
     /**
      * Gets a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -122,7 +113,7 @@ public interface ChangeDataCapturesClient {
 
     /**
      * Deletes a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -133,12 +124,12 @@ public interface ChangeDataCapturesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context);
 
     /**
      * Deletes a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -151,7 +142,7 @@ public interface ChangeDataCapturesClient {
 
     /**
      * Starts a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -162,12 +153,12 @@ public interface ChangeDataCapturesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> startWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context);
+    Response<Void> startWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context);
 
     /**
      * Starts a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -180,7 +171,7 @@ public interface ChangeDataCapturesClient {
 
     /**
      * Stops a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -191,12 +182,12 @@ public interface ChangeDataCapturesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> stopWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context);
+    Response<Void> stopWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context);
 
     /**
      * Stops a change data capture.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -209,7 +200,7 @@ public interface ChangeDataCapturesClient {
 
     /**
      * Gets the current status for the change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.
@@ -220,12 +211,12 @@ public interface ChangeDataCapturesClient {
      * @return the current status for the change data capture resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<String> statusWithResponse(
-        String resourceGroupName, String factoryName, String changeDataCaptureName, Context context);
+    Response<String> statusWithResponse(String resourceGroupName, String factoryName, String changeDataCaptureName,
+        Context context);
 
     /**
      * Gets the current status for the change data capture resource.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param changeDataCaptureName The change data capture name.

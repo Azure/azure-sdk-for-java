@@ -35,6 +35,10 @@ public final class UsageImpl implements Usage {
         return this.innerModel().name();
     }
 
+    public String id() {
+        return this.innerModel().id();
+    }
+
     public UsageInner innerModel() {
         return this.innerObject;
     }

@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.PhoenixSource;
 public final class PhoenixSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PhoenixSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"PhoenixSource\",\"query\":\"datajkwltnsnhuvmok\",\"queryTimeout\":\"datasclpnbidnlodk\",\"additionalColumns\":\"dataqnkptixa\",\"sourceRetryCount\":\"datay\",\"sourceRetryWait\":\"dataaevry\",\"maxConcurrentConnections\":\"datagccpzmh\",\"disableMetricsCollection\":\"datalqtzgtpsbym\",\"\":{\"rqzbqy\":\"datat\",\"ahbynlbwcnnfp\":\"datagfqqrarolc\"}}")
-                .toObject(PhoenixSource.class);
+        PhoenixSource model = BinaryData.fromString(
+            "{\"type\":\"PhoenixSource\",\"query\":\"dataxjlvvvzpjj\",\"queryTimeout\":\"dataintgkveogeld\",\"additionalColumns\":\"datab\",\"sourceRetryCount\":\"databii\",\"sourceRetryWait\":\"databkxiujaagfeiwuux\",\"maxConcurrentConnections\":\"datamzmsivqeg\",\"disableMetricsCollection\":\"datafzbrha\",\"\":{\"ttsz\":\"datatkrsjspziiev\"}}")
+            .toObject(PhoenixSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PhoenixSource model =
-            new PhoenixSource()
-                .withSourceRetryCount("datay")
-                .withSourceRetryWait("dataaevry")
-                .withMaxConcurrentConnections("datagccpzmh")
-                .withDisableMetricsCollection("datalqtzgtpsbym")
-                .withQueryTimeout("datasclpnbidnlodk")
-                .withAdditionalColumns("dataqnkptixa")
-                .withQuery("datajkwltnsnhuvmok");
+        PhoenixSource model
+            = new PhoenixSource().withSourceRetryCount("databii").withSourceRetryWait("databkxiujaagfeiwuux")
+                .withMaxConcurrentConnections("datamzmsivqeg").withDisableMetricsCollection("datafzbrha")
+                .withQueryTimeout("dataintgkveogeld").withAdditionalColumns("datab").withQuery("dataxjlvvvzpjj");
         model = BinaryData.fromObject(model).toObject(PhoenixSource.class);
     }
 }

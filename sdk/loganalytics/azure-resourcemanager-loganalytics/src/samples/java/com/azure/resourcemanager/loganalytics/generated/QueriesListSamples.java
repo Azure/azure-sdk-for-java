@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Queries List. */
 public final class QueriesListSamples {
     /*
@@ -17,6 +15,6 @@ public final class QueriesListSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.queries().list("my-resource-group", "my-querypack", null, true, null, Context.NONE);
+        manager.queries().list("my-resource-group", "my-querypack", null, true, null, com.azure.core.util.Context.NONE);
     }
 }

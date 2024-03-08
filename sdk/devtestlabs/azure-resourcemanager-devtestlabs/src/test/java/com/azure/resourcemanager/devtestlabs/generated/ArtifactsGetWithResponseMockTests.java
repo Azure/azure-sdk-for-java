@@ -31,7 +31,7 @@ public final class ArtifactsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"title\":\"rpq\",\"description\":\"mblcouqehbhbcds\",\"publisher\":\"ryrando\",\"filePath\":\"mbltoo\",\"icon\":\"kfqlwx\",\"targetOsType\":\"ykalsyga\",\"parameters\":\"datanjpnnbmj\",\"createdDate\":\"2021-07-10T06:59:46Z\"},\"location\":\"bjgsjjxxahmrn\",\"tags\":{\"iv\":\"yqegx\",\"bjijkgqxnh\":\"inbmh\",\"aujvaa\":\"bkezn\"},\"id\":\"nggiycwkdtaa\",\"name\":\"xw\",\"type\":\"ekaum\"}";
+            "{\"properties\":{\"title\":\"xtdisnjevhd\",\"description\":\"ydidwhepfwwtjf\",\"publisher\":\"esxxhmwcdbckyoi\",\"filePath\":\"kxhnegknj\",\"icon\":\"bhtmeplvuk\",\"targetOsType\":\"brlbpgs\",\"parameters\":\"dataagnchjhgemuowaky\",\"createdDate\":\"2021-08-17T10:32:52Z\"},\"location\":\"hjym\",\"tags\":{\"gdrclssolj\":\"qt\",\"dkkgjiiytssikizb\":\"mevtfycnlbvgjc\"},\"id\":\"ufqbvntnr\",\"name\":\"mqso\",\"type\":\"hcekxgnlykm\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class ArtifactsGetWithResponseMockTests {
         Artifact response =
             manager
                 .artifacts()
-                .getWithResponse("upzaamrdixtre", "ids", "yskbruff", "l", "ukkutvl", com.azure.core.util.Context.NONE)
+                .getWithResponse("w", "pcpahprzrvxhmtf", "ocnxz", "mj", "ngxno", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("bjgsjjxxahmrn", response.location());
-        Assertions.assertEquals("yqegx", response.tags().get("iv"));
+        Assertions.assertEquals("hjym", response.location());
+        Assertions.assertEquals("qt", response.tags().get("gdrclssolj"));
     }
 }

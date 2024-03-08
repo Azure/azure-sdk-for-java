@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource of an Azure Cosmos DB SQL database event. */
+/**
+ * The resource of an Azure Cosmos DB SQL database event.
+ */
 @Fluent
 public final class RestorableSqlDatabasePropertiesResource {
     /*
@@ -21,6 +23,18 @@ public final class RestorableSqlDatabasePropertiesResource {
      */
     @JsonProperty(value = "operationType", access = JsonProperty.Access.WRITE_ONLY)
     private OperationType operationType;
+
+    /*
+     * A state of this database to identify if this database is restorable in same account.
+     */
+    @JsonProperty(value = "canUndelete", access = JsonProperty.Access.WRITE_ONLY)
+    private String canUndelete;
+
+    /*
+     * The reason why this database can not be restored in same account.
+     */
+    @JsonProperty(value = "canUndeleteReason", access = JsonProperty.Access.WRITE_ONLY)
+    private String canUndeleteReason;
 
     /*
      * The time when this database event happened.
@@ -46,13 +60,15 @@ public final class RestorableSqlDatabasePropertiesResource {
     @JsonProperty(value = "database")
     private RestorableSqlDatabasePropertiesResourceDatabase database;
 
-    /** Creates an instance of RestorableSqlDatabasePropertiesResource class. */
+    /**
+     * Creates an instance of RestorableSqlDatabasePropertiesResource class.
+     */
     public RestorableSqlDatabasePropertiesResource() {
     }
 
     /**
      * Get the rid property: A system generated property. A unique identifier.
-     *
+     * 
      * @return the rid value.
      */
     public String rid() {
@@ -61,7 +77,7 @@ public final class RestorableSqlDatabasePropertiesResource {
 
     /**
      * Get the operationType property: The operation type of this database event.
-     *
+     * 
      * @return the operationType value.
      */
     public OperationType operationType() {
@@ -69,8 +85,27 @@ public final class RestorableSqlDatabasePropertiesResource {
     }
 
     /**
+     * Get the canUndelete property: A state of this database to identify if this database is restorable in same
+     * account.
+     * 
+     * @return the canUndelete value.
+     */
+    public String canUndelete() {
+        return this.canUndelete;
+    }
+
+    /**
+     * Get the canUndeleteReason property: The reason why this database can not be restored in same account.
+     * 
+     * @return the canUndeleteReason value.
+     */
+    public String canUndeleteReason() {
+        return this.canUndeleteReason;
+    }
+
+    /**
      * Get the eventTimestamp property: The time when this database event happened.
-     *
+     * 
      * @return the eventTimestamp value.
      */
     public String eventTimestamp() {
@@ -79,7 +114,7 @@ public final class RestorableSqlDatabasePropertiesResource {
 
     /**
      * Get the ownerId property: The name of the SQL database.
-     *
+     * 
      * @return the ownerId value.
      */
     public String ownerId() {
@@ -88,7 +123,7 @@ public final class RestorableSqlDatabasePropertiesResource {
 
     /**
      * Get the ownerResourceId property: The resource ID of the SQL database.
-     *
+     * 
      * @return the ownerResourceId value.
      */
     public String ownerResourceId() {
@@ -97,7 +132,7 @@ public final class RestorableSqlDatabasePropertiesResource {
 
     /**
      * Get the database property: Cosmos DB SQL database resource object.
-     *
+     * 
      * @return the database value.
      */
     public RestorableSqlDatabasePropertiesResourceDatabase database() {
@@ -106,19 +141,19 @@ public final class RestorableSqlDatabasePropertiesResource {
 
     /**
      * Set the database property: Cosmos DB SQL database resource object.
-     *
+     * 
      * @param database the database value to set.
      * @return the RestorableSqlDatabasePropertiesResource object itself.
      */
-    public RestorableSqlDatabasePropertiesResource withDatabase(
-        RestorableSqlDatabasePropertiesResourceDatabase database) {
+    public RestorableSqlDatabasePropertiesResource
+        withDatabase(RestorableSqlDatabasePropertiesResourceDatabase database) {
         this.database = database;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

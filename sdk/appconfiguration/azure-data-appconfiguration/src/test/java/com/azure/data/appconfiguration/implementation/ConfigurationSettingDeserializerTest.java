@@ -35,7 +35,7 @@ public class ConfigurationSettingDeserializerTest {
     private static final String FEATURE_FLAG_VALUE_JSON =
         "{\"id\":\"hello\",\"display_name\":\"Feature Flag X\",\"enabled\":false,"
             + "\"conditions\":{\"client_filters\":[{\"name\":\"Microsoft.Percentage\",\"parameters\":"
-            + "{\"Value\":\"30\"}}]}}";
+            + "{\"Value\":30}}]}}";
 
     private static final String SECRET_REFERENCE_JSON =
         "{\"key\":\"hello\",\"value\":\"{\\\"uri\\\":\\\"https://localhost\\\"}\","
@@ -95,7 +95,7 @@ public class ConfigurationSettingDeserializerTest {
 
     private static FeatureFlagConfigurationSetting getFeatureFlagConfigurationSetting() {
         List<FeatureFlagFilter> filters = Collections.singletonList(new FeatureFlagFilter("Microsoft.Percentage")
-            .setParameters(Collections.singletonMap("Value", "30")));
+            .setParameters(Collections.singletonMap("Value", 30)));
 
         return new FeatureFlagConfigurationSetting(KEY, false)
             .setDisplayName(FEATURE_FLAG_DISPLAY_NAME)

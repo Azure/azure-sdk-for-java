@@ -6,22 +6,24 @@ package com.azure.resourcemanager.servicefabric.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceInner;
-import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceListInner;
 import com.azure.resourcemanager.servicefabric.models.ServiceResourceUpdate;
 
-/** An instance of this class provides access to all the operations defined in ServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServicesClient.
+ */
 public interface ServicesClient {
     /**
      * Gets a Service Fabric service resource.
-     *
-     * <p>Get a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * 
+     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -31,18 +33,18 @@ public interface ServicesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
-     *     application resource along with {@link Response}.
+     * application resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceResourceInner> getWithResponse(
-        String resourceGroupName, String clusterName, String applicationName, String serviceName, Context context);
+    Response<ServiceResourceInner> getWithResponse(String resourceGroupName, String clusterName, String applicationName,
+        String serviceName, Context context);
 
     /**
      * Gets a Service Fabric service resource.
-     *
-     * <p>Get a Service Fabric service resource created or in the process of being created in the Service Fabric
+     * 
+     * Get a Service Fabric service resource created or in the process of being created in the Service Fabric
      * application resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -51,16 +53,16 @@ public interface ServicesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric service resource created or in the process of being created in the Service Fabric
-     *     application resource.
+     * application resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ServiceResourceInner get(String resourceGroupName, String clusterName, String applicationName, String serviceName);
 
     /**
      * Creates or updates a Service Fabric service resource.
-     *
-     * <p>Create or update a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Create or update a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -72,18 +74,14 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of the service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String applicationName,
-        String serviceName,
-        ServiceResourceInner parameters);
+    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String applicationName, String serviceName, ServiceResourceInner parameters);
 
     /**
      * Creates or updates a Service Fabric service resource.
-     *
-     * <p>Create or update a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Create or update a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -96,19 +94,15 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of the service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String applicationName,
-        String serviceName,
-        ServiceResourceInner parameters,
+    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String applicationName, String serviceName, ServiceResourceInner parameters,
         Context context);
 
     /**
      * Creates or updates a Service Fabric service resource.
-     *
-     * <p>Create or update a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Create or update a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -120,18 +114,14 @@ public interface ServicesClient {
      * @return the service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String applicationName,
-        String serviceName,
-        ServiceResourceInner parameters);
+    ServiceResourceInner createOrUpdate(String resourceGroupName, String clusterName, String applicationName,
+        String serviceName, ServiceResourceInner parameters);
 
     /**
      * Creates or updates a Service Fabric service resource.
-     *
-     * <p>Create or update a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Create or update a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -144,19 +134,14 @@ public interface ServicesClient {
      * @return the service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String applicationName,
-        String serviceName,
-        ServiceResourceInner parameters,
-        Context context);
+    ServiceResourceInner createOrUpdate(String resourceGroupName, String clusterName, String applicationName,
+        String serviceName, ServiceResourceInner parameters, Context context);
 
     /**
      * Updates a Service Fabric service resource.
-     *
-     * <p>Update a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Update a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -168,18 +153,14 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of the service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String applicationName,
-        String serviceName,
-        ServiceResourceUpdate parameters);
+    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(String resourceGroupName,
+        String clusterName, String applicationName, String serviceName, ServiceResourceUpdate parameters);
 
     /**
      * Updates a Service Fabric service resource.
-     *
-     * <p>Update a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Update a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -192,19 +173,15 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of the service resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String applicationName,
-        String serviceName,
-        ServiceResourceUpdate parameters,
+    SyncPoller<PollResult<ServiceResourceInner>, ServiceResourceInner> beginUpdate(String resourceGroupName,
+        String clusterName, String applicationName, String serviceName, ServiceResourceUpdate parameters,
         Context context);
 
     /**
      * Updates a Service Fabric service resource.
-     *
-     * <p>Update a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Update a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -216,18 +193,14 @@ public interface ServicesClient {
      * @return the service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceResourceInner update(
-        String resourceGroupName,
-        String clusterName,
-        String applicationName,
-        String serviceName,
-        ServiceResourceUpdate parameters);
+    ServiceResourceInner update(String resourceGroupName, String clusterName, String applicationName,
+        String serviceName, ServiceResourceUpdate parameters);
 
     /**
      * Updates a Service Fabric service resource.
-     *
-     * <p>Update a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Update a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -240,19 +213,14 @@ public interface ServicesClient {
      * @return the service resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceResourceInner update(
-        String resourceGroupName,
-        String clusterName,
-        String applicationName,
-        String serviceName,
-        ServiceResourceUpdate parameters,
-        Context context);
+    ServiceResourceInner update(String resourceGroupName, String clusterName, String applicationName,
+        String serviceName, ServiceResourceUpdate parameters, Context context);
 
     /**
      * Deletes a Service Fabric service resource.
-     *
-     * <p>Delete a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -263,14 +231,14 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String applicationName, String serviceName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String applicationName,
+        String serviceName);
 
     /**
      * Deletes a Service Fabric service resource.
-     *
-     * <p>Delete a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -282,14 +250,14 @@ public interface ServicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String applicationName, String serviceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName, String applicationName,
+        String serviceName, Context context);
 
     /**
      * Deletes a Service Fabric service resource.
-     *
-     * <p>Delete a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -303,9 +271,9 @@ public interface ServicesClient {
 
     /**
      * Deletes a Service Fabric service resource.
-     *
-     * <p>Delete a Service Fabric service resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric service resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -316,15 +284,31 @@ public interface ServicesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String clusterName, String applicationName, String serviceName, Context context);
+    void delete(String resourceGroupName, String clusterName, String applicationName, String serviceName,
+        Context context);
 
     /**
      * Gets the list of service resources created in the specified Service Fabric application resource.
-     *
-     * <p>Gets all service resources created or in the process of being created in the Service Fabric application
-     * resource.
-     *
+     * 
+     * Gets all service resources created or in the process of being created in the Service Fabric application resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationName The name of the application resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all service resources created or in the process of being created in the Service Fabric application
+     * resource as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServiceResourceInner> list(String resourceGroupName, String clusterName, String applicationName);
+
+    /**
+     * Gets the list of service resources created in the specified Service Fabric application resource.
+     * 
+     * Gets all service resources created or in the process of being created in the Service Fabric application resource.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationName The name of the application resource.
@@ -333,27 +317,9 @@ public interface ServicesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all service resources created or in the process of being created in the Service Fabric application
-     *     resource along with {@link Response}.
+     * resource as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceResourceListInner> listWithResponse(
-        String resourceGroupName, String clusterName, String applicationName, Context context);
-
-    /**
-     * Gets the list of service resources created in the specified Service Fabric application resource.
-     *
-     * <p>Gets all service resources created or in the process of being created in the Service Fabric application
-     * resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationName The name of the application resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all service resources created or in the process of being created in the Service Fabric application
-     *     resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceResourceListInner list(String resourceGroupName, String clusterName, String applicationName);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ServiceResourceInner> list(String resourceGroupName, String clusterName, String applicationName,
+        Context context);
 }

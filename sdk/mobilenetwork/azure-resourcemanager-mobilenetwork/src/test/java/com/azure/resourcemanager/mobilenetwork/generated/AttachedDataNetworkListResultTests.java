@@ -166,6 +166,7 @@ public final class AttachedDataNetworkListResultTests {
         Assertions.assertEquals("rzevdphlxaol", model.value().get(0).userEquipmentStaticAddressPoolPrefix().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

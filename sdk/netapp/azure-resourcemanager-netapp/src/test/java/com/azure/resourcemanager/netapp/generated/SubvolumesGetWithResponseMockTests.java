@@ -30,49 +30,30 @@ public final class SubvolumesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"path\":\"pusxjb\",\"size\":4851960046016392272,\"parentPath\":\"pdo\",\"provisioningState\":\"jqatucoigebxn\"},\"id\":\"nwfepbnwg\",\"name\":\"m\",\"type\":\"jgcgbjbgdlfgtdys\"}";
+        String responseStr
+            = "{\"properties\":{\"path\":\"jyslurl\",\"size\":1165766341545693911,\"parentPath\":\"vpedwqslsrh\",\"provisioningState\":\"qvwwsko\"},\"id\":\"cbrwi\",\"name\":\"uvqejosovyrrle\",\"type\":\"esi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetAppFilesManager manager =
-            NetAppFilesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SubvolumeInfo response =
-            manager
-                .subvolumes()
-                .getWithResponse(
-                    "uslvyjtcvuwkasi",
-                    "iesfuug",
-                    "tuqfecjxeygtu",
-                    "xu",
-                    "cbuewmrswnjlxuz",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        SubvolumeInfo response = manager.subvolumes()
+            .getWithResponse("igsxcdgljplk", "ua", "htomflrytswfp", "mdgycxn", "skw", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("pusxjb", response.path());
-        Assertions.assertEquals(4851960046016392272L, response.size());
-        Assertions.assertEquals("pdo", response.parentPath());
+        Assertions.assertEquals("jyslurl", response.path());
+        Assertions.assertEquals(1165766341545693911L, response.size());
+        Assertions.assertEquals("vpedwqslsrh", response.parentPath());
     }
 }

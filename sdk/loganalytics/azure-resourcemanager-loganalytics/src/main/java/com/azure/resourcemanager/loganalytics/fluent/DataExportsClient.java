@@ -47,22 +47,6 @@ public interface DataExportsClient {
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
      * @param parameters The parameters required to create or update a data export.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the top level data export resource container.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DataExportInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String dataExportName, DataExportInner parameters);
-
-    /**
-     * Create or update a data export.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataExportName The data export rule name.
-     * @param parameters The parameters required to create or update a data export.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,18 +62,20 @@ public interface DataExportsClient {
         Context context);
 
     /**
-     * Gets a data export instance.
+     * Create or update a data export.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataExportName The data export rule name.
+     * @param parameters The parameters required to create or update a data export.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance.
+     * @return the top level data export resource container.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataExportInner get(String resourceGroupName, String workspaceName, String dataExportName);
+    DataExportInner createOrUpdate(
+        String resourceGroupName, String workspaceName, String dataExportName, DataExportInner parameters);
 
     /**
      * Gets a data export instance.
@@ -108,7 +94,7 @@ public interface DataExportsClient {
         String resourceGroupName, String workspaceName, String dataExportName, Context context);
 
     /**
-     * Deletes the specified data export in a given workspace..
+     * Gets a data export instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -116,9 +102,10 @@ public interface DataExportsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a data export instance.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String dataExportName);
+    DataExportInner get(String resourceGroupName, String workspaceName, String dataExportName);
 
     /**
      * Deletes the specified data export in a given workspace..
@@ -135,4 +122,17 @@ public interface DataExportsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String dataExportName, Context context);
+
+    /**
+     * Deletes the specified data export in a given workspace..
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param dataExportName The data export rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String workspaceName, String dataExportName);
 }

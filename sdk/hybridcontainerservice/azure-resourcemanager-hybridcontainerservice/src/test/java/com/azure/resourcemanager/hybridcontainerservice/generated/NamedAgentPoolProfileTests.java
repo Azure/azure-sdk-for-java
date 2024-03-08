@@ -5,12 +5,9 @@
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfile;
-import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfileInfraNetworkProfile;
-import com.azure.resourcemanager.hybridcontainerservice.models.CloudProviderProfileInfraStorageProfile;
-import com.azure.resourcemanager.hybridcontainerservice.models.Mode;
 import com.azure.resourcemanager.hybridcontainerservice.models.NamedAgentPoolProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.OsType;
+import com.azure.resourcemanager.hybridcontainerservice.models.Ossku;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,71 +16,44 @@ import org.junit.jupiter.api.Assertions;
 public final class NamedAgentPoolProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NamedAgentPoolProfile model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"dgmb\",\"count\":432312766,\"availabilityZones\":[\"pbhtqqrolfpfpsa\",\"gbquxigj\",\"jgzjaoyfhrtx\"],\"maxCount\":239046622,\"maxPods\":1167970761,\"minCount\":1846063928,\"mode\":\"System\",\"nodeLabels\":{\"juvf\":\"l\",\"jkcpr\":\"awrlyx\",\"nruj\":\"nwbxgjvtbvpyssz\"},\"nodeTaints\":[\"hmuouqfprwzwbn\",\"uitnwuiz\",\"a\",\"x\"],\"osType\":\"Windows\",\"nodeImageVersion\":\"uckyf\",\"vmSize\":\"rfidfvzwdz\",\"cloudProviderProfile\":{\"infraNetworkProfile\":{\"vnetSubnetIds\":[\"wisdkft\",\"wxmnteiwao\",\"vkmijcmmxdcuf\",\"fsrpymzidnse\"]},\"infraStorageProfile\":{\"storageSpaceIds\":[\"bzsgfyccsne\",\"mdwzjeiachboo\",\"flnrosfqpteehzz\"]}}}")
-                .toObject(NamedAgentPoolProfile.class);
-        Assertions.assertEquals(432312766, model.count());
-        Assertions.assertEquals("pbhtqqrolfpfpsa", model.availabilityZones().get(0));
-        Assertions.assertEquals(239046622, model.maxCount());
-        Assertions.assertEquals(1167970761, model.maxPods());
-        Assertions.assertEquals(1846063928, model.minCount());
-        Assertions.assertEquals(Mode.SYSTEM, model.mode());
-        Assertions.assertEquals("l", model.nodeLabels().get("juvf"));
-        Assertions.assertEquals("hmuouqfprwzwbn", model.nodeTaints().get(0));
+        NamedAgentPoolProfile model = BinaryData.fromString(
+            "{\"count\":1770977837,\"vmSize\":\"jnqglhqgnu\",\"kubernetesVersion\":\"oo\",\"name\":\"wifsq\",\"osType\":\"Windows\",\"osSKU\":\"CBLMariner\",\"nodeLabels\":{\"rifkwm\":\"mglzlhj\"},\"nodeTaints\":[\"tsizntocipaoua\",\"psqucmpoyf\",\"kfo\",\"knygjofjddeq\"],\"maxCount\":752788462,\"minCount\":1305479900,\"enableAutoScaling\":true,\"maxPods\":727938504}")
+            .toObject(NamedAgentPoolProfile.class);
         Assertions.assertEquals(OsType.WINDOWS, model.osType());
-        Assertions.assertEquals("uckyf", model.nodeImageVersion());
-        Assertions.assertEquals("rfidfvzwdz", model.vmSize());
-        Assertions.assertEquals("wisdkft", model.cloudProviderProfile().infraNetworkProfile().vnetSubnetIds().get(0));
-        Assertions
-            .assertEquals("bzsgfyccsne", model.cloudProviderProfile().infraStorageProfile().storageSpaceIds().get(0));
-        Assertions.assertEquals("dgmb", model.name());
+        Assertions.assertEquals(Ossku.CBLMARINER, model.osSku());
+        Assertions.assertEquals("mglzlhj", model.nodeLabels().get("rifkwm"));
+        Assertions.assertEquals("tsizntocipaoua", model.nodeTaints().get(0));
+        Assertions.assertEquals(752788462, model.maxCount());
+        Assertions.assertEquals(1305479900, model.minCount());
+        Assertions.assertEquals(true, model.enableAutoScaling());
+        Assertions.assertEquals(727938504, model.maxPods());
+        Assertions.assertEquals(1770977837, model.count());
+        Assertions.assertEquals("jnqglhqgnu", model.vmSize());
+        Assertions.assertEquals("wifsq", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamedAgentPoolProfile model =
-            new NamedAgentPoolProfile()
-                .withCount(432312766)
-                .withAvailabilityZones(Arrays.asList("pbhtqqrolfpfpsa", "gbquxigj", "jgzjaoyfhrtx"))
-                .withMaxCount(239046622)
-                .withMaxPods(1167970761)
-                .withMinCount(1846063928)
-                .withMode(Mode.SYSTEM)
-                .withNodeLabels(mapOf("juvf", "l", "jkcpr", "awrlyx", "nruj", "nwbxgjvtbvpyssz"))
-                .withNodeTaints(Arrays.asList("hmuouqfprwzwbn", "uitnwuiz", "a", "x"))
-                .withOsType(OsType.WINDOWS)
-                .withNodeImageVersion("uckyf")
-                .withVmSize("rfidfvzwdz")
-                .withCloudProviderProfile(
-                    new CloudProviderProfile()
-                        .withInfraNetworkProfile(
-                            new CloudProviderProfileInfraNetworkProfile()
-                                .withVnetSubnetIds(
-                                    Arrays.asList("wisdkft", "wxmnteiwao", "vkmijcmmxdcuf", "fsrpymzidnse")))
-                        .withInfraStorageProfile(
-                            new CloudProviderProfileInfraStorageProfile()
-                                .withStorageSpaceIds(Arrays.asList("bzsgfyccsne", "mdwzjeiachboo", "flnrosfqpteehzz"))))
-                .withName("dgmb");
+        NamedAgentPoolProfile model = new NamedAgentPoolProfile().withOsType(OsType.WINDOWS).withOsSku(Ossku.CBLMARINER)
+            .withNodeLabels(mapOf("rifkwm", "mglzlhj"))
+            .withNodeTaints(Arrays.asList("tsizntocipaoua", "psqucmpoyf", "kfo", "knygjofjddeq"))
+            .withMaxCount(752788462).withMinCount(1305479900).withEnableAutoScaling(true).withMaxPods(727938504)
+            .withCount(1770977837).withVmSize("jnqglhqgnu").withName("wifsq");
         model = BinaryData.fromObject(model).toObject(NamedAgentPoolProfile.class);
-        Assertions.assertEquals(432312766, model.count());
-        Assertions.assertEquals("pbhtqqrolfpfpsa", model.availabilityZones().get(0));
-        Assertions.assertEquals(239046622, model.maxCount());
-        Assertions.assertEquals(1167970761, model.maxPods());
-        Assertions.assertEquals(1846063928, model.minCount());
-        Assertions.assertEquals(Mode.SYSTEM, model.mode());
-        Assertions.assertEquals("l", model.nodeLabels().get("juvf"));
-        Assertions.assertEquals("hmuouqfprwzwbn", model.nodeTaints().get(0));
         Assertions.assertEquals(OsType.WINDOWS, model.osType());
-        Assertions.assertEquals("uckyf", model.nodeImageVersion());
-        Assertions.assertEquals("rfidfvzwdz", model.vmSize());
-        Assertions.assertEquals("wisdkft", model.cloudProviderProfile().infraNetworkProfile().vnetSubnetIds().get(0));
-        Assertions
-            .assertEquals("bzsgfyccsne", model.cloudProviderProfile().infraStorageProfile().storageSpaceIds().get(0));
-        Assertions.assertEquals("dgmb", model.name());
+        Assertions.assertEquals(Ossku.CBLMARINER, model.osSku());
+        Assertions.assertEquals("mglzlhj", model.nodeLabels().get("rifkwm"));
+        Assertions.assertEquals("tsizntocipaoua", model.nodeTaints().get(0));
+        Assertions.assertEquals(752788462, model.maxCount());
+        Assertions.assertEquals(1305479900, model.minCount());
+        Assertions.assertEquals(true, model.enableAutoScaling());
+        Assertions.assertEquals(727938504, model.maxPods());
+        Assertions.assertEquals(1770977837, model.count());
+        Assertions.assertEquals("jnqglhqgnu", model.vmSize());
+        Assertions.assertEquals("wifsq", model.name());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

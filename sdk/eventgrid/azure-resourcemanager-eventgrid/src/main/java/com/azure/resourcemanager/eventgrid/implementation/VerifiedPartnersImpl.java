@@ -21,8 +21,8 @@ public final class VerifiedPartnersImpl implements VerifiedPartners {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public VerifiedPartnersImpl(
-        VerifiedPartnersClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    public VerifiedPartnersImpl(VerifiedPartnersClient innerClient,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -30,10 +30,7 @@ public final class VerifiedPartnersImpl implements VerifiedPartners {
     public Response<VerifiedPartner> getWithResponse(String verifiedPartnerName, Context context) {
         Response<VerifiedPartnerInner> inner = this.serviceClient().getWithResponse(verifiedPartnerName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VerifiedPartnerImpl(inner.getValue(), this.manager()));
         } else {
             return null;

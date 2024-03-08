@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Metric information. */
+/**
+ * Metric information.
+ */
 @Fluent
 public final class PerfMonSet {
     /*
@@ -42,13 +44,15 @@ public final class PerfMonSet {
     @JsonProperty(value = "values")
     private List<PerfMonSample> values;
 
-    /** Creates an instance of PerfMonSet class. */
+    /**
+     * Creates an instance of PerfMonSet class.
+     */
     public PerfMonSet() {
     }
 
     /**
      * Get the name property: Unique key name of the counter.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +61,7 @@ public final class PerfMonSet {
 
     /**
      * Set the name property: Unique key name of the counter.
-     *
+     * 
      * @param name the name value to set.
      * @return the PerfMonSet object itself.
      */
@@ -68,7 +72,7 @@ public final class PerfMonSet {
 
     /**
      * Get the startTime property: Start time of the period.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -77,7 +81,7 @@ public final class PerfMonSet {
 
     /**
      * Set the startTime property: Start time of the period.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the PerfMonSet object itself.
      */
@@ -88,7 +92,7 @@ public final class PerfMonSet {
 
     /**
      * Get the endTime property: End time of the period.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -97,7 +101,7 @@ public final class PerfMonSet {
 
     /**
      * Set the endTime property: End time of the period.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the PerfMonSet object itself.
      */
@@ -108,7 +112,7 @@ public final class PerfMonSet {
 
     /**
      * Get the timeGrain property: Presented time grain.
-     *
+     * 
      * @return the timeGrain value.
      */
     public String timeGrain() {
@@ -117,7 +121,7 @@ public final class PerfMonSet {
 
     /**
      * Set the timeGrain property: Presented time grain.
-     *
+     * 
      * @param timeGrain the timeGrain value to set.
      * @return the PerfMonSet object itself.
      */
@@ -128,7 +132,7 @@ public final class PerfMonSet {
 
     /**
      * Get the values property: Collection of workers that are active during this time.
-     *
+     * 
      * @return the values value.
      */
     public List<PerfMonSample> values() {
@@ -137,7 +141,7 @@ public final class PerfMonSet {
 
     /**
      * Set the values property: Collection of workers that are active during this time.
-     *
+     * 
      * @param values the values value to set.
      * @return the PerfMonSet object itself.
      */
@@ -148,7 +152,7 @@ public final class PerfMonSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

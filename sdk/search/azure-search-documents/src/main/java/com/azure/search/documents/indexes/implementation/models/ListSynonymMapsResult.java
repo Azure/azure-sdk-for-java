@@ -13,10 +13,11 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.SynonymMap;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-/** Response from a List SynonymMaps request. If successful, it includes the full definitions of all synonym maps. */
+/**
+ * Response from a List SynonymMaps request. If successful, it includes the full definitions of all synonym maps.
+ */
 @Immutable
 public final class ListSynonymMapsResult implements JsonSerializable<ListSynonymMapsResult> {
     /*
@@ -26,7 +27,7 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
 
     /**
      * Creates an instance of ListSynonymMapsResult class.
-     *
+     * 
      * @param synonymMaps the synonymMaps value to set.
      */
     public ListSynonymMapsResult(List<SynonymMap> synonymMaps) {
@@ -35,7 +36,7 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
 
     /**
      * Get the synonymMaps property: The synonym maps in the Search service.
-     *
+     * 
      * @return the synonymMaps value.
      */
     public List<SynonymMap> getSynonymMaps() {
@@ -45,48 +46,37 @@ public final class ListSynonymMapsResult implements JsonSerializable<ListSynonym
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.synonymMaps, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ListSynonymMapsResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ListSynonymMapsResult if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ListSynonymMapsResult.
      */
     public static ListSynonymMapsResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean synonymMapsFound = false;
-                    List<SynonymMap> synonymMaps = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean synonymMapsFound = false;
+            List<SynonymMap> synonymMaps = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            synonymMaps = reader.readArray(reader1 -> SynonymMap.fromJson(reader1));
-                            synonymMapsFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (synonymMapsFound) {
-                        ListSynonymMapsResult deserializedListSynonymMapsResult =
-                                new ListSynonymMapsResult(synonymMaps);
-
-                        return deserializedListSynonymMapsResult;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!synonymMapsFound) {
-                        missingProperties.add("value");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+                if ("value".equals(fieldName)) {
+                    synonymMaps = reader.readArray(reader1 -> SynonymMap.fromJson(reader1));
+                    synonymMapsFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (synonymMapsFound) {
+                return new ListSynonymMapsResult(synonymMaps);
+            }
+            throw new IllegalStateException("Missing required property: value");
+        });
     }
 }

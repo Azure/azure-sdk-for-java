@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Flag if global mesh is supported. */
+/**
+ * Flag if global mesh is supported.
+ */
 public final class IsGlobal extends ExpandableStringEnum<IsGlobal> {
-    /** Static value False for IsGlobal. */
+    /**
+     * Static value False for IsGlobal.
+     */
     public static final IsGlobal FALSE = fromString("False");
 
-    /** Static value True for IsGlobal. */
+    /**
+     * Static value True for IsGlobal.
+     */
     public static final IsGlobal TRUE = fromString("True");
 
     /**
      * Creates a new instance of IsGlobal value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class IsGlobal extends ExpandableStringEnum<IsGlobal> {
 
     /**
      * Creates or finds a IsGlobal from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IsGlobal.
      */
@@ -38,7 +44,7 @@ public final class IsGlobal extends ExpandableStringEnum<IsGlobal> {
 
     /**
      * Gets known IsGlobal values.
-     *
+     * 
      * @return known IsGlobal values.
      */
     public static Collection<IsGlobal> values() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Used for getting ResourceHealthCheck settings. */
+/**
+ * Used for getting ResourceHealthCheck settings.
+ */
 @Fluent
 public final class ResourceHealthMetadataInner extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class ResourceHealthMetadataInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private ResourceHealthMetadataProperties innerProperties;
 
-    /** Creates an instance of ResourceHealthMetadataInner class. */
+    /**
+     * Creates an instance of ResourceHealthMetadataInner class.
+     */
     public ResourceHealthMetadataInner() {
     }
 
     /**
      * Get the innerProperties property: ResourceHealthMetadata resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ResourceHealthMetadataProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceHealthMetadataInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class ResourceHealthMetadataInner extends ProxyOnlyResource {
 
     /**
      * Get the category property: The category that the resource matches in the RHC Policy File.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -48,7 +54,7 @@ public final class ResourceHealthMetadataInner extends ProxyOnlyResource {
 
     /**
      * Set the category property: The category that the resource matches in the RHC Policy File.
-     *
+     * 
      * @param category the category value to set.
      * @return the ResourceHealthMetadataInner object itself.
      */
@@ -62,7 +68,7 @@ public final class ResourceHealthMetadataInner extends ProxyOnlyResource {
 
     /**
      * Get the signalAvailability property: Is there a health signal for the resource.
-     *
+     * 
      * @return the signalAvailability value.
      */
     public Boolean signalAvailability() {
@@ -71,7 +77,7 @@ public final class ResourceHealthMetadataInner extends ProxyOnlyResource {
 
     /**
      * Set the signalAvailability property: Is there a health signal for the resource.
-     *
+     * 
      * @param signalAvailability the signalAvailability value to set.
      * @return the ResourceHealthMetadataInner object itself.
      */
@@ -85,7 +91,7 @@ public final class ResourceHealthMetadataInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

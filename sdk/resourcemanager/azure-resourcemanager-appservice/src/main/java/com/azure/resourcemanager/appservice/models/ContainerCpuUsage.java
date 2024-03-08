@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ContainerCpuUsage model. */
+/**
+ * The ContainerCpuUsage model.
+ */
 @Fluent
 public final class ContainerCpuUsage {
     /*
@@ -35,13 +37,15 @@ public final class ContainerCpuUsage {
     @JsonProperty(value = "userModeUsage")
     private Long userModeUsage;
 
-    /** Creates an instance of ContainerCpuUsage class. */
+    /**
+     * Creates an instance of ContainerCpuUsage class.
+     */
     public ContainerCpuUsage() {
     }
 
     /**
      * Get the totalUsage property: The totalUsage property.
-     *
+     * 
      * @return the totalUsage value.
      */
     public Long totalUsage() {
@@ -50,7 +54,7 @@ public final class ContainerCpuUsage {
 
     /**
      * Set the totalUsage property: The totalUsage property.
-     *
+     * 
      * @param totalUsage the totalUsage value to set.
      * @return the ContainerCpuUsage object itself.
      */
@@ -61,7 +65,7 @@ public final class ContainerCpuUsage {
 
     /**
      * Get the perCpuUsage property: The perCpuUsage property.
-     *
+     * 
      * @return the perCpuUsage value.
      */
     public List<Long> perCpuUsage() {
@@ -70,7 +74,7 @@ public final class ContainerCpuUsage {
 
     /**
      * Set the perCpuUsage property: The perCpuUsage property.
-     *
+     * 
      * @param perCpuUsage the perCpuUsage value to set.
      * @return the ContainerCpuUsage object itself.
      */
@@ -81,7 +85,7 @@ public final class ContainerCpuUsage {
 
     /**
      * Get the kernelModeUsage property: The kernelModeUsage property.
-     *
+     * 
      * @return the kernelModeUsage value.
      */
     public Long kernelModeUsage() {
@@ -90,7 +94,7 @@ public final class ContainerCpuUsage {
 
     /**
      * Set the kernelModeUsage property: The kernelModeUsage property.
-     *
+     * 
      * @param kernelModeUsage the kernelModeUsage value to set.
      * @return the ContainerCpuUsage object itself.
      */
@@ -101,7 +105,7 @@ public final class ContainerCpuUsage {
 
     /**
      * Get the userModeUsage property: The userModeUsage property.
-     *
+     * 
      * @return the userModeUsage value.
      */
     public Long userModeUsage() {
@@ -110,7 +114,7 @@ public final class ContainerCpuUsage {
 
     /**
      * Set the userModeUsage property: The userModeUsage property.
-     *
+     * 
      * @param userModeUsage the userModeUsage value to set.
      * @return the ContainerCpuUsage object itself.
      */
@@ -121,7 +125,7 @@ public final class ContainerCpuUsage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

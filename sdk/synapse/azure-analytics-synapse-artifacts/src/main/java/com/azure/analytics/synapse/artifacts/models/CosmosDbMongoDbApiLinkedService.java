@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for CosmosDB (MongoDB API) data source. */
+/**
+ * Linked service for CosmosDB (MongoDB API) data source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CosmosDbMongoDbApi")
 @JsonFlatten
@@ -32,13 +34,16 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
-    /** Creates an instance of CosmosDbMongoDbApiLinkedService class. */
-    public CosmosDbMongoDbApiLinkedService() {}
+    /**
+     * Creates an instance of CosmosDbMongoDbApiLinkedService class.
+     */
+    public CosmosDbMongoDbApiLinkedService() {
+    }
 
     /**
      * Get the connectionString property: The CosmosDB (MongoDB API) connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -48,7 +53,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /**
      * Set the connectionString property: The CosmosDB (MongoDB API) connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the CosmosDbMongoDbApiLinkedService object itself.
      */
@@ -60,7 +65,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /**
      * Get the database property: The name of the CosmosDB (MongoDB API) database that you want to access. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the database value.
      */
     public Object getDatabase() {
@@ -70,7 +75,7 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
     /**
      * Set the database property: The name of the CosmosDB (MongoDB API) database that you want to access. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param database the database value to set.
      * @return the CosmosDbMongoDbApiLinkedService object itself.
      */
@@ -79,28 +84,36 @@ public class CosmosDbMongoDbApiLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

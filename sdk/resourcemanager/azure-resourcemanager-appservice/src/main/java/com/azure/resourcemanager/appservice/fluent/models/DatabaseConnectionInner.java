@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.StaticSiteDatabaseConnectionC
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Static Site Database Connection resource. */
+/**
+ * Static Site Database Connection resource.
+ */
 @Fluent
 public final class DatabaseConnectionInner extends ProxyOnlyResource {
     /*
@@ -19,20 +21,24 @@ public final class DatabaseConnectionInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DatabaseConnectionProperties innerProperties;
 
-    /** Creates an instance of DatabaseConnectionInner class. */
+    /**
+     * Creates an instance of DatabaseConnectionInner class.
+     */
     public DatabaseConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: DatabaseConnection resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DatabaseConnectionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabaseConnectionInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +47,7 @@ public final class DatabaseConnectionInner extends ProxyOnlyResource {
 
     /**
      * Get the resourceId property: The resource id of the database.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -50,7 +56,7 @@ public final class DatabaseConnectionInner extends ProxyOnlyResource {
 
     /**
      * Set the resourceId property: The resource id of the database.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the DatabaseConnectionInner object itself.
      */
@@ -67,7 +73,7 @@ public final class DatabaseConnectionInner extends ProxyOnlyResource {
      * connect to the database. Use of the system-assigned managed identity is indicated with the string
      * 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed
      * identity resource.
-     *
+     * 
      * @return the connectionIdentity value.
      */
     public String connectionIdentity() {
@@ -79,7 +85,7 @@ public final class DatabaseConnectionInner extends ProxyOnlyResource {
      * connect to the database. Use of the system-assigned managed identity is indicated with the string
      * 'SystemAssigned', while use of a user-assigned managed identity is indicated with the resource id of the managed
      * identity resource.
-     *
+     * 
      * @param connectionIdentity the connectionIdentity value to set.
      * @return the DatabaseConnectionInner object itself.
      */
@@ -93,7 +99,7 @@ public final class DatabaseConnectionInner extends ProxyOnlyResource {
 
     /**
      * Get the connectionString property: The connection string to use to connect to the database.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -102,7 +108,7 @@ public final class DatabaseConnectionInner extends ProxyOnlyResource {
 
     /**
      * Set the connectionString property: The connection string to use to connect to the database.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the DatabaseConnectionInner object itself.
      */
@@ -116,7 +122,7 @@ public final class DatabaseConnectionInner extends ProxyOnlyResource {
 
     /**
      * Get the region property: The region of the database resource.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -125,7 +131,7 @@ public final class DatabaseConnectionInner extends ProxyOnlyResource {
 
     /**
      * Set the region property: The region of the database resource.
-     *
+     * 
      * @param region the region value to set.
      * @return the DatabaseConnectionInner object itself.
      */
@@ -139,7 +145,7 @@ public final class DatabaseConnectionInner extends ProxyOnlyResource {
 
     /**
      * Get the configurationFiles property: A list of configuration files associated with this database connection.
-     *
+     * 
      * @return the configurationFiles value.
      */
     public List<StaticSiteDatabaseConnectionConfigurationFileOverview> configurationFiles() {
@@ -148,7 +154,7 @@ public final class DatabaseConnectionInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

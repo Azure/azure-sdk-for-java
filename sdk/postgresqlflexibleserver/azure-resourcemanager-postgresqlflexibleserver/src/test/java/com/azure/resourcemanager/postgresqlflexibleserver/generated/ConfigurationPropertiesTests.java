@@ -11,21 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"value\":\"dvxzbncblylpst\",\"description\":\"hh\",\"defaultValue\":\"rzdzucerscdnt\",\"dataType\":\"Integer\",\"allowedValues\":\"iwjmygtdssls\",\"source\":\"mweriofzpy\",\"isDynamicConfig\":false,\"isReadOnly\":false,\"isConfigPendingRestart\":false,\"unit\":\"ets\",\"documentationLink\":\"szhedplvw\"}")
-                .toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("dvxzbncblylpst", model.value());
-        Assertions.assertEquals("mweriofzpy", model.source());
+        ConfigurationProperties model = BinaryData.fromString(
+            "{\"value\":\"rzpwvlqdqgbiq\",\"description\":\"ihkaetcktvfc\",\"defaultValue\":\"fsnkymuctq\",\"dataType\":\"Integer\",\"allowedValues\":\"ebrjcxe\",\"source\":\"uwutttxfvjrbi\",\"isDynamicConfig\":true,\"isReadOnly\":true,\"isConfigPendingRestart\":false,\"unit\":\"vahfn\",\"documentationLink\":\"kyqxjvuujqgidokg\"}")
+            .toObject(ConfigurationProperties.class);
+        Assertions.assertEquals("rzpwvlqdqgbiq", model.value());
+        Assertions.assertEquals("uwutttxfvjrbi", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationProperties model =
-            new ConfigurationProperties().withValue("dvxzbncblylpst").withSource("mweriofzpy");
+        ConfigurationProperties model
+            = new ConfigurationProperties().withValue("rzpwvlqdqgbiq").withSource("uwutttxfvjrbi");
         model = BinaryData.fromObject(model).toObject(ConfigurationProperties.class);
-        Assertions.assertEquals("dvxzbncblylpst", model.value());
-        Assertions.assertEquals("mweriofzpy", model.source());
+        Assertions.assertEquals("rzpwvlqdqgbiq", model.value());
+        Assertions.assertEquals("uwutttxfvjrbi", model.source());
     }
 }

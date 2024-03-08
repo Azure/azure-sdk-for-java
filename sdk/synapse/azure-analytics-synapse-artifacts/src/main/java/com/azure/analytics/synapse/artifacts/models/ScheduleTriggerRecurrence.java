@@ -13,7 +13,9 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** The workflow trigger recurrence. */
+/**
+ * The workflow trigger recurrence.
+ */
 @Fluent
 public final class ScheduleTriggerRecurrence {
     /*
@@ -55,14 +57,18 @@ public final class ScheduleTriggerRecurrence {
     /*
      * The workflow trigger recurrence.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ScheduleTriggerRecurrence class. */
-    public ScheduleTriggerRecurrence() {}
+    /**
+     * Creates an instance of ScheduleTriggerRecurrence class.
+     */
+    public ScheduleTriggerRecurrence() {
+    }
 
     /**
      * Get the frequency property: The frequency.
-     *
+     * 
      * @return the frequency value.
      */
     public RecurrenceFrequency getFrequency() {
@@ -71,7 +77,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the frequency property: The frequency.
-     *
+     * 
      * @param frequency the frequency value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -82,7 +88,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the interval property: The interval.
-     *
+     * 
      * @return the interval value.
      */
     public Integer getInterval() {
@@ -91,7 +97,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the interval property: The interval.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -102,7 +108,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the startTime property: The start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -111,7 +117,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the startTime property: The start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -122,7 +128,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the endTime property: The end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -131,7 +137,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the endTime property: The end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -142,7 +148,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the timeZone property: The time zone.
-     *
+     * 
      * @return the timeZone value.
      */
     public String getTimeZone() {
@@ -151,7 +157,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the timeZone property: The time zone.
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -162,7 +168,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the schedule property: The recurrence schedule.
-     *
+     * 
      * @return the schedule value.
      */
     public RecurrenceSchedule getSchedule() {
@@ -171,7 +177,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the schedule property: The recurrence schedule.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */
@@ -182,7 +188,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Get the additionalProperties property: The workflow trigger recurrence.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -192,7 +198,7 @@ public final class ScheduleTriggerRecurrence {
 
     /**
      * Set the additionalProperties property: The workflow trigger recurrence.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ScheduleTriggerRecurrence object itself.
      */

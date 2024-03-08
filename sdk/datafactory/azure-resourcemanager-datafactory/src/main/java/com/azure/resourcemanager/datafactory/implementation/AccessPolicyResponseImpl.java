@@ -13,8 +13,7 @@ public final class AccessPolicyResponseImpl implements AccessPolicyResponse {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    AccessPolicyResponseImpl(
-        AccessPolicyResponseInner innerObject,
+    AccessPolicyResponseImpl(AccessPolicyResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

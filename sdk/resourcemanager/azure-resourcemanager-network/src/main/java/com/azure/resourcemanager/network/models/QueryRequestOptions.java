@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Query Request Options. */
+/**
+ * Query Request Options.
+ */
 @Fluent
 public final class QueryRequestOptions {
     /*
@@ -17,14 +19,16 @@ public final class QueryRequestOptions {
     @JsonProperty(value = "skipToken")
     private String skipToken;
 
-    /** Creates an instance of QueryRequestOptions class. */
+    /**
+     * Creates an instance of QueryRequestOptions class.
+     */
     public QueryRequestOptions() {
     }
 
     /**
      * Get the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     *
+     * 
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -34,7 +38,7 @@ public final class QueryRequestOptions {
     /**
      * Set the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     *
+     * 
      * @param skipToken the skipToken value to set.
      * @return the QueryRequestOptions object itself.
      */
@@ -45,7 +49,7 @@ public final class QueryRequestOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

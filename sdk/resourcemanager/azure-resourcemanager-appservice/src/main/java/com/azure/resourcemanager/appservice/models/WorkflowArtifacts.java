@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The workflow filter. */
+/**
+ * The workflow filter.
+ */
 @Fluent
 public final class WorkflowArtifacts {
     /*
@@ -32,13 +34,15 @@ public final class WorkflowArtifacts {
     @JsonProperty(value = "filesToDelete")
     private List<String> filesToDelete;
 
-    /** Creates an instance of WorkflowArtifacts class. */
+    /**
+     * Creates an instance of WorkflowArtifacts class.
+     */
     public WorkflowArtifacts() {
     }
 
     /**
      * Get the appSettings property: Application settings of the workflow.
-     *
+     * 
      * @return the appSettings value.
      */
     public Object appSettings() {
@@ -47,7 +51,7 @@ public final class WorkflowArtifacts {
 
     /**
      * Set the appSettings property: Application settings of the workflow.
-     *
+     * 
      * @param appSettings the appSettings value to set.
      * @return the WorkflowArtifacts object itself.
      */
@@ -58,7 +62,7 @@ public final class WorkflowArtifacts {
 
     /**
      * Get the files property: Files of the app.
-     *
+     * 
      * @return the files value.
      */
     public Map<String, Object> files() {
@@ -67,7 +71,7 @@ public final class WorkflowArtifacts {
 
     /**
      * Set the files property: Files of the app.
-     *
+     * 
      * @param files the files value to set.
      * @return the WorkflowArtifacts object itself.
      */
@@ -78,7 +82,7 @@ public final class WorkflowArtifacts {
 
     /**
      * Get the filesToDelete property: Files of the app to delete.
-     *
+     * 
      * @return the filesToDelete value.
      */
     public List<String> filesToDelete() {
@@ -87,7 +91,7 @@ public final class WorkflowArtifacts {
 
     /**
      * Set the filesToDelete property: Files of the app to delete.
-     *
+     * 
      * @param filesToDelete the filesToDelete value to set.
      * @return the WorkflowArtifacts object itself.
      */
@@ -98,7 +102,7 @@ public final class WorkflowArtifacts {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,9 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ApplicationInsightsComponentExportConfigurationInner {
     /*
-     * The unique ID of the export configuration inside an Application Insights
-     * component. It is auto generated when the Continuous Export configuration
-     * is created.
+     * The unique ID of the export configuration inside an Application Insights component. It is auto generated when
+     * the Continuous Export configuration is created.
      */
     @JsonProperty(value = "ExportId", access = JsonProperty.Access.WRITE_ONLY)
     private String exportId;
@@ -25,9 +24,8 @@ public final class ApplicationInsightsComponentExportConfigurationInner {
     private String instrumentationKey;
 
     /*
-     * This comma separated list of document types that will be exported. The
-     * possible values include 'Requests', 'Event', 'Exceptions', 'Metrics',
-     * 'PageViews', 'PageViewPerformance', 'Rdd', 'PerformanceCounters',
+     * This comma separated list of document types that will be exported. The possible values include 'Requests',
+     * 'Event', 'Exceptions', 'Metrics', 'PageViews', 'PageViewPerformance', 'Rdd', 'PerformanceCounters',
      * 'Availability', 'Messages'.
      */
     @JsonProperty(value = "RecordTypes")
@@ -76,8 +74,7 @@ public final class ApplicationInsightsComponentExportConfigurationInner {
     private String destinationType;
 
     /*
-     * This will be 'true' if the Continuous Export configuration is enabled,
-     * otherwise it will be 'false'.
+     * This will be 'true' if the Continuous Export configuration is enabled, otherwise it will be 'false'.
      */
     @JsonProperty(value = "IsUserEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private String isUserEnabled;
@@ -95,15 +92,15 @@ public final class ApplicationInsightsComponentExportConfigurationInner {
     private String notificationQueueEnabled;
 
     /*
-     * This indicates current Continuous Export configuration status. The
-     * possible values are 'Preparing', 'Success', 'Failure'.
+     * This indicates current Continuous Export configuration status. The possible values are 'Preparing', 'Success',
+     * 'Failure'.
      */
     @JsonProperty(value = "ExportStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String exportStatus;
 
     /*
-     * The last time data was successfully delivered to the destination storage
-     * container for this Continuous Export configuration.
+     * The last time data was successfully delivered to the destination storage container for this Continuous Export
+     * configuration.
      */
     @JsonProperty(value = "LastSuccessTime", access = JsonProperty.Access.WRITE_ONLY)
     private String lastSuccessTime;
@@ -115,8 +112,8 @@ public final class ApplicationInsightsComponentExportConfigurationInner {
     private String lastGapTime;
 
     /*
-     * This is the reason the Continuous Export configuration started failing.
-     * It can be 'AzureStorageNotFound' or 'AzureStorageAccessDenied'.
+     * This is the reason the Continuous Export configuration started failing. It can be 'AzureStorageNotFound' or
+     * 'AzureStorageAccessDenied'.
      */
     @JsonProperty(value = "PermanentErrorReason", access = JsonProperty.Access.WRITE_ONLY)
     private String permanentErrorReason;
@@ -132,6 +129,10 @@ public final class ApplicationInsightsComponentExportConfigurationInner {
      */
     @JsonProperty(value = "ContainerName", access = JsonProperty.Access.WRITE_ONLY)
     private String containerName;
+
+    /** Creates an instance of ApplicationInsightsComponentExportConfigurationInner class. */
+    public ApplicationInsightsComponentExportConfigurationInner() {
+    }
 
     /**
      * Get the exportId property: The unique ID of the export configuration inside an Application Insights component. It

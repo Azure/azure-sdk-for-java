@@ -12,10 +12,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/** Abstract class to share properties between concrete selectors. */
+/**
+ * Abstract class to share properties between concrete selectors.
+ */
 @Fluent
-public abstract class SearchIndexerKnowledgeStoreProjectionSelector
-        implements JsonSerializable<SearchIndexerKnowledgeStoreProjectionSelector> {
+public class SearchIndexerKnowledgeStoreProjectionSelector
+    implements JsonSerializable<SearchIndexerKnowledgeStoreProjectionSelector> {
     /*
      * Name of reference key to different projection.
      */
@@ -41,12 +43,15 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
      */
     private List<InputFieldMappingEntry> inputs;
 
-    /** Creates an instance of SearchIndexerKnowledgeStoreProjectionSelector class. */
-    public SearchIndexerKnowledgeStoreProjectionSelector() {}
+    /**
+     * Creates an instance of SearchIndexerKnowledgeStoreProjectionSelector class.
+     */
+    public SearchIndexerKnowledgeStoreProjectionSelector() {
+    }
 
     /**
      * Get the referenceKeyName property: Name of reference key to different projection.
-     *
+     * 
      * @return the referenceKeyName value.
      */
     public String getReferenceKeyName() {
@@ -55,7 +60,7 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
 
     /**
      * Set the referenceKeyName property: Name of reference key to different projection.
-     *
+     * 
      * @param referenceKeyName the referenceKeyName value to set.
      * @return the SearchIndexerKnowledgeStoreProjectionSelector object itself.
      */
@@ -66,7 +71,7 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
 
     /**
      * Get the generatedKeyName property: Name of generated key to store projection under.
-     *
+     * 
      * @return the generatedKeyName value.
      */
     public String getGeneratedKeyName() {
@@ -75,7 +80,7 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
 
     /**
      * Set the generatedKeyName property: Name of generated key to store projection under.
-     *
+     * 
      * @param generatedKeyName the generatedKeyName value to set.
      * @return the SearchIndexerKnowledgeStoreProjectionSelector object itself.
      */
@@ -86,7 +91,7 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
 
     /**
      * Get the source property: Source data to project.
-     *
+     * 
      * @return the source value.
      */
     public String getSource() {
@@ -95,7 +100,7 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
 
     /**
      * Set the source property: Source data to project.
-     *
+     * 
      * @param source the source value to set.
      * @return the SearchIndexerKnowledgeStoreProjectionSelector object itself.
      */
@@ -106,7 +111,7 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
 
     /**
      * Get the sourceContext property: Source context for complex projections.
-     *
+     * 
      * @return the sourceContext value.
      */
     public String getSourceContext() {
@@ -115,7 +120,7 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
 
     /**
      * Set the sourceContext property: Source context for complex projections.
-     *
+     * 
      * @param sourceContext the sourceContext value to set.
      * @return the SearchIndexerKnowledgeStoreProjectionSelector object itself.
      */
@@ -126,7 +131,7 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
 
     /**
      * Get the inputs property: Nested inputs for complex projections.
-     *
+     * 
      * @return the inputs value.
      */
     public List<InputFieldMappingEntry> getInputs() {
@@ -135,7 +140,7 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
 
     /**
      * Set the inputs property: Nested inputs for complex projections.
-     *
+     * 
      * @param inputs the inputs value to set.
      * @return the SearchIndexerKnowledgeStoreProjectionSelector object itself.
      */
@@ -154,4 +159,5 @@ public abstract class SearchIndexerKnowledgeStoreProjectionSelector
         jsonWriter.writeArrayField("inputs", this.inputs, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
+
 }

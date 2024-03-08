@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Database connection string value to type pair. */
+/**
+ * Database connection string value to type pair.
+ */
 @Fluent
 public final class ConnStringValueTypePair {
     /*
@@ -23,13 +25,15 @@ public final class ConnStringValueTypePair {
     @JsonProperty(value = "type", required = true)
     private ConnectionStringType type;
 
-    /** Creates an instance of ConnStringValueTypePair class. */
+    /**
+     * Creates an instance of ConnStringValueTypePair class.
+     */
     public ConnStringValueTypePair() {
     }
 
     /**
      * Get the value property: Value of pair.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -38,7 +42,7 @@ public final class ConnStringValueTypePair {
 
     /**
      * Set the value property: Value of pair.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConnStringValueTypePair object itself.
      */
@@ -49,7 +53,7 @@ public final class ConnStringValueTypePair {
 
     /**
      * Get the type property: Type of database.
-     *
+     * 
      * @return the type value.
      */
     public ConnectionStringType type() {
@@ -58,7 +62,7 @@ public final class ConnStringValueTypePair {
 
     /**
      * Set the type property: Type of database.
-     *
+     * 
      * @param type the type value to set.
      * @return the ConnStringValueTypePair object itself.
      */
@@ -69,19 +73,17 @@ public final class ConnStringValueTypePair {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ConnStringValueTypePair"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ConnStringValueTypePair"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ConnStringValueTypePair"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model ConnStringValueTypePair"));
         }
     }
 

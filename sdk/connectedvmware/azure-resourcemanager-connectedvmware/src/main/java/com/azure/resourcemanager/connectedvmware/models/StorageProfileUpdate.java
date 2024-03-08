@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the resource update properties. */
+/** Specifies the storage settings for the virtual machine disks. */
 @Fluent
 public final class StorageProfileUpdate {
     /*
@@ -16,6 +16,10 @@ public final class StorageProfileUpdate {
      */
     @JsonProperty(value = "disks")
     private List<VirtualDiskUpdate> disks;
+
+    /** Creates an instance of StorageProfileUpdate class. */
+    public StorageProfileUpdate() {
+    }
 
     /**
      * Get the disks property: Gets or sets the list of virtual disks associated with the virtual machine.

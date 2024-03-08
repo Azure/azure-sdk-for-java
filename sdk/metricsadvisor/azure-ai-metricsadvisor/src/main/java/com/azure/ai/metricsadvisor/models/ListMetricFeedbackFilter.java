@@ -19,6 +19,12 @@ public final class ListMetricFeedbackFilter {
     private FeedbackQueryTimeMode timeMode;
 
     /**
+     * Create a new instance of ListMetricFeedbackFilter class.
+     */
+    public ListMetricFeedbackFilter() {
+    }
+
+    /**
      * Get the dimension filter set on the feedback.
      *
      * @return the dimensionFilter value.

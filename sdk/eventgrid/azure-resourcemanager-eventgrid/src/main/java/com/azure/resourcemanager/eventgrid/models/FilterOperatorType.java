@@ -8,68 +8,108 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others. */
+/**
+ * The operator type used for filtering, e.g., NumberIn, StringContains, BoolEquals and others.
+ */
 public final class FilterOperatorType extends ExpandableStringEnum<FilterOperatorType> {
-    /** Static value NumberIn for FilterOperatorType. */
+    /**
+     * Static value NumberIn for FilterOperatorType.
+     */
     public static final FilterOperatorType NUMBER_IN = fromString("NumberIn");
 
-    /** Static value NumberNotIn for FilterOperatorType. */
+    /**
+     * Static value NumberNotIn for FilterOperatorType.
+     */
     public static final FilterOperatorType NUMBER_NOT_IN = fromString("NumberNotIn");
 
-    /** Static value NumberLessThan for FilterOperatorType. */
+    /**
+     * Static value NumberLessThan for FilterOperatorType.
+     */
     public static final FilterOperatorType NUMBER_LESS_THAN = fromString("NumberLessThan");
 
-    /** Static value NumberGreaterThan for FilterOperatorType. */
+    /**
+     * Static value NumberGreaterThan for FilterOperatorType.
+     */
     public static final FilterOperatorType NUMBER_GREATER_THAN = fromString("NumberGreaterThan");
 
-    /** Static value NumberLessThanOrEquals for FilterOperatorType. */
+    /**
+     * Static value NumberLessThanOrEquals for FilterOperatorType.
+     */
     public static final FilterOperatorType NUMBER_LESS_THAN_OR_EQUALS = fromString("NumberLessThanOrEquals");
 
-    /** Static value NumberGreaterThanOrEquals for FilterOperatorType. */
+    /**
+     * Static value NumberGreaterThanOrEquals for FilterOperatorType.
+     */
     public static final FilterOperatorType NUMBER_GREATER_THAN_OR_EQUALS = fromString("NumberGreaterThanOrEquals");
 
-    /** Static value BoolEquals for FilterOperatorType. */
+    /**
+     * Static value BoolEquals for FilterOperatorType.
+     */
     public static final FilterOperatorType BOOL_EQUALS = fromString("BoolEquals");
 
-    /** Static value StringIn for FilterOperatorType. */
+    /**
+     * Static value StringIn for FilterOperatorType.
+     */
     public static final FilterOperatorType STRING_IN = fromString("StringIn");
 
-    /** Static value StringNotIn for FilterOperatorType. */
+    /**
+     * Static value StringNotIn for FilterOperatorType.
+     */
     public static final FilterOperatorType STRING_NOT_IN = fromString("StringNotIn");
 
-    /** Static value StringBeginsWith for FilterOperatorType. */
+    /**
+     * Static value StringBeginsWith for FilterOperatorType.
+     */
     public static final FilterOperatorType STRING_BEGINS_WITH = fromString("StringBeginsWith");
 
-    /** Static value StringEndsWith for FilterOperatorType. */
+    /**
+     * Static value StringEndsWith for FilterOperatorType.
+     */
     public static final FilterOperatorType STRING_ENDS_WITH = fromString("StringEndsWith");
 
-    /** Static value StringContains for FilterOperatorType. */
+    /**
+     * Static value StringContains for FilterOperatorType.
+     */
     public static final FilterOperatorType STRING_CONTAINS = fromString("StringContains");
 
-    /** Static value NumberInRange for FilterOperatorType. */
+    /**
+     * Static value NumberInRange for FilterOperatorType.
+     */
     public static final FilterOperatorType NUMBER_IN_RANGE = fromString("NumberInRange");
 
-    /** Static value NumberNotInRange for FilterOperatorType. */
+    /**
+     * Static value NumberNotInRange for FilterOperatorType.
+     */
     public static final FilterOperatorType NUMBER_NOT_IN_RANGE = fromString("NumberNotInRange");
 
-    /** Static value StringNotBeginsWith for FilterOperatorType. */
+    /**
+     * Static value StringNotBeginsWith for FilterOperatorType.
+     */
     public static final FilterOperatorType STRING_NOT_BEGINS_WITH = fromString("StringNotBeginsWith");
 
-    /** Static value StringNotEndsWith for FilterOperatorType. */
+    /**
+     * Static value StringNotEndsWith for FilterOperatorType.
+     */
     public static final FilterOperatorType STRING_NOT_ENDS_WITH = fromString("StringNotEndsWith");
 
-    /** Static value StringNotContains for FilterOperatorType. */
+    /**
+     * Static value StringNotContains for FilterOperatorType.
+     */
     public static final FilterOperatorType STRING_NOT_CONTAINS = fromString("StringNotContains");
 
-    /** Static value IsNullOrUndefined for FilterOperatorType. */
+    /**
+     * Static value IsNullOrUndefined for FilterOperatorType.
+     */
     public static final FilterOperatorType IS_NULL_OR_UNDEFINED = fromString("IsNullOrUndefined");
 
-    /** Static value IsNotNull for FilterOperatorType. */
+    /**
+     * Static value IsNotNull for FilterOperatorType.
+     */
     public static final FilterOperatorType IS_NOT_NULL = fromString("IsNotNull");
 
     /**
      * Creates a new instance of FilterOperatorType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -78,7 +118,7 @@ public final class FilterOperatorType extends ExpandableStringEnum<FilterOperato
 
     /**
      * Creates or finds a FilterOperatorType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FilterOperatorType.
      */
@@ -89,7 +129,7 @@ public final class FilterOperatorType extends ExpandableStringEnum<FilterOperato
 
     /**
      * Gets known FilterOperatorType values.
-     *
+     * 
      * @return known FilterOperatorType values.
      */
     public static Collection<FilterOperatorType> values() {

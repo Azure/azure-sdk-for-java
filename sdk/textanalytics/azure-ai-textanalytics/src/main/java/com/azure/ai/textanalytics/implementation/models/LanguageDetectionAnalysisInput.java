@@ -5,16 +5,19 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /** The LanguageDetectionAnalysisInput model. */
 @Fluent
-public final class LanguageDetectionAnalysisInput {
+public final class LanguageDetectionAnalysisInput implements JsonSerializable<LanguageDetectionAnalysisInput> {
     /*
      * The documents property.
      */
-    @JsonProperty(value = "documents")
     private List<LanguageInput> documents;
 
     /** Creates an instance of LanguageDetectionAnalysisInput class. */
@@ -38,5 +41,42 @@ public final class LanguageDetectionAnalysisInput {
     public LanguageDetectionAnalysisInput setDocuments(List<LanguageInput> documents) {
         this.documents = documents;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("documents", this.documents, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LanguageDetectionAnalysisInput from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LanguageDetectionAnalysisInput if the JsonReader was pointing to an instance of it, or
+     *     null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LanguageDetectionAnalysisInput.
+     */
+    public static LanguageDetectionAnalysisInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    LanguageDetectionAnalysisInput deserializedLanguageDetectionAnalysisInput =
+                            new LanguageDetectionAnalysisInput();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("documents".equals(fieldName)) {
+                            List<LanguageInput> documents =
+                                    reader.readArray(reader1 -> LanguageInput.fromJson(reader1));
+                            deserializedLanguageDetectionAnalysisInput.documents = documents;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+
+                    return deserializedLanguageDetectionAnalysisInput;
+                });
     }
 }

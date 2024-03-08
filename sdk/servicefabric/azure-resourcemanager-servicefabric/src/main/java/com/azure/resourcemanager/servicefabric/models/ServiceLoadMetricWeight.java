@@ -13,21 +13,29 @@ import java.util.Collection;
  * two metrics end up in conflict, the Cluster Resource Manager prefers the metric with the higher weight.
  */
 public final class ServiceLoadMetricWeight extends ExpandableStringEnum<ServiceLoadMetricWeight> {
-    /** Static value Zero for ServiceLoadMetricWeight. */
+    /**
+     * Static value Zero for ServiceLoadMetricWeight.
+     */
     public static final ServiceLoadMetricWeight ZERO = fromString("Zero");
 
-    /** Static value Low for ServiceLoadMetricWeight. */
+    /**
+     * Static value Low for ServiceLoadMetricWeight.
+     */
     public static final ServiceLoadMetricWeight LOW = fromString("Low");
 
-    /** Static value Medium for ServiceLoadMetricWeight. */
+    /**
+     * Static value Medium for ServiceLoadMetricWeight.
+     */
     public static final ServiceLoadMetricWeight MEDIUM = fromString("Medium");
 
-    /** Static value High for ServiceLoadMetricWeight. */
+    /**
+     * Static value High for ServiceLoadMetricWeight.
+     */
     public static final ServiceLoadMetricWeight HIGH = fromString("High");
 
     /**
      * Creates a new instance of ServiceLoadMetricWeight value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +44,7 @@ public final class ServiceLoadMetricWeight extends ExpandableStringEnum<ServiceL
 
     /**
      * Creates or finds a ServiceLoadMetricWeight from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServiceLoadMetricWeight.
      */
@@ -47,7 +55,7 @@ public final class ServiceLoadMetricWeight extends ExpandableStringEnum<ServiceL
 
     /**
      * Gets known ServiceLoadMetricWeight values.
-     *
+     * 
      * @return known ServiceLoadMetricWeight values.
      */
     public static Collection<ServiceLoadMetricWeight> values() {

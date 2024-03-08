@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Service Principal credential type properties. */
+/**
+ * Service Principal credential type properties.
+ */
 @Fluent
 public final class ServicePrincipalCredentialTypeProperties {
     /*
@@ -29,13 +31,15 @@ public final class ServicePrincipalCredentialTypeProperties {
     @JsonProperty(value = "tenant")
     private Object tenant;
 
-    /** Creates an instance of ServicePrincipalCredentialTypeProperties class. */
+    /**
+     * Creates an instance of ServicePrincipalCredentialTypeProperties class.
+     */
     public ServicePrincipalCredentialTypeProperties() {
     }
 
     /**
      * Get the servicePrincipalId property: The app ID of the service principal used to authenticate.
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object servicePrincipalId() {
@@ -44,7 +48,7 @@ public final class ServicePrincipalCredentialTypeProperties {
 
     /**
      * Set the servicePrincipalId property: The app ID of the service principal used to authenticate.
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the ServicePrincipalCredentialTypeProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class ServicePrincipalCredentialTypeProperties {
 
     /**
      * Get the servicePrincipalKey property: The key of the service principal used to authenticate.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public AzureKeyVaultSecretReference servicePrincipalKey() {
@@ -64,19 +68,19 @@ public final class ServicePrincipalCredentialTypeProperties {
 
     /**
      * Set the servicePrincipalKey property: The key of the service principal used to authenticate.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the ServicePrincipalCredentialTypeProperties object itself.
      */
-    public ServicePrincipalCredentialTypeProperties withServicePrincipalKey(
-        AzureKeyVaultSecretReference servicePrincipalKey) {
+    public ServicePrincipalCredentialTypeProperties
+        withServicePrincipalKey(AzureKeyVaultSecretReference servicePrincipalKey) {
         this.servicePrincipalKey = servicePrincipalKey;
         return this;
     }
 
     /**
      * Get the tenant property: The ID of the tenant to which the service principal belongs.
-     *
+     * 
      * @return the tenant value.
      */
     public Object tenant() {
@@ -85,7 +89,7 @@ public final class ServicePrincipalCredentialTypeProperties {
 
     /**
      * Set the tenant property: The ID of the tenant to which the service principal belongs.
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the ServicePrincipalCredentialTypeProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class ServicePrincipalCredentialTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

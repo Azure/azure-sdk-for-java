@@ -9,7 +9,9 @@ import com.azure.resourcemanager.healthcareapis.fluent.models.DicomServiceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The collection of Dicom Services. */
+/**
+ * The collection of Dicom Services.
+ */
 @Fluent
 public final class DicomServiceCollection {
     /*
@@ -25,8 +27,14 @@ public final class DicomServiceCollection {
     private List<DicomServiceInner> value;
 
     /**
+     * Creates an instance of DicomServiceCollection class.
+     */
+    public DicomServiceCollection() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of Dicom Services.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +43,7 @@ public final class DicomServiceCollection {
 
     /**
      * Set the nextLink property: The link used to get the next page of Dicom Services.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DicomServiceCollection object itself.
      */
@@ -46,7 +54,7 @@ public final class DicomServiceCollection {
 
     /**
      * Get the value property: The list of Dicom Services.
-     *
+     * 
      * @return the value value.
      */
     public List<DicomServiceInner> value() {
@@ -55,7 +63,7 @@ public final class DicomServiceCollection {
 
     /**
      * Set the value property: The list of Dicom Services.
-     *
+     * 
      * @param value the value value to set.
      * @return the DicomServiceCollection object itself.
      */
@@ -66,7 +74,7 @@ public final class DicomServiceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

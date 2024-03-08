@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.webpubsub.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.fluent.models.WebPubSubHubInner;
 
@@ -36,6 +37,13 @@ public interface WebPubSubHub {
      * @return the properties value.
      */
     WebPubSubHubProperties properties();
+
+    /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
 
     /**
      * Gets the name of the resource group.

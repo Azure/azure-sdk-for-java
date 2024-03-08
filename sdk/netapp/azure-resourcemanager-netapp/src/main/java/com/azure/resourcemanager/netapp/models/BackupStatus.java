@@ -6,67 +6,77 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
 
-/** An immutable client-side representation of BackupStatus. */
+/**
+ * An immutable client-side representation of BackupStatus.
+ */
 public interface BackupStatus {
     /**
      * Gets the healthy property: Backup health status.
-     *
+     * 
      * @return the healthy value.
      */
     Boolean healthy();
 
     /**
      * Gets the relationshipStatus property: Status of the backup mirror relationship.
-     *
+     * 
      * @return the relationshipStatus value.
      */
     RelationshipStatus relationshipStatus();
 
     /**
      * Gets the mirrorState property: The status of the backup.
-     *
+     * 
      * @return the mirrorState value.
      */
     MirrorState mirrorState();
 
     /**
      * Gets the unhealthyReason property: Reason for the unhealthy backup relationship.
-     *
+     * 
      * @return the unhealthyReason value.
      */
     String unhealthyReason();
 
     /**
      * Gets the errorMessage property: Displays error message if the backup is in an error state.
-     *
+     * 
      * @return the errorMessage value.
      */
     String errorMessage();
 
     /**
      * Gets the lastTransferSize property: Displays the last transfer size.
-     *
+     * 
      * @return the lastTransferSize value.
      */
     Long lastTransferSize();
 
     /**
      * Gets the lastTransferType property: Displays the last transfer type.
-     *
+     * 
      * @return the lastTransferType value.
      */
     String lastTransferType();
 
     /**
      * Gets the totalTransferBytes property: Displays the total bytes transferred.
-     *
+     * 
      * @return the totalTransferBytes value.
      */
     Long totalTransferBytes();
 
     /**
+     * Gets the transferProgressBytes property: Displays the total number of bytes transferred for the ongoing
+     * operation.
+     * 
+     * @return the transferProgressBytes value.
+     */
+    Long transferProgressBytes();
+
+    /**
      * Gets the inner com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner object.
-     *
+     * 
      * @return the inner object.
      */
     BackupStatusInner innerModel();

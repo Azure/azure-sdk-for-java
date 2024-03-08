@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.search.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SharedPrivateLinkResources Get. */
 public final class SharedPrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/GetSharedPrivateLinkResource.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/GetSharedPrivateLinkResource.json
      */
     /**
      * Sample code: SharedPrivateLinkResourceGet.
@@ -22,6 +20,6 @@ public final class SharedPrivateLinkResourcesGetSamples {
             .manager()
             .serviceClient()
             .getSharedPrivateLinkResources()
-            .getWithResponse("rg1", "mysearchservice", "testResource", null, Context.NONE);
+            .getWithResponse("rg1", "mysearchservice", "testResource", null, com.azure.core.util.Context.NONE);
     }
 }

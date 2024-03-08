@@ -8,30 +8,40 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Ssis folder. */
+/**
+ * Ssis folder.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Folder")
 @Fluent
 public final class SsisFolder extends SsisObjectMetadata {
-    /** Creates an instance of SsisFolder class. */
+    /**
+     * Creates an instance of SsisFolder class.
+     */
     public SsisFolder() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisFolder withId(Long id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisFolder withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SsisFolder withDescription(String description) {
         super.withDescription(description);
@@ -40,7 +50,7 @@ public final class SsisFolder extends SsisObjectMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

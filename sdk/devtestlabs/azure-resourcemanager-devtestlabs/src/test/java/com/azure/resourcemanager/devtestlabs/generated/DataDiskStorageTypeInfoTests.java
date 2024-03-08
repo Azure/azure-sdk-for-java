@@ -14,18 +14,18 @@ public final class DataDiskStorageTypeInfoTests {
     public void testDeserialize() throws Exception {
         DataDiskStorageTypeInfo model =
             BinaryData
-                .fromString("{\"lun\":\"co\",\"storageType\":\"Standard\"}")
+                .fromString("{\"lun\":\"djrkvfgbvfvpd\",\"storageType\":\"Premium\"}")
                 .toObject(DataDiskStorageTypeInfo.class);
-        Assertions.assertEquals("co", model.lun());
-        Assertions.assertEquals(StorageType.STANDARD, model.storageType());
+        Assertions.assertEquals("djrkvfgbvfvpd", model.lun());
+        Assertions.assertEquals(StorageType.PREMIUM, model.storageType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataDiskStorageTypeInfo model =
-            new DataDiskStorageTypeInfo().withLun("co").withStorageType(StorageType.STANDARD);
+            new DataDiskStorageTypeInfo().withLun("djrkvfgbvfvpd").withStorageType(StorageType.PREMIUM);
         model = BinaryData.fromObject(model).toObject(DataDiskStorageTypeInfo.class);
-        Assertions.assertEquals("co", model.lun());
-        Assertions.assertEquals(StorageType.STANDARD, model.storageType());
+        Assertions.assertEquals("djrkvfgbvfvpd", model.lun());
+        Assertions.assertEquals(StorageType.PREMIUM, model.storageType());
     }
 }

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableTableResourcesGe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of restorable table names. */
+/**
+ * List of restorable table names.
+ */
 @Immutable
 public final class RestorableTableResourcesListResult {
     /*
@@ -18,13 +20,15 @@ public final class RestorableTableResourcesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableTableResourcesGetResultInner> value;
 
-    /** Creates an instance of RestorableTableResourcesListResult class. */
+    /**
+     * Creates an instance of RestorableTableResourcesListResult class.
+     */
     public RestorableTableResourcesListResult() {
     }
 
     /**
      * Get the value property: List of restorable table names.
-     *
+     * 
      * @return the value value.
      */
     public List<RestorableTableResourcesGetResultInner> value() {
@@ -33,7 +37,7 @@ public final class RestorableTableResourcesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

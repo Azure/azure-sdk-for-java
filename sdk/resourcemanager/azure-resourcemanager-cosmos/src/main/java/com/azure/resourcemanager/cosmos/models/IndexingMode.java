@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the indexing mode. */
+/**
+ * Indicates the indexing mode.
+ */
 public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
-    /** Static value consistent for IndexingMode. */
+    /**
+     * Static value consistent for IndexingMode.
+     */
     public static final IndexingMode CONSISTENT = fromString("consistent");
 
-    /** Static value lazy for IndexingMode. */
+    /**
+     * Static value lazy for IndexingMode.
+     */
     public static final IndexingMode LAZY = fromString("lazy");
 
-    /** Static value none for IndexingMode. */
+    /**
+     * Static value none for IndexingMode.
+     */
     public static final IndexingMode NONE = fromString("none");
 
     /**
      * Creates a new instance of IndexingMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
 
     /**
      * Creates or finds a IndexingMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IndexingMode.
      */
@@ -41,7 +49,7 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
 
     /**
      * Gets known IndexingMode values.
-     *
+     * 
      * @return known IndexingMode values.
      */
     public static Collection<IndexingMode> values() {

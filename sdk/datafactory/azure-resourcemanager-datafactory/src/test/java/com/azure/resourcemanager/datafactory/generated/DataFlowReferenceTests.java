@@ -14,33 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class DataFlowReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataFlowReference model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DataFlowReference\",\"referenceName\":\"sbede\",\"datasetParameters\":\"dataexkxbhx\",\"parameters\":{\"mnhjevdyzn\":\"datanul\",\"kmq\":\"dataajsvk\",\"iizjixlqfhefkwa\":\"datazzkivyhjr\",\"nlqxsjxtele\":\"datasolronqqlm\"},\"\":{\"oolzqocarkuzl\":\"datauqbo\",\"t\":\"datacnn\"}}")
-                .toObject(DataFlowReference.class);
+        DataFlowReference model = BinaryData.fromString(
+            "{\"type\":\"DataFlowReference\",\"referenceName\":\"sbede\",\"datasetParameters\":\"dataexkxbhx\",\"parameters\":{\"mnhjevdyzn\":\"datanul\",\"kmq\":\"dataajsvk\",\"iizjixlqfhefkwa\":\"datazzkivyhjr\",\"nlqxsjxtele\":\"datasolronqqlm\"},\"\":{\"oolzqocarkuzl\":\"datauqbo\",\"t\":\"datacnn\"}}")
+            .toObject(DataFlowReference.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.type());
         Assertions.assertEquals("sbede", model.referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowReference model =
-            new DataFlowReference()
-                .withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-                .withReferenceName("sbede")
-                .withDatasetParameters("dataexkxbhx")
-                .withParameters(
-                    mapOf(
-                        "mnhjevdyzn",
-                        "datanul",
-                        "kmq",
-                        "dataajsvk",
-                        "iizjixlqfhefkwa",
-                        "datazzkivyhjr",
-                        "nlqxsjxtele",
-                        "datasolronqqlm"))
-                .withAdditionalProperties(mapOf());
+        DataFlowReference model = new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
+            .withReferenceName("sbede").withDatasetParameters("dataexkxbhx").withParameters(mapOf("mnhjevdyzn",
+                "datanul", "kmq", "dataajsvk", "iizjixlqfhefkwa", "datazzkivyhjr", "nlqxsjxtele", "datasolronqqlm"))
+            .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(DataFlowReference.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.type());
         Assertions.assertEquals("sbede", model.referenceName());

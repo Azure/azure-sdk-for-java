@@ -17,20 +17,6 @@ public interface ResourcePools {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the resourcePool.
-     */
-    ResourcePool getByResourceGroup(String resourceGroupName, String resourcePoolName);
-
-    /**
-     * Gets a resourcePool.
-     *
-     * <p>Implements resourcePool GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param resourcePoolName Name of the resourcePool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -41,18 +27,18 @@ public interface ResourcePools {
         String resourceGroupName, String resourcePoolName, Context context);
 
     /**
-     * Deletes an resourcePool.
+     * Gets a resourcePool.
      *
-     * <p>Implements resourcePool DELETE method.
+     * <p>Implements resourcePool GET method.
      *
      * @param resourceGroupName The Resource Group Name.
      * @param resourcePoolName Name of the resourcePool.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the resourcePool.
      */
-    void delete(String resourceGroupName, String resourcePoolName, Boolean force);
+    ResourcePool getByResourceGroup(String resourceGroupName, String resourcePoolName);
 
     /**
      * Deletes an resourcePool.

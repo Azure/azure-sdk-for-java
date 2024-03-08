@@ -5,10 +5,13 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.DialogStateResponseConstructorProxy;
-import com.azure.communication.callautomation.implementation.models.DialogOptions;
+import com.azure.communication.callautomation.implementation.models.BaseDialog;
 import com.azure.communication.callautomation.implementation.models.StartDialogRequestInternal;
+import com.azure.communication.callautomation.implementation.models.PowerVirtualAgentsDialog;
+import com.azure.communication.callautomation.implementation.models.AzureOpenAIDialog;
 import com.azure.communication.callautomation.models.DialogStateResult;
 import com.azure.communication.callautomation.models.StartDialogOptions;
+import com.azure.communication.callautomation.models.DialogInputType;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
@@ -69,12 +72,18 @@ public final class CallDialogAsync {
         try {
             context = context == null ? Context.NONE : context;
 
-            DialogOptions dialogOptions = new DialogOptions();
-            dialogOptions.setDialogContext(startDialogOptions.getDialogContext());
-            dialogOptions.setBotAppId(startDialogOptions.getBotId());
+            BaseDialog baseDialog = null;
+            if (startDialogOptions.getDialogInputType() == DialogInputType.POWER_VIRTUAL_AGENTS) {
+                baseDialog = new PowerVirtualAgentsDialog()
+                    .setBotAppId(startDialogOptions.getBotId())
+                    .setContext(startDialogOptions.getDialogContext());
+            } else if (startDialogOptions.getDialogInputType() == DialogInputType.AZURE_OPEN_AI) {
+                baseDialog = new AzureOpenAIDialog()
+                    .setContext(startDialogOptions.getDialogContext());
+            }
 
             StartDialogRequestInternal requestInternal = new StartDialogRequestInternal()
-                .setDialogOptions(dialogOptions)
+                .setDialog(baseDialog)
                 .setOperationContext(startDialogOptions.getOperationContext());
 
             return dialogsInternal.startDialogWithResponseAsync(callConnectionId, startDialogOptions.getDialogId(), requestInternal, context).
@@ -107,8 +116,8 @@ public final class CallDialogAsync {
     Mono<Response<Void>> stopDialogWithResponseInternal(String dialogId, Context context) {
         try {
             context = context == null ? Context.NONE : context;
-
-            return dialogsInternal.stopDialogWithResponseAsync(callConnectionId, dialogId, context);
+            // TODO: FIX OperationCallbackUri
+            return dialogsInternal.stopDialogWithResponseAsync(callConnectionId, dialogId, null, context);
         } catch (RuntimeException e) {
             return monoError(logger, e);
         }

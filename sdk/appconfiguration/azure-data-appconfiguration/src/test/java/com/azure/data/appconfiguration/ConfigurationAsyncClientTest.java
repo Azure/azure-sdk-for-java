@@ -3,16 +3,18 @@
 package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.experimental.models.PollResult;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.PollOperationDetails;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
@@ -1339,7 +1341,6 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    @Disabled
     public void deleteAllSettings(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
         client = getConfigurationAsyncClient(httpClient, serviceVersion);
         client.listConfigurationSettings(new SettingSelector().setKeyFilter("*"))
@@ -1378,7 +1379,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1408,7 +1409,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1457,7 +1458,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1494,7 +1495,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1528,7 +1529,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1561,7 +1562,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1605,7 +1606,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1660,7 +1661,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1675,7 +1676,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1736,7 +1737,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1751,7 +1752,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1820,7 +1821,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1863,7 +1864,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             // Retention period can be setup when creating a snapshot and cannot edit.
             ConfigurationSnapshot snapshot = new ConfigurationSnapshot(filters)
                 .setRetentionPeriod(MINIMUM_RETENTION_PERIOD);
-            SyncPoller<PollResult, ConfigurationSnapshot> poller =
+            SyncPoller<PollOperationDetails, ConfigurationSnapshot> poller =
                 client.beginCreateSnapshot(name, snapshot).getSyncPoller();
             poller.setPollInterval(Duration.ofSeconds(10));
             poller.waitForCompletion();
@@ -1892,6 +1893,57 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .assertNext(response -> assertEquals(ConfigurationSnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
+    public void listSettingsWithPageETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
+        client = getConfigurationAsyncClient(httpClient, serviceVersion);
+        // Step 1: Prepare testing data.
+        // Clean all existing settings before this test purpose
+        client.listConfigurationSettings(null)
+                .flatMap(configurationSetting -> client.deleteConfigurationSetting(configurationSetting))
+                .blockLast();
+
+        // Add a few setting to form a page of settings
+        final ConfigurationSetting setting = new ConfigurationSetting().setKey(getKey()).setValue("value");
+        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(getKey()).setValue("value");
+        client.setConfigurationSetting(setting).block();
+        client.setConfigurationSetting(setting2).block();
+        // Get all page ETags
+        List<MatchConditions> matchConditionsList = new ArrayList<>();
+        PagedResponse<ConfigurationSetting> pagedResponse = client.listConfigurationSettings(null).byPage().blockLast();
+        matchConditionsList.add(new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
+
+
+        // Step 2: Test list settings with page ETag
+        // Validation 1: Validate all pages are not modified and return empty list of settings in each page response.
+        // List settings with page ETag
+        StepVerifier.create(client.listConfigurationSettings(
+                new SettingSelector().setMatchConditions(matchConditionsList)).byPage())
+                .assertNext(response -> {
+                    // No changes on the server side, so the response should be empty list
+                    assertEquals(0, response.getValue().size());
+                }).verifyComplete();
+        // Validation 2: validate the page has the updated setting should be returned
+        // Update a setting
+        final ConfigurationSetting updatedSetting = new ConfigurationSetting().setKey(setting.getKey()).setValue("new value");
+        client.setConfigurationSetting(updatedSetting).block();
+        // List settings with expired page ETag
+        StepVerifier.create(client.listConfigurationSettings(
+                new SettingSelector().setMatchConditions(matchConditionsList))
+                .byPage())
+                .assertNext(response -> {
+                    // The page has the updated setting should be returned, so the response should not be empty list
+                    assertFalse(response.getValue().isEmpty());
+                    // find the updated setting in the list
+                    ConfigurationSetting updatedSettingFromResponse = response.getValue()
+                            .stream()
+                            .filter(s -> s.getKey().equals(updatedSetting.getKey()))
+                            .findAny()
+                            .get();
+                    assertConfigurationEquals(updatedSetting, updatedSettingFromResponse);
+                }).verifyComplete();
     }
 
     /**

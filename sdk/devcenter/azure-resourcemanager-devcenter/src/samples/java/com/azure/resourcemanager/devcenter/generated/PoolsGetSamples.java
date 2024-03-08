@@ -7,7 +7,7 @@ package com.azure.resourcemanager.devcenter.generated;
 /** Samples for Pools Get. */
 public final class PoolsGetSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Pools_GetUnhealthyStatus.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Pools_GetUnhealthyStatus.json
      */
     /**
      * Sample code: Pools_GetUnhealthyStatus.
@@ -19,7 +19,7 @@ public final class PoolsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Pools_Get.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2023-10-01-preview/examples/Pools_Get.json
      */
     /**
      * Sample code: Pools_Get.

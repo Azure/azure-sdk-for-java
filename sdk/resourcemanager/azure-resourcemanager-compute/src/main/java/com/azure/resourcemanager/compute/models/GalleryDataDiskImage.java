@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is the data disk image. */
+/**
+ * This is the data disk image.
+ */
 @Fluent
 public final class GalleryDataDiskImage extends GalleryDiskImage {
     /*
@@ -17,7 +19,9 @@ public final class GalleryDataDiskImage extends GalleryDiskImage {
     @JsonProperty(value = "lun", required = true)
     private int lun;
 
-    /** Creates an instance of GalleryDataDiskImage class. */
+    /**
+     * Creates an instance of GalleryDataDiskImage class.
+     */
     public GalleryDataDiskImage() {
     }
 
@@ -25,7 +29,7 @@ public final class GalleryDataDiskImage extends GalleryDiskImage {
      * Get the lun property: This property specifies the logical unit number of the data disk. This value is used to
      * identify data disks within the Virtual Machine and therefore must be unique for each data disk attached to the
      * Virtual Machine.
-     *
+     * 
      * @return the lun value.
      */
     public int lun() {
@@ -36,7 +40,7 @@ public final class GalleryDataDiskImage extends GalleryDiskImage {
      * Set the lun property: This property specifies the logical unit number of the data disk. This value is used to
      * identify data disks within the Virtual Machine and therefore must be unique for each data disk attached to the
      * Virtual Machine.
-     *
+     * 
      * @param lun the lun value to set.
      * @return the GalleryDataDiskImage object itself.
      */
@@ -45,14 +49,18 @@ public final class GalleryDataDiskImage extends GalleryDiskImage {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryDataDiskImage withHostCaching(HostCaching hostCaching) {
         super.withHostCaching(hostCaching);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryDataDiskImage withSource(GalleryDiskImageSource source) {
         super.withSource(source);
@@ -61,7 +69,7 @@ public final class GalleryDataDiskImage extends GalleryDiskImage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

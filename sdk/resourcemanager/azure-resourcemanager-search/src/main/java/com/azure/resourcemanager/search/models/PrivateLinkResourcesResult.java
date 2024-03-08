@@ -18,6 +18,10 @@ public final class PrivateLinkResourcesResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateLinkResourceInner> value;
 
+    /** Creates an instance of PrivateLinkResourcesResult class. */
+    public PrivateLinkResourcesResult() {
+    }
+
     /**
      * Get the value property: The list of supported Private Link Resources.
      *

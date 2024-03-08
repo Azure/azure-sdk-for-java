@@ -4,7 +4,6 @@
 
 package com.azure.developer.devcenter;
 
-import com.azure.core.util.Configuration;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
@@ -14,8 +13,6 @@ import org.junit.jupiter.api.Assertions;
 class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testCreateDevBox() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "sdk-project-kjqdmrwdctddo");
-        String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "sdk-pool-wjpd3g3vqn2do");
 
         // Provision a Dev Box
         BinaryData devBoxBody = BinaryData.fromString("{\"poolName\":\"" + poolName + "\"}");

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Metadata associated with the operation. */
+/**
+ * Metadata associated with the operation.
+ */
 @Fluent
 public final class OperationDisplay {
     /*
@@ -34,13 +36,15 @@ public final class OperationDisplay {
     @JsonProperty(value = "operation")
     private String operation;
 
-    /** Creates an instance of OperationDisplay class. */
+    /**
+     * Creates an instance of OperationDisplay class.
+     */
     public OperationDisplay() {
     }
 
     /**
      * Get the description property: The description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -49,7 +53,7 @@ public final class OperationDisplay {
 
     /**
      * Set the description property: The description of the operation.
-     *
+     * 
      * @param description the description value to set.
      * @return the OperationDisplay object itself.
      */
@@ -60,7 +64,7 @@ public final class OperationDisplay {
 
     /**
      * Get the provider property: The name of the provider.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -69,7 +73,7 @@ public final class OperationDisplay {
 
     /**
      * Set the provider property: The name of the provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the OperationDisplay object itself.
      */
@@ -80,7 +84,7 @@ public final class OperationDisplay {
 
     /**
      * Get the resource property: The name of the resource type on which the operation is performed.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -89,7 +93,7 @@ public final class OperationDisplay {
 
     /**
      * Set the resource property: The name of the resource type on which the operation is performed.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the OperationDisplay object itself.
      */
@@ -100,7 +104,7 @@ public final class OperationDisplay {
 
     /**
      * Get the operation property: The type of operation: get, read, delete, etc.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -109,7 +113,7 @@ public final class OperationDisplay {
 
     /**
      * Set the operation property: The type of operation: get, read, delete, etc.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the OperationDisplay object itself.
      */
@@ -120,7 +124,7 @@ public final class OperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

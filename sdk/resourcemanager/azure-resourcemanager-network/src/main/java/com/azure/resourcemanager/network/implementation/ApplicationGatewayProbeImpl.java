@@ -85,6 +85,11 @@ class ApplicationGatewayProbeImpl
         return this.innerModel().host();
     }
 
+    @Override
+    public Boolean isHostNameFromBackendHttpSettings() {
+        return this.innerModel().pickHostnameFromBackendHttpSettings();
+    }
+
     // Fluent setters
 
     @Override
@@ -115,6 +120,18 @@ class ApplicationGatewayProbeImpl
     @Override
     public ApplicationGatewayProbeImpl withHost(String host) {
         this.innerModel().withHost(host);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayProbeImpl withHostNameFromBackendHttpSettings() {
+        this.innerModel().withPickHostnameFromBackendHttpSettings(true);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayProbeImpl withoutHostNameFromBackendHttpSettings() {
+        this.innerModel().withPickHostnameFromBackendHttpSettings(false);
         return this;
     }
 

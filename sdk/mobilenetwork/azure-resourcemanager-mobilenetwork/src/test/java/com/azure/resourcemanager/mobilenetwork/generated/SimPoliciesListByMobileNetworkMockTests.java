@@ -32,7 +32,7 @@ public final class SimPoliciesListByMobileNetworkMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"siteProvisioningState\":{\"ylcc\":\"Deleting\"},\"ueAmbr\":{\"uplink\":\"evxrhyz\",\"downlink\":\"fwrsofpltdbmair\"},\"defaultSlice\":{\"id\":\"hvhfnracw\"},\"rfspIndex\":1723621906,\"registrationTimer\":189921644,\"sliceConfigurations\":[{\"slice\":{\"id\":\"uuj\"},\"defaultDataNetwork\":{\"id\":\"ouhdawsigrb\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"xsjybvitvqk\"},\"sessionAmbr\":{\"uplink\":\"y\",\"downlink\":\"znumtggmuwdchoz\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"nkf\"},\"sessionAmbr\":{\"uplink\":\"xlvxnoakiz\",\"downlink\":\"oaiknaqlnuwig\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"yxl\"},\"sessionAmbr\":{\"uplink\":\"kwph\",\"downlink\":\"xzcwxhmpejt\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"ke\"},\"sessionAmbr\":{\"uplink\":\"aonwivkcqhrxh\",\"downlink\":\"knlccrmmkyup\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"jubyqjfkakfq\"},\"defaultDataNetwork\":{\"id\":\"rke\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"il\"},\"sessionAmbr\":{\"uplink\":\"udxjascowv\",\"downlink\":\"djkpdxph\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"kk\"},\"sessionAmbr\":{\"uplink\":\"nmgzvyfijdkzuqnw\",\"downlink\":\"it\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"uqoly\"},\"sessionAmbr\":{\"uplink\":\"hluqwquls\",\"downlink\":\"trjbhxykfhyq\"},\"allowedServices\":[]},{\"dataNetwork\":{\"id\":\"zvqqugdrftbcvexr\"},\"sessionAmbr\":{\"uplink\":\"uquowtljvfwhr\",\"downlink\":\"agk\"},\"allowedServices\":[]}]}]},\"location\":\"xv\",\"tags\":{\"lmepjpf\":\"vbczsulmdg\",\"g\":\"eykgsangpszngaf\",\"ujcngo\":\"lkvec\"},\"id\":\"dyedmzrgjfo\",\"name\":\"nub\",\"type\":\"oitpkpztrgdgx\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"siteProvisioningState\":{\"owtljvfw\":\"NotApplicable\",\"eagk\":\"Failed\",\"xv\":\"Adding\",\"tvbczsulm\":\"Adding\"},\"ueAmbr\":{\"uplink\":\"gglmepjpfsey\",\"downlink\":\"g\"},\"defaultSlice\":{\"id\":\"angpszngafpgyl\"},\"rfspIndex\":2068016278,\"registrationTimer\":73150877,\"sliceConfigurations\":[{\"slice\":{\"id\":\"jcngoadyed\"},\"defaultDataNetwork\":{\"id\":\"zrgjfok\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"bnoit\"},\"sessionAmbr\":{\"uplink\":\"kpztrgd\",\"downlink\":\"x\"},\"allowedServices\":[]}]},{\"slice\":{\"id\":\"coqra\"},\"defaultDataNetwork\":{\"id\":\"wugyx\"},\"dataNetworkConfigurations\":[{\"dataNetwork\":{\"id\":\"itweialwvskbuh\"},\"sessionAmbr\":{\"uplink\":\"acaqtyltcoqcu\",\"downlink\":\"pdsxzakuejkm\"},\"allowedServices\":[]}]}]},\"location\":\"iztjof\",\"tags\":{\"yeji\":\"ovjufycsjmlbe\",\"rtudawlpjfel\":\"iuxegth\",\"bgqnz\":\"erppt\",\"ialwc\":\"nhii\"},\"id\":\"gckbb\",\"name\":\"ccgzpraoxnyu\",\"type\":\"fa\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,22 +61,21 @@ public final class SimPoliciesListByMobileNetworkMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<SimPolicy> response =
-            manager.simPolicies().listByMobileNetwork("tnhqsycl", "selpkpbaf", com.azure.core.util.Context.NONE);
+            manager.simPolicies().listByMobileNetwork("rftb", "ve", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xv", response.iterator().next().location());
-        Assertions.assertEquals("vbczsulmdg", response.iterator().next().tags().get("lmepjpf"));
-        Assertions.assertEquals("evxrhyz", response.iterator().next().ueAmbr().uplink());
-        Assertions.assertEquals("fwrsofpltdbmair", response.iterator().next().ueAmbr().downlink());
-        Assertions.assertEquals("hvhfnracw", response.iterator().next().defaultSlice().id());
-        Assertions.assertEquals(1723621906, response.iterator().next().rfspIndex());
-        Assertions.assertEquals(189921644, response.iterator().next().registrationTimer());
-        Assertions.assertEquals("uuj", response.iterator().next().sliceConfigurations().get(0).slice().id());
+        Assertions.assertEquals("iztjof", response.iterator().next().location());
+        Assertions.assertEquals("ovjufycsjmlbe", response.iterator().next().tags().get("yeji"));
+        Assertions.assertEquals("gglmepjpfsey", response.iterator().next().ueAmbr().uplink());
+        Assertions.assertEquals("g", response.iterator().next().ueAmbr().downlink());
+        Assertions.assertEquals("angpszngafpgyl", response.iterator().next().defaultSlice().id());
+        Assertions.assertEquals(2068016278, response.iterator().next().rfspIndex());
+        Assertions.assertEquals(73150877, response.iterator().next().registrationTimer());
+        Assertions.assertEquals("jcngoadyed", response.iterator().next().sliceConfigurations().get(0).slice().id());
+        Assertions
+            .assertEquals("zrgjfok", response.iterator().next().sliceConfigurations().get(0).defaultDataNetwork().id());
         Assertions
             .assertEquals(
-                "ouhdawsigrb", response.iterator().next().sliceConfigurations().get(0).defaultDataNetwork().id());
-        Assertions
-            .assertEquals(
-                "xsjybvitvqk",
+                "bnoit",
                 response
                     .iterator()
                     .next()
@@ -88,7 +87,7 @@ public final class SimPoliciesListByMobileNetworkMockTests {
                     .id());
         Assertions
             .assertEquals(
-                "y",
+                "kpztrgd",
                 response
                     .iterator()
                     .next()
@@ -100,7 +99,7 @@ public final class SimPoliciesListByMobileNetworkMockTests {
                     .uplink());
         Assertions
             .assertEquals(
-                "znumtggmuwdchoz",
+                "x",
                 response
                     .iterator()
                     .next()

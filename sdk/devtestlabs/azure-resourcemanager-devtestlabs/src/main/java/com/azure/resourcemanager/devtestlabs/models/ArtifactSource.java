@@ -159,11 +159,13 @@ public interface ArtifactSource {
             DefinitionStages.WithParentResource,
             DefinitionStages.WithCreate {
     }
+
     /** The ArtifactSource definition stages. */
     interface DefinitionStages {
         /** The first stage of the ArtifactSource definition. */
         interface Blank extends WithLocation {
         }
+
         /** The stage of the ArtifactSource definition allowing to specify location. */
         interface WithLocation {
             /**
@@ -182,6 +184,7 @@ public interface ArtifactSource {
              */
             WithParentResource withRegion(String location);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify parent resource. */
         interface WithParentResource {
             /**
@@ -193,6 +196,7 @@ public interface ArtifactSource {
              */
             WithCreate withExistingLab(String resourceGroupName, String labName);
         }
+
         /**
          * The stage of the ArtifactSource definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -222,6 +226,7 @@ public interface ArtifactSource {
              */
             ArtifactSource create(Context context);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify tags. */
         interface WithTags {
             /**
@@ -232,6 +237,7 @@ public interface ArtifactSource {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify displayName. */
         interface WithDisplayName {
             /**
@@ -242,6 +248,7 @@ public interface ArtifactSource {
              */
             WithCreate withDisplayName(String displayName);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify uri. */
         interface WithUri {
             /**
@@ -252,6 +259,7 @@ public interface ArtifactSource {
              */
             WithCreate withUri(String uri);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify sourceType. */
         interface WithSourceType {
             /**
@@ -262,6 +270,7 @@ public interface ArtifactSource {
              */
             WithCreate withSourceType(SourceControlType sourceType);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify folderPath. */
         interface WithFolderPath {
             /**
@@ -272,6 +281,7 @@ public interface ArtifactSource {
              */
             WithCreate withFolderPath(String folderPath);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify armTemplateFolderPath. */
         interface WithArmTemplateFolderPath {
             /**
@@ -282,6 +292,7 @@ public interface ArtifactSource {
              */
             WithCreate withArmTemplateFolderPath(String armTemplateFolderPath);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify branchRef. */
         interface WithBranchRef {
             /**
@@ -292,6 +303,7 @@ public interface ArtifactSource {
              */
             WithCreate withBranchRef(String branchRef);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify securityToken. */
         interface WithSecurityToken {
             /**
@@ -302,6 +314,7 @@ public interface ArtifactSource {
              */
             WithCreate withSecurityToken(String securityToken);
         }
+
         /** The stage of the ArtifactSource definition allowing to specify status. */
         interface WithStatus {
             /**
@@ -313,6 +326,7 @@ public interface ArtifactSource {
             WithCreate withStatus(EnableStatus status);
         }
     }
+
     /**
      * Begins update for the ArtifactSource resource.
      *
@@ -337,6 +351,7 @@ public interface ArtifactSource {
          */
         ArtifactSource apply(Context context);
     }
+
     /** The ArtifactSource update stages. */
     interface UpdateStages {
         /** The stage of the ArtifactSource update allowing to specify tags. */
@@ -350,6 +365,7 @@ public interface ArtifactSource {
             Update withTags(Map<String, String> tags);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
      *

@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class GreenplumTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GreenplumTableDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"GreenplumTable\",\"typeProperties\":{\"tableName\":\"datafpxeswctlfytb\",\"table\":\"dataytvnpbgcesfd\",\"schema\":\"dataclmowurofo\"},\"description\":\"b\",\"structure\":\"datazzwweoblb\",\"schema\":\"dataq\",\"linkedServiceName\":{\"referenceName\":\"hixcc\",\"parameters\":{\"xmyqzyqepgbb\":\"datasogvy\",\"dpwmgwxwukfjvqg\":\"datadsluokcevoxd\",\"gyphheovejkpalec\":\"dataaxseisvv\",\"pu\":\"datatlthrt\"}},\"parameters\":{\"oll\":{\"type\":\"Object\",\"defaultValue\":\"datagrqefnq\"}},\"annotations\":[\"datarmuzemb\",\"dataqieh\",\"datahjofy\"],\"folder\":{\"name\":\"axoxlorx\"},\"\":{\"glyyhrgmabspmlu\":\"dataqcxuthvp\",\"kedputocrb\":\"datayju\"}}")
-                .toObject(GreenplumTableDataset.class);
+        GreenplumTableDataset model = BinaryData.fromString(
+            "{\"type\":\"GreenplumTable\",\"typeProperties\":{\"tableName\":\"datafpxeswctlfytb\",\"table\":\"dataytvnpbgcesfd\",\"schema\":\"dataclmowurofo\"},\"description\":\"b\",\"structure\":\"datazzwweoblb\",\"schema\":\"dataq\",\"linkedServiceName\":{\"referenceName\":\"hixcc\",\"parameters\":{\"xmyqzyqepgbb\":\"datasogvy\",\"dpwmgwxwukfjvqg\":\"datadsluokcevoxd\",\"gyphheovejkpalec\":\"dataaxseisvv\",\"pu\":\"datatlthrt\"}},\"parameters\":{\"oll\":{\"type\":\"Object\",\"defaultValue\":\"datagrqefnq\"}},\"annotations\":[\"datarmuzemb\",\"dataqieh\",\"datahjofy\"],\"folder\":{\"name\":\"axoxlorx\"},\"\":{\"glyyhrgmabspmlu\":\"dataqcxuthvp\",\"kedputocrb\":\"datayju\"}}")
+            .toObject(GreenplumTableDataset.class);
         Assertions.assertEquals("b", model.description());
         Assertions.assertEquals("hixcc", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("oll").type());
@@ -31,33 +29,16 @@ public final class GreenplumTableDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GreenplumTableDataset model =
-            new GreenplumTableDataset()
-                .withDescription("b")
-                .withStructure("datazzwweoblb")
-                .withSchema("dataq")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("hixcc")
-                        .withParameters(
-                            mapOf(
-                                "xmyqzyqepgbb",
-                                "datasogvy",
-                                "dpwmgwxwukfjvqg",
-                                "datadsluokcevoxd",
-                                "gyphheovejkpalec",
-                                "dataaxseisvv",
-                                "pu",
-                                "datatlthrt")))
-                .withParameters(
-                    mapOf(
-                        "oll",
-                        new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datagrqefnq")))
+        GreenplumTableDataset model
+            = new GreenplumTableDataset().withDescription("b").withStructure("datazzwweoblb").withSchema("dataq")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("hixcc")
+                    .withParameters(mapOf("xmyqzyqepgbb", "datasogvy", "dpwmgwxwukfjvqg", "datadsluokcevoxd",
+                        "gyphheovejkpalec", "dataaxseisvv", "pu", "datatlthrt")))
+                .withParameters(mapOf("oll",
+                    new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datagrqefnq")))
                 .withAnnotations(Arrays.asList("datarmuzemb", "dataqieh", "datahjofy"))
-                .withFolder(new DatasetFolder().withName("axoxlorx"))
-                .withTableName("datafpxeswctlfytb")
-                .withTable("dataytvnpbgcesfd")
-                .withSchemaTypePropertiesSchema("dataclmowurofo");
+                .withFolder(new DatasetFolder().withName("axoxlorx")).withTableName("datafpxeswctlfytb")
+                .withTable("dataytvnpbgcesfd").withSchemaTypePropertiesSchema("dataclmowurofo");
         model = BinaryData.fromObject(model).toObject(GreenplumTableDataset.class);
         Assertions.assertEquals("b", model.description());
         Assertions.assertEquals("hixcc", model.linkedServiceName().referenceName());

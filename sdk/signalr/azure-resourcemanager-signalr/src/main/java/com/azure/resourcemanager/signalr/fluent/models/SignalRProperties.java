@@ -151,6 +151,23 @@ public final class SignalRProperties {
     @JsonProperty(value = "disableAadAuth")
     private Boolean disableAadAuth;
 
+    /*
+     * Enable or disable the regional endpoint. Default to "Enabled".
+     * When it's Disabled, new connections will not be routed to this endpoint, however existing connections will not
+     * be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     */
+    @JsonProperty(value = "regionEndpointEnabled")
+    private String regionEndpointEnabled;
+
+    /*
+     * Stop or start the resource.  Default to "False".
+     * When it's true, the data plane of the resource is shutdown.
+     * When it's false, the data plane of the resource is started.
+     */
+    @JsonProperty(value = "resourceStopped")
+    private String resourceStopped;
+
     /** Creates an instance of SignalRProperties class. */
     public SignalRProperties() {
     }
@@ -473,6 +490,52 @@ public final class SignalRProperties {
      */
     public SignalRProperties withDisableAadAuth(Boolean disableAadAuth) {
         this.disableAadAuth = disableAadAuth;
+        return this;
+    }
+
+    /**
+     * Get the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @return the regionEndpointEnabled value.
+     */
+    public String regionEndpointEnabled() {
+        return this.regionEndpointEnabled;
+    }
+
+    /**
+     * Set the regionEndpointEnabled property: Enable or disable the regional endpoint. Default to "Enabled". When it's
+     * Disabled, new connections will not be routed to this endpoint, however existing connections will not be affected.
+     * This property is replica specific. Disable the regional endpoint without replica is not allowed.
+     *
+     * @param regionEndpointEnabled the regionEndpointEnabled value to set.
+     * @return the SignalRProperties object itself.
+     */
+    public SignalRProperties withRegionEndpointEnabled(String regionEndpointEnabled) {
+        this.regionEndpointEnabled = regionEndpointEnabled;
+        return this;
+    }
+
+    /**
+     * Get the resourceStopped property: Stop or start the resource. Default to "False". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @return the resourceStopped value.
+     */
+    public String resourceStopped() {
+        return this.resourceStopped;
+    }
+
+    /**
+     * Set the resourceStopped property: Stop or start the resource. Default to "False". When it's true, the data plane
+     * of the resource is shutdown. When it's false, the data plane of the resource is started.
+     *
+     * @param resourceStopped the resourceStopped value to set.
+     * @return the SignalRProperties object itself.
+     */
+    public SignalRProperties withResourceStopped(String resourceStopped) {
+        this.resourceStopped = resourceStopped;
         return this;
     }
 

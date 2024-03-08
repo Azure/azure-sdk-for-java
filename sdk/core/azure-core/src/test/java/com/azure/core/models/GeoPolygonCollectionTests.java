@@ -95,16 +95,13 @@ public class GeoPolygonCollectionTests {
             Arguments.of(multiPolygon, 1, false),
 
             // Other is itself.
-            Arguments.of(multiPolygon, multiPolygon, true),
-            Arguments.of(multiPolygon1, multiPolygon1, true),
+            Arguments.of(multiPolygon, multiPolygon, true), Arguments.of(multiPolygon1, multiPolygon1, true),
 
             // Other is a different value.
-            Arguments.of(multiPolygon, multiPolygon1, false),
-            Arguments.of(multiPolygon1, multiPolygon, false),
+            Arguments.of(multiPolygon, multiPolygon1, false), Arguments.of(multiPolygon1, multiPolygon, false),
 
             // Other is the same value.
             Arguments.of(multiPolygon, new GeoPolygonCollection(polygons), true),
-            Arguments.of(multiPolygon1, new GeoPolygonCollection(polygons1, boundingBox, properties), true)
-        );
+            Arguments.of(multiPolygon1, new GeoPolygonCollection(polygons1, boundingBox, properties), true));
     }
 }

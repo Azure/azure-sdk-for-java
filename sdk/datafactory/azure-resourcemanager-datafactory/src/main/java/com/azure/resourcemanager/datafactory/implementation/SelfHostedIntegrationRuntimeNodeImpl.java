@@ -17,8 +17,7 @@ public final class SelfHostedIntegrationRuntimeNodeImpl implements SelfHostedInt
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    SelfHostedIntegrationRuntimeNodeImpl(
-        SelfHostedIntegrationRuntimeNodeInner innerObject,
+    SelfHostedIntegrationRuntimeNodeImpl(SelfHostedIntegrationRuntimeNodeInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

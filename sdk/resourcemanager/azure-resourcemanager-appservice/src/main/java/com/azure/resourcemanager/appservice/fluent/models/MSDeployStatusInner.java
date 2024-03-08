@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** MSDeploy ARM response. */
+/**
+ * MSDeploy ARM response.
+ */
 @Fluent
 public final class MSDeployStatusInner extends ProxyOnlyResource {
     /*
@@ -19,20 +21,24 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private MSDeployStatusProperties innerProperties;
 
-    /** Creates an instance of MSDeployStatusInner class. */
+    /**
+     * Creates an instance of MSDeployStatusInner class.
+     */
     public MSDeployStatusInner() {
     }
 
     /**
      * Get the innerProperties property: MSDeployStatus resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MSDeployStatusProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSDeployStatusInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +47,7 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the deployer property: Username of deployer.
-     *
+     * 
      * @return the deployer value.
      */
     public String deployer() {
@@ -50,7 +56,7 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public MSDeployProvisioningState provisioningState() {
@@ -59,7 +65,7 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the startTime property: Start time of deploy operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -68,7 +74,7 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the endTime property: End time of deploy operation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -77,7 +83,7 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Get the complete property: Whether the deployment operation has completed.
-     *
+     * 
      * @return the complete value.
      */
     public Boolean complete() {
@@ -86,7 +92,7 @@ public final class MSDeployStatusInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

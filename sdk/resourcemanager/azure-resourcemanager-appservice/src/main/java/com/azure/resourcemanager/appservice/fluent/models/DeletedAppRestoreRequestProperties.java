@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** DeletedAppRestoreRequest resource specific properties. */
+/**
+ * DeletedAppRestoreRequest resource specific properties.
+ */
 @Fluent
 public final class DeletedAppRestoreRequestProperties {
     /*
@@ -36,14 +38,16 @@ public final class DeletedAppRestoreRequestProperties {
     @JsonProperty(value = "useDRSecondary")
     private Boolean useDRSecondary;
 
-    /** Creates an instance of DeletedAppRestoreRequestProperties class. */
+    /**
+     * Creates an instance of DeletedAppRestoreRequestProperties class.
+     */
     public DeletedAppRestoreRequestProperties() {
     }
 
     /**
      * Get the deletedSiteId property: ARM resource ID of the deleted app. Example:
      * /subscriptions/{subId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}.
-     *
+     * 
      * @return the deletedSiteId value.
      */
     public String deletedSiteId() {
@@ -53,7 +57,7 @@ public final class DeletedAppRestoreRequestProperties {
     /**
      * Set the deletedSiteId property: ARM resource ID of the deleted app. Example:
      * /subscriptions/{subId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}.
-     *
+     * 
      * @param deletedSiteId the deletedSiteId value to set.
      * @return the DeletedAppRestoreRequestProperties object itself.
      */
@@ -65,7 +69,7 @@ public final class DeletedAppRestoreRequestProperties {
     /**
      * Get the recoverConfiguration property: If true, deleted site configuration, in addition to content, will be
      * restored.
-     *
+     * 
      * @return the recoverConfiguration value.
      */
     public Boolean recoverConfiguration() {
@@ -75,7 +79,7 @@ public final class DeletedAppRestoreRequestProperties {
     /**
      * Set the recoverConfiguration property: If true, deleted site configuration, in addition to content, will be
      * restored.
-     *
+     * 
      * @param recoverConfiguration the recoverConfiguration value to set.
      * @return the DeletedAppRestoreRequestProperties object itself.
      */
@@ -85,9 +89,9 @@ public final class DeletedAppRestoreRequestProperties {
     }
 
     /**
-     * Get the snapshotTime property: Point in time to restore the deleted app from, formatted as a DateTime string. If
-     * unspecified, default value is the time that the app was deleted.
-     *
+     * Get the snapshotTime property: Point in time to restore the deleted app from, formatted as a DateTime string.
+     * If unspecified, default value is the time that the app was deleted.
+     * 
      * @return the snapshotTime value.
      */
     public String snapshotTime() {
@@ -95,9 +99,9 @@ public final class DeletedAppRestoreRequestProperties {
     }
 
     /**
-     * Set the snapshotTime property: Point in time to restore the deleted app from, formatted as a DateTime string. If
-     * unspecified, default value is the time that the app was deleted.
-     *
+     * Set the snapshotTime property: Point in time to restore the deleted app from, formatted as a DateTime string.
+     * If unspecified, default value is the time that the app was deleted.
+     * 
      * @param snapshotTime the snapshotTime value to set.
      * @return the DeletedAppRestoreRequestProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class DeletedAppRestoreRequestProperties {
 
     /**
      * Get the useDRSecondary property: If true, the snapshot is retrieved from DRSecondary endpoint.
-     *
+     * 
      * @return the useDRSecondary value.
      */
     public Boolean useDRSecondary() {
@@ -117,7 +121,7 @@ public final class DeletedAppRestoreRequestProperties {
 
     /**
      * Set the useDRSecondary property: If true, the snapshot is retrieved from DRSecondary endpoint.
-     *
+     * 
      * @param useDRSecondary the useDRSecondary value to set.
      * @return the DeletedAppRestoreRequestProperties object itself.
      */
@@ -128,7 +132,7 @@ public final class DeletedAppRestoreRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

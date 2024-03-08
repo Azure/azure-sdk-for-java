@@ -8,29 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecurityServicesTypeEnum. */
+/**
+ * Defines values for SecurityServicesTypeEnum.
+ */
 public final class SecurityServicesTypeEnum extends ExpandableStringEnum<SecurityServicesTypeEnum> {
-    /** Static value antiSpyware for SecurityServicesTypeEnum. */
+    /**
+     * Static value antiSpyware for SecurityServicesTypeEnum.
+     */
     public static final SecurityServicesTypeEnum ANTI_SPYWARE = fromString("antiSpyware");
 
-    /** Static value antiVirus for SecurityServicesTypeEnum. */
+    /**
+     * Static value antiVirus for SecurityServicesTypeEnum.
+     */
     public static final SecurityServicesTypeEnum ANTI_VIRUS = fromString("antiVirus");
 
-    /** Static value ipsVulnerability for SecurityServicesTypeEnum. */
+    /**
+     * Static value ipsVulnerability for SecurityServicesTypeEnum.
+     */
     public static final SecurityServicesTypeEnum IPS_VULNERABILITY = fromString("ipsVulnerability");
 
-    /** Static value urlFiltering for SecurityServicesTypeEnum. */
+    /**
+     * Static value urlFiltering for SecurityServicesTypeEnum.
+     */
     public static final SecurityServicesTypeEnum URL_FILTERING = fromString("urlFiltering");
 
-    /** Static value fileBlocking for SecurityServicesTypeEnum. */
+    /**
+     * Static value fileBlocking for SecurityServicesTypeEnum.
+     */
     public static final SecurityServicesTypeEnum FILE_BLOCKING = fromString("fileBlocking");
 
-    /** Static value dnsSubscription for SecurityServicesTypeEnum. */
+    /**
+     * Static value dnsSubscription for SecurityServicesTypeEnum.
+     */
     public static final SecurityServicesTypeEnum DNS_SUBSCRIPTION = fromString("dnsSubscription");
 
     /**
      * Creates a new instance of SecurityServicesTypeEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +53,7 @@ public final class SecurityServicesTypeEnum extends ExpandableStringEnum<Securit
 
     /**
      * Creates or finds a SecurityServicesTypeEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecurityServicesTypeEnum.
      */
@@ -50,7 +64,7 @@ public final class SecurityServicesTypeEnum extends ExpandableStringEnum<Securit
 
     /**
      * Gets known SecurityServicesTypeEnum values.
-     *
+     * 
      * @return known SecurityServicesTypeEnum values.
      */
     public static Collection<SecurityServicesTypeEnum> values() {

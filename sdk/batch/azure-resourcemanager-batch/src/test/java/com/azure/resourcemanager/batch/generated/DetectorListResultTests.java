@@ -13,25 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class DetectorListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DetectorListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"spkwlhzdobpxjm\"},\"etag\":\"bvvnchrkcciw\",\"id\":\"zjuqkhrsaj\",\"name\":\"wkuofoskghsauu\",\"type\":\"mjmvxieduugidyjr\"},{\"properties\":{\"value\":\"y\"},\"etag\":\"svexcsonpclhoco\",\"id\":\"slkevle\",\"name\":\"gz\",\"type\":\"buhfmvfaxkffeiit\"}],\"nextLink\":\"vmezy\"}")
-                .toObject(DetectorListResult.class);
+        DetectorListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"value\":\"spkwlhzdobpxjm\"},\"etag\":\"bvvnchrkcciw\",\"id\":\"zjuqkhrsaj\",\"name\":\"wkuofoskghsauu\",\"type\":\"mjmvxieduugidyjr\"},{\"properties\":{\"value\":\"y\"},\"etag\":\"svexcsonpclhoco\",\"id\":\"slkevle\",\"name\":\"gz\",\"type\":\"buhfmvfaxkffeiit\"}],\"nextLink\":\"vmezy\"}")
+            .toObject(DetectorListResult.class);
         Assertions.assertEquals("spkwlhzdobpxjm", model.value().get(0).value());
         Assertions.assertEquals("vmezy", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DetectorListResult model =
-            new DetectorListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DetectorResponseInner().withValue("spkwlhzdobpxjm"),
-                            new DetectorResponseInner().withValue("y")))
-                .withNextLink("vmezy");
+        DetectorListResult model
+            = new DetectorListResult().withValue(Arrays.asList(new DetectorResponseInner().withValue("spkwlhzdobpxjm"),
+                new DetectorResponseInner().withValue("y"))).withNextLink("vmezy");
         model = BinaryData.fromObject(model).toObject(DetectorListResult.class);
         Assertions.assertEquals("spkwlhzdobpxjm", model.value().get(0).value());
         Assertions.assertEquals("vmezy", model.nextLink());

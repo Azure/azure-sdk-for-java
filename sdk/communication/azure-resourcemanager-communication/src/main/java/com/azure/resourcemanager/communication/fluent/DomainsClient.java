@@ -15,13 +15,15 @@ import com.azure.resourcemanager.communication.fluent.models.DomainResourceInner
 import com.azure.resourcemanager.communication.models.UpdateDomainRequestParameters;
 import com.azure.resourcemanager.communication.models.VerificationParameter;
 
-/** An instance of this class provides access to all the operations defined in DomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DomainsClient.
+ */
 public interface DomainsClient {
     /**
      * Get
-     *
-     * <p>Get the Domains resource and its properties.
-     *
+     * 
+     * Get the Domains resource and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -32,14 +34,14 @@ public interface DomainsClient {
      * @return the Domains resource and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainResourceInner> getWithResponse(
-        String resourceGroupName, String emailServiceName, String domainName, Context context);
+    Response<DomainResourceInner> getWithResponse(String resourceGroupName, String emailServiceName, String domainName,
+        Context context);
 
     /**
      * Get
-     *
-     * <p>Get the Domains resource and its properties.
-     *
+     * 
+     * Get the Domains resource and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -53,9 +55,9 @@ public interface DomainsClient {
 
     /**
      * Create Or Update
-     *
-     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
-     *
+     * 
+     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -66,14 +68,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of a class representing a Domains resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String emailServiceName, String domainName, DomainResourceInner parameters);
+    SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String emailServiceName, String domainName, DomainResourceInner parameters);
 
     /**
      * Create Or Update
-     *
-     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
-     *
+     * 
+     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -85,18 +87,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of a class representing a Domains resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        DomainResourceInner parameters,
-        Context context);
+    SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String emailServiceName, String domainName, DomainResourceInner parameters, Context context);
 
     /**
      * Create Or Update
-     *
-     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
-     *
+     * 
+     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -107,14 +105,14 @@ public interface DomainsClient {
      * @return a class representing a Domains resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainResourceInner createOrUpdate(
-        String resourceGroupName, String emailServiceName, String domainName, DomainResourceInner parameters);
+    DomainResourceInner createOrUpdate(String resourceGroupName, String emailServiceName, String domainName,
+        DomainResourceInner parameters);
 
     /**
      * Create Or Update
-     *
-     * <p>Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
-     *
+     * 
+     * Add a new Domains resource under the parent EmailService resource or update an existing Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -126,18 +124,14 @@ public interface DomainsClient {
      * @return a class representing a Domains resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainResourceInner createOrUpdate(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        DomainResourceInner parameters,
-        Context context);
+    DomainResourceInner createOrUpdate(String resourceGroupName, String emailServiceName, String domainName,
+        DomainResourceInner parameters, Context context);
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a Domains resource.
-     *
+     * 
+     * Operation to delete a Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -147,14 +141,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String emailServiceName, String domainName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String emailServiceName,
+        String domainName);
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a Domains resource.
-     *
+     * 
+     * Operation to delete a Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -165,14 +159,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String emailServiceName, String domainName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String emailServiceName, String domainName,
+        Context context);
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a Domains resource.
-     *
+     * 
+     * Operation to delete a Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -185,9 +179,9 @@ public interface DomainsClient {
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a Domains resource.
-     *
+     * 
+     * Operation to delete a Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -201,9 +195,9 @@ public interface DomainsClient {
 
     /**
      * Update
-     *
-     * <p>Operation to update an existing Domains resource.
-     *
+     * 
+     * Operation to update an existing Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -214,14 +208,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of a class representing a Domains resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginUpdate(
-        String resourceGroupName, String emailServiceName, String domainName, UpdateDomainRequestParameters parameters);
+    SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginUpdate(String resourceGroupName,
+        String emailServiceName, String domainName, UpdateDomainRequestParameters parameters);
 
     /**
      * Update
-     *
-     * <p>Operation to update an existing Domains resource.
-     *
+     * 
+     * Operation to update an existing Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -233,18 +227,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of a class representing a Domains resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginUpdate(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        UpdateDomainRequestParameters parameters,
-        Context context);
+    SyncPoller<PollResult<DomainResourceInner>, DomainResourceInner> beginUpdate(String resourceGroupName,
+        String emailServiceName, String domainName, UpdateDomainRequestParameters parameters, Context context);
 
     /**
      * Update
-     *
-     * <p>Operation to update an existing Domains resource.
-     *
+     * 
+     * Operation to update an existing Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -255,14 +245,14 @@ public interface DomainsClient {
      * @return a class representing a Domains resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainResourceInner update(
-        String resourceGroupName, String emailServiceName, String domainName, UpdateDomainRequestParameters parameters);
+    DomainResourceInner update(String resourceGroupName, String emailServiceName, String domainName,
+        UpdateDomainRequestParameters parameters);
 
     /**
      * Update
-     *
-     * <p>Operation to update an existing Domains resource.
-     *
+     * 
+     * Operation to update an existing Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -274,34 +264,30 @@ public interface DomainsClient {
      * @return a class representing a Domains resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainResourceInner update(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        UpdateDomainRequestParameters parameters,
-        Context context);
+    DomainResourceInner update(String resourceGroupName, String emailServiceName, String domainName,
+        UpdateDomainRequestParameters parameters, Context context);
 
     /**
      * List by EmailService
-     *
-     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
-     *
+     * 
+     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Domains resource and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DomainResourceInner> listByEmailServiceResource(String resourceGroupName, String emailServiceName);
 
     /**
      * List by EmailService
-     *
-     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
-     *
+     * 
+     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param context The context to associate with this operation.
@@ -309,17 +295,17 @@ public interface DomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Domains resource and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DomainResourceInner> listByEmailServiceResource(
-        String resourceGroupName, String emailServiceName, Context context);
+    PagedIterable<DomainResourceInner> listByEmailServiceResource(String resourceGroupName, String emailServiceName,
+        Context context);
 
     /**
      * Initiate Verification
-     *
-     * <p>Initiate verification of DNS record.
-     *
+     * 
+     * Initiate verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -330,14 +316,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginInitiateVerification(
-        String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters);
+    SyncPoller<PollResult<Void>, Void> beginInitiateVerification(String resourceGroupName, String emailServiceName,
+        String domainName, VerificationParameter parameters);
 
     /**
      * Initiate Verification
-     *
-     * <p>Initiate verification of DNS record.
-     *
+     * 
+     * Initiate verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -349,18 +335,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginInitiateVerification(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        VerificationParameter parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginInitiateVerification(String resourceGroupName, String emailServiceName,
+        String domainName, VerificationParameter parameters, Context context);
 
     /**
      * Initiate Verification
-     *
-     * <p>Initiate verification of DNS record.
-     *
+     * 
+     * Initiate verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -370,14 +352,14 @@ public interface DomainsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void initiateVerification(
-        String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters);
+    void initiateVerification(String resourceGroupName, String emailServiceName, String domainName,
+        VerificationParameter parameters);
 
     /**
      * Initiate Verification
-     *
-     * <p>Initiate verification of DNS record.
-     *
+     * 
+     * Initiate verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -388,18 +370,14 @@ public interface DomainsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void initiateVerification(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        VerificationParameter parameters,
-        Context context);
+    void initiateVerification(String resourceGroupName, String emailServiceName, String domainName,
+        VerificationParameter parameters, Context context);
 
     /**
      * Cancel Verification
-     *
-     * <p>Cancel verification of DNS record.
-     *
+     * 
+     * Cancel verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -410,14 +388,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancelVerification(
-        String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters);
+    SyncPoller<PollResult<Void>, Void> beginCancelVerification(String resourceGroupName, String emailServiceName,
+        String domainName, VerificationParameter parameters);
 
     /**
      * Cancel Verification
-     *
-     * <p>Cancel verification of DNS record.
-     *
+     * 
+     * Cancel verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -429,18 +407,14 @@ public interface DomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginCancelVerification(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        VerificationParameter parameters,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginCancelVerification(String resourceGroupName, String emailServiceName,
+        String domainName, VerificationParameter parameters, Context context);
 
     /**
      * Cancel Verification
-     *
-     * <p>Cancel verification of DNS record.
-     *
+     * 
+     * Cancel verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -450,14 +424,14 @@ public interface DomainsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancelVerification(
-        String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters);
+    void cancelVerification(String resourceGroupName, String emailServiceName, String domainName,
+        VerificationParameter parameters);
 
     /**
      * Cancel Verification
-     *
-     * <p>Cancel verification of DNS record.
-     *
+     * 
+     * Cancel verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -468,10 +442,6 @@ public interface DomainsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void cancelVerification(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        VerificationParameter parameters,
-        Context context);
+    void cancelVerification(String resourceGroupName, String emailServiceName, String domainName,
+        VerificationParameter parameters, Context context);
 }

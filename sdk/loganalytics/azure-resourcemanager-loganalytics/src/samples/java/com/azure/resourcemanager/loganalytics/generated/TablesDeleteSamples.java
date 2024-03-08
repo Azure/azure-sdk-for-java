@@ -4,19 +4,17 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tables Delete. */
 public final class TablesDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesDelete.json
+     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/TablesDelete.json
      */
     /**
-     * Sample code: TablesGet.
+     * Sample code: TablesDelete.
      *
      * @param manager Entry point to LogAnalyticsManager.
      */
-    public static void tablesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.tables().delete("oiautorest6685", "oiautorest6685", "table1_CL", Context.NONE);
+    public static void tablesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.tables().delete("oiautorest6685", "oiautorest6685", "table1_CL", com.azure.core.util.Context.NONE);
     }
 }

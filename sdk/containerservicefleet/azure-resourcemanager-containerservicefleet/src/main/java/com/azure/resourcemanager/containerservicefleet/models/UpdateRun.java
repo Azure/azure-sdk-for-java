@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.containerservicefleet.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservicefleet.fluent.models.UpdateRunInner;
 
@@ -41,11 +42,36 @@ public interface UpdateRun {
     String etag();
 
     /**
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the provisioningState property: The provisioning state of the UpdateRun resource.
      *
      * @return the provisioningState value.
      */
     UpdateRunProvisioningState provisioningState();
+
+    /**
+     * Gets the updateStrategyId property: The resource id of the FleetUpdateStrategy resource to reference.
+     *
+     * <p>When creating a new run, there are three ways to define a strategy for the run: 1. Define a new strategy in
+     * place: Set the "strategy" field. 2. Use an existing strategy: Set the "updateStrategyId" field. (since
+     * 2023-08-15-preview) 3. Use the default strategy to update all the members one by one: Leave both
+     * "updateStrategyId" and "strategy" unset. (since 2023-08-15-preview)
+     *
+     * <p>Setting both "updateStrategyId" and "strategy" is invalid.
+     *
+     * <p>UpdateRuns created by "updateStrategyId" snapshot the referenced UpdateStrategy at the time of creation and
+     * store it in the "strategy" field. Subsequent changes to the referenced FleetUpdateStrategy resource do not
+     * propagate. UpdateRunStrategy changes can be made directly on the "strategy" field before launching the UpdateRun.
+     *
+     * @return the updateStrategyId value.
+     */
+    String updateStrategyId();
 
     /**
      * Gets the strategy property: The strategy defines the order in which the clusters will be updated. If not set, all
@@ -113,7 +139,8 @@ public interface UpdateRun {
          * be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithStrategy,
+            extends DefinitionStages.WithUpdateStrategyId,
+                DefinitionStages.WithStrategy,
                 DefinitionStages.WithManagedClusterUpdate,
                 DefinitionStages.WithIfMatch,
                 DefinitionStages.WithIfNoneMatch {
@@ -131,6 +158,39 @@ public interface UpdateRun {
              * @return the created resource.
              */
             UpdateRun create(Context context);
+        }
+
+        /** The stage of the UpdateRun definition allowing to specify updateStrategyId. */
+        interface WithUpdateStrategyId {
+            /**
+             * Specifies the updateStrategyId property: The resource id of the FleetUpdateStrategy resource to
+             * reference.
+             *
+             * <p>When creating a new run, there are three ways to define a strategy for the run: 1. Define a new
+             * strategy in place: Set the "strategy" field. 2. Use an existing strategy: Set the "updateStrategyId"
+             * field. (since 2023-08-15-preview) 3. Use the default strategy to update all the members one by one: Leave
+             * both "updateStrategyId" and "strategy" unset. (since 2023-08-15-preview)
+             *
+             * <p>Setting both "updateStrategyId" and "strategy" is invalid.
+             *
+             * <p>UpdateRuns created by "updateStrategyId" snapshot the referenced UpdateStrategy at the time of
+             * creation and store it in the "strategy" field. Subsequent changes to the referenced FleetUpdateStrategy
+             * resource do not propagate. UpdateRunStrategy changes can be made directly on the "strategy" field before
+             * launching the UpdateRun..
+             *
+             * @param updateStrategyId The resource id of the FleetUpdateStrategy resource to reference.
+             *     <p>When creating a new run, there are three ways to define a strategy for the run: 1. Define a new
+             *     strategy in place: Set the "strategy" field. 2. Use an existing strategy: Set the "updateStrategyId"
+             *     field. (since 2023-08-15-preview) 3. Use the default strategy to update all the members one by one:
+             *     Leave both "updateStrategyId" and "strategy" unset. (since 2023-08-15-preview)
+             *     <p>Setting both "updateStrategyId" and "strategy" is invalid.
+             *     <p>UpdateRuns created by "updateStrategyId" snapshot the referenced UpdateStrategy at the time of
+             *     creation and store it in the "strategy" field. Subsequent changes to the referenced
+             *     FleetUpdateStrategy resource do not propagate. UpdateRunStrategy changes can be made directly on the
+             *     "strategy" field before launching the UpdateRun.
+             * @return the next definition stage.
+             */
+            WithCreate withUpdateStrategyId(String updateStrategyId);
         }
 
         /** The stage of the UpdateRun definition allowing to specify strategy. */
@@ -195,7 +255,8 @@ public interface UpdateRun {
 
     /** The template for UpdateRun update. */
     interface Update
-        extends UpdateStages.WithStrategy,
+        extends UpdateStages.WithUpdateStrategyId,
+            UpdateStages.WithStrategy,
             UpdateStages.WithManagedClusterUpdate,
             UpdateStages.WithIfMatch,
             UpdateStages.WithIfNoneMatch {
@@ -217,6 +278,39 @@ public interface UpdateRun {
 
     /** The UpdateRun update stages. */
     interface UpdateStages {
+        /** The stage of the UpdateRun update allowing to specify updateStrategyId. */
+        interface WithUpdateStrategyId {
+            /**
+             * Specifies the updateStrategyId property: The resource id of the FleetUpdateStrategy resource to
+             * reference.
+             *
+             * <p>When creating a new run, there are three ways to define a strategy for the run: 1. Define a new
+             * strategy in place: Set the "strategy" field. 2. Use an existing strategy: Set the "updateStrategyId"
+             * field. (since 2023-08-15-preview) 3. Use the default strategy to update all the members one by one: Leave
+             * both "updateStrategyId" and "strategy" unset. (since 2023-08-15-preview)
+             *
+             * <p>Setting both "updateStrategyId" and "strategy" is invalid.
+             *
+             * <p>UpdateRuns created by "updateStrategyId" snapshot the referenced UpdateStrategy at the time of
+             * creation and store it in the "strategy" field. Subsequent changes to the referenced FleetUpdateStrategy
+             * resource do not propagate. UpdateRunStrategy changes can be made directly on the "strategy" field before
+             * launching the UpdateRun..
+             *
+             * @param updateStrategyId The resource id of the FleetUpdateStrategy resource to reference.
+             *     <p>When creating a new run, there are three ways to define a strategy for the run: 1. Define a new
+             *     strategy in place: Set the "strategy" field. 2. Use an existing strategy: Set the "updateStrategyId"
+             *     field. (since 2023-08-15-preview) 3. Use the default strategy to update all the members one by one:
+             *     Leave both "updateStrategyId" and "strategy" unset. (since 2023-08-15-preview)
+             *     <p>Setting both "updateStrategyId" and "strategy" is invalid.
+             *     <p>UpdateRuns created by "updateStrategyId" snapshot the referenced UpdateStrategy at the time of
+             *     creation and store it in the "strategy" field. Subsequent changes to the referenced
+             *     FleetUpdateStrategy resource do not propagate. UpdateRunStrategy changes can be made directly on the
+             *     "strategy" field before launching the UpdateRun.
+             * @return the next definition stage.
+             */
+            Update withUpdateStrategyId(String updateStrategyId);
+        }
+
         /** The stage of the UpdateRun update allowing to specify strategy. */
         interface WithStrategy {
             /**
@@ -290,7 +384,7 @@ public interface UpdateRun {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     UpdateRun start();
 
@@ -302,7 +396,7 @@ public interface UpdateRun {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     UpdateRun start(String ifMatch, Context context);
 
@@ -311,7 +405,7 @@ public interface UpdateRun {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     UpdateRun stop();
 
@@ -323,7 +417,7 @@ public interface UpdateRun {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an UpdateRun is a multi-stage process to perform update operations across members of a Fleet.
+     * @return a multi-stage process to perform update operations across members of a Fleet.
      */
     UpdateRun stop(String ifMatch, Context context);
 }

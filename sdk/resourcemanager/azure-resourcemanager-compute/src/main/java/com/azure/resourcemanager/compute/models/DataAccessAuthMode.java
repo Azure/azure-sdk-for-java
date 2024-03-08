@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Additional authentication requirements when exporting or uploading to a disk or snapshot. */
+/**
+ * Additional authentication requirements when exporting or uploading to a disk or snapshot.
+ */
 public final class DataAccessAuthMode extends ExpandableStringEnum<DataAccessAuthMode> {
-    /** Static value AzureActiveDirectory for DataAccessAuthMode. */
+    /**
+     * Static value AzureActiveDirectory for DataAccessAuthMode.
+     */
     public static final DataAccessAuthMode AZURE_ACTIVE_DIRECTORY = fromString("AzureActiveDirectory");
 
-    /** Static value None for DataAccessAuthMode. */
+    /**
+     * Static value None for DataAccessAuthMode.
+     */
     public static final DataAccessAuthMode NONE = fromString("None");
 
     /**
      * Creates a new instance of DataAccessAuthMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class DataAccessAuthMode extends ExpandableStringEnum<DataAccessAut
 
     /**
      * Creates or finds a DataAccessAuthMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DataAccessAuthMode.
      */
@@ -38,7 +44,7 @@ public final class DataAccessAuthMode extends ExpandableStringEnum<DataAccessAut
 
     /**
      * Gets known DataAccessAuthMode values.
-     *
+     * 
      * @return known DataAccessAuthMode values.
      */
     public static Collection<DataAccessAuthMode> values() {

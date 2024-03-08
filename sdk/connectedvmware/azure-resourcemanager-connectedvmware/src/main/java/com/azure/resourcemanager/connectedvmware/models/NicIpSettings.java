@@ -60,6 +60,10 @@ public final class NicIpSettings {
     @JsonProperty(value = "ipAddressInfo", access = JsonProperty.Access.WRITE_ONLY)
     private List<NicIpAddressSettings> ipAddressInfo;
 
+    /** Creates an instance of NicIpSettings class. */
+    public NicIpSettings() {
+    }
+
     /**
      * Get the allocationMethod property: Gets or sets the nic allocation method.
      *

@@ -11,13 +11,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.fluent.models.RestorableSqlContainerGetResultInner;
 
-/** An instance of this class provides access to all the operations defined in RestorableSqlContainersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestorableSqlContainersClient.
+ */
 public interface RestorableSqlContainersClient {
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
@@ -27,24 +29,24 @@ public interface RestorableSqlContainersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the SQL container events and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<RestorableSqlContainerGetResultInner> listAsync(
-        String location, String instanceId, String restorableSqlDatabaseRid, String startTime, String endTime);
+    PagedFlux<RestorableSqlContainerGetResultInner> listAsync(String location, String instanceId,
+        String restorableSqlDatabaseRid, String startTime, String endTime);
 
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the SQL container events and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RestorableSqlContainerGetResultInner> listAsync(String location, String instanceId);
@@ -53,14 +55,14 @@ public interface RestorableSqlContainersClient {
      * Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the SQL container events and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RestorableSqlContainerGetResultInner> list(String location, String instanceId);
@@ -69,7 +71,7 @@ public interface RestorableSqlContainersClient {
      * Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
@@ -80,14 +82,9 @@ public interface RestorableSqlContainersClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the SQL container events and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RestorableSqlContainerGetResultInner> list(
-        String location,
-        String instanceId,
-        String restorableSqlDatabaseRid,
-        String startTime,
-        String endTime,
-        Context context);
+    PagedIterable<RestorableSqlContainerGetResultInner> list(String location, String instanceId,
+        String restorableSqlDatabaseRid, String startTime, String endTime, Context context);
 }

@@ -4,24 +4,22 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for AppServiceEnvironments ListWorkerPoolInstanceMetricDefinitions. */
+/**
+ * Samples for AppServiceEnvironments ListWorkerPoolInstanceMetricDefinitions.
+ */
 public final class AppServiceEnvironmentsListWorkerPoolInstanceMetricDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListWorkerPoolInstanceMetricDefinitions.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/
+     * AppServiceEnvironments_ListWorkerPoolInstanceMetricDefinitions.json
      */
     /**
      * Sample code: Get metric definitions for a specific instance of a worker pool of an App Service Environment.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getMetricDefinitionsForASpecificInstanceOfAWorkerPoolOfAnAppServiceEnvironment(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getAppServiceEnvironments()
-            .listWorkerPoolInstanceMetricDefinitions(
-                "test-rg", "test-ase", "0", "10.8.0.7", com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getAppServiceEnvironments().listWorkerPoolInstanceMetricDefinitions(
+            "test-rg", "test-ase", "0", "10.8.0.7", com.azure.core.util.Context.NONE);
     }
 }

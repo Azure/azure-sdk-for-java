@@ -13,18 +13,24 @@ import java.util.Collection;
  * when the activity is inactive, the status will be Succeeded by default.
  */
 public final class ActivityOnInactiveMarkAs extends ExpandableStringEnum<ActivityOnInactiveMarkAs> {
-    /** Static value Succeeded for ActivityOnInactiveMarkAs. */
+    /**
+     * Static value Succeeded for ActivityOnInactiveMarkAs.
+     */
     public static final ActivityOnInactiveMarkAs SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ActivityOnInactiveMarkAs. */
+    /**
+     * Static value Failed for ActivityOnInactiveMarkAs.
+     */
     public static final ActivityOnInactiveMarkAs FAILED = fromString("Failed");
 
-    /** Static value Skipped for ActivityOnInactiveMarkAs. */
+    /**
+     * Static value Skipped for ActivityOnInactiveMarkAs.
+     */
     public static final ActivityOnInactiveMarkAs SKIPPED = fromString("Skipped");
 
     /**
      * Creates a new instance of ActivityOnInactiveMarkAs value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +39,7 @@ public final class ActivityOnInactiveMarkAs extends ExpandableStringEnum<Activit
 
     /**
      * Creates or finds a ActivityOnInactiveMarkAs from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActivityOnInactiveMarkAs.
      */
@@ -44,7 +50,7 @@ public final class ActivityOnInactiveMarkAs extends ExpandableStringEnum<Activit
 
     /**
      * Gets known ActivityOnInactiveMarkAs values.
-     *
+     * 
      * @return known ActivityOnInactiveMarkAs values.
      */
     public static Collection<ActivityOnInactiveMarkAs> values() {

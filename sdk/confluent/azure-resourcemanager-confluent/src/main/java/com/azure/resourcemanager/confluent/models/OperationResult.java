@@ -6,32 +6,34 @@ package com.azure.resourcemanager.confluent.models;
 
 import com.azure.resourcemanager.confluent.fluent.models.OperationResultInner;
 
-/** An immutable client-side representation of OperationResult. */
+/**
+ * An immutable client-side representation of OperationResult.
+ */
 public interface OperationResult {
     /**
      * Gets the name property: Operation name: {provider}/{resource}/{operation}.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the display property: The object that represents the operation.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
      * Gets the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     Boolean isDataAction();
 
     /**
      * Gets the inner com.azure.resourcemanager.confluent.fluent.models.OperationResultInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationResultInner innerModel();

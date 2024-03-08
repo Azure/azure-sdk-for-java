@@ -31,7 +31,7 @@ public final class CommunicationsCreateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"ctobg\",\"subject\":\"kdmoi\",\"body\":\"postmgrcfbunrm\",\"createdDate\":\"2021-10-01T13:01:52Z\"},\"id\":\"hhkxbp\",\"name\":\"jy\",\"type\":\"jhxxjyn\"}";
+            "{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"inbound\",\"sender\":\"ljxkcgxxlx\",\"subject\":\"ffgcvizqz\",\"body\":\"wlvwlyoupf\",\"createdDate\":\"2021-07-15T15:51:01Z\"},\"id\":\"k\",\"name\":\"ubdyhgk\",\"type\":\"minsgowzf\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,15 +62,15 @@ public final class CommunicationsCreateMockTests {
         CommunicationDetails response =
             manager
                 .communications()
-                .define("n")
-                .withExistingSupportTicket("gqgitxmedjvcsl")
-                .withSender("zhxgktrmgucn")
-                .withSubject("pkteo")
-                .withBody("llwptfdy")
+                .define("rwfscjfnynszquj")
+                .withExistingSupportTicket("bywdxsmicc")
+                .withSender("tiby")
+                .withSubject("wb")
+                .withBody("lgy")
                 .create();
 
-        Assertions.assertEquals("ctobg", response.sender());
-        Assertions.assertEquals("kdmoi", response.subject());
-        Assertions.assertEquals("postmgrcfbunrm", response.body());
+        Assertions.assertEquals("ljxkcgxxlx", response.sender());
+        Assertions.assertEquals("ffgcvizqz", response.subject());
+        Assertions.assertEquals("wlvwlyoupf", response.body());
     }
 }

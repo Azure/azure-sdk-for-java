@@ -7,60 +7,62 @@ package com.azure.resourcemanager.quota.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for AzureQuotaExtensionApi class. */
+/**
+ * The interface for AzureQuotaExtensionApi class.
+ */
 public interface AzureQuotaExtensionApi {
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the UsagesClient object to access its operations.
-     *
+     * 
      * @return the UsagesClient object.
      */
     UsagesClient getUsages();
 
     /**
      * Gets the QuotasClient object to access its operations.
-     *
+     * 
      * @return the QuotasClient object.
      */
     QuotasClient getQuotas();
 
     /**
      * Gets the QuotaRequestStatusClient object to access its operations.
-     *
+     * 
      * @return the QuotaRequestStatusClient object.
      */
     QuotaRequestStatusClient getQuotaRequestStatus();
 
     /**
      * Gets the QuotaOperationsClient object to access its operations.
-     *
+     * 
      * @return the QuotaOperationsClient object.
      */
     QuotaOperationsClient getQuotaOperations();

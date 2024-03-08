@@ -15,18 +15,6 @@ public interface ComponentCurrentBillingFeatures {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights component billing features.
-     */
-    ApplicationInsightsComponentBillingFeatures get(String resourceGroupName, String resourceName);
-
-    /**
-     * Returns current billing features for an Application Insights component.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,21 +25,16 @@ public interface ComponentCurrentBillingFeatures {
         String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Update current billing features for an Application Insights component.
+     * Returns current billing features for an Application Insights component.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @param billingFeaturesProperties Properties that need to be specified to update billing features for an
-     *     Application Insights component.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights component billing features.
      */
-    ApplicationInsightsComponentBillingFeatures update(
-        String resourceGroupName,
-        String resourceName,
-        ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties);
+    ApplicationInsightsComponentBillingFeatures get(String resourceGroupName, String resourceName);
 
     /**
      * Update current billing features for an Application Insights component.
@@ -71,4 +54,21 @@ public interface ComponentCurrentBillingFeatures {
         String resourceName,
         ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties,
         Context context);
+
+    /**
+     * Update current billing features for an Application Insights component.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param billingFeaturesProperties Properties that need to be specified to update billing features for an
+     *     Application Insights component.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Application Insights component billing features.
+     */
+    ApplicationInsightsComponentBillingFeatures update(
+        String resourceGroupName,
+        String resourceName,
+        ApplicationInsightsComponentBillingFeaturesInner billingFeaturesProperties);
 }

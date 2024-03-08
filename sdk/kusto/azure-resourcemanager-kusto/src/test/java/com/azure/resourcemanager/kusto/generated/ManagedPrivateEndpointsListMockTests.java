@@ -32,7 +32,7 @@ public final class ManagedPrivateEndpointsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"privateLinkResourceId\":\"iesfuug\",\"privateLinkResourceRegion\":\"uqfecj\",\"groupId\":\"ey\",\"requestMessage\":\"uhxu\",\"provisioningState\":\"Deleting\"},\"id\":\"ewmrswnjlxu\",\"name\":\"rhwpus\",\"type\":\"jbaqehgpdoh\"}]}";
+            "{\"value\":[{\"properties\":{\"privateLinkResourceId\":\"rkolawjm\",\"privateLinkResourceRegion\":\"mwrokcdxfzzzwyja\",\"groupId\":\"itlhguyn\",\"requestMessage\":\"hlgmltxdwhmoz\",\"provisioningState\":\"Moving\"},\"id\":\"vlnsnnjz\",\"name\":\"pafolp\",\"type\":\"mwamxqzragpgdph\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,11 +61,11 @@ public final class ManagedPrivateEndpointsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ManagedPrivateEndpoint> response =
-            manager.managedPrivateEndpoints().list("yjtcvuwk", "s", com.azure.core.util.Context.NONE);
+            manager.managedPrivateEndpoints().list("lxrzvhqjwtr", "tgvgzp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("iesfuug", response.iterator().next().privateLinkResourceId());
-        Assertions.assertEquals("uqfecj", response.iterator().next().privateLinkResourceRegion());
-        Assertions.assertEquals("ey", response.iterator().next().groupId());
-        Assertions.assertEquals("uhxu", response.iterator().next().requestMessage());
+        Assertions.assertEquals("rkolawjm", response.iterator().next().privateLinkResourceId());
+        Assertions.assertEquals("mwrokcdxfzzzwyja", response.iterator().next().privateLinkResourceRegion());
+        Assertions.assertEquals("itlhguyn", response.iterator().next().groupId());
+        Assertions.assertEquals("hlgmltxdwhmoz", response.iterator().next().requestMessage());
     }
 }

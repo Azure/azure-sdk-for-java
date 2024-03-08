@@ -12,14 +12,14 @@ public final class TechnicalTicketDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TechnicalTicketDetails model =
-            BinaryData.fromString("{\"resourceId\":\"x\"}").toObject(TechnicalTicketDetails.class);
-        Assertions.assertEquals("x", model.resourceId());
+            BinaryData.fromString("{\"resourceId\":\"xywpmueefjzwfqkq\"}").toObject(TechnicalTicketDetails.class);
+        Assertions.assertEquals("xywpmueefjzwfqkq", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TechnicalTicketDetails model = new TechnicalTicketDetails().withResourceId("x");
+        TechnicalTicketDetails model = new TechnicalTicketDetails().withResourceId("xywpmueefjzwfqkq");
         model = BinaryData.fromObject(model).toObject(TechnicalTicketDetails.class);
-        Assertions.assertEquals("x", model.resourceId());
+        Assertions.assertEquals("xywpmueefjzwfqkq", model.resourceId());
     }
 }

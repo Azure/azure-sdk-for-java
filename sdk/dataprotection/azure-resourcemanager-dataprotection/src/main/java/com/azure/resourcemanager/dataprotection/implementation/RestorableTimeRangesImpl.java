@@ -21,41 +21,29 @@ public final class RestorableTimeRangesImpl implements RestorableTimeRanges {
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public RestorableTimeRangesImpl(
-        RestorableTimeRangesClient innerClient,
+    public RestorableTimeRangesImpl(RestorableTimeRangesClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<AzureBackupFindRestorableTimeRangesResponseResource> findWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupFindRestorableTimeRangesRequest parameters,
+    public Response<AzureBackupFindRestorableTimeRangesResponseResource> findWithResponse(String resourceGroupName,
+        String vaultName, String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest parameters,
         Context context) {
-        Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> inner =
-            this
-                .serviceClient()
-                .findWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+        Response<AzureBackupFindRestorableTimeRangesResponseResourceInner> inner = this.serviceClient()
+            .findWithResponse(resourceGroupName, vaultName, backupInstanceName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureBackupFindRestorableTimeRangesResponseResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AzureBackupFindRestorableTimeRangesResponseResource find(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupFindRestorableTimeRangesRequest parameters) {
-        AzureBackupFindRestorableTimeRangesResponseResourceInner inner =
-            this.serviceClient().find(resourceGroupName, vaultName, backupInstanceName, parameters);
+    public AzureBackupFindRestorableTimeRangesResponseResource find(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupFindRestorableTimeRangesRequest parameters) {
+        AzureBackupFindRestorableTimeRangesResponseResourceInner inner
+            = this.serviceClient().find(resourceGroupName, vaultName, backupInstanceName, parameters);
         if (inner != null) {
             return new AzureBackupFindRestorableTimeRangesResponseResourceImpl(inner, this.manager());
         } else {

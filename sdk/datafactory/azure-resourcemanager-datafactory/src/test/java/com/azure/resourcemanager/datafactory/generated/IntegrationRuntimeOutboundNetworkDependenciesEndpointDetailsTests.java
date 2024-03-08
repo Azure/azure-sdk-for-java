@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails model =
-            BinaryData
-                .fromString("{\"port\":434822175}")
+        IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails model
+            = BinaryData.fromString("{\"port\":434822175}")
                 .toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails.class);
         Assertions.assertEquals(434822175, model.port());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails model =
-            new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(434822175);
-        model =
-            BinaryData.fromObject(model).toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails.class);
+        IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails model
+            = new IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails().withPort(434822175);
+        model
+            = BinaryData.fromObject(model).toObject(IntegrationRuntimeOutboundNetworkDependenciesEndpointDetails.class);
         Assertions.assertEquals(434822175, model.port());
     }
 }

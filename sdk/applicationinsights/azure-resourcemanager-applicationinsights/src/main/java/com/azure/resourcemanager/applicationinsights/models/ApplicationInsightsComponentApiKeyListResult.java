@@ -19,6 +19,10 @@ public final class ApplicationInsightsComponentApiKeyListResult {
     @JsonProperty(value = "value", required = true)
     private List<ApplicationInsightsComponentApiKeyInner> value;
 
+    /** Creates an instance of ApplicationInsightsComponentApiKeyListResult class. */
+    public ApplicationInsightsComponentApiKeyListResult() {
+    }
+
     /**
      * Get the value property: List of API Key definitions.
      *

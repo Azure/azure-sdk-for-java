@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -22,11 +24,13 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.confluent.fluent.ConfluentManagementClient;
+import com.azure.resourcemanager.confluent.implementation.AccessImpl;
 import com.azure.resourcemanager.confluent.implementation.ConfluentManagementClientBuilder;
 import com.azure.resourcemanager.confluent.implementation.MarketplaceAgreementsImpl;
 import com.azure.resourcemanager.confluent.implementation.OrganizationOperationsImpl;
 import com.azure.resourcemanager.confluent.implementation.OrganizationsImpl;
 import com.azure.resourcemanager.confluent.implementation.ValidationsImpl;
+import com.azure.resourcemanager.confluent.models.Access;
 import com.azure.resourcemanager.confluent.models.MarketplaceAgreements;
 import com.azure.resourcemanager.confluent.models.OrganizationOperations;
 import com.azure.resourcemanager.confluent.models.Organizations;
@@ -38,7 +42,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ConfluentManager. */
+/**
+ * Entry point to ConfluentManager.
+ */
 public final class ConfluentManager {
     private MarketplaceAgreements marketplaceAgreements;
 
@@ -48,23 +54,21 @@ public final class ConfluentManager {
 
     private Validations validations;
 
+    private Access access;
+
     private final ConfluentManagementClient clientObject;
 
     private ConfluentManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new ConfluentManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new ConfluentManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
      * Creates an instance of Confluent service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Confluent service API instance.
@@ -76,23 +80,39 @@ public final class ConfluentManager {
     }
 
     /**
+     * Creates an instance of Confluent service API entry point.
+     * 
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the Confluent service API instance.
+     */
+    public static ConfluentManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new ConfluentManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create ConfluentManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ConfluentManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -154,15 +174,30 @@ public final class ConfluentManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -179,21 +214,12 @@ public final class ConfluentManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
-                .append("-")
-                .append("com.azure.resourcemanager.confluent")
-                .append("/")
-                .append("1.0.0-beta.3");
+            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.confluent").append("/")
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
-                    .append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.name"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version"))
-                    .append("; auto-generated)");
+                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -202,41 +228,37 @@ public final class ConfluentManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
             return new ConfluentManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
-    /** @return Resource collection API of MarketplaceAgreements. */
+    /**
+     * Gets the resource collection API of MarketplaceAgreements.
+     * 
+     * @return Resource collection API of MarketplaceAgreements.
+     */
     public MarketplaceAgreements marketplaceAgreements() {
         if (this.marketplaceAgreements == null) {
             this.marketplaceAgreements = new MarketplaceAgreementsImpl(clientObject.getMarketplaceAgreements(), this);
@@ -244,16 +266,24 @@ public final class ConfluentManager {
         return marketplaceAgreements;
     }
 
-    /** @return Resource collection API of OrganizationOperations. */
+    /**
+     * Gets the resource collection API of OrganizationOperations.
+     * 
+     * @return Resource collection API of OrganizationOperations.
+     */
     public OrganizationOperations organizationOperations() {
         if (this.organizationOperations == null) {
-            this.organizationOperations =
-                new OrganizationOperationsImpl(clientObject.getOrganizationOperations(), this);
+            this.organizationOperations
+                = new OrganizationOperationsImpl(clientObject.getOrganizationOperations(), this);
         }
         return organizationOperations;
     }
 
-    /** @return Resource collection API of Organizations. */
+    /**
+     * Gets the resource collection API of Organizations. It manages OrganizationResource.
+     * 
+     * @return Resource collection API of Organizations.
+     */
     public Organizations organizations() {
         if (this.organizations == null) {
             this.organizations = new OrganizationsImpl(clientObject.getOrganizations(), this);
@@ -261,7 +291,11 @@ public final class ConfluentManager {
         return organizations;
     }
 
-    /** @return Resource collection API of Validations. */
+    /**
+     * Gets the resource collection API of Validations.
+     * 
+     * @return Resource collection API of Validations.
+     */
     public Validations validations() {
         if (this.validations == null) {
             this.validations = new ValidationsImpl(clientObject.getValidations(), this);
@@ -270,8 +304,22 @@ public final class ConfluentManager {
     }
 
     /**
-     * @return Wrapped service client ConfluentManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets the resource collection API of Access.
+     * 
+     * @return Resource collection API of Access.
+     */
+    public Access access() {
+        if (this.access == null) {
+            this.access = new AccessImpl(clientObject.getAccess(), this);
+        }
+        return access;
+    }
+
+    /**
+     * Gets wrapped service client ConfluentManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client ConfluentManagementClient.
      */
     public ConfluentManagementClient serviceClient() {
         return this.clientObject;

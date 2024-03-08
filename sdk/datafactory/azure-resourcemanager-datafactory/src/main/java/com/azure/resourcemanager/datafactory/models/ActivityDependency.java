@@ -14,7 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Activity dependency information. */
+/**
+ * Activity dependency information.
+ */
 @Fluent
 public final class ActivityDependency {
     /*
@@ -32,15 +34,18 @@ public final class ActivityDependency {
     /*
      * Activity dependency information.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ActivityDependency class. */
+    /**
+     * Creates an instance of ActivityDependency class.
+     */
     public ActivityDependency() {
     }
 
     /**
      * Get the activity property: Activity name.
-     *
+     * 
      * @return the activity value.
      */
     public String activity() {
@@ -49,7 +54,7 @@ public final class ActivityDependency {
 
     /**
      * Set the activity property: Activity name.
-     *
+     * 
      * @param activity the activity value to set.
      * @return the ActivityDependency object itself.
      */
@@ -60,7 +65,7 @@ public final class ActivityDependency {
 
     /**
      * Get the dependencyConditions property: Match-Condition for the dependency.
-     *
+     * 
      * @return the dependencyConditions value.
      */
     public List<DependencyCondition> dependencyConditions() {
@@ -69,7 +74,7 @@ public final class ActivityDependency {
 
     /**
      * Set the dependencyConditions property: Match-Condition for the dependency.
-     *
+     * 
      * @param dependencyConditions the dependencyConditions value to set.
      * @return the ActivityDependency object itself.
      */
@@ -80,7 +85,7 @@ public final class ActivityDependency {
 
     /**
      * Get the additionalProperties property: Activity dependency information.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -90,7 +95,7 @@ public final class ActivityDependency {
 
     /**
      * Set the additionalProperties property: Activity dependency information.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ActivityDependency object itself.
      */
@@ -109,20 +114,17 @@ public final class ActivityDependency {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (activity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property activity in model ActivityDependency"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property activity in model ActivityDependency"));
         }
         if (dependencyConditions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dependencyConditions in model ActivityDependency"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dependencyConditions in model ActivityDependency"));
         }
     }
 

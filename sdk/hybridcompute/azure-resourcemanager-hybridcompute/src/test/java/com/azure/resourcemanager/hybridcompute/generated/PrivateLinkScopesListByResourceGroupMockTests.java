@@ -33,7 +33,7 @@ public final class PrivateLinkScopesListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"tkoievseotgq\",\"privateLinkScopeId\":\"ltmuwlauwzizx\"},\"location\":\"pgcjefuzmuvp\",\"tags\":{\"morppxebmnzbtbh\":\"d\"},\"id\":\"pglkf\",\"name\":\"ohdneuel\",\"type\":\"phsdyhto\"}]}";
+            "{\"value\":[{\"properties\":{\"publicNetworkAccess\":\"Disabled\",\"provisioningState\":\"gamquhiosrsjui\",\"privateLinkScopeId\":\"cdisyir\",\"privateEndpointConnections\":[{\"id\":\"czexrxzbujrtrhqv\",\"name\":\"evkh\",\"type\":\"lnzonzlrpiqywn\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"szcofizeht\",\"description\":\"hgbjkvrelje\"},\"provisioningState\":\"urvzmlovuanashc\",\"groupIds\":[\"mjerbdk\",\"lvidizozs\",\"bccxjmonfdgn\",\"n\"]}},{\"id\":\"puuw\",\"name\":\"tvuqjctzenkeifzz\",\"type\":\"kdasvflyhbxcudch\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"boldforobwj\",\"description\":\"vizbfhfo\"},\"provisioningState\":\"acqpbtuodxesza\",\"groupIds\":[\"l\",\"wumuaslzk\"]}},{\"id\":\"rwoycqucwyh\",\"name\":\"nomdrkywuhpsv\",\"type\":\"urut\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"xwlalniexzsrzpg\",\"description\":\"pqtybb\"},\"provisioningState\":\"pgdakchzyvli\",\"groupIds\":[\"rkcxkj\",\"bn\"]}},{\"id\":\"ysux\",\"name\":\"qrntv\",\"type\":\"ijpstte\",\"properties\":{\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{\"status\":\"pwcyyufmhr\",\"description\":\"nc\"},\"provisioningState\":\"mqspkcdqzhlctdd\",\"groupIds\":[\"ndy\"]}}]},\"location\":\"chrqb\",\"tags\":{\"qqoli\":\"rcgegydcwboxjum\"},\"id\":\"r\",\"name\":\"aiouaubrjt\",\"type\":\"oq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class PrivateLinkScopesListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<HybridComputePrivateLinkScope> response =
-            manager.privateLinkScopes().listByResourceGroup("bxmubyynt", com.azure.core.util.Context.NONE);
+            manager.privateLinkScopes().listByResourceGroup("lcgqlsismj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pgcjefuzmuvp", response.iterator().next().location());
-        Assertions.assertEquals("d", response.iterator().next().tags().get("morppxebmnzbtbh"));
+        Assertions.assertEquals("chrqb", response.iterator().next().location());
+        Assertions.assertEquals("rcgegydcwboxjum", response.iterator().next().tags().get("qqoli"));
         Assertions
             .assertEquals(
                 PublicNetworkAccessType.DISABLED, response.iterator().next().properties().publicNetworkAccess());

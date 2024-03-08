@@ -12,11 +12,14 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
+import com.azure.resourcemanager.devcenter.models.EnvironmentRole;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentType;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
+import com.azure.resourcemanager.devcenter.models.UserAssignedIdentity;
+import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -37,7 +40,8 @@ public final class ProjectEnvironmentTypesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"MovingResources\",\"deploymentTargetId\":\"qwogfnzjvus\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{}},\"tags\":{\"dp\":\"ylfsbtk\",\"wn\":\"s\"},\"identity\":{\"principalId\":\"a2b5c4cc-a0bb-4f8d-b03c-b4a0d7382186\",\"tenantId\":\"d307c1d5-a538-4a6c-be2e-58f2bd6c4aaf\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"jqctojcmisofie\",\"id\":\"efojyqdhcupl\",\"name\":\"plcwkhi\",\"type\":\"ihlhzdsqtzb\"}";
+            "{\"properties\":{\"provisioningState\":\"TransientFailure\",\"displayName\":\"ryuzcbmqqv\",\"environmentCount\":538529132,\"deploymentTargetId\":\"fgtayxonsup\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"yqo\":{\"roleName\":\"hcvsqltnzoi\",\"description\":\"sxgnx\"},\"iqxeiiqbimht\":{\"roleName\":\"p\",\"description\":\"xwdofdb\"},\"embnkbw\":{\"roleName\":\"winhehfqpo\",\"description\":\"wbcb\"},\"izvcjfe\":{\"roleName\":\"vxkdivqihebwtswb\",\"description\":\"wfmdurage\"}}},\"userRoleAssignments\":{\"rylniofrzg\":{\"roles\":{\"ubggbqigkxkb\":{},\"azgakg\":{},\"cyrcmjdmspo\":{},\"apvu\":{}}},\"tkvnlvxbcuiiznkt\":{\"roles\":{\"edm\":{}}},\"z\":{\"roles\":{\"nsnvpd\":{},\"bmikost\":{}}},\"bcunezzceze\":{\"roles\":{\"wbuqn\":{},\"ophzfylsgcrp\":{}}}}},\"tags\":{\"psihcla\":\"yfwlwxjwet\"},\"identity\":{\"principalId\":\"75eb1b2d-5659-4b8c-9e54-337be480eee2\",\"tenantId\":\"8d016d1b-71c0-4aba-8f9d-168e68de158b\",\"type\":\"SystemAssigned,"
+                + " UserAssigned\",\"userAssignedIdentities\":{\"sqqw\":{\"principalId\":\"27523d7a-4c5f-4372-9e8c-0d1cf9d99683\",\"clientId\":\"1c11940a-0bc7-4f24-a0e4-93d1e6c6d28b\"}}},\"location\":\"cmwqkchcxwa\",\"id\":\"ewzjkjexfd\",\"name\":\"qvhpsylkkshkbff\",\"type\":\"bmxzjrgywwpg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,30 +72,35 @@ public final class ProjectEnvironmentTypesCreateOrUpdateWithResponseMockTests {
         ProjectEnvironmentType response =
             manager
                 .projectEnvironmentTypes()
-                .define("spave")
-                .withExistingProject("khocxvdfffwaf", "roud")
-                .withRegion("avodg")
-                .withTags(
-                    mapOf(
-                        "mfdn", "dyuib", "jnaeois", "zydvfvf", "vwmzhwplefaxvxil", "vhmgorffukis", "nzeyqxtjj", "btgn"))
+                .define("igjkskyrio")
+                .withExistingProject("hv", "slkvntjl")
+                .withRegion("amwabzxrvxcushsp")
+                .withTags(mapOf("pmxelnwcltyje", "p", "mlfmkqs", "ex"))
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                        .withUserAssignedIdentities(mapOf()))
-                .withDeploymentTargetId("bunzozudh")
-                .withStatus(EnvironmentTypeEnableStatus.DISABLED)
+                        .withType(ManagedServiceIdentityType.NONE)
+                        .withUserAssignedIdentities(mapOf("x", new UserAssignedIdentity())))
+                .withDisplayName("sxwaabzm")
+                .withDeploymentTargetId("gznmmaxrizkzob")
+                .withStatus(EnvironmentTypeEnableStatus.ENABLED)
                 .withCreatorRoleAssignment(
-                    new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment().withRoles(mapOf()))
-                .withUserRoleAssignments(mapOf())
+                    new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
+                        .withRoles(mapOf("tifdwfmvi", new EnvironmentRole())))
+                .withUserRoleAssignments(
+                    mapOf(
+                        "ujeickp",
+                        new UserRoleAssignmentValue().withRoles(mapOf("bttzhraglkafhonq", new EnvironmentRole()))))
                 .create();
 
-        Assertions.assertEquals("ylfsbtk", response.tags().get("dp"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("jqctojcmisofie", response.location());
-        Assertions.assertEquals("qwogfnzjvus", response.deploymentTargetId());
+        Assertions.assertEquals("yfwlwxjwet", response.tags().get("psihcla"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
+        Assertions.assertEquals("cmwqkchcxwa", response.location());
+        Assertions.assertEquals("ryuzcbmqqv", response.displayName());
+        Assertions.assertEquals("fgtayxonsup", response.deploymentTargetId());
         Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, response.status());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

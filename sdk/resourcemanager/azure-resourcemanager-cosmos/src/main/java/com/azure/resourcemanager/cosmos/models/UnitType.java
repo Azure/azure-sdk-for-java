@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The unit of the metric. */
+/**
+ * The unit of the metric.
+ */
 public final class UnitType extends ExpandableStringEnum<UnitType> {
-    /** Static value Count for UnitType. */
+    /**
+     * Static value Count for UnitType.
+     */
     public static final UnitType COUNT = fromString("Count");
 
-    /** Static value Bytes for UnitType. */
+    /**
+     * Static value Bytes for UnitType.
+     */
     public static final UnitType BYTES = fromString("Bytes");
 
-    /** Static value Seconds for UnitType. */
+    /**
+     * Static value Seconds for UnitType.
+     */
     public static final UnitType SECONDS = fromString("Seconds");
 
-    /** Static value Percent for UnitType. */
+    /**
+     * Static value Percent for UnitType.
+     */
     public static final UnitType PERCENT = fromString("Percent");
 
-    /** Static value CountPerSecond for UnitType. */
+    /**
+     * Static value CountPerSecond for UnitType.
+     */
     public static final UnitType COUNT_PER_SECOND = fromString("CountPerSecond");
 
-    /** Static value BytesPerSecond for UnitType. */
+    /**
+     * Static value BytesPerSecond for UnitType.
+     */
     public static final UnitType BYTES_PER_SECOND = fromString("BytesPerSecond");
 
-    /** Static value Milliseconds for UnitType. */
+    /**
+     * Static value Milliseconds for UnitType.
+     */
     public static final UnitType MILLISECONDS = fromString("Milliseconds");
 
     /**
      * Creates a new instance of UnitType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class UnitType extends ExpandableStringEnum<UnitType> {
 
     /**
      * Creates or finds a UnitType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UnitType.
      */
@@ -53,7 +69,7 @@ public final class UnitType extends ExpandableStringEnum<UnitType> {
 
     /**
      * Gets known UnitType values.
-     *
+     * 
      * @return known UnitType values.
      */
     public static Collection<UnitType> values() {

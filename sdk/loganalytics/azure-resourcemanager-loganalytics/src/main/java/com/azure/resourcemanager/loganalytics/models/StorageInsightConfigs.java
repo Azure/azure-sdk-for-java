@@ -16,19 +16,6 @@ public interface StorageInsightConfigs {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param storageInsightName Name of the storageInsightsConfigs resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance.
-     */
-    StorageInsight get(String resourceGroupName, String workspaceName, String storageInsightName);
-
-    /**
-     * Gets a storage insight instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param storageInsightName Name of the storageInsightsConfigs resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -39,7 +26,7 @@ public interface StorageInsightConfigs {
         String resourceGroupName, String workspaceName, String storageInsightName, Context context);
 
     /**
-     * Deletes a storageInsightsConfigs resource.
+     * Gets a storage insight instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -47,8 +34,9 @@ public interface StorageInsightConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a storage insight instance.
      */
-    void delete(String resourceGroupName, String workspaceName, String storageInsightName);
+    StorageInsight get(String resourceGroupName, String workspaceName, String storageInsightName);
 
     /**
      * Deletes a storageInsightsConfigs resource.
@@ -64,6 +52,18 @@ public interface StorageInsightConfigs {
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String storageInsightName, Context context);
+
+    /**
+     * Deletes a storageInsightsConfigs resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param storageInsightName Name of the storageInsightsConfigs resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String workspaceName, String storageInsightName);
 
     /**
      * Lists the storage insight instances within a workspace.

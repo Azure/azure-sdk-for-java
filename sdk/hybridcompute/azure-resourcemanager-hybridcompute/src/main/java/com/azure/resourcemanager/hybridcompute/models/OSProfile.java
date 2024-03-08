@@ -4,17 +4,29 @@
 
 package com.azure.resourcemanager.hybridcompute.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the operating system settings for the hybrid machine. */
-@Immutable
+@Fluent
 public final class OSProfile {
     /*
      * Specifies the host OS name of the hybrid machine.
      */
     @JsonProperty(value = "computerName", access = JsonProperty.Access.WRITE_ONLY)
     private String computerName;
+
+    /*
+     * Specifies the windows configuration for update management.
+     */
+    @JsonProperty(value = "windowsConfiguration")
+    private OSProfileWindowsConfiguration windowsConfiguration;
+
+    /*
+     * Specifies the linux configuration for update management.
+     */
+    @JsonProperty(value = "linuxConfiguration")
+    private OSProfileLinuxConfiguration linuxConfiguration;
 
     /** Creates an instance of OSProfile class. */
     public OSProfile() {
@@ -30,10 +42,56 @@ public final class OSProfile {
     }
 
     /**
+     * Get the windowsConfiguration property: Specifies the windows configuration for update management.
+     *
+     * @return the windowsConfiguration value.
+     */
+    public OSProfileWindowsConfiguration windowsConfiguration() {
+        return this.windowsConfiguration;
+    }
+
+    /**
+     * Set the windowsConfiguration property: Specifies the windows configuration for update management.
+     *
+     * @param windowsConfiguration the windowsConfiguration value to set.
+     * @return the OSProfile object itself.
+     */
+    public OSProfile withWindowsConfiguration(OSProfileWindowsConfiguration windowsConfiguration) {
+        this.windowsConfiguration = windowsConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the linuxConfiguration property: Specifies the linux configuration for update management.
+     *
+     * @return the linuxConfiguration value.
+     */
+    public OSProfileLinuxConfiguration linuxConfiguration() {
+        return this.linuxConfiguration;
+    }
+
+    /**
+     * Set the linuxConfiguration property: Specifies the linux configuration for update management.
+     *
+     * @param linuxConfiguration the linuxConfiguration value to set.
+     * @return the OSProfile object itself.
+     */
+    public OSProfile withLinuxConfiguration(OSProfileLinuxConfiguration linuxConfiguration) {
+        this.linuxConfiguration = linuxConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (windowsConfiguration() != null) {
+            windowsConfiguration().validate();
+        }
+        if (linuxConfiguration() != null) {
+            linuxConfiguration().validate();
+        }
     }
 }

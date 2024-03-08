@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Firewall Policy Insights. */
+/**
+ * Firewall Policy Insights.
+ */
 @Fluent
 public final class FirewallPolicyInsights {
     /*
@@ -28,13 +30,15 @@ public final class FirewallPolicyInsights {
     @JsonProperty(value = "logAnalyticsResources")
     private FirewallPolicyLogAnalyticsResources logAnalyticsResources;
 
-    /** Creates an instance of FirewallPolicyInsights class. */
+    /**
+     * Creates an instance of FirewallPolicyInsights class.
+     */
     public FirewallPolicyInsights() {
     }
 
     /**
      * Get the isEnabled property: A flag to indicate if the insights are enabled on the policy.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -43,7 +47,7 @@ public final class FirewallPolicyInsights {
 
     /**
      * Set the isEnabled property: A flag to indicate if the insights are enabled on the policy.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the FirewallPolicyInsights object itself.
      */
@@ -54,7 +58,7 @@ public final class FirewallPolicyInsights {
 
     /**
      * Get the retentionDays property: Number of days the insights should be enabled on the policy.
-     *
+     * 
      * @return the retentionDays value.
      */
     public Integer retentionDays() {
@@ -63,7 +67,7 @@ public final class FirewallPolicyInsights {
 
     /**
      * Set the retentionDays property: Number of days the insights should be enabled on the policy.
-     *
+     * 
      * @param retentionDays the retentionDays value to set.
      * @return the FirewallPolicyInsights object itself.
      */
@@ -74,7 +78,7 @@ public final class FirewallPolicyInsights {
 
     /**
      * Get the logAnalyticsResources property: Workspaces needed to configure the Firewall Policy Insights.
-     *
+     * 
      * @return the logAnalyticsResources value.
      */
     public FirewallPolicyLogAnalyticsResources logAnalyticsResources() {
@@ -83,7 +87,7 @@ public final class FirewallPolicyInsights {
 
     /**
      * Set the logAnalyticsResources property: Workspaces needed to configure the Firewall Policy Insights.
-     *
+     * 
      * @param logAnalyticsResources the logAnalyticsResources value to set.
      * @return the FirewallPolicyInsights object itself.
      */
@@ -94,7 +98,7 @@ public final class FirewallPolicyInsights {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

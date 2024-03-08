@@ -24,6 +24,13 @@ public final class DiskEncryptionSetResourceSettings extends ResourceSettings {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DiskEncryptionSetResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

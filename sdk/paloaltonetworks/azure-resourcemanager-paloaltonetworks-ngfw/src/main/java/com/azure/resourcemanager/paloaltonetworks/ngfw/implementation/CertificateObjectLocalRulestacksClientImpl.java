@@ -42,24 +42,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in CertificateObjectLocalRulestacksClient.
  */
 public final class CertificateObjectLocalRulestacksClientImpl implements CertificateObjectLocalRulestacksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final CertificateObjectLocalRulestacksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PaloAltoNetworksCloudngfwImpl client;
 
     /**
      * Initializes an instance of CertificateObjectLocalRulestacksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     CertificateObjectLocalRulestacksClientImpl(PaloAltoNetworksCloudngfwImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    CertificateObjectLocalRulestacksService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(CertificateObjectLocalRulestacksService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -70,102 +70,78 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
     @Host("{$host}")
     @ServiceInterface(name = "PaloAltoNetworksClou")
     public interface CertificateObjectLocalRulestacksService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateObjectLocalRulestackResourceListResult>> listByLocalRulestacks(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("localRulestackName") String localRulestackName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CertificateObjectLocalRulestackResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<CertificateObjectLocalRulestackResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("name") String name,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates/{name}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("name") String name,
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("name") String name,
             @BodyParam("application/json") CertificateObjectLocalRulestackResourceInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates/{name}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/localRulestacks/{localRulestackName}/certificates/{name}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("localRulestackName") String localRulestackName,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("localRulestackName") String localRulestackName, @PathParam("name") String name,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CertificateObjectLocalRulestackResourceListResult>> listByLocalRulestacksNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List CertificateObjectLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectLocalRulestackResource list operation along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateObjectLocalRulestackResourceInner>> listByLocalRulestacksSinglePageAsync(
-        String resourceGroupName, String localRulestackName) {
+    private Mono<PagedResponse<CertificateObjectLocalRulestackResourceInner>>
+        listByLocalRulestacksSinglePageAsync(String resourceGroupName, String localRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -178,31 +154,17 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByLocalRulestacks(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            accept,
-                            context))
+                context -> service.listByLocalRulestacks(this.client.getEndpoint(), this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context))
             .<PagedResponse<CertificateObjectLocalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List CertificateObjectLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -210,22 +172,18 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectLocalRulestackResource list operation along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateObjectLocalRulestackResourceInner>> listByLocalRulestacksSinglePageAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private Mono<PagedResponse<CertificateObjectLocalRulestackResourceInner>>
+        listByLocalRulestacksSinglePageAsync(String resourceGroupName, String localRulestackName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -238,47 +196,33 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByLocalRulestacks(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByLocalRulestacks(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List CertificateObjectLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectLocalRulestackResource list operation as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacksAsync(
-        String resourceGroupName, String localRulestackName) {
-        return new PagedFlux<>(
-            () -> listByLocalRulestacksSinglePageAsync(resourceGroupName, localRulestackName),
+    private PagedFlux<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacksAsync(String resourceGroupName,
+        String localRulestackName) {
+        return new PagedFlux<>(() -> listByLocalRulestacksSinglePageAsync(resourceGroupName, localRulestackName),
             nextLink -> listByLocalRulestacksNextSinglePageAsync(nextLink));
     }
 
     /**
      * List CertificateObjectLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -286,11 +230,11 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectLocalRulestackResource list operation as paginated response with
-     *     {@link PagedFlux}.
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacksAsync(
-        String resourceGroupName, String localRulestackName, Context context) {
+    private PagedFlux<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacksAsync(String resourceGroupName,
+        String localRulestackName, Context context) {
         return new PagedFlux<>(
             () -> listByLocalRulestacksSinglePageAsync(resourceGroupName, localRulestackName, context),
             nextLink -> listByLocalRulestacksNextSinglePageAsync(nextLink, context));
@@ -298,24 +242,24 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
 
     /**
      * List CertificateObjectLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectLocalRulestackResource list operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName) {
+    public PagedIterable<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName) {
         return new PagedIterable<>(listByLocalRulestacksAsync(resourceGroupName, localRulestackName));
     }
 
     /**
      * List CertificateObjectLocalRulestackResource resources by LocalRulestacks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param context The context to associate with this operation.
@@ -323,40 +267,36 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectLocalRulestackResource list operation as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context) {
+    public PagedIterable<CertificateObjectLocalRulestackResourceInner> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName, Context context) {
         return new PagedIterable<>(listByLocalRulestacksAsync(resourceGroupName, localRulestackName, context));
     }
 
     /**
      * Get a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CertificateObjectLocalRulestackResource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a CertificateObjectLocalRulestackResource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateObjectLocalRulestackResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String name) {
+    private Mono<Response<CertificateObjectLocalRulestackResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -371,24 +311,14 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            name,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -396,23 +326,19 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a CertificateObjectLocalRulestackResource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a CertificateObjectLocalRulestackResource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CertificateObjectLocalRulestackResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
+    private Mono<Response<CertificateObjectLocalRulestackResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -427,21 +353,13 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                name,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, localRulestackName, name, accept, context);
     }
 
     /**
      * Get a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -451,15 +369,15 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return a CertificateObjectLocalRulestackResource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateObjectLocalRulestackResourceInner> getAsync(
-        String resourceGroupName, String localRulestackName, String name) {
+    private Mono<CertificateObjectLocalRulestackResourceInner> getAsync(String resourceGroupName,
+        String localRulestackName, String name) {
         return getWithResponseAsync(resourceGroupName, localRulestackName, name)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -470,14 +388,14 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return a CertificateObjectLocalRulestackResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateObjectLocalRulestackResourceInner> getWithResponse(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
+    public Response<CertificateObjectLocalRulestackResourceInner> getWithResponse(String resourceGroupName,
+        String localRulestackName, String name, Context context) {
         return getWithResponseAsync(resourceGroupName, localRulestackName, name, context).block();
     }
 
     /**
      * Get a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -487,14 +405,14 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return a CertificateObjectLocalRulestackResource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateObjectLocalRulestackResourceInner get(
-        String resourceGroupName, String localRulestackName, String name) {
+    public CertificateObjectLocalRulestackResourceInner get(String resourceGroupName, String localRulestackName,
+        String name) {
         return getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE).getValue();
     }
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -505,22 +423,15 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return localRulestack Certificate Object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        CertificateObjectLocalRulestackResourceInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name, CertificateObjectLocalRulestackResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -540,25 +451,15 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            name,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, resource, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -570,23 +471,16 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return localRulestack Certificate Object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        CertificateObjectLocalRulestackResourceInner resource,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name, CertificateObjectLocalRulestackResourceInner resource,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -606,22 +500,13 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                name,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, resource, accept, context);
     }
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -632,28 +517,21 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return the {@link PollerFlux} for polling of localRulestack Certificate Object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CertificateObjectLocalRulestackResourceInner>, CertificateObjectLocalRulestackResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
+    private
+        PollerFlux<PollResult<CertificateObjectLocalRulestackResourceInner>, CertificateObjectLocalRulestackResourceInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String localRulestackName, String name,
             CertificateObjectLocalRulestackResourceInner resource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, name, resource);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, name, resource);
+        return this.client
             .<CertificateObjectLocalRulestackResourceInner, CertificateObjectLocalRulestackResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CertificateObjectLocalRulestackResourceInner.class,
-                CertificateObjectLocalRulestackResourceInner.class,
-                this.client.getContext());
+                mono, this.client.getHttpPipeline(), CertificateObjectLocalRulestackResourceInner.class,
+                CertificateObjectLocalRulestackResourceInner.class, this.client.getContext());
     }
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -665,30 +543,22 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return the {@link PollerFlux} for polling of localRulestack Certificate Object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<
-            PollResult<CertificateObjectLocalRulestackResourceInner>, CertificateObjectLocalRulestackResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
-            CertificateObjectLocalRulestackResourceInner resource,
-            Context context) {
+    private
+        PollerFlux<PollResult<CertificateObjectLocalRulestackResourceInner>, CertificateObjectLocalRulestackResourceInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String localRulestackName, String name,
+            CertificateObjectLocalRulestackResourceInner resource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, name, resource, context);
-        return this
-            .client
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, localRulestackName, name, resource, context);
+        return this.client
             .<CertificateObjectLocalRulestackResourceInner, CertificateObjectLocalRulestackResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                CertificateObjectLocalRulestackResourceInner.class,
-                CertificateObjectLocalRulestackResourceInner.class,
-                context);
+                mono, this.client.getHttpPipeline(), CertificateObjectLocalRulestackResourceInner.class,
+                CertificateObjectLocalRulestackResourceInner.class, context);
     }
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -699,19 +569,16 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return the {@link SyncPoller} for polling of localRulestack Certificate Object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CertificateObjectLocalRulestackResourceInner>, CertificateObjectLocalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
+    public
+        SyncPoller<PollResult<CertificateObjectLocalRulestackResourceInner>, CertificateObjectLocalRulestackResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String localRulestackName, String name,
             CertificateObjectLocalRulestackResourceInner resource) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource).getSyncPoller();
     }
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -723,22 +590,17 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return the {@link SyncPoller} for polling of localRulestack Certificate Object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<
-            PollResult<CertificateObjectLocalRulestackResourceInner>, CertificateObjectLocalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String localRulestackName,
-            String name,
-            CertificateObjectLocalRulestackResourceInner resource,
-            Context context) {
-        return this
-            .beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource, context)
+    public
+        SyncPoller<PollResult<CertificateObjectLocalRulestackResourceInner>, CertificateObjectLocalRulestackResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String localRulestackName, String name,
+            CertificateObjectLocalRulestackResourceInner resource, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource, context)
             .getSyncPoller();
     }
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -749,19 +611,15 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return localRulestack Certificate Object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateObjectLocalRulestackResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        CertificateObjectLocalRulestackResourceInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource)
-            .last()
+    private Mono<CertificateObjectLocalRulestackResourceInner> createOrUpdateAsync(String resourceGroupName,
+        String localRulestackName, String name, CertificateObjectLocalRulestackResourceInner resource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -773,20 +631,16 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return localRulestack Certificate Object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CertificateObjectLocalRulestackResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        CertificateObjectLocalRulestackResourceInner resource,
+    private Mono<CertificateObjectLocalRulestackResourceInner> createOrUpdateAsync(String resourceGroupName,
+        String localRulestackName, String name, CertificateObjectLocalRulestackResourceInner resource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource, context)
-            .last()
+        return beginCreateOrUpdateAsync(resourceGroupName, localRulestackName, name, resource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -797,17 +651,14 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return localRulestack Certificate Object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateObjectLocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        CertificateObjectLocalRulestackResourceInner resource) {
+    public CertificateObjectLocalRulestackResourceInner createOrUpdate(String resourceGroupName,
+        String localRulestackName, String name, CertificateObjectLocalRulestackResourceInner resource) {
         return createOrUpdateAsync(resourceGroupName, localRulestackName, name, resource).block();
     }
 
     /**
      * Create a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -819,18 +670,15 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return localRulestack Certificate Object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CertificateObjectLocalRulestackResourceInner createOrUpdate(
-        String resourceGroupName,
-        String localRulestackName,
-        String name,
-        CertificateObjectLocalRulestackResourceInner resource,
+    public CertificateObjectLocalRulestackResourceInner createOrUpdate(String resourceGroupName,
+        String localRulestackName, String name, CertificateObjectLocalRulestackResourceInner resource,
         Context context) {
         return createOrUpdateAsync(resourceGroupName, localRulestackName, name, resource, context).block();
     }
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -840,19 +688,15 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String name) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -867,24 +711,14 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            localRulestackName,
-                            name,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, localRulestackName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -895,19 +729,15 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String localRulestackName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -922,21 +752,13 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                localRulestackName,
-                name,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, localRulestackName, name, accept, context);
     }
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -946,18 +768,16 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String localRulestackName, String name) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String localRulestackName,
+        String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, localRulestackName, name);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -968,19 +788,18 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String localRulestackName,
+        String name, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, localRulestackName, name, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, localRulestackName, name, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -990,14 +809,14 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, String name) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
+        String name) {
         return this.beginDeleteAsync(resourceGroupName, localRulestackName, name).getSyncPoller();
     }
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -1008,14 +827,14 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String localRulestackName,
+        String name, Context context) {
         return this.beginDeleteAsync(resourceGroupName, localRulestackName, name, context).getSyncPoller();
     }
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -1026,14 +845,13 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String localRulestackName, String name) {
-        return beginDeleteAsync(resourceGroupName, localRulestackName, name)
-            .last()
+        return beginDeleteAsync(resourceGroupName, localRulestackName, name).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -1045,14 +863,13 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String localRulestackName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, localRulestackName, name, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, localRulestackName, name, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -1067,7 +884,7 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
 
     /**
      * Delete a CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param localRulestackName LocalRulestack resource name.
      * @param name certificate name.
@@ -1083,79 +900,63 @@ public final class CertificateObjectLocalRulestacksClientImpl implements Certifi
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectLocalRulestackResource list operation along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateObjectLocalRulestackResourceInner>> listByLocalRulestacksNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<CertificateObjectLocalRulestackResourceInner>>
+        listByLocalRulestacksNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByLocalRulestacksNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<CertificateObjectLocalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                    res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a CertificateObjectLocalRulestackResource list operation along with {@link PagedResponse}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CertificateObjectLocalRulestackResourceInner>> listByLocalRulestacksNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<CertificateObjectLocalRulestackResourceInner>>
+        listByLocalRulestacksNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByLocalRulestacksNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByLocalRulestacksNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

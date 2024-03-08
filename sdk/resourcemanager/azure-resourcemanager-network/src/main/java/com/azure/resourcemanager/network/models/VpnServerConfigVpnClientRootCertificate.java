@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of VPN client root certificate of VpnServerConfiguration. */
+/**
+ * Properties of VPN client root certificate of VpnServerConfiguration.
+ */
 @Fluent
 public final class VpnServerConfigVpnClientRootCertificate {
     /*
@@ -22,13 +24,15 @@ public final class VpnServerConfigVpnClientRootCertificate {
     @JsonProperty(value = "publicCertData")
     private String publicCertData;
 
-    /** Creates an instance of VpnServerConfigVpnClientRootCertificate class. */
+    /**
+     * Creates an instance of VpnServerConfigVpnClientRootCertificate class.
+     */
     public VpnServerConfigVpnClientRootCertificate() {
     }
 
     /**
      * Get the name property: The certificate name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class VpnServerConfigVpnClientRootCertificate {
 
     /**
      * Set the name property: The certificate name.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnServerConfigVpnClientRootCertificate object itself.
      */
@@ -48,7 +52,7 @@ public final class VpnServerConfigVpnClientRootCertificate {
 
     /**
      * Get the publicCertData property: The certificate public data.
-     *
+     * 
      * @return the publicCertData value.
      */
     public String publicCertData() {
@@ -57,7 +61,7 @@ public final class VpnServerConfigVpnClientRootCertificate {
 
     /**
      * Set the publicCertData property: The certificate public data.
-     *
+     * 
      * @param publicCertData the publicCertData value to set.
      * @return the VpnServerConfigVpnClientRootCertificate object itself.
      */
@@ -68,7 +72,7 @@ public final class VpnServerConfigVpnClientRootCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

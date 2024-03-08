@@ -24,6 +24,10 @@ public final class ClusterPatchProperties {
     @JsonProperty(value = "billingType")
     private BillingType billingType;
 
+    /** Creates an instance of ClusterPatchProperties class. */
+    public ClusterPatchProperties() {
+    }
+
     /**
      * Get the keyVaultProperties property: The associated key properties.
      *

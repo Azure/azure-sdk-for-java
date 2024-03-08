@@ -12,18 +12,16 @@ public final class ParameterInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParameterInfo model =
-            BinaryData
-                .fromString("{\"name\":\"oizpostmgrcfbun\",\"value\":\"fqjhhkxbpvjymj\"}")
-                .toObject(ParameterInfo.class);
-        Assertions.assertEquals("oizpostmgrcfbun", model.name());
-        Assertions.assertEquals("fqjhhkxbpvjymj", model.value());
+            BinaryData.fromString("{\"name\":\"euel\",\"value\":\"hsd\"}").toObject(ParameterInfo.class);
+        Assertions.assertEquals("euel", model.name());
+        Assertions.assertEquals("hsd", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParameterInfo model = new ParameterInfo().withName("oizpostmgrcfbun").withValue("fqjhhkxbpvjymj");
+        ParameterInfo model = new ParameterInfo().withName("euel").withValue("hsd");
         model = BinaryData.fromObject(model).toObject(ParameterInfo.class);
-        Assertions.assertEquals("oizpostmgrcfbun", model.name());
-        Assertions.assertEquals("fqjhhkxbpvjymj", model.value());
+        Assertions.assertEquals("euel", model.name());
+        Assertions.assertEquals("hsd", model.value());
     }
 }

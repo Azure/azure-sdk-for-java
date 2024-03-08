@@ -11,34 +11,22 @@ import com.azure.resourcemanager.datafactory.models.SqlPartitionSettings;
 public final class AmazonRdsForSqlServerSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmazonRdsForSqlServerSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AmazonRdsForSqlServerSource\",\"sqlReaderQuery\":\"datajzpvckhbutmxtijs\",\"sqlReaderStoredProcedureName\":\"datatdp\",\"storedProcedureParameters\":\"datajtwibwcd\",\"isolationLevel\":\"datamnswxq\",\"produceAdditionalTypes\":\"datahffcanvrdtdl\",\"partitionOption\":\"datamgghutl\",\"partitionSettings\":{\"partitionColumnName\":\"datazljyogcpw\",\"partitionUpperBound\":\"datagpbi\",\"partitionLowerBound\":\"datanxhq\"},\"queryTimeout\":\"datajmfolqdikuv\",\"additionalColumns\":\"datalsp\",\"sourceRetryCount\":\"dataghkflwnl\",\"sourceRetryWait\":\"dataawtpwnk\",\"maxConcurrentConnections\":\"dataxl\",\"disableMetricsCollection\":\"dataqnil\",\"\":{\"rfdml\":\"dataygvsfafc\",\"cufc\":\"dataeqdw\",\"clcnxfofwqd\":\"datahq\"}}")
-                .toObject(AmazonRdsForSqlServerSource.class);
+        AmazonRdsForSqlServerSource model = BinaryData.fromString(
+            "{\"type\":\"AmazonRdsForSqlServerSource\",\"sqlReaderQuery\":\"datayseyvagakfqpaexl\",\"sqlReaderStoredProcedureName\":\"datamekkaeigrh\",\"storedProcedureParameters\":\"datansgvsrtql\",\"isolationLevel\":\"datawjkraleglpynsbl\",\"produceAdditionalTypes\":\"dataiwrubxe\",\"partitionOption\":\"dataalhbrwaltvky\",\"partitionSettings\":{\"partitionColumnName\":\"dataopqtegkrjolbaegh\",\"partitionUpperBound\":\"datasscismrnneklfi\",\"partitionLowerBound\":\"dataysfclxtf\"},\"queryTimeout\":\"datadwqzbiukzmfyfvy\",\"additionalColumns\":\"dataofaiwlnfvexiuuqa\",\"sourceRetryCount\":\"datalseyxpgkmlnj\",\"sourceRetryWait\":\"dataaywgc\",\"maxConcurrentConnections\":\"datanf\",\"disableMetricsCollection\":\"datapyglnfw\",\"\":{\"xblucpmqwkf\":\"datawv\"}}")
+            .toObject(AmazonRdsForSqlServerSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonRdsForSqlServerSource model =
-            new AmazonRdsForSqlServerSource()
-                .withSourceRetryCount("dataghkflwnl")
-                .withSourceRetryWait("dataawtpwnk")
-                .withMaxConcurrentConnections("dataxl")
-                .withDisableMetricsCollection("dataqnil")
-                .withQueryTimeout("datajmfolqdikuv")
-                .withAdditionalColumns("datalsp")
-                .withSqlReaderQuery("datajzpvckhbutmxtijs")
-                .withSqlReaderStoredProcedureName("datatdp")
-                .withStoredProcedureParameters("datajtwibwcd")
-                .withIsolationLevel("datamnswxq")
-                .withProduceAdditionalTypes("datahffcanvrdtdl")
-                .withPartitionOption("datamgghutl")
-                .withPartitionSettings(
-                    new SqlPartitionSettings()
-                        .withPartitionColumnName("datazljyogcpw")
-                        .withPartitionUpperBound("datagpbi")
-                        .withPartitionLowerBound("datanxhq"));
+        AmazonRdsForSqlServerSource model = new AmazonRdsForSqlServerSource().withSourceRetryCount("datalseyxpgkmlnj")
+            .withSourceRetryWait("dataaywgc").withMaxConcurrentConnections("datanf")
+            .withDisableMetricsCollection("datapyglnfw").withQueryTimeout("datadwqzbiukzmfyfvy")
+            .withAdditionalColumns("dataofaiwlnfvexiuuqa").withSqlReaderQuery("datayseyvagakfqpaexl")
+            .withSqlReaderStoredProcedureName("datamekkaeigrh").withStoredProcedureParameters("datansgvsrtql")
+            .withIsolationLevel("datawjkraleglpynsbl").withProduceAdditionalTypes("dataiwrubxe")
+            .withPartitionOption("dataalhbrwaltvky")
+            .withPartitionSettings(new SqlPartitionSettings().withPartitionColumnName("dataopqtegkrjolbaegh")
+                .withPartitionUpperBound("datasscismrnneklfi").withPartitionLowerBound("dataysfclxtf"));
         model = BinaryData.fromObject(model).toObject(AmazonRdsForSqlServerSource.class);
     }
 }

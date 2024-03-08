@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A object which contains list of tables and connection details for a target connection. */
+/**
+ * A object which contains list of tables and connection details for a target connection.
+ */
 @Fluent
 public final class MapperTargetConnectionsInfo {
     /*
@@ -35,13 +37,15 @@ public final class MapperTargetConnectionsInfo {
     @JsonProperty(value = "relationships")
     private List<Object> relationships;
 
-    /** Creates an instance of MapperTargetConnectionsInfo class. */
+    /**
+     * Creates an instance of MapperTargetConnectionsInfo class.
+     */
     public MapperTargetConnectionsInfo() {
     }
 
     /**
      * Get the targetEntities property: List of source tables for a target connection.
-     *
+     * 
      * @return the targetEntities value.
      */
     public List<MapperTable> targetEntities() {
@@ -50,7 +54,7 @@ public final class MapperTargetConnectionsInfo {
 
     /**
      * Set the targetEntities property: List of source tables for a target connection.
-     *
+     * 
      * @param targetEntities the targetEntities value to set.
      * @return the MapperTargetConnectionsInfo object itself.
      */
@@ -61,7 +65,7 @@ public final class MapperTargetConnectionsInfo {
 
     /**
      * Get the connection property: Source connection details.
-     *
+     * 
      * @return the connection value.
      */
     public MapperConnection connection() {
@@ -70,7 +74,7 @@ public final class MapperTargetConnectionsInfo {
 
     /**
      * Set the connection property: Source connection details.
-     *
+     * 
      * @param connection the connection value to set.
      * @return the MapperTargetConnectionsInfo object itself.
      */
@@ -81,7 +85,7 @@ public final class MapperTargetConnectionsInfo {
 
     /**
      * Get the dataMapperMappings property: List of table mappings.
-     *
+     * 
      * @return the dataMapperMappings value.
      */
     public List<DataMapperMapping> dataMapperMappings() {
@@ -90,7 +94,7 @@ public final class MapperTargetConnectionsInfo {
 
     /**
      * Set the dataMapperMappings property: List of table mappings.
-     *
+     * 
      * @param dataMapperMappings the dataMapperMappings value to set.
      * @return the MapperTargetConnectionsInfo object itself.
      */
@@ -101,7 +105,7 @@ public final class MapperTargetConnectionsInfo {
 
     /**
      * Get the relationships property: List of relationship info among the tables.
-     *
+     * 
      * @return the relationships value.
      */
     public List<Object> relationships() {
@@ -110,7 +114,7 @@ public final class MapperTargetConnectionsInfo {
 
     /**
      * Set the relationships property: List of relationship info among the tables.
-     *
+     * 
      * @param relationships the relationships value to set.
      * @return the MapperTargetConnectionsInfo object itself.
      */
@@ -121,7 +125,7 @@ public final class MapperTargetConnectionsInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

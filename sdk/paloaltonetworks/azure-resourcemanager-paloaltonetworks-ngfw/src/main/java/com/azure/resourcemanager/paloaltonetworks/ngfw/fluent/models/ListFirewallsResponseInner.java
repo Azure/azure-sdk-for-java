@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List firewalls response. */
+/**
+ * List firewalls response.
+ */
 @Fluent
 public final class ListFirewallsResponseInner {
     /*
@@ -24,13 +26,15 @@ public final class ListFirewallsResponseInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListFirewallsResponseInner class. */
+    /**
+     * Creates an instance of ListFirewallsResponseInner class.
+     */
     public ListFirewallsResponseInner() {
     }
 
     /**
      * Get the value property: firewalls list.
-     *
+     * 
      * @return the value value.
      */
     public List<String> value() {
@@ -39,7 +43,7 @@ public final class ListFirewallsResponseInner {
 
     /**
      * Set the value property: firewalls list.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListFirewallsResponseInner object itself.
      */
@@ -50,7 +54,7 @@ public final class ListFirewallsResponseInner {
 
     /**
      * Get the nextLink property: next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ListFirewallsResponseInner {
 
     /**
      * Set the nextLink property: next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListFirewallsResponseInner object itself.
      */
@@ -70,15 +74,13 @@ public final class ListFirewallsResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ListFirewallsResponseInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ListFirewallsResponseInner"));
         }
     }
 

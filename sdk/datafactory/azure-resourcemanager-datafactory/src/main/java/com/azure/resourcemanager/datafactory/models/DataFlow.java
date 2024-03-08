@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Azure Data Factory nested object which contains a flow with data movements and transformations. */
+/**
+ * Azure Data Factory nested object which contains a flow with data movements and transformations.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,8 +23,7 @@ import java.util.List;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "MappingDataFlow", value = MappingDataFlow.class),
     @JsonSubTypes.Type(name = "Flowlet", value = Flowlet.class),
-    @JsonSubTypes.Type(name = "WranglingDataFlow", value = WranglingDataFlow.class)
-})
+    @JsonSubTypes.Type(name = "WranglingDataFlow", value = WranglingDataFlow.class) })
 @Fluent
 public class DataFlow {
     /*
@@ -43,13 +44,15 @@ public class DataFlow {
     @JsonProperty(value = "folder")
     private DataFlowFolder folder;
 
-    /** Creates an instance of DataFlow class. */
+    /**
+     * Creates an instance of DataFlow class.
+     */
     public DataFlow() {
     }
 
     /**
      * Get the description property: The description of the data flow.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -58,7 +61,7 @@ public class DataFlow {
 
     /**
      * Set the description property: The description of the data flow.
-     *
+     * 
      * @param description the description value to set.
      * @return the DataFlow object itself.
      */
@@ -69,7 +72,7 @@ public class DataFlow {
 
     /**
      * Get the annotations property: List of tags that can be used for describing the data flow.
-     *
+     * 
      * @return the annotations value.
      */
     public List<Object> annotations() {
@@ -78,7 +81,7 @@ public class DataFlow {
 
     /**
      * Set the annotations property: List of tags that can be used for describing the data flow.
-     *
+     * 
      * @param annotations the annotations value to set.
      * @return the DataFlow object itself.
      */
@@ -90,7 +93,7 @@ public class DataFlow {
     /**
      * Get the folder property: The folder that this data flow is in. If not specified, Data flow will appear at the
      * root level.
-     *
+     * 
      * @return the folder value.
      */
     public DataFlowFolder folder() {
@@ -100,7 +103,7 @@ public class DataFlow {
     /**
      * Set the folder property: The folder that this data flow is in. If not specified, Data flow will appear at the
      * root level.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the DataFlow object itself.
      */
@@ -111,7 +114,7 @@ public class DataFlow {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

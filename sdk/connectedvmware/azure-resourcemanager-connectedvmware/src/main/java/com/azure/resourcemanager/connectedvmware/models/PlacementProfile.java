@@ -7,7 +7,7 @@ package com.azure.resourcemanager.connectedvmware.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the resource properties. */
+/** Specifies the compute and storage placement settings for the virtual machine. */
 @Fluent
 public final class PlacementProfile {
     /*
@@ -33,6 +33,10 @@ public final class PlacementProfile {
      */
     @JsonProperty(value = "datastoreId")
     private String datastoreId;
+
+    /** Creates an instance of PlacementProfile class. */
+    public PlacementProfile() {
+    }
 
     /**
      * Get the resourcePoolId property: Gets or sets the ARM Id of the resourcePool resource on which this virtual

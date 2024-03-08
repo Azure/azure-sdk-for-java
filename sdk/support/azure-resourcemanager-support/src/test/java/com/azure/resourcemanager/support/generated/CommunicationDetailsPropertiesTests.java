@@ -14,23 +14,23 @@ public final class CommunicationDetailsPropertiesTests {
         CommunicationDetailsProperties model =
             BinaryData
                 .fromString(
-                    "{\"communicationType\":\"web\",\"communicationDirection\":\"outbound\",\"sender\":\"vfaxkffeiith\",\"subject\":\"vmezy\",\"body\":\"shxmzsbbzoggigrx\",\"createdDate\":\"2021-08-02T21:26:13Z\"}")
+                    "{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"vxdjzlmwlxkvugf\",\"subject\":\"zovawjvz\",\"body\":\"nluthnnp\",\"createdDate\":\"2021-01-27T13:07:29Z\"}")
                 .toObject(CommunicationDetailsProperties.class);
-        Assertions.assertEquals("vfaxkffeiith", model.sender());
-        Assertions.assertEquals("vmezy", model.subject());
-        Assertions.assertEquals("shxmzsbbzoggigrx", model.body());
+        Assertions.assertEquals("vxdjzlmwlxkvugf", model.sender());
+        Assertions.assertEquals("zovawjvz", model.subject());
+        Assertions.assertEquals("nluthnnp", model.body());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommunicationDetailsProperties model =
             new CommunicationDetailsProperties()
-                .withSender("vfaxkffeiith")
-                .withSubject("vmezy")
-                .withBody("shxmzsbbzoggigrx");
+                .withSender("vxdjzlmwlxkvugf")
+                .withSubject("zovawjvz")
+                .withBody("nluthnnp");
         model = BinaryData.fromObject(model).toObject(CommunicationDetailsProperties.class);
-        Assertions.assertEquals("vfaxkffeiith", model.sender());
-        Assertions.assertEquals("vmezy", model.subject());
-        Assertions.assertEquals("shxmzsbbzoggigrx", model.body());
+        Assertions.assertEquals("vxdjzlmwlxkvugf", model.sender());
+        Assertions.assertEquals("zovawjvz", model.subject());
+        Assertions.assertEquals("nluthnnp", model.body());
     }
 }

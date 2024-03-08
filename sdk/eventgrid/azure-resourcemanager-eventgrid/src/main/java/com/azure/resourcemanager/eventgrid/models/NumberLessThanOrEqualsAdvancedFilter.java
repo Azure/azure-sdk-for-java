@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** NumberLessThanOrEquals Advanced Filter. */
+/**
+ * NumberLessThanOrEquals Advanced Filter.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
 @JsonTypeName("NumberLessThanOrEquals")
 @Fluent
@@ -20,13 +22,15 @@ public final class NumberLessThanOrEqualsAdvancedFilter extends AdvancedFilter {
     @JsonProperty(value = "value")
     private Double value;
 
-    /** Creates an instance of NumberLessThanOrEqualsAdvancedFilter class. */
+    /**
+     * Creates an instance of NumberLessThanOrEqualsAdvancedFilter class.
+     */
     public NumberLessThanOrEqualsAdvancedFilter() {
     }
 
     /**
      * Get the value property: The filter value.
-     *
+     * 
      * @return the value value.
      */
     public Double value() {
@@ -35,7 +39,7 @@ public final class NumberLessThanOrEqualsAdvancedFilter extends AdvancedFilter {
 
     /**
      * Set the value property: The filter value.
-     *
+     * 
      * @param value the value value to set.
      * @return the NumberLessThanOrEqualsAdvancedFilter object itself.
      */
@@ -44,7 +48,9 @@ public final class NumberLessThanOrEqualsAdvancedFilter extends AdvancedFilter {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NumberLessThanOrEqualsAdvancedFilter withKey(String key) {
         super.withKey(key);
@@ -53,7 +59,7 @@ public final class NumberLessThanOrEqualsAdvancedFilter extends AdvancedFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

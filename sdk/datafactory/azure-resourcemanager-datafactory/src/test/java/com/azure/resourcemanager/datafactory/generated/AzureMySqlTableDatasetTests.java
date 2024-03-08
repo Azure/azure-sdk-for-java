@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureMySqlTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureMySqlTableDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureMySqlTable\",\"typeProperties\":{\"tableName\":\"dataw\",\"table\":\"datazyjj\"},\"description\":\"t\",\"structure\":\"datazql\",\"schema\":\"dataagwiijc\",\"linkedServiceName\":{\"referenceName\":\"qiywhxpsbapial\",\"parameters\":{\"zudegefxlieg\":\"dataydp\",\"smhssfnwh\":\"dataot\",\"nfmkcuft\":\"datakahhec\",\"dvhzfkdn\":\"datadgwuzron\"}},\"parameters\":{\"zfzdjekeb\":{\"type\":\"Object\",\"defaultValue\":\"datacikgxkk\"},\"jwyfi\":{\"type\":\"Array\",\"defaultValue\":\"dataxz\"}},\"annotations\":[\"datagcjf\",\"dataiwu\",\"datapjkakrxifqnf\"],\"folder\":{\"name\":\"xsqtzngxbs\"},\"\":{\"ly\":\"datawguxcmmhipbvskci\"}}")
-                .toObject(AzureMySqlTableDataset.class);
+        AzureMySqlTableDataset model = BinaryData.fromString(
+            "{\"type\":\"AzureMySqlTable\",\"typeProperties\":{\"tableName\":\"dataw\",\"table\":\"datazyjj\"},\"description\":\"t\",\"structure\":\"datazql\",\"schema\":\"dataagwiijc\",\"linkedServiceName\":{\"referenceName\":\"qiywhxpsbapial\",\"parameters\":{\"zudegefxlieg\":\"dataydp\",\"smhssfnwh\":\"dataot\",\"nfmkcuft\":\"datakahhec\",\"dvhzfkdn\":\"datadgwuzron\"}},\"parameters\":{\"zfzdjekeb\":{\"type\":\"Object\",\"defaultValue\":\"datacikgxkk\"},\"jwyfi\":{\"type\":\"Array\",\"defaultValue\":\"dataxz\"}},\"annotations\":[\"datagcjf\",\"dataiwu\",\"datapjkakrxifqnf\"],\"folder\":{\"name\":\"xsqtzngxbs\"},\"\":{\"ly\":\"datawguxcmmhipbvskci\"}}")
+            .toObject(AzureMySqlTableDataset.class);
         Assertions.assertEquals("t", model.description());
         Assertions.assertEquals("qiywhxpsbapial", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("zfzdjekeb").type());
@@ -31,34 +29,16 @@ public final class AzureMySqlTableDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMySqlTableDataset model =
-            new AzureMySqlTableDataset()
-                .withDescription("t")
-                .withStructure("datazql")
-                .withSchema("dataagwiijc")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("qiywhxpsbapial")
-                        .withParameters(
-                            mapOf(
-                                "zudegefxlieg",
-                                "dataydp",
-                                "smhssfnwh",
-                                "dataot",
-                                "nfmkcuft",
-                                "datakahhec",
-                                "dvhzfkdn",
-                                "datadgwuzron")))
-                .withParameters(
-                    mapOf(
-                        "zfzdjekeb",
-                        new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datacikgxkk"),
-                        "jwyfi",
-                        new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataxz")))
+        AzureMySqlTableDataset model
+            = new AzureMySqlTableDataset().withDescription("t").withStructure("datazql").withSchema("dataagwiijc")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("qiywhxpsbapial")
+                    .withParameters(mapOf("zudegefxlieg", "dataydp", "smhssfnwh", "dataot", "nfmkcuft", "datakahhec",
+                        "dvhzfkdn", "datadgwuzron")))
+                .withParameters(mapOf("zfzdjekeb",
+                    new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datacikgxkk"),
+                    "jwyfi", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataxz")))
                 .withAnnotations(Arrays.asList("datagcjf", "dataiwu", "datapjkakrxifqnf"))
-                .withFolder(new DatasetFolder().withName("xsqtzngxbs"))
-                .withTableName("dataw")
-                .withTable("datazyjj");
+                .withFolder(new DatasetFolder().withName("xsqtzngxbs")).withTableName("dataw").withTable("datazyjj");
         model = BinaryData.fromObject(model).toObject(AzureMySqlTableDataset.class);
         Assertions.assertEquals("t", model.description());
         Assertions.assertEquals("qiywhxpsbapial", model.linkedServiceName().referenceName());

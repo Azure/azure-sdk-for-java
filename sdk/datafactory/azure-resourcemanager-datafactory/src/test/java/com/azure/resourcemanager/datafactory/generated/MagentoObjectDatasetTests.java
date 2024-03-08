@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MagentoObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MagentoObjectDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"MagentoObject\",\"typeProperties\":{\"tableName\":\"dataznlf\"},\"description\":\"fzx\",\"structure\":\"dataz\",\"schema\":\"dataugtkxncwdytnlr\",\"linkedServiceName\":{\"referenceName\":\"cmwbejywwwvn\",\"parameters\":{\"dfyziruqvgnjxi\":\"datakrmqevrhhafqf\",\"gikyluyu\":\"datakgyjmzbm\",\"c\":\"datambrdcvoloxtv\"}},\"parameters\":{\"vokkyankxvcpt\":{\"type\":\"Object\",\"defaultValue\":\"datammglvnbenkp\"},\"rdxpcpautfzptr\":{\"type\":\"Int\",\"defaultValue\":\"databhnkxasomafegazh\"}},\"annotations\":[\"dataytrtffvpkdx\",\"datayuwenbq\"],\"folder\":{\"name\":\"awvoqatdjkal\"},\"\":{\"smxfzynfemqy\":\"datae\",\"wgssdquupirnb\":\"datakkp\",\"irzyudrq\":\"datalqyvdsqxkjwdzp\"}}")
-                .toObject(MagentoObjectDataset.class);
+        MagentoObjectDataset model = BinaryData.fromString(
+            "{\"type\":\"MagentoObject\",\"typeProperties\":{\"tableName\":\"dataznlf\"},\"description\":\"fzx\",\"structure\":\"dataz\",\"schema\":\"dataugtkxncwdytnlr\",\"linkedServiceName\":{\"referenceName\":\"cmwbejywwwvn\",\"parameters\":{\"dfyziruqvgnjxi\":\"datakrmqevrhhafqf\",\"gikyluyu\":\"datakgyjmzbm\",\"c\":\"datambrdcvoloxtv\"}},\"parameters\":{\"vokkyankxvcpt\":{\"type\":\"Object\",\"defaultValue\":\"datammglvnbenkp\"},\"rdxpcpautfzptr\":{\"type\":\"Int\",\"defaultValue\":\"databhnkxasomafegazh\"}},\"annotations\":[\"dataytrtffvpkdx\",\"datayuwenbq\"],\"folder\":{\"name\":\"awvoqatdjkal\"},\"\":{\"smxfzynfemqy\":\"datae\",\"wgssdquupirnb\":\"datakkp\",\"irzyudrq\":\"datalqyvdsqxkjwdzp\"}}")
+            .toObject(MagentoObjectDataset.class);
         Assertions.assertEquals("fzx", model.description());
         Assertions.assertEquals("cmwbejywwwvn", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("vokkyankxvcpt").type());
@@ -31,33 +29,16 @@ public final class MagentoObjectDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MagentoObjectDataset model =
-            new MagentoObjectDataset()
-                .withDescription("fzx")
-                .withStructure("dataz")
-                .withSchema("dataugtkxncwdytnlr")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("cmwbejywwwvn")
-                        .withParameters(
-                            mapOf(
-                                "dfyziruqvgnjxi",
-                                "datakrmqevrhhafqf",
-                                "gikyluyu",
-                                "datakgyjmzbm",
-                                "c",
-                                "datambrdcvoloxtv")))
-                .withParameters(
-                    mapOf(
-                        "vokkyankxvcpt",
-                        new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datammglvnbenkp"),
-                        "rdxpcpautfzptr",
-                        new ParameterSpecification()
-                            .withType(ParameterType.INT)
-                            .withDefaultValue("databhnkxasomafegazh")))
+        MagentoObjectDataset model
+            = new MagentoObjectDataset().withDescription("fzx").withStructure("dataz").withSchema("dataugtkxncwdytnlr")
+                .withLinkedServiceName(new LinkedServiceReference().withReferenceName("cmwbejywwwvn").withParameters(
+                    mapOf("dfyziruqvgnjxi", "datakrmqevrhhafqf", "gikyluyu", "datakgyjmzbm", "c", "datambrdcvoloxtv")))
+                .withParameters(mapOf("vokkyankxvcpt",
+                    new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datammglvnbenkp"),
+                    "rdxpcpautfzptr",
+                    new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("databhnkxasomafegazh")))
                 .withAnnotations(Arrays.asList("dataytrtffvpkdx", "datayuwenbq"))
-                .withFolder(new DatasetFolder().withName("awvoqatdjkal"))
-                .withTableName("dataznlf");
+                .withFolder(new DatasetFolder().withName("awvoqatdjkal")).withTableName("dataznlf");
         model = BinaryData.fromObject(model).toObject(MagentoObjectDataset.class);
         Assertions.assertEquals("fzx", model.description());
         Assertions.assertEquals("cmwbejywwwvn", model.linkedServiceName().referenceName());

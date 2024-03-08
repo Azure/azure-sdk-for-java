@@ -40,6 +40,8 @@ public final class ConfigStore {
 
     private AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
 
+    private List<String> trimKeyPrefix;
+
     /**
      * @return the endpoint
      */
@@ -171,6 +173,21 @@ public final class ConfigStore {
             return true;
         }
         return endpoints.stream().anyMatch(storeEndpoint -> storeEndpoint.startsWith(endpoint));
+    }
+
+    /**
+     * @return the trimKeyPrefix
+     */
+    public List<String> getTrimKeyPrefix() {
+        return trimKeyPrefix;
+    }
+
+    /**
+     * @param trimKeyPrefix the values to be trimmed from key names before being set to
+     *        `@ConfigurationProperties`
+     */
+    public void setTrimKeyPrefix(List<String> trimKeyPrefix) {
+        this.trimKeyPrefix = trimKeyPrefix;
     }
 
     /**

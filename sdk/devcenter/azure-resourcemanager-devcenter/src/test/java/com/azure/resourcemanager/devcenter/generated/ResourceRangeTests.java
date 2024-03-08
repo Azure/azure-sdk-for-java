@@ -11,7 +11,7 @@ public final class ResourceRangeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceRange model =
-            BinaryData.fromString("{\"min\":10134075,\"max\":1131419469}").toObject(ResourceRange.class);
+            BinaryData.fromString("{\"min\":903903169,\"max\":1397850949}").toObject(ResourceRange.class);
     }
 
     @org.junit.jupiter.api.Test

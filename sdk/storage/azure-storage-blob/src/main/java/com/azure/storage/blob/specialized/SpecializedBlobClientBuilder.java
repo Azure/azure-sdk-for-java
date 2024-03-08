@@ -32,11 +32,11 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
 import com.azure.storage.blob.implementation.util.BuilderHelper;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.connectionstring.StorageAuthenticationSettings;
 import com.azure.storage.common.implementation.connectionstring.StorageConnectionString;
 import com.azure.storage.common.implementation.connectionstring.StorageEndpoint;
@@ -103,6 +103,7 @@ public final class SpecializedBlobClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private BlobServiceVersion version;
+    private BlobAudience audience;
 
     /**
      * Creates a {@link AppendBlobClient} based on options set in the Builder. AppendBlobClients are used to perform
@@ -235,7 +236,7 @@ public final class SpecializedBlobClientBuilder implements
         return (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
             endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, audience, LOGGER);
     }
 
     private BlobServiceVersion getServiceVersion() {
@@ -338,7 +339,7 @@ public final class SpecializedBlobClientBuilder implements
             this.endpoint = BuilderHelper.getEndpoint(parts);
             this.containerName = parts.getBlobContainerName() == null ? this.containerName
                 : parts.getBlobContainerName();
-            this.blobName = parts.getBlobName() == null ? this.blobName : Utility.urlEncode(parts.getBlobName());
+            this.blobName = parts.getBlobName() == null ? this.blobName : parts.getBlobName();
             this.snapshot = parts.getSnapshot();
             this.versionId = parts.getVersionId();
 
@@ -540,8 +541,7 @@ public final class SpecializedBlobClientBuilder implements
      * @throws NullPointerException If {@code blobName} is {@code null}
      */
     public SpecializedBlobClientBuilder blobName(String blobName) {
-        this.blobName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(blobName,
-            "'blobName' cannot be null.")));
+        this.blobName = Objects.requireNonNull(blobName, "'blobName' cannot be null.");
         return this;
     }
 
@@ -757,6 +757,17 @@ public final class SpecializedBlobClientBuilder implements
      */
     public SpecializedBlobClientBuilder serviceVersion(BlobServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * when using a shared key.
+     * @param audience {@link BlobAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @return the updated SpecializedBlobClientBuilder object
+     */
+    public SpecializedBlobClientBuilder audience(BlobAudience audience) {
+        this.audience = audience;
         return this;
     }
 }

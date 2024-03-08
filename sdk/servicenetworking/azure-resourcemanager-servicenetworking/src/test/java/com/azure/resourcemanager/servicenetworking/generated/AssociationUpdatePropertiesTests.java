@@ -5,30 +5,27 @@
 package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationUpdateProperties;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
+import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 import org.junit.jupiter.api.Assertions;
 
 public final class AssociationUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssociationUpdateProperties model =
-            BinaryData
-                .fromString("{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"qrimzinpv\"}}")
+        AssociationUpdateProperties model
+            = BinaryData.fromString("{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"ufufsrp\"}}")
                 .toObject(AssociationUpdateProperties.class);
         Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("qrimzinpv", model.subnet().id());
+        Assertions.assertEquals("ufufsrp", model.subnet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssociationUpdateProperties model =
-            new AssociationUpdateProperties()
-                .withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnetUpdate().withId("qrimzinpv"));
+        AssociationUpdateProperties model = new AssociationUpdateProperties()
+            .withAssociationType(AssociationType.SUBNETS).withSubnet(new AssociationSubnetUpdate().withId("ufufsrp"));
         model = BinaryData.fromObject(model).toObject(AssociationUpdateProperties.class);
         Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("qrimzinpv", model.subnet().id());
+        Assertions.assertEquals("ufufsrp", model.subnet().id());
     }
 }

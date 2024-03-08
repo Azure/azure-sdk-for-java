@@ -14,7 +14,9 @@ import com.azure.resourcemanager.appservice.models.Status;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Class representing Response from Detector. */
+/**
+ * Class representing Response from Detector.
+ */
 @Fluent
 public final class DetectorResponseInner extends ProxyOnlyResource {
     /*
@@ -23,20 +25,24 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private DetectorResponseProperties innerProperties;
 
-    /** Creates an instance of DetectorResponseInner class. */
+    /**
+     * Creates an instance of DetectorResponseInner class.
+     */
     public DetectorResponseInner() {
     }
 
     /**
      * Get the innerProperties property: DetectorResponse resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DetectorResponseProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DetectorResponseInner withKind(String kind) {
         super.withKind(kind);
@@ -45,7 +51,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the metadata property: metadata for the detector.
-     *
+     * 
      * @return the metadata value.
      */
     public DetectorInfo metadata() {
@@ -54,7 +60,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the metadata property: metadata for the detector.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -68,7 +74,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the dataset property: Data Set.
-     *
+     * 
      * @return the dataset value.
      */
     public List<DiagnosticData> dataset() {
@@ -77,7 +83,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the dataset property: Data Set.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -91,7 +97,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the status property: Indicates status of the most severe insight.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -100,7 +106,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the status property: Indicates status of the most severe insight.
-     *
+     * 
      * @param status the status value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -115,7 +121,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
     /**
      * Get the dataProvidersMetadata property: Additional configuration for different data providers to be used by the
      * UI.
-     *
+     * 
      * @return the dataProvidersMetadata value.
      */
     public List<DataProviderMetadata> dataProvidersMetadata() {
@@ -125,7 +131,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
     /**
      * Set the dataProvidersMetadata property: Additional configuration for different data providers to be used by the
      * UI.
-     *
+     * 
      * @param dataProvidersMetadata the dataProvidersMetadata value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -139,7 +145,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the suggestedUtterances property: Suggested utterances where the detector can be applicable.
-     *
+     * 
      * @return the suggestedUtterances value.
      */
     public QueryUtterancesResults suggestedUtterances() {
@@ -148,7 +154,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the suggestedUtterances property: Suggested utterances where the detector can be applicable.
-     *
+     * 
      * @param suggestedUtterances the suggestedUtterances value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -162,7 +168,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

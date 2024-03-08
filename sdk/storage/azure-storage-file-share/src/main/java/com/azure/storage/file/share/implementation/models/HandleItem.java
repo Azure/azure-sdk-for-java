@@ -56,6 +56,12 @@ public final class HandleItem {
     private String clientIp;
 
     /*
+     * Name of the client machine where the share is being mounted
+     */
+    @JsonProperty(value = "ClientName", required = true)
+    private String clientName;
+
+    /*
      * Time when the session that previously opened the handle has last been reconnected. (UTC)
      */
     @JsonProperty(value = "OpenTime", required = true)
@@ -204,6 +210,26 @@ public final class HandleItem {
      */
     public HandleItem setClientIp(String clientIp) {
         this.clientIp = clientIp;
+        return this;
+    }
+
+    /**
+     * Get the clientName property: Name of the client machine where the share is being mounted.
+     *
+     * @return the clientName value.
+     */
+    private String getClientName() {
+        return this.clientName;
+    }
+
+    /**
+     * Set the clientName property: Name of the client machine where the share is being mounted.
+     *
+     * @param clientName the clientName value to set.
+     * @return the HandleItem object itself.
+     */
+    private HandleItem setClientName(String clientName) {
+        this.clientName = clientName;
         return this;
     }
 

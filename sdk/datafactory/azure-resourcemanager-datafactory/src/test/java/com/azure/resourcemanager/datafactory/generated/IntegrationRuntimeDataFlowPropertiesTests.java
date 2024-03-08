@@ -16,41 +16,33 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeDataFlowPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeDataFlowProperties model =
-            BinaryData
-                .fromString(
-                    "{\"computeType\":\"MemoryOptimized\",\"coreCount\":1804017472,\"timeToLive\":672092871,\"cleanup\":true,\"customProperties\":[{\"name\":\"scsd\",\"value\":\"ymktcwmiv\"}],\"\":{\"dcozwxux\":\"datazegnglafnfgazagh\",\"utuhvemg\":\"datar\",\"xlx\":\"datalssolqypv\",\"vgdojcvzfcmxmjp\":\"datahvrkqv\"}}")
-                .toObject(IntegrationRuntimeDataFlowProperties.class);
-        Assertions.assertEquals(DataFlowComputeType.MEMORY_OPTIMIZED, model.computeType());
-        Assertions.assertEquals(1804017472, model.coreCount());
-        Assertions.assertEquals(672092871, model.timeToLive());
-        Assertions.assertEquals(true, model.cleanup());
-        Assertions.assertEquals("scsd", model.customProperties().get(0).name());
-        Assertions.assertEquals("ymktcwmiv", model.customProperties().get(0).value());
+        IntegrationRuntimeDataFlowProperties model = BinaryData.fromString(
+            "{\"computeType\":\"ComputeOptimized\",\"coreCount\":1479856776,\"timeToLive\":2091496981,\"cleanup\":false,\"customProperties\":[{\"name\":\"hbxve\",\"value\":\"q\"},{\"name\":\"t\",\"value\":\"uzc\"}],\"\":{\"nrvxyyh\":\"datairybytcaqpjohlc\",\"tq\":\"datasis\",\"teqiwd\":\"datarpa\"}}")
+            .toObject(IntegrationRuntimeDataFlowProperties.class);
+        Assertions.assertEquals(DataFlowComputeType.COMPUTE_OPTIMIZED, model.computeType());
+        Assertions.assertEquals(1479856776, model.coreCount());
+        Assertions.assertEquals(2091496981, model.timeToLive());
+        Assertions.assertEquals(false, model.cleanup());
+        Assertions.assertEquals("hbxve", model.customProperties().get(0).name());
+        Assertions.assertEquals("q", model.customProperties().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeDataFlowProperties model =
-            new IntegrationRuntimeDataFlowProperties()
-                .withComputeType(DataFlowComputeType.MEMORY_OPTIMIZED)
-                .withCoreCount(1804017472)
-                .withTimeToLive(672092871)
-                .withCleanup(true)
-                .withCustomProperties(
-                    Arrays
-                        .asList(
-                            new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem()
-                                .withName("scsd")
-                                .withValue("ymktcwmiv")))
+        IntegrationRuntimeDataFlowProperties model
+            = new IntegrationRuntimeDataFlowProperties().withComputeType(DataFlowComputeType.COMPUTE_OPTIMIZED)
+                .withCoreCount(1479856776).withTimeToLive(2091496981).withCleanup(false)
+                .withCustomProperties(Arrays.asList(
+                    new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("hbxve").withValue("q"),
+                    new IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem().withName("t").withValue("uzc")))
                 .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeDataFlowProperties.class);
-        Assertions.assertEquals(DataFlowComputeType.MEMORY_OPTIMIZED, model.computeType());
-        Assertions.assertEquals(1804017472, model.coreCount());
-        Assertions.assertEquals(672092871, model.timeToLive());
-        Assertions.assertEquals(true, model.cleanup());
-        Assertions.assertEquals("scsd", model.customProperties().get(0).name());
-        Assertions.assertEquals("ymktcwmiv", model.customProperties().get(0).value());
+        Assertions.assertEquals(DataFlowComputeType.COMPUTE_OPTIMIZED, model.computeType());
+        Assertions.assertEquals(1479856776, model.coreCount());
+        Assertions.assertEquals(2091496981, model.timeToLive());
+        Assertions.assertEquals(false, model.cleanup());
+        Assertions.assertEquals("hbxve", model.customProperties().get(0).name());
+        Assertions.assertEquals("q", model.customProperties().get(0).value());
     }
 
     // Use "Map.of" if available

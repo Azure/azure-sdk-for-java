@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class VMwareCbtMigrateInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareCbtMigrateInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"VMwareCbt\",\"performShutdown\":\"ara\",\"osUpgradeVersion\":\"wuasnjeglhtrx\"}")
-                .toObject(VMwareCbtMigrateInput.class);
+        VMwareCbtMigrateInput model = BinaryData
+            .fromString(
+                "{\"instanceType\":\"VMwareCbt\",\"performShutdown\":\"ara\",\"osUpgradeVersion\":\"wuasnjeglhtrx\"}")
+            .toObject(VMwareCbtMigrateInput.class);
         Assertions.assertEquals("ara", model.performShutdown());
         Assertions.assertEquals("wuasnjeglhtrx", model.osUpgradeVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtMigrateInput model =
-            new VMwareCbtMigrateInput().withPerformShutdown("ara").withOsUpgradeVersion("wuasnjeglhtrx");
+        VMwareCbtMigrateInput model
+            = new VMwareCbtMigrateInput().withPerformShutdown("ara").withOsUpgradeVersion("wuasnjeglhtrx");
         model = BinaryData.fromObject(model).toObject(VMwareCbtMigrateInput.class);
         Assertions.assertEquals("ara", model.performShutdown());
         Assertions.assertEquals("wuasnjeglhtrx", model.osUpgradeVersion());

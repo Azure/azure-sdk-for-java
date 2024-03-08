@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedNotificationHubInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedNotificationHubInner model =
-            BinaryData.fromString("{\"resourceId\":\"apcz\"}").toObject(LinkedNotificationHubInner.class);
+        LinkedNotificationHubInner model
+            = BinaryData.fromString("{\"resourceId\":\"apcz\"}").toObject(LinkedNotificationHubInner.class);
         Assertions.assertEquals("apcz", model.resourceId());
     }
 

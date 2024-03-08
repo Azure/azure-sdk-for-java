@@ -7,7 +7,7 @@ package com.azure.resourcemanager.webpubsub.generated;
 /** Samples for WebPubSubReplicas Get. */
 public final class WebPubSubReplicasGetSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/WebPubSubReplicas_Get.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/WebPubSubReplicas_Get.json
      */
     /**
      * Sample code: WebPubSubReplicas_Get.

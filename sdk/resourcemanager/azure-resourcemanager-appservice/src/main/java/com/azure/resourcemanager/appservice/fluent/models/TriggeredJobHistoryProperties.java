@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.TriggeredJobRun;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** TriggeredJobHistory resource specific properties. */
+/**
+ * TriggeredJobHistory resource specific properties.
+ */
 @Fluent
 public final class TriggeredJobHistoryProperties {
     /*
@@ -18,13 +20,15 @@ public final class TriggeredJobHistoryProperties {
     @JsonProperty(value = "runs")
     private List<TriggeredJobRun> runs;
 
-    /** Creates an instance of TriggeredJobHistoryProperties class. */
+    /**
+     * Creates an instance of TriggeredJobHistoryProperties class.
+     */
     public TriggeredJobHistoryProperties() {
     }
 
     /**
      * Get the runs property: List of triggered web job runs.
-     *
+     * 
      * @return the runs value.
      */
     public List<TriggeredJobRun> runs() {
@@ -33,7 +37,7 @@ public final class TriggeredJobHistoryProperties {
 
     /**
      * Set the runs property: List of triggered web job runs.
-     *
+     * 
      * @param runs the runs value to set.
      * @return the TriggeredJobHistoryProperties object itself.
      */
@@ -44,7 +48,7 @@ public final class TriggeredJobHistoryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

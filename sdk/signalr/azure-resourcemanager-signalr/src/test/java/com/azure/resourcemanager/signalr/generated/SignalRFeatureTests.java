@@ -17,26 +17,24 @@ public final class SignalRFeatureTests {
         SignalRFeature model =
             BinaryData
                 .fromString(
-                    "{\"flag\":\"ServiceMode\",\"value\":\"phoszqz\",\"properties\":{\"ynwcvtbv\":\"hqamvdkf\",\"pcnp\":\"ayhmtnvyqiatkz\",\"jguq\":\"zcjaesgvvsccy\",\"lvdnkfx\":\"hwyg\"}}")
+                    "{\"flag\":\"EnableLiveTrace\",\"value\":\"nvrk\",\"properties\":{\"ixqtn\":\"uaibrebqaaysj\"}}")
                 .toObject(SignalRFeature.class);
-        Assertions.assertEquals(FeatureFlags.SERVICE_MODE, model.flag());
-        Assertions.assertEquals("phoszqz", model.value());
-        Assertions.assertEquals("hqamvdkf", model.properties().get("ynwcvtbv"));
+        Assertions.assertEquals(FeatureFlags.ENABLE_LIVE_TRACE, model.flag());
+        Assertions.assertEquals("nvrk", model.value());
+        Assertions.assertEquals("uaibrebqaaysj", model.properties().get("ixqtn"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SignalRFeature model =
             new SignalRFeature()
-                .withFlag(FeatureFlags.SERVICE_MODE)
-                .withValue("phoszqz")
-                .withProperties(
-                    mapOf(
-                        "ynwcvtbv", "hqamvdkf", "pcnp", "ayhmtnvyqiatkz", "jguq", "zcjaesgvvsccy", "lvdnkfx", "hwyg"));
+                .withFlag(FeatureFlags.ENABLE_LIVE_TRACE)
+                .withValue("nvrk")
+                .withProperties(mapOf("ixqtn", "uaibrebqaaysj"));
         model = BinaryData.fromObject(model).toObject(SignalRFeature.class);
-        Assertions.assertEquals(FeatureFlags.SERVICE_MODE, model.flag());
-        Assertions.assertEquals("phoszqz", model.value());
-        Assertions.assertEquals("hqamvdkf", model.properties().get("ynwcvtbv"));
+        Assertions.assertEquals(FeatureFlags.ENABLE_LIVE_TRACE, model.flag());
+        Assertions.assertEquals("nvrk", model.value());
+        Assertions.assertEquals("uaibrebqaaysj", model.properties().get("ixqtn"));
     }
 
     // Use "Map.of" if available

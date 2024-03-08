@@ -33,7 +33,7 @@ public final class SitesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkFunctions\":[{\"id\":\"eqvdsm\"},{\"id\":\"lixqcah\"}]},\"location\":\"xalybxawoijpo\",\"tags\":{\"kwjdjodqhy\":\"lxp\",\"mehllizhceu\":\"incnr\",\"ibngqladyw\":\"oqodkadpp\",\"ds\":\"xwhydtluvv\"},\"id\":\"zsn\",\"name\":\"yemlowuowhlxln\",\"type\":\"y\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkFunctions\":[{\"id\":\"eyguq\"}]},\"location\":\"ijiitns\",\"tags\":{\"jwaiuf\":\"zdesygr\"},\"id\":\"n\",\"name\":\"aybfu\",\"type\":\"qfrojsydgrhyd\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,16 +64,17 @@ public final class SitesCreateOrUpdateMockTests {
         Site response =
             manager
                 .sites()
-                .define("gukvlbpkt")
-                .withRegion("igijiitnspxlz")
-                .withExistingMobileNetwork("w", "iytxt")
-                .withTags(mapOf("jwaiuf", "ygr", "aybfu", "n"))
+                .define("tujwjju")
+                .withRegion("ytiq")
+                .withExistingMobileNetwork("enwphpzfngq", "clid")
+                .withTags(mapOf("w", "qer", "gukvlbpkt", "iytxt"))
                 .create();
 
-        Assertions.assertEquals("xalybxawoijpo", response.location());
-        Assertions.assertEquals("lxp", response.tags().get("kwjdjodqhy"));
+        Assertions.assertEquals("ijiitns", response.location());
+        Assertions.assertEquals("zdesygr", response.tags().get("jwaiuf"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

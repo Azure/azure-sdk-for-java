@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.PrivateEndpointConnection
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the ListPrivateEndpointConnection API service call. */
+/**
+ * Response for the ListPrivateEndpointConnection API service call.
+ */
 @Fluent
 public final class PrivateEndpointConnectionListResult {
     /*
@@ -24,13 +26,15 @@ public final class PrivateEndpointConnectionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PrivateEndpointConnectionListResult class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionListResult class.
+     */
     public PrivateEndpointConnectionListResult() {
     }
 
     /**
      * Get the value property: A list of PrivateEndpointConnection resources for a specific private link service.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionInner> value() {
@@ -39,7 +43,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Set the value property: A list of PrivateEndpointConnection resources for a specific private link service.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,14 +12,14 @@ public final class GenerateUploadUriResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GenerateUploadUriResponseInner model =
-            BinaryData.fromString("{\"uploadUri\":\"zvkfv\"}").toObject(GenerateUploadUriResponseInner.class);
-        Assertions.assertEquals("zvkfv", model.uploadUri());
+            BinaryData.fromString("{\"uploadUri\":\"ela\"}").toObject(GenerateUploadUriResponseInner.class);
+        Assertions.assertEquals("ela", model.uploadUri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GenerateUploadUriResponseInner model = new GenerateUploadUriResponseInner().withUploadUri("zvkfv");
+        GenerateUploadUriResponseInner model = new GenerateUploadUriResponseInner().withUploadUri("ela");
         model = BinaryData.fromObject(model).toObject(GenerateUploadUriResponseInner.class);
-        Assertions.assertEquals("zvkfv", model.uploadUri());
+        Assertions.assertEquals("ela", model.uploadUri());
     }
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The base definition of a linked integration runtime. */
+/**
+ * The base definition of a linked integration runtime.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -18,17 +20,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("LinkedIntegrationRuntimeType")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Key", value = LinkedIntegrationRuntimeKeyAuthorization.class),
-    @JsonSubTypes.Type(name = "RBAC", value = LinkedIntegrationRuntimeRbacAuthorization.class)
-})
+    @JsonSubTypes.Type(name = "RBAC", value = LinkedIntegrationRuntimeRbacAuthorization.class) })
 @Immutable
 public class LinkedIntegrationRuntimeType {
-    /** Creates an instance of LinkedIntegrationRuntimeType class. */
+    /**
+     * Creates an instance of LinkedIntegrationRuntimeType class.
+     */
     public LinkedIntegrationRuntimeType() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

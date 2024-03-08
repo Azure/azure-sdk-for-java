@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A web application firewall rule set. */
+/**
+ * A web application firewall rule set.
+ */
 @Fluent
 public final class ApplicationGatewayFirewallRuleSet extends Resource {
     /*
@@ -26,13 +28,15 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ApplicationGatewayFirewallRuleSet class. */
+    /**
+     * Creates an instance of ApplicationGatewayFirewallRuleSet class.
+     */
     public ApplicationGatewayFirewallRuleSet() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway firewall rule set.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayFirewallRuleSetPropertiesFormat innerProperties() {
@@ -41,7 +45,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -59,14 +63,18 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayFirewallRuleSet withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayFirewallRuleSet withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,7 +83,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the web application firewall rule set.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -84,7 +92,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -93,7 +101,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -107,7 +115,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -116,7 +124,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -130,7 +138,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ApplicationGatewayFirewallRuleGroup> ruleGroups() {
@@ -139,7 +147,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
+     * 
      * @param ruleGroups the ruleGroups value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -153,7 +161,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the tiers property: Tier of an application gateway that support the rule set.
-     *
+     * 
      * @return the tiers value.
      */
     public List<ApplicationGatewayTierTypes> tiers() {
@@ -162,7 +170,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the tiers property: Tier of an application gateway that support the rule set.
-     *
+     * 
      * @param tiers the tiers value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -176,7 +184,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

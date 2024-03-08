@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Cosmos DB MongoDB collection resource object. */
+/**
+ * Cosmos DB MongoDB collection resource object.
+ */
 @Fluent
 public class MongoDBCollectionResource {
     /*
@@ -39,13 +41,27 @@ public class MongoDBCollectionResource {
     @JsonProperty(value = "analyticalStorageTtl")
     private Integer analyticalStorageTtl;
 
-    /** Creates an instance of MongoDBCollectionResource class. */
+    /*
+     * Parameters to indicate the information about the restore
+     */
+    @JsonProperty(value = "restoreParameters")
+    private ResourceRestoreParameters restoreParameters;
+
+    /*
+     * Enum to indicate the mode of resource creation.
+     */
+    @JsonProperty(value = "createMode")
+    private CreateMode createMode;
+
+    /**
+     * Creates an instance of MongoDBCollectionResource class.
+     */
     public MongoDBCollectionResource() {
     }
 
     /**
      * Get the id property: Name of the Cosmos DB MongoDB collection.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -54,7 +70,7 @@ public class MongoDBCollectionResource {
 
     /**
      * Set the id property: Name of the Cosmos DB MongoDB collection.
-     *
+     * 
      * @param id the id value to set.
      * @return the MongoDBCollectionResource object itself.
      */
@@ -65,7 +81,7 @@ public class MongoDBCollectionResource {
 
     /**
      * Get the shardKey property: A key-value pair of shard keys to be applied for the request.
-     *
+     * 
      * @return the shardKey value.
      */
     public Map<String, String> shardKey() {
@@ -74,7 +90,7 @@ public class MongoDBCollectionResource {
 
     /**
      * Set the shardKey property: A key-value pair of shard keys to be applied for the request.
-     *
+     * 
      * @param shardKey the shardKey value to set.
      * @return the MongoDBCollectionResource object itself.
      */
@@ -85,7 +101,7 @@ public class MongoDBCollectionResource {
 
     /**
      * Get the indexes property: List of index keys.
-     *
+     * 
      * @return the indexes value.
      */
     public List<MongoIndex> indexes() {
@@ -94,7 +110,7 @@ public class MongoDBCollectionResource {
 
     /**
      * Set the indexes property: List of index keys.
-     *
+     * 
      * @param indexes the indexes value to set.
      * @return the MongoDBCollectionResource object itself.
      */
@@ -105,7 +121,7 @@ public class MongoDBCollectionResource {
 
     /**
      * Get the analyticalStorageTtl property: Analytical TTL.
-     *
+     * 
      * @return the analyticalStorageTtl value.
      */
     public Integer analyticalStorageTtl() {
@@ -114,7 +130,7 @@ public class MongoDBCollectionResource {
 
     /**
      * Set the analyticalStorageTtl property: Analytical TTL.
-     *
+     * 
      * @param analyticalStorageTtl the analyticalStorageTtl value to set.
      * @return the MongoDBCollectionResource object itself.
      */
@@ -124,18 +140,60 @@ public class MongoDBCollectionResource {
     }
 
     /**
+     * Get the restoreParameters property: Parameters to indicate the information about the restore.
+     * 
+     * @return the restoreParameters value.
+     */
+    public ResourceRestoreParameters restoreParameters() {
+        return this.restoreParameters;
+    }
+
+    /**
+     * Set the restoreParameters property: Parameters to indicate the information about the restore.
+     * 
+     * @param restoreParameters the restoreParameters value to set.
+     * @return the MongoDBCollectionResource object itself.
+     */
+    public MongoDBCollectionResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        this.restoreParameters = restoreParameters;
+        return this;
+    }
+
+    /**
+     * Get the createMode property: Enum to indicate the mode of resource creation.
+     * 
+     * @return the createMode value.
+     */
+    public CreateMode createMode() {
+        return this.createMode;
+    }
+
+    /**
+     * Set the createMode property: Enum to indicate the mode of resource creation.
+     * 
+     * @param createMode the createMode value to set.
+     * @return the MongoDBCollectionResource object itself.
+     */
+    public MongoDBCollectionResource withCreateMode(CreateMode createMode) {
+        this.createMode = createMode;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model MongoDBCollectionResource"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model MongoDBCollectionResource"));
         }
         if (indexes() != null) {
             indexes().forEach(e -> e.validate());
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
         }
     }
 

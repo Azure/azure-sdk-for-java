@@ -25,22 +25,28 @@ import com.azure.resourcemanager.eventgrid.fluent.ExtensionTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.ExtensionTopicInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExtensionTopicsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExtensionTopicsClient.
+ */
 public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExtensionTopicsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of ExtensionTopicsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExtensionTopicsClientImpl(EventGridManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ExtensionTopicsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ExtensionTopicsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,42 +57,36 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
     public interface ExtensionTopicsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.EventGrid/extensionTopics/default")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExtensionTopicInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("scope") String scope,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ExtensionTopicInner>> get(@HostParam("$host") String endpoint, @PathParam("scope") String scope,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get properties of an extension topic.
-     *
-     * <p>Get the properties of an extension topic.
-     *
+     * 
+     * Get the properties of an extension topic.
+     * 
      * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
-     *     or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for Azure resource.
+     * or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for Azure resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an extension topic along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of an extension topic along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtensionTopicInner>> getWithResponseAsync(String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -100,29 +100,27 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
 
     /**
      * Get properties of an extension topic.
-     *
-     * <p>Get the properties of an extension topic.
-     *
+     * 
+     * Get the properties of an extension topic.
+     * 
      * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
-     *     or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for Azure resource.
+     * or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for Azure resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an extension topic along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the properties of an extension topic along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ExtensionTopicInner>> getWithResponseAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -134,15 +132,15 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
 
     /**
      * Get properties of an extension topic.
-     *
-     * <p>Get the properties of an extension topic.
-     *
+     * 
+     * Get the properties of an extension topic.
+     * 
      * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
-     *     or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for Azure resource.
+     * or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for Azure resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -155,15 +153,15 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
 
     /**
      * Get properties of an extension topic.
-     *
-     * <p>Get the properties of an extension topic.
-     *
+     * 
+     * Get the properties of an extension topic.
+     * 
      * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
-     *     or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for Azure resource.
+     * or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for Azure resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -177,15 +175,15 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
 
     /**
      * Get properties of an extension topic.
-     *
-     * <p>Get the properties of an extension topic.
-     *
+     * 
+     * Get the properties of an extension topic.
+     * 
      * @param scope The identifier of the resource to which extension topic is queried. The scope can be a subscription,
-     *     or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
-     *     '/subscriptions/{subscriptionId}/' for a subscription,
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-     *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-     *     for Azure resource.
+     * or a resource group, or a top level resource belonging to a resource provider namespace. For example, use
+     * '/subscriptions/{subscriptionId}/' for a subscription,
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+     * for Azure resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

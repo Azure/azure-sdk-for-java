@@ -56,6 +56,6 @@ public final class GalleriesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.galleries().delete("ostgkts", "vdxec", "zedqbcvhzlhplo", com.azure.core.util.Context.NONE);
+        manager.galleries().delete("moy", "hlwigdivbkbxg", "mf", com.azure.core.util.Context.NONE);
     }
 }

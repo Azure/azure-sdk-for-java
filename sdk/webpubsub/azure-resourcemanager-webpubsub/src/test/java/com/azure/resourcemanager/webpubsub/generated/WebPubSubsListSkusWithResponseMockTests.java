@@ -30,7 +30,7 @@ public final class WebPubSubsListSkusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"dbn\",\"sku\":{\"name\":\"ehol\",\"tier\":\"Premium\",\"size\":\"iuubwefqsf\",\"family\":\"aqtferr\",\"capacity\":334650465},\"capacity\":{\"minimum\":996119870,\"maximum\":1852289661,\"default\":2076529802,\"allowedValues\":[1795286214,401804668,942772485,367492569],\"scaleType\":\"Manual\"}}],\"nextLink\":\"bpudcdab\"}";
+            "{\"value\":[{\"resourceType\":\"hrqbnjjrcg\",\"sku\":{\"name\":\"ydcwboxjumv\",\"tier\":\"Basic\",\"size\":\"ihrraiouaub\",\"family\":\"tloqxfuojrn\",\"capacity\":1614609688},\"capacity\":{\"minimum\":193344927,\"maximum\":2039990607,\"default\":1842642996,\"allowedValues\":[243616363,231724213,1776866664,1431120696],\"scaleType\":\"None\"}},{\"resourceType\":\"yjdfqwmky\",\"sku\":{\"name\":\"ufdvruz\",\"tier\":\"Standard\",\"size\":\"j\",\"family\":\"ctfnmdxotng\",\"capacity\":1293168350},\"capacity\":{\"minimum\":222223496,\"maximum\":2136201648,\"default\":1242659668,\"allowedValues\":[1233581087,692345701],\"scaleType\":\"Manual\"}}],\"nextLink\":\"absnmfpp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,6 +59,9 @@ public final class WebPubSubsListSkusWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SkuList response =
-            manager.webPubSubs().listSkusWithResponse("a", "zv", com.azure.core.util.Context.NONE).getValue();
+            manager
+                .webPubSubs()
+                .listSkusWithResponse("pkcdqzhlct", "dunqnd", com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

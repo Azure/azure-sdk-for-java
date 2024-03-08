@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The instance view of a restore point. */
+/**
+ * The instance view of a restore point.
+ */
 @Fluent
 public final class RestorePointInstanceView {
     /*
@@ -23,13 +25,15 @@ public final class RestorePointInstanceView {
     @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
-    /** Creates an instance of RestorePointInstanceView class. */
+    /**
+     * Creates an instance of RestorePointInstanceView class.
+     */
     public RestorePointInstanceView() {
     }
 
     /**
      * Get the diskRestorePoints property: The disk restore points information.
-     *
+     * 
      * @return the diskRestorePoints value.
      */
     public List<DiskRestorePointInstanceView> diskRestorePoints() {
@@ -38,7 +42,7 @@ public final class RestorePointInstanceView {
 
     /**
      * Set the diskRestorePoints property: The disk restore points information.
-     *
+     * 
      * @param diskRestorePoints the diskRestorePoints value to set.
      * @return the RestorePointInstanceView object itself.
      */
@@ -49,7 +53,7 @@ public final class RestorePointInstanceView {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -58,7 +62,7 @@ public final class RestorePointInstanceView {
 
     /**
      * Set the statuses property: The resource status information.
-     *
+     * 
      * @param statuses the statuses value to set.
      * @return the RestorePointInstanceView object itself.
      */
@@ -69,7 +73,7 @@ public final class RestorePointInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

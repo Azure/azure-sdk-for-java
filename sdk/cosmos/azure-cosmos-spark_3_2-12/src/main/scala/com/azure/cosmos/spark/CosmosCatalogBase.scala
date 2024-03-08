@@ -41,6 +41,7 @@ class CosmosCatalogBase
         with BasicLoggingTrait {
 
     private lazy val sparkSession = SparkSession.active
+    private lazy val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(SparkSession.getActiveSession)
 
     // mutable but only expected to be changed from within initialize method
     private var catalogName: String = _
@@ -110,7 +111,7 @@ class CosmosCatalogBase
         Loan(
             List[Option[CosmosClientCacheItem]](
                 Some(CosmosClientCache(
-                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
                     None,
                     s"CosmosCatalog(name $catalogName).listNamespaces"
                 ))
@@ -160,7 +161,7 @@ class CosmosCatalogBase
         Loan(
             List[Option[CosmosClientCacheItem]](
                 Some(CosmosClientCache(
-                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
                     None,
                     s"CosmosCatalog(name $catalogName).loadNamespaceMetadata([${namespace.mkString(", ")}])"
                 ))
@@ -195,7 +196,7 @@ class CosmosCatalogBase
         Loan(
             List[Option[CosmosClientCacheItem]](
                 Some(CosmosClientCache(
-                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
                     None,
                     s"CosmosCatalog(name $catalogName).createNamespace([${namespace.mkString(", ")}])"
                 ))
@@ -241,7 +242,7 @@ class CosmosCatalogBase
     Loan(
       List[Option[CosmosClientCacheItem]](
         Some(CosmosClientCache(
-          CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+          CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
           None,
           s"CosmosCatalog(name $catalogName).alterNamespace($databaseName)"
         ))
@@ -273,7 +274,7 @@ class CosmosCatalogBase
             Loan(
                 List[Option[CosmosClientCacheItem]](
                     Some(CosmosClientCache(
-                        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                        CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
                         None,
                         s"CosmosCatalog(name $catalogName).dropNamespace([${namespace.mkString(", ")}])"
                     ))
@@ -305,7 +306,7 @@ class CosmosCatalogBase
                 Loan(
                     List[Option[CosmosClientCacheItem]](
                         Some(CosmosClientCache(
-                            CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                            CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
                             None,
                             s"CosmosCatalog(name $catalogName).listTables([${namespace.mkString(", ")}])"
                         ))
@@ -455,7 +456,7 @@ class CosmosCatalogBase
         Loan(
             List[Option[CosmosClientCacheItem]](
                 Some(CosmosClientCache(
-                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
                     None,
                     s"CosmosCatalog(name $catalogName).createPhysicalTable($databaseName, $containerName)"
                 ))
@@ -551,7 +552,7 @@ class CosmosCatalogBase
     Loan(
       List[Option[CosmosClientCacheItem]](
         Some(CosmosClientCache(
-          CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+          CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
           None,
           s"CosmosCatalog(name $catalogName).alterPhysicalTable($databaseName, $containerName)"
         ))
@@ -570,7 +571,7 @@ class CosmosCatalogBase
             Loan(
                 List[Option[CosmosClientCacheItem]](
                     Some(CosmosClientCache(
-                        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                        CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
                         None,
                         s"CosmosCatalog(name $catalogName).deletePhysicalTable($databaseName, $containerName)"
                     ))
@@ -630,7 +631,7 @@ class CosmosCatalogBase
         Loan(
             List[Option[CosmosClientCacheItem]](
                 Some(CosmosClientCache(
-                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+                    CosmosClientConfiguration(config, readConfig.forceEventualConsistency, sparkEnvironmentInfo),
                     None,
                     s"CosmosCatalog(name $catalogName).tryGetContainerMetadata($databaseName, $containerName)"
                 ))

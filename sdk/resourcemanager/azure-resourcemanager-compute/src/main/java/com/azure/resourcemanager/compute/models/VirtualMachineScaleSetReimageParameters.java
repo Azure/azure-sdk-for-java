@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a Virtual Machine Scale Set VM Reimage Parameters. */
+/**
+ * Describes a Virtual Machine Scale Set VM Reimage Parameters.
+ */
 @Fluent
 public final class VirtualMachineScaleSetReimageParameters extends VirtualMachineScaleSetVMReimageParameters {
     /*
@@ -18,7 +20,9 @@ public final class VirtualMachineScaleSetReimageParameters extends VirtualMachin
     @JsonProperty(value = "instanceIds")
     private List<String> instanceIds;
 
-    /** Creates an instance of VirtualMachineScaleSetReimageParameters class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetReimageParameters class.
+     */
     public VirtualMachineScaleSetReimageParameters() {
     }
 
@@ -26,7 +30,7 @@ public final class VirtualMachineScaleSetReimageParameters extends VirtualMachin
      * Get the instanceIds property: The virtual machine scale set instance ids. Omitting the virtual machine scale set
      * instance ids will result in the operation being performed on all virtual machines in the virtual machine scale
      * set.
-     *
+     * 
      * @return the instanceIds value.
      */
     public List<String> instanceIds() {
@@ -37,7 +41,7 @@ public final class VirtualMachineScaleSetReimageParameters extends VirtualMachin
      * Set the instanceIds property: The virtual machine scale set instance ids. Omitting the virtual machine scale set
      * instance ids will result in the operation being performed on all virtual machines in the virtual machine scale
      * set.
-     *
+     * 
      * @param instanceIds the instanceIds value to set.
      * @return the VirtualMachineScaleSetReimageParameters object itself.
      */
@@ -46,21 +50,27 @@ public final class VirtualMachineScaleSetReimageParameters extends VirtualMachin
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineScaleSetReimageParameters withTempDisk(Boolean tempDisk) {
         super.withTempDisk(tempDisk);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineScaleSetReimageParameters withExactVersion(String exactVersion) {
         super.withExactVersion(exactVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineScaleSetReimageParameters withOsProfile(OSProfileProvisioningData osProfile) {
         super.withOsProfile(osProfile);
@@ -69,7 +79,7 @@ public final class VirtualMachineScaleSetReimageParameters extends VirtualMachin
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

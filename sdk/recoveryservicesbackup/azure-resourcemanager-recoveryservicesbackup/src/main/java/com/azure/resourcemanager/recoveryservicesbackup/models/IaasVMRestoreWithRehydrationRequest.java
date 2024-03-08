@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** IaaS VM workload-specific restore with integrated rehydration of recovery point. */
+/**
+ * IaaS VM workload-specific restore with integrated rehydration of recovery point.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("IaasVMRestoreWithRehydrationRequest")
 @Fluent
@@ -21,13 +23,15 @@ public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequ
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
-    /** Creates an instance of IaasVMRestoreWithRehydrationRequest class. */
+    /**
+     * Creates an instance of IaasVMRestoreWithRehydrationRequest class.
+     */
     public IaasVMRestoreWithRehydrationRequest() {
     }
 
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @return the recoveryPointRehydrationInfo value.
      */
     public RecoveryPointRehydrationInfo recoveryPointRehydrationInfo() {
@@ -36,182 +40,228 @@ public final class IaasVMRestoreWithRehydrationRequest extends IaasVMRestoreRequ
 
     /**
      * Set the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @param recoveryPointRehydrationInfo the recoveryPointRehydrationInfo value to set.
      * @return the IaasVMRestoreWithRehydrationRequest object itself.
      */
-    public IaasVMRestoreWithRehydrationRequest withRecoveryPointRehydrationInfo(
-        RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
+    public IaasVMRestoreWithRehydrationRequest
+        withRecoveryPointRehydrationInfo(RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
         this.recoveryPointRehydrationInfo = recoveryPointRehydrationInfo;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withRecoveryPointId(String recoveryPointId) {
         super.withRecoveryPointId(recoveryPointId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withRecoveryType(RecoveryType recoveryType) {
         super.withRecoveryType(recoveryType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withTargetResourceGroupId(String targetResourceGroupId) {
         super.withTargetResourceGroupId(targetResourceGroupId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withStorageAccountId(String storageAccountId) {
         super.withStorageAccountId(storageAccountId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withVirtualNetworkId(String virtualNetworkId) {
         super.withVirtualNetworkId(virtualNetworkId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withSubnetId(String subnetId) {
         super.withSubnetId(subnetId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withTargetDomainNameId(String targetDomainNameId) {
         super.withTargetDomainNameId(targetDomainNameId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withRegion(String region) {
         super.withRegion(region);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withAffinityGroup(String affinityGroup) {
         super.withAffinityGroup(affinityGroup);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withCreateNewCloudService(Boolean createNewCloudService) {
         super.withCreateNewCloudService(createNewCloudService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withOriginalStorageAccountOption(Boolean originalStorageAccountOption) {
         super.withOriginalStorageAccountOption(originalStorageAccountOption);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withEncryptionDetails(EncryptionDetails encryptionDetails) {
         super.withEncryptionDetails(encryptionDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withRestoreDiskLunList(List<Integer> restoreDiskLunList) {
         super.withRestoreDiskLunList(restoreDiskLunList);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withRestoreWithManagedDisks(Boolean restoreWithManagedDisks) {
         super.withRestoreWithManagedDisks(restoreWithManagedDisks);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withDiskEncryptionSetId(String diskEncryptionSetId) {
         super.withDiskEncryptionSetId(diskEncryptionSetId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withZones(List<String> zones) {
         super.withZones(zones);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withIdentityInfo(IdentityInfo identityInfo) {
         super.withIdentityInfo(identityInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public IaasVMRestoreWithRehydrationRequest withIdentityBasedRestoreDetails(
-        IdentityBasedRestoreDetails identityBasedRestoreDetails) {
+    public IaasVMRestoreWithRehydrationRequest
+        withIdentityBasedRestoreDetails(IdentityBasedRestoreDetails identityBasedRestoreDetails) {
         super.withIdentityBasedRestoreDetails(identityBasedRestoreDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withExtendedLocation(ExtendedLocation extendedLocation) {
         super.withExtendedLocation(extendedLocation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IaasVMRestoreWithRehydrationRequest withSecuredVMDetails(SecuredVMDetails securedVMDetails) {
         super.withSecuredVMDetails(securedVMDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public IaasVMRestoreWithRehydrationRequest withTargetDiskNetworkAccessSettings(
-        TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings) {
+    public IaasVMRestoreWithRehydrationRequest
+        withTargetDiskNetworkAccessSettings(TargetDiskNetworkAccessSettings targetDiskNetworkAccessSettings) {
         super.withTargetDiskNetworkAccessSettings(targetDiskNetworkAccessSettings);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

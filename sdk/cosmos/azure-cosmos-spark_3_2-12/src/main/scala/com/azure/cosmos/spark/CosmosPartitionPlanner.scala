@@ -646,7 +646,8 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
         ThroughputControlHelper.getThroughputControlClientCacheItem(
           userConfig,
           calledFrom,
-          cosmosClientStateHandles)
+          cosmosClientStateHandles,
+          cosmosClientConfig.sparkEnvironmentInfo)
       ))
       .to(clientCacheItems => {
         val container =
@@ -655,7 +656,6 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
             cosmosContainerConfig,
             clientCacheItems(0).get,
             clientCacheItems(1))
-        SparkUtils.safeOpenConnectionInitCaches(container, (msg, e) => logWarning(msg, e))
 
         ContainerFeedRangesCache
           .getFeedRanges(container)

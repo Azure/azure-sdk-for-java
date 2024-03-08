@@ -9,10 +9,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.selfhelp.fluent.DiagnosticsClient;
-import com.azure.resourcemanager.selfhelp.fluent.models.CheckNameAvailabilityResponseInner;
 import com.azure.resourcemanager.selfhelp.fluent.models.DiagnosticResourceInner;
-import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityRequest;
-import com.azure.resourcemanager.selfhelp.models.CheckNameAvailabilityResponse;
 import com.azure.resourcemanager.selfhelp.models.DiagnosticResource;
 import com.azure.resourcemanager.selfhelp.models.Diagnostics;
 
@@ -23,44 +20,17 @@ public final class DiagnosticsImpl implements Diagnostics {
 
     private final com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager;
 
-    public DiagnosticsImpl(
-        DiagnosticsClient innerClient, com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
+    public DiagnosticsImpl(DiagnosticsClient innerClient,
+        com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(scope, checkNameAvailabilityRequest, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public CheckNameAvailabilityResponse checkNameAvailability(String scope) {
-        CheckNameAvailabilityResponseInner inner = this.serviceClient().checkNameAvailability(scope);
-        if (inner != null) {
-            return new CheckNameAvailabilityResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DiagnosticResource> getWithResponse(String scope, String diagnosticsResourceName, Context context) {
-        Response<DiagnosticResourceInner> inner =
-            this.serviceClient().getWithResponse(scope, diagnosticsResourceName, context);
+        Response<DiagnosticResourceInner> inner
+            = this.serviceClient().getWithResponse(scope, diagnosticsResourceName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DiagnosticResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -77,53 +47,33 @@ public final class DiagnosticsImpl implements Diagnostics {
     }
 
     public DiagnosticResource getById(String id) {
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "scope");
+        String scope = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "scope");
         if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String diagnosticsResourceName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}",
-                    "diagnosticsResourceName");
+        String diagnosticsResourceName = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "diagnosticsResourceName");
         if (diagnosticsResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
         }
         return this.getWithResponse(scope, diagnosticsResourceName, Context.NONE).getValue();
     }
 
     public Response<DiagnosticResource> getByIdWithResponse(String id, Context context) {
-        String scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    id, "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "scope");
+        String scope = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "scope");
         if (scope == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'scope'.", id)));
         }
-        String diagnosticsResourceName =
-            Utils
-                .getValueFromIdByParameterName(
-                    id,
-                    "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}",
-                    "diagnosticsResourceName");
+        String diagnosticsResourceName = Utils.getValueFromIdByParameterName(id,
+            "/{scope}/providers/Microsoft.Help/diagnostics/{diagnosticsResourceName}", "diagnosticsResourceName");
         if (diagnosticsResourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'diagnostics'.", id)));
         }
         return this.getWithResponse(scope, diagnosticsResourceName, context);
     }

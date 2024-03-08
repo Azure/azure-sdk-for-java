@@ -58,7 +58,6 @@ public final class SecretsDeleteWithResponseMockTests {
 
         manager
             .secrets()
-            .deleteWithResponse(
-                "lokhueoijyzcqyp", "qzufgsyfejyvdwt", "xptpqaya", "k", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("xjqifhujjsbc", "lzaahzbhuroolk", "lirh", "mojusuz", com.azure.core.util.Context.NONE);
     }
 }

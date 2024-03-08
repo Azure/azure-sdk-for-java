@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Properties of the Partner Destination that can be updated. */
+/**
+ * Properties of the Partner Destination that can be updated.
+ */
 @Fluent
 public final class PartnerDestinationUpdateParameters {
     /*
@@ -19,13 +21,15 @@ public final class PartnerDestinationUpdateParameters {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of PartnerDestinationUpdateParameters class. */
+    /**
+     * Creates an instance of PartnerDestinationUpdateParameters class.
+     */
     public PartnerDestinationUpdateParameters() {
     }
 
     /**
      * Get the tags property: Tags of the Partner Destination resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +38,7 @@ public final class PartnerDestinationUpdateParameters {
 
     /**
      * Set the tags property: Tags of the Partner Destination resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PartnerDestinationUpdateParameters object itself.
      */
@@ -45,7 +49,7 @@ public final class PartnerDestinationUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

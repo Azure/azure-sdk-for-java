@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The WeeklySchedule model. */
+/**
+ * The WeeklySchedule model.
+ */
 @Fluent
 public final class WeeklySchedule {
     /*
@@ -24,13 +26,15 @@ public final class WeeklySchedule {
     @JsonProperty(value = "scheduleRunTimes")
     private List<OffsetDateTime> scheduleRunTimes;
 
-    /** Creates an instance of WeeklySchedule class. */
+    /**
+     * Creates an instance of WeeklySchedule class.
+     */
     public WeeklySchedule() {
     }
 
     /**
      * Get the scheduleRunDays property: The scheduleRunDays property.
-     *
+     * 
      * @return the scheduleRunDays value.
      */
     public List<DayOfWeek> scheduleRunDays() {
@@ -39,7 +43,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the scheduleRunDays property: The scheduleRunDays property.
-     *
+     * 
      * @param scheduleRunDays the scheduleRunDays value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -50,7 +54,7 @@ public final class WeeklySchedule {
 
     /**
      * Get the scheduleRunTimes property: List of times of day this schedule has to be run.
-     *
+     * 
      * @return the scheduleRunTimes value.
      */
     public List<OffsetDateTime> scheduleRunTimes() {
@@ -59,7 +63,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the scheduleRunTimes property: List of times of day this schedule has to be run.
-     *
+     * 
      * @param scheduleRunTimes the scheduleRunTimes value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -70,7 +74,7 @@ public final class WeeklySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

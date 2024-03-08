@@ -9,7 +9,9 @@ import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Data Lake Store dataset properties. */
+/**
+ * Azure Data Lake Store dataset properties.
+ */
 @Fluent
 public final class AzureDataLakeStoreDatasetTypeProperties {
     /*
@@ -36,14 +38,16 @@ public final class AzureDataLakeStoreDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
-    /** Creates an instance of AzureDataLakeStoreDatasetTypeProperties class. */
+    /**
+     * Creates an instance of AzureDataLakeStoreDatasetTypeProperties class.
+     */
     public AzureDataLakeStoreDatasetTypeProperties() {
     }
 
     /**
      * Get the folderPath property: Path to the folder in the Azure Data Lake Store. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the folderPath value.
      */
     public Object folderPath() {
@@ -53,7 +57,7 @@ public final class AzureDataLakeStoreDatasetTypeProperties {
     /**
      * Set the folderPath property: Path to the folder in the Azure Data Lake Store. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the AzureDataLakeStoreDatasetTypeProperties object itself.
      */
@@ -65,7 +69,7 @@ public final class AzureDataLakeStoreDatasetTypeProperties {
     /**
      * Get the fileName property: The name of the file in the Azure Data Lake Store. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the fileName value.
      */
     public Object fileName() {
@@ -75,7 +79,7 @@ public final class AzureDataLakeStoreDatasetTypeProperties {
     /**
      * Set the fileName property: The name of the file in the Azure Data Lake Store. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the AzureDataLakeStoreDatasetTypeProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class AzureDataLakeStoreDatasetTypeProperties {
 
     /**
      * Get the format property: The format of the Data Lake Store.
-     *
+     * 
      * @return the format value.
      */
     public DatasetStorageFormat format() {
@@ -95,7 +99,7 @@ public final class AzureDataLakeStoreDatasetTypeProperties {
 
     /**
      * Set the format property: The format of the Data Lake Store.
-     *
+     * 
      * @param format the format value to set.
      * @return the AzureDataLakeStoreDatasetTypeProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class AzureDataLakeStoreDatasetTypeProperties {
 
     /**
      * Get the compression property: The data compression method used for the item(s) in the Azure Data Lake Store.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -115,7 +119,7 @@ public final class AzureDataLakeStoreDatasetTypeProperties {
 
     /**
      * Set the compression property: The data compression method used for the item(s) in the Azure Data Lake Store.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the AzureDataLakeStoreDatasetTypeProperties object itself.
      */
@@ -126,7 +130,7 @@ public final class AzureDataLakeStoreDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

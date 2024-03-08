@@ -7,250 +7,259 @@ package com.azure.resourcemanager.eventgrid.fluent;
 import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
-/** The interface for EventGridManagementClient class. */
+/**
+ * The interface for EventGridManagementClient class.
+ */
 public interface EventGridManagementClient {
     /**
      * Gets Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     *
+     * 
      * @return the subscriptionId value.
      */
     String getSubscriptionId();
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     String getEndpoint();
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     String getApiVersion();
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     HttpPipeline getHttpPipeline();
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     Duration getDefaultPollInterval();
 
     /**
      * Gets the CaCertificatesClient object to access its operations.
-     *
+     * 
      * @return the CaCertificatesClient object.
      */
     CaCertificatesClient getCaCertificates();
 
     /**
      * Gets the ChannelsClient object to access its operations.
-     *
+     * 
      * @return the ChannelsClient object.
      */
     ChannelsClient getChannels();
 
     /**
      * Gets the ClientGroupsClient object to access its operations.
-     *
+     * 
      * @return the ClientGroupsClient object.
      */
     ClientGroupsClient getClientGroups();
 
     /**
      * Gets the ClientsClient object to access its operations.
-     *
+     * 
      * @return the ClientsClient object.
      */
     ClientsClient getClients();
 
     /**
      * Gets the DomainsClient object to access its operations.
-     *
+     * 
      * @return the DomainsClient object.
      */
     DomainsClient getDomains();
 
     /**
      * Gets the DomainTopicsClient object to access its operations.
-     *
+     * 
      * @return the DomainTopicsClient object.
      */
     DomainTopicsClient getDomainTopics();
 
     /**
-     * Gets the TopicEventSubscriptionsClient object to access its operations.
-     *
-     * @return the TopicEventSubscriptionsClient object.
-     */
-    TopicEventSubscriptionsClient getTopicEventSubscriptions();
-
-    /**
      * Gets the DomainTopicEventSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the DomainTopicEventSubscriptionsClient object.
      */
     DomainTopicEventSubscriptionsClient getDomainTopicEventSubscriptions();
 
     /**
+     * Gets the TopicEventSubscriptionsClient object to access its operations.
+     * 
+     * @return the TopicEventSubscriptionsClient object.
+     */
+    TopicEventSubscriptionsClient getTopicEventSubscriptions();
+
+    /**
      * Gets the DomainEventSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the DomainEventSubscriptionsClient object.
      */
     DomainEventSubscriptionsClient getDomainEventSubscriptions();
 
     /**
      * Gets the EventSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the EventSubscriptionsClient object.
      */
     EventSubscriptionsClient getEventSubscriptions();
 
     /**
      * Gets the SystemTopicEventSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the SystemTopicEventSubscriptionsClient object.
      */
     SystemTopicEventSubscriptionsClient getSystemTopicEventSubscriptions();
 
     /**
      * Gets the NamespaceTopicEventSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the NamespaceTopicEventSubscriptionsClient object.
      */
     NamespaceTopicEventSubscriptionsClient getNamespaceTopicEventSubscriptions();
 
     /**
      * Gets the PartnerTopicEventSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the PartnerTopicEventSubscriptionsClient object.
      */
     PartnerTopicEventSubscriptionsClient getPartnerTopicEventSubscriptions();
 
     /**
      * Gets the NamespacesClient object to access its operations.
-     *
+     * 
      * @return the NamespacesClient object.
      */
     NamespacesClient getNamespaces();
 
     /**
      * Gets the NamespaceTopicsClient object to access its operations.
-     *
+     * 
      * @return the NamespaceTopicsClient object.
      */
     NamespaceTopicsClient getNamespaceTopics();
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     OperationsClient getOperations();
 
     /**
      * Gets the PartnerConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the PartnerConfigurationsClient object.
      */
     PartnerConfigurationsClient getPartnerConfigurations();
 
     /**
      * Gets the PartnerDestinationsClient object to access its operations.
-     *
+     * 
      * @return the PartnerDestinationsClient object.
      */
     PartnerDestinationsClient getPartnerDestinations();
 
     /**
      * Gets the PartnerNamespacesClient object to access its operations.
-     *
+     * 
      * @return the PartnerNamespacesClient object.
      */
     PartnerNamespacesClient getPartnerNamespaces();
 
     /**
      * Gets the PartnerRegistrationsClient object to access its operations.
-     *
+     * 
      * @return the PartnerRegistrationsClient object.
      */
     PartnerRegistrationsClient getPartnerRegistrations();
 
     /**
      * Gets the PartnerTopicsClient object to access its operations.
-     *
+     * 
      * @return the PartnerTopicsClient object.
      */
     PartnerTopicsClient getPartnerTopics();
 
     /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations();
+
+    /**
      * Gets the PermissionBindingsClient object to access its operations.
-     *
+     * 
      * @return the PermissionBindingsClient object.
      */
     PermissionBindingsClient getPermissionBindings();
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     PrivateLinkResourcesClient getPrivateLinkResources();
 
     /**
      * Gets the SystemTopicsClient object to access its operations.
-     *
+     * 
      * @return the SystemTopicsClient object.
      */
     SystemTopicsClient getSystemTopics();
 
     /**
      * Gets the TopicsClient object to access its operations.
-     *
+     * 
      * @return the TopicsClient object.
      */
     TopicsClient getTopics();
 
     /**
      * Gets the ExtensionTopicsClient object to access its operations.
-     *
+     * 
      * @return the ExtensionTopicsClient object.
      */
     ExtensionTopicsClient getExtensionTopics();
 
     /**
      * Gets the TopicSpacesClient object to access its operations.
-     *
+     * 
      * @return the TopicSpacesClient object.
      */
     TopicSpacesClient getTopicSpaces();
 
     /**
      * Gets the TopicTypesClient object to access its operations.
-     *
+     * 
      * @return the TopicTypesClient object.
      */
     TopicTypesClient getTopicTypes();
 
     /**
      * Gets the VerifiedPartnersClient object to access its operations.
-     *
+     * 
      * @return the VerifiedPartnersClient object.
      */
     VerifiedPartnersClient getVerifiedPartners();

@@ -10,10 +10,7 @@ module com.azure.resourcemanager.hybridcontainerservice {
     exports com.azure.resourcemanager.hybridcontainerservice.fluent.models;
     exports com.azure.resourcemanager.hybridcontainerservice.models;
 
-    opens com.azure.resourcemanager.hybridcontainerservice.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.hybridcontainerservice.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.hybridcontainerservice.fluent.models
+        to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.hybridcontainerservice.models to com.azure.core, com.fasterxml.jackson.databind;
 }

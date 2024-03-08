@@ -58,13 +58,6 @@ public final class CapabilitiesDeleteWithResponseMockTests {
 
         manager
             .capabilities()
-            .deleteWithResponse(
-                "owtlmnguxawqald",
-                "yuuximerqfobwyzn",
-                "bykutw",
-                "fhpagmhrskdsnf",
-                "sd",
-                "akgtdlmkkzevdlh",
-                com.azure.core.util.Context.NONE);
+            .deleteWithResponse("lolp", "vk", "r", "qvujzraehtwdwrf", "swibyr", "dl", com.azure.core.util.Context.NONE);
     }
 }

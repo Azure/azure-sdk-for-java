@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Creates a particular correlation between services. */
+/**
+ * Creates a particular correlation between services.
+ */
 @Fluent
 public final class ServiceCorrelationDescription {
     /*
@@ -24,14 +26,16 @@ public final class ServiceCorrelationDescription {
     @JsonProperty(value = "serviceName", required = true)
     private String serviceName;
 
-    /** Creates an instance of ServiceCorrelationDescription class. */
+    /**
+     * Creates an instance of ServiceCorrelationDescription class.
+     */
     public ServiceCorrelationDescription() {
     }
 
     /**
      * Get the scheme property: The ServiceCorrelationScheme which describes the relationship between this service and
      * the service specified via ServiceName.
-     *
+     * 
      * @return the scheme value.
      */
     public ServiceCorrelationScheme scheme() {
@@ -41,7 +45,7 @@ public final class ServiceCorrelationDescription {
     /**
      * Set the scheme property: The ServiceCorrelationScheme which describes the relationship between this service and
      * the service specified via ServiceName.
-     *
+     * 
      * @param scheme the scheme value to set.
      * @return the ServiceCorrelationDescription object itself.
      */
@@ -52,7 +56,7 @@ public final class ServiceCorrelationDescription {
 
     /**
      * Get the serviceName property: The name of the service that the correlation relationship is established with.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -61,7 +65,7 @@ public final class ServiceCorrelationDescription {
 
     /**
      * Set the serviceName property: The name of the service that the correlation relationship is established with.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the ServiceCorrelationDescription object itself.
      */
@@ -72,21 +76,17 @@ public final class ServiceCorrelationDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scheme() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scheme in model ServiceCorrelationDescription"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property scheme in model ServiceCorrelationDescription"));
         }
         if (serviceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceName in model ServiceCorrelationDescription"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serviceName in model ServiceCorrelationDescription"));
         }
     }
 

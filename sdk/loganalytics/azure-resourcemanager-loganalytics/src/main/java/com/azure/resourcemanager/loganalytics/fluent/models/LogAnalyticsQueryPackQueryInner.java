@@ -21,6 +21,10 @@ public final class LogAnalyticsQueryPackQueryInner extends AzureResourceProperti
     @JsonProperty(value = "properties")
     private LogAnalyticsQueryPackQueryProperties innerProperties;
 
+    /** Creates an instance of LogAnalyticsQueryPackQueryInner class. */
+    public LogAnalyticsQueryPackQueryInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties that define an Log Analytics QueryPack-Query resource.
      *

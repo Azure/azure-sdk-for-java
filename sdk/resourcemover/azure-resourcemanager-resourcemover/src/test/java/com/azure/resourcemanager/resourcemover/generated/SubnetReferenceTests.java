@@ -13,17 +13,18 @@ public final class SubnetReferenceTests {
     public void testDeserialize() throws Exception {
         SubnetReference model =
             BinaryData
-                .fromString("{\"name\":\"nxytxh\",\"sourceArmResourceId\":\"zxbzpfzabglc\"}")
+                .fromString("{\"name\":\"eyvjusrtslhspkde\",\"sourceArmResourceId\":\"maofmxagkv\"}")
                 .toObject(SubnetReference.class);
-        Assertions.assertEquals("zxbzpfzabglc", model.sourceArmResourceId());
-        Assertions.assertEquals("nxytxh", model.name());
+        Assertions.assertEquals("maofmxagkv", model.sourceArmResourceId());
+        Assertions.assertEquals("eyvjusrtslhspkde", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SubnetReference model = new SubnetReference().withSourceArmResourceId("zxbzpfzabglc").withName("nxytxh");
+        SubnetReference model =
+            new SubnetReference().withSourceArmResourceId("maofmxagkv").withName("eyvjusrtslhspkde");
         model = BinaryData.fromObject(model).toObject(SubnetReference.class);
-        Assertions.assertEquals("zxbzpfzabglc", model.sourceArmResourceId());
-        Assertions.assertEquals("nxytxh", model.name());
+        Assertions.assertEquals("maofmxagkv", model.sourceArmResourceId());
+        Assertions.assertEquals("eyvjusrtslhspkde", model.name());
     }
 }

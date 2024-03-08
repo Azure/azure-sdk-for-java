@@ -31,43 +31,32 @@ public final class BackupPoliciesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"etag\":\"pv\",\"properties\":{\"backupPolicyId\":\"rylniofrzg\",\"provisioningState\":\"jed\",\"dailyBackupsToKeep\":1946171356,\"weeklyBackupsToKeep\":2142933776,\"monthlyBackupsToKeep\":25820211,\"volumesAssigned\":280758159,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"znktwfansnv\",\"backupsCount\":556245699,\"policyEnabled\":false},{\"volumeName\":\"kostbzbki\",\"backupsCount\":775922838,\"policyEnabled\":false},{\"volumeName\":\"ophzfylsgcrp\",\"backupsCount\":1192657678,\"policyEnabled\":true}]},\"location\":\"zzcezelfwyfwlw\",\"tags\":{\"fzvaylptr\":\"etnpsihcl\",\"mwqkchcxwaxf\":\"qqwzt\",\"jkjexf\":\"w\"},\"id\":\"eqvhpsylkk\",\"name\":\"hkbffmbm\",\"type\":\"zjrgyww\"}]}";
+        String responseStr
+            = "{\"value\":[{\"etag\":\"ccxlzhcoxovnek\",\"properties\":{\"backupPolicyId\":\"nlusfnrd\",\"provisioningState\":\"xtxrdcqtjvidt\",\"dailyBackupsToKeep\":695049640,\"weeklyBackupsToKeep\":1779546866,\"monthlyBackupsToKeep\":818370137,\"volumesAssigned\":2099497391,\"enabled\":false,\"volumeBackups\":[{\"volumeName\":\"wkasiziesf\",\"backupsCount\":1027973509,\"policyEnabled\":true},{\"volumeName\":\"qfecjxeygtuhx\",\"backupsCount\":1670662701,\"policyEnabled\":true},{\"volumeName\":\"wmrswnjlxuzrh\",\"backupsCount\":519622226,\"policyEnabled\":true},{\"volumeName\":\"baqehgpdoh\",\"backupsCount\":1232652299,\"policyEnabled\":false}]},\"location\":\"coi\",\"tags\":{\"bnwgfmxj\":\"xncnwfe\",\"y\":\"cgbjbgdlfgt\",\"ctqhamzjrwdk\":\"naquflq\"},\"id\":\"zeqyjleziun\",\"name\":\"xdfzantkw\",\"type\":\"eg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetAppFilesManager manager =
-            NetAppFilesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<BackupPolicy> response =
-            manager.backupPolicies().list("igkxkbsazga", "gacyrcmjdmspo", com.azure.core.util.Context.NONE);
+        PagedIterable<BackupPolicy> response
+            = manager.backupPolicies().list("onwpnga", "innixjawrtmjfj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zzcezelfwyfwlw", response.iterator().next().location());
-        Assertions.assertEquals("etnpsihcl", response.iterator().next().tags().get("fzvaylptr"));
-        Assertions.assertEquals(1946171356, response.iterator().next().dailyBackupsToKeep());
-        Assertions.assertEquals(2142933776, response.iterator().next().weeklyBackupsToKeep());
-        Assertions.assertEquals(25820211, response.iterator().next().monthlyBackupsToKeep());
+        Assertions.assertEquals("coi", response.iterator().next().location());
+        Assertions.assertEquals("xncnwfe", response.iterator().next().tags().get("bnwgfmxj"));
+        Assertions.assertEquals(695049640, response.iterator().next().dailyBackupsToKeep());
+        Assertions.assertEquals(1779546866, response.iterator().next().weeklyBackupsToKeep());
+        Assertions.assertEquals(818370137, response.iterator().next().monthlyBackupsToKeep());
         Assertions.assertEquals(false, response.iterator().next().enabled());
     }
 }

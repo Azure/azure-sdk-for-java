@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a run output. */
+/**
+ * Describes the properties of a run output.
+ */
 @Fluent
 public final class RunOutputProperties {
     /*
@@ -29,13 +31,15 @@ public final class RunOutputProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of RunOutputProperties class. */
+    /**
+     * Creates an instance of RunOutputProperties class.
+     */
     public RunOutputProperties() {
     }
 
     /**
      * Get the artifactId property: The resource id of the artifact.
-     *
+     * 
      * @return the artifactId value.
      */
     public String artifactId() {
@@ -44,7 +48,7 @@ public final class RunOutputProperties {
 
     /**
      * Set the artifactId property: The resource id of the artifact.
-     *
+     * 
      * @param artifactId the artifactId value to set.
      * @return the RunOutputProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class RunOutputProperties {
 
     /**
      * Get the artifactUri property: The location URI of the artifact.
-     *
+     * 
      * @return the artifactUri value.
      */
     public String artifactUri() {
@@ -64,7 +68,7 @@ public final class RunOutputProperties {
 
     /**
      * Set the artifactUri property: The location URI of the artifact.
-     *
+     * 
      * @param artifactUri the artifactUri value to set.
      * @return the RunOutputProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class RunOutputProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -84,7 +88,7 @@ public final class RunOutputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

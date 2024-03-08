@@ -8,75 +8,85 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.BaseBackupPolicyResourceInner;
 
-/** An immutable client-side representation of BaseBackupPolicyResource. */
+/**
+ * An immutable client-side representation of BaseBackupPolicyResource.
+ */
 public interface BaseBackupPolicyResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the properties property: BaseBackupPolicy
-     *
-     * <p>BaseBackupPolicyResource properties.
-     *
+     * 
+     * BaseBackupPolicyResource properties.
+     * 
      * @return the properties value.
      */
     BaseBackupPolicy properties();
 
     /**
      * Gets the name of the resource group.
-     *
+     * 
      * @return the name of the resource group.
      */
     String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.dataprotection.fluent.models.BaseBackupPolicyResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     BaseBackupPolicyResourceInner innerModel();
 
-    /** The entirety of the BaseBackupPolicyResource definition. */
+    /**
+     * The entirety of the BaseBackupPolicyResource definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
 
-    /** The BaseBackupPolicyResource definition stages. */
+    /**
+     * The BaseBackupPolicyResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the BaseBackupPolicyResource definition. */
+        /**
+         * The first stage of the BaseBackupPolicyResource definition.
+         */
         interface Blank extends WithParentResource {
         }
 
-        /** The stage of the BaseBackupPolicyResource definition allowing to specify parent resource. */
+        /**
+         * The stage of the BaseBackupPolicyResource definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, vaultName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param vaultName The name of the backup vault.
              * @return the next definition stage.
@@ -91,29 +101,32 @@ public interface BaseBackupPolicyResource {
         interface WithCreate extends DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             BaseBackupPolicyResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             BaseBackupPolicyResource create(Context context);
         }
 
-        /** The stage of the BaseBackupPolicyResource definition allowing to specify properties. */
+        /**
+         * The stage of the BaseBackupPolicyResource definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: BaseBackupPolicy
-             *
-             * <p>BaseBackupPolicyResource properties.
-             *
+             * 
+             * BaseBackupPolicyResource properties.
+             * 
              * @param properties BaseBackupPolicy
-             *     <p>BaseBackupPolicyResource properties.
+             * 
+             * BaseBackupPolicyResource properties.
              * @return the next definition stage.
              */
             WithCreate withProperties(BaseBackupPolicy properties);
@@ -122,40 +135,47 @@ public interface BaseBackupPolicyResource {
 
     /**
      * Begins update for the BaseBackupPolicyResource resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     BaseBackupPolicyResource.Update update();
 
-    /** The template for BaseBackupPolicyResource update. */
+    /**
+     * The template for BaseBackupPolicyResource update.
+     */
     interface Update extends UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         BaseBackupPolicyResource apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         BaseBackupPolicyResource apply(Context context);
     }
 
-    /** The BaseBackupPolicyResource update stages. */
+    /**
+     * The BaseBackupPolicyResource update stages.
+     */
     interface UpdateStages {
-        /** The stage of the BaseBackupPolicyResource update allowing to specify properties. */
+        /**
+         * The stage of the BaseBackupPolicyResource update allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: BaseBackupPolicy
-             *
-             * <p>BaseBackupPolicyResource properties.
-             *
+             * 
+             * BaseBackupPolicyResource properties.
+             * 
              * @param properties BaseBackupPolicy
-             *     <p>BaseBackupPolicyResource properties.
+             * 
+             * BaseBackupPolicyResource properties.
              * @return the next definition stage.
              */
             Update withProperties(BaseBackupPolicy properties);
@@ -164,14 +184,14 @@ public interface BaseBackupPolicyResource {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     BaseBackupPolicyResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

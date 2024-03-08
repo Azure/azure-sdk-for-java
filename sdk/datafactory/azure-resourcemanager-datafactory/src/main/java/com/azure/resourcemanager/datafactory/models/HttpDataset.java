@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** A file in an HTTP web server. */
+/**
+ * A file in an HTTP web server.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HttpFile")
 @Fluent
@@ -23,62 +25,78 @@ public final class HttpDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private HttpDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of HttpDataset class. */
+    /**
+     * Creates an instance of HttpDataset class.
+     */
     public HttpDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private HttpDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -88,7 +106,7 @@ public final class HttpDataset extends Dataset {
     /**
      * Get the relativeUrl property: The relative URL based on the URL in the HttpLinkedService refers to an HTTP file
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the relativeUrl value.
      */
     public Object relativeUrl() {
@@ -98,7 +116,7 @@ public final class HttpDataset extends Dataset {
     /**
      * Set the relativeUrl property: The relative URL based on the URL in the HttpLinkedService refers to an HTTP file
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param relativeUrl the relativeUrl value to set.
      * @return the HttpDataset object itself.
      */
@@ -111,9 +129,9 @@ public final class HttpDataset extends Dataset {
     }
 
     /**
-     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
-     * string).
-     *
+     * Get the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the requestMethod value.
      */
     public Object requestMethod() {
@@ -121,9 +139,9 @@ public final class HttpDataset extends Dataset {
     }
 
     /**
-     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with resultType
-     * string).
-     *
+     * Set the requestMethod property: The HTTP method for the HTTP request. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param requestMethod the requestMethod value to set.
      * @return the HttpDataset object itself.
      */
@@ -136,8 +154,9 @@ public final class HttpDataset extends Dataset {
     }
 
     /**
-     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
-     *
+     * Get the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the requestBody value.
      */
     public Object requestBody() {
@@ -145,8 +164,9 @@ public final class HttpDataset extends Dataset {
     }
 
     /**
-     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType string).
-     *
+     * Set the requestBody property: The body for the HTTP request. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param requestBody the requestBody value to set.
      * @return the HttpDataset object itself.
      */
@@ -160,9 +180,10 @@ public final class HttpDataset extends Dataset {
 
     /**
      * Get the additionalHeaders property: The headers for the HTTP Request. e.g.
-     * request-header-name-1:request-header-value-1 ... request-header-name-n:request-header-value-n Type: string (or
-     * Expression with resultType string).
-     *
+     * request-header-name-1:request-header-value-1
+     * ...
+     * request-header-name-n:request-header-value-n Type: string (or Expression with resultType string).
+     * 
      * @return the additionalHeaders value.
      */
     public Object additionalHeaders() {
@@ -171,9 +192,10 @@ public final class HttpDataset extends Dataset {
 
     /**
      * Set the additionalHeaders property: The headers for the HTTP Request. e.g.
-     * request-header-name-1:request-header-value-1 ... request-header-name-n:request-header-value-n Type: string (or
-     * Expression with resultType string).
-     *
+     * request-header-name-1:request-header-value-1
+     * ...
+     * request-header-name-n:request-header-value-n Type: string (or Expression with resultType string).
+     * 
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the HttpDataset object itself.
      */
@@ -187,7 +209,7 @@ public final class HttpDataset extends Dataset {
 
     /**
      * Get the format property: The format of files.
-     *
+     * 
      * @return the format value.
      */
     public DatasetStorageFormat format() {
@@ -196,7 +218,7 @@ public final class HttpDataset extends Dataset {
 
     /**
      * Set the format property: The format of files.
-     *
+     * 
      * @param format the format value to set.
      * @return the HttpDataset object itself.
      */
@@ -210,7 +232,7 @@ public final class HttpDataset extends Dataset {
 
     /**
      * Get the compression property: The data compression method used on files.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -219,7 +241,7 @@ public final class HttpDataset extends Dataset {
 
     /**
      * Set the compression property: The data compression method used on files.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the HttpDataset object itself.
      */
@@ -233,7 +255,7 @@ public final class HttpDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

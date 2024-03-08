@@ -13,7 +13,7 @@ public final class ImageVersionInnerTests {
         ImageVersionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"name\":\"e\",\"publishedDate\":\"2021-12-09T19:14:49Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":514021855,\"provisioningState\":\"Failed\"},\"id\":\"dslfhotwmcy\",\"name\":\"pwlbjnpg\",\"type\":\"cftadeh\"}")
+                    "{\"properties\":{\"name\":\"ea\",\"publishedDate\":\"2021-02-05T10:28:18Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1864604101,\"provisioningState\":\"Updating\"},\"id\":\"keyyi\",\"name\":\"nj\",\"type\":\"dlwtgrhpdj\"}")
                 .toObject(ImageVersionInner.class);
     }
 

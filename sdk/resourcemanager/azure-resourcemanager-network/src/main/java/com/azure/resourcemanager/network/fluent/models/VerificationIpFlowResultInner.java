@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.Access;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Results of IP flow verification on the target resource. */
+/**
+ * Results of IP flow verification on the target resource.
+ */
 @Fluent
 public final class VerificationIpFlowResultInner {
     /*
@@ -23,13 +25,15 @@ public final class VerificationIpFlowResultInner {
     @JsonProperty(value = "ruleName")
     private String ruleName;
 
-    /** Creates an instance of VerificationIpFlowResultInner class. */
+    /**
+     * Creates an instance of VerificationIpFlowResultInner class.
+     */
     public VerificationIpFlowResultInner() {
     }
 
     /**
      * Get the access property: Indicates whether the traffic is allowed or denied.
-     *
+     * 
      * @return the access value.
      */
     public Access access() {
@@ -38,7 +42,7 @@ public final class VerificationIpFlowResultInner {
 
     /**
      * Set the access property: Indicates whether the traffic is allowed or denied.
-     *
+     * 
      * @param access the access value to set.
      * @return the VerificationIpFlowResultInner object itself.
      */
@@ -50,7 +54,7 @@ public final class VerificationIpFlowResultInner {
     /**
      * Get the ruleName property: Name of the rule. If input is not matched against any security rule, it is not
      * displayed.
-     *
+     * 
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -60,7 +64,7 @@ public final class VerificationIpFlowResultInner {
     /**
      * Set the ruleName property: Name of the rule. If input is not matched against any security rule, it is not
      * displayed.
-     *
+     * 
      * @param ruleName the ruleName value to set.
      * @return the VerificationIpFlowResultInner object itself.
      */
@@ -71,7 +75,7 @@ public final class VerificationIpFlowResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

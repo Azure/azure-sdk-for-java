@@ -40,6 +40,10 @@ public final class WorkItemConfigurationInner {
     @JsonProperty(value = "ConfigProperties")
     private String configProperties;
 
+    /** Creates an instance of WorkItemConfigurationInner class. */
+    public WorkItemConfigurationInner() {
+    }
+
     /**
      * Get the connectorId property: Connector identifier where work item is created.
      *

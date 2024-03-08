@@ -19,7 +19,32 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 /**
- * The pipeline policy that applies a token credential to an HTTP request with "Bearer" scheme.
+ * <p>The {@code BearerTokenAuthenticationPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface.
+ * This policy uses a {@link TokenCredential} to authenticate the request with a bearer token.</p>
+ *
+ * <p>This class is useful when you need to authorize requests with a bearer token from Azure. It ensures that the
+ * requests are sent over HTTPS to prevent the token from being leaked.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, a {@code BearerTokenAuthenticationPolicy} is created with a {@link TokenCredential} and a scope.
+ * The policy can then added to the pipeline. The request sent via the pipeline will then include the
+ * Authorization header with the bearer token.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->
+ * <pre>
+ * TokenCredential credential = new BasicAuthenticationCredential&#40;&quot;username&quot;, &quot;password&quot;&#41;;
+ * BearerTokenAuthenticationPolicy policy = new BearerTokenAuthenticationPolicy&#40;credential,
+ *     &quot;https:&#47;&#47;management.azure.com&#47;.default&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.credential.TokenCredential
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(BearerTokenAuthenticationPolicy.class);
@@ -90,39 +115,36 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+        if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
             return Mono.error(new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
         HttpPipelineNextPolicy nextPolicy = next.clone();
 
-        return authorizeRequest(context)
-            .then(Mono.defer(next::process))
-            .flatMap(httpResponse -> {
-                String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
-                if (httpResponse.getStatusCode() == 401 && authHeader != null) {
-                    return authorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
-                        if (retry) {
-                            // Both Netty and OkHttp expect the requestBody to be closed after the response has been read.
-                            // Failure to do so results in memory leak.
-                            // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
-                            // the response body may not be consumed.
-                            // This can cause potential leaks in the scenarios like above, where the policy
-                            // may intercept the response and it may never be read.
-                            // Forcing the read here - so that the memory can be released.
-                            return httpResponse.getBody().ignoreElements()
-                                .then(nextPolicy.process());
-                        } else {
-                            return Mono.just(httpResponse);
-                        }
-                    });
-                }
-                return Mono.just(httpResponse);
-            });
+        return authorizeRequest(context).then(Mono.defer(next::process)).flatMap(httpResponse -> {
+            String authHeader = httpResponse.getHeaderValue(HttpHeaderName.WWW_AUTHENTICATE);
+            if (httpResponse.getStatusCode() == 401 && authHeader != null) {
+                return authorizeRequestOnChallenge(context, httpResponse).flatMap(retry -> {
+                    if (retry) {
+                        // Both Netty and OkHttp expect the requestBody to be closed after the response has been read.
+                        // Failure to do so results in memory leak.
+                        // In case of StreamResponse (or other scenarios where we do not eagerly read the response)
+                        // the response body may not be consumed.
+                        // This can cause potential leaks in the scenarios like above, where the policy
+                        // may intercept the response and it may never be read.
+                        // Forcing the read here - so that the memory can be released.
+                        return httpResponse.getBody().ignoreElements().then(nextPolicy.process());
+                    } else {
+                        return Mono.just(httpResponse);
+                    }
+                });
+            }
+            return Mono.just(httpResponse);
+        });
     }
 
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
-        if ("http".equals(context.getHttpRequest().getUrl().getProtocol())) {
+        if (!"https".equals(context.getHttpRequest().getUrl().getProtocol())) {
             throw LOGGER.logExceptionAsError(
                 new RuntimeException("token credentials require a URL using the HTTPS protocol scheme"));
         }
@@ -171,11 +193,10 @@ public class BearerTokenAuthenticationPolicy implements HttpPipelinePolicy {
 
     private Mono<Void> setAuthorizationHeaderHelper(HttpPipelineCallContext context,
         TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
-        return cache.getToken(tokenRequestContext, checkToForceFetchToken)
-            .flatMap(token -> {
-                setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
-                return Mono.empty();
-            });
+        return cache.getToken(tokenRequestContext, checkToForceFetchToken).flatMap(token -> {
+            setAuthorizationHeader(context.getHttpRequest().getHeaders(), token.getToken());
+            return Mono.empty();
+        });
     }
 
     private void setAuthorizationHeaderHelperSync(HttpPipelineCallContext context,

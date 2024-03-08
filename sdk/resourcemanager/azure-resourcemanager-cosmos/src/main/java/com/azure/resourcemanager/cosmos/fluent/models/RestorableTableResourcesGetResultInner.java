@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specific Databases to restore. */
+/**
+ * Specific Databases to restore.
+ */
 @Immutable
 public final class RestorableTableResourcesGetResultInner {
     /*
@@ -28,13 +30,15 @@ public final class RestorableTableResourcesGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of RestorableTableResourcesGetResultInner class. */
+    /**
+     * Creates an instance of RestorableTableResourcesGetResultInner class.
+     */
     public RestorableTableResourcesGetResultInner() {
     }
 
     /**
      * Get the id property: The unique resource identifier of the ARM resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +47,7 @@ public final class RestorableTableResourcesGetResultInner {
 
     /**
      * Get the name property: The name of the Table.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +56,7 @@ public final class RestorableTableResourcesGetResultInner {
 
     /**
      * Get the type property: The type of Azure resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -61,7 +65,7 @@ public final class RestorableTableResourcesGetResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

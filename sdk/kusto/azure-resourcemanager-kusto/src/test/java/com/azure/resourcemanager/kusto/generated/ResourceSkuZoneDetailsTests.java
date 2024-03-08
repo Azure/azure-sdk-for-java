@@ -13,7 +13,7 @@ public final class ResourceSkuZoneDetailsTests {
         ResourceSkuZoneDetails model =
             BinaryData
                 .fromString(
-                    "{\"name\":[\"wbme\",\"hseyvju\"],\"capabilities\":[{\"name\":\"lhspkdee\",\"value\":\"ofmxagkvtmelmqkr\"},{\"name\":\"hvljuahaquh\",\"value\":\"hmdua\"},{\"name\":\"exq\",\"value\":\"fadmws\"}]}")
+                    "{\"name\":[\"dxxiv\",\"tvtc\",\"aqtdoqmcbx\",\"wvxysl\"],\"capabilities\":[{\"name\":\"fxoblytkb\",\"value\":\"pe\"},{\"name\":\"wfbkrvrns\",\"value\":\"hqjohxcrsbfova\"},{\"name\":\"ruvw\",\"value\":\"sqfsubcgjbirxb\"}]}")
                 .toObject(ResourceSkuZoneDetails.class);
     }
 

@@ -12,29 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class ProtectableContainerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectableContainer model =
-            BinaryData
-                .fromString(
-                    "{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"iknsorgjh\",\"backupManagementType\":\"DefaultBackup\",\"healthStatus\":\"tlwwrlk\",\"containerId\":\"tncvokot\"}")
-                .toObject(ProtectableContainer.class);
-        Assertions.assertEquals("iknsorgjh", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
-        Assertions.assertEquals("tlwwrlk", model.healthStatus());
-        Assertions.assertEquals("tncvokot", model.containerId());
+        ProtectableContainer model = BinaryData.fromString(
+            "{\"protectableContainerType\":\"ProtectableContainer\",\"friendlyName\":\"n\",\"backupManagementType\":\"MAB\",\"healthStatus\":\"xwczelpcire\",\"containerId\":\"feaenwab\"}")
+            .toObject(ProtectableContainer.class);
+        Assertions.assertEquals("n", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("xwczelpcire", model.healthStatus());
+        Assertions.assertEquals("feaenwab", model.containerId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectableContainer model =
-            new ProtectableContainer()
-                .withFriendlyName("iknsorgjh")
-                .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
-                .withHealthStatus("tlwwrlk")
-                .withContainerId("tncvokot");
+        ProtectableContainer model
+            = new ProtectableContainer().withFriendlyName("n").withBackupManagementType(BackupManagementType.MAB)
+                .withHealthStatus("xwczelpcire").withContainerId("feaenwab");
         model = BinaryData.fromObject(model).toObject(ProtectableContainer.class);
-        Assertions.assertEquals("iknsorgjh", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
-        Assertions.assertEquals("tlwwrlk", model.healthStatus());
-        Assertions.assertEquals("tncvokot", model.containerId());
+        Assertions.assertEquals("n", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
+        Assertions.assertEquals("xwczelpcire", model.healthStatus());
+        Assertions.assertEquals("feaenwab", model.containerId());
     }
 }

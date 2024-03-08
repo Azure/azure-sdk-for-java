@@ -18,12 +18,12 @@ public final class SecretListTests {
         SecretList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"value\":\"idxas\",\"provisioningState\":\"ddyvvjskgfmo\",\"uniqueIdentifier\":\"ah\"},\"location\":\"qgatjeaahhvjhhn\",\"tags\":{\"yxvxevblbjed\":\"ybbjjidjksyx\",\"smjbnkppxyn\":\"ljlageuaulxu\"},\"id\":\"nlsvxeiz\",\"name\":\"gwklnsr\",\"type\":\"ffeycx\"},{\"properties\":{\"value\":\"tpiymerteea\",\"provisioningState\":\"xqiekkkzddrtk\",\"uniqueIdentifier\":\"ojbmxv\"},\"location\":\"vrefdeesv\",\"tags\":{\"uwprtujwsawd\":\"ijpxtx\"},\"id\":\"jibabxvititvtze\",\"name\":\"xavo\",\"type\":\"tfgle\"},{\"properties\":{\"value\":\"m\",\"provisioningState\":\"bwpypqtgsfjacb\",\"uniqueIdentifier\":\"hhxud\"},\"location\":\"xvodhtnsir\",\"tags\":{\"mes\":\"z\",\"zrcxfailcfxwmdbo\":\"kdlpa\"},\"id\":\"dfgsftufqobrj\",\"name\":\"nac\",\"type\":\"cc\"},{\"properties\":{\"value\":\"nhxk\",\"provisioningState\":\"v\",\"uniqueIdentifier\":\"nrzvuljraaer\"},\"location\":\"nok\",\"tags\":{\"cdisd\":\"kkjqnvbroylaxxu\",\"rwhryvycytd\":\"sfjbjsvg\",\"pdvjdhttzaefedx\":\"lxgccknfnwmbtm\",\"dfzpbgtgkylkdg\":\"hchrphkmcrjdqn\"},\"id\":\"rjeuut\",\"name\":\"wxezwzhok\",\"type\":\"bwnhhtql\"}],\"nextLink\":\"hgppipifhpfeoa\"}")
+                    "{\"value\":[{\"properties\":{\"value\":\"tfnmdx\",\"provisioningState\":\"ngfdgugeyzihgrky\",\"uniqueIdentifier\":\"zabs\"},\"location\":\"mfp\",\"tags\":{\"yhyhsgzfczb\":\"jee\",\"tnluankrr\":\"omfgbeglqgleohib\"},\"id\":\"xeeebtijvacvbmqz\",\"name\":\"qqxlajr\",\"type\":\"wxacevehj\"}],\"nextLink\":\"yxoaf\"}")
                 .toObject(SecretList.class);
-        Assertions.assertEquals("qgatjeaahhvjhhn", model.value().get(0).location());
-        Assertions.assertEquals("ybbjjidjksyx", model.value().get(0).tags().get("yxvxevblbjed"));
-        Assertions.assertEquals("idxas", model.value().get(0).value());
-        Assertions.assertEquals("hgppipifhpfeoa", model.nextLink());
+        Assertions.assertEquals("mfp", model.value().get(0).location());
+        Assertions.assertEquals("jee", model.value().get(0).tags().get("yhyhsgzfczb"));
+        Assertions.assertEquals("tfnmdx", model.value().get(0).value());
+        Assertions.assertEquals("yxoaf", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,38 +34,18 @@ public final class SecretListTests {
                     Arrays
                         .asList(
                             new SecretInner()
-                                .withLocation("qgatjeaahhvjhhn")
-                                .withTags(mapOf("yxvxevblbjed", "ybbjjidjksyx", "smjbnkppxyn", "ljlageuaulxu"))
-                                .withValue("idxas"),
-                            new SecretInner()
-                                .withLocation("vrefdeesv")
-                                .withTags(mapOf("uwprtujwsawd", "ijpxtx"))
-                                .withValue("tpiymerteea"),
-                            new SecretInner()
-                                .withLocation("xvodhtnsir")
-                                .withTags(mapOf("mes", "z", "zrcxfailcfxwmdbo", "kdlpa"))
-                                .withValue("m"),
-                            new SecretInner()
-                                .withLocation("nok")
-                                .withTags(
-                                    mapOf(
-                                        "cdisd",
-                                        "kkjqnvbroylaxxu",
-                                        "rwhryvycytd",
-                                        "sfjbjsvg",
-                                        "pdvjdhttzaefedx",
-                                        "lxgccknfnwmbtm",
-                                        "dfzpbgtgkylkdg",
-                                        "hchrphkmcrjdqn"))
-                                .withValue("nhxk")))
-                .withNextLink("hgppipifhpfeoa");
+                                .withLocation("mfp")
+                                .withTags(mapOf("yhyhsgzfczb", "jee", "tnluankrr", "omfgbeglqgleohib"))
+                                .withValue("tfnmdx")))
+                .withNextLink("yxoaf");
         model = BinaryData.fromObject(model).toObject(SecretList.class);
-        Assertions.assertEquals("qgatjeaahhvjhhn", model.value().get(0).location());
-        Assertions.assertEquals("ybbjjidjksyx", model.value().get(0).tags().get("yxvxevblbjed"));
-        Assertions.assertEquals("idxas", model.value().get(0).value());
-        Assertions.assertEquals("hgppipifhpfeoa", model.nextLink());
+        Assertions.assertEquals("mfp", model.value().get(0).location());
+        Assertions.assertEquals("jee", model.value().get(0).tags().get("yhyhsgzfczb"));
+        Assertions.assertEquals("tfnmdx", model.value().get(0).value());
+        Assertions.assertEquals("yxoaf", model.nextLink());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

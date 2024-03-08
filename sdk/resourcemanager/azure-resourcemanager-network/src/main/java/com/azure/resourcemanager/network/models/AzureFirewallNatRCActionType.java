@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The action type of a NAT rule collection. */
+/**
+ * The action type of a NAT rule collection.
+ */
 public final class AzureFirewallNatRCActionType extends ExpandableStringEnum<AzureFirewallNatRCActionType> {
-    /** Static value Snat for AzureFirewallNatRCActionType. */
+    /**
+     * Static value Snat for AzureFirewallNatRCActionType.
+     */
     public static final AzureFirewallNatRCActionType SNAT = fromString("Snat");
 
-    /** Static value Dnat for AzureFirewallNatRCActionType. */
+    /**
+     * Static value Dnat for AzureFirewallNatRCActionType.
+     */
     public static final AzureFirewallNatRCActionType DNAT = fromString("Dnat");
 
     /**
      * Creates a new instance of AzureFirewallNatRCActionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AzureFirewallNatRCActionType extends ExpandableStringEnum<Azu
 
     /**
      * Creates or finds a AzureFirewallNatRCActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureFirewallNatRCActionType.
      */
@@ -38,7 +44,7 @@ public final class AzureFirewallNatRCActionType extends ExpandableStringEnum<Azu
 
     /**
      * Gets known AzureFirewallNatRCActionType values.
-     *
+     * 
      * @return known AzureFirewallNatRCActionType values.
      */
     public static Collection<AzureFirewallNatRCActionType> values() {

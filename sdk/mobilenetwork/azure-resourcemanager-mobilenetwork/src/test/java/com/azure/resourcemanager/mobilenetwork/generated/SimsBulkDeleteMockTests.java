@@ -33,7 +33,7 @@ public final class SimsBulkDeleteMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"xra\",\"name\":\"uqd\",\"status\":\"rxmrgchbapx\",\"resourceId\":\"y\",\"startTime\":\"2021-02-28T15:19:21Z\",\"endTime\":\"2021-07-26T21:09:16Z\",\"percentComplete\":35.908896510494316,\"properties\":\"datascgdu\"}";
+            "{\"id\":\"hwtbbaedorvvm\",\"name\":\"loyg\",\"status\":\"dgwumgxdgdhp\",\"resourceId\":\"gdexjd\",\"startTime\":\"2021-02-07T21:21:29Z\",\"endTime\":\"2020-12-20T10:31:54Z\",\"percentComplete\":95.73648016931433,\"properties\":\"datammwllc\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,17 +65,17 @@ public final class SimsBulkDeleteMockTests {
             manager
                 .sims()
                 .bulkDelete(
-                    "vodrrslblxydkxr",
-                    "vvbxiwkgfbqljnq",
-                    new SimDeleteList().withSims(Arrays.asList("ychocokulehu", "qlrqffaweyurk", "hy")),
+                    "atvfuzkaftj",
+                    "vru",
+                    new SimDeleteList().withSims(Arrays.asList("igsyeipqdsmjt", "rqgdgkkil", "plkcsm")),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xra", response.id());
-        Assertions.assertEquals("uqd", response.name());
-        Assertions.assertEquals("rxmrgchbapx", response.status());
-        Assertions.assertEquals("y", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-28T15:19:21Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T21:09:16Z"), response.endTime());
-        Assertions.assertEquals(35.908896510494316D, response.percentComplete());
+        Assertions.assertEquals("hwtbbaedorvvm", response.id());
+        Assertions.assertEquals("loyg", response.name());
+        Assertions.assertEquals("dgwumgxdgdhp", response.status());
+        Assertions.assertEquals("gdexjd", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-07T21:21:29Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-20T10:31:54Z"), response.endTime());
+        Assertions.assertEquals(95.73648016931433D, response.percentComplete());
     }
 }

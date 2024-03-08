@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureSqlTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureSqlTableDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureSqlTable\",\"typeProperties\":{\"tableName\":\"databs\",\"schema\":\"datalonbzaowcahdkmb\",\"table\":\"datamihrijezbfsj\"},\"description\":\"czglkvbgukbsvb\",\"structure\":\"dataotygnbknhjg\",\"schema\":\"dataxaxw\",\"linkedServiceName\":{\"referenceName\":\"ffaspsdzkucsz\",\"parameters\":{\"zrn\":\"dataoaqipmnxclfrs\",\"wvpu\":\"datau\",\"n\":\"datafddtbfmekjcng\",\"aoy\":\"datadv\"}},\"parameters\":{\"nofxlttxoqx\":{\"type\":\"SecureString\",\"defaultValue\":\"datayxzmx\"},\"kcjhmmofbnivd\":{\"type\":\"Float\",\"defaultValue\":\"datazujsjirkrp\"},\"caccptbzetxyg\":{\"type\":\"SecureString\",\"defaultValue\":\"dataykpaxnlsfgny\"},\"eoxmpzzw\":{\"type\":\"Int\",\"defaultValue\":\"dataceecvjwyu\"}},\"annotations\":[\"datardvhaztkxbi\",\"datazfgxmbry\"],\"folder\":{\"name\":\"ibio\"},\"\":{\"wdrtxtfdaglmrco\":\"datasykqfd\",\"hubymfp\":\"datazzertkounzsiy\"}}")
-                .toObject(AzureSqlTableDataset.class);
+        AzureSqlTableDataset model = BinaryData.fromString(
+            "{\"type\":\"AzureSqlTable\",\"typeProperties\":{\"tableName\":\"databs\",\"schema\":\"datalonbzaowcahdkmb\",\"table\":\"datamihrijezbfsj\"},\"description\":\"czglkvbgukbsvb\",\"structure\":\"dataotygnbknhjg\",\"schema\":\"dataxaxw\",\"linkedServiceName\":{\"referenceName\":\"ffaspsdzkucsz\",\"parameters\":{\"zrn\":\"dataoaqipmnxclfrs\",\"wvpu\":\"datau\",\"n\":\"datafddtbfmekjcng\",\"aoy\":\"datadv\"}},\"parameters\":{\"nofxlttxoqx\":{\"type\":\"SecureString\",\"defaultValue\":\"datayxzmx\"},\"kcjhmmofbnivd\":{\"type\":\"Float\",\"defaultValue\":\"datazujsjirkrp\"},\"caccptbzetxyg\":{\"type\":\"SecureString\",\"defaultValue\":\"dataykpaxnlsfgny\"},\"eoxmpzzw\":{\"type\":\"Int\",\"defaultValue\":\"dataceecvjwyu\"}},\"annotations\":[\"datardvhaztkxbi\",\"datazfgxmbry\"],\"folder\":{\"name\":\"ibio\"},\"\":{\"wdrtxtfdaglmrco\":\"datasykqfd\",\"hubymfp\":\"datazzertkounzsiy\"}}")
+            .toObject(AzureSqlTableDataset.class);
         Assertions.assertEquals("czglkvbgukbsvb", model.description());
         Assertions.assertEquals("ffaspsdzkucsz", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.SECURE_STRING, model.parameters().get("nofxlttxoqx").type());
@@ -31,43 +29,20 @@ public final class AzureSqlTableDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSqlTableDataset model =
-            new AzureSqlTableDataset()
-                .withDescription("czglkvbgukbsvb")
-                .withStructure("dataotygnbknhjg")
-                .withSchema("dataxaxw")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("ffaspsdzkucsz")
-                        .withParameters(
-                            mapOf(
-                                "zrn",
-                                "dataoaqipmnxclfrs",
-                                "wvpu",
-                                "datau",
-                                "n",
-                                "datafddtbfmekjcng",
-                                "aoy",
-                                "datadv")))
-                .withParameters(
-                    mapOf(
-                        "nofxlttxoqx",
-                        new ParameterSpecification()
-                            .withType(ParameterType.SECURE_STRING)
-                            .withDefaultValue("datayxzmx"),
-                        "kcjhmmofbnivd",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datazujsjirkrp"),
-                        "caccptbzetxyg",
-                        new ParameterSpecification()
-                            .withType(ParameterType.SECURE_STRING)
-                            .withDefaultValue("dataykpaxnlsfgny"),
-                        "eoxmpzzw",
-                        new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataceecvjwyu")))
-                .withAnnotations(Arrays.asList("datardvhaztkxbi", "datazfgxmbry"))
-                .withFolder(new DatasetFolder().withName("ibio"))
-                .withTableName("databs")
-                .withSchemaTypePropertiesSchema("datalonbzaowcahdkmb")
-                .withTable("datamihrijezbfsj");
+        AzureSqlTableDataset model = new AzureSqlTableDataset().withDescription("czglkvbgukbsvb")
+            .withStructure("dataotygnbknhjg").withSchema("dataxaxw")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ffaspsdzkucsz").withParameters(
+                mapOf("zrn", "dataoaqipmnxclfrs", "wvpu", "datau", "n", "datafddtbfmekjcng", "aoy", "datadv")))
+            .withParameters(mapOf("nofxlttxoqx",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datayxzmx"),
+                "kcjhmmofbnivd",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datazujsjirkrp"),
+                "caccptbzetxyg",
+                new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("dataykpaxnlsfgny"),
+                "eoxmpzzw", new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataceecvjwyu")))
+            .withAnnotations(Arrays.asList("datardvhaztkxbi", "datazfgxmbry"))
+            .withFolder(new DatasetFolder().withName("ibio")).withTableName("databs")
+            .withSchemaTypePropertiesSchema("datalonbzaowcahdkmb").withTable("datamihrijezbfsj");
         model = BinaryData.fromObject(model).toObject(AzureSqlTableDataset.class);
         Assertions.assertEquals("czglkvbgukbsvb", model.description());
         Assertions.assertEquals("ffaspsdzkucsz", model.linkedServiceName().referenceName());

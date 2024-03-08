@@ -10,11 +10,9 @@ import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
 public final class BackupStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupStatusInner model =
-            BinaryData
-                .fromString(
-                    "{\"healthy\":true,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Mirrored\",\"unhealthyReason\":\"qreyfkzi\",\"errorMessage\":\"jawneaiv\",\"lastTransferSize\":1387162080816059785,\"lastTransferType\":\"lpcirelsf\",\"totalTransferBytes\":667743000793247548}")
-                .toObject(BackupStatusInner.class);
+        BackupStatusInner model = BinaryData.fromString(
+            "{\"healthy\":false,\"relationshipStatus\":\"Idle\",\"mirrorState\":\"Uninitialized\",\"unhealthyReason\":\"oefki\",\"errorMessage\":\"vtpuqujmqlgk\",\"lastTransferSize\":2595329865796026079,\"lastTransferType\":\"oaongbjc\",\"totalTransferBytes\":3888691267660480720,\"transferProgressBytes\":4564203424204648247}")
+            .toObject(BackupStatusInner.class);
     }
 
     @org.junit.jupiter.api.Test

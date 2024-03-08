@@ -28,8 +28,14 @@ public final class PrivateEndpointConnectionProxyListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of PrivateEndpointConnectionProxyListResult class.
+     */
+    public PrivateEndpointConnectionProxyListResult() {
+    }
+
+    /**
      * Get the value property: The list of available private endpoint connection proxies for an Account.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionProxyInner> value() {
@@ -38,7 +44,7 @@ public final class PrivateEndpointConnectionProxyListResult {
 
     /**
      * Set the value property: The list of available private endpoint connection proxies for an Account.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionProxyListResult object itself.
      */
@@ -50,7 +56,7 @@ public final class PrivateEndpointConnectionProxyListResult {
     /**
      * Get the nextLink property: The URI that can be used to request the next list of private endpoint connection
      * proxies.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +66,7 @@ public final class PrivateEndpointConnectionProxyListResult {
     /**
      * Set the nextLink property: The URI that can be used to request the next list of private endpoint connection
      * proxies.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PrivateEndpointConnectionProxyListResult object itself.
      */
@@ -71,7 +77,7 @@ public final class PrivateEndpointConnectionProxyListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

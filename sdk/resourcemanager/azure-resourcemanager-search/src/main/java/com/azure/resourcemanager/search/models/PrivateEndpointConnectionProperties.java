@@ -7,7 +7,7 @@ package com.azure.resourcemanager.search.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of an existing Private Endpoint connection to the Azure Cognitive Search service. */
+/** Describes the properties of an existing Private Endpoint connection to the search service. */
 @Fluent
 public final class PrivateEndpointConnectionProperties {
     /*
@@ -17,11 +17,27 @@ public final class PrivateEndpointConnectionProperties {
     private PrivateEndpointConnectionPropertiesPrivateEndpoint privateEndpoint;
 
     /*
-     * Describes the current state of an existing Private Link Service
-     * connection to the Azure Private Endpoint.
+     * Describes the current state of an existing Private Link Service connection to the Azure Private Endpoint.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+
+    /*
+     * The group id from the provider of resource the private link service connection is for.
+     */
+    @JsonProperty(value = "groupId")
+    private String groupId;
+
+    /*
+     * The provisioning state of the private link service connection. Valid values are Updating, Deleting, Failed,
+     * Succeeded, or Incomplete
+     */
+    @JsonProperty(value = "provisioningState")
+    private PrivateLinkServiceConnectionProvisioningState provisioningState;
+
+    /** Creates an instance of PrivateEndpointConnectionProperties class. */
+    public PrivateEndpointConnectionProperties() {
+    }
 
     /**
      * Get the privateEndpoint property: The private endpoint resource from Microsoft.Network provider.
@@ -64,6 +80,49 @@ public final class PrivateEndpointConnectionProperties {
     public PrivateEndpointConnectionProperties withPrivateLinkServiceConnectionState(
         PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
+        return this;
+    }
+
+    /**
+     * Get the groupId property: The group id from the provider of resource the private link service connection is for.
+     *
+     * @return the groupId value.
+     */
+    public String groupId() {
+        return this.groupId;
+    }
+
+    /**
+     * Set the groupId property: The group id from the provider of resource the private link service connection is for.
+     *
+     * @param groupId the groupId value to set.
+     * @return the PrivateEndpointConnectionProperties object itself.
+     */
+    public PrivateEndpointConnectionProperties withGroupId(String groupId) {
+        this.groupId = groupId;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the private link service connection. Valid values
+     * are Updating, Deleting, Failed, Succeeded, or Incomplete.
+     *
+     * @return the provisioningState value.
+     */
+    public PrivateLinkServiceConnectionProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState property: The provisioning state of the private link service connection. Valid values
+     * are Updating, Deleting, Failed, Succeeded, or Incomplete.
+     *
+     * @param provisioningState the provisioningState value to set.
+     * @return the PrivateEndpointConnectionProperties object itself.
+     */
+    public PrivateEndpointConnectionProperties withProvisioningState(
+        PrivateLinkServiceConnectionProvisioningState provisioningState) {
+        this.provisioningState = provisioningState;
         return this;
     }
 

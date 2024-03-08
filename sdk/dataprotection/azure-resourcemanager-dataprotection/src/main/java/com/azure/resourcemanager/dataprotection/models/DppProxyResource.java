@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The DppProxyResource model. */
+/**
+ * The DppProxyResource model.
+ */
 @Fluent
 public class DppProxyResource extends ProxyResource {
     /*
@@ -27,13 +29,15 @@ public class DppProxyResource extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DppProxyResource class. */
+    /**
+     * Creates an instance of DppProxyResource class.
+     */
     public DppProxyResource() {
     }
 
     /**
      * Get the tags property: Proxy Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -42,7 +46,7 @@ public class DppProxyResource extends ProxyResource {
 
     /**
      * Set the tags property: Proxy Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DppProxyResource object itself.
      */
@@ -53,7 +57,7 @@ public class DppProxyResource extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -62,7 +66,7 @@ public class DppProxyResource extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

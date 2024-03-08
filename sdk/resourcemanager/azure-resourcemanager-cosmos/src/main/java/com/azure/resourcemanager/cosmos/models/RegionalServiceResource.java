@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource for a regional service location. */
+/**
+ * Resource for a regional service location.
+ */
 @Immutable
 public class RegionalServiceResource {
     /*
@@ -28,13 +30,15 @@ public class RegionalServiceResource {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private ServiceStatus status;
 
-    /** Creates an instance of RegionalServiceResource class. */
+    /**
+     * Creates an instance of RegionalServiceResource class.
+     */
     public RegionalServiceResource() {
     }
 
     /**
      * Get the name property: The regional service name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public class RegionalServiceResource {
 
     /**
      * Get the location property: The location name.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -52,7 +56,7 @@ public class RegionalServiceResource {
 
     /**
      * Get the status property: Describes the status of a service.
-     *
+     * 
      * @return the status value.
      */
     public ServiceStatus status() {
@@ -61,7 +65,7 @@ public class RegionalServiceResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

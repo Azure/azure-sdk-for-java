@@ -13,7 +13,9 @@ import com.azure.resourcemanager.appservice.models.WorkflowTriggerRecurrence;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The workflow trigger properties. */
+/**
+ * The workflow trigger properties.
+ */
 @Immutable
 public final class WorkflowTriggerProperties {
     /*
@@ -70,13 +72,15 @@ public final class WorkflowTriggerProperties {
     @JsonProperty(value = "workflow", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceReference workflow;
 
-    /** Creates an instance of WorkflowTriggerProperties class. */
+    /**
+     * Creates an instance of WorkflowTriggerProperties class.
+     */
     public WorkflowTriggerProperties() {
     }
 
     /**
      * Get the provisioningState property: Gets the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public WorkflowTriggerProvisioningState provisioningState() {
@@ -85,7 +89,7 @@ public final class WorkflowTriggerProperties {
 
     /**
      * Get the createdTime property: Gets the created time.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -94,7 +98,7 @@ public final class WorkflowTriggerProperties {
 
     /**
      * Get the changedTime property: Gets the changed time.
-     *
+     * 
      * @return the changedTime value.
      */
     public OffsetDateTime changedTime() {
@@ -103,7 +107,7 @@ public final class WorkflowTriggerProperties {
 
     /**
      * Get the state property: Gets the state.
-     *
+     * 
      * @return the state value.
      */
     public WorkflowState state() {
@@ -112,7 +116,7 @@ public final class WorkflowTriggerProperties {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -121,7 +125,7 @@ public final class WorkflowTriggerProperties {
 
     /**
      * Get the lastExecutionTime property: Gets the last execution time.
-     *
+     * 
      * @return the lastExecutionTime value.
      */
     public OffsetDateTime lastExecutionTime() {
@@ -130,7 +134,7 @@ public final class WorkflowTriggerProperties {
 
     /**
      * Get the nextExecutionTime property: Gets the next execution time.
-     *
+     * 
      * @return the nextExecutionTime value.
      */
     public OffsetDateTime nextExecutionTime() {
@@ -139,7 +143,7 @@ public final class WorkflowTriggerProperties {
 
     /**
      * Get the recurrence property: Gets the workflow trigger recurrence.
-     *
+     * 
      * @return the recurrence value.
      */
     public WorkflowTriggerRecurrence recurrence() {
@@ -148,7 +152,7 @@ public final class WorkflowTriggerProperties {
 
     /**
      * Get the workflow property: Gets the reference to workflow.
-     *
+     * 
      * @return the workflow value.
      */
     public ResourceReference workflow() {
@@ -157,7 +161,7 @@ public final class WorkflowTriggerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

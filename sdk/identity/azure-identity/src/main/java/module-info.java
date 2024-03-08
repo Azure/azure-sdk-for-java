@@ -3,6 +3,7 @@
 
 module com.azure.identity {
     requires transitive com.azure.core;
+    requires com.azure.json;
 
     requires com.microsoft.aad.msal4j;
     requires msal4j.persistence.extension;
@@ -12,6 +13,7 @@ module com.azure.identity {
     requires java.xml;
 
     exports com.azure.identity;
-
-    opens com.azure.identity.implementation to com.fasterxml.jackson.databind;
+    exports com.azure.identity.implementation to com.azure.identity.broker;
+    opens com.azure.identity to com.azure.identity.broker;
+    opens com.azure.identity.implementation to com.fasterxml.jackson.databind, com.azure.identity.broker, com.azure.core;
 }

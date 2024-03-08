@@ -18,6 +18,10 @@ public final class ApplicationInsightsComponentAvailableFeaturesInner {
     @JsonProperty(value = "Result", access = JsonProperty.Access.WRITE_ONLY)
     private List<ApplicationInsightsComponentFeature> result;
 
+    /** Creates an instance of ApplicationInsightsComponentAvailableFeaturesInner class. */
+    public ApplicationInsightsComponentAvailableFeaturesInner() {
+    }
+
     /**
      * Get the result property: A list of Application Insights component feature.
      *

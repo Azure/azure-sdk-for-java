@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureSqlMITableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureSqlMITableDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureSqlMITable\",\"typeProperties\":{\"tableName\":\"dataczygpmgfjcu\",\"schema\":\"datajhhy\",\"table\":\"datadevfi\"},\"description\":\"motuzbybwjmtf\",\"structure\":\"datavelni\",\"schema\":\"datapk\",\"linkedServiceName\":{\"referenceName\":\"nstp\",\"parameters\":{\"vswmehfxrtt\":\"dataibjg\",\"ectcxsfmbzdx\":\"databmsennqfabqcama\"}},\"parameters\":{\"zyq\":{\"type\":\"Bool\",\"defaultValue\":\"datakdnnyufxuzms\"},\"ara\":{\"type\":\"Int\",\"defaultValue\":\"datanxhjtlxfikjk\"},\"zpcjcnwjzbqblxr\":{\"type\":\"Bool\",\"defaultValue\":\"datauasnjeglhtrxb\"},\"wsdsorg\":{\"type\":\"Float\",\"defaultValue\":\"datadsvoqiza\"}},\"annotations\":[\"dataxsawooauff\",\"dataxfqk\",\"datawzrdqyoybm\"],\"folder\":{\"name\":\"to\"},\"\":{\"rpqphkvyyzad\":\"datazdaiovrb\",\"yzvelffo\":\"datarxylaypd\"}}")
-                .toObject(AzureSqlMITableDataset.class);
+        AzureSqlMITableDataset model = BinaryData.fromString(
+            "{\"type\":\"AzureSqlMITable\",\"typeProperties\":{\"tableName\":\"dataczygpmgfjcu\",\"schema\":\"datajhhy\",\"table\":\"datadevfi\"},\"description\":\"motuzbybwjmtf\",\"structure\":\"datavelni\",\"schema\":\"datapk\",\"linkedServiceName\":{\"referenceName\":\"nstp\",\"parameters\":{\"vswmehfxrtt\":\"dataibjg\",\"ectcxsfmbzdx\":\"databmsennqfabqcama\"}},\"parameters\":{\"zyq\":{\"type\":\"Bool\",\"defaultValue\":\"datakdnnyufxuzms\"},\"ara\":{\"type\":\"Int\",\"defaultValue\":\"datanxhjtlxfikjk\"},\"zpcjcnwjzbqblxr\":{\"type\":\"Bool\",\"defaultValue\":\"datauasnjeglhtrxb\"},\"wsdsorg\":{\"type\":\"Float\",\"defaultValue\":\"datadsvoqiza\"}},\"annotations\":[\"dataxsawooauff\",\"dataxfqk\",\"datawzrdqyoybm\"],\"folder\":{\"name\":\"to\"},\"\":{\"rpqphkvyyzad\":\"datazdaiovrb\",\"yzvelffo\":\"datarxylaypd\"}}")
+            .toObject(AzureSqlMITableDataset.class);
         Assertions.assertEquals("motuzbybwjmtf", model.description());
         Assertions.assertEquals("nstp", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("zyq").type());
@@ -31,30 +29,19 @@ public final class AzureSqlMITableDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSqlMITableDataset model =
-            new AzureSqlMITableDataset()
-                .withDescription("motuzbybwjmtf")
-                .withStructure("datavelni")
-                .withSchema("datapk")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("nstp")
-                        .withParameters(mapOf("vswmehfxrtt", "dataibjg", "ectcxsfmbzdx", "databmsennqfabqcama")))
-                .withParameters(
-                    mapOf(
-                        "zyq",
-                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datakdnnyufxuzms"),
-                        "ara",
-                        new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datanxhjtlxfikjk"),
-                        "zpcjcnwjzbqblxr",
-                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datauasnjeglhtrxb"),
-                        "wsdsorg",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datadsvoqiza")))
-                .withAnnotations(Arrays.asList("dataxsawooauff", "dataxfqk", "datawzrdqyoybm"))
-                .withFolder(new DatasetFolder().withName("to"))
-                .withTableName("dataczygpmgfjcu")
-                .withSchemaTypePropertiesSchema("datajhhy")
-                .withTable("datadevfi");
+        AzureSqlMITableDataset model = new AzureSqlMITableDataset().withDescription("motuzbybwjmtf")
+            .withStructure("datavelni").withSchema("datapk")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("nstp")
+                .withParameters(mapOf("vswmehfxrtt", "dataibjg", "ectcxsfmbzdx", "databmsennqfabqcama")))
+            .withParameters(mapOf("zyq",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datakdnnyufxuzms"), "ara",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datanxhjtlxfikjk"),
+                "zpcjcnwjzbqblxr",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datauasnjeglhtrxb"),
+                "wsdsorg", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datadsvoqiza")))
+            .withAnnotations(Arrays.asList("dataxsawooauff", "dataxfqk", "datawzrdqyoybm"))
+            .withFolder(new DatasetFolder().withName("to")).withTableName("dataczygpmgfjcu")
+            .withSchemaTypePropertiesSchema("datajhhy").withTable("datadevfi");
         model = BinaryData.fromObject(model).toObject(AzureSqlMITableDataset.class);
         Assertions.assertEquals("motuzbybwjmtf", model.description());
         Assertions.assertEquals("nstp", model.linkedServiceName().referenceName());

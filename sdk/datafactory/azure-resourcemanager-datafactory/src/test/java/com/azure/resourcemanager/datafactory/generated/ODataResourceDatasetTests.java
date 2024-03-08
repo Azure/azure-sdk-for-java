@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ODataResourceDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ODataResourceDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ODataResource\",\"typeProperties\":{\"path\":\"dataicovj\"},\"description\":\"vwrmjx\",\"structure\":\"datauod\",\"schema\":\"dataczbassqfyylwpp\",\"linkedServiceName\":{\"referenceName\":\"ygkbzb\",\"parameters\":{\"pmhttuvsqjsrvjnq\":\"datasybxhqvov\",\"qbfkceincnrecjbi\":\"dataaqg\",\"sqsvzvmxtc\":\"datawevsfgdrmnszdosm\",\"hgsulwvgs\":\"dataghndae\"}},\"parameters\":{\"jjuzk\":{\"type\":\"Float\",\"defaultValue\":\"datav\"},\"vljlbzdlby\":{\"type\":\"Bool\",\"defaultValue\":\"dataciwuhyzekypy\"},\"ov\":{\"type\":\"String\",\"defaultValue\":\"dataxhpzy\"}},\"annotations\":[\"databhanz\"],\"folder\":{\"name\":\"fhsh\"},\"\":{\"zpbyfyvynpmggq\":\"dataahn\",\"izorbloejzs\":\"dataagenvqbugihcdvf\"}}")
-                .toObject(ODataResourceDataset.class);
+        ODataResourceDataset model = BinaryData.fromString(
+            "{\"type\":\"ODataResource\",\"typeProperties\":{\"path\":\"dataicovj\"},\"description\":\"vwrmjx\",\"structure\":\"datauod\",\"schema\":\"dataczbassqfyylwpp\",\"linkedServiceName\":{\"referenceName\":\"ygkbzb\",\"parameters\":{\"pmhttuvsqjsrvjnq\":\"datasybxhqvov\",\"qbfkceincnrecjbi\":\"dataaqg\",\"sqsvzvmxtc\":\"datawevsfgdrmnszdosm\",\"hgsulwvgs\":\"dataghndae\"}},\"parameters\":{\"jjuzk\":{\"type\":\"Float\",\"defaultValue\":\"datav\"},\"vljlbzdlby\":{\"type\":\"Bool\",\"defaultValue\":\"dataciwuhyzekypy\"},\"ov\":{\"type\":\"String\",\"defaultValue\":\"dataxhpzy\"}},\"annotations\":[\"databhanz\"],\"folder\":{\"name\":\"fhsh\"},\"\":{\"zpbyfyvynpmggq\":\"dataahn\",\"izorbloejzs\":\"dataagenvqbugihcdvf\"}}")
+            .toObject(ODataResourceDataset.class);
         Assertions.assertEquals("vwrmjx", model.description());
         Assertions.assertEquals("ygkbzb", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("jjuzk").type());
@@ -31,35 +29,17 @@ public final class ODataResourceDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ODataResourceDataset model =
-            new ODataResourceDataset()
-                .withDescription("vwrmjx")
-                .withStructure("datauod")
-                .withSchema("dataczbassqfyylwpp")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("ygkbzb")
-                        .withParameters(
-                            mapOf(
-                                "pmhttuvsqjsrvjnq",
-                                "datasybxhqvov",
-                                "qbfkceincnrecjbi",
-                                "dataaqg",
-                                "sqsvzvmxtc",
-                                "datawevsfgdrmnszdosm",
-                                "hgsulwvgs",
-                                "dataghndae")))
-                .withParameters(
-                    mapOf(
-                        "jjuzk",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datav"),
-                        "vljlbzdlby",
-                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataciwuhyzekypy"),
-                        "ov",
-                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataxhpzy")))
-                .withAnnotations(Arrays.asList("databhanz"))
-                .withFolder(new DatasetFolder().withName("fhsh"))
-                .withPath("dataicovj");
+        ODataResourceDataset model = new ODataResourceDataset().withDescription("vwrmjx").withStructure("datauod")
+            .withSchema("dataczbassqfyylwpp")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ygkbzb")
+                .withParameters(mapOf("pmhttuvsqjsrvjnq", "datasybxhqvov", "qbfkceincnrecjbi", "dataaqg", "sqsvzvmxtc",
+                    "datawevsfgdrmnszdosm", "hgsulwvgs", "dataghndae")))
+            .withParameters(mapOf("jjuzk",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datav"), "vljlbzdlby",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataciwuhyzekypy"), "ov",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataxhpzy")))
+            .withAnnotations(Arrays.asList("databhanz")).withFolder(new DatasetFolder().withName("fhsh"))
+            .withPath("dataicovj");
         model = BinaryData.fromObject(model).toObject(ODataResourceDataset.class);
         Assertions.assertEquals("vwrmjx", model.description());
         Assertions.assertEquals("ygkbzb", model.linkedServiceName().referenceName());

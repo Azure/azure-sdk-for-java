@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Provides details for log ranges. */
+/**
+ * Provides details for log ranges.
+ */
 @Fluent
 public final class PointInTimeRange {
     /*
@@ -23,13 +25,15 @@ public final class PointInTimeRange {
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
-    /** Creates an instance of PointInTimeRange class. */
+    /**
+     * Creates an instance of PointInTimeRange class.
+     */
     public PointInTimeRange() {
     }
 
     /**
      * Get the startTime property: Start time of the time range for log recovery.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -38,7 +42,7 @@ public final class PointInTimeRange {
 
     /**
      * Set the startTime property: Start time of the time range for log recovery.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the PointInTimeRange object itself.
      */
@@ -49,7 +53,7 @@ public final class PointInTimeRange {
 
     /**
      * Get the endTime property: End time of the time range for log recovery.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -58,7 +62,7 @@ public final class PointInTimeRange {
 
     /**
      * Set the endTime property: End time of the time range for log recovery.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the PointInTimeRange object itself.
      */
@@ -69,7 +73,7 @@ public final class PointInTimeRange {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

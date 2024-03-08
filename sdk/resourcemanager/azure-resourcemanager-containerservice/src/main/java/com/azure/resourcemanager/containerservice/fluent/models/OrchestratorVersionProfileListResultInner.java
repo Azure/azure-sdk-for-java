@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProf
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of versions for supported orchestrators. */
+/**
+ * The list of versions for supported orchestrators.
+ */
 @Fluent
 public final class OrchestratorVersionProfileListResultInner {
     /*
@@ -37,13 +39,15 @@ public final class OrchestratorVersionProfileListResultInner {
     @JsonProperty(value = "properties", required = true)
     private OrchestratorVersionProfileProperties innerProperties = new OrchestratorVersionProfileProperties();
 
-    /** Creates an instance of OrchestratorVersionProfileListResultInner class. */
+    /**
+     * Creates an instance of OrchestratorVersionProfileListResultInner class.
+     */
     public OrchestratorVersionProfileListResultInner() {
     }
 
     /**
      * Get the id property: Id of the orchestrator version profile list result.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -52,7 +56,7 @@ public final class OrchestratorVersionProfileListResultInner {
 
     /**
      * Get the name property: Name of the orchestrator version profile list result.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class OrchestratorVersionProfileListResultInner {
 
     /**
      * Get the type property: Type of the orchestrator version profile list result.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -70,7 +74,7 @@ public final class OrchestratorVersionProfileListResultInner {
 
     /**
      * Get the innerProperties property: The properties of an orchestrator version profile.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OrchestratorVersionProfileProperties innerProperties() {
@@ -79,7 +83,7 @@ public final class OrchestratorVersionProfileListResultInner {
 
     /**
      * Get the orchestrators property: List of orchestrator version profiles.
-     *
+     * 
      * @return the orchestrators value.
      */
     public List<OrchestratorVersionProfile> orchestrators() {
@@ -88,7 +92,7 @@ public final class OrchestratorVersionProfileListResultInner {
 
     /**
      * Set the orchestrators property: List of orchestrator version profiles.
-     *
+     * 
      * @param orchestrators the orchestrators value to set.
      * @return the OrchestratorVersionProfileListResultInner object itself.
      */
@@ -102,16 +106,13 @@ public final class OrchestratorVersionProfileListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model"
-                            + " OrchestratorVersionProfileListResultInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model OrchestratorVersionProfileListResultInner"));
         } else {
             innerProperties().validate();
         }

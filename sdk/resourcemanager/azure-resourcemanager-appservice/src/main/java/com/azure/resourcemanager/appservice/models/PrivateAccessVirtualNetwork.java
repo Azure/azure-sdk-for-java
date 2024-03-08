@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Description of a Virtual Network that is useable for private site access. */
+/**
+ * Description of a Virtual Network that is useable for private site access.
+ */
 @Fluent
 public final class PrivateAccessVirtualNetwork {
     /*
@@ -36,13 +38,15 @@ public final class PrivateAccessVirtualNetwork {
     @JsonProperty(value = "subnets")
     private List<PrivateAccessSubnet> subnets;
 
-    /** Creates an instance of PrivateAccessVirtualNetwork class. */
+    /**
+     * Creates an instance of PrivateAccessVirtualNetwork class.
+     */
     public PrivateAccessVirtualNetwork() {
     }
 
     /**
      * Get the name property: The name of the Virtual Network.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +55,7 @@ public final class PrivateAccessVirtualNetwork {
 
     /**
      * Set the name property: The name of the Virtual Network.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateAccessVirtualNetwork object itself.
      */
@@ -62,7 +66,7 @@ public final class PrivateAccessVirtualNetwork {
 
     /**
      * Get the key property: The key (ID) of the Virtual Network.
-     *
+     * 
      * @return the key value.
      */
     public Integer key() {
@@ -71,7 +75,7 @@ public final class PrivateAccessVirtualNetwork {
 
     /**
      * Set the key property: The key (ID) of the Virtual Network.
-     *
+     * 
      * @param key the key value to set.
      * @return the PrivateAccessVirtualNetwork object itself.
      */
@@ -82,7 +86,7 @@ public final class PrivateAccessVirtualNetwork {
 
     /**
      * Get the resourceId property: The ARM uri of the Virtual Network.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -91,7 +95,7 @@ public final class PrivateAccessVirtualNetwork {
 
     /**
      * Set the resourceId property: The ARM uri of the Virtual Network.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the PrivateAccessVirtualNetwork object itself.
      */
@@ -103,7 +107,7 @@ public final class PrivateAccessVirtualNetwork {
     /**
      * Get the subnets property: A List of subnets that access is allowed to on this Virtual Network. An empty array
      * (but not null) is interpreted to mean that all subnets are allowed within this Virtual Network.
-     *
+     * 
      * @return the subnets value.
      */
     public List<PrivateAccessSubnet> subnets() {
@@ -113,7 +117,7 @@ public final class PrivateAccessVirtualNetwork {
     /**
      * Set the subnets property: A List of subnets that access is allowed to on this Virtual Network. An empty array
      * (but not null) is interpreted to mean that all subnets are allowed within this Virtual Network.
-     *
+     * 
      * @param subnets the subnets value to set.
      * @return the PrivateAccessVirtualNetwork object itself.
      */
@@ -124,7 +128,7 @@ public final class PrivateAccessVirtualNetwork {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

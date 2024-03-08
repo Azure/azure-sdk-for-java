@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Blob Trigger properties. */
+/**
+ * Blob Trigger properties.
+ */
 @Fluent
 public final class BlobTriggerTypeProperties {
     /*
@@ -30,13 +32,15 @@ public final class BlobTriggerTypeProperties {
     @JsonProperty(value = "linkedService", required = true)
     private LinkedServiceReference linkedService;
 
-    /** Creates an instance of BlobTriggerTypeProperties class. */
+    /**
+     * Creates an instance of BlobTriggerTypeProperties class.
+     */
     public BlobTriggerTypeProperties() {
     }
 
     /**
      * Get the folderPath property: The path of the container/folder that will trigger the pipeline.
-     *
+     * 
      * @return the folderPath value.
      */
     public String folderPath() {
@@ -45,7 +49,7 @@ public final class BlobTriggerTypeProperties {
 
     /**
      * Set the folderPath property: The path of the container/folder that will trigger the pipeline.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the BlobTriggerTypeProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class BlobTriggerTypeProperties {
 
     /**
      * Get the maxConcurrency property: The max number of parallel files to handle when it is triggered.
-     *
+     * 
      * @return the maxConcurrency value.
      */
     public int maxConcurrency() {
@@ -65,7 +69,7 @@ public final class BlobTriggerTypeProperties {
 
     /**
      * Set the maxConcurrency property: The max number of parallel files to handle when it is triggered.
-     *
+     * 
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the BlobTriggerTypeProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class BlobTriggerTypeProperties {
 
     /**
      * Get the linkedService property: The Azure Storage linked service reference.
-     *
+     * 
      * @return the linkedService value.
      */
     public LinkedServiceReference linkedService() {
@@ -85,7 +89,7 @@ public final class BlobTriggerTypeProperties {
 
     /**
      * Set the linkedService property: The Azure Storage linked service reference.
-     *
+     * 
      * @param linkedService the linkedService value to set.
      * @return the BlobTriggerTypeProperties object itself.
      */
@@ -96,21 +100,17 @@ public final class BlobTriggerTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (folderPath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property folderPath in model BlobTriggerTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property folderPath in model BlobTriggerTypeProperties"));
         }
         if (linkedService() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property linkedService in model BlobTriggerTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property linkedService in model BlobTriggerTypeProperties"));
         } else {
             linkedService().validate();
         }

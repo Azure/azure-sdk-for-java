@@ -13,17 +13,16 @@ import com.azure.resourcemanager.confluent.fluent.MarketplaceAgreementsClient;
 import com.azure.resourcemanager.confluent.fluent.models.ConfluentAgreementResourceInner;
 import com.azure.resourcemanager.confluent.models.ConfluentAgreementResource;
 import com.azure.resourcemanager.confluent.models.MarketplaceAgreements;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MarketplaceAgreementsImpl implements MarketplaceAgreements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MarketplaceAgreementsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MarketplaceAgreementsImpl.class);
 
     private final MarketplaceAgreementsClient innerClient;
 
     private final com.azure.resourcemanager.confluent.ConfluentManager serviceManager;
 
-    public MarketplaceAgreementsImpl(
-        MarketplaceAgreementsClient innerClient, com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
+    public MarketplaceAgreementsImpl(MarketplaceAgreementsClient innerClient,
+        com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -38,24 +37,21 @@ public final class MarketplaceAgreementsImpl implements MarketplaceAgreements {
         return Utils.mapPage(inner, inner1 -> new ConfluentAgreementResourceImpl(inner1, this.manager()));
     }
 
-    public ConfluentAgreementResource create() {
-        ConfluentAgreementResourceInner inner = this.serviceClient().create();
+    public Response<ConfluentAgreementResource> createWithResponse(ConfluentAgreementResourceInner body,
+        Context context) {
+        Response<ConfluentAgreementResourceInner> inner = this.serviceClient().createWithResponse(body, context);
         if (inner != null) {
-            return new ConfluentAgreementResourceImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfluentAgreementResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<ConfluentAgreementResource> createWithResponse(
-        ConfluentAgreementResourceInner body, Context context) {
-        Response<ConfluentAgreementResourceInner> inner = this.serviceClient().createWithResponse(body, context);
+    public ConfluentAgreementResource create() {
+        ConfluentAgreementResourceInner inner = this.serviceClient().create();
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ConfluentAgreementResourceImpl(inner.getValue(), this.manager()));
+            return new ConfluentAgreementResourceImpl(inner, this.manager());
         } else {
             return null;
         }

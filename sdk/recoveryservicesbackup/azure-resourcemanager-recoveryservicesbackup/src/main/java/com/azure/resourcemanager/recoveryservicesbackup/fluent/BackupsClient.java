@@ -10,12 +10,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupRequestResource;
 
-/** An instance of this class provides access to all the operations defined in BackupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupsClient.
+ */
 public interface BackupsClient {
     /**
      * Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
      * operation, call GetProtectedItemOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -29,19 +31,13 @@ public interface BackupsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> triggerWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        BackupRequestResource parameters,
-        Context context);
+    Response<Void> triggerWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, BackupRequestResource parameters, Context context);
 
     /**
      * Triggers backup for specified backed up item. This is an asynchronous operation. To know the status of the
      * operation, call GetProtectedItemOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -53,11 +49,6 @@ public interface BackupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        BackupRequestResource parameters);
+    void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, BackupRequestResource parameters);
 }

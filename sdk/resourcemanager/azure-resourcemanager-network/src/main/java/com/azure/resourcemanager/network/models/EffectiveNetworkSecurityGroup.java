@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Effective network security group. */
+/**
+ * Effective network security group.
+ */
 @Fluent
 public final class EffectiveNetworkSecurityGroup {
     /*
@@ -36,13 +38,15 @@ public final class EffectiveNetworkSecurityGroup {
     @JsonProperty(value = "tagMap")
     private String tagMap;
 
-    /** Creates an instance of EffectiveNetworkSecurityGroup class. */
+    /**
+     * Creates an instance of EffectiveNetworkSecurityGroup class.
+     */
     public EffectiveNetworkSecurityGroup() {
     }
 
     /**
      * Get the networkSecurityGroup property: The ID of network security group that is applied.
-     *
+     * 
      * @return the networkSecurityGroup value.
      */
     public SubResource networkSecurityGroup() {
@@ -51,7 +55,7 @@ public final class EffectiveNetworkSecurityGroup {
 
     /**
      * Set the networkSecurityGroup property: The ID of network security group that is applied.
-     *
+     * 
      * @param networkSecurityGroup the networkSecurityGroup value to set.
      * @return the EffectiveNetworkSecurityGroup object itself.
      */
@@ -62,7 +66,7 @@ public final class EffectiveNetworkSecurityGroup {
 
     /**
      * Get the association property: Associated resources.
-     *
+     * 
      * @return the association value.
      */
     public EffectiveNetworkSecurityGroupAssociation association() {
@@ -71,7 +75,7 @@ public final class EffectiveNetworkSecurityGroup {
 
     /**
      * Set the association property: Associated resources.
-     *
+     * 
      * @param association the association value to set.
      * @return the EffectiveNetworkSecurityGroup object itself.
      */
@@ -82,7 +86,7 @@ public final class EffectiveNetworkSecurityGroup {
 
     /**
      * Get the effectiveSecurityRules property: A collection of effective security rules.
-     *
+     * 
      * @return the effectiveSecurityRules value.
      */
     public List<EffectiveNetworkSecurityRule> effectiveSecurityRules() {
@@ -91,19 +95,19 @@ public final class EffectiveNetworkSecurityGroup {
 
     /**
      * Set the effectiveSecurityRules property: A collection of effective security rules.
-     *
+     * 
      * @param effectiveSecurityRules the effectiveSecurityRules value to set.
      * @return the EffectiveNetworkSecurityGroup object itself.
      */
-    public EffectiveNetworkSecurityGroup withEffectiveSecurityRules(
-        List<EffectiveNetworkSecurityRule> effectiveSecurityRules) {
+    public EffectiveNetworkSecurityGroup
+        withEffectiveSecurityRules(List<EffectiveNetworkSecurityRule> effectiveSecurityRules) {
         this.effectiveSecurityRules = effectiveSecurityRules;
         return this;
     }
 
     /**
      * Get the tagMap property: Mapping of tags to list of IP Addresses included within the tag.
-     *
+     * 
      * @return the tagMap value.
      */
     public String tagMap() {
@@ -112,7 +116,7 @@ public final class EffectiveNetworkSecurityGroup {
 
     /**
      * Set the tagMap property: Mapping of tags to list of IP Addresses included within the tag.
-     *
+     * 
      * @param tagMap the tagMap value to set.
      * @return the EffectiveNetworkSecurityGroup object itself.
      */
@@ -123,7 +127,7 @@ public final class EffectiveNetworkSecurityGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

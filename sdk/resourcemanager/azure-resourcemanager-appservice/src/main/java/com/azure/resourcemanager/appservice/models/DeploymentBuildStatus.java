@@ -8,50 +8,78 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Deployment build status. */
+/**
+ * Deployment build status.
+ */
 public final class DeploymentBuildStatus extends ExpandableStringEnum<DeploymentBuildStatus> {
-    /** Static value TimedOut for DeploymentBuildStatus. */
+    /**
+     * Static value TimedOut for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus TIMED_OUT = fromString("TimedOut");
 
-    /** Static value RuntimeFailed for DeploymentBuildStatus. */
+    /**
+     * Static value RuntimeFailed for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus RUNTIME_FAILED = fromString("RuntimeFailed");
 
-    /** Static value BuildAborted for DeploymentBuildStatus. */
+    /**
+     * Static value BuildAborted for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus BUILD_ABORTED = fromString("BuildAborted");
 
-    /** Static value BuildFailed for DeploymentBuildStatus. */
+    /**
+     * Static value BuildFailed for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus BUILD_FAILED = fromString("BuildFailed");
 
-    /** Static value BuildRequestReceived for DeploymentBuildStatus. */
+    /**
+     * Static value BuildRequestReceived for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus BUILD_REQUEST_RECEIVED = fromString("BuildRequestReceived");
 
-    /** Static value BuildPending for DeploymentBuildStatus. */
+    /**
+     * Static value BuildPending for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus BUILD_PENDING = fromString("BuildPending");
 
-    /** Static value BuildInProgress for DeploymentBuildStatus. */
+    /**
+     * Static value BuildInProgress for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus BUILD_IN_PROGRESS = fromString("BuildInProgress");
 
-    /** Static value BuildSuccessful for DeploymentBuildStatus. */
+    /**
+     * Static value BuildSuccessful for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus BUILD_SUCCESSFUL = fromString("BuildSuccessful");
 
-    /** Static value PostBuildRestartRequired for DeploymentBuildStatus. */
+    /**
+     * Static value PostBuildRestartRequired for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus POST_BUILD_RESTART_REQUIRED = fromString("PostBuildRestartRequired");
 
-    /** Static value StartPolling for DeploymentBuildStatus. */
+    /**
+     * Static value StartPolling for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus START_POLLING = fromString("StartPolling");
 
-    /** Static value StartPollingWithRestart for DeploymentBuildStatus. */
+    /**
+     * Static value StartPollingWithRestart for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus START_POLLING_WITH_RESTART = fromString("StartPollingWithRestart");
 
-    /** Static value RuntimeStarting for DeploymentBuildStatus. */
+    /**
+     * Static value RuntimeStarting for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus RUNTIME_STARTING = fromString("RuntimeStarting");
 
-    /** Static value RuntimeSuccessful for DeploymentBuildStatus. */
+    /**
+     * Static value RuntimeSuccessful for DeploymentBuildStatus.
+     */
     public static final DeploymentBuildStatus RUNTIME_SUCCESSFUL = fromString("RuntimeSuccessful");
 
     /**
      * Creates a new instance of DeploymentBuildStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -60,7 +88,7 @@ public final class DeploymentBuildStatus extends ExpandableStringEnum<Deployment
 
     /**
      * Creates or finds a DeploymentBuildStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeploymentBuildStatus.
      */
@@ -71,7 +99,7 @@ public final class DeploymentBuildStatus extends ExpandableStringEnum<Deployment
 
     /**
      * Gets known DeploymentBuildStatus values.
-     *
+     * 
      * @return known DeploymentBuildStatus values.
      */
     public static Collection<DeploymentBuildStatus> values() {

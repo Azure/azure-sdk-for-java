@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Source and target column mapping details. */
+/**
+ * Source and target column mapping details.
+ */
 @Fluent
 public final class MapperAttributeMapping {
     /*
@@ -47,13 +49,15 @@ public final class MapperAttributeMapping {
     @JsonProperty(value = "attributeReferences")
     private List<MapperAttributeReference> attributeReferences;
 
-    /** Creates an instance of MapperAttributeMapping class. */
+    /**
+     * Creates an instance of MapperAttributeMapping class.
+     */
     public MapperAttributeMapping() {
     }
 
     /**
      * Get the name property: Name of the target column.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +66,7 @@ public final class MapperAttributeMapping {
 
     /**
      * Set the name property: Name of the target column.
-     *
+     * 
      * @param name the name value to set.
      * @return the MapperAttributeMapping object itself.
      */
@@ -74,7 +78,7 @@ public final class MapperAttributeMapping {
     /**
      * Get the type property: Type of the CDC attribute mapping. Note: 'Advanced' mapping type is also saved as
      * 'Derived'.
-     *
+     * 
      * @return the type value.
      */
     public MappingType type() {
@@ -84,7 +88,7 @@ public final class MapperAttributeMapping {
     /**
      * Set the type property: Type of the CDC attribute mapping. Note: 'Advanced' mapping type is also saved as
      * 'Derived'.
-     *
+     * 
      * @param type the type value to set.
      * @return the MapperAttributeMapping object itself.
      */
@@ -96,7 +100,7 @@ public final class MapperAttributeMapping {
     /**
      * Get the functionName property: Name of the function used for 'Aggregate' and 'Derived' (except 'Advanced') type
      * mapping.
-     *
+     * 
      * @return the functionName value.
      */
     public String functionName() {
@@ -106,7 +110,7 @@ public final class MapperAttributeMapping {
     /**
      * Set the functionName property: Name of the function used for 'Aggregate' and 'Derived' (except 'Advanced') type
      * mapping.
-     *
+     * 
      * @param functionName the functionName value to set.
      * @return the MapperAttributeMapping object itself.
      */
@@ -117,7 +121,7 @@ public final class MapperAttributeMapping {
 
     /**
      * Get the expression property: Expression used for 'Aggregate' and 'Derived' type mapping.
-     *
+     * 
      * @return the expression value.
      */
     public String expression() {
@@ -126,7 +130,7 @@ public final class MapperAttributeMapping {
 
     /**
      * Set the expression property: Expression used for 'Aggregate' and 'Derived' type mapping.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the MapperAttributeMapping object itself.
      */
@@ -138,7 +142,7 @@ public final class MapperAttributeMapping {
     /**
      * Get the attributeReference property: Reference of the source column used in the mapping. It is used for 'Direct'
      * mapping type only.
-     *
+     * 
      * @return the attributeReference value.
      */
     public MapperAttributeReference attributeReference() {
@@ -148,7 +152,7 @@ public final class MapperAttributeMapping {
     /**
      * Set the attributeReference property: Reference of the source column used in the mapping. It is used for 'Direct'
      * mapping type only.
-     *
+     * 
      * @param attributeReference the attributeReference value to set.
      * @return the MapperAttributeMapping object itself.
      */
@@ -160,7 +164,7 @@ public final class MapperAttributeMapping {
     /**
      * Get the attributeReferences property: List of references for source columns. It is used for 'Derived' and
      * 'Aggregate' type mappings only.
-     *
+     * 
      * @return the attributeReferences value.
      */
     public List<MapperAttributeReference> attributeReferences() {
@@ -170,7 +174,7 @@ public final class MapperAttributeMapping {
     /**
      * Set the attributeReferences property: List of references for source columns. It is used for 'Derived' and
      * 'Aggregate' type mappings only.
-     *
+     * 
      * @param attributeReferences the attributeReferences value to set.
      * @return the MapperAttributeMapping object itself.
      */
@@ -181,7 +185,7 @@ public final class MapperAttributeMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

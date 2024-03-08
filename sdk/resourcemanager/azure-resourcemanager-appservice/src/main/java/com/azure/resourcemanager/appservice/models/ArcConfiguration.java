@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ArcConfiguration model. */
+/**
+ * The ArcConfiguration model.
+ */
 @Fluent
 public final class ArcConfiguration {
     /*
@@ -52,13 +54,15 @@ public final class ArcConfiguration {
     @JsonProperty(value = "kubeConfig")
     private String kubeConfig;
 
-    /** Creates an instance of ArcConfiguration class. */
+    /**
+     * Creates an instance of ArcConfiguration class.
+     */
     public ArcConfiguration() {
     }
 
     /**
      * Get the artifactsStorageType property: The artifactsStorageType property.
-     *
+     * 
      * @return the artifactsStorageType value.
      */
     public StorageType artifactsStorageType() {
@@ -67,7 +71,7 @@ public final class ArcConfiguration {
 
     /**
      * Set the artifactsStorageType property: The artifactsStorageType property.
-     *
+     * 
      * @param artifactsStorageType the artifactsStorageType value to set.
      * @return the ArcConfiguration object itself.
      */
@@ -78,7 +82,7 @@ public final class ArcConfiguration {
 
     /**
      * Get the artifactStorageClassName property: The artifactStorageClassName property.
-     *
+     * 
      * @return the artifactStorageClassName value.
      */
     public String artifactStorageClassName() {
@@ -87,7 +91,7 @@ public final class ArcConfiguration {
 
     /**
      * Set the artifactStorageClassName property: The artifactStorageClassName property.
-     *
+     * 
      * @param artifactStorageClassName the artifactStorageClassName value to set.
      * @return the ArcConfiguration object itself.
      */
@@ -98,7 +102,7 @@ public final class ArcConfiguration {
 
     /**
      * Get the artifactStorageMountPath property: The artifactStorageMountPath property.
-     *
+     * 
      * @return the artifactStorageMountPath value.
      */
     public String artifactStorageMountPath() {
@@ -107,7 +111,7 @@ public final class ArcConfiguration {
 
     /**
      * Set the artifactStorageMountPath property: The artifactStorageMountPath property.
-     *
+     * 
      * @param artifactStorageMountPath the artifactStorageMountPath value to set.
      * @return the ArcConfiguration object itself.
      */
@@ -118,7 +122,7 @@ public final class ArcConfiguration {
 
     /**
      * Get the artifactStorageNodeName property: The artifactStorageNodeName property.
-     *
+     * 
      * @return the artifactStorageNodeName value.
      */
     public String artifactStorageNodeName() {
@@ -127,7 +131,7 @@ public final class ArcConfiguration {
 
     /**
      * Set the artifactStorageNodeName property: The artifactStorageNodeName property.
-     *
+     * 
      * @param artifactStorageNodeName the artifactStorageNodeName value to set.
      * @return the ArcConfiguration object itself.
      */
@@ -138,7 +142,7 @@ public final class ArcConfiguration {
 
     /**
      * Get the artifactStorageAccessMode property: The artifactStorageAccessMode property.
-     *
+     * 
      * @return the artifactStorageAccessMode value.
      */
     public String artifactStorageAccessMode() {
@@ -147,7 +151,7 @@ public final class ArcConfiguration {
 
     /**
      * Set the artifactStorageAccessMode property: The artifactStorageAccessMode property.
-     *
+     * 
      * @param artifactStorageAccessMode the artifactStorageAccessMode value to set.
      * @return the ArcConfiguration object itself.
      */
@@ -158,7 +162,7 @@ public final class ArcConfiguration {
 
     /**
      * Get the frontEndServiceConfiguration property: The frontEndServiceConfiguration property.
-     *
+     * 
      * @return the frontEndServiceConfiguration value.
      */
     public FrontEndConfiguration frontEndServiceConfiguration() {
@@ -167,7 +171,7 @@ public final class ArcConfiguration {
 
     /**
      * Set the frontEndServiceConfiguration property: The frontEndServiceConfiguration property.
-     *
+     * 
      * @param frontEndServiceConfiguration the frontEndServiceConfiguration value to set.
      * @return the ArcConfiguration object itself.
      */
@@ -178,7 +182,7 @@ public final class ArcConfiguration {
 
     /**
      * Get the kubeConfig property: The kubeConfig property.
-     *
+     * 
      * @return the kubeConfig value.
      */
     public String kubeConfig() {
@@ -187,7 +191,7 @@ public final class ArcConfiguration {
 
     /**
      * Set the kubeConfig property: The kubeConfig property.
-     *
+     * 
      * @param kubeConfig the kubeConfig value to set.
      * @return the ArcConfiguration object itself.
      */
@@ -198,7 +202,7 @@ public final class ArcConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

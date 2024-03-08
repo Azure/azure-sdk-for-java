@@ -15,29 +15,29 @@ public final class DevCenterSkuInnerTests {
         DevCenterSkuInner model =
             BinaryData
                 .fromString(
-                    "{\"resourceType\":\"fnndl\",\"locations\":[\"hkoymkcdyhbp\",\"kpw\",\"reqnovvqfov\"],\"capabilities\":[{\"name\":\"wsuwsyr\",\"value\":\"dsytgadgvr\"},{\"name\":\"aeneqnzarrwl\",\"value\":\"uijfqk\"}],\"name\":\"cewiipfpub\",\"tier\":\"Basic\",\"size\":\"wifto\",\"family\":\"kvpuvksgplsaknyn\",\"capacity\":654967336}")
+                    "{\"resourceType\":\"elmcuvhixbjxyfw\",\"locations\":[\"r\",\"ool\",\"ttpkiwkkbnujrywv\"],\"capabilities\":[{\"name\":\"fpncurdo\",\"value\":\"iithtywu\"},{\"name\":\"cbihwqk\",\"value\":\"dntwjchrdgo\"},{\"name\":\"xum\",\"value\":\"ton\"}],\"name\":\"zj\",\"tier\":\"Basic\",\"size\":\"fdlwg\",\"family\":\"tsbwtovvtgse\",\"capacity\":800109726}")
                 .toObject(DevCenterSkuInner.class);
-        Assertions.assertEquals("cewiipfpub", model.name());
+        Assertions.assertEquals("zj", model.name());
         Assertions.assertEquals(SkuTier.BASIC, model.tier());
-        Assertions.assertEquals("wifto", model.size());
-        Assertions.assertEquals("kvpuvksgplsaknyn", model.family());
-        Assertions.assertEquals(654967336, model.capacity());
+        Assertions.assertEquals("fdlwg", model.size());
+        Assertions.assertEquals("tsbwtovvtgse", model.family());
+        Assertions.assertEquals(800109726, model.capacity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DevCenterSkuInner model =
             new DevCenterSkuInner()
-                .withName("cewiipfpub")
+                .withName("zj")
                 .withTier(SkuTier.BASIC)
-                .withSize("wifto")
-                .withFamily("kvpuvksgplsaknyn")
-                .withCapacity(654967336);
+                .withSize("fdlwg")
+                .withFamily("tsbwtovvtgse")
+                .withCapacity(800109726);
         model = BinaryData.fromObject(model).toObject(DevCenterSkuInner.class);
-        Assertions.assertEquals("cewiipfpub", model.name());
+        Assertions.assertEquals("zj", model.name());
         Assertions.assertEquals(SkuTier.BASIC, model.tier());
-        Assertions.assertEquals("wifto", model.size());
-        Assertions.assertEquals("kvpuvksgplsaknyn", model.family());
-        Assertions.assertEquals(654967336, model.capacity());
+        Assertions.assertEquals("fdlwg", model.size());
+        Assertions.assertEquals("tsbwtovvtgse", model.family());
+        Assertions.assertEquals(800109726, model.capacity());
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.1.0-beta.2 (Unreleased)
+## 2.1.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,45 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.1.0-beta.2 (2023-11-23)
+
+- Azure Resource Manager Communication client library for Java. This package contains Microsoft Azure SDK for Communication Management SDK. REST API for Azure Communication Services. Package tag package-preview-2023-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SuppressionListAddressResourceCollection` was added
+
+* `models.SuppressionListAddressResource` was added
+
+* `models.SuppressionListResource$UpdateStages` was added
+
+* `models.SuppressionListResource$Update` was added
+
+* `models.SuppressionListAddressResource$Update` was added
+
+* `models.SuppressionListAddressResource$Definition` was added
+
+* `models.SuppressionListAddresses` was added
+
+* `models.SuppressionListAddressResource$DefinitionStages` was added
+
+* `models.SuppressionListResource$Definition` was added
+
+* `models.SuppressionListResource` was added
+
+* `models.SuppressionLists` was added
+
+* `models.SuppressionListResourceCollection` was added
+
+* `models.SuppressionListResource$DefinitionStages` was added
+
+* `models.SuppressionListAddressResource$UpdateStages` was added
+
+#### `CommunicationManager` was modified
+
+* `suppressionLists()` was added
+* `suppressionListAddresses()` was added
 
 ## 2.1.0-beta.1 (2023-09-18)
 

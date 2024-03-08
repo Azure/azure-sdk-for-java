@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Managed Identity used for CMK. */
+/**
+ * Managed Identity used for CMK.
+ */
 @Fluent
 public final class CmkIdentityDefinition {
     /*
@@ -16,14 +18,16 @@ public final class CmkIdentityDefinition {
     @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
-    /** Creates an instance of CmkIdentityDefinition class. */
+    /**
+     * Creates an instance of CmkIdentityDefinition class.
+     */
     public CmkIdentityDefinition() {
     }
 
     /**
      * Get the userAssignedIdentity property: The resource id of the user assigned identity to authenticate to
      * customer's key vault.
-     *
+     * 
      * @return the userAssignedIdentity value.
      */
     public String userAssignedIdentity() {
@@ -33,7 +37,7 @@ public final class CmkIdentityDefinition {
     /**
      * Set the userAssignedIdentity property: The resource id of the user assigned identity to authenticate to
      * customer's key vault.
-     *
+     * 
      * @param userAssignedIdentity the userAssignedIdentity value to set.
      * @return the CmkIdentityDefinition object itself.
      */
@@ -44,7 +48,7 @@ public final class CmkIdentityDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -30,11 +30,15 @@ import com.azure.resourcemanager.communication.implementation.DomainsImpl;
 import com.azure.resourcemanager.communication.implementation.EmailServicesImpl;
 import com.azure.resourcemanager.communication.implementation.OperationsImpl;
 import com.azure.resourcemanager.communication.implementation.SenderUsernamesImpl;
+import com.azure.resourcemanager.communication.implementation.SuppressionListAddressesImpl;
+import com.azure.resourcemanager.communication.implementation.SuppressionListsImpl;
 import com.azure.resourcemanager.communication.models.CommunicationServices;
 import com.azure.resourcemanager.communication.models.Domains;
 import com.azure.resourcemanager.communication.models.EmailServices;
 import com.azure.resourcemanager.communication.models.Operations;
 import com.azure.resourcemanager.communication.models.SenderUsernames;
+import com.azure.resourcemanager.communication.models.SuppressionListAddresses;
+import com.azure.resourcemanager.communication.models.SuppressionLists;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -42,7 +46,10 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to CommunicationManager. REST API for Azure Communication Services. */
+/**
+ * Entry point to CommunicationManager.
+ * REST API for Azure Communication Services.
+ */
 public final class CommunicationManager {
     private Operations operations;
 
@@ -54,23 +61,23 @@ public final class CommunicationManager {
 
     private SenderUsernames senderUsernames;
 
+    private SuppressionLists suppressionLists;
+
+    private SuppressionListAddresses suppressionListAddresses;
+
     private final CommunicationServiceManagementClient clientObject;
 
     private CommunicationManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new CommunicationServiceManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new CommunicationServiceManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
      * Creates an instance of Communication service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the Communication service API instance.
@@ -83,7 +90,7 @@ public final class CommunicationManager {
 
     /**
      * Creates an instance of Communication service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the Communication service API instance.
@@ -96,14 +103,16 @@ public final class CommunicationManager {
 
     /**
      * Gets a Configurable instance that can be used to create CommunicationManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new CommunicationManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -175,8 +184,8 @@ public final class CommunicationManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -193,8 +202,8 @@ public final class CommunicationManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -214,21 +223,12 @@ public final class CommunicationManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
-                .append("-")
-                .append("com.azure.resourcemanager.communication")
-                .append("/")
-                .append("2.1.0-beta.1");
+            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.communication")
+                .append("/").append("2.1.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
-                    .append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.name"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version"))
-                    .append("; auto-generated)");
+                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -247,38 +247,25 @@ public final class CommunicationManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
             return new CommunicationManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -290,7 +277,7 @@ public final class CommunicationManager {
 
     /**
      * Gets the resource collection API of CommunicationServices. It manages CommunicationServiceResource.
-     *
+     * 
      * @return Resource collection API of CommunicationServices.
      */
     public CommunicationServices communicationServices() {
@@ -302,7 +289,7 @@ public final class CommunicationManager {
 
     /**
      * Gets the resource collection API of Domains. It manages DomainResource.
-     *
+     * 
      * @return Resource collection API of Domains.
      */
     public Domains domains() {
@@ -314,7 +301,7 @@ public final class CommunicationManager {
 
     /**
      * Gets the resource collection API of EmailServices. It manages EmailServiceResource.
-     *
+     * 
      * @return Resource collection API of EmailServices.
      */
     public EmailServices emailServices() {
@@ -326,7 +313,7 @@ public final class CommunicationManager {
 
     /**
      * Gets the resource collection API of SenderUsernames. It manages SenderUsernameResource.
-     *
+     * 
      * @return Resource collection API of SenderUsernames.
      */
     public SenderUsernames senderUsernames() {
@@ -337,9 +324,34 @@ public final class CommunicationManager {
     }
 
     /**
+     * Gets the resource collection API of SuppressionLists. It manages SuppressionListResource.
+     * 
+     * @return Resource collection API of SuppressionLists.
+     */
+    public SuppressionLists suppressionLists() {
+        if (this.suppressionLists == null) {
+            this.suppressionLists = new SuppressionListsImpl(clientObject.getSuppressionLists(), this);
+        }
+        return suppressionLists;
+    }
+
+    /**
+     * Gets the resource collection API of SuppressionListAddresses. It manages SuppressionListAddressResource.
+     * 
+     * @return Resource collection API of SuppressionListAddresses.
+     */
+    public SuppressionListAddresses suppressionListAddresses() {
+        if (this.suppressionListAddresses == null) {
+            this.suppressionListAddresses
+                = new SuppressionListAddressesImpl(clientObject.getSuppressionListAddresses(), this);
+        }
+        return suppressionListAddresses;
+    }
+
+    /**
      * Gets wrapped service client CommunicationServiceManagementClient providing direct access to the underlying
      * auto-generated API implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client CommunicationServiceManagementClient.
      */
     public CommunicationServiceManagementClient serviceClient() {

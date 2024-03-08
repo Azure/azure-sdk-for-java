@@ -20,22 +20,18 @@ public final class OperationStatusResourceGroupContextsImpl implements Operation
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public OperationStatusResourceGroupContextsImpl(
-        OperationStatusResourceGroupContextsClient innerClient,
+    public OperationStatusResourceGroupContextsImpl(OperationStatusResourceGroupContextsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String operationId, Context context) {
-        Response<OperationResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, operationId, context);
+    public Response<OperationResource> getByResourceGroupWithResponse(String resourceGroupName, String operationId,
+        Context context) {
+        Response<OperationResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

@@ -16,41 +16,35 @@ import org.junit.jupiter.api.Assertions;
 public final class CapacityPoolInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CapacityPoolInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"qugxywpmueefjzwf\",\"properties\":{\"poolId\":\"q\",\"size\":7502146387336972702,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"uyonobglaoc\",\"totalThroughputMibps\":17.340857,\"utilizedThroughputMibps\":36.81238,\"qosType\":\"Auto\",\"coolAccess\":true,\"encryptionType\":\"Single\"},\"location\":\"tlmoyrx\",\"tags\":{\"wpzntxhdzh\":\"u\",\"rxsbkyvp\":\"rqjbhckfrl\"},\"id\":\"ca\",\"name\":\"uzbpzkafku\",\"type\":\"b\"}")
-                .toObject(CapacityPoolInner.class);
-        Assertions.assertEquals("tlmoyrx", model.location());
-        Assertions.assertEquals("u", model.tags().get("wpzntxhdzh"));
-        Assertions.assertEquals(7502146387336972702L, model.size());
+        CapacityPoolInner model = BinaryData.fromString(
+            "{\"etag\":\"zcjrvxdjzlmwlx\",\"properties\":{\"poolId\":\"ug\",\"size\":6340547465391917507,\"serviceLevel\":\"Ultra\",\"provisioningState\":\"awjvzunluthnnp\",\"totalThroughputMibps\":83.22846,\"utilizedThroughputMibps\":85.84867,\"qosType\":\"Manual\",\"coolAccess\":false,\"encryptionType\":\"Single\"},\"location\":\"aejxd\",\"tags\":{\"dzumveekg\":\"skzbb\",\"bsjyofdx\":\"wozuhkf\",\"oekqvk\":\"uusdttouwa\",\"vbxwyjsflhh\":\"lns\"},\"id\":\"aalnjixi\",\"name\":\"xyawj\",\"type\":\"yaqcslyjpkiidz\"}")
+            .toObject(CapacityPoolInner.class);
+        Assertions.assertEquals("aejxd", model.location());
+        Assertions.assertEquals("skzbb", model.tags().get("dzumveekg"));
+        Assertions.assertEquals(6340547465391917507L, model.size());
         Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
-        Assertions.assertEquals(true, model.coolAccess());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
+        Assertions.assertEquals(false, model.coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CapacityPoolInner model =
-            new CapacityPoolInner()
-                .withLocation("tlmoyrx")
-                .withTags(mapOf("wpzntxhdzh", "u", "rxsbkyvp", "rqjbhckfrl"))
-                .withSize(7502146387336972702L)
-                .withServiceLevel(ServiceLevel.ULTRA)
-                .withQosType(QosType.AUTO)
-                .withCoolAccess(true)
-                .withEncryptionType(EncryptionType.SINGLE);
+        CapacityPoolInner model = new CapacityPoolInner().withLocation("aejxd")
+            .withTags(mapOf("dzumveekg", "skzbb", "bsjyofdx", "wozuhkf", "oekqvk", "uusdttouwa", "vbxwyjsflhh", "lns"))
+            .withSize(6340547465391917507L).withServiceLevel(ServiceLevel.ULTRA).withQosType(QosType.MANUAL)
+            .withCoolAccess(false).withEncryptionType(EncryptionType.SINGLE);
         model = BinaryData.fromObject(model).toObject(CapacityPoolInner.class);
-        Assertions.assertEquals("tlmoyrx", model.location());
-        Assertions.assertEquals("u", model.tags().get("wpzntxhdzh"));
-        Assertions.assertEquals(7502146387336972702L, model.size());
+        Assertions.assertEquals("aejxd", model.location());
+        Assertions.assertEquals("skzbb", model.tags().get("dzumveekg"));
+        Assertions.assertEquals(6340547465391917507L, model.size());
         Assertions.assertEquals(ServiceLevel.ULTRA, model.serviceLevel());
-        Assertions.assertEquals(QosType.AUTO, model.qosType());
-        Assertions.assertEquals(true, model.coolAccess());
+        Assertions.assertEquals(QosType.MANUAL, model.qosType());
+        Assertions.assertEquals(false, model.coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

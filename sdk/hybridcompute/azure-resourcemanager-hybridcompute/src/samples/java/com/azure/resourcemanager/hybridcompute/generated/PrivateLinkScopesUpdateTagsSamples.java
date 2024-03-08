@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for PrivateLinkScopes UpdateTags. */
 public final class PrivateLinkScopesUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2021-03-25-preview/examples/PrivateLinkScopesUpdateTagsOnly.json
+     * x-ms-original-file: specification/hybridcompute/resource-manager/Microsoft.HybridCompute/preview/2023-06-20-preview/examples/privateLinkScope/PrivateLinkScopes_UpdateTagsOnly.json
      */
     /**
      * Sample code: PrivateLinkScopeUpdateTagsOnly.
@@ -29,6 +29,7 @@ public final class PrivateLinkScopesUpdateTagsSamples {
         resource.update().withTags(mapOf("Tag1", "Value1", "Tag2", "Value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

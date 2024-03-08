@@ -13,7 +13,9 @@ import com.azure.resourcemanager.network.models.SecurityProviderName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Security Partner Provider resource. */
+/**
+ * Security Partner Provider resource.
+ */
 @Fluent
 public final class SecurityPartnerProviderInner extends Resource {
     /*
@@ -34,13 +36,15 @@ public final class SecurityPartnerProviderInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of SecurityPartnerProviderInner class. */
+    /**
+     * Creates an instance of SecurityPartnerProviderInner class.
+     */
     public SecurityPartnerProviderInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Security Partner Provider.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityPartnerProviderPropertiesFormat innerProperties() {
@@ -49,7 +53,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -58,7 +62,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -67,7 +71,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the SecurityPartnerProviderInner object itself.
      */
@@ -76,14 +80,18 @@ public final class SecurityPartnerProviderInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityPartnerProviderInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityPartnerProviderInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -92,7 +100,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the Security Partner Provider resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -101,7 +109,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the securityProviderName property: The security provider name.
-     *
+     * 
      * @return the securityProviderName value.
      */
     public SecurityProviderName securityProviderName() {
@@ -110,7 +118,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Set the securityProviderName property: The security provider name.
-     *
+     * 
      * @param securityProviderName the securityProviderName value to set.
      * @return the SecurityPartnerProviderInner object itself.
      */
@@ -124,7 +132,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the connectionStatus property: The connection status with the Security Partner Provider.
-     *
+     * 
      * @return the connectionStatus value.
      */
     public SecurityPartnerProviderConnectionStatus connectionStatus() {
@@ -133,7 +141,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Get the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
-     *
+     * 
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -142,7 +150,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Set the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the SecurityPartnerProviderInner object itself.
      */
@@ -156,7 +164,7 @@ public final class SecurityPartnerProviderInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.client.traits.AmqpTrait;
+import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AzureTokenManagerProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
@@ -55,7 +56,6 @@ import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
@@ -241,7 +241,6 @@ public class EventHubClientBuilder implements
     private static final String UNKNOWN = "UNKNOWN";
 
     private static final String AZURE_EVENT_HUBS_CONNECTION_STRING = "AZURE_EVENT_HUBS_CONNECTION_STRING";
-    private static final Pattern HOST_PORT_PATTERN = Pattern.compile("^[^:]+:\\d+");
 
     private static final ClientLogger LOGGER = new ClientLogger(EventHubClientBuilder.class);
     private final Object connectionLock = new Object();
@@ -717,10 +716,10 @@ public class EventHubClientBuilder implements
     }
 
     /**
-     * Sets the count used by the receiver to control the number of events the Event Hub consumer will actively receive
+     * Sets the count used by the receiver to control the number of events per partition the Event Hub consumer will actively receive
      * and queue locally without regard to whether a receive operation is currently active.
      *
-     * @param prefetchCount The amount of events to queue locally.
+     * @param prefetchCount The amount of events per partition to queue locally. Defaults to 500 events per partition.
      *
      * @return The updated {@link EventHubClientBuilder} object.
      * @throws IllegalArgumentException if {@code prefetchCount} is less than {@link #MINIMUM_PREFETCH_COUNT 1} or
@@ -997,9 +996,10 @@ public class EventHubClientBuilder implements
                     connectionOptions.getAuthorizationScope());
                 final ReactorProvider provider = new ReactorProvider();
                 final ReactorHandlerProvider handlerProvider = new ReactorHandlerProvider(provider, meter);
+                final AmqpLinkProvider linkProvider = new AmqpLinkProvider();
 
                 final EventHubAmqpConnection connection = new EventHubReactorAmqpConnection(connectionId,
-                    connectionOptions, getEventHubName.get(), provider, handlerProvider, tokenManagerProvider,
+                    connectionOptions, getEventHubName.get(), provider, handlerProvider, linkProvider, tokenManagerProvider,
                     messageSerializer);
 
                 sink.next(connection);

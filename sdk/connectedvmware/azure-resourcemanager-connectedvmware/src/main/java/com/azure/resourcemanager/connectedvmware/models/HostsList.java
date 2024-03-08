@@ -25,6 +25,10 @@ public final class HostsList {
     @JsonProperty(value = "value", required = true)
     private List<HostModelInner> value;
 
+    /** Creates an instance of HostsList class. */
+    public HostsList() {
+    }
+
     /**
      * Get the nextLink property: Url to follow for getting next page of Hosts.
      *

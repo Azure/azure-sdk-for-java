@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.CosmosDbMongoDbApiSink;
 public final class CosmosDbMongoDbApiSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CosmosDbMongoDbApiSink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"CosmosDbMongoDbApiSink\",\"writeBehavior\":\"datapk\",\"writeBatchSize\":\"dataxdmbx\",\"writeBatchTimeout\":\"dataxw\",\"sinkRetryCount\":\"dataqvhfyvkxgo\",\"sinkRetryWait\":\"dataveiucuxwnojvcr\",\"maxConcurrentConnections\":\"datambnfvygtt\",\"disableMetricsCollection\":\"datafjalpsycvcksz\",\"\":{\"fth\":\"dataguucpytsxnujw\",\"eoxlbccccrauabd\":\"datazi\",\"xqgsteeksbksvv\":\"datavjrbgc\",\"vvu\":\"datavoi\"}}")
-                .toObject(CosmosDbMongoDbApiSink.class);
+        CosmosDbMongoDbApiSink model = BinaryData.fromString(
+            "{\"type\":\"CosmosDbMongoDbApiSink\",\"writeBehavior\":\"datamgvm\",\"writeBatchSize\":\"datamjazqlmigkx\",\"writeBatchTimeout\":\"datashadnholkoyxms\",\"sinkRetryCount\":\"datadsqwvzunrqvu\",\"sinkRetryWait\":\"dataxs\",\"maxConcurrentConnections\":\"dataqzdfjwo\",\"disableMetricsCollection\":\"datazifrmoftilhoyemh\",\"\":{\"rcdtkv\":\"datapgdd\",\"ubmhsxtry\":\"datarifcqmfv\"}}")
+            .toObject(CosmosDbMongoDbApiSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbMongoDbApiSink model =
-            new CosmosDbMongoDbApiSink()
-                .withWriteBatchSize("dataxdmbx")
-                .withWriteBatchTimeout("dataxw")
-                .withSinkRetryCount("dataqvhfyvkxgo")
-                .withSinkRetryWait("dataveiucuxwnojvcr")
-                .withMaxConcurrentConnections("datambnfvygtt")
-                .withDisableMetricsCollection("datafjalpsycvcksz")
-                .withWriteBehavior("datapk");
+        CosmosDbMongoDbApiSink model = new CosmosDbMongoDbApiSink().withWriteBatchSize("datamjazqlmigkx")
+            .withWriteBatchTimeout("datashadnholkoyxms").withSinkRetryCount("datadsqwvzunrqvu")
+            .withSinkRetryWait("dataxs").withMaxConcurrentConnections("dataqzdfjwo")
+            .withDisableMetricsCollection("datazifrmoftilhoyemh").withWriteBehavior("datamgvm");
         model = BinaryData.fromObject(model).toObject(CosmosDbMongoDbApiSink.class);
     }
 }

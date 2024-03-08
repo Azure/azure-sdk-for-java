@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
@@ -33,28 +34,34 @@ private case class ChangeFeedPartitionReader
   readSchema: StructType,
   diagnosticsContext: DiagnosticsContext,
   cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
-  diagnosticsConfig: DiagnosticsConfig
+  diagnosticsConfig: DiagnosticsConfig,
+  sparkEnvironmentInfo: String
 ) extends PartitionReader[InternalRow] {
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
   requireNotNull(partition, "partition")
   assert(partition.continuationState.isDefined, "Argument 'partition.continuationState' must be defined here.")
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
   private val containerTargetConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   log.logInfo(s"Reading from feed range ${partition.feedRange} of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val clientCacheItem = CosmosClientCache(
-    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+    CosmosClientConfiguration(
+      config,
+      readConfig.forceEventualConsistency,
+      sparkEnvironmentInfo),
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ChangeFeedPartitionReader(partition $partition)")
+
   private val throughputControlClientCacheItemOpt =
     ThroughputControlHelper.getThroughputControlClientCacheItem(
       config,
       clientCacheItem.context,
-      Some(cosmosClientStateHandles))
+      Some(cosmosClientStateHandles),
+      sparkEnvironmentInfo)
 
   private val cosmosAsyncContainer =
     ThroughputControlHelper.getContainer(
@@ -62,13 +69,14 @@ private case class ChangeFeedPartitionReader
       containerTargetConfig,
       clientCacheItem,
       throughputControlClientCacheItemOpt)
-  SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
 
   private val partitionKeyDefinition: Option[PartitionKeyDefinition] =
     if (diagnosticsConfig.mode.isDefined &&
       diagnosticsConfig.mode.get.equalsIgnoreCase(classOf[DetailedFeedDiagnosticsProvider].getName)) {
 
-      Option.apply(cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition)
+      Option.apply(SparkBridgeInternal
+        .getContainerPropertiesFromCollectionCache(cosmosAsyncContainer)
+        .getPartitionKeyDefinition)
     } else {
       None
     }

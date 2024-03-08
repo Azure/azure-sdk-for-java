@@ -65,6 +65,10 @@ public final class ApplicationInsightsComponentFeature {
     @JsonProperty(value = "SupportedAddonFeatures", access = JsonProperty.Access.WRITE_ONLY)
     private String supportedAddonFeatures;
 
+    /** Creates an instance of ApplicationInsightsComponentFeature class. */
+    public ApplicationInsightsComponentFeature() {
+    }
+
     /**
      * Get the featureName property: The pricing feature name.
      *

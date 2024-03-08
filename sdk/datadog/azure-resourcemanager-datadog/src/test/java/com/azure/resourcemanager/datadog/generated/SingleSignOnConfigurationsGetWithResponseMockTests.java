@@ -32,7 +32,7 @@ public final class SingleSignOnConfigurationsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"singleSignOnState\":\"Disable\",\"enterpriseAppId\":\"blytk\",\"singleSignOnUrl\":\"mpew\"},\"id\":\"fbkrvrnsvs\",\"name\":\"q\",\"type\":\"ohxcrsbfova\"}";
+            "{\"properties\":{\"provisioningState\":\"Deleted\",\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"kqze\",\"singleSignOnUrl\":\"kdltfzxmhhvhg\"},\"id\":\"eodkwobda\",\"name\":\"xtibqdxbxwakbog\",\"type\":\"xndlkzgxhu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +63,10 @@ public final class SingleSignOnConfigurationsGetWithResponseMockTests {
         DatadogSingleSignOnResource response =
             manager
                 .singleSignOnConfigurations()
-                .getWithResponse("ivetvtcq", "qtdo", "mcbxvwvxysl", com.azure.core.util.Context.NONE)
+                .getWithResponse("k", "wtppjflcxogaoko", "z", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(SingleSignOnStates.DISABLE, response.properties().singleSignOnState());
-        Assertions.assertEquals("blytk", response.properties().enterpriseAppId());
+        Assertions.assertEquals(SingleSignOnStates.ENABLE, response.properties().singleSignOnState());
+        Assertions.assertEquals("kqze", response.properties().enterpriseAppId());
     }
 }

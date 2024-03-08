@@ -9,11 +9,11 @@ import java.util.List;
 
 public class CompositeIndexUtilizationEntity {
 
-    @JsonProperty(value = "IndexSpecs", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "IndexSpecs", access = JsonProperty.Access.READ_WRITE)
     private List<String> indexDocumentExpressions;
-    @JsonProperty(value = "IndexPreciseSet", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "IndexPreciseSet", access = JsonProperty.Access.READ_WRITE)
     private boolean indexPlanFullFidelity;
-    @JsonProperty(value = "IndexImpactScore", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "IndexImpactScore", access = JsonProperty.Access.READ_WRITE)
     private String indexImpactScore;
 
     CompositeIndexUtilizationEntity() {}

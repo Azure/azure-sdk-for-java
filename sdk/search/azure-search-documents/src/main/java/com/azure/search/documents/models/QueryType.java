@@ -30,7 +30,9 @@ public enum QueryType {
      */
     SEMANTIC("semantic");
 
-    /** The actual serialized value for a QueryType instance. */
+    /**
+     * The actual serialized value for a QueryType instance.
+     */
     private final String value;
 
     QueryType(String value) {
@@ -39,7 +41,7 @@ public enum QueryType {
 
     /**
      * Parses a serialized value to a QueryType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed QueryType object, or null if unable to parse.
      */
@@ -56,7 +58,9 @@ public enum QueryType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration settings of the Azure Active Directory app registration. */
+/**
+ * The configuration settings of the Azure Active Directory app registration.
+ */
 @Fluent
 public final class AzureActiveDirectoryRegistration {
     /*
@@ -59,16 +61,20 @@ public final class AzureActiveDirectoryRegistration {
     @JsonProperty(value = "clientSecretCertificateIssuer")
     private String clientSecretCertificateIssuer;
 
-    /** Creates an instance of AzureActiveDirectoryRegistration class. */
+    /**
+     * Creates an instance of AzureActiveDirectoryRegistration class.
+     */
     public AzureActiveDirectoryRegistration() {
     }
 
     /**
      * Get the openIdIssuer property: The OpenID Connect Issuer URI that represents the entity which issues access
-     * tokens for this application. When using Azure Active Directory, this value is the URI of the directory tenant,
-     * e.g. https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token
-     * issuer. More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
-     *
+     * tokens for this application.
+     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g.
+     * https://login.microsoftonline.com/v2.0/{tenant-guid}/.
+     * This URI is a case-sensitive identifier for the token issuer.
+     * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
+     * 
      * @return the openIdIssuer value.
      */
     public String openIdIssuer() {
@@ -77,10 +83,12 @@ public final class AzureActiveDirectoryRegistration {
 
     /**
      * Set the openIdIssuer property: The OpenID Connect Issuer URI that represents the entity which issues access
-     * tokens for this application. When using Azure Active Directory, this value is the URI of the directory tenant,
-     * e.g. https://login.microsoftonline.com/v2.0/{tenant-guid}/. This URI is a case-sensitive identifier for the token
-     * issuer. More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
-     *
+     * tokens for this application.
+     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g.
+     * https://login.microsoftonline.com/v2.0/{tenant-guid}/.
+     * This URI is a case-sensitive identifier for the token issuer.
+     * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html.
+     * 
      * @param openIdIssuer the openIdIssuer value to set.
      * @return the AzureActiveDirectoryRegistration object itself.
      */
@@ -90,10 +98,11 @@ public final class AzureActiveDirectoryRegistration {
     }
 
     /**
-     * Get the clientId property: The Client ID of this relying party application, known as the client_id. This setting
-     * is required for enabling OpenID Connection authentication with Azure Active Directory or other 3rd party OpenID
-     * Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
-     *
+     * Get the clientId property: The Client ID of this relying party application, known as the client_id.
+     * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
+     * other 3rd party OpenID Connect providers.
+     * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -101,10 +110,11 @@ public final class AzureActiveDirectoryRegistration {
     }
 
     /**
-     * Set the clientId property: The Client ID of this relying party application, known as the client_id. This setting
-     * is required for enabling OpenID Connection authentication with Azure Active Directory or other 3rd party OpenID
-     * Connect providers. More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
-     *
+     * Set the clientId property: The Client ID of this relying party application, known as the client_id.
+     * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
+     * other 3rd party OpenID Connect providers.
+     * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html.
+     * 
      * @param clientId the clientId value to set.
      * @return the AzureActiveDirectoryRegistration object itself.
      */
@@ -116,7 +126,7 @@ public final class AzureActiveDirectoryRegistration {
     /**
      * Get the clientSecretSettingName property: The app setting name that contains the client secret of the relying
      * party application.
-     *
+     * 
      * @return the clientSecretSettingName value.
      */
     public String clientSecretSettingName() {
@@ -126,7 +136,7 @@ public final class AzureActiveDirectoryRegistration {
     /**
      * Set the clientSecretSettingName property: The app setting name that contains the client secret of the relying
      * party application.
-     *
+     * 
      * @param clientSecretSettingName the clientSecretSettingName value to set.
      * @return the AzureActiveDirectoryRegistration object itself.
      */
@@ -137,9 +147,9 @@ public final class AzureActiveDirectoryRegistration {
 
     /**
      * Get the clientSecretCertificateThumbprint property: An alternative to the client secret, that is the thumbprint
-     * of a certificate used for signing purposes. This property acts as a replacement for the Client Secret. It is also
-     * optional.
-     *
+     * of a certificate used for signing purposes. This property acts as
+     * a replacement for the Client Secret. It is also optional.
+     * 
      * @return the clientSecretCertificateThumbprint value.
      */
     public String clientSecretCertificateThumbprint() {
@@ -148,23 +158,23 @@ public final class AzureActiveDirectoryRegistration {
 
     /**
      * Set the clientSecretCertificateThumbprint property: An alternative to the client secret, that is the thumbprint
-     * of a certificate used for signing purposes. This property acts as a replacement for the Client Secret. It is also
-     * optional.
-     *
+     * of a certificate used for signing purposes. This property acts as
+     * a replacement for the Client Secret. It is also optional.
+     * 
      * @param clientSecretCertificateThumbprint the clientSecretCertificateThumbprint value to set.
      * @return the AzureActiveDirectoryRegistration object itself.
      */
-    public AzureActiveDirectoryRegistration withClientSecretCertificateThumbprint(
-        String clientSecretCertificateThumbprint) {
+    public AzureActiveDirectoryRegistration
+        withClientSecretCertificateThumbprint(String clientSecretCertificateThumbprint) {
         this.clientSecretCertificateThumbprint = clientSecretCertificateThumbprint;
         return this;
     }
 
     /**
      * Get the clientSecretCertificateSubjectAlternativeName property: An alternative to the client secret thumbprint,
-     * that is the subject alternative name of a certificate used for signing purposes. This property acts as a
-     * replacement for the Client Secret Certificate Thumbprint. It is also optional.
-     *
+     * that is the subject alternative name of a certificate used for signing purposes. This property acts as
+     * a replacement for the Client Secret Certificate Thumbprint. It is also optional.
+     * 
      * @return the clientSecretCertificateSubjectAlternativeName value.
      */
     public String clientSecretCertificateSubjectAlternativeName() {
@@ -173,24 +183,24 @@ public final class AzureActiveDirectoryRegistration {
 
     /**
      * Set the clientSecretCertificateSubjectAlternativeName property: An alternative to the client secret thumbprint,
-     * that is the subject alternative name of a certificate used for signing purposes. This property acts as a
-     * replacement for the Client Secret Certificate Thumbprint. It is also optional.
-     *
+     * that is the subject alternative name of a certificate used for signing purposes. This property acts as
+     * a replacement for the Client Secret Certificate Thumbprint. It is also optional.
+     * 
      * @param clientSecretCertificateSubjectAlternativeName the clientSecretCertificateSubjectAlternativeName value to
-     *     set.
+     * set.
      * @return the AzureActiveDirectoryRegistration object itself.
      */
-    public AzureActiveDirectoryRegistration withClientSecretCertificateSubjectAlternativeName(
-        String clientSecretCertificateSubjectAlternativeName) {
+    public AzureActiveDirectoryRegistration
+        withClientSecretCertificateSubjectAlternativeName(String clientSecretCertificateSubjectAlternativeName) {
         this.clientSecretCertificateSubjectAlternativeName = clientSecretCertificateSubjectAlternativeName;
         return this;
     }
 
     /**
      * Get the clientSecretCertificateIssuer property: An alternative to the client secret thumbprint, that is the
-     * issuer of a certificate used for signing purposes. This property acts as a replacement for the Client Secret
-     * Certificate Thumbprint. It is also optional.
-     *
+     * issuer of a certificate used for signing purposes. This property acts as
+     * a replacement for the Client Secret Certificate Thumbprint. It is also optional.
+     * 
      * @return the clientSecretCertificateIssuer value.
      */
     public String clientSecretCertificateIssuer() {
@@ -199,9 +209,9 @@ public final class AzureActiveDirectoryRegistration {
 
     /**
      * Set the clientSecretCertificateIssuer property: An alternative to the client secret thumbprint, that is the
-     * issuer of a certificate used for signing purposes. This property acts as a replacement for the Client Secret
-     * Certificate Thumbprint. It is also optional.
-     *
+     * issuer of a certificate used for signing purposes. This property acts as
+     * a replacement for the Client Secret Certificate Thumbprint. It is also optional.
+     * 
      * @param clientSecretCertificateIssuer the clientSecretCertificateIssuer value to set.
      * @return the AzureActiveDirectoryRegistration object itself.
      */
@@ -212,7 +222,7 @@ public final class AzureActiveDirectoryRegistration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -24,65 +24,73 @@ public final class LabInnerTests {
         LabInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"defaultStorageAccount\":\"yypnddhsgcbacphe\",\"defaultPremiumStorageAccount\":\"ot\",\"artifactsStorageAccount\":\"qgoulznd\",\"premiumDataDiskStorageAccount\":\"kwy\",\"vaultName\":\"gfgibm\",\"labStorageType\":\"Standard\",\"mandatoryArtifactsResourceIdsLinux\":[\"eqsrxybzqqedqyt\",\"ciqfou\",\"lmmnkzsmodmglo\",\"gpbkwtmut\"],\"mandatoryArtifactsResourceIdsWindows\":[\"ktapspwgcuertu\",\"kdosvqw\",\"bmdg\",\"bjf\"],\"createdDate\":\"2021-04-14T03:32:51Z\",\"premiumDataDisks\":\"Enabled\",\"environmentPermission\":\"Reader\",\"announcement\":{\"title\":\"ppbhtqqrolfp\",\"markdown\":\"s\",\"enabled\":\"Enabled\",\"expirationDate\":\"2021-02-03T23:40:53Z\",\"expired\":true,\"provisioningState\":\"gjyjgzjaoyfhrtxi\",\"uniqueIdentifier\":\"erkujys\"},\"support\":{\"enabled\":\"Enabled\",\"markdown\":\"vfqawrlyxwjkcpr\"},\"vmCreationResourceGroup\":\"wbxgjvt\",\"publicIpId\":\"p\",\"loadBalancerId\":\"szdnr\",\"networkSecurityGroupId\":\"qguhmuo\",\"extendedProperties\":{\"gazxuf\":\"prwzwbnguitnwui\"},\"provisioningState\":\"uckyf\",\"uniqueIdentifier\":\"rfidfvzwdz\"},\"location\":\"htymw\",\"tags\":{\"aop\":\"kfthwxmntei\",\"jcmmxdcufufsrp\":\"km\",\"sgfyccsnew\":\"mzidnsezcxtb\"},\"id\":\"dwzjeiach\",\"name\":\"oosflnr\",\"type\":\"sfqpteehz\"}")
+                    "{\"properties\":{\"defaultStorageAccount\":\"dkirsoodqxhcr\",\"defaultPremiumStorageAccount\":\"ohjtckw\",\"artifactsStorageAccount\":\"soifiyipjxsqw\",\"premiumDataDiskStorageAccount\":\"rjb\",\"vaultName\":\"orcjxvsnby\",\"labStorageType\":\"StandardSSD\",\"mandatoryArtifactsResourceIdsLinux\":[\"mocpc\"],\"mandatoryArtifactsResourceIdsWindows\":[\"urzafb\",\"jjgpb\",\"oq\"],\"createdDate\":\"2021-03-12T03:38:31Z\",\"premiumDataDisks\":\"Disabled\",\"environmentPermission\":\"Reader\",\"announcement\":{\"title\":\"qidtqajzyu\",\"markdown\":\"kudjkrlkhb\",\"enabled\":\"Enabled\",\"expirationDate\":\"2021-02-23T09:32:58Z\",\"expired\":false,\"provisioningState\":\"qex\",\"uniqueIdentifier\":\"ocxscpaierhhbcs\"},\"support\":{\"enabled\":\"Disabled\",\"markdown\":\"a\"},\"vmCreationResourceGroup\":\"j\",\"publicIpId\":\"dxob\",\"loadBalancerId\":\"dxkqpx\",\"networkSecurityGroupId\":\"ajionpimexgstxg\",\"extendedProperties\":{\"aajrm\":\"dg\",\"clwhijcoejctbz\":\"djwzrlov\",\"bkbfkgukdkex\":\"qsqsy\",\"ocjjxhvpmouexh\":\"ppofmxaxcfjpgdd\"},\"provisioningState\":\"xibqeojnx\",\"uniqueIdentifier\":\"zvddntwndeicbtwn\"},\"location\":\"zao\",\"tags\":{\"qkwpyeicxmqc\":\"hrhcffcyddglmjth\",\"pbobjo\":\"wqvhkhixuigdt\",\"w\":\"hm\",\"a\":\"a\"},\"id\":\"hrzayvvtpgvdf\",\"name\":\"iotkftutqxl\",\"type\":\"gxlefgugnxkrxd\"}")
                 .toObject(LabInner.class);
-        Assertions.assertEquals("htymw", model.location());
-        Assertions.assertEquals("kfthwxmntei", model.tags().get("aop"));
-        Assertions.assertEquals(StorageType.STANDARD, model.labStorageType());
-        Assertions.assertEquals("eqsrxybzqqedqyt", model.mandatoryArtifactsResourceIdsLinux().get(0));
-        Assertions.assertEquals("ktapspwgcuertu", model.mandatoryArtifactsResourceIdsWindows().get(0));
-        Assertions.assertEquals(PremiumDataDisk.ENABLED, model.premiumDataDisks());
+        Assertions.assertEquals("zao", model.location());
+        Assertions.assertEquals("hrhcffcyddglmjth", model.tags().get("qkwpyeicxmqc"));
+        Assertions.assertEquals(StorageType.STANDARD_SSD, model.labStorageType());
+        Assertions.assertEquals("mocpc", model.mandatoryArtifactsResourceIdsLinux().get(0));
+        Assertions.assertEquals("urzafb", model.mandatoryArtifactsResourceIdsWindows().get(0));
+        Assertions.assertEquals(PremiumDataDisk.DISABLED, model.premiumDataDisks());
         Assertions.assertEquals(EnvironmentPermission.READER, model.environmentPermission());
-        Assertions.assertEquals("ppbhtqqrolfp", model.announcement().title());
-        Assertions.assertEquals("s", model.announcement().markdown());
+        Assertions.assertEquals("qidtqajzyu", model.announcement().title());
+        Assertions.assertEquals("kudjkrlkhb", model.announcement().markdown());
         Assertions.assertEquals(EnableStatus.ENABLED, model.announcement().enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T23:40:53Z"), model.announcement().expirationDate());
-        Assertions.assertEquals(true, model.announcement().expired());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.support().enabled());
-        Assertions.assertEquals("vfqawrlyxwjkcpr", model.support().markdown());
-        Assertions.assertEquals("prwzwbnguitnwui", model.extendedProperties().get("gazxuf"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-23T09:32:58Z"), model.announcement().expirationDate());
+        Assertions.assertEquals(false, model.announcement().expired());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.support().enabled());
+        Assertions.assertEquals("a", model.support().markdown());
+        Assertions.assertEquals("dg", model.extendedProperties().get("aajrm"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LabInner model =
             new LabInner()
-                .withLocation("htymw")
-                .withTags(mapOf("aop", "kfthwxmntei", "jcmmxdcufufsrp", "km", "sgfyccsnew", "mzidnsezcxtb"))
-                .withLabStorageType(StorageType.STANDARD)
-                .withMandatoryArtifactsResourceIdsLinux(
-                    Arrays.asList("eqsrxybzqqedqyt", "ciqfou", "lmmnkzsmodmglo", "gpbkwtmut"))
-                .withMandatoryArtifactsResourceIdsWindows(Arrays.asList("ktapspwgcuertu", "kdosvqw", "bmdg", "bjf"))
-                .withPremiumDataDisks(PremiumDataDisk.ENABLED)
+                .withLocation("zao")
+                .withTags(mapOf("qkwpyeicxmqc", "hrhcffcyddglmjth", "pbobjo", "wqvhkhixuigdt", "w", "hm", "a", "a"))
+                .withLabStorageType(StorageType.STANDARD_SSD)
+                .withMandatoryArtifactsResourceIdsLinux(Arrays.asList("mocpc"))
+                .withMandatoryArtifactsResourceIdsWindows(Arrays.asList("urzafb", "jjgpb", "oq"))
+                .withPremiumDataDisks(PremiumDataDisk.DISABLED)
                 .withEnvironmentPermission(EnvironmentPermission.READER)
                 .withAnnouncement(
                     new LabAnnouncementProperties()
-                        .withTitle("ppbhtqqrolfp")
-                        .withMarkdown("s")
+                        .withTitle("qidtqajzyu")
+                        .withMarkdown("kudjkrlkhb")
                         .withEnabled(EnableStatus.ENABLED)
-                        .withExpirationDate(OffsetDateTime.parse("2021-02-03T23:40:53Z"))
-                        .withExpired(true))
-                .withSupport(
-                    new LabSupportProperties().withEnabled(EnableStatus.ENABLED).withMarkdown("vfqawrlyxwjkcpr"))
-                .withExtendedProperties(mapOf("gazxuf", "prwzwbnguitnwui"));
+                        .withExpirationDate(OffsetDateTime.parse("2021-02-23T09:32:58Z"))
+                        .withExpired(false))
+                .withSupport(new LabSupportProperties().withEnabled(EnableStatus.DISABLED).withMarkdown("a"))
+                .withExtendedProperties(
+                    mapOf(
+                        "aajrm",
+                        "dg",
+                        "clwhijcoejctbz",
+                        "djwzrlov",
+                        "bkbfkgukdkex",
+                        "qsqsy",
+                        "ocjjxhvpmouexh",
+                        "ppofmxaxcfjpgdd"));
         model = BinaryData.fromObject(model).toObject(LabInner.class);
-        Assertions.assertEquals("htymw", model.location());
-        Assertions.assertEquals("kfthwxmntei", model.tags().get("aop"));
-        Assertions.assertEquals(StorageType.STANDARD, model.labStorageType());
-        Assertions.assertEquals("eqsrxybzqqedqyt", model.mandatoryArtifactsResourceIdsLinux().get(0));
-        Assertions.assertEquals("ktapspwgcuertu", model.mandatoryArtifactsResourceIdsWindows().get(0));
-        Assertions.assertEquals(PremiumDataDisk.ENABLED, model.premiumDataDisks());
+        Assertions.assertEquals("zao", model.location());
+        Assertions.assertEquals("hrhcffcyddglmjth", model.tags().get("qkwpyeicxmqc"));
+        Assertions.assertEquals(StorageType.STANDARD_SSD, model.labStorageType());
+        Assertions.assertEquals("mocpc", model.mandatoryArtifactsResourceIdsLinux().get(0));
+        Assertions.assertEquals("urzafb", model.mandatoryArtifactsResourceIdsWindows().get(0));
+        Assertions.assertEquals(PremiumDataDisk.DISABLED, model.premiumDataDisks());
         Assertions.assertEquals(EnvironmentPermission.READER, model.environmentPermission());
-        Assertions.assertEquals("ppbhtqqrolfp", model.announcement().title());
-        Assertions.assertEquals("s", model.announcement().markdown());
+        Assertions.assertEquals("qidtqajzyu", model.announcement().title());
+        Assertions.assertEquals("kudjkrlkhb", model.announcement().markdown());
         Assertions.assertEquals(EnableStatus.ENABLED, model.announcement().enabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-03T23:40:53Z"), model.announcement().expirationDate());
-        Assertions.assertEquals(true, model.announcement().expired());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.support().enabled());
-        Assertions.assertEquals("vfqawrlyxwjkcpr", model.support().markdown());
-        Assertions.assertEquals("prwzwbnguitnwui", model.extendedProperties().get("gazxuf"));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-23T09:32:58Z"), model.announcement().expirationDate());
+        Assertions.assertEquals(false, model.announcement().expired());
+        Assertions.assertEquals(EnableStatus.DISABLED, model.support().enabled());
+        Assertions.assertEquals("a", model.support().markdown());
+        Assertions.assertEquals("dg", model.extendedProperties().get("aajrm"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

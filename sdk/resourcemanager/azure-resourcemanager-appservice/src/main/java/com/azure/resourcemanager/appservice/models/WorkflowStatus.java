@@ -8,50 +8,78 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The workflow status. */
+/**
+ * The workflow status.
+ */
 public final class WorkflowStatus extends ExpandableStringEnum<WorkflowStatus> {
-    /** Static value NotSpecified for WorkflowStatus. */
+    /**
+     * Static value NotSpecified for WorkflowStatus.
+     */
     public static final WorkflowStatus NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Paused for WorkflowStatus. */
+    /**
+     * Static value Paused for WorkflowStatus.
+     */
     public static final WorkflowStatus PAUSED = fromString("Paused");
 
-    /** Static value Running for WorkflowStatus. */
+    /**
+     * Static value Running for WorkflowStatus.
+     */
     public static final WorkflowStatus RUNNING = fromString("Running");
 
-    /** Static value Waiting for WorkflowStatus. */
+    /**
+     * Static value Waiting for WorkflowStatus.
+     */
     public static final WorkflowStatus WAITING = fromString("Waiting");
 
-    /** Static value Succeeded for WorkflowStatus. */
+    /**
+     * Static value Succeeded for WorkflowStatus.
+     */
     public static final WorkflowStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Skipped for WorkflowStatus. */
+    /**
+     * Static value Skipped for WorkflowStatus.
+     */
     public static final WorkflowStatus SKIPPED = fromString("Skipped");
 
-    /** Static value Suspended for WorkflowStatus. */
+    /**
+     * Static value Suspended for WorkflowStatus.
+     */
     public static final WorkflowStatus SUSPENDED = fromString("Suspended");
 
-    /** Static value Cancelled for WorkflowStatus. */
+    /**
+     * Static value Cancelled for WorkflowStatus.
+     */
     public static final WorkflowStatus CANCELLED = fromString("Cancelled");
 
-    /** Static value Failed for WorkflowStatus. */
+    /**
+     * Static value Failed for WorkflowStatus.
+     */
     public static final WorkflowStatus FAILED = fromString("Failed");
 
-    /** Static value Faulted for WorkflowStatus. */
+    /**
+     * Static value Faulted for WorkflowStatus.
+     */
     public static final WorkflowStatus FAULTED = fromString("Faulted");
 
-    /** Static value TimedOut for WorkflowStatus. */
+    /**
+     * Static value TimedOut for WorkflowStatus.
+     */
     public static final WorkflowStatus TIMED_OUT = fromString("TimedOut");
 
-    /** Static value Aborted for WorkflowStatus. */
+    /**
+     * Static value Aborted for WorkflowStatus.
+     */
     public static final WorkflowStatus ABORTED = fromString("Aborted");
 
-    /** Static value Ignored for WorkflowStatus. */
+    /**
+     * Static value Ignored for WorkflowStatus.
+     */
     public static final WorkflowStatus IGNORED = fromString("Ignored");
 
     /**
      * Creates a new instance of WorkflowStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -60,7 +88,7 @@ public final class WorkflowStatus extends ExpandableStringEnum<WorkflowStatus> {
 
     /**
      * Creates or finds a WorkflowStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WorkflowStatus.
      */
@@ -71,7 +99,7 @@ public final class WorkflowStatus extends ExpandableStringEnum<WorkflowStatus> {
 
     /**
      * Gets known WorkflowStatus values.
-     *
+     * 
      * @return known WorkflowStatus values.
      */
     public static Collection<WorkflowStatus> values() {

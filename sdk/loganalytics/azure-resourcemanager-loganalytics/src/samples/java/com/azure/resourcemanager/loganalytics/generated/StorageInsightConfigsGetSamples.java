@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StorageInsightConfigs Get. */
 public final class StorageInsightConfigsGetSamples {
     /*
@@ -17,6 +15,8 @@ public final class StorageInsightConfigsGetSamples {
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void storageInsightsGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.storageInsightConfigs().getWithResponse("OIAutoRest5123", "aztest5048", "AzTestSI1110", Context.NONE);
+        manager
+            .storageInsightConfigs()
+            .getWithResponse("OIAutoRest5123", "aztest5048", "AzTestSI1110", com.azure.core.util.Context.NONE);
     }
 }

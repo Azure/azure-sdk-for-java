@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A2A enable protection input. */
+/**
+ * A2A enable protection input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -124,13 +126,21 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
     @JsonProperty(value = "recoveryCapacityReservationGroupId")
     private String recoveryCapacityReservationGroupId;
 
-    /** Creates an instance of A2AEnableProtectionInput class. */
+    /*
+     * A value indicating whether the auto protection is enabled.
+     */
+    @JsonProperty(value = "autoProtectionOfDataDisk")
+    private AutoProtectionOfDataDisk autoProtectionOfDataDisk;
+
+    /**
+     * Creates an instance of A2AEnableProtectionInput class.
+     */
     public A2AEnableProtectionInput() {
     }
 
     /**
      * Get the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -139,7 +149,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @param fabricObjectId the fabricObjectId value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -150,7 +160,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @return the recoveryContainerId value.
      */
     public String recoveryContainerId() {
@@ -159,7 +169,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @param recoveryContainerId the recoveryContainerId value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -170,7 +180,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoveryResourceGroupId property: The recovery resource group Id. Valid for V2 scenarios.
-     *
+     * 
      * @return the recoveryResourceGroupId value.
      */
     public String recoveryResourceGroupId() {
@@ -179,7 +189,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoveryResourceGroupId property: The recovery resource group Id. Valid for V2 scenarios.
-     *
+     * 
      * @param recoveryResourceGroupId the recoveryResourceGroupId value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -190,7 +200,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoveryCloudServiceId property: The recovery cloud service Id. Valid for V1 scenarios.
-     *
+     * 
      * @return the recoveryCloudServiceId value.
      */
     public String recoveryCloudServiceId() {
@@ -199,7 +209,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoveryCloudServiceId property: The recovery cloud service Id. Valid for V1 scenarios.
-     *
+     * 
      * @param recoveryCloudServiceId the recoveryCloudServiceId value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -210,7 +220,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoveryAvailabilitySetId property: The recovery availability set Id.
-     *
+     * 
      * @return the recoveryAvailabilitySetId value.
      */
     public String recoveryAvailabilitySetId() {
@@ -219,7 +229,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoveryAvailabilitySetId property: The recovery availability set Id.
-     *
+     * 
      * @param recoveryAvailabilitySetId the recoveryAvailabilitySetId value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -230,7 +240,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoveryProximityPlacementGroupId property: The recovery proximity placement group Id.
-     *
+     * 
      * @return the recoveryProximityPlacementGroupId value.
      */
     public String recoveryProximityPlacementGroupId() {
@@ -239,7 +249,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoveryProximityPlacementGroupId property: The recovery proximity placement group Id.
-     *
+     * 
      * @param recoveryProximityPlacementGroupId the recoveryProximityPlacementGroupId value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -250,7 +260,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @return the vmDisks value.
      */
     public List<A2AVmDiskInputDetails> vmDisks() {
@@ -259,7 +269,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @param vmDisks the vmDisks value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -270,7 +280,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the vmManagedDisks property: The list of vm managed disk details.
-     *
+     * 
      * @return the vmManagedDisks value.
      */
     public List<A2AVmManagedDiskInputDetails> vmManagedDisks() {
@@ -279,7 +289,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the vmManagedDisks property: The list of vm managed disk details.
-     *
+     * 
      * @param vmManagedDisks the vmManagedDisks value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -290,7 +300,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -299,7 +309,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @param multiVmGroupName the multiVmGroupName value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -310,7 +320,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the multiVmGroupId property: The multi vm group id.
-     *
+     * 
      * @return the multiVmGroupId value.
      */
     public String multiVmGroupId() {
@@ -319,7 +329,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the multiVmGroupId property: The multi vm group id.
-     *
+     * 
      * @param multiVmGroupId the multiVmGroupId value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -330,7 +340,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoveryBootDiagStorageAccountId property: The boot diagnostic storage account.
-     *
+     * 
      * @return the recoveryBootDiagStorageAccountId value.
      */
     public String recoveryBootDiagStorageAccountId() {
@@ -339,7 +349,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoveryBootDiagStorageAccountId property: The boot diagnostic storage account.
-     *
+     * 
      * @param recoveryBootDiagStorageAccountId the recoveryBootDiagStorageAccountId value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -350,7 +360,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the diskEncryptionInfo property: The recovery disk encryption information (for two pass flows).
-     *
+     * 
      * @return the diskEncryptionInfo value.
      */
     public DiskEncryptionInfo diskEncryptionInfo() {
@@ -359,7 +369,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the diskEncryptionInfo property: The recovery disk encryption information (for two pass flows).
-     *
+     * 
      * @param diskEncryptionInfo the diskEncryptionInfo value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -370,7 +380,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @return the recoveryAvailabilityZone value.
      */
     public String recoveryAvailabilityZone() {
@@ -379,7 +389,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @param recoveryAvailabilityZone the recoveryAvailabilityZone value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -390,7 +400,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoveryExtendedLocation property: The recovery extended location.
-     *
+     * 
      * @return the recoveryExtendedLocation value.
      */
     public ExtendedLocation recoveryExtendedLocation() {
@@ -399,7 +409,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoveryExtendedLocation property: The recovery extended location.
-     *
+     * 
      * @param recoveryExtendedLocation the recoveryExtendedLocation value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -410,7 +420,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoveryAzureNetworkId property: The recovery Azure virtual network ARM id.
-     *
+     * 
      * @return the recoveryAzureNetworkId value.
      */
     public String recoveryAzureNetworkId() {
@@ -419,7 +429,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoveryAzureNetworkId property: The recovery Azure virtual network ARM id.
-     *
+     * 
      * @param recoveryAzureNetworkId the recoveryAzureNetworkId value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -430,7 +440,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoverySubnetName property: The recovery subnet name.
-     *
+     * 
      * @return the recoverySubnetName value.
      */
     public String recoverySubnetName() {
@@ -439,7 +449,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoverySubnetName property: The recovery subnet name.
-     *
+     * 
      * @param recoverySubnetName the recoverySubnetName value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -450,7 +460,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoveryVirtualMachineScaleSetId property: The virtual machine scale set Id.
-     *
+     * 
      * @return the recoveryVirtualMachineScaleSetId value.
      */
     public String recoveryVirtualMachineScaleSetId() {
@@ -459,7 +469,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoveryVirtualMachineScaleSetId property: The virtual machine scale set Id.
-     *
+     * 
      * @param recoveryVirtualMachineScaleSetId the recoveryVirtualMachineScaleSetId value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -470,7 +480,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Get the recoveryCapacityReservationGroupId property: The recovery capacity reservation group Id.
-     *
+     * 
      * @return the recoveryCapacityReservationGroupId value.
      */
     public String recoveryCapacityReservationGroupId() {
@@ -479,7 +489,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
 
     /**
      * Set the recoveryCapacityReservationGroupId property: The recovery capacity reservation group Id.
-     *
+     * 
      * @param recoveryCapacityReservationGroupId the recoveryCapacityReservationGroupId value to set.
      * @return the A2AEnableProtectionInput object itself.
      */
@@ -489,18 +499,36 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
     }
 
     /**
+     * Get the autoProtectionOfDataDisk property: A value indicating whether the auto protection is enabled.
+     * 
+     * @return the autoProtectionOfDataDisk value.
+     */
+    public AutoProtectionOfDataDisk autoProtectionOfDataDisk() {
+        return this.autoProtectionOfDataDisk;
+    }
+
+    /**
+     * Set the autoProtectionOfDataDisk property: A value indicating whether the auto protection is enabled.
+     * 
+     * @param autoProtectionOfDataDisk the autoProtectionOfDataDisk value to set.
+     * @return the A2AEnableProtectionInput object itself.
+     */
+    public A2AEnableProtectionInput withAutoProtectionOfDataDisk(AutoProtectionOfDataDisk autoProtectionOfDataDisk) {
+        this.autoProtectionOfDataDisk = autoProtectionOfDataDisk;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (fabricObjectId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fabricObjectId in model A2AEnableProtectionInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property fabricObjectId in model A2AEnableProtectionInput"));
         }
         if (vmDisks() != null) {
             vmDisks().forEach(e -> e.validate());

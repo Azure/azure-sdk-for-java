@@ -32,53 +32,35 @@ public final class CertificateObjectGlobalRulestacksCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"certificateSignerResourceId\":\"glqgleoh\",\"certificateSelfSigned\":\"FALSE\",\"auditComment\":\"tnluankrr\",\"description\":\"eeebtijvacv\",\"etag\":\"qzbqqxlajrnwxa\",\"provisioningState\":\"Succeeded\"},\"id\":\"h\",\"name\":\"kuyxoafg\",\"type\":\"oqltfae\"}";
+        String responseStr
+            = "{\"properties\":{\"certificateSignerResourceId\":\"xpunjqi\",\"certificateSelfSigned\":\"TRUE\",\"auditComment\":\"vvi\",\"description\":\"cgx\",\"etag\":\"csserxht\",\"provisioningState\":\"Succeeded\"},\"id\":\"hlwntsjgq\",\"name\":\"sxypruuu\",\"type\":\"bnchrsziz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CertificateObjectGlobalRulestackResource response =
-            manager
-                .certificateObjectGlobalRulestacks()
-                .createOrUpdate(
-                    "fuojrngif",
-                    "rzpasccbiuimzdly",
-                    new CertificateObjectGlobalRulestackResourceInner()
-                        .withCertificateSignerResourceId("fqwmkyoquf")
-                        .withCertificateSelfSigned(BooleanEnum.FALSE)
-                        .withAuditComment("uzslzojhpctfnmdx")
-                        .withDescription("ngfdgugeyzihgrky")
-                        .withEtag("zabs"),
-                    com.azure.core.util.Context.NONE);
+        CertificateObjectGlobalRulestackResource response
+            = manager.certificateObjectGlobalRulestacks().createOrUpdate("fvcl", "lxnfuijtkbusqogs",
+                new CertificateObjectGlobalRulestackResourceInner().withCertificateSignerResourceId("kayi")
+                    .withCertificateSelfSigned(BooleanEnum.FALSE).withAuditComment("haru").withDescription("ji")
+                    .withEtag("fzyjqt"),
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("glqgleoh", response.certificateSignerResourceId());
-        Assertions.assertEquals(BooleanEnum.FALSE, response.certificateSelfSigned());
-        Assertions.assertEquals("tnluankrr", response.auditComment());
-        Assertions.assertEquals("eeebtijvacv", response.description());
-        Assertions.assertEquals("qzbqqxlajrnwxa", response.etag());
+        Assertions.assertEquals("xpunjqi", response.certificateSignerResourceId());
+        Assertions.assertEquals(BooleanEnum.TRUE, response.certificateSelfSigned());
+        Assertions.assertEquals("vvi", response.auditComment());
+        Assertions.assertEquals("cgx", response.description());
+        Assertions.assertEquals("csserxht", response.etag());
     }
 }

@@ -13,7 +13,9 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Trigger runs. */
+/**
+ * Trigger runs.
+ */
 @Fluent
 public final class TriggerRun {
     /*
@@ -67,14 +69,18 @@ public final class TriggerRun {
     /*
      * Trigger runs.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of TriggerRun class. */
-    public TriggerRun() {}
+    /**
+     * Creates an instance of TriggerRun class.
+     */
+    public TriggerRun() {
+    }
 
     /**
      * Get the triggerRunId property: Trigger run id.
-     *
+     * 
      * @return the triggerRunId value.
      */
     public String getTriggerRunId() {
@@ -83,7 +89,7 @@ public final class TriggerRun {
 
     /**
      * Get the triggerName property: Trigger name.
-     *
+     * 
      * @return the triggerName value.
      */
     public String getTriggerName() {
@@ -92,7 +98,7 @@ public final class TriggerRun {
 
     /**
      * Get the triggerType property: Trigger type.
-     *
+     * 
      * @return the triggerType value.
      */
     public String getTriggerType() {
@@ -101,7 +107,7 @@ public final class TriggerRun {
 
     /**
      * Get the triggerRunTimestamp property: Trigger run start time.
-     *
+     * 
      * @return the triggerRunTimestamp value.
      */
     public OffsetDateTime getTriggerRunTimestamp() {
@@ -110,7 +116,7 @@ public final class TriggerRun {
 
     /**
      * Get the status property: Trigger run status.
-     *
+     * 
      * @return the status value.
      */
     public TriggerRunStatus getStatus() {
@@ -119,7 +125,7 @@ public final class TriggerRun {
 
     /**
      * Get the message property: Trigger error message.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -129,7 +135,7 @@ public final class TriggerRun {
     /**
      * Get the properties property: List of property name and value related to trigger run. Name, value pair depends on
      * type of trigger.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> getProperties() {
@@ -138,7 +144,7 @@ public final class TriggerRun {
 
     /**
      * Get the triggeredPipelines property: List of pipeline name and run Id triggered by the trigger run.
-     *
+     * 
      * @return the triggeredPipelines value.
      */
     public Map<String, String> getTriggeredPipelines() {
@@ -147,7 +153,7 @@ public final class TriggerRun {
 
     /**
      * Get the additionalProperties property: Trigger runs.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -157,7 +163,7 @@ public final class TriggerRun {
 
     /**
      * Set the additionalProperties property: Trigger runs.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the TriggerRun object itself.
      */

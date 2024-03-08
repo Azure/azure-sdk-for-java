@@ -11,7 +11,9 @@ import com.azure.resourcemanager.appservice.models.HttpLogsConfig;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration of App Service site logs. */
+/**
+ * Configuration of App Service site logs.
+ */
 @Fluent
 public final class SiteLogsConfigInner extends ProxyOnlyResource {
     /*
@@ -20,20 +22,24 @@ public final class SiteLogsConfigInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SiteLogsConfigProperties innerProperties;
 
-    /** Creates an instance of SiteLogsConfigInner class. */
+    /**
+     * Creates an instance of SiteLogsConfigInner class.
+     */
     public SiteLogsConfigInner() {
     }
 
     /**
      * Get the innerProperties property: SiteLogsConfig resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SiteLogsConfigProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SiteLogsConfigInner withKind(String kind) {
         super.withKind(kind);
@@ -42,7 +48,7 @@ public final class SiteLogsConfigInner extends ProxyOnlyResource {
 
     /**
      * Get the applicationLogs property: Application logs configuration.
-     *
+     * 
      * @return the applicationLogs value.
      */
     public ApplicationLogsConfig applicationLogs() {
@@ -51,7 +57,7 @@ public final class SiteLogsConfigInner extends ProxyOnlyResource {
 
     /**
      * Set the applicationLogs property: Application logs configuration.
-     *
+     * 
      * @param applicationLogs the applicationLogs value to set.
      * @return the SiteLogsConfigInner object itself.
      */
@@ -65,7 +71,7 @@ public final class SiteLogsConfigInner extends ProxyOnlyResource {
 
     /**
      * Get the httpLogs property: HTTP logs configuration.
-     *
+     * 
      * @return the httpLogs value.
      */
     public HttpLogsConfig httpLogs() {
@@ -74,7 +80,7 @@ public final class SiteLogsConfigInner extends ProxyOnlyResource {
 
     /**
      * Set the httpLogs property: HTTP logs configuration.
-     *
+     * 
      * @param httpLogs the httpLogs value to set.
      * @return the SiteLogsConfigInner object itself.
      */
@@ -88,7 +94,7 @@ public final class SiteLogsConfigInner extends ProxyOnlyResource {
 
     /**
      * Get the failedRequestsTracing property: Failed requests tracing configuration.
-     *
+     * 
      * @return the failedRequestsTracing value.
      */
     public EnabledConfig failedRequestsTracing() {
@@ -97,7 +103,7 @@ public final class SiteLogsConfigInner extends ProxyOnlyResource {
 
     /**
      * Set the failedRequestsTracing property: Failed requests tracing configuration.
-     *
+     * 
      * @param failedRequestsTracing the failedRequestsTracing value to set.
      * @return the SiteLogsConfigInner object itself.
      */
@@ -111,7 +117,7 @@ public final class SiteLogsConfigInner extends ProxyOnlyResource {
 
     /**
      * Get the detailedErrorMessages property: Detailed error messages configuration.
-     *
+     * 
      * @return the detailedErrorMessages value.
      */
     public EnabledConfig detailedErrorMessages() {
@@ -120,7 +126,7 @@ public final class SiteLogsConfigInner extends ProxyOnlyResource {
 
     /**
      * Set the detailedErrorMessages property: Detailed error messages configuration.
-     *
+     * 
      * @param detailedErrorMessages the detailedErrorMessages value to set.
      * @return the SiteLogsConfigInner object itself.
      */
@@ -134,7 +140,7 @@ public final class SiteLogsConfigInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

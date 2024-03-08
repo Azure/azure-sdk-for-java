@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.AccountsClient;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.Accounts;
+import com.azure.resourcemanager.netapp.models.EncryptionMigrationRequest;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
 
 public final class AccountsImpl implements Accounts {
@@ -21,8 +22,8 @@ public final class AccountsImpl implements Accounts {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    public AccountsImpl(
-        AccountsClient innerClient, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    public AccountsImpl(AccountsClient innerClient,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -47,15 +48,12 @@ public final class AccountsImpl implements Accounts {
         return Utils.mapPage(inner, inner1 -> new NetAppAccountImpl(inner1, this.manager()));
     }
 
-    public Response<NetAppAccount> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        Response<NetAppAccountInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
+    public Response<NetAppAccount> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context) {
+        Response<NetAppAccountInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new NetAppAccountImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -87,22 +85,25 @@ public final class AccountsImpl implements Accounts {
         this.serviceClient().renewCredentials(resourceGroupName, accountName, context);
     }
 
+    public void migrateEncryptionKey(String resourceGroupName, String accountName) {
+        this.serviceClient().migrateEncryptionKey(resourceGroupName, accountName);
+    }
+
+    public void migrateEncryptionKey(String resourceGroupName, String accountName, EncryptionMigrationRequest body,
+        Context context) {
+        this.serviceClient().migrateEncryptionKey(resourceGroupName, accountName, body, context);
+    }
+
     public NetAppAccount getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
@@ -110,19 +111,13 @@ public final class AccountsImpl implements Accounts {
     public Response<NetAppAccount> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
@@ -130,19 +125,13 @@ public final class AccountsImpl implements Accounts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         this.delete(resourceGroupName, accountName, Context.NONE);
     }
@@ -150,19 +139,13 @@ public final class AccountsImpl implements Accounts {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         this.delete(resourceGroupName, accountName, context);
     }

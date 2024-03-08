@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.reactivex.subscribers.TestSubscriber;
 import org.mockito.Mockito;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
@@ -19,6 +20,19 @@ import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientCon
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class WebExceptionRetryPolicyTest extends TestSuiteBase {
+
+    @DataProvider(name = "operationTypeProvider")
+    public static Object[][] operationTypeProvider() {
+        return new Object[][]{
+            // OperationType
+            { OperationType.Read },
+            { OperationType.Replace },
+            { OperationType.Create },
+            { OperationType.Delete },
+            { OperationType.Query },
+            { OperationType.Patch }
+        };
+    }
 
     @Test(groups = {"unit"})
     public void shouldRetryOnTimeoutForReadOperations() throws Exception {
@@ -41,9 +55,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
@@ -52,10 +66,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 2nd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
@@ -64,19 +77,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 3rd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
-        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
-
         assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
-        validateSuccess(shouldRetry, ShouldRetryValidator.builder().
-            nullException().
-            shouldRetry(true).
-            backOffTime(Duration.ofSeconds(0)).
-            build());
-
-        // 4th Attempt - retry is set to false, as we only make 3 retry attempts for now.
-        retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
@@ -102,13 +103,13 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         //Default HttpTimeout Policy
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
-            OperationType.Read, "/dbs/db/colls/col/docs/doc", ResourceType.DatabaseAccount);
+            OperationType.Read, "/dbs/db", ResourceType.DatabaseAccount);
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
@@ -117,10 +118,10 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 2nd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
+
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
@@ -129,20 +130,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         //3rd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
-        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
-
         assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(20));
-        validateSuccess(shouldRetry, ShouldRetryValidator.builder().
-            nullException().
-            shouldRetry(true).
-            backOffTime(Duration.ofSeconds(0)).
-            build());
-
-        // 4th Attempt - retry is set to false, as we only make 3 retry attempts for now.
-        retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
+
 
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
@@ -171,9 +161,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofMillis(500));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofMillis(500));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
@@ -182,31 +172,18 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         // 2nd Attempt
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
             nullException().
             shouldRetry(true).
             backOffTime(Duration.ofSeconds(1)).
             build());
 
-        //3rd Attempt
+        //3rd Attempt - retry is set to false, as we only make 2 retry attempts for now.
         retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
-        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
-
         assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
-        validateSuccess(shouldRetry, ShouldRetryValidator.builder().
-            nullException().
-            shouldRetry(true).
-            backOffTime(Duration.ofSeconds(0)).
-            build());
-
-        // 4th Attempt - retry is set to false, as we only make 3 retry attempts for now.
-        retryContext.addStatusAndSubStatusCode(408, 10002);
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
         validateSuccess(shouldRetry, ShouldRetryValidator.builder().
@@ -244,7 +221,7 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
         //Metadata Write - Should not Retry
         dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
-            OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Database);
+            OperationType.Create, "/dbs/db", ResourceType.DatabaseAccount);
 
         webExceptionRetryPolicy = new WebExceptionRetryPolicy(new RetryContext());
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
@@ -256,8 +233,8 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
             .build());
     }
 
-    @Test(groups = "unit")
-    public void httpNetworkFailureOnAddressRefresh() throws Exception {
+    @Test(groups = "unit", dataProvider = "operationTypeProvider")
+    public void httpNetworkFailureOnAddressRefresh(OperationType operationType) throws Exception {
         GlobalEndpointManager endpointManager = Mockito.mock(GlobalEndpointManager.class);
         Mockito.doReturn(new URI("http://localhost:")).when(endpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         Mockito.doReturn(Mono.empty()).when(endpointManager).refreshLocationAsync(Mockito.eq(null), Mockito.eq(false));
@@ -270,15 +247,15 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
         BridgeInternal.setSubStatusCode(cosmosException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_READ_TIMEOUT);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
-            OperationType.Read, "/dbs/db/colls/col/docs/", ResourceType.Document);
+            operationType, "/dbs/db/colls/col/docs/", ResourceType.Document);
         dsr.setAddressRefresh(true, false);
         dsr.requestContext = new DocumentServiceRequestContext();
 
         // 1st Attempt
         webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofMillis(500));
         Mono<ShouldRetryResult> shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofMillis(500));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(true)
@@ -286,10 +263,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
             .build());
 
         // 2nd Attempt
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
 
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(true)
@@ -298,19 +274,9 @@ public class WebExceptionRetryPolicyTest extends TestSuiteBase {
 
 
         // 3rd Attempt
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
-        shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
-
         assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
-        validateSuccess(shouldRetry, ShouldRetryValidator.builder()
-            .nullException()
-            .shouldRetry(true)
-            .backOffTime(Duration.ofSeconds(0))
-            .build());
-
-        // 4th Attempt
-        webExceptionRetryPolicy.onBeforeSendRequest(dsr);
         shouldRetry = webExceptionRetryPolicy.shouldRetry(cosmosException);
+
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()
             .nullException()
             .shouldRetry(false)

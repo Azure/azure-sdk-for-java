@@ -10,25 +10,18 @@ import com.azure.resourcemanager.datafactory.models.AzureTableSource;
 public final class AzureTableSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureTableSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureTableSource\",\"azureTableSourceQuery\":\"datazgzscgs\",\"azureTableSourceIgnoreTableNotFound\":\"dataujkeytpmlrjnnbmo\",\"queryTimeout\":\"dataytqtvatujphqvfx\",\"additionalColumns\":\"dataogwghxoxwp\",\"sourceRetryCount\":\"datakkmpfnwd\",\"sourceRetryWait\":\"datazwmtsm\",\"maxConcurrentConnections\":\"dataciyp\",\"disableMetricsCollection\":\"datanrgmgnvcusv\",\"\":{\"sn\":\"datazbdbv\",\"fom\":\"datahym\"}}")
-                .toObject(AzureTableSource.class);
+        AzureTableSource model = BinaryData.fromString(
+            "{\"type\":\"AzureTableSource\",\"azureTableSourceQuery\":\"dataopocleffgggg\",\"azureTableSourceIgnoreTableNotFound\":\"datasbouhmng\",\"queryTimeout\":\"datan\",\"additionalColumns\":\"dataiusrvswcpsp\",\"sourceRetryCount\":\"dataxigpdiouppg\",\"sourceRetryWait\":\"datasmglutnlynplxx\",\"maxConcurrentConnections\":\"dataogxk\",\"disableMetricsCollection\":\"databcxbgfwwcfwlwnjg\",\"\":{\"fbjesmiyj\":\"dataopcmetdruugimvi\",\"xqsvax\":\"datahjuuepnjuqwnajbb\"}}")
+            .toObject(AzureTableSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureTableSource model =
-            new AzureTableSource()
-                .withSourceRetryCount("datakkmpfnwd")
-                .withSourceRetryWait("datazwmtsm")
-                .withMaxConcurrentConnections("dataciyp")
-                .withDisableMetricsCollection("datanrgmgnvcusv")
-                .withQueryTimeout("dataytqtvatujphqvfx")
-                .withAdditionalColumns("dataogwghxoxwp")
-                .withAzureTableSourceQuery("datazgzscgs")
-                .withAzureTableSourceIgnoreTableNotFound("dataujkeytpmlrjnnbmo");
+        AzureTableSource model
+            = new AzureTableSource().withSourceRetryCount("dataxigpdiouppg").withSourceRetryWait("datasmglutnlynplxx")
+                .withMaxConcurrentConnections("dataogxk").withDisableMetricsCollection("databcxbgfwwcfwlwnjg")
+                .withQueryTimeout("datan").withAdditionalColumns("dataiusrvswcpsp")
+                .withAzureTableSourceQuery("dataopocleffgggg").withAzureTableSourceIgnoreTableNotFound("datasbouhmng");
         model = BinaryData.fromObject(model).toObject(AzureTableSource.class);
     }
 }

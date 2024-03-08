@@ -3,10 +3,9 @@
 package com.azure.storage.file.datalake;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
 import com.azure.storage.file.datalake.models.PathProperties;
-
-import java.util.UUID;
 
 /**
  * Sample demonstrates how to create, list and delete directory and its subdirectories and files
@@ -17,7 +16,7 @@ public class DirectoryExample {
 
     // This is the helper method to generate random name.
     private static String generateRandomName() {
-        return UUID.randomUUID().toString().substring(0, 8);
+        return CoreUtils.randomUuid().toString().substring(0, 8);
     }
 
     /**

@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of connection via linked service or dataset. */
+/**
+ * Type of connection via linked service or dataset.
+ */
 public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
-    /** Static value linkedservicetype for ConnectionType. */
+    /**
+     * Static value linkedservicetype for ConnectionType.
+     */
     public static final ConnectionType LINKEDSERVICETYPE = fromString("linkedservicetype");
 
     /**
      * Creates a new instance of ConnectionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
 
     /**
      * Creates or finds a ConnectionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectionType.
      */
@@ -35,7 +39,7 @@ public final class ConnectionType extends ExpandableStringEnum<ConnectionType> {
 
     /**
      * Gets known ConnectionType values.
-     *
+     * 
      * @return known ConnectionType values.
      */
     public static Collection<ConnectionType> values() {

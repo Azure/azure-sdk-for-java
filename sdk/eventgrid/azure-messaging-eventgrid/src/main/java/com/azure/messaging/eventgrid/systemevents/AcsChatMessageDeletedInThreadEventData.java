@@ -5,24 +5,32 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeletedInThread event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeletedInThread event.
+ */
 @Fluent
 public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessageEventInThreadBaseProperties {
     /*
      * The time at which the message was deleted
      */
-    @JsonProperty(value = "deleteTime")
     private OffsetDateTime deleteTime;
 
-    /** Creates an instance of AcsChatMessageDeletedInThreadEventData class. */
-    public AcsChatMessageDeletedInThreadEventData() {}
+    /**
+     * Creates an instance of AcsChatMessageDeletedInThreadEventData class.
+     */
+    public AcsChatMessageDeletedInThreadEventData() {
+    }
 
     /**
      * Get the deleteTime property: The time at which the message was deleted.
-     *
+     * 
      * @return the deleteTime value.
      */
     public OffsetDateTime getDeleteTime() {
@@ -31,7 +39,7 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
 
     /**
      * Set the deleteTime property: The time at which the message was deleted.
-     *
+     * 
      * @param deleteTime the deleteTime value to set.
      * @return the AcsChatMessageDeletedInThreadEventData object itself.
      */
@@ -40,60 +48,140 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageDeletedInThreadEventData setMessageId(String messageId) {
         super.setMessageId(messageId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AcsChatMessageDeletedInThreadEventData setSenderCommunicationIdentifier(
-            CommunicationIdentifierModel senderCommunicationIdentifier) {
+    public AcsChatMessageDeletedInThreadEventData
+        setSenderCommunicationIdentifier(CommunicationIdentifierModel senderCommunicationIdentifier) {
         super.setSenderCommunicationIdentifier(senderCommunicationIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageDeletedInThreadEventData setSenderDisplayName(String senderDisplayName) {
         super.setSenderDisplayName(senderDisplayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageDeletedInThreadEventData setComposeTime(OffsetDateTime composeTime) {
         super.setComposeTime(composeTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageDeletedInThreadEventData setType(String type) {
         super.setType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageDeletedInThreadEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageDeletedInThreadEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageDeletedInThreadEventData setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transactionId", getTransactionId());
+        jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("messageId", getMessageId());
+        jsonWriter.writeJsonField("senderCommunicationIdentifier", getSenderCommunicationIdentifier());
+        jsonWriter.writeStringField("senderDisplayName", getSenderDisplayName());
+        jsonWriter.writeStringField("composeTime",
+            getComposeTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getComposeTime()));
+        jsonWriter.writeStringField("type", getType());
+        jsonWriter.writeNumberField("version", getVersion());
+        jsonWriter.writeStringField("deleteTime",
+            this.deleteTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deleteTime));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsChatMessageDeletedInThreadEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsChatMessageDeletedInThreadEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsChatMessageDeletedInThreadEventData.
+     */
+    public static AcsChatMessageDeletedInThreadEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatMessageDeletedInThreadEventData deserializedAcsChatMessageDeletedInThreadEventData
+                = new AcsChatMessageDeletedInThreadEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transactionId".equals(fieldName)) {
+                    deserializedAcsChatMessageDeletedInThreadEventData.setTransactionId(reader.getString());
+                } else if ("threadId".equals(fieldName)) {
+                    deserializedAcsChatMessageDeletedInThreadEventData.setThreadId(reader.getString());
+                } else if ("messageId".equals(fieldName)) {
+                    deserializedAcsChatMessageDeletedInThreadEventData.setMessageId(reader.getString());
+                } else if ("senderCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatMessageDeletedInThreadEventData
+                        .setSenderCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
+                } else if ("senderDisplayName".equals(fieldName)) {
+                    deserializedAcsChatMessageDeletedInThreadEventData.setSenderDisplayName(reader.getString());
+                } else if ("composeTime".equals(fieldName)) {
+                    deserializedAcsChatMessageDeletedInThreadEventData.setComposeTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAcsChatMessageDeletedInThreadEventData.setType(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedAcsChatMessageDeletedInThreadEventData
+                        .setVersion(reader.getNullable(JsonReader::getLong));
+                } else if ("deleteTime".equals(fieldName)) {
+                    deserializedAcsChatMessageDeletedInThreadEventData.deleteTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsChatMessageDeletedInThreadEventData;
+        });
     }
 }

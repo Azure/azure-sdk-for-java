@@ -36,6 +36,7 @@ public class AzureSpringMonitorAutoConfig {
 
     /**
      * Create an instance of AzureSpringMonitorConfig
+     *
      * @param connectionStringSysProp connection string system property
      * @param httpPipeline an instance of HttpPipeline
      */
@@ -75,6 +76,7 @@ public class AzureSpringMonitorAutoConfig {
 
     /**
      * Declare a MetricExporter bean
+     *
      * @return MetricExporter
      */
     @Bean
@@ -87,6 +89,7 @@ public class AzureSpringMonitorAutoConfig {
 
     /**
      * Declare a SpanExporter bean
+     *
      * @return SpanExporter
      */
     @Bean
@@ -99,6 +102,7 @@ public class AzureSpringMonitorAutoConfig {
 
     /**
      * Declare a LogRecordExporter bean
+     *
      * @return LogRecordExporter
      */
     @Bean
@@ -111,6 +115,7 @@ public class AzureSpringMonitorAutoConfig {
 
     /**
      * Declare OpenTelemetryVersionCheckRunner bean to check the OpenTelemetry version
+     *
      * @param resource An OpenTelemetry resource
      * @return OpenTelemetryVersionCheckRunner
      */

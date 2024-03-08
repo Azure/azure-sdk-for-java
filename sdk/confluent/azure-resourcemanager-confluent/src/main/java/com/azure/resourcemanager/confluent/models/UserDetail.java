@@ -6,14 +6,13 @@ package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Subscriber detail. */
+/**
+ * Subscriber detail.
+ */
 @Fluent
 public final class UserDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserDetail.class);
-
     /*
      * First name
      */
@@ -32,9 +31,27 @@ public final class UserDetail {
     @JsonProperty(value = "emailAddress", required = true)
     private String emailAddress;
 
+    /*
+     * User principal name
+     */
+    @JsonProperty(value = "userPrincipalName")
+    private String userPrincipalName;
+
+    /*
+     * AAD email address
+     */
+    @JsonProperty(value = "aadEmail")
+    private String aadEmail;
+
+    /**
+     * Creates an instance of UserDetail class.
+     */
+    public UserDetail() {
+    }
+
     /**
      * Get the firstName property: First name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -43,7 +60,7 @@ public final class UserDetail {
 
     /**
      * Set the firstName property: First name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the UserDetail object itself.
      */
@@ -54,7 +71,7 @@ public final class UserDetail {
 
     /**
      * Get the lastName property: Last name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -63,7 +80,7 @@ public final class UserDetail {
 
     /**
      * Set the lastName property: Last name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the UserDetail object itself.
      */
@@ -74,7 +91,7 @@ public final class UserDetail {
 
     /**
      * Get the emailAddress property: Email address.
-     *
+     * 
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -83,7 +100,7 @@ public final class UserDetail {
 
     /**
      * Set the emailAddress property: Email address.
-     *
+     * 
      * @param emailAddress the emailAddress value to set.
      * @return the UserDetail object itself.
      */
@@ -93,15 +110,56 @@ public final class UserDetail {
     }
 
     /**
+     * Get the userPrincipalName property: User principal name.
+     * 
+     * @return the userPrincipalName value.
+     */
+    public String userPrincipalName() {
+        return this.userPrincipalName;
+    }
+
+    /**
+     * Set the userPrincipalName property: User principal name.
+     * 
+     * @param userPrincipalName the userPrincipalName value to set.
+     * @return the UserDetail object itself.
+     */
+    public UserDetail withUserPrincipalName(String userPrincipalName) {
+        this.userPrincipalName = userPrincipalName;
+        return this;
+    }
+
+    /**
+     * Get the aadEmail property: AAD email address.
+     * 
+     * @return the aadEmail value.
+     */
+    public String aadEmail() {
+        return this.aadEmail;
+    }
+
+    /**
+     * Set the aadEmail property: AAD email address.
+     * 
+     * @param aadEmail the aadEmail value to set.
+     * @return the UserDetail object itself.
+     */
+    public UserDetail withAadEmail(String aadEmail) {
+        this.aadEmail = aadEmail;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (emailAddress() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property emailAddress in model UserDetail"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property emailAddress in model UserDetail"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserDetail.class);
 }

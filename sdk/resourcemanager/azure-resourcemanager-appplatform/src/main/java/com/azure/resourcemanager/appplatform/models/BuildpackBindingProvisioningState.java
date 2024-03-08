@@ -8,26 +8,47 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BuildpackBindingProvisioningState. */
+/**
+ * State of the Buildpack Binding.
+ */
 public final class BuildpackBindingProvisioningState extends ExpandableStringEnum<BuildpackBindingProvisioningState> {
-    /** Static value Creating for BuildpackBindingProvisioningState. */
+    /**
+     * Static value Creating for BuildpackBindingProvisioningState.
+     */
     public static final BuildpackBindingProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for BuildpackBindingProvisioningState. */
+    /**
+     * Static value Updating for BuildpackBindingProvisioningState.
+     */
     public static final BuildpackBindingProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Succeeded for BuildpackBindingProvisioningState. */
+    /**
+     * Static value Succeeded for BuildpackBindingProvisioningState.
+     */
     public static final BuildpackBindingProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for BuildpackBindingProvisioningState. */
+    /**
+     * Static value Failed for BuildpackBindingProvisioningState.
+     */
     public static final BuildpackBindingProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Deleting for BuildpackBindingProvisioningState. */
+    /**
+     * Static value Deleting for BuildpackBindingProvisioningState.
+     */
     public static final BuildpackBindingProvisioningState DELETING = fromString("Deleting");
 
     /**
+     * Creates a new instance of BuildpackBindingProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BuildpackBindingProvisioningState() {
+    }
+
+    /**
      * Creates or finds a BuildpackBindingProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BuildpackBindingProvisioningState.
      */
@@ -38,7 +59,7 @@ public final class BuildpackBindingProvisioningState extends ExpandableStringEnu
 
     /**
      * Gets known BuildpackBindingProvisioningState values.
-     *
+     * 
      * @return known BuildpackBindingProvisioningState values.
      */
     public static Collection<BuildpackBindingProvisioningState> values() {

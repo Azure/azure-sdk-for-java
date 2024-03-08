@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current scope connection state. */
+/**
+ * The current scope connection state.
+ */
 public final class ScopeConnectionState extends ExpandableStringEnum<ScopeConnectionState> {
-    /** Static value Connected for ScopeConnectionState. */
+    /**
+     * Static value Connected for ScopeConnectionState.
+     */
     public static final ScopeConnectionState CONNECTED = fromString("Connected");
 
-    /** Static value Pending for ScopeConnectionState. */
+    /**
+     * Static value Pending for ScopeConnectionState.
+     */
     public static final ScopeConnectionState PENDING = fromString("Pending");
 
-    /** Static value Conflict for ScopeConnectionState. */
+    /**
+     * Static value Conflict for ScopeConnectionState.
+     */
     public static final ScopeConnectionState CONFLICT = fromString("Conflict");
 
-    /** Static value Revoked for ScopeConnectionState. */
+    /**
+     * Static value Revoked for ScopeConnectionState.
+     */
     public static final ScopeConnectionState REVOKED = fromString("Revoked");
 
-    /** Static value Rejected for ScopeConnectionState. */
+    /**
+     * Static value Rejected for ScopeConnectionState.
+     */
     public static final ScopeConnectionState REJECTED = fromString("Rejected");
 
     /**
      * Creates a new instance of ScopeConnectionState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class ScopeConnectionState extends ExpandableStringEnum<ScopeConnec
 
     /**
      * Creates or finds a ScopeConnectionState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScopeConnectionState.
      */
@@ -47,7 +59,7 @@ public final class ScopeConnectionState extends ExpandableStringEnum<ScopeConnec
 
     /**
      * Gets known ScopeConnectionState values.
-     *
+     * 
      * @return known ScopeConnectionState values.
      */
     public static Collection<ScopeConnectionState> values() {

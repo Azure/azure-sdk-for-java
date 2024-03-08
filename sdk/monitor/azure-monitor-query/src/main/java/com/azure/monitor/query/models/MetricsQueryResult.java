@@ -23,6 +23,8 @@ public final class MetricsQueryResult {
     private final String resourceRegion;
     private final List<MetricResult> metrics;
 
+    private String resourceId;
+
     /**
      * Creates an instance of the response to a metrics query.
      * @param cost the integer value representing the cost of the query, for data case.
@@ -88,6 +90,14 @@ public final class MetricsQueryResult {
      */
     public List<MetricResult> getMetrics() {
         return metrics;
+    }
+
+    /**
+     * Returns the resource id of the resource this metrics result belongs to.
+     * @return the resource id of the resource this metrics result belongs to.
+     */
+    public String getResourceId() {
+        return resourceId;
     }
 
     /**

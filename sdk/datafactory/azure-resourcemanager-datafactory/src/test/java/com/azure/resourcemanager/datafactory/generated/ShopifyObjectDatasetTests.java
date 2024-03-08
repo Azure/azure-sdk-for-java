@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ShopifyObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ShopifyObjectDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ShopifyObject\",\"typeProperties\":{\"tableName\":\"dataybfmpotal\"},\"description\":\"figrxxtrco\",\"structure\":\"dataqe\",\"schema\":\"dataldmxxbjh\",\"linkedServiceName\":{\"referenceName\":\"pvamsxrwqlwdf\",\"parameters\":{\"bboffgxtae\":\"datarplzeqzv\",\"fcyatbxdwr\":\"dataxt\",\"fbpeigkflvovriq\":\"datayvtkmxvztshnu\"}},\"parameters\":{\"txur\":{\"type\":\"Float\",\"defaultValue\":\"datakqcgzygtdjhtbar\"}},\"annotations\":[\"datayyumhzpst\",\"datacqacvttyh\",\"databilnszyjbuw\"],\"folder\":{\"name\":\"sydsci\"},\"\":{\"l\":\"dataayioxpqgqs\",\"akqsjymcfv\":\"datalefeombodvdgf\",\"nbpkfnxrlncmlzvv\":\"datazceuyuqktck\",\"cjqzrevfwcba\":\"datamesfhqs\"}}")
-                .toObject(ShopifyObjectDataset.class);
+        ShopifyObjectDataset model = BinaryData.fromString(
+            "{\"type\":\"ShopifyObject\",\"typeProperties\":{\"tableName\":\"dataybfmpotal\"},\"description\":\"figrxxtrco\",\"structure\":\"dataqe\",\"schema\":\"dataldmxxbjh\",\"linkedServiceName\":{\"referenceName\":\"pvamsxrwqlwdf\",\"parameters\":{\"bboffgxtae\":\"datarplzeqzv\",\"fcyatbxdwr\":\"dataxt\",\"fbpeigkflvovriq\":\"datayvtkmxvztshnu\"}},\"parameters\":{\"txur\":{\"type\":\"Float\",\"defaultValue\":\"datakqcgzygtdjhtbar\"}},\"annotations\":[\"datayyumhzpst\",\"datacqacvttyh\",\"databilnszyjbuw\"],\"folder\":{\"name\":\"sydsci\"},\"\":{\"l\":\"dataayioxpqgqs\",\"akqsjymcfv\":\"datalefeombodvdgf\",\"nbpkfnxrlncmlzvv\":\"datazceuyuqktck\",\"cjqzrevfwcba\":\"datamesfhqs\"}}")
+            .toObject(ShopifyObjectDataset.class);
         Assertions.assertEquals("figrxxtrco", model.description());
         Assertions.assertEquals("pvamsxrwqlwdf", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("txur").type());
@@ -31,31 +29,14 @@ public final class ShopifyObjectDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ShopifyObjectDataset model =
-            new ShopifyObjectDataset()
-                .withDescription("figrxxtrco")
-                .withStructure("dataqe")
-                .withSchema("dataldmxxbjh")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("pvamsxrwqlwdf")
-                        .withParameters(
-                            mapOf(
-                                "bboffgxtae",
-                                "datarplzeqzv",
-                                "fcyatbxdwr",
-                                "dataxt",
-                                "fbpeigkflvovriq",
-                                "datayvtkmxvztshnu")))
-                .withParameters(
-                    mapOf(
-                        "txur",
-                        new ParameterSpecification()
-                            .withType(ParameterType.FLOAT)
-                            .withDefaultValue("datakqcgzygtdjhtbar")))
-                .withAnnotations(Arrays.asList("datayyumhzpst", "datacqacvttyh", "databilnszyjbuw"))
-                .withFolder(new DatasetFolder().withName("sydsci"))
-                .withTableName("dataybfmpotal");
+        ShopifyObjectDataset model = new ShopifyObjectDataset().withDescription("figrxxtrco").withStructure("dataqe")
+            .withSchema("dataldmxxbjh")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("pvamsxrwqlwdf").withParameters(
+                mapOf("bboffgxtae", "datarplzeqzv", "fcyatbxdwr", "dataxt", "fbpeigkflvovriq", "datayvtkmxvztshnu")))
+            .withParameters(mapOf("txur",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datakqcgzygtdjhtbar")))
+            .withAnnotations(Arrays.asList("datayyumhzpst", "datacqacvttyh", "databilnszyjbuw"))
+            .withFolder(new DatasetFolder().withName("sydsci")).withTableName("dataybfmpotal");
         model = BinaryData.fromObject(model).toObject(ShopifyObjectDataset.class);
         Assertions.assertEquals("figrxxtrco", model.description());
         Assertions.assertEquals("pvamsxrwqlwdf", model.linkedServiceName().referenceName());

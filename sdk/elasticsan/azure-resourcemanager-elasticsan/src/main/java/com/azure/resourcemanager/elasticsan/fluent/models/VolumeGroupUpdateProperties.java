@@ -5,12 +5,15 @@
 package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.elasticsan.models.EncryptionProperties;
 import com.azure.resourcemanager.elasticsan.models.EncryptionType;
 import com.azure.resourcemanager.elasticsan.models.NetworkRuleSet;
 import com.azure.resourcemanager.elasticsan.models.StorageTargetType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VolumeGroup response properties. */
+/**
+ * VolumeGroup response properties.
+ */
 @Fluent
 public final class VolumeGroupUpdateProperties {
     /*
@@ -26,18 +29,26 @@ public final class VolumeGroupUpdateProperties {
     private EncryptionType encryption;
 
     /*
+     * Encryption Properties describing Key Vault and Identity information
+     */
+    @JsonProperty(value = "encryptionProperties")
+    private EncryptionProperties encryptionProperties;
+
+    /*
      * A collection of rules governing the accessibility from specific network locations.
      */
     @JsonProperty(value = "networkAcls")
     private NetworkRuleSet networkAcls;
 
-    /** Creates an instance of VolumeGroupUpdateProperties class. */
+    /**
+     * Creates an instance of VolumeGroupUpdateProperties class.
+     */
     public VolumeGroupUpdateProperties() {
     }
 
     /**
      * Get the protocolType property: Type of storage target.
-     *
+     * 
      * @return the protocolType value.
      */
     public StorageTargetType protocolType() {
@@ -46,7 +57,7 @@ public final class VolumeGroupUpdateProperties {
 
     /**
      * Set the protocolType property: Type of storage target.
-     *
+     * 
      * @param protocolType the protocolType value to set.
      * @return the VolumeGroupUpdateProperties object itself.
      */
@@ -57,7 +68,7 @@ public final class VolumeGroupUpdateProperties {
 
     /**
      * Get the encryption property: Type of encryption.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionType encryption() {
@@ -66,7 +77,7 @@ public final class VolumeGroupUpdateProperties {
 
     /**
      * Set the encryption property: Type of encryption.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the VolumeGroupUpdateProperties object itself.
      */
@@ -76,8 +87,28 @@ public final class VolumeGroupUpdateProperties {
     }
 
     /**
+     * Get the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     * 
+     * @return the encryptionProperties value.
+     */
+    public EncryptionProperties encryptionProperties() {
+        return this.encryptionProperties;
+    }
+
+    /**
+     * Set the encryptionProperties property: Encryption Properties describing Key Vault and Identity information.
+     * 
+     * @param encryptionProperties the encryptionProperties value to set.
+     * @return the VolumeGroupUpdateProperties object itself.
+     */
+    public VolumeGroupUpdateProperties withEncryptionProperties(EncryptionProperties encryptionProperties) {
+        this.encryptionProperties = encryptionProperties;
+        return this;
+    }
+
+    /**
      * Get the networkAcls property: A collection of rules governing the accessibility from specific network locations.
-     *
+     * 
      * @return the networkAcls value.
      */
     public NetworkRuleSet networkAcls() {
@@ -86,7 +117,7 @@ public final class VolumeGroupUpdateProperties {
 
     /**
      * Set the networkAcls property: A collection of rules governing the accessibility from specific network locations.
-     *
+     * 
      * @param networkAcls the networkAcls value to set.
      * @return the VolumeGroupUpdateProperties object itself.
      */
@@ -97,10 +128,13 @@ public final class VolumeGroupUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (encryptionProperties() != null) {
+            encryptionProperties().validate();
+        }
         if (networkAcls() != null) {
             networkAcls().validate();
         }

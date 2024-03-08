@@ -18,6 +18,10 @@ public final class TablesListResult {
     @JsonProperty(value = "value")
     private List<TableInner> value;
 
+    /** Creates an instance of TablesListResult class. */
+    public TablesListResult() {
+    }
+
     /**
      * Get the value property: A list of data tables.
      *

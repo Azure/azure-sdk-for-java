@@ -5,16 +5,19 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.BackupType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Backup properties. */
+/**
+ * Backup properties.
+ */
 @Fluent
 public final class BackupProperties {
     /*
      * backupId
-     *
+     * 
      * UUID v4 used to identify the Backup
      */
     @JsonProperty(value = "backupId", access = JsonProperty.Access.WRITE_ONLY)
@@ -22,7 +25,7 @@ public final class BackupProperties {
 
     /*
      * creationDate
-     *
+     * 
      * The creation date of the backup
      */
     @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
@@ -35,7 +38,7 @@ public final class BackupProperties {
     private String provisioningState;
 
     /*
-     * Size of backup
+     * Size of backup in bytes
      */
     @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private Long size;
@@ -48,7 +51,7 @@ public final class BackupProperties {
 
     /*
      * backupType
-     *
+     * 
      * Type of backup Manual or Scheduled
      */
     @JsonProperty(value = "backupType", access = JsonProperty.Access.WRITE_ONLY)
@@ -61,10 +64,10 @@ public final class BackupProperties {
     private String failureReason;
 
     /*
-     * Volume name
+     * ResourceId used to identify the Volume
      */
-    @JsonProperty(value = "volumeName", access = JsonProperty.Access.WRITE_ONLY)
-    private String volumeName;
+    @JsonProperty(value = "volumeResourceId", required = true)
+    private String volumeResourceId;
 
     /*
      * Manual backup an already existing snapshot. This will always be false for scheduled backups and true/false for
@@ -73,15 +76,29 @@ public final class BackupProperties {
     @JsonProperty(value = "useExistingSnapshot")
     private Boolean useExistingSnapshot;
 
-    /** Creates an instance of BackupProperties class. */
+    /*
+     * The name of the snapshot
+     */
+    @JsonProperty(value = "snapshotName")
+    private String snapshotName;
+
+    /*
+     * ResourceId used to identify the backup policy
+     */
+    @JsonProperty(value = "backupPolicyResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String backupPolicyResourceId;
+
+    /**
+     * Creates an instance of BackupProperties class.
+     */
     public BackupProperties() {
     }
 
     /**
      * Get the backupId property: backupId
-     *
-     * <p>UUID v4 used to identify the Backup.
-     *
+     * 
+     * UUID v4 used to identify the Backup.
+     * 
      * @return the backupId value.
      */
     public String backupId() {
@@ -90,9 +107,9 @@ public final class BackupProperties {
 
     /**
      * Get the creationDate property: creationDate
-     *
-     * <p>The creation date of the backup.
-     *
+     * 
+     * The creation date of the backup.
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -101,7 +118,7 @@ public final class BackupProperties {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -109,8 +126,8 @@ public final class BackupProperties {
     }
 
     /**
-     * Get the size property: Size of backup.
-     *
+     * Get the size property: Size of backup in bytes.
+     * 
      * @return the size value.
      */
     public Long size() {
@@ -119,7 +136,7 @@ public final class BackupProperties {
 
     /**
      * Get the label property: Label for backup.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -128,7 +145,7 @@ public final class BackupProperties {
 
     /**
      * Set the label property: Label for backup.
-     *
+     * 
      * @param label the label value to set.
      * @return the BackupProperties object itself.
      */
@@ -139,9 +156,9 @@ public final class BackupProperties {
 
     /**
      * Get the backupType property: backupType
-     *
-     * <p>Type of backup Manual or Scheduled.
-     *
+     * 
+     * Type of backup Manual or Scheduled.
+     * 
      * @return the backupType value.
      */
     public BackupType backupType() {
@@ -150,7 +167,7 @@ public final class BackupProperties {
 
     /**
      * Get the failureReason property: Failure reason.
-     *
+     * 
      * @return the failureReason value.
      */
     public String failureReason() {
@@ -158,18 +175,29 @@ public final class BackupProperties {
     }
 
     /**
-     * Get the volumeName property: Volume name.
-     *
-     * @return the volumeName value.
+     * Get the volumeResourceId property: ResourceId used to identify the Volume.
+     * 
+     * @return the volumeResourceId value.
      */
-    public String volumeName() {
-        return this.volumeName;
+    public String volumeResourceId() {
+        return this.volumeResourceId;
+    }
+
+    /**
+     * Set the volumeResourceId property: ResourceId used to identify the Volume.
+     * 
+     * @param volumeResourceId the volumeResourceId value to set.
+     * @return the BackupProperties object itself.
+     */
+    public BackupProperties withVolumeResourceId(String volumeResourceId) {
+        this.volumeResourceId = volumeResourceId;
+        return this;
     }
 
     /**
      * Get the useExistingSnapshot property: Manual backup an already existing snapshot. This will always be false for
      * scheduled backups and true/false for manual backups.
-     *
+     * 
      * @return the useExistingSnapshot value.
      */
     public Boolean useExistingSnapshot() {
@@ -179,7 +207,7 @@ public final class BackupProperties {
     /**
      * Set the useExistingSnapshot property: Manual backup an already existing snapshot. This will always be false for
      * scheduled backups and true/false for manual backups.
-     *
+     * 
      * @param useExistingSnapshot the useExistingSnapshot value to set.
      * @return the BackupProperties object itself.
      */
@@ -189,10 +217,45 @@ public final class BackupProperties {
     }
 
     /**
+     * Get the snapshotName property: The name of the snapshot.
+     * 
+     * @return the snapshotName value.
+     */
+    public String snapshotName() {
+        return this.snapshotName;
+    }
+
+    /**
+     * Set the snapshotName property: The name of the snapshot.
+     * 
+     * @param snapshotName the snapshotName value to set.
+     * @return the BackupProperties object itself.
+     */
+    public BackupProperties withSnapshotName(String snapshotName) {
+        this.snapshotName = snapshotName;
+        return this;
+    }
+
+    /**
+     * Get the backupPolicyResourceId property: ResourceId used to identify the backup policy.
+     * 
+     * @return the backupPolicyResourceId value.
+     */
+    public String backupPolicyResourceId() {
+        return this.backupPolicyResourceId;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (volumeResourceId() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property volumeResourceId in model BackupProperties"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupProperties.class);
 }

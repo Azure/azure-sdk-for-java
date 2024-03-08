@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a cloud service Extension. */
+/**
+ * Describes a cloud service Extension.
+ */
 @Fluent
 public final class Extension {
     /*
@@ -22,13 +24,15 @@ public final class Extension {
     @JsonProperty(value = "properties")
     private CloudServiceExtensionProperties properties;
 
-    /** Creates an instance of Extension class. */
+    /**
+     * Creates an instance of Extension class.
+     */
     public Extension() {
     }
 
     /**
      * Get the name property: The name of the extension.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class Extension {
 
     /**
      * Set the name property: The name of the extension.
-     *
+     * 
      * @param name the name value to set.
      * @return the Extension object itself.
      */
@@ -48,7 +52,7 @@ public final class Extension {
 
     /**
      * Get the properties property: Extension Properties.
-     *
+     * 
      * @return the properties value.
      */
     public CloudServiceExtensionProperties properties() {
@@ -57,7 +61,7 @@ public final class Extension {
 
     /**
      * Set the properties property: Extension Properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the Extension object itself.
      */
@@ -68,7 +72,7 @@ public final class Extension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,30 +7,48 @@ package com.azure.resourcemanager.datafactory.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for DaysOfWeek. */
+/**
+ * Defines values for DaysOfWeek.
+ */
 public enum DaysOfWeek {
-    /** Enum value Sunday. */
+    /**
+     * Enum value Sunday.
+     */
     SUNDAY("Sunday"),
 
-    /** Enum value Monday. */
+    /**
+     * Enum value Monday.
+     */
     MONDAY("Monday"),
 
-    /** Enum value Tuesday. */
+    /**
+     * Enum value Tuesday.
+     */
     TUESDAY("Tuesday"),
 
-    /** Enum value Wednesday. */
+    /**
+     * Enum value Wednesday.
+     */
     WEDNESDAY("Wednesday"),
 
-    /** Enum value Thursday. */
+    /**
+     * Enum value Thursday.
+     */
     THURSDAY("Thursday"),
 
-    /** Enum value Friday. */
+    /**
+     * Enum value Friday.
+     */
     FRIDAY("Friday"),
 
-    /** Enum value Saturday. */
+    /**
+     * Enum value Saturday.
+     */
     SATURDAY("Saturday");
 
-    /** The actual serialized value for a DaysOfWeek instance. */
+    /**
+     * The actual serialized value for a DaysOfWeek instance.
+     */
     private final String value;
 
     DaysOfWeek(String value) {
@@ -39,7 +57,7 @@ public enum DaysOfWeek {
 
     /**
      * Parses a serialized value to a DaysOfWeek instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DaysOfWeek object, or null if unable to parse.
      */
@@ -57,7 +75,9 @@ public enum DaysOfWeek {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

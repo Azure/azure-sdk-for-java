@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.InboundNatRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListInboundNatRule API service call. */
+/**
+ * Response for ListInboundNatRule API service call.
+ */
 @Fluent
 public final class InboundNatRuleListResult {
     /*
@@ -24,13 +26,15 @@ public final class InboundNatRuleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of InboundNatRuleListResult class. */
+    /**
+     * Creates an instance of InboundNatRuleListResult class.
+     */
     public InboundNatRuleListResult() {
     }
 
     /**
      * Get the value property: A list of inbound NAT rules in a load balancer.
-     *
+     * 
      * @return the value value.
      */
     public List<InboundNatRuleInner> value() {
@@ -39,7 +43,7 @@ public final class InboundNatRuleListResult {
 
     /**
      * Set the value property: A list of inbound NAT rules in a load balancer.
-     *
+     * 
      * @param value the value value to set.
      * @return the InboundNatRuleListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class InboundNatRuleListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class InboundNatRuleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

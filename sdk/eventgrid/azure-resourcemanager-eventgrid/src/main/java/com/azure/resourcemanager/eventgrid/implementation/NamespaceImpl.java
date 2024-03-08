@@ -74,12 +74,8 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -150,20 +146,14 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
     }
 
     public Namespace create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .createOrUpdate(resourceGroupName, namespaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getNamespaces().createOrUpdate(resourceGroupName,
+            namespaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Namespace create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .createOrUpdate(resourceGroupName, namespaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getNamespaces().createOrUpdate(resourceGroupName,
+            namespaceName, this.innerModel(), context);
         return this;
     }
 
@@ -179,20 +169,14 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
     }
 
     public Namespace apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .update(resourceGroupName, namespaceName, updateNamespaceUpdateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getNamespaces().update(resourceGroupName, namespaceName,
+            updateNamespaceUpdateParameters, Context.NONE);
         return this;
     }
 
     public Namespace apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .update(resourceGroupName, namespaceName, updateNamespaceUpdateParameters, context);
+        this.innerObject = serviceManager.serviceClient().getNamespaces().update(resourceGroupName, namespaceName,
+            updateNamespaceUpdateParameters, context);
         return this;
     }
 
@@ -204,22 +188,14 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
     }
 
     public Namespace refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, Context.NONE).getValue();
         return this;
     }
 
     public Namespace refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNamespaces()
-                .getByResourceGroupWithResponse(resourceGroupName, namespaceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getNamespaces()
+            .getByResourceGroupWithResponse(resourceGroupName, namespaceName, context).getValue();
         return this;
     }
 
@@ -235,11 +211,10 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
         return serviceManager.namespaces().regenerateKey(resourceGroupName, namespaceName, regenerateKeyRequest);
     }
 
-    public NamespaceSharedAccessKeys regenerateKey(
-        NamespaceRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        return serviceManager
-            .namespaces()
-            .regenerateKey(resourceGroupName, namespaceName, regenerateKeyRequest, context);
+    public NamespaceSharedAccessKeys regenerateKey(NamespaceRegenerateKeyRequest regenerateKeyRequest,
+        Context context) {
+        return serviceManager.namespaces().regenerateKey(resourceGroupName, namespaceName, regenerateKeyRequest,
+            context);
     }
 
     public NamespaceImpl withRegion(Region location) {
@@ -282,8 +257,8 @@ public final class NamespaceImpl implements Namespace, Namespace.Definition, Nam
         }
     }
 
-    public NamespaceImpl withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public NamespaceImpl
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.innerModel().withPrivateEndpointConnections(privateEndpointConnections);
         return this;
     }

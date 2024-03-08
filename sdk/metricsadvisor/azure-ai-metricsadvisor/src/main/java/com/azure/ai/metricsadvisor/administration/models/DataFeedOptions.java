@@ -22,6 +22,12 @@ public final class DataFeedOptions {
     private String actionLinkTemplate;
 
     /**
+     * Create a new instance of DataFeedOptions.
+     */
+    public DataFeedOptions() {
+    }
+
+    /**
      * Get the data feed roll up properties.
      *
      * @return the data feed roll up properties.

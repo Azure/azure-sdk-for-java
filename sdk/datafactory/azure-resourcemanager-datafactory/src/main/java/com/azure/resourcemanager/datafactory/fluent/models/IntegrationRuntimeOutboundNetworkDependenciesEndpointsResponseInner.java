@@ -9,7 +9,9 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeOutboundNe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Azure-SSIS integration runtime outbound network dependency endpoints. */
+/**
+ * Azure-SSIS integration runtime outbound network dependency endpoints.
+ */
 @Fluent
 public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner {
     /*
@@ -18,13 +20,15 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointsRespons
     @JsonProperty(value = "value")
     private List<IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint> value;
 
-    /** Creates an instance of IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner class. */
+    /**
+     * Creates an instance of IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner class.
+     */
     public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner() {
     }
 
     /**
      * Get the value property: The list of outbound network dependency endpoints.
-     *
+     * 
      * @return the value value.
      */
     public List<IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint> value() {
@@ -33,19 +37,19 @@ public final class IntegrationRuntimeOutboundNetworkDependenciesEndpointsRespons
 
     /**
      * Set the value property: The list of outbound network dependency endpoints.
-     *
+     * 
      * @param value the value value to set.
      * @return the IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner object itself.
      */
-    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner withValue(
-        List<IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint> value) {
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner
+        withValue(List<IntegrationRuntimeOutboundNetworkDependenciesCategoryEndpoint> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

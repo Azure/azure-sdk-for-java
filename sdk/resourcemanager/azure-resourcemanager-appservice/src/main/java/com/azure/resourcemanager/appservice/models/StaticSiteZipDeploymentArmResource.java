@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteZipDeployment;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Static site zip deployment ARM resource. */
+/**
+ * Static site zip deployment ARM resource.
+ */
 @Fluent
 public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
     @JsonProperty(value = "properties")
     private StaticSiteZipDeployment innerProperties;
 
-    /** Creates an instance of StaticSiteZipDeploymentArmResource class. */
+    /**
+     * Creates an instance of StaticSiteZipDeploymentArmResource class.
+     */
     public StaticSiteZipDeploymentArmResource() {
     }
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteZipDeployment innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteZipDeploymentArmResource withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Get the appZipUrl property: URL for the zipped app content.
-     *
+     * 
      * @return the appZipUrl value.
      */
     public String appZipUrl() {
@@ -48,7 +54,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Set the appZipUrl property: URL for the zipped app content.
-     *
+     * 
      * @param appZipUrl the appZipUrl value to set.
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
@@ -62,7 +68,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Get the apiZipUrl property: URL for the zipped api content.
-     *
+     * 
      * @return the apiZipUrl value.
      */
     public String apiZipUrl() {
@@ -71,7 +77,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Set the apiZipUrl property: URL for the zipped api content.
-     *
+     * 
      * @param apiZipUrl the apiZipUrl value to set.
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
@@ -85,7 +91,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Get the deploymentTitle property: A title to label the deployment.
-     *
+     * 
      * @return the deploymentTitle value.
      */
     public String deploymentTitle() {
@@ -94,7 +100,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Set the deploymentTitle property: A title to label the deployment.
-     *
+     * 
      * @param deploymentTitle the deploymentTitle value to set.
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
@@ -108,7 +114,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Get the provider property: The provider submitting this deployment.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -117,7 +123,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Set the provider property: The provider submitting this deployment.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
@@ -131,7 +137,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Get the functionLanguage property: The language of the api content, if it exists.
-     *
+     * 
      * @return the functionLanguage value.
      */
     public String functionLanguage() {
@@ -140,7 +146,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Set the functionLanguage property: The language of the api content, if it exists.
-     *
+     * 
      * @param functionLanguage the functionLanguage value to set.
      * @return the StaticSiteZipDeploymentArmResource object itself.
      */
@@ -154,7 +160,7 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

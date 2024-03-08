@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Top level error object that contains all relevant information. */
+/**
+ * Top level error object that contains all relevant information.
+ */
 @Fluent
 public final class AdditionalInfoErrorResponseError {
     /*
@@ -32,21 +34,20 @@ public final class AdditionalInfoErrorResponseError {
 
     /**
      * Creates an instance of AdditionalInfoErrorResponseError class.
-     *
+     * 
      * @param code the code value to set.
      * @param message the message value to set.
      */
     @JsonCreator
-    public AdditionalInfoErrorResponseError(
-            @JsonProperty(value = "code", required = true) String code,
-            @JsonProperty(value = "message", required = true) String message) {
+    public AdditionalInfoErrorResponseError(@JsonProperty(value = "code", required = true) String code,
+        @JsonProperty(value = "message", required = true) String message) {
         this.code = code;
         this.message = message;
     }
 
     /**
      * Get the additionalInfo property: Additional information about the error.
-     *
+     * 
      * @return the additionalInfo value.
      */
     public List<AdditionalInfoErrorResponseErrorAdditionalInfoItem> getAdditionalInfo() {
@@ -55,19 +56,19 @@ public final class AdditionalInfoErrorResponseError {
 
     /**
      * Set the additionalInfo property: Additional information about the error.
-     *
+     * 
      * @param additionalInfo the additionalInfo value to set.
      * @return the AdditionalInfoErrorResponseError object itself.
      */
-    public AdditionalInfoErrorResponseError setAdditionalInfo(
-            List<AdditionalInfoErrorResponseErrorAdditionalInfoItem> additionalInfo) {
+    public AdditionalInfoErrorResponseError
+        setAdditionalInfo(List<AdditionalInfoErrorResponseErrorAdditionalInfoItem> additionalInfo) {
         this.additionalInfo = additionalInfo;
         return this;
     }
 
     /**
      * Get the code property: Error code.
-     *
+     * 
      * @return the code value.
      */
     public String getCode() {
@@ -76,7 +77,7 @@ public final class AdditionalInfoErrorResponseError {
 
     /**
      * Get the message property: Error message indicating why the operation failed.
-     *
+     * 
      * @return the message value.
      */
     public String getMessage() {

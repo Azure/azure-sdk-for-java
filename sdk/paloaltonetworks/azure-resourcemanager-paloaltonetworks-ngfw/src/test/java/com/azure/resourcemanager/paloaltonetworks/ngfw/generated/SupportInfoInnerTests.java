@@ -12,53 +12,42 @@ import org.junit.jupiter.api.Assertions;
 public final class SupportInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"productSku\":\"tmczuomejwcwwqi\",\"productSerial\":\"nssxmojmsvpk\",\"accountRegistered\":\"TRUE\",\"accountId\":\"kwcf\",\"userDomainSupported\":\"FALSE\",\"userRegistered\":\"TRUE\",\"freeTrial\":\"FALSE\",\"freeTrialDaysLeft\":1494813827,\"freeTrialCreditLeft\":981677943,\"helpURL\":\"ydbsd\",\"supportURL\":\"m\",\"registerURL\":\"maehvbbxurip\"}")
-                .toObject(SupportInfoInner.class);
-        Assertions.assertEquals("tmczuomejwcwwqi", model.productSku());
-        Assertions.assertEquals("nssxmojmsvpk", model.productSerial());
+        SupportInfoInner model = BinaryData.fromString(
+            "{\"productSku\":\"h\",\"productSerial\":\"uj\",\"accountRegistered\":\"TRUE\",\"accountId\":\"kozzwculkb\",\"userDomainSupported\":\"FALSE\",\"userRegistered\":\"FALSE\",\"freeTrial\":\"FALSE\",\"freeTrialDaysLeft\":1824615307,\"freeTrialCreditLeft\":1819890486,\"helpURL\":\"wtjjguktalhsnv\",\"supportURL\":\"dmxzr\",\"registerURL\":\"aimlnwiaaom\"}")
+            .toObject(SupportInfoInner.class);
+        Assertions.assertEquals("h", model.productSku());
+        Assertions.assertEquals("uj", model.productSerial());
         Assertions.assertEquals(BooleanEnum.TRUE, model.accountRegistered());
-        Assertions.assertEquals("kwcf", model.accountId());
+        Assertions.assertEquals("kozzwculkb", model.accountId());
         Assertions.assertEquals(BooleanEnum.FALSE, model.userDomainSupported());
-        Assertions.assertEquals(BooleanEnum.TRUE, model.userRegistered());
+        Assertions.assertEquals(BooleanEnum.FALSE, model.userRegistered());
         Assertions.assertEquals(BooleanEnum.FALSE, model.freeTrial());
-        Assertions.assertEquals(1494813827, model.freeTrialDaysLeft());
-        Assertions.assertEquals(981677943, model.freeTrialCreditLeft());
-        Assertions.assertEquals("ydbsd", model.helpUrl());
-        Assertions.assertEquals("m", model.supportUrl());
-        Assertions.assertEquals("maehvbbxurip", model.registerUrl());
+        Assertions.assertEquals(1824615307, model.freeTrialDaysLeft());
+        Assertions.assertEquals(1819890486, model.freeTrialCreditLeft());
+        Assertions.assertEquals("wtjjguktalhsnv", model.helpUrl());
+        Assertions.assertEquals("dmxzr", model.supportUrl());
+        Assertions.assertEquals("aimlnwiaaom", model.registerUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportInfoInner model =
-            new SupportInfoInner()
-                .withProductSku("tmczuomejwcwwqi")
-                .withProductSerial("nssxmojmsvpk")
-                .withAccountRegistered(BooleanEnum.TRUE)
-                .withAccountId("kwcf")
-                .withUserDomainSupported(BooleanEnum.FALSE)
-                .withUserRegistered(BooleanEnum.TRUE)
-                .withFreeTrial(BooleanEnum.FALSE)
-                .withFreeTrialDaysLeft(1494813827)
-                .withFreeTrialCreditLeft(981677943)
-                .withHelpUrl("ydbsd")
-                .withSupportUrl("m")
-                .withRegisterUrl("maehvbbxurip");
+        SupportInfoInner model = new SupportInfoInner().withProductSku("h").withProductSerial("uj")
+            .withAccountRegistered(BooleanEnum.TRUE).withAccountId("kozzwculkb")
+            .withUserDomainSupported(BooleanEnum.FALSE).withUserRegistered(BooleanEnum.FALSE)
+            .withFreeTrial(BooleanEnum.FALSE).withFreeTrialDaysLeft(1824615307).withFreeTrialCreditLeft(1819890486)
+            .withHelpUrl("wtjjguktalhsnv").withSupportUrl("dmxzr").withRegisterUrl("aimlnwiaaom");
         model = BinaryData.fromObject(model).toObject(SupportInfoInner.class);
-        Assertions.assertEquals("tmczuomejwcwwqi", model.productSku());
-        Assertions.assertEquals("nssxmojmsvpk", model.productSerial());
+        Assertions.assertEquals("h", model.productSku());
+        Assertions.assertEquals("uj", model.productSerial());
         Assertions.assertEquals(BooleanEnum.TRUE, model.accountRegistered());
-        Assertions.assertEquals("kwcf", model.accountId());
+        Assertions.assertEquals("kozzwculkb", model.accountId());
         Assertions.assertEquals(BooleanEnum.FALSE, model.userDomainSupported());
-        Assertions.assertEquals(BooleanEnum.TRUE, model.userRegistered());
+        Assertions.assertEquals(BooleanEnum.FALSE, model.userRegistered());
         Assertions.assertEquals(BooleanEnum.FALSE, model.freeTrial());
-        Assertions.assertEquals(1494813827, model.freeTrialDaysLeft());
-        Assertions.assertEquals(981677943, model.freeTrialCreditLeft());
-        Assertions.assertEquals("ydbsd", model.helpUrl());
-        Assertions.assertEquals("m", model.supportUrl());
-        Assertions.assertEquals("maehvbbxurip", model.registerUrl());
+        Assertions.assertEquals(1824615307, model.freeTrialDaysLeft());
+        Assertions.assertEquals(1819890486, model.freeTrialCreditLeft());
+        Assertions.assertEquals("wtjjguktalhsnv", model.helpUrl());
+        Assertions.assertEquals("dmxzr", model.supportUrl());
+        Assertions.assertEquals("aimlnwiaaom", model.registerUrl());
     }
 }

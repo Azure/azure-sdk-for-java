@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resourcehealth.generated;
 /** Samples for AvailabilityStatuses List. */
 public final class AvailabilityStatusesListSamples {
     /*
-     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/AvailabilityStatuses_List.json
+     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/AvailabilityStatuses_List.json
      */
     /**
      * Sample code: GetHealthHistoryByResource.

@@ -31,7 +31,7 @@ public final class MonitorsListLinkedResourcesMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"id\":\"omzlfmi\"}]}";
+        String responseStr = "{\"value\":[{\"id\":\"q\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,8 +60,8 @@ public final class MonitorsListLinkedResourcesMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LinkedResource> response =
-            manager.monitors().listLinkedResources("alaexqpvfadmwsrc", "gvxp", com.azure.core.util.Context.NONE);
+            manager.monitors().listLinkedResources("psbjta", "qugxywpmueefjzwf", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("omzlfmi", response.iterator().next().id());
+        Assertions.assertEquals("q", response.iterator().next().id());
     }
 }

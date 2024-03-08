@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resourcehealth.generated;
 /** Samples for ChildAvailabilityStatuses List. */
 public final class ChildAvailabilityStatusesListSamples {
     /*
-     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/ChildAvailabilityStatuses_List.json
+     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/ChildAvailabilityStatuses_List.json
      */
     /**
      * Sample code: GetChildHealthHistoryByResource.

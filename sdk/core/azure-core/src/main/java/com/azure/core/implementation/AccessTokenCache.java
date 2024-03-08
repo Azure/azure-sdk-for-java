@@ -41,23 +41,24 @@ public final class AccessTokenCache {
     private final TokenCredential tokenCredential;
     // Stores the last authenticated token request context. The cached token is valid under this context.
     private TokenRequestContext tokenRequestContext;
-    private Supplier<Mono<AccessToken>> tokenSupplierAsync;
-    private Supplier<AccessToken> tokenSupplierSync;
+    private final Supplier<Mono<AccessToken>> tokenSupplierAsync;
+    private final Supplier<AccessToken> tokenSupplierSync;
     private final Predicate<AccessToken> shouldRefresh;
     // Used for sync flow.
-    private Lock lock;
+    private final Lock lock;
 
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
      *
+     * @param tokenCredential the token credential to be used to acquire the token.
      */
     public AccessTokenCache(TokenCredential tokenCredential) {
         Objects.requireNonNull(tokenCredential, "The token credential cannot be null");
         this.wip = new AtomicReference<>();
         this.tokenCredential = tokenCredential;
         this.cacheInfo = new AtomicReference<>(new AccessTokenCacheInfo(null, OffsetDateTime.now()));
-        this.shouldRefresh = accessToken -> OffsetDateTime.now()
-            .isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
+        this.shouldRefresh
+            = accessToken -> OffsetDateTime.now().isAfter(accessToken.getExpiresAt().minus(REFRESH_OFFSET));
         this.tokenSupplierAsync = () -> tokenCredential.getToken(this.tokenRequestContext);
         this.tokenSupplierSync = () -> tokenCredential.getTokenSync(this.tokenRequestContext);
         this.lock = new ReentrantLock();
@@ -67,19 +68,21 @@ public final class AccessTokenCache {
      * Asynchronously get a token from either the cache or replenish the cache with a new token.
      *
      * @param tokenRequestContext The request context for token acquisition.
+     * @param checkToForceFetchToken The flag indicating whether to force fetch a new token or not.
      * @return The Publisher that emits an AccessToken
      */
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         return Mono.defer(retrieveToken(tokenRequestContext, checkToForceFetchToken))
             // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
-            .repeatWhenEmpty((Flux<Long> longFlux) ->
-                longFlux.concatMap(ignored -> Flux.just(true).delayElements(Duration.ofMillis(500))));
+            .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux
+                .concatMap(ignored -> Flux.just(true).delayElements(Duration.ofMillis(500))));
     }
 
     /**
      * Synchronously get a token from either the cache or replenish the cache with a new token.
      *
      * @param tokenRequestContext The request context for token acquisition.
+     * @param checkToForceFetchToken The flag indicating whether to force fetch a new token or not.
      * @return The Publisher that emits an AccessToken
      */
     public AccessToken getTokenSync(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
@@ -92,7 +95,7 @@ public final class AccessTokenCache {
     }
 
     private Supplier<Mono<? extends AccessToken>> retrieveToken(TokenRequestContext tokenRequestContext,
-                                                                boolean checkToForceFetchToken) {
+        boolean checkToForceFetchToken) {
         return () -> {
             try {
                 if (tokenRequestContext == null) {
@@ -143,9 +146,11 @@ public final class AccessTokenCache {
                         fallback = Mono.just(cachedToken);
                     }
 
-                    return Mono.using(() -> wip, ignored -> tokenRefresh.materialize()
-                        .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
-                        .doOnError(sinksOne::tryEmitError), w -> w.set(null));
+                    return Mono.using(() -> wip,
+                        ignored -> tokenRefresh.materialize()
+                            .flatMap(processTokenRefreshResult(sinksOne, now, fallback))
+                            .doOnError(sinksOne::tryEmitError),
+                        w -> w.set(null));
                 } else if (cachedToken != null && !cachedToken.isExpired() && !checkToForceFetchToken) {
                     // another thread might be refreshing the token proactively, but the current token is still valid
                     return Mono.just(cachedToken);
@@ -171,7 +176,7 @@ public final class AccessTokenCache {
     }
 
     private Supplier<AccessToken> retrieveTokenSync(TokenRequestContext tokenRequestContext,
-                                                                boolean checkToForceFetchToken) {
+        boolean checkToForceFetchToken) {
         return () -> {
             if (tokenRequestContext == null) {
                 throw LOGGER.logExceptionAsError(
@@ -221,8 +226,7 @@ public final class AccessTokenCache {
             try {
                 if (tokenRefresh != null) {
                     AccessToken token = tokenRefresh.get();
-                    buildTokenRefreshLog(LogLevel.INFORMATIONAL, cachedToken, now)
-                        .log("Acquired a new access token.");
+                    buildTokenRefreshLog(LogLevel.INFORMATIONAL, cachedToken, now).log("Acquired a new access token.");
                     OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now().plus(REFRESH_DELAY);
                     AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(token, nextTokenRefreshTime);
                     this.cacheInfo.set(updatedInfo);
@@ -231,8 +235,8 @@ public final class AccessTokenCache {
                     return fallback;
                 }
             } catch (Throwable error) {
-                buildTokenRefreshLog(LogLevel.ERROR, cachedToken, now)
-                    .log("Failed to acquire a new access token.", error);
+                buildTokenRefreshLog(LogLevel.ERROR, cachedToken, now).log("Failed to acquire a new access token.",
+                    error);
                 OffsetDateTime nextTokenRefreshTime = OffsetDateTime.now();
                 AccessTokenCacheInfo updatedInfo = new AccessTokenCacheInfo(cachedToken, nextTokenRefreshTime);
                 this.cacheInfo.set(updatedInfo);
@@ -246,28 +250,28 @@ public final class AccessTokenCache {
 
     private boolean checkIfForceRefreshRequired(TokenRequestContext tokenRequestContext) {
         return !(this.tokenRequestContext != null
-            && (this.tokenRequestContext.getClaims() == null ? tokenRequestContext.getClaims() == null
-            : (tokenRequestContext.getClaims() == null ? false
-            : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
+            && (this.tokenRequestContext.getClaims() == null
+                ? tokenRequestContext.getClaims() == null
+                : (tokenRequestContext.getClaims() == null
+                    ? false
+                    : tokenRequestContext.getClaims().equals(this.tokenRequestContext.getClaims())))
             && this.tokenRequestContext.getScopes().equals(tokenRequestContext.getScopes()));
     }
 
-    private Function<Signal<AccessToken>, Mono<? extends AccessToken>> processTokenRefreshResult(
-        Sinks.One<AccessToken> sinksOne, OffsetDateTime now, Mono<AccessToken> fallback) {
+    private Function<Signal<AccessToken>, Mono<? extends AccessToken>>
+        processTokenRefreshResult(Sinks.One<AccessToken> sinksOne, OffsetDateTime now, Mono<AccessToken> fallback) {
         return signal -> {
             AccessToken accessToken = signal.get();
             Throwable error = signal.getThrowable();
             AccessToken cache = cacheInfo.get().getCachedAccessToken();
             if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                buildTokenRefreshLog(LogLevel.INFORMATIONAL, cache, now)
-                    .log("Acquired a new access token.");
+                buildTokenRefreshLog(LogLevel.INFORMATIONAL, cache, now).log("Acquired a new access token.");
                 sinksOne.tryEmitValue(accessToken);
                 OffsetDateTime nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                 cacheInfo.set(new AccessTokenCacheInfo(accessToken, nextTokenRefresh));
                 return Mono.just(accessToken);
             } else if (signal.isOnError() && error != null) { // ERROR
-                buildTokenRefreshLog(LogLevel.ERROR, cache, now)
-                    .log("Failed to acquire a new access token.", error);
+                buildTokenRefreshLog(LogLevel.ERROR, cache, now).log("Failed to acquire a new access token.", error);
                 OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
                 cacheInfo.set(new AccessTokenCacheInfo(cache, nextTokenRefresh));
                 return fallback.switchIfEmpty(Mono.error(error));
@@ -285,8 +289,7 @@ public final class AccessTokenCache {
         }
 
         Duration tte = Duration.between(now, cache.getExpiresAt());
-        return logBuilder
-            .addKeyValue("expiresAt", cache.getExpiresAt())
+        return logBuilder.addKeyValue("expiresAt", cache.getExpiresAt())
             .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
             .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)
             .addKeyValue("expired", tte.isNegative());

@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationMetricSpecificationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationMetricSpecification model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"urzafb\",\"displayName\":\"j\",\"displayDescription\":\"btoqcjmkljavbqid\",\"unit\":\"ajzyul\",\"aggregationType\":\"u\",\"enableRegionalMdmAccount\":\"krlkhbzhfepg\",\"sourceMdmAccount\":\"qex\",\"sourceMdmNamespace\":\"ocxscpaierhhbcs\",\"availabilities\":[{\"timeGrain\":\"majtjaod\",\"blobDuration\":\"bnbdxkqpxokajion\"},{\"timeGrain\":\"mexgstxgcp\",\"blobDuration\":\"gmaajrm\"},{\"timeGrain\":\"jwzrl\",\"blobDuration\":\"mcl\"}],\"dimensions\":[{\"name\":\"coejctbzaqs\",\"displayName\":\"y\",\"toBeExportedForShoebox\":false},{\"name\":\"fkgukdkexxppof\",\"displayName\":\"axcfjpgddtocjjx\",\"toBeExportedForShoebox\":true},{\"name\":\"o\",\"displayName\":\"xhdzxibqeojnx\",\"toBeExportedForShoebox\":true}]}")
-                .toObject(OperationMetricSpecification.class);
+        OperationMetricSpecification model = BinaryData.fromString(
+            "{\"name\":\"urzafb\",\"displayName\":\"j\",\"displayDescription\":\"btoqcjmkljavbqid\",\"unit\":\"ajzyul\",\"aggregationType\":\"u\",\"enableRegionalMdmAccount\":\"krlkhbzhfepg\",\"sourceMdmAccount\":\"qex\",\"sourceMdmNamespace\":\"ocxscpaierhhbcs\",\"availabilities\":[{\"timeGrain\":\"majtjaod\",\"blobDuration\":\"bnbdxkqpxokajion\"},{\"timeGrain\":\"mexgstxgcp\",\"blobDuration\":\"gmaajrm\"},{\"timeGrain\":\"jwzrl\",\"blobDuration\":\"mcl\"}],\"dimensions\":[{\"name\":\"coejctbzaqs\",\"displayName\":\"y\",\"toBeExportedForShoebox\":false},{\"name\":\"fkgukdkexxppof\",\"displayName\":\"axcfjpgddtocjjx\",\"toBeExportedForShoebox\":true},{\"name\":\"o\",\"displayName\":\"xhdzxibqeojnx\",\"toBeExportedForShoebox\":true}]}")
+            .toObject(OperationMetricSpecification.class);
         Assertions.assertEquals("urzafb", model.name());
         Assertions.assertEquals("j", model.displayName());
         Assertions.assertEquals("btoqcjmkljavbqid", model.displayDescription());
@@ -36,39 +34,21 @@ public final class OperationMetricSpecificationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationMetricSpecification model =
-            new OperationMetricSpecification()
-                .withName("urzafb")
-                .withDisplayName("j")
-                .withDisplayDescription("btoqcjmkljavbqid")
-                .withUnit("ajzyul")
-                .withAggregationType("u")
-                .withEnableRegionalMdmAccount("krlkhbzhfepg")
-                .withSourceMdmAccount("qex")
-                .withSourceMdmNamespace("ocxscpaierhhbcs")
-                .withAvailabilities(
-                    Arrays
-                        .asList(
-                            new OperationMetricAvailability()
-                                .withTimeGrain("majtjaod")
-                                .withBlobDuration("bnbdxkqpxokajion"),
-                            new OperationMetricAvailability().withTimeGrain("mexgstxgcp").withBlobDuration("gmaajrm"),
-                            new OperationMetricAvailability().withTimeGrain("jwzrl").withBlobDuration("mcl")))
-                .withDimensions(
-                    Arrays
-                        .asList(
-                            new OperationMetricDimension()
-                                .withName("coejctbzaqs")
-                                .withDisplayName("y")
-                                .withToBeExportedForShoebox(false),
-                            new OperationMetricDimension()
-                                .withName("fkgukdkexxppof")
-                                .withDisplayName("axcfjpgddtocjjx")
-                                .withToBeExportedForShoebox(true),
-                            new OperationMetricDimension()
-                                .withName("o")
-                                .withDisplayName("xhdzxibqeojnx")
-                                .withToBeExportedForShoebox(true)));
+        OperationMetricSpecification model = new OperationMetricSpecification().withName("urzafb").withDisplayName("j")
+            .withDisplayDescription("btoqcjmkljavbqid").withUnit("ajzyul").withAggregationType("u")
+            .withEnableRegionalMdmAccount("krlkhbzhfepg").withSourceMdmAccount("qex")
+            .withSourceMdmNamespace("ocxscpaierhhbcs")
+            .withAvailabilities(Arrays.asList(
+                new OperationMetricAvailability().withTimeGrain("majtjaod").withBlobDuration("bnbdxkqpxokajion"),
+                new OperationMetricAvailability().withTimeGrain("mexgstxgcp").withBlobDuration("gmaajrm"),
+                new OperationMetricAvailability().withTimeGrain("jwzrl").withBlobDuration("mcl")))
+            .withDimensions(Arrays.asList(
+                new OperationMetricDimension().withName("coejctbzaqs").withDisplayName("y")
+                    .withToBeExportedForShoebox(false),
+                new OperationMetricDimension().withName("fkgukdkexxppof").withDisplayName("axcfjpgddtocjjx")
+                    .withToBeExportedForShoebox(true),
+                new OperationMetricDimension().withName("o").withDisplayName("xhdzxibqeojnx")
+                    .withToBeExportedForShoebox(true)));
         model = BinaryData.fromObject(model).toObject(OperationMetricSpecification.class);
         Assertions.assertEquals("urzafb", model.name());
         Assertions.assertEquals("j", model.displayName());

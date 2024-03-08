@@ -7,24 +7,38 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Log level. */
+/**
+ * Log level.
+ */
 public enum LogLevel {
-    /** Enum value Off. */
+    /**
+     * Enum value Off.
+     */
     OFF("Off"),
 
-    /** Enum value Verbose. */
+    /**
+     * Enum value Verbose.
+     */
     VERBOSE("Verbose"),
 
-    /** Enum value Information. */
+    /**
+     * Enum value Information.
+     */
     INFORMATION("Information"),
 
-    /** Enum value Warning. */
+    /**
+     * Enum value Warning.
+     */
     WARNING("Warning"),
 
-    /** Enum value Error. */
+    /**
+     * Enum value Error.
+     */
     ERROR("Error");
 
-    /** The actual serialized value for a LogLevel instance. */
+    /**
+     * The actual serialized value for a LogLevel instance.
+     */
     private final String value;
 
     LogLevel(String value) {
@@ -33,7 +47,7 @@ public enum LogLevel {
 
     /**
      * Parses a serialized value to a LogLevel instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed LogLevel object, or null if unable to parse.
      */
@@ -51,7 +65,9 @@ public enum LogLevel {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

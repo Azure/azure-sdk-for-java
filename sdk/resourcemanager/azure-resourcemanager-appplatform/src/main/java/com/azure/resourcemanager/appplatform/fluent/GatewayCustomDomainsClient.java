@@ -18,31 +18,33 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GatewayCustomDomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GatewayCustomDomainsClient.
+ */
 public interface GatewayCustomDomainsClient {
     /**
      * Get the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Spring Cloud Gateway custom domain along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Spring Cloud Gateway custom domain along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<GatewayCustomDomainResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String domainName);
+    Mono<Response<GatewayCustomDomainResourceInner>> getWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String domainName);
 
     /**
      * Get the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -52,31 +54,14 @@ public interface GatewayCustomDomainsClient {
      * @return the Spring Cloud Gateway custom domain on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GatewayCustomDomainResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String domainName);
+    Mono<GatewayCustomDomainResourceInner> getAsync(String resourceGroupName, String serviceName, String gatewayName,
+        String domainName);
 
     /**
      * Get the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param gatewayName The name of Spring Cloud Gateway.
-     * @param domainName The name of the Spring Cloud Gateway custom domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Spring Cloud Gateway custom domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayCustomDomainResourceInner get(
-        String resourceGroupName, String serviceName, String gatewayName, String domainName);
-
-    /**
-     * Get the Spring Cloud Gateway custom domain.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -87,14 +72,31 @@ public interface GatewayCustomDomainsClient {
      * @return the Spring Cloud Gateway custom domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GatewayCustomDomainResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayName, String domainName, Context context);
+    Response<GatewayCustomDomainResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String gatewayName, String domainName, Context context);
+
+    /**
+     * Get the Spring Cloud Gateway custom domain.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @param domainName The name of the Spring Cloud Gateway custom domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Spring Cloud Gateway custom domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    GatewayCustomDomainResourceInner get(String resourceGroupName, String serviceName, String gatewayName,
+        String domainName);
 
     /**
      * Create or update the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -102,22 +104,18 @@ public interface GatewayCustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain of the Spring Cloud Gateway along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return custom domain of the Spring Cloud Gateway along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String domainName,
-        GatewayCustomDomainResourceInner gatewayCustomDomainResource);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String domainName, GatewayCustomDomainResourceInner gatewayCustomDomainResource);
 
     /**
      * Create or update the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -129,17 +127,14 @@ public interface GatewayCustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<GatewayCustomDomainResourceInner>, GatewayCustomDomainResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String domainName,
+        String resourceGroupName, String serviceName, String gatewayName, String domainName,
         GatewayCustomDomainResourceInner gatewayCustomDomainResource);
 
     /**
      * Create or update the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -151,17 +146,14 @@ public interface GatewayCustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GatewayCustomDomainResourceInner>, GatewayCustomDomainResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String domainName,
+        String resourceGroupName, String serviceName, String gatewayName, String domainName,
         GatewayCustomDomainResourceInner gatewayCustomDomainResource);
 
     /**
      * Create or update the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -174,18 +166,14 @@ public interface GatewayCustomDomainsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GatewayCustomDomainResourceInner>, GatewayCustomDomainResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String domainName,
-        GatewayCustomDomainResourceInner gatewayCustomDomainResource,
-        Context context);
+        String resourceGroupName, String serviceName, String gatewayName, String domainName,
+        GatewayCustomDomainResourceInner gatewayCustomDomainResource, Context context);
 
     /**
      * Create or update the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -196,18 +184,14 @@ public interface GatewayCustomDomainsClient {
      * @return custom domain of the Spring Cloud Gateway on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GatewayCustomDomainResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String domainName,
-        GatewayCustomDomainResourceInner gatewayCustomDomainResource);
+    Mono<GatewayCustomDomainResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String domainName, GatewayCustomDomainResourceInner gatewayCustomDomainResource);
 
     /**
      * Create or update the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -218,18 +202,14 @@ public interface GatewayCustomDomainsClient {
      * @return custom domain of the Spring Cloud Gateway.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayCustomDomainResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String domainName,
-        GatewayCustomDomainResourceInner gatewayCustomDomainResource);
+    GatewayCustomDomainResourceInner createOrUpdate(String resourceGroupName, String serviceName, String gatewayName,
+        String domainName, GatewayCustomDomainResourceInner gatewayCustomDomainResource);
 
     /**
      * Create or update the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -241,19 +221,14 @@ public interface GatewayCustomDomainsClient {
      * @return custom domain of the Spring Cloud Gateway.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GatewayCustomDomainResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String domainName,
-        GatewayCustomDomainResourceInner gatewayCustomDomainResource,
-        Context context);
+    GatewayCustomDomainResourceInner createOrUpdate(String resourceGroupName, String serviceName, String gatewayName,
+        String domainName, GatewayCustomDomainResourceInner gatewayCustomDomainResource, Context context);
 
     /**
      * Delete the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -263,14 +238,14 @@ public interface GatewayCustomDomainsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String domainName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String domainName);
 
     /**
      * Delete the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -280,14 +255,14 @@ public interface GatewayCustomDomainsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String domainName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String domainName);
 
     /**
      * Delete the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -297,14 +272,14 @@ public interface GatewayCustomDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String gatewayName, String domainName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String gatewayName,
+        String domainName);
 
     /**
      * Delete the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -315,14 +290,14 @@ public interface GatewayCustomDomainsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String gatewayName, String domainName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String gatewayName,
+        String domainName, Context context);
 
     /**
      * Delete the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -336,9 +311,9 @@ public interface GatewayCustomDomainsClient {
 
     /**
      * Delete the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -351,9 +326,9 @@ public interface GatewayCustomDomainsClient {
 
     /**
      * Delete the Spring Cloud Gateway custom domain.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param domainName The name of the Spring Cloud Gateway custom domain.
@@ -367,43 +342,43 @@ public interface GatewayCustomDomainsClient {
 
     /**
      * Handle requests to list all Spring Cloud Gateway custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Spring Cloud Gateway custom domain resources and a possible link for
-     *     next set as paginated response with {@link PagedFlux}.
+     * next set as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<GatewayCustomDomainResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String gatewayName);
+    PagedFlux<GatewayCustomDomainResourceInner> listAsync(String resourceGroupName, String serviceName,
+        String gatewayName);
 
     /**
      * Handle requests to list all Spring Cloud Gateway custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Spring Cloud Gateway custom domain resources and a possible link for
-     *     next set as paginated response with {@link PagedIterable}.
+     * next set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GatewayCustomDomainResourceInner> list(
-        String resourceGroupName, String serviceName, String gatewayName);
+    PagedIterable<GatewayCustomDomainResourceInner> list(String resourceGroupName, String serviceName,
+        String gatewayName);
 
     /**
      * Handle requests to list all Spring Cloud Gateway custom domains.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param context The context to associate with this operation.
@@ -411,9 +386,9 @@ public interface GatewayCustomDomainsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Spring Cloud Gateway custom domain resources and a possible link for
-     *     next set as paginated response with {@link PagedIterable}.
+     * next set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<GatewayCustomDomainResourceInner> list(
-        String resourceGroupName, String serviceName, String gatewayName, Context context);
+    PagedIterable<GatewayCustomDomainResourceInner> list(String resourceGroupName, String serviceName,
+        String gatewayName, Context context);
 }

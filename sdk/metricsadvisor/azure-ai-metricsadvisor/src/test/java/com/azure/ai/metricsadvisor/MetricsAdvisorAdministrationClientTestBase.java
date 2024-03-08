@@ -22,7 +22,6 @@ import java.util.Arrays;
 import static com.azure.ai.metricsadvisor.MetricsAdvisorClientBuilderTest.PLAYBACK_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.AZURE_METRICS_ADVISOR_ENDPOINT;
 import static com.azure.ai.metricsadvisor.TestUtils.DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS;
-import static com.azure.ai.metricsadvisor.TestUtils.getEmailSanitizers;
 
 public abstract class MetricsAdvisorAdministrationClientTestBase extends TestProxyTestBase {
     protected static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(DEFAULT_SUBSCRIBER_TIMEOUT_SECONDS);
@@ -96,9 +95,7 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestPro
                 interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
             }
         }
-        if (!interceptorManager.isLiveMode()) {
-            interceptorManager.addSanitizers(getEmailSanitizers());
-        }
+
         return builder;
     }
 

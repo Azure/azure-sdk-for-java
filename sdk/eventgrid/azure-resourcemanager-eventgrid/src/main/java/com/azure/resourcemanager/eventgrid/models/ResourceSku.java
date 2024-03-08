@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes an EventGrid Resource Sku. */
+/**
+ * Describes an EventGrid Resource Sku.
+ */
 @Fluent
 public final class ResourceSku {
     /*
@@ -16,13 +18,15 @@ public final class ResourceSku {
     @JsonProperty(value = "name")
     private Sku name;
 
-    /** Creates an instance of ResourceSku class. */
+    /**
+     * Creates an instance of ResourceSku class.
+     */
     public ResourceSku() {
     }
 
     /**
      * Get the name property: The Sku name of the resource. The possible values are: Basic or Premium.
-     *
+     * 
      * @return the name value.
      */
     public Sku name() {
@@ -31,7 +35,7 @@ public final class ResourceSku {
 
     /**
      * Set the name property: The Sku name of the resource. The possible values are: Basic or Premium.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceSku object itself.
      */
@@ -42,7 +46,7 @@ public final class ResourceSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

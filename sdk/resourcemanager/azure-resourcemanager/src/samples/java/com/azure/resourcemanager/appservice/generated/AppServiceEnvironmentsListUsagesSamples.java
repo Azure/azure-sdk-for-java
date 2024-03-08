@@ -4,23 +4,23 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for AppServiceEnvironments ListUsages. */
+/**
+ * Samples for AppServiceEnvironments ListUsages.
+ */
 public final class AppServiceEnvironmentsListUsagesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_ListUsages.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/AppServiceEnvironments_ListUsages.
+     * json
      */
     /**
      * Sample code: Get global usage metrics of an App Service Environment.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getGlobalUsageMetricsOfAnAppServiceEnvironment(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getAppServiceEnvironments()
-            .listUsages("test-rg", "test-ase", null, com.azure.core.util.Context.NONE);
+    public static void
+        getGlobalUsageMetricsOfAnAppServiceEnvironment(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.webApps().manager().serviceClient().getAppServiceEnvironments().listUsages("test-rg", "test-ase", null,
+            com.azure.core.util.Context.NONE);
     }
 }

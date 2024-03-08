@@ -3,6 +3,14 @@
 
 package com.azure.monitor.applicationinsights.spring.selfdiagnostics;
 
+import org.slf4j.Logger;
+import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+import javax.sql.DataSource;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.util.ArrayList;
@@ -12,14 +20,6 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javax.sql.DataSource;
-
-import org.slf4j.Logger;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 
 /**
  * JDBC self-diagnostics features.
@@ -41,6 +41,7 @@ public class JdbcSelfDiagConfig {
 
         /**
          * To execute the JDBC self-diagnostics.
+         *
          * @param args Incoming main method arguments
          */
         @Override

@@ -30,22 +30,28 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.FirewallSta
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.FirewallStatusResourceListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FirewallStatusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FirewallStatusClient.
+ */
 public final class FirewallStatusClientImpl implements FirewallStatusClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FirewallStatusService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PaloAltoNetworksCloudngfwImpl client;
 
     /**
      * Initializes an instance of FirewallStatusClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FirewallStatusClientImpl(PaloAltoNetworksCloudngfwImpl client) {
-        this.service =
-            RestProxy.create(FirewallStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FirewallStatusService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,70 +62,54 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
     @Host("{$host}")
     @ServiceInterface(name = "PaloAltoNetworksClou")
     public interface FirewallStatusService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/statuses")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/statuses")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FirewallStatusResourceListResult>> listByFirewalls(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("firewallName") String firewallName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FirewallStatusResourceListResult>> listByFirewalls(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("firewallName") String firewallName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/statuses/default")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/PaloAltoNetworks.Cloudngfw/firewalls/{firewallName}/statuses/default")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FirewallStatusResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("firewallName") String firewallName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FirewallStatusResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("firewallName") String firewallName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FirewallStatusResourceListResult>> listByFirewallsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List FirewallStatusResource resources by Firewalls.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FirewallStatusResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FirewallStatusResourceInner>> listByFirewallsSinglePageAsync(
-        String resourceGroupName, String firewallName) {
+    private Mono<PagedResponse<FirewallStatusResourceInner>> listByFirewallsSinglePageAsync(String resourceGroupName,
+        String firewallName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -130,32 +120,16 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByFirewalls(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            firewallName,
-                            accept,
-                            context))
-            .<PagedResponse<FirewallStatusResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByFirewalls(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, firewallName, accept, context))
+            .<PagedResponse<FirewallStatusResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List FirewallStatusResource resources by Firewalls.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -163,22 +137,18 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FirewallStatusResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FirewallStatusResourceInner>> listByFirewallsSinglePageAsync(
-        String resourceGroupName, String firewallName, Context context) {
+    private Mono<PagedResponse<FirewallStatusResourceInner>> listByFirewallsSinglePageAsync(String resourceGroupName,
+        String firewallName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -190,28 +160,15 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByFirewalls(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                firewallName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByFirewalls(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, firewallName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List FirewallStatusResource resources by Firewalls.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,14 +178,13 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FirewallStatusResourceInner> listByFirewallsAsync(String resourceGroupName, String firewallName) {
-        return new PagedFlux<>(
-            () -> listByFirewallsSinglePageAsync(resourceGroupName, firewallName),
+        return new PagedFlux<>(() -> listByFirewallsSinglePageAsync(resourceGroupName, firewallName),
             nextLink -> listByFirewallsNextSinglePageAsync(nextLink));
     }
 
     /**
      * List FirewallStatusResource resources by Firewalls.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -238,16 +194,15 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
      * @return the response of a FirewallStatusResource list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FirewallStatusResourceInner> listByFirewallsAsync(
-        String resourceGroupName, String firewallName, Context context) {
-        return new PagedFlux<>(
-            () -> listByFirewallsSinglePageAsync(resourceGroupName, firewallName, context),
+    private PagedFlux<FirewallStatusResourceInner> listByFirewallsAsync(String resourceGroupName, String firewallName,
+        Context context) {
+        return new PagedFlux<>(() -> listByFirewallsSinglePageAsync(resourceGroupName, firewallName, context),
             nextLink -> listByFirewallsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List FirewallStatusResource resources by Firewalls.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,7 +217,7 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
 
     /**
      * List FirewallStatusResource resources by Firewalls.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -272,14 +227,14 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
      * @return the response of a FirewallStatusResource list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FirewallStatusResourceInner> listByFirewalls(
-        String resourceGroupName, String firewallName, Context context) {
+    public PagedIterable<FirewallStatusResourceInner> listByFirewalls(String resourceGroupName, String firewallName,
+        Context context) {
         return new PagedIterable<>(listByFirewallsAsync(resourceGroupName, firewallName, context));
     }
 
     /**
      * Get a FirewallStatusResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -288,19 +243,15 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
      * @return a FirewallStatusResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FirewallStatusResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String firewallName) {
+    private Mono<Response<FirewallStatusResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String firewallName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -311,23 +262,14 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            firewallName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, firewallName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a FirewallStatusResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -337,19 +279,15 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
      * @return a FirewallStatusResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FirewallStatusResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String firewallName, Context context) {
+    private Mono<Response<FirewallStatusResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String firewallName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -360,20 +298,13 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                firewallName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, firewallName, accept, context);
     }
 
     /**
      * Get a FirewallStatusResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -388,7 +319,7 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
 
     /**
      * Get a FirewallStatusResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @param context The context to associate with this operation.
@@ -398,14 +329,14 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
      * @return a FirewallStatusResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FirewallStatusResourceInner> getWithResponse(
-        String resourceGroupName, String firewallName, Context context) {
+    public Response<FirewallStatusResourceInner> getWithResponse(String resourceGroupName, String firewallName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, firewallName, context).block();
     }
 
     /**
      * Get a FirewallStatusResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param firewallName Firewall resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -420,14 +351,15 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FirewallStatusResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FirewallStatusResourceInner>> listByFirewallsNextSinglePageAsync(String nextLink) {
@@ -435,62 +367,44 @@ public final class FirewallStatusClientImpl implements FirewallStatusClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFirewallsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FirewallStatusResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FirewallStatusResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FirewallStatusResource list operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FirewallStatusResourceInner>> listByFirewallsNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<FirewallStatusResourceInner>> listByFirewallsNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByFirewallsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByFirewallsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

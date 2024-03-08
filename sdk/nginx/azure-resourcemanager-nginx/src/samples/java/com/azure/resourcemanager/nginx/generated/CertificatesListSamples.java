@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.nginx.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Certificates List. */
+/**
+ * Samples for Certificates List.
+ */
 public final class CertificatesListSamples {
     /*
-     * x-ms-original-file: specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2022-08-01/examples/Certificates_List.json
+     * x-ms-original-file:
+     * specification/nginx/resource-manager/NGINX.NGINXPLUS/stable/2023-04-01/examples/Certificates_List.json
      */
     /**
      * Sample code: Certificates_List.
-     *
+     * 
      * @param manager Entry point to NginxManager.
      */
     public static void certificatesList(com.azure.resourcemanager.nginx.NginxManager manager) {
-        manager.certificates().list("myResourceGroup", "myDeployment", Context.NONE);
+        manager.certificates().list("myResourceGroup", "myDeployment", com.azure.core.util.Context.NONE);
     }
 }

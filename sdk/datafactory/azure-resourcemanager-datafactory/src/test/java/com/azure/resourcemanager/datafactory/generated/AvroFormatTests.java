@@ -10,16 +10,14 @@ import com.azure.resourcemanager.datafactory.models.AvroFormat;
 public final class AvroFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvroFormat model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AvroFormat\",\"serializer\":\"dataugxwjwilmqrslaat\",\"deserializer\":\"datatwujjzgx\",\"\":{\"hvtqqykbkk\":\"datawlxrhgt\",\"vmcofn\":\"dataeozejogmkorvv\"}}")
-                .toObject(AvroFormat.class);
+        AvroFormat model = BinaryData.fromString(
+            "{\"type\":\"AvroFormat\",\"serializer\":\"datasnosnqliwkmzojf\",\"deserializer\":\"datayalhtgm\",\"\":{\"sttcucrcmm\":\"datazgbjbhrpgi\"}}")
+            .toObject(AvroFormat.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvroFormat model = new AvroFormat().withSerializer("dataugxwjwilmqrslaat").withDeserializer("datatwujjzgx");
+        AvroFormat model = new AvroFormat().withSerializer("datasnosnqliwkmzojf").withDeserializer("datayalhtgm");
         model = BinaryData.fromObject(model).toObject(AvroFormat.class);
     }
 }

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.batch.fluent.models.CheckNameAvailabilityResult
 public final class CheckNameAvailabilityResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameAvailabilityResultInner model =
-            BinaryData
-                .fromString("{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"ajvnysounqe\"}")
+        CheckNameAvailabilityResultInner model
+            = BinaryData.fromString("{\"nameAvailable\":true,\"reason\":\"Invalid\",\"message\":\"ajvnysounqe\"}")
                 .toObject(CheckNameAvailabilityResultInner.class);
     }
 

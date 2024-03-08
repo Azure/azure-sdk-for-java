@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cosmos DB indexing policy. */
+/**
+ * Cosmos DB indexing policy.
+ */
 @Fluent
 public final class IndexingPolicy {
     /*
@@ -47,13 +49,15 @@ public final class IndexingPolicy {
     @JsonProperty(value = "spatialIndexes")
     private List<SpatialSpec> spatialIndexes;
 
-    /** Creates an instance of IndexingPolicy class. */
+    /**
+     * Creates an instance of IndexingPolicy class.
+     */
     public IndexingPolicy() {
     }
 
     /**
      * Get the automatic property: Indicates if the indexing policy is automatic.
-     *
+     * 
      * @return the automatic value.
      */
     public Boolean automatic() {
@@ -62,7 +66,7 @@ public final class IndexingPolicy {
 
     /**
      * Set the automatic property: Indicates if the indexing policy is automatic.
-     *
+     * 
      * @param automatic the automatic value to set.
      * @return the IndexingPolicy object itself.
      */
@@ -73,7 +77,7 @@ public final class IndexingPolicy {
 
     /**
      * Get the indexingMode property: Indicates the indexing mode.
-     *
+     * 
      * @return the indexingMode value.
      */
     public IndexingMode indexingMode() {
@@ -82,7 +86,7 @@ public final class IndexingPolicy {
 
     /**
      * Set the indexingMode property: Indicates the indexing mode.
-     *
+     * 
      * @param indexingMode the indexingMode value to set.
      * @return the IndexingPolicy object itself.
      */
@@ -93,7 +97,7 @@ public final class IndexingPolicy {
 
     /**
      * Get the includedPaths property: List of paths to include in the indexing.
-     *
+     * 
      * @return the includedPaths value.
      */
     public List<IncludedPath> includedPaths() {
@@ -102,7 +106,7 @@ public final class IndexingPolicy {
 
     /**
      * Set the includedPaths property: List of paths to include in the indexing.
-     *
+     * 
      * @param includedPaths the includedPaths value to set.
      * @return the IndexingPolicy object itself.
      */
@@ -113,7 +117,7 @@ public final class IndexingPolicy {
 
     /**
      * Get the excludedPaths property: List of paths to exclude from indexing.
-     *
+     * 
      * @return the excludedPaths value.
      */
     public List<ExcludedPath> excludedPaths() {
@@ -122,7 +126,7 @@ public final class IndexingPolicy {
 
     /**
      * Set the excludedPaths property: List of paths to exclude from indexing.
-     *
+     * 
      * @param excludedPaths the excludedPaths value to set.
      * @return the IndexingPolicy object itself.
      */
@@ -133,7 +137,7 @@ public final class IndexingPolicy {
 
     /**
      * Get the compositeIndexes property: List of composite path list.
-     *
+     * 
      * @return the compositeIndexes value.
      */
     public List<List<CompositePath>> compositeIndexes() {
@@ -142,7 +146,7 @@ public final class IndexingPolicy {
 
     /**
      * Set the compositeIndexes property: List of composite path list.
-     *
+     * 
      * @param compositeIndexes the compositeIndexes value to set.
      * @return the IndexingPolicy object itself.
      */
@@ -153,7 +157,7 @@ public final class IndexingPolicy {
 
     /**
      * Get the spatialIndexes property: List of spatial specifics.
-     *
+     * 
      * @return the spatialIndexes value.
      */
     public List<SpatialSpec> spatialIndexes() {
@@ -162,7 +166,7 @@ public final class IndexingPolicy {
 
     /**
      * Set the spatialIndexes property: List of spatial specifics.
-     *
+     * 
      * @param spatialIndexes the spatialIndexes value to set.
      * @return the IndexingPolicy object itself.
      */
@@ -173,7 +177,7 @@ public final class IndexingPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

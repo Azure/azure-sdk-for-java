@@ -8,35 +8,63 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the endpoint for the event subscription destination. */
+/**
+ * Type of the endpoint for the event subscription destination.
+ */
 public final class EndpointType extends ExpandableStringEnum<EndpointType> {
-    /** Static value WebHook for EndpointType. */
+    /**
+     * Static value WebHook for EndpointType.
+     */
     public static final EndpointType WEB_HOOK = fromString("WebHook");
 
-    /** Static value EventHub for EndpointType. */
+    /**
+     * Static value EventHub for EndpointType.
+     */
     public static final EndpointType EVENT_HUB = fromString("EventHub");
 
-    /** Static value StorageQueue for EndpointType. */
+    /**
+     * Static value StorageQueue for EndpointType.
+     */
     public static final EndpointType STORAGE_QUEUE = fromString("StorageQueue");
 
-    /** Static value HybridConnection for EndpointType. */
+    /**
+     * Static value HybridConnection for EndpointType.
+     */
     public static final EndpointType HYBRID_CONNECTION = fromString("HybridConnection");
 
-    /** Static value ServiceBusQueue for EndpointType. */
+    /**
+     * Static value ServiceBusQueue for EndpointType.
+     */
     public static final EndpointType SERVICE_BUS_QUEUE = fromString("ServiceBusQueue");
 
-    /** Static value ServiceBusTopic for EndpointType. */
+    /**
+     * Static value ServiceBusTopic for EndpointType.
+     */
     public static final EndpointType SERVICE_BUS_TOPIC = fromString("ServiceBusTopic");
 
-    /** Static value AzureFunction for EndpointType. */
+    /**
+     * Static value AzureFunction for EndpointType.
+     */
     public static final EndpointType AZURE_FUNCTION = fromString("AzureFunction");
 
-    /** Static value PartnerDestination for EndpointType. */
+    /**
+     * Static value PartnerDestination for EndpointType.
+     */
     public static final EndpointType PARTNER_DESTINATION = fromString("PartnerDestination");
 
     /**
+     * Static value MonitorAlert for EndpointType.
+     */
+    public static final EndpointType MONITOR_ALERT = fromString("MonitorAlert");
+
+    /**
+     * Static value NamespaceTopic for EndpointType.
+     */
+    public static final EndpointType NAMESPACE_TOPIC = fromString("NamespaceTopic");
+
+    /**
      * Creates a new instance of EndpointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +73,7 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
 
     /**
      * Creates or finds a EndpointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EndpointType.
      */
@@ -56,7 +84,7 @@ public final class EndpointType extends ExpandableStringEnum<EndpointType> {
 
     /**
      * Gets known EndpointType values.
-     *
+     * 
      * @return known EndpointType values.
      */
     public static Collection<EndpointType> values() {

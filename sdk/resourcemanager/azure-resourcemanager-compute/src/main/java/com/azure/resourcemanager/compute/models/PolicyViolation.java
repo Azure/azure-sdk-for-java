@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A policy violation reported against a gallery artifact. */
+/**
+ * A policy violation reported against a gallery artifact.
+ */
 @Fluent
 public final class PolicyViolation {
     /*
@@ -22,13 +24,15 @@ public final class PolicyViolation {
     @JsonProperty(value = "details")
     private String details;
 
-    /** Creates an instance of PolicyViolation class. */
+    /**
+     * Creates an instance of PolicyViolation class.
+     */
     public PolicyViolation() {
     }
 
     /**
      * Get the category property: Describes the nature of the policy violation.
-     *
+     * 
      * @return the category value.
      */
     public PolicyViolationCategory category() {
@@ -37,7 +41,7 @@ public final class PolicyViolation {
 
     /**
      * Set the category property: Describes the nature of the policy violation.
-     *
+     * 
      * @param category the category value to set.
      * @return the PolicyViolation object itself.
      */
@@ -48,7 +52,7 @@ public final class PolicyViolation {
 
     /**
      * Get the details property: Describes specific details about why this policy violation was reported.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -57,7 +61,7 @@ public final class PolicyViolation {
 
     /**
      * Set the details property: Describes specific details about why this policy violation was reported.
-     *
+     * 
      * @param details the details value to set.
      * @return the PolicyViolation object itself.
      */
@@ -68,7 +72,7 @@ public final class PolicyViolation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

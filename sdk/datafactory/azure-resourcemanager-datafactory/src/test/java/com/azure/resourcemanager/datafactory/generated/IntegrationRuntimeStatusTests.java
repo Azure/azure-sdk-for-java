@@ -12,19 +12,15 @@ import java.util.Map;
 public final class IntegrationRuntimeStatusTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeStatus model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"bjtazqugxywpmu\",\"state\":\"Started\",\"\":{\"dsuyonobgla\":\"datawfqkquj\",\"tcc\":\"datacq\",\"udxytlmoyrx\":\"datag\",\"qj\":\"datawfudwpzntxhdzhl\"}}")
-                .toObject(IntegrationRuntimeStatus.class);
+        IntegrationRuntimeStatus model = BinaryData.fromString(
+            "{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"bjtazqugxywpmu\",\"state\":\"Started\",\"\":{\"dsuyonobgla\":\"datawfqkquj\",\"tcc\":\"datacq\",\"udxytlmoyrx\":\"datag\",\"qj\":\"datawfudwpzntxhdzhl\"}}")
+            .toObject(IntegrationRuntimeStatus.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeStatus model =
-            new IntegrationRuntimeStatus()
-                .withAdditionalProperties(
-                    mapOf("dataFactoryName", "bjtazqugxywpmu", "state", "Started", "type", "IntegrationRuntimeStatus"));
+        IntegrationRuntimeStatus model = new IntegrationRuntimeStatus().withAdditionalProperties(
+            mapOf("dataFactoryName", "bjtazqugxywpmu", "state", "Started", "type", "IntegrationRuntimeStatus"));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeStatus.class);
     }
 

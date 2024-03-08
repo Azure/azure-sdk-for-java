@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters in Policy. */
+/**
+ * Parameters in Policy.
+ */
 @Fluent
 public final class PolicyParameters {
     /*
@@ -23,13 +25,15 @@ public final class PolicyParameters {
     @JsonProperty(value = "backupDatasourceParametersList")
     private List<BackupDatasourceParameters> backupDatasourceParametersList;
 
-    /** Creates an instance of PolicyParameters class. */
+    /**
+     * Creates an instance of PolicyParameters class.
+     */
     public PolicyParameters() {
     }
 
     /**
      * Get the dataStoreParametersList property: Gets or sets the DataStore Parameters.
-     *
+     * 
      * @return the dataStoreParametersList value.
      */
     public List<DataStoreParameters> dataStoreParametersList() {
@@ -38,7 +42,7 @@ public final class PolicyParameters {
 
     /**
      * Set the dataStoreParametersList property: Gets or sets the DataStore Parameters.
-     *
+     * 
      * @param dataStoreParametersList the dataStoreParametersList value to set.
      * @return the PolicyParameters object itself.
      */
@@ -49,7 +53,7 @@ public final class PolicyParameters {
 
     /**
      * Get the backupDatasourceParametersList property: Gets or sets the Backup Data Source Parameters.
-     *
+     * 
      * @return the backupDatasourceParametersList value.
      */
     public List<BackupDatasourceParameters> backupDatasourceParametersList() {
@@ -58,19 +62,19 @@ public final class PolicyParameters {
 
     /**
      * Set the backupDatasourceParametersList property: Gets or sets the Backup Data Source Parameters.
-     *
+     * 
      * @param backupDatasourceParametersList the backupDatasourceParametersList value to set.
      * @return the PolicyParameters object itself.
      */
-    public PolicyParameters withBackupDatasourceParametersList(
-        List<BackupDatasourceParameters> backupDatasourceParametersList) {
+    public PolicyParameters
+        withBackupDatasourceParametersList(List<BackupDatasourceParameters> backupDatasourceParametersList) {
         this.backupDatasourceParametersList = backupDatasourceParametersList;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

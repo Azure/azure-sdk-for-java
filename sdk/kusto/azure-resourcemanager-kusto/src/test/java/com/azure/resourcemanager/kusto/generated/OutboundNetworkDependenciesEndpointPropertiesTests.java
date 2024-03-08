@@ -17,36 +17,32 @@ public final class OutboundNetworkDependenciesEndpointPropertiesTests {
         OutboundNetworkDependenciesEndpointProperties model =
             BinaryData
                 .fromString(
-                    "{\"category\":\"foakgg\",\"endpoints\":[{\"domainName\":\"gaowpulpqblylsyx\",\"endpointDetails\":[{\"port\":1714916710},{\"port\":262817355},{\"port\":560645314},{\"port\":1868480291}]},{\"domainName\":\"gxsds\",\"endpointDetails\":[{\"port\":1182322128}]}],\"provisioningState\":\"Deleting\"}")
+                    "{\"category\":\"jq\",\"endpoints\":[{\"domainName\":\"zpfrla\",\"endpointDetails\":[{\"port\":1822187571,\"ipAddress\":\"oiindfpwpjy\"}]}],\"provisioningState\":\"Moving\"}")
                 .toObject(OutboundNetworkDependenciesEndpointProperties.class);
-        Assertions.assertEquals("foakgg", model.category());
-        Assertions.assertEquals("gaowpulpqblylsyx", model.endpoints().get(0).domainName());
-        Assertions.assertEquals(1714916710, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("jq", model.category());
+        Assertions.assertEquals("zpfrla", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(1822187571, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("oiindfpwpjy", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         OutboundNetworkDependenciesEndpointProperties model =
             new OutboundNetworkDependenciesEndpointProperties()
-                .withCategory("foakgg")
+                .withCategory("jq")
                 .withEndpoints(
                     Arrays
                         .asList(
                             new EndpointDependency()
-                                .withDomainName("gaowpulpqblylsyx")
+                                .withDomainName("zpfrla")
                                 .withEndpointDetails(
                                     Arrays
                                         .asList(
-                                            new EndpointDetail().withPort(1714916710),
-                                            new EndpointDetail().withPort(262817355),
-                                            new EndpointDetail().withPort(560645314),
-                                            new EndpointDetail().withPort(1868480291))),
-                            new EndpointDependency()
-                                .withDomainName("gxsds")
-                                .withEndpointDetails(Arrays.asList(new EndpointDetail().withPort(1182322128)))));
+                                            new EndpointDetail().withPort(1822187571).withIpAddress("oiindfpwpjy")))));
         model = BinaryData.fromObject(model).toObject(OutboundNetworkDependenciesEndpointProperties.class);
-        Assertions.assertEquals("foakgg", model.category());
-        Assertions.assertEquals("gaowpulpqblylsyx", model.endpoints().get(0).domainName());
-        Assertions.assertEquals(1714916710, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("jq", model.category());
+        Assertions.assertEquals("zpfrla", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(1822187571, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("oiindfpwpjy", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
     }
 }

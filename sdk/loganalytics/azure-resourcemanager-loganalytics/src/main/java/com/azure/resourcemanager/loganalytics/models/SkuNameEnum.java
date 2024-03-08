@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuNameEnum. */
+/** The name of the Service Tier. */
 public final class SkuNameEnum extends ExpandableStringEnum<SkuNameEnum> {
     /** Static value Free for SkuNameEnum. */
     public static final SkuNameEnum FREE = fromString("Free");
@@ -30,6 +30,15 @@ public final class SkuNameEnum extends ExpandableStringEnum<SkuNameEnum> {
 
     /** Static value CapacityReservation for SkuNameEnum. */
     public static final SkuNameEnum CAPACITY_RESERVATION = fromString("CapacityReservation");
+
+    /**
+     * Creates a new instance of SkuNameEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuNameEnum() {
+    }
 
     /**
      * Creates or finds a SkuNameEnum from its string representation.

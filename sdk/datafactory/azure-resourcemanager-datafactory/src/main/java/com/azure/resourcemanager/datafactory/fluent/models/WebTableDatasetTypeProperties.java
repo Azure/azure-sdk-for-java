@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Web table dataset properties. */
+/**
+ * Web table dataset properties.
+ */
 @Fluent
 public final class WebTableDatasetTypeProperties {
     /*
@@ -25,14 +27,16 @@ public final class WebTableDatasetTypeProperties {
     @JsonProperty(value = "path")
     private Object path;
 
-    /** Creates an instance of WebTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of WebTableDatasetTypeProperties class.
+     */
     public WebTableDatasetTypeProperties() {
     }
 
     /**
      * Get the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
      * resultType integer), minimum: 0.
-     *
+     * 
      * @return the index value.
      */
     public Object index() {
@@ -42,7 +46,7 @@ public final class WebTableDatasetTypeProperties {
     /**
      * Set the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
      * resultType integer), minimum: 0.
-     *
+     * 
      * @param index the index value to set.
      * @return the WebTableDatasetTypeProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class WebTableDatasetTypeProperties {
     /**
      * Get the path property: The relative URL to the web page from the linked service URL. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the path value.
      */
     public Object path() {
@@ -64,7 +68,7 @@ public final class WebTableDatasetTypeProperties {
     /**
      * Set the path property: The relative URL to the web page from the linked service URL. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param path the path value to set.
      * @return the WebTableDatasetTypeProperties object itself.
      */
@@ -75,15 +79,13 @@ public final class WebTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (index() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property index in model WebTableDatasetTypeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property index in model WebTableDatasetTypeProperties"));
         }
     }
 

@@ -5,7 +5,6 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Healthcare Entity Category. */
@@ -132,7 +131,6 @@ public final class HealthcareEntityCategory extends ExpandableStringEnum<Healthc
      * @param name a name to look for.
      * @return the corresponding HealthcareEntityCategory.
      */
-    @JsonCreator
     public static HealthcareEntityCategory fromString(String name) {
         return fromString(name, HealthcareEntityCategory.class);
     }

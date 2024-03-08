@@ -58,6 +58,6 @@ public final class GlobalSchedulesDeleteByResourceGroupWithResponseMockTests {
 
         manager
             .globalSchedules()
-            .deleteByResourceGroupWithResponse("xeiqbpsmg", "mguaml", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("inzcpdltkrlgj", "tbdrvcqgue", com.azure.core.util.Context.NONE);
     }
 }

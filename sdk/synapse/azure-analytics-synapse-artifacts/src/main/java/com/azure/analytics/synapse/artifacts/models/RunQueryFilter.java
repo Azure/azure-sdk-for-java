@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Query filter option for listing runs. */
+/**
+ * Query filter option for listing runs.
+ */
 @Fluent
 public final class RunQueryFilter {
     /*
@@ -31,15 +33,18 @@ public final class RunQueryFilter {
     @JsonProperty(value = "values", required = true)
     private List<String> values;
 
-    /** Creates an instance of RunQueryFilter class. */
-    public RunQueryFilter() {}
+    /**
+     * Creates an instance of RunQueryFilter class.
+     */
+    public RunQueryFilter() {
+    }
 
     /**
      * Get the operand property: Parameter name to be used for filter. The allowed operands to query pipeline runs are
      * PipelineName, RunStart, RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart,
      * ActivityRunEnd, ActivityType and Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and
      * Status.
-     *
+     * 
      * @return the operand value.
      */
     public RunQueryFilterOperand getOperand() {
@@ -51,7 +56,7 @@ public final class RunQueryFilter {
      * PipelineName, RunStart, RunEnd and Status; to query activity runs are ActivityName, ActivityRunStart,
      * ActivityRunEnd, ActivityType and Status, and to query trigger runs are TriggerName, TriggerRunTimestamp and
      * Status.
-     *
+     * 
      * @param operand the operand value to set.
      * @return the RunQueryFilter object itself.
      */
@@ -62,7 +67,7 @@ public final class RunQueryFilter {
 
     /**
      * Get the operator property: Operator to be used for filter.
-     *
+     * 
      * @return the operator value.
      */
     public RunQueryFilterOperator getOperator() {
@@ -71,7 +76,7 @@ public final class RunQueryFilter {
 
     /**
      * Set the operator property: Operator to be used for filter.
-     *
+     * 
      * @param operator the operator value to set.
      * @return the RunQueryFilter object itself.
      */
@@ -82,7 +87,7 @@ public final class RunQueryFilter {
 
     /**
      * Get the values property: List of filter values.
-     *
+     * 
      * @return the values value.
      */
     public List<String> getValues() {
@@ -91,7 +96,7 @@ public final class RunQueryFilter {
 
     /**
      * Set the values property: List of filter values.
-     *
+     * 
      * @param values the values value to set.
      * @return the RunQueryFilter object itself.
      */

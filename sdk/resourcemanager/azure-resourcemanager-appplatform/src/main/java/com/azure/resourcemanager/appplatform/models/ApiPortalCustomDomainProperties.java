@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of custom domain for API portal. */
+/**
+ * The properties of custom domain for API portal.
+ */
 @Fluent
 public final class ApiPortalCustomDomainProperties {
     /*
@@ -17,8 +19,14 @@ public final class ApiPortalCustomDomainProperties {
     private String thumbprint;
 
     /**
+     * Creates an instance of ApiPortalCustomDomainProperties class.
+     */
+    public ApiPortalCustomDomainProperties() {
+    }
+
+    /**
      * Get the thumbprint property: The thumbprint of bound certificate.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -27,7 +35,7 @@ public final class ApiPortalCustomDomainProperties {
 
     /**
      * Set the thumbprint property: The thumbprint of bound certificate.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the ApiPortalCustomDomainProperties object itself.
      */
@@ -38,7 +46,7 @@ public final class ApiPortalCustomDomainProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

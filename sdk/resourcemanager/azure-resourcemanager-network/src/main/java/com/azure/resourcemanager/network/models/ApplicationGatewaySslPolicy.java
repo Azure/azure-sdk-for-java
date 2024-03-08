@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Application Gateway Ssl policy. */
+/**
+ * Application Gateway Ssl policy.
+ */
 @Fluent
 public final class ApplicationGatewaySslPolicy {
     /*
@@ -41,13 +43,15 @@ public final class ApplicationGatewaySslPolicy {
     @JsonProperty(value = "minProtocolVersion")
     private ApplicationGatewaySslProtocol minProtocolVersion;
 
-    /** Creates an instance of ApplicationGatewaySslPolicy class. */
+    /**
+     * Creates an instance of ApplicationGatewaySslPolicy class.
+     */
     public ApplicationGatewaySslPolicy() {
     }
 
     /**
      * Get the disabledSslProtocols property: Ssl protocols to be disabled on application gateway.
-     *
+     * 
      * @return the disabledSslProtocols value.
      */
     public List<ApplicationGatewaySslProtocol> disabledSslProtocols() {
@@ -56,19 +60,19 @@ public final class ApplicationGatewaySslPolicy {
 
     /**
      * Set the disabledSslProtocols property: Ssl protocols to be disabled on application gateway.
-     *
+     * 
      * @param disabledSslProtocols the disabledSslProtocols value to set.
      * @return the ApplicationGatewaySslPolicy object itself.
      */
-    public ApplicationGatewaySslPolicy withDisabledSslProtocols(
-        List<ApplicationGatewaySslProtocol> disabledSslProtocols) {
+    public ApplicationGatewaySslPolicy
+        withDisabledSslProtocols(List<ApplicationGatewaySslProtocol> disabledSslProtocols) {
         this.disabledSslProtocols = disabledSslProtocols;
         return this;
     }
 
     /**
      * Get the policyType property: Type of Ssl Policy.
-     *
+     * 
      * @return the policyType value.
      */
     public ApplicationGatewaySslPolicyType policyType() {
@@ -77,7 +81,7 @@ public final class ApplicationGatewaySslPolicy {
 
     /**
      * Set the policyType property: Type of Ssl Policy.
-     *
+     * 
      * @param policyType the policyType value to set.
      * @return the ApplicationGatewaySslPolicy object itself.
      */
@@ -88,7 +92,7 @@ public final class ApplicationGatewaySslPolicy {
 
     /**
      * Get the policyName property: Name of Ssl predefined policy.
-     *
+     * 
      * @return the policyName value.
      */
     public ApplicationGatewaySslPolicyName policyName() {
@@ -97,7 +101,7 @@ public final class ApplicationGatewaySslPolicy {
 
     /**
      * Set the policyName property: Name of Ssl predefined policy.
-     *
+     * 
      * @param policyName the policyName value to set.
      * @return the ApplicationGatewaySslPolicy object itself.
      */
@@ -108,7 +112,7 @@ public final class ApplicationGatewaySslPolicy {
 
     /**
      * Get the cipherSuites property: Ssl cipher suites to be enabled in the specified order to application gateway.
-     *
+     * 
      * @return the cipherSuites value.
      */
     public List<ApplicationGatewaySslCipherSuite> cipherSuites() {
@@ -117,7 +121,7 @@ public final class ApplicationGatewaySslPolicy {
 
     /**
      * Set the cipherSuites property: Ssl cipher suites to be enabled in the specified order to application gateway.
-     *
+     * 
      * @param cipherSuites the cipherSuites value to set.
      * @return the ApplicationGatewaySslPolicy object itself.
      */
@@ -128,7 +132,7 @@ public final class ApplicationGatewaySslPolicy {
 
     /**
      * Get the minProtocolVersion property: Minimum version of Ssl protocol to be supported on application gateway.
-     *
+     * 
      * @return the minProtocolVersion value.
      */
     public ApplicationGatewaySslProtocol minProtocolVersion() {
@@ -137,7 +141,7 @@ public final class ApplicationGatewaySslPolicy {
 
     /**
      * Set the minProtocolVersion property: Minimum version of Ssl protocol to be supported on application gateway.
-     *
+     * 
      * @param minProtocolVersion the minProtocolVersion value to set.
      * @return the ApplicationGatewaySslPolicy object itself.
      */
@@ -148,7 +152,7 @@ public final class ApplicationGatewaySslPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

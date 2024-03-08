@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the gallery unique name. */
+/**
+ * Describes the gallery unique name.
+ */
 @Immutable
 public final class GalleryIdentifier {
     /*
@@ -16,14 +18,16 @@ public final class GalleryIdentifier {
     @JsonProperty(value = "uniqueName", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueName;
 
-    /** Creates an instance of GalleryIdentifier class. */
+    /**
+     * Creates an instance of GalleryIdentifier class.
+     */
     public GalleryIdentifier() {
     }
 
     /**
-     * Get the uniqueName property: The unique name of the Shared Image Gallery. This name is generated automatically by
-     * Azure.
-     *
+     * Get the uniqueName property: The unique name of the Shared Image Gallery. This name is generated automatically
+     * by Azure.
+     * 
      * @return the uniqueName value.
      */
     public String uniqueName() {
@@ -32,7 +36,7 @@ public final class GalleryIdentifier {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

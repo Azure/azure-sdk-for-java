@@ -32,7 +32,7 @@ public final class StorageMoversListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"gipwhonowkg\",\"provisioningState\":\"Succeeded\"},\"location\":\"nkixzbinj\",\"tags\":{\"iyqzrnk\":\"ttmrywnuzoqf\",\"qnwvlrya\":\"qvyxlwhzlsicoho\",\"heun\":\"w\",\"klyaxuconu\":\"mqhgyxzkonocuk\"},\"id\":\"szfkbe\",\"name\":\"pewr\",\"type\":\"jmwvvj\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"wv\",\"provisioningState\":\"Succeeded\"},\"location\":\"tcxsenhwlrs\",\"tags\":{\"qdqgbi\":\"zpwv\",\"fcivfsnkym\":\"ylihkaetckt\",\"jf\":\"ctq\",\"fuwutttxf\":\"ebrjcxe\"},\"id\":\"jrbirphxepcyv\",\"name\":\"hfnljkyq\",\"type\":\"j\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class StorageMoversListMockTests {
 
         PagedIterable<StorageMover> response = manager.storageMovers().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nkixzbinj", response.iterator().next().location());
-        Assertions.assertEquals("ttmrywnuzoqf", response.iterator().next().tags().get("iyqzrnk"));
-        Assertions.assertEquals("gipwhonowkg", response.iterator().next().description());
+        Assertions.assertEquals("tcxsenhwlrs", response.iterator().next().location());
+        Assertions.assertEquals("zpwv", response.iterator().next().tags().get("qdqgbi"));
+        Assertions.assertEquals("wv", response.iterator().next().description());
     }
 }

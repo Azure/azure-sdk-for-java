@@ -15,26 +15,26 @@ public final class StatusBannerTests {
         StatusBanner model =
             BinaryData
                 .fromString(
-                    "{\"title\":\"wptfdy\",\"message\":\"fqbuaceopzf\",\"cloud\":\"hhuao\",\"lastModifiedTime\":\"2021-03-20T16:48:49Z\"}")
+                    "{\"title\":\"qmqhldvriii\",\"message\":\"nalghfkvtvsexso\",\"cloud\":\"el\",\"lastModifiedTime\":\"2021-11-06T19:32:24Z\"}")
                 .toObject(StatusBanner.class);
-        Assertions.assertEquals("wptfdy", model.title());
-        Assertions.assertEquals("fqbuaceopzf", model.message());
-        Assertions.assertEquals("hhuao", model.cloud());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T16:48:49Z"), model.lastModifiedTime());
+        Assertions.assertEquals("qmqhldvriii", model.title());
+        Assertions.assertEquals("nalghfkvtvsexso", model.message());
+        Assertions.assertEquals("el", model.cloud());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T19:32:24Z"), model.lastModifiedTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StatusBanner model =
             new StatusBanner()
-                .withTitle("wptfdy")
-                .withMessage("fqbuaceopzf")
-                .withCloud("hhuao")
-                .withLastModifiedTime(OffsetDateTime.parse("2021-03-20T16:48:49Z"));
+                .withTitle("qmqhldvriii")
+                .withMessage("nalghfkvtvsexso")
+                .withCloud("el")
+                .withLastModifiedTime(OffsetDateTime.parse("2021-11-06T19:32:24Z"));
         model = BinaryData.fromObject(model).toObject(StatusBanner.class);
-        Assertions.assertEquals("wptfdy", model.title());
-        Assertions.assertEquals("fqbuaceopzf", model.message());
-        Assertions.assertEquals("hhuao", model.cloud());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T16:48:49Z"), model.lastModifiedTime());
+        Assertions.assertEquals("qmqhldvriii", model.title());
+        Assertions.assertEquals("nalghfkvtvsexso", model.message());
+        Assertions.assertEquals("el", model.cloud());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-06T19:32:24Z"), model.lastModifiedTime());
     }
 }

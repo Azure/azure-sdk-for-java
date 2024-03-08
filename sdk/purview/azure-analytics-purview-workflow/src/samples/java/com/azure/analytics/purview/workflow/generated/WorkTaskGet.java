@@ -4,8 +4,8 @@
 
 package com.azure.analytics.purview.workflow.generated;
 
-import com.azure.analytics.purview.workflow.PurviewWorkflowClient;
-import com.azure.analytics.purview.workflow.PurviewWorkflowClientBuilder;
+import com.azure.analytics.purview.workflow.WorkflowTaskClient;
+import com.azure.analytics.purview.workflow.WorkflowTaskClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -14,16 +14,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class WorkTaskGet {
     public static void main(String[] args) {
-        PurviewWorkflowClient purviewWorkflowClient =
-                new PurviewWorkflowClientBuilder()
+        WorkflowTaskClient workflowTaskClient =
+                new WorkflowTaskClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                         .buildClient();
-        // BEGIN:com.azure.analytics.purview.workflow.generated.getworkflowtask.worktaskget
+        // BEGIN:com.azure.analytics.purview.workflow.generated.workflowtaskget.worktaskget
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                purviewWorkflowClient.getWorkflowTaskWithResponse(
-                        "98d98e2c-23fa-4157-a3f8-ff8ce5cc095c", requestOptions);
-        // END:com.azure.analytics.purview.workflow.generated.getworkflowtask.worktaskget
+                workflowTaskClient.getWithResponse("98d98e2c-23fa-4157-a3f8-ff8ce5cc095c", requestOptions);
+        // END:com.azure.analytics.purview.workflow.generated.workflowtaskget.worktaskget
     }
 }

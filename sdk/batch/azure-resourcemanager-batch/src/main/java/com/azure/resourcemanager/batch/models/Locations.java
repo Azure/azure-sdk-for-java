@@ -8,24 +8,26 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Locations. */
+/**
+ * Resource collection API of Locations.
+ */
 public interface Locations {
     /**
      * Gets the Batch service quotas for the specified subscription at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service quotas.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch service quotas for the specified subscription at the given location along with {@link
-     *     Response}.
+     * @return the Batch service quotas for the specified subscription at the given location along with
+     * {@link Response}.
      */
     Response<BatchLocationQuota> getQuotasWithResponse(String locationName, Context context);
 
     /**
      * Gets the Batch service quotas for the specified subscription at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service quotas.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,19 +38,19 @@ public interface Locations {
 
     /**
      * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Virtual Machine VM sizes available at the given location as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(String locationName);
 
     /**
      * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
@@ -57,26 +59,26 @@ public interface Locations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Virtual Machine VM sizes available at the given location as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
-    PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(
-        String locationName, Integer maxresults, String filter, Context context);
+    PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(String locationName, Integer maxresults, String filter,
+        Context context);
 
     /**
      * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Cloud Service VM sizes available at the given location as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<SupportedSku> listSupportedCloudServiceSkus(String locationName);
 
     /**
      * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
@@ -85,14 +87,14 @@ public interface Locations {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Cloud Service VM sizes available at the given location as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
-    PagedIterable<SupportedSku> listSupportedCloudServiceSkus(
-        String locationName, Integer maxresults, String filter, Context context);
+    PagedIterable<SupportedSku> listSupportedCloudServiceSkus(String locationName, Integer maxresults, String filter,
+        Context context);
 
     /**
      * Checks whether the Batch account name is available in the specified region.
-     *
+     * 
      * @param locationName The desired region for the name check.
      * @param parameters Properties needed to check the availability of a name.
      * @param context The context to associate with this operation.
@@ -101,12 +103,12 @@ public interface Locations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response along with {@link Response}.
      */
-    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        String locationName, CheckNameAvailabilityParameters parameters, Context context);
+    Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(String locationName,
+        CheckNameAvailabilityParameters parameters, Context context);
 
     /**
      * Checks whether the Batch account name is available in the specified region.
-     *
+     * 
      * @param locationName The desired region for the name check.
      * @param parameters Properties needed to check the availability of a name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -6,8 +6,10 @@ package com.azure.resourcemanager.support.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.support.fluent.models.SupportTicketDetailsInner;
+import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.ContactProfile;
 import com.azure.resourcemanager.support.models.QuotaTicketDetails;
+import com.azure.resourcemanager.support.models.SecondaryConsent;
 import com.azure.resourcemanager.support.models.ServiceLevelAgreement;
 import com.azure.resourcemanager.support.models.SeverityLevel;
 import com.azure.resourcemanager.support.models.Status;
@@ -17,6 +19,8 @@ import com.azure.resourcemanager.support.models.TechnicalTicketDetails;
 import com.azure.resourcemanager.support.models.UpdateContactProfile;
 import com.azure.resourcemanager.support.models.UpdateSupportTicket;
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.List;
 
 public final class SupportTicketDetailsImpl
     implements SupportTicketDetails, SupportTicketDetails.Definition, SupportTicketDetails.Update {
@@ -64,6 +68,18 @@ public final class SupportTicketDetailsImpl
         return this.innerModel().require24X7Response();
     }
 
+    public Consent advancedDiagnosticConsent() {
+        return this.innerModel().advancedDiagnosticConsent();
+    }
+
+    public String problemScopingQuestions() {
+        return this.innerModel().problemScopingQuestions();
+    }
+
+    public String supportPlanId() {
+        return this.innerModel().supportPlanId();
+    }
+
     public ContactProfile contactDetails() {
         return this.innerModel().contactDetails();
     }
@@ -78,6 +94,10 @@ public final class SupportTicketDetailsImpl
 
     public String supportPlanType() {
         return this.innerModel().supportPlanType();
+    }
+
+    public String supportPlanDisplayName() {
+        return this.innerModel().supportPlanDisplayName();
     }
 
     public String title() {
@@ -108,12 +128,25 @@ public final class SupportTicketDetailsImpl
         return this.innerModel().modifiedDate();
     }
 
+    public String fileWorkspaceName() {
+        return this.innerModel().fileWorkspaceName();
+    }
+
     public TechnicalTicketDetails technicalTicketDetails() {
         return this.innerModel().technicalTicketDetails();
     }
 
     public QuotaTicketDetails quotaTicketDetails() {
         return this.innerModel().quotaTicketDetails();
+    }
+
+    public List<SecondaryConsent> secondaryConsent() {
+        List<SecondaryConsent> inner = this.innerModel().secondaryConsent();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public SupportTicketDetailsInner innerModel() {
@@ -227,6 +260,26 @@ public final class SupportTicketDetailsImpl
         return this;
     }
 
+    public SupportTicketDetailsImpl withAdvancedDiagnosticConsent(Consent advancedDiagnosticConsent) {
+        if (isInCreateMode()) {
+            this.innerModel().withAdvancedDiagnosticConsent(advancedDiagnosticConsent);
+            return this;
+        } else {
+            this.updateUpdateSupportTicket.withAdvancedDiagnosticConsent(advancedDiagnosticConsent);
+            return this;
+        }
+    }
+
+    public SupportTicketDetailsImpl withProblemScopingQuestions(String problemScopingQuestions) {
+        this.innerModel().withProblemScopingQuestions(problemScopingQuestions);
+        return this;
+    }
+
+    public SupportTicketDetailsImpl withSupportPlanId(String supportPlanId) {
+        this.innerModel().withSupportPlanId(supportPlanId);
+        return this;
+    }
+
     public SupportTicketDetailsImpl withContactDetails(ContactProfile contactDetails) {
         this.innerModel().withContactDetails(contactDetails);
         return this;
@@ -257,6 +310,11 @@ public final class SupportTicketDetailsImpl
         return this;
     }
 
+    public SupportTicketDetailsImpl withFileWorkspaceName(String fileWorkspaceName) {
+        this.innerModel().withFileWorkspaceName(fileWorkspaceName);
+        return this;
+    }
+
     public SupportTicketDetailsImpl withTechnicalTicketDetails(TechnicalTicketDetails technicalTicketDetails) {
         this.innerModel().withTechnicalTicketDetails(technicalTicketDetails);
         return this;
@@ -265,6 +323,16 @@ public final class SupportTicketDetailsImpl
     public SupportTicketDetailsImpl withQuotaTicketDetails(QuotaTicketDetails quotaTicketDetails) {
         this.innerModel().withQuotaTicketDetails(quotaTicketDetails);
         return this;
+    }
+
+    public SupportTicketDetailsImpl withSecondaryConsent(List<SecondaryConsent> secondaryConsent) {
+        if (isInCreateMode()) {
+            this.innerModel().withSecondaryConsent(secondaryConsent);
+            return this;
+        } else {
+            this.updateUpdateSupportTicket.withSecondaryConsent(secondaryConsent);
+            return this;
+        }
     }
 
     public SupportTicketDetailsImpl withStatus(Status status) {

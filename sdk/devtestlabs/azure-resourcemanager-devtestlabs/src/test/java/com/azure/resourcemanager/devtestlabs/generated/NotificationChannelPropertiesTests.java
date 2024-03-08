@@ -17,12 +17,12 @@ public final class NotificationChannelPropertiesTests {
         NotificationChannelProperties model =
             BinaryData
                 .fromString(
-                    "{\"webHookUrl\":\"qxvcxgfrpdsofb\",\"emailRecipient\":\"rnsvbuswd\",\"notificationLocale\":\"yybyc\",\"description\":\"nvjsrtkfa\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"Cost\"},{\"eventName\":\"Cost\"},{\"eventName\":\"AutoShutdown\"}],\"createdDate\":\"2021-09-23T00:06:59Z\",\"provisioningState\":\"dyuxzej\",\"uniqueIdentifier\":\"psew\"}")
+                    "{\"webHookUrl\":\"zfvazi\",\"emailRecipient\":\"l\",\"notificationLocale\":\"qttbaj\",\"description\":\"atnwxyiopi\",\"events\":[{\"eventName\":\"AutoShutdown\"},{\"eventName\":\"Cost\"}],\"createdDate\":\"2021-10-17T16:33:45Z\",\"provisioningState\":\"xkdmligo\",\"uniqueIdentifier\":\"brxk\"}")
                 .toObject(NotificationChannelProperties.class);
-        Assertions.assertEquals("qxvcxgfrpdsofb", model.webhookUrl());
-        Assertions.assertEquals("rnsvbuswd", model.emailRecipient());
-        Assertions.assertEquals("yybyc", model.notificationLocale());
-        Assertions.assertEquals("nvjsrtkfa", model.description());
+        Assertions.assertEquals("zfvazi", model.webhookUrl());
+        Assertions.assertEquals("l", model.emailRecipient());
+        Assertions.assertEquals("qttbaj", model.notificationLocale());
+        Assertions.assertEquals("atnwxyiopi", model.description());
         Assertions.assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, model.events().get(0).eventName());
     }
 
@@ -30,22 +30,20 @@ public final class NotificationChannelPropertiesTests {
     public void testSerialize() throws Exception {
         NotificationChannelProperties model =
             new NotificationChannelProperties()
-                .withWebhookUrl("qxvcxgfrpdsofb")
-                .withEmailRecipient("rnsvbuswd")
-                .withNotificationLocale("yybyc")
-                .withDescription("nvjsrtkfa")
+                .withWebhookUrl("zfvazi")
+                .withEmailRecipient("l")
+                .withNotificationLocale("qttbaj")
+                .withDescription("atnwxyiopi")
                 .withEvents(
                     Arrays
                         .asList(
                             new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN),
-                            new Event().withEventName(NotificationChannelEventType.COST),
-                            new Event().withEventName(NotificationChannelEventType.COST),
-                            new Event().withEventName(NotificationChannelEventType.AUTO_SHUTDOWN)));
+                            new Event().withEventName(NotificationChannelEventType.COST)));
         model = BinaryData.fromObject(model).toObject(NotificationChannelProperties.class);
-        Assertions.assertEquals("qxvcxgfrpdsofb", model.webhookUrl());
-        Assertions.assertEquals("rnsvbuswd", model.emailRecipient());
-        Assertions.assertEquals("yybyc", model.notificationLocale());
-        Assertions.assertEquals("nvjsrtkfa", model.description());
+        Assertions.assertEquals("zfvazi", model.webhookUrl());
+        Assertions.assertEquals("l", model.emailRecipient());
+        Assertions.assertEquals("qttbaj", model.notificationLocale());
+        Assertions.assertEquals("atnwxyiopi", model.description());
         Assertions.assertEquals(NotificationChannelEventType.AUTO_SHUTDOWN, model.events().get(0).eventName());
     }
 }

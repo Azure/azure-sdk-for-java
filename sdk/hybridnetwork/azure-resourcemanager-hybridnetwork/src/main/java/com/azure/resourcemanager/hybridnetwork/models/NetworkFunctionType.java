@@ -8,20 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The network function type. */
+/**
+ * The network function type.
+ */
 public final class NetworkFunctionType extends ExpandableStringEnum<NetworkFunctionType> {
-    /** Static value Unknown for NetworkFunctionType. */
+    /**
+     * Static value Unknown for NetworkFunctionType.
+     */
     public static final NetworkFunctionType UNKNOWN = fromString("Unknown");
 
-    /** Static value VirtualNetworkFunction for NetworkFunctionType. */
+    /**
+     * Static value VirtualNetworkFunction for NetworkFunctionType.
+     */
     public static final NetworkFunctionType VIRTUAL_NETWORK_FUNCTION = fromString("VirtualNetworkFunction");
 
-    /** Static value ContainerizedNetworkFunction for NetworkFunctionType. */
+    /**
+     * Static value ContainerizedNetworkFunction for NetworkFunctionType.
+     */
     public static final NetworkFunctionType CONTAINERIZED_NETWORK_FUNCTION = fromString("ContainerizedNetworkFunction");
 
     /**
+     * Creates a new instance of NetworkFunctionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NetworkFunctionType() {
+    }
+
+    /**
      * Creates or finds a NetworkFunctionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkFunctionType.
      */
@@ -32,7 +49,7 @@ public final class NetworkFunctionType extends ExpandableStringEnum<NetworkFunct
 
     /**
      * Gets known NetworkFunctionType values.
-     *
+     * 
      * @return known NetworkFunctionType values.
      */
     public static Collection<NetworkFunctionType> values() {

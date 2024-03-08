@@ -53,11 +53,14 @@ public final class ApplicationInsightsComponentProactiveDetectionConfigurationRu
     private Boolean isInPreview;
 
     /*
-     * A flag indicating whether email notifications are supported for
-     * detections for this rule
+     * A flag indicating whether email notifications are supported for detections for this rule
      */
     @JsonProperty(value = "SupportsEmailNotifications")
     private Boolean supportsEmailNotifications;
+
+    /** Creates an instance of ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions class. */
+    public ApplicationInsightsComponentProactiveDetectionConfigurationRuleDefinitions() {
+    }
 
     /**
      * Get the name property: The rule name.

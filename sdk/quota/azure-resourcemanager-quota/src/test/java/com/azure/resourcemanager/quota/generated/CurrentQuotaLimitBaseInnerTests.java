@@ -14,27 +14,20 @@ import org.junit.jupiter.api.Assertions;
 public final class CurrentQuotaLimitBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CurrentQuotaLimitBaseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"ithxqhabifpi\",\"name\":{\"value\":\"czbysc\",\"localizedValue\":\"q\"},\"resourceType\":\"hiv\",\"quotaPeriod\":\"n\",\"isQuotaApplicable\":false,\"properties\":\"databr\"},\"id\":\"xvd\",\"name\":\"mjgr\",\"type\":\"fwvuk\"}")
-                .toObject(CurrentQuotaLimitBaseInner.class);
-        Assertions.assertEquals("czbysc", model.properties().name().value());
-        Assertions.assertEquals("hiv", model.properties().resourceType());
+        CurrentQuotaLimitBaseInner model = BinaryData.fromString(
+            "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"mjgr\",\"name\":{\"value\":\"vukxgau\",\"localizedValue\":\"cs\"},\"resourceType\":\"s\",\"quotaPeriod\":\"nyejhkryhtnap\",\"isQuotaApplicable\":false,\"properties\":\"dataokjye\"},\"id\":\"kkvnipjox\",\"name\":\"jnchgej\",\"type\":\"podmailzydehojwy\"}")
+            .toObject(CurrentQuotaLimitBaseInner.class);
+        Assertions.assertEquals("vukxgau", model.properties().name().value());
+        Assertions.assertEquals("s", model.properties().resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CurrentQuotaLimitBaseInner model =
-            new CurrentQuotaLimitBaseInner()
-                .withProperties(
-                    new QuotaProperties()
-                        .withLimit(new LimitJsonObject())
-                        .withName(new ResourceName().withValue("czbysc"))
-                        .withResourceType("hiv")
-                        .withProperties("databr"));
+        CurrentQuotaLimitBaseInner model
+            = new CurrentQuotaLimitBaseInner().withProperties(new QuotaProperties().withLimit(new LimitJsonObject())
+                .withName(new ResourceName().withValue("vukxgau")).withResourceType("s").withProperties("dataokjye"));
         model = BinaryData.fromObject(model).toObject(CurrentQuotaLimitBaseInner.class);
-        Assertions.assertEquals("czbysc", model.properties().name().value());
-        Assertions.assertEquals("hiv", model.properties().resourceType());
+        Assertions.assertEquals("vukxgau", model.properties().name().value());
+        Assertions.assertEquals("s", model.properties().resourceType());
     }
 }

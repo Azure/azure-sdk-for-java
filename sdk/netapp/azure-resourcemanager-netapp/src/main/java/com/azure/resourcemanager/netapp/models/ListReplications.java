@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.fluent.models.ReplicationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List Replications. */
+/**
+ * List Replications.
+ */
 @Fluent
 public final class ListReplications {
     /*
@@ -18,13 +20,15 @@ public final class ListReplications {
     @JsonProperty(value = "value")
     private List<ReplicationInner> value;
 
-    /** Creates an instance of ListReplications class. */
+    /**
+     * Creates an instance of ListReplications class.
+     */
     public ListReplications() {
     }
 
     /**
      * Get the value property: A list of replications.
-     *
+     * 
      * @return the value value.
      */
     public List<ReplicationInner> value() {
@@ -33,7 +37,7 @@ public final class ListReplications {
 
     /**
      * Set the value property: A list of replications.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListReplications object itself.
      */
@@ -44,7 +48,7 @@ public final class ListReplications {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -30,14 +30,16 @@ public final class RedshiftUnloadSettings {
     @JsonProperty(value = "bucketName", required = true)
     private Object bucketName;
 
-    /** Creates an instance of RedshiftUnloadSettings class. */
+    /**
+     * Creates an instance of RedshiftUnloadSettings class.
+     */
     public RedshiftUnloadSettings() {
     }
 
     /**
      * Get the s3LinkedServiceName property: The name of the Amazon S3 linked service which will be used for the unload
      * operation when copying from the Amazon Redshift source.
-     *
+     * 
      * @return the s3LinkedServiceName value.
      */
     public LinkedServiceReference s3LinkedServiceName() {
@@ -47,7 +49,7 @@ public final class RedshiftUnloadSettings {
     /**
      * Set the s3LinkedServiceName property: The name of the Amazon S3 linked service which will be used for the unload
      * operation when copying from the Amazon Redshift source.
-     *
+     * 
      * @param s3LinkedServiceName the s3LinkedServiceName value to set.
      * @return the RedshiftUnloadSettings object itself.
      */
@@ -60,7 +62,7 @@ public final class RedshiftUnloadSettings {
      * Get the bucketName property: The bucket of the interim Amazon S3 which will be used to store the unloaded data
      * from Amazon Redshift source. The bucket must be in the same region as the Amazon Redshift source. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the bucketName value.
      */
     public Object bucketName() {
@@ -71,7 +73,7 @@ public final class RedshiftUnloadSettings {
      * Set the bucketName property: The bucket of the interim Amazon S3 which will be used to store the unloaded data
      * from Amazon Redshift source. The bucket must be in the same region as the Amazon Redshift source. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param bucketName the bucketName value to set.
      * @return the RedshiftUnloadSettings object itself.
      */
@@ -82,23 +84,19 @@ public final class RedshiftUnloadSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (s3LinkedServiceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property s3LinkedServiceName in model RedshiftUnloadSettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property s3LinkedServiceName in model RedshiftUnloadSettings"));
         } else {
             s3LinkedServiceName().validate();
         }
         if (bucketName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property bucketName in model RedshiftUnloadSettings"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property bucketName in model RedshiftUnloadSettings"));
         }
     }
 

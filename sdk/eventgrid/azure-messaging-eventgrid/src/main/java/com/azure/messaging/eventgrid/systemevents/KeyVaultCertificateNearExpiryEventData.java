@@ -5,59 +5,62 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.CertificateNearExpiry event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.KeyVault.CertificateNearExpiry event.
+ */
 @Fluent
-public final class KeyVaultCertificateNearExpiryEventData {
+public final class KeyVaultCertificateNearExpiryEventData
+    implements JsonSerializable<KeyVaultCertificateNearExpiryEventData> {
     /*
      * The id of the object that triggered this event.
      */
-    @JsonProperty(value = "Id")
     private String id;
 
     /*
      * Key vault name of the object that triggered this event.
      */
-    @JsonProperty(value = "VaultName")
     private String vaultName;
 
     /*
      * The type of the object that triggered this event
      */
-    @JsonProperty(value = "ObjectType")
     private String objectType;
 
     /*
      * The name of the object that triggered this event
      */
-    @JsonProperty(value = "ObjectName")
     private String objectName;
 
     /*
      * The version of the object that triggered this event
      */
-    @JsonProperty(value = "Version")
     private String version;
 
     /*
      * Not before date of the object that triggered this event
      */
-    @JsonProperty(value = "NBF")
     private Float nbf;
 
     /*
      * The expiration date of the object that triggered this event
      */
-    @JsonProperty(value = "EXP")
     private Float exp;
 
-    /** Creates an instance of KeyVaultCertificateNearExpiryEventData class. */
-    public KeyVaultCertificateNearExpiryEventData() {}
+    /**
+     * Creates an instance of KeyVaultCertificateNearExpiryEventData class.
+     */
+    public KeyVaultCertificateNearExpiryEventData() {
+    }
 
     /**
      * Get the id property: The id of the object that triggered this event.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -66,7 +69,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Set the id property: The id of the object that triggered this event.
-     *
+     * 
      * @param id the id value to set.
      * @return the KeyVaultCertificateNearExpiryEventData object itself.
      */
@@ -77,7 +80,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Get the vaultName property: Key vault name of the object that triggered this event.
-     *
+     * 
      * @return the vaultName value.
      */
     public String getVaultName() {
@@ -86,7 +89,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Set the vaultName property: Key vault name of the object that triggered this event.
-     *
+     * 
      * @param vaultName the vaultName value to set.
      * @return the KeyVaultCertificateNearExpiryEventData object itself.
      */
@@ -97,7 +100,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Get the objectType property: The type of the object that triggered this event.
-     *
+     * 
      * @return the objectType value.
      */
     public String getObjectType() {
@@ -106,7 +109,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Set the objectType property: The type of the object that triggered this event.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the KeyVaultCertificateNearExpiryEventData object itself.
      */
@@ -117,7 +120,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Get the objectName property: The name of the object that triggered this event.
-     *
+     * 
      * @return the objectName value.
      */
     public String getObjectName() {
@@ -126,7 +129,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Set the objectName property: The name of the object that triggered this event.
-     *
+     * 
      * @param objectName the objectName value to set.
      * @return the KeyVaultCertificateNearExpiryEventData object itself.
      */
@@ -137,7 +140,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Get the version property: The version of the object that triggered this event.
-     *
+     * 
      * @return the version value.
      */
     public String getVersion() {
@@ -146,7 +149,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Set the version property: The version of the object that triggered this event.
-     *
+     * 
      * @param version the version value to set.
      * @return the KeyVaultCertificateNearExpiryEventData object itself.
      */
@@ -157,7 +160,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Get the nbf property: Not before date of the object that triggered this event.
-     *
+     * 
      * @return the nbf value.
      */
     public Float getNbf() {
@@ -166,7 +169,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Set the nbf property: Not before date of the object that triggered this event.
-     *
+     * 
      * @param nbf the nbf value to set.
      * @return the KeyVaultCertificateNearExpiryEventData object itself.
      */
@@ -177,7 +180,7 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Get the exp property: The expiration date of the object that triggered this event.
-     *
+     * 
      * @return the exp value.
      */
     public Float getExp() {
@@ -186,12 +189,64 @@ public final class KeyVaultCertificateNearExpiryEventData {
 
     /**
      * Set the exp property: The expiration date of the object that triggered this event.
-     *
+     * 
      * @param exp the exp value to set.
      * @return the KeyVaultCertificateNearExpiryEventData object itself.
      */
     public KeyVaultCertificateNearExpiryEventData setExp(Float exp) {
         this.exp = exp;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("Id", this.id);
+        jsonWriter.writeStringField("VaultName", this.vaultName);
+        jsonWriter.writeStringField("ObjectType", this.objectType);
+        jsonWriter.writeStringField("ObjectName", this.objectName);
+        jsonWriter.writeStringField("Version", this.version);
+        jsonWriter.writeNumberField("NBF", this.nbf);
+        jsonWriter.writeNumberField("EXP", this.exp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultCertificateNearExpiryEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultCertificateNearExpiryEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the KeyVaultCertificateNearExpiryEventData.
+     */
+    public static KeyVaultCertificateNearExpiryEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultCertificateNearExpiryEventData deserializedKeyVaultCertificateNearExpiryEventData
+                = new KeyVaultCertificateNearExpiryEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("Id".equals(fieldName)) {
+                    deserializedKeyVaultCertificateNearExpiryEventData.id = reader.getString();
+                } else if ("VaultName".equals(fieldName)) {
+                    deserializedKeyVaultCertificateNearExpiryEventData.vaultName = reader.getString();
+                } else if ("ObjectType".equals(fieldName)) {
+                    deserializedKeyVaultCertificateNearExpiryEventData.objectType = reader.getString();
+                } else if ("ObjectName".equals(fieldName)) {
+                    deserializedKeyVaultCertificateNearExpiryEventData.objectName = reader.getString();
+                } else if ("Version".equals(fieldName)) {
+                    deserializedKeyVaultCertificateNearExpiryEventData.version = reader.getString();
+                } else if ("NBF".equals(fieldName)) {
+                    deserializedKeyVaultCertificateNearExpiryEventData.nbf = reader.getNullable(JsonReader::getFloat);
+                } else if ("EXP".equals(fieldName)) {
+                    deserializedKeyVaultCertificateNearExpiryEventData.exp = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultCertificateNearExpiryEventData;
+        });
     }
 }

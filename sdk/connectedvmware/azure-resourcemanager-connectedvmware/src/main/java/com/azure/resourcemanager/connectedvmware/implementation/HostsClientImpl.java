@@ -64,11 +64,10 @@ public final class HostsClientImpl implements HostsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ConnectedVMwareClien")
-    private interface HostsService {
+    public interface HostsService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -83,8 +82,7 @@ public final class HostsClientImpl implements HostsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HostModelInner>> getByResourceGroup(
@@ -98,8 +96,7 @@ public final class HostsClientImpl implements HostsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HostModelInner>> update(
@@ -114,8 +111,7 @@ public final class HostsClientImpl implements HostsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts/{hostName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -141,8 +137,7 @@ public final class HostsClientImpl implements HostsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/hosts")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/hosts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<HostsList>> listByResourceGroup(
@@ -316,6 +311,33 @@ public final class HostsClientImpl implements HostsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of define the host.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<HostModelInner>, HostModelInner> beginCreateAsync(
+        String resourceGroupName, String hostname) {
+        final HostModelInner body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, hostname, body);
+        return this
+            .client
+            .<HostModelInner, HostModelInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                HostModelInner.class,
+                HostModelInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Implements host PUT method.
+     *
+     * <p>Create Or Update host.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param hostname Name of the host.
      * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -341,7 +363,6 @@ public final class HostsClientImpl implements HostsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
-     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -349,8 +370,9 @@ public final class HostsClientImpl implements HostsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(
-        String resourceGroupName, String hostname, HostModelInner body) {
-        return beginCreateAsync(resourceGroupName, hostname, body).getSyncPoller();
+        String resourceGroupName, String hostname) {
+        final HostModelInner body = null;
+        return this.beginCreateAsync(resourceGroupName, hostname, body).getSyncPoller();
     }
 
     /**
@@ -370,7 +392,7 @@ public final class HostsClientImpl implements HostsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<HostModelInner>, HostModelInner> beginCreate(
         String resourceGroupName, String hostname, HostModelInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, hostname, body, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, hostname, body, context).getSyncPoller();
     }
 
     /**
@@ -433,24 +455,6 @@ public final class HostsClientImpl implements HostsClient {
         return beginCreateAsync(resourceGroupName, hostname, body, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Implements host PUT method.
-     *
-     * <p>Create Or Update host.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param hostname Name of the host.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the host.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HostModelInner create(String resourceGroupName, String hostname, HostModelInner body) {
-        return createAsync(resourceGroupName, hostname, body).block();
     }
 
     /**
@@ -613,23 +617,6 @@ public final class HostsClientImpl implements HostsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the host.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HostModelInner getByResourceGroup(String resourceGroupName, String hostname) {
-        return getByResourceGroupAsync(resourceGroupName, hostname).block();
-    }
-
-    /**
-     * Gets a host.
-     *
-     * <p>Implements host GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param hostname Name of the host.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -640,6 +627,23 @@ public final class HostsClientImpl implements HostsClient {
     public Response<HostModelInner> getByResourceGroupWithResponse(
         String resourceGroupName, String hostname, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, hostname, context).block();
+    }
+
+    /**
+     * Gets a host.
+     *
+     * <p>Implements host GET method.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param hostname Name of the host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the host.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HostModelInner getByResourceGroup(String resourceGroupName, String hostname) {
+        return getByResourceGroupWithResponse(resourceGroupName, hostname, Context.NONE).getValue();
     }
 
     /**
@@ -757,25 +761,6 @@ public final class HostsClientImpl implements HostsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
-     * @param body Resource properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the host on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<HostModelInner> updateAsync(String resourceGroupName, String hostname, ResourcePatch body) {
-        return updateWithResponseAsync(resourceGroupName, hostname, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a host.
-     *
-     * <p>API to update certain properties of the host resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param hostname Name of the host.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -786,24 +771,6 @@ public final class HostsClientImpl implements HostsClient {
         final ResourcePatch body = null;
         return updateWithResponseAsync(resourceGroupName, hostname, body)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a host.
-     *
-     * <p>API to update certain properties of the host resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param hostname Name of the host.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the host.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public HostModelInner update(String resourceGroupName, String hostname) {
-        final ResourcePatch body = null;
-        return updateAsync(resourceGroupName, hostname, body).block();
     }
 
     /**
@@ -824,6 +791,24 @@ public final class HostsClientImpl implements HostsClient {
     public Response<HostModelInner> updateWithResponse(
         String resourceGroupName, String hostname, ResourcePatch body, Context context) {
         return updateWithResponseAsync(resourceGroupName, hostname, body, context).block();
+    }
+
+    /**
+     * Updates a host.
+     *
+     * <p>API to update certain properties of the host resource.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param hostname Name of the host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the host.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HostModelInner update(String resourceGroupName, String hostname) {
+        final ResourcePatch body = null;
+        return updateWithResponse(resourceGroupName, hostname, body, Context.NONE).getValue();
     }
 
     /**
@@ -958,6 +943,28 @@ public final class HostsClientImpl implements HostsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String hostname) {
+        final Boolean force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hostname, force);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Deletes an host.
+     *
+     * <p>Implements host DELETE method.
+     *
+     * @param resourceGroupName The Resource Group Name.
+     * @param hostname Name of the host.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -982,15 +989,15 @@ public final class HostsClientImpl implements HostsClient {
      *
      * @param resourceGroupName The Resource Group Name.
      * @param hostname Name of the host.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostname, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, hostname, force).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostname) {
+        final Boolean force = null;
+        return this.beginDeleteAsync(resourceGroupName, hostname, force).getSyncPoller();
     }
 
     /**
@@ -1010,7 +1017,7 @@ public final class HostsClientImpl implements HostsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String hostname, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, hostname, force, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, hostname, force, context).getSyncPoller();
     }
 
     /**
@@ -1072,23 +1079,6 @@ public final class HostsClientImpl implements HostsClient {
         return beginDeleteAsync(resourceGroupName, hostname, force, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes an host.
-     *
-     * <p>Implements host DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param hostname Name of the host.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String hostname, Boolean force) {
-        deleteAsync(resourceGroupName, hostname, force).block();
     }
 
     /**
@@ -1456,7 +1446,8 @@ public final class HostsClientImpl implements HostsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1491,7 +1482,8 @@ public final class HostsClientImpl implements HostsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1527,7 +1519,8 @@ public final class HostsClientImpl implements HostsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1563,7 +1556,8 @@ public final class HostsClientImpl implements HostsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

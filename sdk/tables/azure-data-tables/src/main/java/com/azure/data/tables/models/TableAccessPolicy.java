@@ -27,6 +27,13 @@ public final class TableAccessPolicy {
      */
     private String permissions;
 
+    // empty constructor necessary due to Javadoc warnings
+    /**
+     * Creates an instance of {@link TableAccessPolicy}.
+     */
+    public TableAccessPolicy() {
+    }
+
     /**
      * Get the {@link OffsetDateTime date-time} the policy is active.
      *

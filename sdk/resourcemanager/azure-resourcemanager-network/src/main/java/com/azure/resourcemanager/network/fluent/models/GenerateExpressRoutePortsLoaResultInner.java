@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response for GenerateExpressRoutePortsLOA API service call. */
+/**
+ * Response for GenerateExpressRoutePortsLOA API service call.
+ */
 @Fluent
 public final class GenerateExpressRoutePortsLoaResultInner {
     /*
@@ -16,13 +18,15 @@ public final class GenerateExpressRoutePortsLoaResultInner {
     @JsonProperty(value = "encodedContent")
     private String encodedContent;
 
-    /** Creates an instance of GenerateExpressRoutePortsLoaResultInner class. */
+    /**
+     * Creates an instance of GenerateExpressRoutePortsLoaResultInner class.
+     */
     public GenerateExpressRoutePortsLoaResultInner() {
     }
 
     /**
      * Get the encodedContent property: The content as a base64 encoded string.
-     *
+     * 
      * @return the encodedContent value.
      */
     public String encodedContent() {
@@ -31,7 +35,7 @@ public final class GenerateExpressRoutePortsLoaResultInner {
 
     /**
      * Set the encodedContent property: The content as a base64 encoded string.
-     *
+     * 
      * @param encodedContent the encodedContent value to set.
      * @return the GenerateExpressRoutePortsLoaResultInner object itself.
      */
@@ -42,7 +46,7 @@ public final class GenerateExpressRoutePortsLoaResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

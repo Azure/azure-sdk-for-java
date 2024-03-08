@@ -10,7 +10,7 @@ import com.azure.resourcemanager.support.models.SupportEngineer;
 public final class SupportEngineerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportEngineer model = BinaryData.fromString("{\"emailAddress\":\"fionl\"}").toObject(SupportEngineer.class);
+        SupportEngineer model = BinaryData.fromString("{\"emailAddress\":\"zq\"}").toObject(SupportEngineer.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -13,8 +13,8 @@ import java.util.List;
 
 /**
  * ScheduleBasedTriggerContext
- *
- * <p>Schedule based trigger context.
+ * 
+ * Schedule based trigger context.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("ScheduleBasedTriggerContext")
@@ -22,7 +22,7 @@ import java.util.List;
 public final class ScheduleBasedTriggerContext extends TriggerContext {
     /*
      * BackupSchedule
-     *
+     * 
      * Schedule for this backup
      */
     @JsonProperty(value = "schedule", required = true)
@@ -34,15 +34,17 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
     @JsonProperty(value = "taggingCriteria", required = true)
     private List<TaggingCriteria> taggingCriteria;
 
-    /** Creates an instance of ScheduleBasedTriggerContext class. */
+    /**
+     * Creates an instance of ScheduleBasedTriggerContext class.
+     */
     public ScheduleBasedTriggerContext() {
     }
 
     /**
      * Get the schedule property: BackupSchedule
-     *
-     * <p>Schedule for this backup.
-     *
+     * 
+     * Schedule for this backup.
+     * 
      * @return the schedule value.
      */
     public BackupSchedule schedule() {
@@ -51,9 +53,9 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
 
     /**
      * Set the schedule property: BackupSchedule
-     *
-     * <p>Schedule for this backup.
-     *
+     * 
+     * Schedule for this backup.
+     * 
      * @param schedule the schedule value to set.
      * @return the ScheduleBasedTriggerContext object itself.
      */
@@ -64,7 +66,7 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
 
     /**
      * Get the taggingCriteria property: List of tags that can be applicable for given schedule.
-     *
+     * 
      * @return the taggingCriteria value.
      */
     public List<TaggingCriteria> taggingCriteria() {
@@ -73,7 +75,7 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
 
     /**
      * Set the taggingCriteria property: List of tags that can be applicable for given schedule.
-     *
+     * 
      * @param taggingCriteria the taggingCriteria value to set.
      * @return the ScheduleBasedTriggerContext object itself.
      */
@@ -84,25 +86,21 @@ public final class ScheduleBasedTriggerContext extends TriggerContext {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (schedule() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property schedule in model ScheduleBasedTriggerContext"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property schedule in model ScheduleBasedTriggerContext"));
         } else {
             schedule().validate();
         }
         if (taggingCriteria() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property taggingCriteria in model ScheduleBasedTriggerContext"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property taggingCriteria in model ScheduleBasedTriggerContext"));
         } else {
             taggingCriteria().forEach(e -> e.validate());
         }

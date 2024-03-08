@@ -12,29 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class PrefixObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrefixObject model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"q\",\"prefixList\":[\"ltmuwlauwzizx\"],\"etag\":\"pgcjefuzmuvp\",\"auditComment\":\"tdum\",\"provisioningState\":\"Canceled\"}")
-                .toObject(PrefixObject.class);
-        Assertions.assertEquals("q", model.description());
-        Assertions.assertEquals("ltmuwlauwzizx", model.prefixList().get(0));
-        Assertions.assertEquals("pgcjefuzmuvp", model.etag());
-        Assertions.assertEquals("tdum", model.auditComment());
+        PrefixObject model = BinaryData.fromString(
+            "{\"description\":\"bahwfl\",\"prefixList\":[\"zdtmhrkwofy\",\"voqacpiexpbt\",\"iwbwoenwashrtdtk\"],\"etag\":\"qxwbpokulpiu\",\"auditComment\":\"aasipqi\",\"provisioningState\":\"Deleting\"}")
+            .toObject(PrefixObject.class);
+        Assertions.assertEquals("bahwfl", model.description());
+        Assertions.assertEquals("zdtmhrkwofy", model.prefixList().get(0));
+        Assertions.assertEquals("qxwbpokulpiu", model.etag());
+        Assertions.assertEquals("aasipqi", model.auditComment());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrefixObject model =
-            new PrefixObject()
-                .withDescription("q")
-                .withPrefixList(Arrays.asList("ltmuwlauwzizx"))
-                .withEtag("pgcjefuzmuvp")
-                .withAuditComment("tdum");
+        PrefixObject model = new PrefixObject().withDescription("bahwfl")
+            .withPrefixList(Arrays.asList("zdtmhrkwofy", "voqacpiexpbt", "iwbwoenwashrtdtk")).withEtag("qxwbpokulpiu")
+            .withAuditComment("aasipqi");
         model = BinaryData.fromObject(model).toObject(PrefixObject.class);
-        Assertions.assertEquals("q", model.description());
-        Assertions.assertEquals("ltmuwlauwzizx", model.prefixList().get(0));
-        Assertions.assertEquals("pgcjefuzmuvp", model.etag());
-        Assertions.assertEquals("tdum", model.auditComment());
+        Assertions.assertEquals("bahwfl", model.description());
+        Assertions.assertEquals("zdtmhrkwofy", model.prefixList().get(0));
+        Assertions.assertEquals("qxwbpokulpiu", model.etag());
+        Assertions.assertEquals("aasipqi", model.auditComment());
     }
 }

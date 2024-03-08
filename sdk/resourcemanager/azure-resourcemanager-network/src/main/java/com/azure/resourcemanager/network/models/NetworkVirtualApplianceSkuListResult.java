@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceSk
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListNetworkVirtualApplianceSkus API service call. */
+/**
+ * Response for ListNetworkVirtualApplianceSkus API service call.
+ */
 @Fluent
 public final class NetworkVirtualApplianceSkuListResult {
     /*
@@ -24,13 +26,15 @@ public final class NetworkVirtualApplianceSkuListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkVirtualApplianceSkuListResult class. */
+    /**
+     * Creates an instance of NetworkVirtualApplianceSkuListResult class.
+     */
     public NetworkVirtualApplianceSkuListResult() {
     }
 
     /**
      * Get the value property: List of Network Virtual Appliance Skus that are available.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkVirtualApplianceSkuInner> value() {
@@ -39,7 +43,7 @@ public final class NetworkVirtualApplianceSkuListResult {
 
     /**
      * Set the value property: List of Network Virtual Appliance Skus that are available.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkVirtualApplianceSkuListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkVirtualApplianceSkuListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NetworkVirtualApplianceSkuListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkVirtualApplianceSkuListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class NetworkVirtualApplianceSkuListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

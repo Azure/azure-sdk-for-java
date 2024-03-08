@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.XeroSource;
 public final class XeroSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        XeroSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"XeroSource\",\"query\":\"datalwhtfscoupsf\",\"queryTimeout\":\"datawb\",\"additionalColumns\":\"datahawkwc\",\"sourceRetryCount\":\"datac\",\"sourceRetryWait\":\"dataxdwecvkwwjj\",\"maxConcurrentConnections\":\"datafunsd\",\"disableMetricsCollection\":\"datajx\",\"\":{\"qedofuobx\":\"dataale\",\"fjibbl\":\"datalainzvhl\",\"egzyzlslvgqlexw\":\"dataihvzdaycme\",\"t\":\"datawbbellcjd\"}}")
-                .toObject(XeroSource.class);
+        XeroSource model = BinaryData.fromString(
+            "{\"type\":\"XeroSource\",\"query\":\"dataxtkmknacnfzcy\",\"queryTimeout\":\"datahdjpagwszm\",\"additionalColumns\":\"datagzfeyexbg\",\"sourceRetryCount\":\"datayo\",\"sourceRetryWait\":\"datawigvqgc\",\"maxConcurrentConnections\":\"datacqjg\",\"disableMetricsCollection\":\"dataxpbpj\",\"\":{\"ohehhtl\":\"datanvdabaodiytxq\"}}")
+            .toObject(XeroSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        XeroSource model =
-            new XeroSource()
-                .withSourceRetryCount("datac")
-                .withSourceRetryWait("dataxdwecvkwwjj")
-                .withMaxConcurrentConnections("datafunsd")
-                .withDisableMetricsCollection("datajx")
-                .withQueryTimeout("datawb")
-                .withAdditionalColumns("datahawkwc")
-                .withQuery("datalwhtfscoupsf");
+        XeroSource model = new XeroSource().withSourceRetryCount("datayo").withSourceRetryWait("datawigvqgc")
+            .withMaxConcurrentConnections("datacqjg").withDisableMetricsCollection("dataxpbpj")
+            .withQueryTimeout("datahdjpagwszm").withAdditionalColumns("datagzfeyexbg").withQuery("dataxtkmknacnfzcy");
         model = BinaryData.fromObject(model).toObject(XeroSource.class);
     }
 }

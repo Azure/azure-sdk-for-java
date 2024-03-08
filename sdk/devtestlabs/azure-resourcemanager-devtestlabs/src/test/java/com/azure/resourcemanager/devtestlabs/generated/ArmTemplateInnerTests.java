@@ -16,20 +16,24 @@ public final class ArmTemplateInnerTests {
         ArmTemplateInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"displayName\":\"rgvtqag\",\"description\":\"uynhijg\",\"publisher\":\"ebf\",\"icon\":\"arbu\",\"contents\":\"datacvpnazzmhjrunmpx\",\"createdDate\":\"2021-01-09T00:08:33Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"bnlankxmyskpb\",\"parametersValueInfo\":\"datanbtkcxywnytnr\"},{\"fileName\":\"nlqidybyxczf\",\"parametersValueInfo\":\"datahaaxdbabphl\"},{\"fileName\":\"qlfktsths\",\"parametersValueInfo\":\"dataocmnyyazttbtwwrq\"},{\"fileName\":\"edckzywbiexzfey\",\"parametersValueInfo\":\"dataaxibxujw\"}],\"enabled\":true},\"location\":\"walm\",\"tags\":{\"zjancuxr\":\"oxaepd\"},\"id\":\"d\",\"name\":\"bavxbniwdjswzt\",\"type\":\"dbpgnxytxhp\"}")
+                    "{\"properties\":{\"displayName\":\"c\",\"description\":\"ynqwwncwzzhxgk\",\"publisher\":\"mgucna\",\"icon\":\"t\",\"contents\":\"dataellwptfdy\",\"createdDate\":\"2020-12-31T02:22:45Z\",\"parametersValueFilesInfo\":[{\"fileName\":\"ac\",\"parametersValueInfo\":\"datapzfqrhhuaoppp\"}],\"enabled\":false},\"location\":\"qxolzdahzx\",\"tags\":{\"grcfb\":\"bgbkdmoizpost\",\"bpvjymjhx\":\"nrmfqjhhk\",\"n\":\"j\"},\"id\":\"u\",\"name\":\"ivkrtsw\",\"type\":\"xqzvszjfa\"}")
                 .toObject(ArmTemplateInner.class);
-        Assertions.assertEquals("walm", model.location());
-        Assertions.assertEquals("oxaepd", model.tags().get("zjancuxr"));
+        Assertions.assertEquals("qxolzdahzx", model.location());
+        Assertions.assertEquals("bgbkdmoizpost", model.tags().get("grcfb"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ArmTemplateInner model = new ArmTemplateInner().withLocation("walm").withTags(mapOf("zjancuxr", "oxaepd"));
+        ArmTemplateInner model =
+            new ArmTemplateInner()
+                .withLocation("qxolzdahzx")
+                .withTags(mapOf("grcfb", "bgbkdmoizpost", "bpvjymjhx", "nrmfqjhhk", "n", "j"));
         model = BinaryData.fromObject(model).toObject(ArmTemplateInner.class);
-        Assertions.assertEquals("walm", model.location());
-        Assertions.assertEquals("oxaepd", model.tags().get("zjancuxr"));
+        Assertions.assertEquals("qxolzdahzx", model.location());
+        Assertions.assertEquals("bgbkdmoizpost", model.tags().get("grcfb"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

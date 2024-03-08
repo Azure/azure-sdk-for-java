@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidationStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response contract for enable backup validation request. */
+/**
+ * Response contract for enable backup validation request.
+ */
 @Fluent
 public final class PreValidateEnableBackupResponseInner {
     /*
@@ -49,13 +51,15 @@ public final class PreValidateEnableBackupResponseInner {
     @JsonProperty(value = "protectedItemName")
     private String protectedItemName;
 
-    /** Creates an instance of PreValidateEnableBackupResponseInner class. */
+    /**
+     * Creates an instance of PreValidateEnableBackupResponseInner class.
+     */
     public PreValidateEnableBackupResponseInner() {
     }
 
     /**
      * Get the status property: Validation Status.
-     *
+     * 
      * @return the status value.
      */
     public ValidationStatus status() {
@@ -64,7 +68,7 @@ public final class PreValidateEnableBackupResponseInner {
 
     /**
      * Set the status property: Validation Status.
-     *
+     * 
      * @param status the status value to set.
      * @return the PreValidateEnableBackupResponseInner object itself.
      */
@@ -75,7 +79,7 @@ public final class PreValidateEnableBackupResponseInner {
 
     /**
      * Get the errorCode property: Response error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public String errorCode() {
@@ -84,7 +88,7 @@ public final class PreValidateEnableBackupResponseInner {
 
     /**
      * Set the errorCode property: Response error code.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the PreValidateEnableBackupResponseInner object itself.
      */
@@ -95,7 +99,7 @@ public final class PreValidateEnableBackupResponseInner {
 
     /**
      * Get the errorMessage property: Response error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -104,7 +108,7 @@ public final class PreValidateEnableBackupResponseInner {
 
     /**
      * Set the errorMessage property: Response error message.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the PreValidateEnableBackupResponseInner object itself.
      */
@@ -115,7 +119,7 @@ public final class PreValidateEnableBackupResponseInner {
 
     /**
      * Get the recommendation property: Recommended action for user.
-     *
+     * 
      * @return the recommendation value.
      */
     public String recommendation() {
@@ -124,7 +128,7 @@ public final class PreValidateEnableBackupResponseInner {
 
     /**
      * Set the recommendation property: Recommended action for user.
-     *
+     * 
      * @param recommendation the recommendation value to set.
      * @return the PreValidateEnableBackupResponseInner object itself.
      */
@@ -135,8 +139,9 @@ public final class PreValidateEnableBackupResponseInner {
 
     /**
      * Get the containerName property: Specifies the product specific container name. E.g.
-     * iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required for portal.
-     *
+     * iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required
+     * for portal.
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -145,8 +150,9 @@ public final class PreValidateEnableBackupResponseInner {
 
     /**
      * Set the containerName property: Specifies the product specific container name. E.g.
-     * iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required for portal.
-     *
+     * iaasvmcontainer;iaasvmcontainer;rgname;vmname. This is required
+     * for portal.
+     * 
      * @param containerName the containerName value to set.
      * @return the PreValidateEnableBackupResponseInner object itself.
      */
@@ -158,7 +164,7 @@ public final class PreValidateEnableBackupResponseInner {
     /**
      * Get the protectedItemName property: Specifies the product specific ds name. E.g.
      * vm;iaasvmcontainer;rgname;vmname. This is required for portal.
-     *
+     * 
      * @return the protectedItemName value.
      */
     public String protectedItemName() {
@@ -168,7 +174,7 @@ public final class PreValidateEnableBackupResponseInner {
     /**
      * Set the protectedItemName property: Specifies the product specific ds name. E.g.
      * vm;iaasvmcontainer;rgname;vmname. This is required for portal.
-     *
+     * 
      * @param protectedItemName the protectedItemName value to set.
      * @return the PreValidateEnableBackupResponseInner object itself.
      */
@@ -179,7 +185,7 @@ public final class PreValidateEnableBackupResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

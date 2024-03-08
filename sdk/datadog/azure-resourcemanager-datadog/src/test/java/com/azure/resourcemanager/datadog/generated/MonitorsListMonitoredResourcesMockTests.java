@@ -32,7 +32,7 @@ public final class MonitorsListMonitoredResourcesMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"ldawkzbaliourqha\",\"sendingMetrics\":true,\"reasonForMetricsStatus\":\"ashsfwxos\",\"sendingLogs\":false,\"reasonForLogsStatus\":\"cugicjoox\"}]}";
+            "{\"value\":[{\"id\":\"dxyt\",\"sendingMetrics\":true,\"reasonForMetricsStatus\":\"rxv\",\"sendingLogs\":false,\"reasonForLogsStatus\":\"wpzntxhdzh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,12 +61,12 @@ public final class MonitorsListMonitoredResourcesMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<MonitoredResource> response =
-            manager.monitors().listMonitoredResources("gwb", "b", com.azure.core.util.Context.NONE);
+            manager.monitors().listMonitoredResources("jidsuyonobglaoc", "xtccmg", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ldawkzbaliourqha", response.iterator().next().id());
+        Assertions.assertEquals("dxyt", response.iterator().next().id());
         Assertions.assertEquals(true, response.iterator().next().sendingMetrics());
-        Assertions.assertEquals("ashsfwxos", response.iterator().next().reasonForMetricsStatus());
+        Assertions.assertEquals("rxv", response.iterator().next().reasonForMetricsStatus());
         Assertions.assertEquals(false, response.iterator().next().sendingLogs());
-        Assertions.assertEquals("cugicjoox", response.iterator().next().reasonForLogsStatus());
+        Assertions.assertEquals("wpzntxhdzh", response.iterator().next().reasonForLogsStatus());
     }
 }

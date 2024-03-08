@@ -5,14 +5,31 @@ package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a geo position.
+ * <p>Represents a geographic position in GeoJSON format.</p>
+ *
+ * <p>This class encapsulates a geographic position defined by longitude, latitude, and optionally altitude. It
+ * provides methods to access these properties.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geographic position to JSON,
+ * and a {@link #fromJson(JsonReader)} method to deserialize a geographic position from JSON.</p>
+ *
+ * <p>This class is useful when you want to work with a geographic position in a geographic context. For example,
+ * you can use it to represent a location on a map or a point in a geographic dataset.</p>
+ *
+ * @see JsonSerializable
  */
 @Immutable
-public final class GeoPosition {
+public final class GeoPosition implements JsonSerializable<GeoPosition> {
     // GeoPosition is a commonly used model, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(GeoPosition.class);
 
@@ -116,8 +133,10 @@ public final class GeoPosition {
         switch (index) {
             case 0:
                 return longitude;
+
             case 1:
                 return latitude;
+
             case 2:
                 if (altitude == null) {
                     throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("Index out of range: " + index));
@@ -156,5 +175,50 @@ public final class GeoPosition {
         return (altitude != null)
             ? String.format("[%s, %s, %s]", longitude, latitude, altitude)
             : String.format("[%s, %s]", longitude, latitude);
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartArray().writeDouble(longitude).writeDouble(latitude);
+
+        if (altitude != null) {
+            jsonWriter.writeDouble(altitude);
+        }
+
+        return jsonWriter.writeEndArray();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link GeoPosition}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link GeoPosition} that the JSON stream represented, or null if it pointed to JSON null.
+     * @throws IllegalStateException If the {@link GeoPosition} has less than two or more than three positions in the
+     * array.
+     * @throws IOException If a {@link GeoPosition} fails to be read from the {@code jsonReader}.
+     */
+    public static GeoPosition fromJson(JsonReader jsonReader) throws IOException {
+        List<Number> coordinates = jsonReader.readArray(reader -> {
+            if (reader.currentToken() == JsonToken.NUMBER) {
+                return reader.getDouble();
+            } else {
+                return null;
+            }
+        });
+
+        if (coordinates == null) {
+            return null;
+        }
+
+        int coordinateCount = coordinates.size();
+        if (coordinateCount < 2 || coordinateCount > 3) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Only 2 or 3 element coordinates supported."));
+        }
+
+        double longitude = coordinates.get(0).doubleValue();
+        double latitude = coordinates.get(1).doubleValue();
+        Double altitude = (coordinateCount == 3) ? coordinates.get(2).doubleValue() : null;
+
+        return new GeoPosition(longitude, latitude, altitude);
     }
 }

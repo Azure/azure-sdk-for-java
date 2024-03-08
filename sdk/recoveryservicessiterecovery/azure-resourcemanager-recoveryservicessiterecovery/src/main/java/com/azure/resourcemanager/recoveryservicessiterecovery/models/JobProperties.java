@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Job custom data details. */
+/**
+ * Job custom data details.
+ */
 @Fluent
 public final class JobProperties {
     /*
@@ -98,13 +100,15 @@ public final class JobProperties {
     @JsonProperty(value = "customDetails")
     private JobDetails customDetails;
 
-    /** Creates an instance of JobProperties class. */
+    /**
+     * Creates an instance of JobProperties class.
+     */
     public JobProperties() {
     }
 
     /**
      * Get the activityId property: The activity id.
-     *
+     * 
      * @return the activityId value.
      */
     public String activityId() {
@@ -113,7 +117,7 @@ public final class JobProperties {
 
     /**
      * Set the activityId property: The activity id.
-     *
+     * 
      * @param activityId the activityId value to set.
      * @return the JobProperties object itself.
      */
@@ -124,7 +128,7 @@ public final class JobProperties {
 
     /**
      * Get the scenarioName property: The ScenarioName.
-     *
+     * 
      * @return the scenarioName value.
      */
     public String scenarioName() {
@@ -133,7 +137,7 @@ public final class JobProperties {
 
     /**
      * Set the scenarioName property: The ScenarioName.
-     *
+     * 
      * @param scenarioName the scenarioName value to set.
      * @return the JobProperties object itself.
      */
@@ -144,7 +148,7 @@ public final class JobProperties {
 
     /**
      * Get the friendlyName property: The DisplayName.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -153,7 +157,7 @@ public final class JobProperties {
 
     /**
      * Set the friendlyName property: The DisplayName.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the JobProperties object itself.
      */
@@ -165,7 +169,7 @@ public final class JobProperties {
     /**
      * Get the state property: The status of the Job. It is one of these values - NotStarted, InProgress, Succeeded,
      * Failed, Cancelled, Suspended or Other.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -175,7 +179,7 @@ public final class JobProperties {
     /**
      * Set the state property: The status of the Job. It is one of these values - NotStarted, InProgress, Succeeded,
      * Failed, Cancelled, Suspended or Other.
-     *
+     * 
      * @param state the state value to set.
      * @return the JobProperties object itself.
      */
@@ -187,7 +191,7 @@ public final class JobProperties {
     /**
      * Get the stateDescription property: The description of the state of the Job. For e.g. - For Succeeded state,
      * description can be Completed, PartiallySucceeded, CompletedWithInformation or Skipped.
-     *
+     * 
      * @return the stateDescription value.
      */
     public String stateDescription() {
@@ -197,7 +201,7 @@ public final class JobProperties {
     /**
      * Set the stateDescription property: The description of the state of the Job. For e.g. - For Succeeded state,
      * description can be Completed, PartiallySucceeded, CompletedWithInformation or Skipped.
-     *
+     * 
      * @param stateDescription the stateDescription value to set.
      * @return the JobProperties object itself.
      */
@@ -208,7 +212,7 @@ public final class JobProperties {
 
     /**
      * Get the tasks property: The tasks.
-     *
+     * 
      * @return the tasks value.
      */
     public List<AsrTask> tasks() {
@@ -217,7 +221,7 @@ public final class JobProperties {
 
     /**
      * Set the tasks property: The tasks.
-     *
+     * 
      * @param tasks the tasks value to set.
      * @return the JobProperties object itself.
      */
@@ -228,7 +232,7 @@ public final class JobProperties {
 
     /**
      * Get the errors property: The errors.
-     *
+     * 
      * @return the errors value.
      */
     public List<JobErrorDetails> errors() {
@@ -237,7 +241,7 @@ public final class JobProperties {
 
     /**
      * Set the errors property: The errors.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the JobProperties object itself.
      */
@@ -248,7 +252,7 @@ public final class JobProperties {
 
     /**
      * Get the startTime property: The start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -257,7 +261,7 @@ public final class JobProperties {
 
     /**
      * Set the startTime property: The start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the JobProperties object itself.
      */
@@ -268,7 +272,7 @@ public final class JobProperties {
 
     /**
      * Get the endTime property: The end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -277,7 +281,7 @@ public final class JobProperties {
 
     /**
      * Set the endTime property: The end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the JobProperties object itself.
      */
@@ -288,7 +292,7 @@ public final class JobProperties {
 
     /**
      * Get the allowedActions property: The Allowed action the job.
-     *
+     * 
      * @return the allowedActions value.
      */
     public List<String> allowedActions() {
@@ -297,7 +301,7 @@ public final class JobProperties {
 
     /**
      * Set the allowedActions property: The Allowed action the job.
-     *
+     * 
      * @param allowedActions the allowedActions value to set.
      * @return the JobProperties object itself.
      */
@@ -308,7 +312,7 @@ public final class JobProperties {
 
     /**
      * Get the targetObjectId property: The affected Object Id.
-     *
+     * 
      * @return the targetObjectId value.
      */
     public String targetObjectId() {
@@ -317,7 +321,7 @@ public final class JobProperties {
 
     /**
      * Set the targetObjectId property: The affected Object Id.
-     *
+     * 
      * @param targetObjectId the targetObjectId value to set.
      * @return the JobProperties object itself.
      */
@@ -328,7 +332,7 @@ public final class JobProperties {
 
     /**
      * Get the targetObjectName property: The name of the affected object.
-     *
+     * 
      * @return the targetObjectName value.
      */
     public String targetObjectName() {
@@ -337,7 +341,7 @@ public final class JobProperties {
 
     /**
      * Set the targetObjectName property: The name of the affected object.
-     *
+     * 
      * @param targetObjectName the targetObjectName value to set.
      * @return the JobProperties object itself.
      */
@@ -349,7 +353,7 @@ public final class JobProperties {
     /**
      * Get the targetInstanceType property: The type of the affected object which is of
      * Microsoft.Azure.SiteRecovery.V2015_11_10.AffectedObjectType class.
-     *
+     * 
      * @return the targetInstanceType value.
      */
     public String targetInstanceType() {
@@ -359,7 +363,7 @@ public final class JobProperties {
     /**
      * Set the targetInstanceType property: The type of the affected object which is of
      * Microsoft.Azure.SiteRecovery.V2015_11_10.AffectedObjectType class.
-     *
+     * 
      * @param targetInstanceType the targetInstanceType value to set.
      * @return the JobProperties object itself.
      */
@@ -370,7 +374,7 @@ public final class JobProperties {
 
     /**
      * Get the customDetails property: The custom job details like test failover job details.
-     *
+     * 
      * @return the customDetails value.
      */
     public JobDetails customDetails() {
@@ -379,7 +383,7 @@ public final class JobProperties {
 
     /**
      * Set the customDetails property: The custom job details like test failover job details.
-     *
+     * 
      * @param customDetails the customDetails value to set.
      * @return the JobProperties object itself.
      */
@@ -390,7 +394,7 @@ public final class JobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

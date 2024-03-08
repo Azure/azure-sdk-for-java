@@ -30,7 +30,7 @@ public final class SignalRsListReplicaSkusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"resourceType\":\"wfgtayxonsup\",\"sku\":{\"name\":\"jlzqnhc\",\"tier\":\"Free\",\"size\":\"tnzoibgsxgnxfy\",\"family\":\"nmpqoxwdofdb\",\"capacity\":1852240045},\"capacity\":{\"minimum\":1307662729,\"maximum\":540908229,\"default\":941412266,\"allowedValues\":[1213641430,1466569067],\"scaleType\":\"Automatic\"}}],\"nextLink\":\"nhe\"}";
+            "{\"value\":[{\"resourceType\":\"ohqfzizv\",\"sku\":{\"name\":\"mmkjsvthnwpztek\",\"tier\":\"Basic\",\"size\":\"ibiattg\",\"family\":\"ucfotangcf\",\"capacity\":821874250},\"capacity\":{\"minimum\":1077682035,\"maximum\":809427492,\"default\":1031306393,\"allowedValues\":[2124351290],\"scaleType\":\"None\"}},{\"resourceType\":\"qwm\",\"sku\":{\"name\":\"xnjmxm\",\"tier\":\"Standard\",\"size\":\"dtcvcl\",\"family\":\"npdkv\",\"capacity\":1186529927},\"capacity\":{\"minimum\":979398617,\"maximum\":269435268,\"default\":214346592,\"allowedValues\":[874901455,593163747,203185987],\"scaleType\":\"Manual\"}},{\"resourceType\":\"eiknpgo\",\"sku\":{\"name\":\"jiuqhibtozi\",\"tier\":\"Premium\",\"size\":\"edmurrxxge\",\"family\":\"ktvqylkmqpzoy\",\"capacity\":2005467515},\"capacity\":{\"minimum\":1241682628,\"maximum\":774397044,\"default\":125495169,\"allowedValues\":[325536454],\"scaleType\":\"None\"}},{\"resourceType\":\"injipnwjf\",\"sku\":{\"name\":\"qlafcbahhpzpofoi\",\"tier\":\"Free\",\"size\":\"filkmkkholv\",\"family\":\"dviauogp\",\"capacity\":1546671556},\"capacity\":{\"minimum\":1965289703,\"maximum\":887059851,\"default\":1904382549,\"allowedValues\":[2049992940,1475609054],\"scaleType\":\"None\"}}],\"nextLink\":\"n\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,8 @@ public final class SignalRsListReplicaSkusWithResponseMockTests {
         SkuList response =
             manager
                 .signalRs()
-                .listReplicaSkusWithResponse("blmljh", "nymzotqyr", "uzcbmqq", com.azure.core.util.Context.NONE)
+                .listReplicaSkusWithResponse(
+                    "qcbfrmbodths", "qgvriibakcla", "jfrnxousxauzlwv", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

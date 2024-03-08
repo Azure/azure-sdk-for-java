@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DatabasePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DatabaseProperties model =
-            BinaryData
-                .fromString("{\"charset\":\"pgcjefuzmuvp\",\"collation\":\"tdum\"}")
-                .toObject(DatabaseProperties.class);
-        Assertions.assertEquals("pgcjefuzmuvp", model.charset());
-        Assertions.assertEquals("tdum", model.collation());
+        DatabaseProperties model = BinaryData.fromString("{\"charset\":\"siarbutrcvpn\",\"collation\":\"zmhjrunmp\"}")
+            .toObject(DatabaseProperties.class);
+        Assertions.assertEquals("siarbutrcvpn", model.charset());
+        Assertions.assertEquals("zmhjrunmp", model.collation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseProperties model = new DatabaseProperties().withCharset("pgcjefuzmuvp").withCollation("tdum");
+        DatabaseProperties model = new DatabaseProperties().withCharset("siarbutrcvpn").withCollation("zmhjrunmp");
         model = BinaryData.fromObject(model).toObject(DatabaseProperties.class);
-        Assertions.assertEquals("pgcjefuzmuvp", model.charset());
-        Assertions.assertEquals("tdum", model.collation());
+        Assertions.assertEquals("siarbutrcvpn", model.charset());
+        Assertions.assertEquals("zmhjrunmp", model.collation());
     }
 }

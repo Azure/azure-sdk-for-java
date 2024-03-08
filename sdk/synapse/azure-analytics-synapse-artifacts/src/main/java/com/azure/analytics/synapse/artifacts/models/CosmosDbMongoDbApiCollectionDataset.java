@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The CosmosDB (MongoDB API) database dataset. */
+/**
+ * The CosmosDB (MongoDB API) database dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CosmosDbMongoDbApiCollection")
 @JsonFlatten
@@ -24,13 +26,16 @@ public class CosmosDbMongoDbApiCollectionDataset extends Dataset {
     @JsonProperty(value = "typeProperties.collection", required = true)
     private Object collection;
 
-    /** Creates an instance of CosmosDbMongoDbApiCollectionDataset class. */
-    public CosmosDbMongoDbApiCollectionDataset() {}
+    /**
+     * Creates an instance of CosmosDbMongoDbApiCollectionDataset class.
+     */
+    public CosmosDbMongoDbApiCollectionDataset() {
+    }
 
     /**
      * Get the collection property: The collection name of the CosmosDB (MongoDB API) database. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the collection value.
      */
     public Object getCollection() {
@@ -40,7 +45,7 @@ public class CosmosDbMongoDbApiCollectionDataset extends Dataset {
     /**
      * Set the collection property: The collection name of the CosmosDB (MongoDB API) database. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param collection the collection value to set.
      * @return the CosmosDbMongoDbApiCollectionDataset object itself.
      */
@@ -49,49 +54,63 @@ public class CosmosDbMongoDbApiCollectionDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiCollectionDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiCollectionDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiCollectionDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiCollectionDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiCollectionDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiCollectionDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CosmosDbMongoDbApiCollectionDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

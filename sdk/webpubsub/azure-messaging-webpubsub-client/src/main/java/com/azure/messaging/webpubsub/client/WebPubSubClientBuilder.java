@@ -17,11 +17,10 @@ import com.azure.core.util.UserAgentUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.webpubsub.client.implementation.websocket.WebSocketClient;
 import com.azure.messaging.webpubsub.client.models.WebPubSubClientCredential;
-import com.azure.messaging.webpubsub.client.models.WebPubSubJsonReliableProtocol;
-import com.azure.messaging.webpubsub.client.models.WebPubSubProtocol;
-import reactor.core.publisher.Mono;
+import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * The builder of WebPubSub client.
@@ -30,8 +29,8 @@ import java.util.Map;
  * Either the credential through {@link #credential(WebPubSubClientCredential)},
  * or the client access URL through {@link #clientAccessUrl(String)}.
  */
-@ServiceClientBuilder(serviceClients = {WebPubSubAsyncClient.class, WebPubSubClient.class})
-public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClientBuilder> {
+@ServiceClientBuilder(serviceClients = {WebPubSubClient.class})
+public final class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(WebPubSubClientBuilder.class);
 
@@ -43,7 +42,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
     private String clientAccessUrl;
 
     // default protocol be WebPubSubJsonReliableProtocol
-    private WebPubSubProtocol webPubSubProtocol = new WebPubSubJsonReliableProtocol();
+    private WebPubSubProtocolType webPubSubProtocol = WebPubSubProtocolType.JSON_RELIABLE_PROTOCOL;
 
     private ClientOptions clientOptions;
     private Configuration configuration;
@@ -69,20 +68,20 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
      *
      * <!-- src_embed readme-sample-createClientFromCredential -->
      * <pre>
-     * &#47;&#47; WebPubSubServiceAsyncClient is from com.azure:azure-messaging-webpubsub
+     * &#47;&#47; WebPubSubServiceClient is from com.azure:azure-messaging-webpubsub
      * &#47;&#47; create WebPubSub service client
-     * WebPubSubServiceAsyncClient serverClient = new WebPubSubServiceClientBuilder&#40;&#41;
+     * WebPubSubServiceClient serverClient = new WebPubSubServiceClientBuilder&#40;&#41;
      *     .connectionString&#40;&quot;&lt;connection-string&gt;&quot;&#41;
      *     .hub&#40;&quot;&lt;hub&gt;&gt;&quot;&#41;
-     *     .buildAsyncClient&#40;&#41;;
+     *     .buildClient&#40;&#41;;
      *
-     * &#47;&#47; wrap WebPubSubServiceAsyncClient.getClientAccessToken as WebPubSubClientCredential
-     * WebPubSubClientCredential clientCredential = new WebPubSubClientCredential&#40;Mono.defer&#40;&#40;&#41; -&gt;
-     *     serverClient.getClientAccessToken&#40;new GetClientAccessTokenOptions&#40;&#41;
+     * &#47;&#47; wrap WebPubSubServiceClient.getClientAccessToken as WebPubSubClientCredential
+     * WebPubSubClientCredential clientCredential = new WebPubSubClientCredential&#40;
+     *     &#40;&#41; -&gt; serverClient.getClientAccessToken&#40;new GetClientAccessTokenOptions&#40;&#41;
      *             .setUserId&#40;&quot;&lt;user-name&gt;&quot;&#41;
      *             .addRole&#40;&quot;webpubsub.joinLeaveGroup&quot;&#41;
      *             .addRole&#40;&quot;webpubsub.sendToGroup&quot;&#41;&#41;
-     *         .map&#40;WebPubSubClientAccessToken::getUrl&#41;&#41;&#41;;
+     *         .getUrl&#40;&#41;&#41;;
      *
      * &#47;&#47; create WebPubSub client
      * WebPubSubClient client = new WebPubSubClientBuilder&#40;&#41;
@@ -122,17 +121,21 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
 
     /**
      * Sets the protocol.
+     * <p>
+     * Default value is {@link WebPubSubProtocolType#JSON_RELIABLE_PROTOCOL}.
      *
      * @param webPubSubProtocol the protocol.
      * @return itself.
      */
-    public WebPubSubClientBuilder protocol(WebPubSubProtocol webPubSubProtocol) {
+    public WebPubSubClientBuilder protocol(WebPubSubProtocolType webPubSubProtocol) {
         this.webPubSubProtocol = webPubSubProtocol;
         return this;
     }
 
     /**
      * Sets the retry options when sending messages.
+     * <p>
+     * By default, the retry uses exponential backoff.
      *
      * @param retryOptions the retry options.
      * @return itself.
@@ -165,6 +168,8 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
 
     /**
      * Sets whether automatically reconnect after disconnect.
+     * <p>
+     * Default value is {@code true}.
      *
      * @param autoReconnect whether automatically reconnect after disconnect.
      * @return itself.
@@ -176,6 +181,9 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
 
     /**
      * Sets whether automatically restore joined groups after reconnect.
+     * <p>
+     * Default value is {@code true}.
+     * This feature depends on the enabling of {@link #autoReconnect} feature.
      *
      * @param autoRestoreGroup whether automatically restore joined groups after reconnect.
      * @return itself.
@@ -217,15 +225,15 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
         }
 
         // credential
-        Mono<String> clientAccessUrlProvider;
+        Supplier<String> clientAccessUrlSuplier;
         if (credential != null && clientAccessUrl != null) {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Both credential and clientAccessUrl have been set. "
                     + "Set null to one of them to clear that option."));
         } else if (credential != null) {
-            clientAccessUrlProvider = credential.getClientAccessUrl();
+            clientAccessUrlSuplier = credential.getClientAccessUrlSupplier();
         } else if (clientAccessUrl != null) {
-            clientAccessUrlProvider = Mono.just(clientAccessUrl);
+            clientAccessUrlSuplier = () -> clientAccessUrl;
         } else {
             throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Credentials have not been set. "
@@ -240,7 +248,7 @@ public class WebPubSubClientBuilder implements ConfigurationTrait<WebPubSubClien
             configuration == null ? Configuration.getGlobalConfiguration() : configuration);
 
         return new WebPubSubAsyncClient(
-            webSocketClient, clientAccessUrlProvider, webPubSubProtocol,
+            webSocketClient, clientAccessUrlSuplier, webPubSubProtocol,
             applicationId, userAgent,
             retryStrategy, autoReconnect, autoRestoreGroup);
     }

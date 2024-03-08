@@ -29,22 +29,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExportJobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExportJobsClient.
+ */
 public final class ExportJobsClientImpl implements ExportJobsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExportJobsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataProtectionClientImpl client;
 
     /**
      * Initializes an instance of ExportJobsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExportJobsClientImpl(DataProtectionClientImpl client) {
-        this.service =
-            RestProxy.create(ExportJobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ExportJobsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,24 +61,19 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
     public interface ExportJobsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/exportBackupJobs")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/exportBackupJobs")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> trigger(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> trigger(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,16 +84,12 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(String resourceGroupName, String vaultName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -103,23 +100,14 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .trigger(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            vaultName,
-                            accept,
-                            context))
+            .withContext(context -> service.trigger(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -129,19 +117,15 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(
-        String resourceGroupName, String vaultName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> triggerWithResponseAsync(String resourceGroupName, String vaultName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -152,20 +136,13 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .trigger(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                vaultName,
-                accept,
-                context);
+        return service.trigger(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, vaultName, accept, context);
     }
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,15 +153,13 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(String resourceGroupName, String vaultName) {
         Mono<Response<Flux<ByteBuffer>>> mono = triggerWithResponseAsync(resourceGroupName, vaultName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -194,18 +169,17 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(
-        String resourceGroupName, String vaultName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginTriggerAsync(String resourceGroupName, String vaultName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = triggerWithResponseAsync(resourceGroupName, vaultName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -220,7 +194,7 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -230,14 +204,14 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginTrigger(
-        String resourceGroupName, String vaultName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginTrigger(String resourceGroupName, String vaultName,
+        Context context) {
         return this.beginTriggerAsync(resourceGroupName, vaultName, context).getSyncPoller();
     }
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,7 +226,7 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -263,14 +237,13 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> triggerAsync(String resourceGroupName, String vaultName, Context context) {
-        return beginTriggerAsync(resourceGroupName, vaultName, context)
-            .last()
+        return beginTriggerAsync(resourceGroupName, vaultName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,7 +257,7 @@ public final class ExportJobsClientImpl implements ExportJobsClient {
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.

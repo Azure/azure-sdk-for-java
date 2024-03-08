@@ -19,9 +19,9 @@ public final class FleetPatchTests {
         FleetPatch model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"zevndhkrwpdappds\":\"sabkyqduujitcjcz\",\"snhu\":\"dkvwrwjfe\",\"tmrldhugjzzdatq\":\"je\"},\"identity\":{\"principalId\":\"6e2b927a-720e-424c-8e89-4e012ec3a802\",\"tenantId\":\"d906c806-8d0a-41a7-af5d-3d59b4b8b0d9\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"lgphu\":{\"principalId\":\"d46ae37b-b0cf-4afa-9413-59109bcb98ff\",\"clientId\":\"9af4399c-4a57-457f-bc30-07616cfa8057\"},\"ndv\":{\"principalId\":\"067e7edd-cc1c-4dd4-bd74-0ab3bfd1eaf5\",\"clientId\":\"ad9ed536-0a75-4789-800a-92a5d8796a92\"}}}}")
+                    "{\"tags\":{\"np\":\"xjtfelluwfzit\",\"lxofpdvhpfxxypin\":\"qfpjk\"},\"identity\":{\"principalId\":\"7c7b323d-6cc4-40f6-af72-a4c007ef749c\",\"tenantId\":\"8997fe17-381d-420f-9816-bf994fa2830f\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"bkpodepooginuv\":{\"principalId\":\"42219f64-5b58-4ce7-9e37-cf944b2955f5\",\"clientId\":\"e80cc306-287c-46f7-b0b8-207a4f05a4a4\"},\"heognarxzxtheo\":{\"principalId\":\"ed898b90-21b1-48ad-8072-be40d6a0298f\",\"clientId\":\"3564b3dc-d9a6-471d-a070-2bda3b6f14cb\"},\"ivyevcciqihnhun\":{\"principalId\":\"bd8b7337-8cd7-492d-8abf-fe0860e34e72\",\"clientId\":\"19ffc4f5-d2ca-4a82-b5b7-0b9781597552\"}}}}")
                 .toObject(FleetPatch.class);
-        Assertions.assertEquals("sabkyqduujitcjcz", model.tags().get("zevndhkrwpdappds"));
+        Assertions.assertEquals("xjtfelluwfzit", model.tags().get("np"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 
@@ -29,14 +29,20 @@ public final class FleetPatchTests {
     public void testSerialize() throws Exception {
         FleetPatch model =
             new FleetPatch()
-                .withTags(mapOf("zevndhkrwpdappds", "sabkyqduujitcjcz", "snhu", "dkvwrwjfe", "tmrldhugjzzdatq", "je"))
+                .withTags(mapOf("np", "xjtfelluwfzit", "lxofpdvhpfxxypin", "qfpjk"))
                 .withIdentity(
                     new ManagedServiceIdentity()
                         .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                         .withUserAssignedIdentities(
-                            mapOf("lgphu", new UserAssignedIdentity(), "ndv", new UserAssignedIdentity())));
+                            mapOf(
+                                "bkpodepooginuv",
+                                new UserAssignedIdentity(),
+                                "heognarxzxtheo",
+                                new UserAssignedIdentity(),
+                                "ivyevcciqihnhun",
+                                new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(FleetPatch.class);
-        Assertions.assertEquals("sabkyqduujitcjcz", model.tags().get("zevndhkrwpdappds"));
+        Assertions.assertEquals("xjtfelluwfzit", model.tags().get("np"));
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
     }
 

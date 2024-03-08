@@ -5,27 +5,32 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.BlobDataSourceProperties;
 import com.azure.resourcemanager.streamanalytics.models.StorageAccount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties that are associated with a blob input containing stream data. */
+/**
+ * The properties that are associated with a blob input containing stream data.
+ */
 @Fluent
 public final class BlobStreamInputDataSourceProperties extends BlobDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobStreamInputDataSourceProperties.class);
-
     /*
-     * The partition count of the blob input data source. Range 1 - 256.
+     * The partition count of the blob input data source. Range 1 - 1024.
      */
     @JsonProperty(value = "sourcePartitionCount")
     private Integer sourcePartitionCount;
 
     /**
-     * Get the sourcePartitionCount property: The partition count of the blob input data source. Range 1 - 256.
-     *
+     * Creates an instance of BlobStreamInputDataSourceProperties class.
+     */
+    public BlobStreamInputDataSourceProperties() {
+    }
+
+    /**
+     * Get the sourcePartitionCount property: The partition count of the blob input data source. Range 1 - 1024.
+     * 
      * @return the sourcePartitionCount value.
      */
     public Integer sourcePartitionCount() {
@@ -33,8 +38,8 @@ public final class BlobStreamInputDataSourceProperties extends BlobDataSourcePro
     }
 
     /**
-     * Set the sourcePartitionCount property: The partition count of the blob input data source. Range 1 - 256.
-     *
+     * Set the sourcePartitionCount property: The partition count of the blob input data source. Range 1 - 1024.
+     * 
      * @param sourcePartitionCount the sourcePartitionCount value to set.
      * @return the BlobStreamInputDataSourceProperties object itself.
      */
@@ -43,35 +48,45 @@ public final class BlobStreamInputDataSourceProperties extends BlobDataSourcePro
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobStreamInputDataSourceProperties withStorageAccounts(List<StorageAccount> storageAccounts) {
         super.withStorageAccounts(storageAccounts);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobStreamInputDataSourceProperties withContainer(String container) {
         super.withContainer(container);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobStreamInputDataSourceProperties withPathPattern(String pathPattern) {
         super.withPathPattern(pathPattern);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobStreamInputDataSourceProperties withDateFormat(String dateFormat) {
         super.withDateFormat(dateFormat);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobStreamInputDataSourceProperties withTimeFormat(String timeFormat) {
         super.withTimeFormat(timeFormat);
@@ -79,8 +94,17 @@ public final class BlobStreamInputDataSourceProperties extends BlobDataSourcePro
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BlobStreamInputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
+        super.withAuthenticationMode(authenticationMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

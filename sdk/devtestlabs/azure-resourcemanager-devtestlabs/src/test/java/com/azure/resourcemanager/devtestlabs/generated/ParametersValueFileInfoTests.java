@@ -13,16 +13,16 @@ public final class ParametersValueFileInfoTests {
     public void testDeserialize() throws Exception {
         ParametersValueFileInfo model =
             BinaryData
-                .fromString("{\"fileName\":\"m\",\"parametersValueInfo\":\"dataqupedeojnab\"}")
+                .fromString("{\"fileName\":\"ruoujmk\",\"parametersValueInfo\":\"datahwqytj\"}")
                 .toObject(ParametersValueFileInfo.class);
-        Assertions.assertEquals("m", model.fileName());
+        Assertions.assertEquals("ruoujmk", model.fileName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ParametersValueFileInfo model =
-            new ParametersValueFileInfo().withFileName("m").withParametersValueInfo("dataqupedeojnab");
+            new ParametersValueFileInfo().withFileName("ruoujmk").withParametersValueInfo("datahwqytj");
         model = BinaryData.fromObject(model).toObject(ParametersValueFileInfo.class);
-        Assertions.assertEquals("m", model.fileName());
+        Assertions.assertEquals("ruoujmk", model.fileName());
     }
 }

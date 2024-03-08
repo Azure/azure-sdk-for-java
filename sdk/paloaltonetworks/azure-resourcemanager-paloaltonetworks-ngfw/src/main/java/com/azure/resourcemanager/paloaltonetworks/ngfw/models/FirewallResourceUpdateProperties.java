@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The updatable properties of the FirewallResource. */
+/**
+ * The updatable properties of the FirewallResource.
+ */
 @Fluent
 public final class FirewallResourceUpdateProperties {
     /*
@@ -65,13 +67,15 @@ public final class FirewallResourceUpdateProperties {
     @JsonProperty(value = "marketplaceDetails")
     private MarketplaceDetails marketplaceDetails;
 
-    /** Creates an instance of FirewallResourceUpdateProperties class. */
+    /**
+     * Creates an instance of FirewallResourceUpdateProperties class.
+     */
     public FirewallResourceUpdateProperties() {
     }
 
     /**
      * Get the panEtag property: panEtag info.
-     *
+     * 
      * @return the panEtag value.
      */
     public String panEtag() {
@@ -80,7 +84,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Set the panEtag property: panEtag info.
-     *
+     * 
      * @param panEtag the panEtag value to set.
      * @return the FirewallResourceUpdateProperties object itself.
      */
@@ -91,7 +95,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Get the networkProfile property: Network settings.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -100,7 +104,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Set the networkProfile property: Network settings.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the FirewallResourceUpdateProperties object itself.
      */
@@ -111,7 +115,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Get the isPanoramaManaged property: Panorama Managed: Default is False. Default will be CloudSec managed.
-     *
+     * 
      * @return the isPanoramaManaged value.
      */
     public BooleanEnum isPanoramaManaged() {
@@ -120,7 +124,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Set the isPanoramaManaged property: Panorama Managed: Default is False. Default will be CloudSec managed.
-     *
+     * 
      * @param isPanoramaManaged the isPanoramaManaged value to set.
      * @return the FirewallResourceUpdateProperties object itself.
      */
@@ -131,7 +135,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Get the panoramaConfig property: Panorama Configuration.
-     *
+     * 
      * @return the panoramaConfig value.
      */
     public PanoramaConfig panoramaConfig() {
@@ -140,7 +144,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Set the panoramaConfig property: Panorama Configuration.
-     *
+     * 
      * @param panoramaConfig the panoramaConfig value to set.
      * @return the FirewallResourceUpdateProperties object itself.
      */
@@ -151,7 +155,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Get the associatedRulestack property: Associated Rulestack.
-     *
+     * 
      * @return the associatedRulestack value.
      */
     public RulestackDetails associatedRulestack() {
@@ -160,7 +164,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Set the associatedRulestack property: Associated Rulestack.
-     *
+     * 
      * @param associatedRulestack the associatedRulestack value to set.
      * @return the FirewallResourceUpdateProperties object itself.
      */
@@ -171,7 +175,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Get the dnsSettings property: DNS settings for Firewall.
-     *
+     * 
      * @return the dnsSettings value.
      */
     public DnsSettings dnsSettings() {
@@ -180,7 +184,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Set the dnsSettings property: DNS settings for Firewall.
-     *
+     * 
      * @param dnsSettings the dnsSettings value to set.
      * @return the FirewallResourceUpdateProperties object itself.
      */
@@ -191,7 +195,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Get the frontEndSettings property: Frontend settings for Firewall.
-     *
+     * 
      * @return the frontEndSettings value.
      */
     public List<FrontendSetting> frontEndSettings() {
@@ -200,7 +204,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Set the frontEndSettings property: Frontend settings for Firewall.
-     *
+     * 
      * @param frontEndSettings the frontEndSettings value to set.
      * @return the FirewallResourceUpdateProperties object itself.
      */
@@ -211,7 +215,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Get the planData property: Billing plan information.
-     *
+     * 
      * @return the planData value.
      */
     public PlanData planData() {
@@ -220,7 +224,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Set the planData property: Billing plan information.
-     *
+     * 
      * @param planData the planData value to set.
      * @return the FirewallResourceUpdateProperties object itself.
      */
@@ -231,7 +235,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Get the marketplaceDetails property: Marketplace details.
-     *
+     * 
      * @return the marketplaceDetails value.
      */
     public MarketplaceDetails marketplaceDetails() {
@@ -240,7 +244,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Set the marketplaceDetails property: Marketplace details.
-     *
+     * 
      * @param marketplaceDetails the marketplaceDetails value to set.
      * @return the FirewallResourceUpdateProperties object itself.
      */
@@ -251,7 +255,7 @@ public final class FirewallResourceUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

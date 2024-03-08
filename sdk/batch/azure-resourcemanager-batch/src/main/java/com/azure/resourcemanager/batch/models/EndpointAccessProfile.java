@@ -9,12 +9,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network access profile for Batch endpoint. */
+/**
+ * Network access profile for Batch endpoint.
+ */
 @Fluent
 public final class EndpointAccessProfile {
     /*
      * The default action when there is no IPRule matched.
-     *
+     * 
      * Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
      */
     @JsonProperty(value = "defaultAction", required = true)
@@ -26,15 +28,17 @@ public final class EndpointAccessProfile {
     @JsonProperty(value = "ipRules")
     private List<IpRule> ipRules;
 
-    /** Creates an instance of EndpointAccessProfile class. */
+    /**
+     * Creates an instance of EndpointAccessProfile class.
+     */
     public EndpointAccessProfile() {
     }
 
     /**
      * Get the defaultAction property: The default action when there is no IPRule matched.
-     *
-     * <p>Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
-     *
+     * 
+     * Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
+     * 
      * @return the defaultAction value.
      */
     public EndpointAccessDefaultAction defaultAction() {
@@ -43,9 +47,9 @@ public final class EndpointAccessProfile {
 
     /**
      * Set the defaultAction property: The default action when there is no IPRule matched.
-     *
-     * <p>Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
-     *
+     * 
+     * Default action for endpoint access. It is only applicable when publicNetworkAccess is enabled.
+     * 
      * @param defaultAction the defaultAction value to set.
      * @return the EndpointAccessProfile object itself.
      */
@@ -56,7 +60,7 @@ public final class EndpointAccessProfile {
 
     /**
      * Get the ipRules property: Array of IP ranges to filter client IP address.
-     *
+     * 
      * @return the ipRules value.
      */
     public List<IpRule> ipRules() {
@@ -65,7 +69,7 @@ public final class EndpointAccessProfile {
 
     /**
      * Set the ipRules property: Array of IP ranges to filter client IP address.
-     *
+     * 
      * @param ipRules the ipRules value to set.
      * @return the EndpointAccessProfile object itself.
      */
@@ -76,15 +80,13 @@ public final class EndpointAccessProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (defaultAction() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property defaultAction in model EndpointAccessProfile"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property defaultAction in model EndpointAccessProfile"));
         }
         if (ipRules() != null) {
             ipRules().forEach(e -> e.validate());

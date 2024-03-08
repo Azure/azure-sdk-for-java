@@ -28,6 +28,10 @@ public final class IntelligencePackInner {
     @JsonProperty(value = "displayName")
     private String displayName;
 
+    /** Creates an instance of IntelligencePackInner class. */
+    public IntelligencePackInner() {
+    }
+
     /**
      * Get the name property: The name of the intelligence pack.
      *

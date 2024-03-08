@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Backups. */
+/**
+ * List of Backups.
+ */
 @Fluent
 public final class BackupsList {
     /*
@@ -18,13 +20,21 @@ public final class BackupsList {
     @JsonProperty(value = "value")
     private List<BackupInner> value;
 
-    /** Creates an instance of BackupsList class. */
+    /*
+     * URL to get the next set of results.
+     */
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
+
+    /**
+     * Creates an instance of BackupsList class.
+     */
     public BackupsList() {
     }
 
     /**
      * Get the value property: A list of Backups.
-     *
+     * 
      * @return the value value.
      */
     public List<BackupInner> value() {
@@ -33,7 +43,7 @@ public final class BackupsList {
 
     /**
      * Set the value property: A list of Backups.
-     *
+     * 
      * @param value the value value to set.
      * @return the BackupsList object itself.
      */
@@ -43,8 +53,28 @@ public final class BackupsList {
     }
 
     /**
+     * Get the nextLink property: URL to get the next set of results.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: URL to get the next set of results.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the BackupsList object itself.
+     */
+    public BackupsList withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

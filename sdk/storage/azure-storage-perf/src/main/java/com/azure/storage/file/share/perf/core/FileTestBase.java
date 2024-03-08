@@ -3,11 +3,10 @@
 
 package com.azure.storage.file.share.perf.core;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
-
-import java.util.UUID;
 
 public abstract class FileTestBase<TOptions extends PerfStressOptions> extends DirectoryTest<TOptions> {
 
@@ -18,7 +17,7 @@ public abstract class FileTestBase<TOptions extends PerfStressOptions> extends D
     public FileTestBase(TOptions options) {
         super(options);
 
-        String fileName = "randomfiletest-" + UUID.randomUUID().toString();
+        String fileName = "randomfiletest-" + CoreUtils.randomUuid();
 
         shareFileClient =  shareDirectoryClient.getFileClient(fileName);
         shareFileAsyncClient = shareDirectoryAsyncClient.getFileClient(fileName);

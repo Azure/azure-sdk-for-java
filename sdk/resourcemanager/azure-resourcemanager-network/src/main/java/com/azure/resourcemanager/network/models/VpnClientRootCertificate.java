@@ -10,7 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VpnClientRootCertificatePropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VPN client root certificate of virtual network gateway. */
+/**
+ * VPN client root certificate of virtual network gateway.
+ */
 @Fluent
 public final class VpnClientRootCertificate extends SubResource {
     /*
@@ -31,13 +33,15 @@ public final class VpnClientRootCertificate extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of VpnClientRootCertificate class. */
+    /**
+     * Creates an instance of VpnClientRootCertificate class.
+     */
     public VpnClientRootCertificate() {
     }
 
     /**
      * Get the innerProperties property: Properties of the vpn client root certificate.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VpnClientRootCertificatePropertiesFormat innerProperties() {
@@ -47,7 +51,7 @@ public final class VpnClientRootCertificate extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +61,7 @@ public final class VpnClientRootCertificate extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnClientRootCertificate object itself.
      */
@@ -68,14 +72,16 @@ public final class VpnClientRootCertificate extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnClientRootCertificate withId(String id) {
         super.withId(id);
@@ -84,7 +90,7 @@ public final class VpnClientRootCertificate extends SubResource {
 
     /**
      * Get the publicCertData property: The certificate public data.
-     *
+     * 
      * @return the publicCertData value.
      */
     public String publicCertData() {
@@ -93,7 +99,7 @@ public final class VpnClientRootCertificate extends SubResource {
 
     /**
      * Set the publicCertData property: The certificate public data.
-     *
+     * 
      * @param publicCertData the publicCertData value to set.
      * @return the VpnClientRootCertificate object itself.
      */
@@ -107,7 +113,7 @@ public final class VpnClientRootCertificate extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN client root certificate resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -116,15 +122,13 @@ public final class VpnClientRootCertificate extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model VpnClientRootCertificate"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model VpnClientRootCertificate"));
         } else {
             innerProperties().validate();
         }

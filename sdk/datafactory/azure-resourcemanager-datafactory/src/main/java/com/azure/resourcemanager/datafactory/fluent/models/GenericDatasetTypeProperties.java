@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties specific to this dataset type. */
+/**
+ * Properties specific to this dataset type.
+ */
 @Fluent
 public final class GenericDatasetTypeProperties {
     /*
@@ -16,13 +18,15 @@ public final class GenericDatasetTypeProperties {
     @JsonProperty(value = "tableName")
     private Object tableName;
 
-    /** Creates an instance of GenericDatasetTypeProperties class. */
+    /**
+     * Creates an instance of GenericDatasetTypeProperties class.
+     */
     public GenericDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -31,7 +35,7 @@ public final class GenericDatasetTypeProperties {
 
     /**
      * Set the tableName property: The table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the GenericDatasetTypeProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class GenericDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoDBCollectionGetResult
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the MongoDB collections and their properties. */
+/**
+ * The List operation response, that contains the MongoDB collections and their properties.
+ */
 @Immutable
 public final class MongoDBCollectionListResult {
     /*
@@ -18,13 +20,15 @@ public final class MongoDBCollectionListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MongoDBCollectionGetResultsInner> value;
 
-    /** Creates an instance of MongoDBCollectionListResult class. */
+    /**
+     * Creates an instance of MongoDBCollectionListResult class.
+     */
     public MongoDBCollectionListResult() {
     }
 
     /**
      * Get the value property: List of MongoDB collections and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<MongoDBCollectionGetResultsInner> value() {
@@ -33,7 +37,7 @@ public final class MongoDBCollectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

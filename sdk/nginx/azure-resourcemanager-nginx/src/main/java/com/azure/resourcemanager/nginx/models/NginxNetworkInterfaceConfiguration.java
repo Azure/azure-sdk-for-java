@@ -7,7 +7,9 @@ package com.azure.resourcemanager.nginx.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NginxNetworkInterfaceConfiguration model. */
+/**
+ * The NginxNetworkInterfaceConfiguration model.
+ */
 @Fluent
 public final class NginxNetworkInterfaceConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class NginxNetworkInterfaceConfiguration {
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
-    /** Creates an instance of NginxNetworkInterfaceConfiguration class. */
+    /**
+     * Creates an instance of NginxNetworkInterfaceConfiguration class.
+     */
     public NginxNetworkInterfaceConfiguration() {
     }
 
     /**
      * Get the subnetId property: The subnetId property.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -31,7 +35,7 @@ public final class NginxNetworkInterfaceConfiguration {
 
     /**
      * Set the subnetId property: The subnetId property.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the NginxNetworkInterfaceConfiguration object itself.
      */
@@ -42,7 +46,7 @@ public final class NginxNetworkInterfaceConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

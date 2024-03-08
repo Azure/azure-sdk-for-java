@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of a single parameter for an entity. */
+/**
+ * Definition of a single parameter for an entity.
+ */
 @Fluent
 public final class ParameterSpecification {
     /*
@@ -23,13 +25,15 @@ public final class ParameterSpecification {
     @JsonProperty(value = "defaultValue")
     private Object defaultValue;
 
-    /** Creates an instance of ParameterSpecification class. */
+    /**
+     * Creates an instance of ParameterSpecification class.
+     */
     public ParameterSpecification() {
     }
 
     /**
      * Get the type property: Parameter type.
-     *
+     * 
      * @return the type value.
      */
     public ParameterType type() {
@@ -38,7 +42,7 @@ public final class ParameterSpecification {
 
     /**
      * Set the type property: Parameter type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ParameterSpecification object itself.
      */
@@ -49,7 +53,7 @@ public final class ParameterSpecification {
 
     /**
      * Get the defaultValue property: Default value of parameter.
-     *
+     * 
      * @return the defaultValue value.
      */
     public Object defaultValue() {
@@ -58,7 +62,7 @@ public final class ParameterSpecification {
 
     /**
      * Set the defaultValue property: Default value of parameter.
-     *
+     * 
      * @param defaultValue the defaultValue value to set.
      * @return the ParameterSpecification object itself.
      */
@@ -69,14 +73,13 @@ public final class ParameterSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ParameterSpecification"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model ParameterSpecification"));
         }
     }
 

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies settings related to VM Guest Patching on Linux. */
+/**
+ * Specifies settings related to VM Guest Patching on Linux.
+ */
 @Fluent
 public final class LinuxPatchSettings {
     /*
@@ -35,7 +37,9 @@ public final class LinuxPatchSettings {
     @JsonProperty(value = "automaticByPlatformSettings")
     private LinuxVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings;
 
-    /** Creates an instance of LinuxPatchSettings class. */
+    /**
+     * Creates an instance of LinuxPatchSettings class.
+     */
     public LinuxPatchSettings() {
     }
 
@@ -43,9 +47,9 @@ public final class LinuxPatchSettings {
      * Get the patchMode property: Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines
      * associated to virtual machine scale set with OrchestrationMode as Flexible.&lt;br /&gt;&lt;br /&gt; Possible
      * values are:&lt;br /&gt;&lt;br /&gt; **ImageDefault** - The virtual machine's default patching configuration is
-     * used. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - The virtual machine will be automatically updated by the
-     * platform. The property provisionVMAgent must be true.
-     *
+     * used. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - The virtual machine will be automatically updated by
+     * the platform. The property provisionVMAgent must be true.
+     * 
      * @return the patchMode value.
      */
     public LinuxVMGuestPatchMode patchMode() {
@@ -56,9 +60,9 @@ public final class LinuxPatchSettings {
      * Set the patchMode property: Specifies the mode of VM Guest Patching to IaaS virtual machine or virtual machines
      * associated to virtual machine scale set with OrchestrationMode as Flexible.&lt;br /&gt;&lt;br /&gt; Possible
      * values are:&lt;br /&gt;&lt;br /&gt; **ImageDefault** - The virtual machine's default patching configuration is
-     * used. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - The virtual machine will be automatically updated by the
-     * platform. The property provisionVMAgent must be true.
-     *
+     * used. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - The virtual machine will be automatically updated by
+     * the platform. The property provisionVMAgent must be true.
+     * 
      * @param patchMode the patchMode value to set.
      * @return the LinuxPatchSettings object itself.
      */
@@ -70,9 +74,9 @@ public final class LinuxPatchSettings {
     /**
      * Get the assessmentMode property: Specifies the mode of VM Guest Patch Assessment for the IaaS virtual
      * machine.&lt;br /&gt;&lt;br /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **ImageDefault** - You control the
-     * timing of patch assessments on a virtual machine. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - The platform
-     * will trigger periodic patch assessments. The property provisionVMAgent must be true.
-     *
+     * timing of patch assessments on a virtual machine. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - The
+     * platform will trigger periodic patch assessments. The property provisionVMAgent must be true.
+     * 
      * @return the assessmentMode value.
      */
     public LinuxPatchAssessmentMode assessmentMode() {
@@ -82,9 +86,9 @@ public final class LinuxPatchSettings {
     /**
      * Set the assessmentMode property: Specifies the mode of VM Guest Patch Assessment for the IaaS virtual
      * machine.&lt;br /&gt;&lt;br /&gt; Possible values are:&lt;br /&gt;&lt;br /&gt; **ImageDefault** - You control the
-     * timing of patch assessments on a virtual machine. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - The platform
-     * will trigger periodic patch assessments. The property provisionVMAgent must be true.
-     *
+     * timing of patch assessments on a virtual machine. &lt;br /&gt;&lt;br /&gt; **AutomaticByPlatform** - The
+     * platform will trigger periodic patch assessments. The property provisionVMAgent must be true.
+     * 
      * @param assessmentMode the assessmentMode value to set.
      * @return the LinuxPatchSettings object itself.
      */
@@ -94,9 +98,9 @@ public final class LinuxPatchSettings {
     }
 
     /**
-     * Get the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform in
-     * VM Guest Patching on Linux.
-     *
+     * Get the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform
+     * in VM Guest Patching on Linux.
+     * 
      * @return the automaticByPlatformSettings value.
      */
     public LinuxVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings() {
@@ -104,21 +108,21 @@ public final class LinuxPatchSettings {
     }
 
     /**
-     * Set the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform in
-     * VM Guest Patching on Linux.
-     *
+     * Set the automaticByPlatformSettings property: Specifies additional settings for patch mode AutomaticByPlatform
+     * in VM Guest Patching on Linux.
+     * 
      * @param automaticByPlatformSettings the automaticByPlatformSettings value to set.
      * @return the LinuxPatchSettings object itself.
      */
-    public LinuxPatchSettings withAutomaticByPlatformSettings(
-        LinuxVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings) {
+    public LinuxPatchSettings
+        withAutomaticByPlatformSettings(LinuxVMGuestPatchAutomaticByPlatformSettings automaticByPlatformSettings) {
         this.automaticByPlatformSettings = automaticByPlatformSettings;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

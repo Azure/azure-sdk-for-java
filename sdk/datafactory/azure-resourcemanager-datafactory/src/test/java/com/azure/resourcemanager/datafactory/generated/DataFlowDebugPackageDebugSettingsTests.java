@@ -15,36 +15,24 @@ import org.junit.jupiter.api.Assertions;
 public final class DataFlowDebugPackageDebugSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataFlowDebugPackageDebugSettings model =
-            BinaryData
-                .fromString(
-                    "{\"sourceSettings\":[{\"sourceName\":\"cnqmxqpsw\",\"rowLimit\":2027239261,\"\":{\"gdhbe\":\"datahl\"}},{\"sourceName\":\"qkzszuwiwtglxxh\",\"rowLimit\":1438070602,\"\":{\"pqcbfrmbodthsq\":\"datapicrmnzhrgmqgjsx\",\"fr\":\"datagvriibakclac\"}},{\"sourceName\":\"ousxauzlwvsgmw\",\"rowLimit\":414245170,\"\":{\"mmkjsvthnwpztek\":\"dataizvu\",\"gplucfotangcfhny\":\"datavmribiat\",\"vtxnjmxmcuqud\":\"datazcugswvxwlmzqw\"}}],\"parameters\":{\"dkvgfabuiyjibuzp\":\"dataclxyn\"},\"datasetParameters\":\"dataugneikn\"}")
-                .toObject(DataFlowDebugPackageDebugSettings.class);
+        DataFlowDebugPackageDebugSettings model = BinaryData.fromString(
+            "{\"sourceSettings\":[{\"sourceName\":\"cnqmxqpsw\",\"rowLimit\":2027239261,\"\":{\"gdhbe\":\"datahl\"}},{\"sourceName\":\"qkzszuwiwtglxxh\",\"rowLimit\":1438070602,\"\":{\"pqcbfrmbodthsq\":\"datapicrmnzhrgmqgjsx\",\"fr\":\"datagvriibakclac\"}},{\"sourceName\":\"ousxauzlwvsgmw\",\"rowLimit\":414245170,\"\":{\"mmkjsvthnwpztek\":\"dataizvu\",\"gplucfotangcfhny\":\"datavmribiat\",\"vtxnjmxmcuqud\":\"datazcugswvxwlmzqw\"}}],\"parameters\":{\"dkvgfabuiyjibuzp\":\"dataclxyn\"},\"datasetParameters\":\"dataugneikn\"}")
+            .toObject(DataFlowDebugPackageDebugSettings.class);
         Assertions.assertEquals("cnqmxqpsw", model.sourceSettings().get(0).sourceName());
         Assertions.assertEquals(2027239261, model.sourceSettings().get(0).rowLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowDebugPackageDebugSettings model =
-            new DataFlowDebugPackageDebugSettings()
-                .withSourceSettings(
-                    Arrays
-                        .asList(
-                            new DataFlowSourceSetting()
-                                .withSourceName("cnqmxqpsw")
-                                .withRowLimit(2027239261)
-                                .withAdditionalProperties(mapOf()),
-                            new DataFlowSourceSetting()
-                                .withSourceName("qkzszuwiwtglxxh")
-                                .withRowLimit(1438070602)
-                                .withAdditionalProperties(mapOf()),
-                            new DataFlowSourceSetting()
-                                .withSourceName("ousxauzlwvsgmw")
-                                .withRowLimit(414245170)
-                                .withAdditionalProperties(mapOf())))
-                .withParameters(mapOf("dkvgfabuiyjibuzp", "dataclxyn"))
-                .withDatasetParameters("dataugneikn");
+        DataFlowDebugPackageDebugSettings model = new DataFlowDebugPackageDebugSettings()
+            .withSourceSettings(Arrays.asList(
+                new DataFlowSourceSetting().withSourceName("cnqmxqpsw").withRowLimit(2027239261)
+                    .withAdditionalProperties(mapOf()),
+                new DataFlowSourceSetting().withSourceName("qkzszuwiwtglxxh").withRowLimit(1438070602)
+                    .withAdditionalProperties(mapOf()),
+                new DataFlowSourceSetting().withSourceName("ousxauzlwvsgmw").withRowLimit(414245170)
+                    .withAdditionalProperties(mapOf())))
+            .withParameters(mapOf("dkvgfabuiyjibuzp", "dataclxyn")).withDatasetParameters("dataugneikn");
         model = BinaryData.fromObject(model).toObject(DataFlowDebugPackageDebugSettings.class);
         Assertions.assertEquals("cnqmxqpsw", model.sourceSettings().get(0).sourceName());
         Assertions.assertEquals(2027239261, model.sourceSettings().get(0).rowLimit());

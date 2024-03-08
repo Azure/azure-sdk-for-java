@@ -5,16 +5,25 @@
 package com.azure.resourcemanager.resourcemover.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
+import java.util.Map;
 
 /** Defines the virtual network resource settings. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
 @JsonTypeName("Microsoft.Network/virtualNetworks")
 @Fluent
 public final class VirtualNetworkResourceSettings extends ResourceSettings {
+    /*
+     * Gets or sets the Resource tags.
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
+
     /*
      * Gets or sets a value indicating whether gets or sets whether the
      * DDOS protection should be switched on.
@@ -43,6 +52,26 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
 
     /** Creates an instance of VirtualNetworkResourceSettings class. */
     public VirtualNetworkResourceSettings() {
+    }
+
+    /**
+     * Get the tags property: Gets or sets the Resource tags.
+     *
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Gets or sets the Resource tags.
+     *
+     * @param tags the tags value to set.
+     * @return the VirtualNetworkResourceSettings object itself.
+     */
+    public VirtualNetworkResourceSettings withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**
@@ -133,6 +162,13 @@ public final class VirtualNetworkResourceSettings extends ResourceSettings {
     @Override
     public VirtualNetworkResourceSettings withTargetResourceName(String targetResourceName) {
         super.withTargetResourceName(targetResourceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public VirtualNetworkResourceSettings withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
         return this;
     }
 

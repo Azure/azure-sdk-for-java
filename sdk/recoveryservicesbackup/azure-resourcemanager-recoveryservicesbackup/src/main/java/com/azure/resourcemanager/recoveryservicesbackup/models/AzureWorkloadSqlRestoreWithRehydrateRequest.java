@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** AzureWorkload SQL-specific restore with integrated rehydration of recovery point. */
+/**
+ * AzureWorkload SQL-specific restore with integrated rehydration of recovery point.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureWorkloadSQLRestoreWithRehydrateRequest")
 @Fluent
@@ -22,13 +24,15 @@ public final class AzureWorkloadSqlRestoreWithRehydrateRequest extends AzureWork
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
-    /** Creates an instance of AzureWorkloadSqlRestoreWithRehydrateRequest class. */
+    /**
+     * Creates an instance of AzureWorkloadSqlRestoreWithRehydrateRequest class.
+     */
     public AzureWorkloadSqlRestoreWithRehydrateRequest() {
     }
 
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @return the recoveryPointRehydrationInfo value.
      */
     public RecoveryPointRehydrationInfo recoveryPointRehydrationInfo() {
@@ -37,75 +41,122 @@ public final class AzureWorkloadSqlRestoreWithRehydrateRequest extends AzureWork
 
     /**
      * Set the recoveryPointRehydrationInfo property: RP Rehydration Info.
-     *
+     * 
      * @param recoveryPointRehydrationInfo the recoveryPointRehydrationInfo value to set.
      * @return the AzureWorkloadSqlRestoreWithRehydrateRequest object itself.
      */
-    public AzureWorkloadSqlRestoreWithRehydrateRequest withRecoveryPointRehydrationInfo(
-        RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
+    public AzureWorkloadSqlRestoreWithRehydrateRequest
+        withRecoveryPointRehydrationInfo(RecoveryPointRehydrationInfo recoveryPointRehydrationInfo) {
         this.recoveryPointRehydrationInfo = recoveryPointRehydrationInfo;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSqlRestoreWithRehydrateRequest withShouldUseAlternateTargetLocation(
-        Boolean shouldUseAlternateTargetLocation) {
+    public AzureWorkloadSqlRestoreWithRehydrateRequest
+        withShouldUseAlternateTargetLocation(Boolean shouldUseAlternateTargetLocation) {
         super.withShouldUseAlternateTargetLocation(shouldUseAlternateTargetLocation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreWithRehydrateRequest withIsNonRecoverable(Boolean isNonRecoverable) {
         super.withIsNonRecoverable(isNonRecoverable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureWorkloadSqlRestoreWithRehydrateRequest withAlternateDirectoryPaths(
-        List<SqlDataDirectoryMapping> alternateDirectoryPaths) {
+    public AzureWorkloadSqlRestoreWithRehydrateRequest
+        withAlternateDirectoryPaths(List<SqlDataDirectoryMapping> alternateDirectoryPaths) {
         super.withAlternateDirectoryPaths(alternateDirectoryPaths);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreWithRehydrateRequest withRecoveryType(RecoveryType recoveryType) {
         super.withRecoveryType(recoveryType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreWithRehydrateRequest withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreWithRehydrateRequest withPropertyBag(Map<String, String> propertyBag) {
         super.withPropertyBag(propertyBag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreWithRehydrateRequest withTargetInfo(TargetRestoreInfo targetInfo) {
         super.withTargetInfo(targetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreWithRehydrateRequest withRecoveryMode(RecoveryMode recoveryMode) {
         super.withRecoveryMode(recoveryMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlRestoreWithRehydrateRequest withTargetResourceGroupName(String targetResourceGroupName) {
+        super.withTargetResourceGroupName(targetResourceGroupName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlRestoreWithRehydrateRequest
+        withUserAssignedManagedIdentityDetails(UserAssignedManagedIdentityDetails userAssignedManagedIdentityDetails) {
+        super.withUserAssignedManagedIdentityDetails(userAssignedManagedIdentityDetails);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureWorkloadSqlRestoreWithRehydrateRequest
+        withSnapshotRestoreParameters(SnapshotRestoreParameters snapshotRestoreParameters) {
+        super.withSnapshotRestoreParameters(snapshotRestoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureWorkloadSqlRestoreWithRehydrateRequest withTargetVirtualMachineId(String targetVirtualMachineId) {
         super.withTargetVirtualMachineId(targetVirtualMachineId);
@@ -114,7 +165,7 @@ public final class AzureWorkloadSqlRestoreWithRehydrateRequest extends AzureWork
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

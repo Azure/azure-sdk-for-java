@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** EventHub configurations. */
+/**
+ * EventHub configurations.
+ */
 @Fluent
 public final class EventHub {
     /*
@@ -40,13 +42,15 @@ public final class EventHub {
     @JsonProperty(value = "policyName")
     private String policyName;
 
-    /** Creates an instance of EventHub class. */
+    /**
+     * Creates an instance of EventHub class.
+     */
     public EventHub() {
     }
 
     /**
      * Get the id property: Resource ID of EventHub.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -55,7 +59,7 @@ public final class EventHub {
 
     /**
      * Set the id property: Resource ID of EventHub.
-     *
+     * 
      * @param id the id value to set.
      * @return the EventHub object itself.
      */
@@ -66,7 +70,7 @@ public final class EventHub {
 
     /**
      * Get the subscriptionId property: Subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -75,7 +79,7 @@ public final class EventHub {
 
     /**
      * Set the subscriptionId property: Subscription Id.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the EventHub object itself.
      */
@@ -86,7 +90,7 @@ public final class EventHub {
 
     /**
      * Get the name property: EventHub name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -95,7 +99,7 @@ public final class EventHub {
 
     /**
      * Set the name property: EventHub name.
-     *
+     * 
      * @param name the name value to set.
      * @return the EventHub object itself.
      */
@@ -106,7 +110,7 @@ public final class EventHub {
 
     /**
      * Get the nameSpace property: EventHub namespace.
-     *
+     * 
      * @return the nameSpace value.
      */
     public String nameSpace() {
@@ -115,7 +119,7 @@ public final class EventHub {
 
     /**
      * Set the nameSpace property: EventHub namespace.
-     *
+     * 
      * @param nameSpace the nameSpace value to set.
      * @return the EventHub object itself.
      */
@@ -126,7 +130,7 @@ public final class EventHub {
 
     /**
      * Get the policyName property: EventHub policy name.
-     *
+     * 
      * @return the policyName value.
      */
     public String policyName() {
@@ -135,7 +139,7 @@ public final class EventHub {
 
     /**
      * Set the policyName property: EventHub policy name.
-     *
+     * 
      * @param policyName the policyName value to set.
      * @return the EventHub object itself.
      */
@@ -146,7 +150,7 @@ public final class EventHub {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the resource properties. */
+/** Describes the properties of a Resource Pool. */
 @Fluent
 public final class ResourcePoolProperties {
     /*
@@ -85,10 +86,46 @@ public final class ResourcePoolProperties {
     private Long memLimitMB;
 
     /*
+     * Gets the used physical memory on the pool in GB.
+     */
+    @JsonProperty(value = "memOverallUsageGB", access = JsonProperty.Access.WRITE_ONLY)
+    private Long memOverallUsageGB;
+
+    /*
+     * Gets the total amount of physical memory on the pool in GB.
+     */
+    @JsonProperty(value = "memCapacityGB", access = JsonProperty.Access.WRITE_ONLY)
+    private Long memCapacityGB;
+
+    /*
+     * Gets the used CPU usage across all cores on the pool in MHz.
+     */
+    @JsonProperty(value = "cpuOverallUsageMHz", access = JsonProperty.Access.WRITE_ONLY)
+    private Long cpuOverallUsageMHz;
+
+    /*
+     * Gets the max CPU usage across all cores on the pool in MHz.
+     */
+    @JsonProperty(value = "cpuCapacityMHz", access = JsonProperty.Access.WRITE_ONLY)
+    private Long cpuCapacityMHz;
+
+    /*
      * Gets the name of the corresponding resource in Kubernetes.
      */
     @JsonProperty(value = "customResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String customResourceName;
+
+    /*
+     * Gets the datastore ARM ids.
+     */
+    @JsonProperty(value = "datastoreIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> datastoreIds;
+
+    /*
+     * Gets the network ARM ids.
+     */
+    @JsonProperty(value = "networkIds", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> networkIds;
 
     /*
      * The resource status information.
@@ -97,10 +134,14 @@ public final class ResourcePoolProperties {
     private List<ResourceStatus> statuses;
 
     /*
-     * Gets or sets the provisioning state.
+     * Gets the provisioning state.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private ProvisioningState provisioningState;
+
+    /** Creates an instance of ResourcePoolProperties class. */
+    public ResourcePoolProperties() {
+    }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
@@ -241,12 +282,66 @@ public final class ResourcePoolProperties {
     }
 
     /**
+     * Get the memOverallUsageGB property: Gets the used physical memory on the pool in GB.
+     *
+     * @return the memOverallUsageGB value.
+     */
+    public Long memOverallUsageGB() {
+        return this.memOverallUsageGB;
+    }
+
+    /**
+     * Get the memCapacityGB property: Gets the total amount of physical memory on the pool in GB.
+     *
+     * @return the memCapacityGB value.
+     */
+    public Long memCapacityGB() {
+        return this.memCapacityGB;
+    }
+
+    /**
+     * Get the cpuOverallUsageMHz property: Gets the used CPU usage across all cores on the pool in MHz.
+     *
+     * @return the cpuOverallUsageMHz value.
+     */
+    public Long cpuOverallUsageMHz() {
+        return this.cpuOverallUsageMHz;
+    }
+
+    /**
+     * Get the cpuCapacityMHz property: Gets the max CPU usage across all cores on the pool in MHz.
+     *
+     * @return the cpuCapacityMHz value.
+     */
+    public Long cpuCapacityMHz() {
+        return this.cpuCapacityMHz;
+    }
+
+    /**
      * Get the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
      *
      * @return the customResourceName value.
      */
     public String customResourceName() {
         return this.customResourceName;
+    }
+
+    /**
+     * Get the datastoreIds property: Gets the datastore ARM ids.
+     *
+     * @return the datastoreIds value.
+     */
+    public List<String> datastoreIds() {
+        return this.datastoreIds;
+    }
+
+    /**
+     * Get the networkIds property: Gets the network ARM ids.
+     *
+     * @return the networkIds value.
+     */
+    public List<String> networkIds() {
+        return this.networkIds;
     }
 
     /**
@@ -259,11 +354,11 @@ public final class ResourcePoolProperties {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
+     * Get the provisioningState property: Gets the provisioning state.
      *
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 

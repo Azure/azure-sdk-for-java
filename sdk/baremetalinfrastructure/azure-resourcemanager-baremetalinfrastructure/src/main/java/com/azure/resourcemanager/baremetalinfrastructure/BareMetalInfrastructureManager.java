@@ -25,9 +25,11 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.baremetalinfrastructure.fluent.BareMetalInfrastructureClient;
 import com.azure.resourcemanager.baremetalinfrastructure.implementation.AzureBareMetalInstancesImpl;
+import com.azure.resourcemanager.baremetalinfrastructure.implementation.AzureBareMetalStorageInstancesImpl;
 import com.azure.resourcemanager.baremetalinfrastructure.implementation.BareMetalInfrastructureClientBuilder;
 import com.azure.resourcemanager.baremetalinfrastructure.implementation.OperationsImpl;
 import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalInstances;
+import com.azure.resourcemanager.baremetalinfrastructure.models.AzureBareMetalStorageInstances;
 import com.azure.resourcemanager.baremetalinfrastructure.models.Operations;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -36,11 +38,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to BareMetalInfrastructureManager. The BareMetalInfrastructure Management client. */
+/** Entry point to BareMetalInfrastructureManager. The Bare Metal Infrastructure Management client. */
 public final class BareMetalInfrastructureManager {
     private AzureBareMetalInstances azureBareMetalInstances;
 
     private Operations operations;
+
+    private AzureBareMetalStorageInstances azureBareMetalStorageInstances;
 
     private final BareMetalInfrastructureClient clientObject;
 
@@ -209,7 +213,7 @@ public final class BareMetalInfrastructureManager {
                 .append("-")
                 .append("com.azure.resourcemanager.baremetalinfrastructure")
                 .append("/")
-                .append("1.0.0-beta.2");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -292,8 +296,23 @@ public final class BareMetalInfrastructureManager {
     }
 
     /**
-     * @return Wrapped service client BareMetalInfrastructureClient providing direct access to the underlying
-     *     auto-generated API implementation, based on Azure REST API.
+     * Gets the resource collection API of AzureBareMetalStorageInstances. It manages AzureBareMetalStorageInstance.
+     *
+     * @return Resource collection API of AzureBareMetalStorageInstances.
+     */
+    public AzureBareMetalStorageInstances azureBareMetalStorageInstances() {
+        if (this.azureBareMetalStorageInstances == null) {
+            this.azureBareMetalStorageInstances =
+                new AzureBareMetalStorageInstancesImpl(clientObject.getAzureBareMetalStorageInstances(), this);
+        }
+        return azureBareMetalStorageInstances;
+    }
+
+    /**
+     * Gets wrapped service client BareMetalInfrastructureClient providing direct access to the underlying
+     * auto-generated API implementation, based on Azure REST API.
+     *
+     * @return Wrapped service client BareMetalInfrastructureClient.
      */
     public BareMetalInfrastructureClient serviceClient() {
         return this.clientObject;

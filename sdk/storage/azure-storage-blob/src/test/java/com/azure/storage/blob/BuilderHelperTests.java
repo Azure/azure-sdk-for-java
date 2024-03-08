@@ -4,7 +4,6 @@
 package com.azure.storage.blob;
 
 import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
@@ -15,6 +14,7 @@ import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -32,7 +32,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -72,7 +71,7 @@ public class BuilderHelperTests {
     public void freshDateAppliedOnRetry() {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null,
             ENDPOINT, REQUEST_RETRY_OPTIONS, null, BuilderHelper.getDefaultHttpLogOptions(),
-            new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null,
+            new ClientOptions(), new FreshDateTestClient(), new ArrayList<>(), new ArrayList<>(), null, null,
             new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
@@ -178,7 +177,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null,
             ENDPOINT, new RequestRetryOptions(), null, new HttpLogOptions().setApplicationId(logOptionsUA),
             new ClientOptions().setApplicationId(clientOptionsUA), new ApplicationIdUAStringTestClient(expectedUA),
-            new ArrayList<>(), new ArrayList<>(), null, new ClientLogger(BuilderHelperTests.class));
+            new ArrayList<>(), new ArrayList<>(), null, null, new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
             .assertNext(it -> assertEquals(200, it.getStatusCode()))
@@ -311,7 +310,7 @@ public class BuilderHelperTests {
         HttpPipeline pipeline = BuilderHelper.buildPipeline(CREDENTIALS, null, null, null,
             ENDPOINT, new RequestRetryOptions(), null, BuilderHelper.getDefaultHttpLogOptions(),
             new ClientOptions().setHeaders(headers),
-            new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), null,
+            new ClientOptionsHeadersTestClient(headers), new ArrayList<>(), new ArrayList<>(), null, null,
             new ClientLogger(BuilderHelperTests.class));
 
         StepVerifier.create(pipeline.send(request(ENDPOINT)))
@@ -435,7 +434,7 @@ public class BuilderHelperTests {
             .endpoint(ENDPOINT)
             .blobName("foo")
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
             .buildClient());
 
@@ -443,21 +442,21 @@ public class BuilderHelperTests {
             .endpoint(ENDPOINT)
             .blobName("foo")
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
             .buildBlockBlobClient());
 
         assertDoesNotThrow(() -> new BlobContainerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
             .buildClient());
 
         assertDoesNotThrow(() -> new BlobServiceClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new StorageSharedKeyCredential("foo", "bar"))
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .sasToken("foo")
             .buildClient());
     }
@@ -474,7 +473,7 @@ public class BuilderHelperTests {
         assertThrows(IllegalStateException.class, () -> new BlobClientBuilder()
             .endpoint(ENDPOINT)
             .blobName("foo")
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .credential(new AzureSasCredential("foo"))
             .buildClient());
 
@@ -501,7 +500,7 @@ public class BuilderHelperTests {
         assertThrows(IllegalStateException.class, () -> new SpecializedBlobClientBuilder()
             .endpoint(ENDPOINT)
             .blobName("foo")
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .credential(new AzureSasCredential("foo"))
             .buildBlockBlobClient());
 
@@ -526,7 +525,7 @@ public class BuilderHelperTests {
 
         assertThrows(IllegalStateException.class, () -> new BlobContainerClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .credential(new AzureSasCredential("foo"))
             .buildClient());
 
@@ -549,7 +548,7 @@ public class BuilderHelperTests {
 
         assertThrows(IllegalStateException.class, () -> new BlobServiceClientBuilder()
             .endpoint(ENDPOINT)
-            .credential(Mockito.mock(TokenCredential.class))
+            .credential(new MockTokenCredential())
             .credential(new AzureSasCredential("foo"))
             .buildClient());
 

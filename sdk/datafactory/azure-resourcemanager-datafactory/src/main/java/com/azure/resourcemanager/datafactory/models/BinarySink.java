@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Binary sink. */
+/**
+ * A copy activity Binary sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("BinarySink")
 @Fluent
@@ -20,13 +22,15 @@ public final class BinarySink extends CopySink {
     @JsonProperty(value = "storeSettings")
     private StoreWriteSettings storeSettings;
 
-    /** Creates an instance of BinarySink class. */
+    /**
+     * Creates an instance of BinarySink class.
+     */
     public BinarySink() {
     }
 
     /**
      * Get the storeSettings property: Binary store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreWriteSettings storeSettings() {
@@ -35,7 +39,7 @@ public final class BinarySink extends CopySink {
 
     /**
      * Set the storeSettings property: Binary store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the BinarySink object itself.
      */
@@ -44,42 +48,54 @@ public final class BinarySink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinarySink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinarySink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinarySink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinarySink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinarySink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BinarySink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -88,7 +104,7 @@ public final class BinarySink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

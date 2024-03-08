@@ -16,7 +16,7 @@
         }
     },
     "variables": {
-        "mgmtApiVersion": "2019-04-01",
+        "mgmtApiVersion": "2022-05-01",
         "authorizationApiVersion": "2018-09-01-preview",
         "blobDataContributorRoleId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/0a9a7e1f-b9d0-4cc4-a60d-0319b160aaa3')]",
         "location": "[resourceGroup().location]",
@@ -65,7 +65,8 @@
                 "networkAcls": "[variables('networkAcls')]",
                 "supportsHttpsTrafficOnly": true,
                 "encryption": "[variables('encryption')]",
-                "accessTier": "Cool"
+                "accessTier": "Cool",
+                "minimumTlsVersion": "TLS1_2"
             }
         },
         {

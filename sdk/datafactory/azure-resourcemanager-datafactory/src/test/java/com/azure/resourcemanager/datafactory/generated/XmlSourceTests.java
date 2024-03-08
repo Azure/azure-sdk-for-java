@@ -15,36 +15,23 @@ import java.util.Map;
 public final class XmlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        XmlSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"XmlSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datafimlyx\",\"disableMetricsCollection\":\"dataixjudbiac\",\"\":{\"lvbujwpnzijpyyve\":\"dataucmfuvu\",\"khlpgtpgxkkoypxw\":\"dataruhqymwdsthktsal\",\"uaxoswqwbh\":\"datavthiva\",\"cnpdkw\":\"datarzlg\"}},\"formatSettings\":{\"type\":\"XmlReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"vofrenuvp\":\"datazlmzsekvsuzyowra\"}},\"validationMode\":\"dataltnyyeyj\",\"detectDataType\":\"datafpbxnretpg\",\"namespaces\":\"datatohruqtximrxeyz\",\"namespacePrefixes\":\"datanxb\",\"\":{\"sb\":\"dataglfyf\",\"ixdgqjkfvmrnwgea\":\"datajhoxtbsybpefojp\",\"tlxrdepqtz\":\"datayifeiiriomjdnkn\",\"o\":\"datahkpko\"}},\"additionalColumns\":\"datanobuwhutvcdtgx\",\"sourceRetryCount\":\"datafu\",\"sourceRetryWait\":\"datammzxpsrlbppjq\",\"maxConcurrentConnections\":\"datacpdaoskgtalljsoa\",\"disableMetricsCollection\":\"datajjklmpbgrosxfdx\",\"\":{\"luvdceouevno\":\"datanmbb\"}}")
-                .toObject(XmlSource.class);
+        XmlSource model = BinaryData.fromString(
+            "{\"type\":\"XmlSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datavcv\",\"disableMetricsCollection\":\"datalsb\",\"\":{\"teklgs\":\"datadjvyclasdprknup\",\"oaol\":\"datapvqczpk\",\"wcs\":\"datah\",\"euimtxmd\":\"dataebtjg\"}},\"formatSettings\":{\"type\":\"XmlReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"irnivf\":\"dataguk\"}},\"validationMode\":\"databskinmxanjgua\",\"detectDataType\":\"dataipgfxstw\",\"namespaces\":\"datazeqjno\",\"namespacePrefixes\":\"dataujliti\",\"\":{\"pbxspvkcng\":\"datamqxgjzslhopyqx\",\"klkhhjxww\":\"dataocnwnjmiitlamf\",\"wznwc\":\"datazsyetbffrhqz\",\"purv\":\"dataoapdtjkltetf\"}},\"additionalColumns\":\"datatjb\",\"sourceRetryCount\":\"datafume\",\"sourceRetryWait\":\"dataaafkvqhbw\",\"maxConcurrentConnections\":\"dataivqkyaghf\",\"disableMetricsCollection\":\"datablszsvegu\",\"\":{\"iufqxrlzij\":\"dataijpnymbjrs\"}}")
+            .toObject(XmlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        XmlSource model =
-            new XmlSource()
-                .withSourceRetryCount("datafu")
-                .withSourceRetryWait("datammzxpsrlbppjq")
-                .withMaxConcurrentConnections("datacpdaoskgtalljsoa")
-                .withDisableMetricsCollection("datajjklmpbgrosxfdx")
-                .withStoreSettings(
-                    new StoreReadSettings()
-                        .withMaxConcurrentConnections("datafimlyx")
-                        .withDisableMetricsCollection("dataixjudbiac")
-                        .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
-                .withFormatSettings(
-                    new XmlReadSettings()
-                        .withCompressionProperties(
-                            new CompressionReadSettings()
-                                .withAdditionalProperties(mapOf("type", "CompressionReadSettings")))
-                        .withValidationMode("dataltnyyeyj")
-                        .withDetectDataType("datafpbxnretpg")
-                        .withNamespaces("datatohruqtximrxeyz")
-                        .withNamespacePrefixes("datanxb"))
-                .withAdditionalColumns("datanobuwhutvcdtgx");
+        XmlSource model = new XmlSource().withSourceRetryCount("datafume").withSourceRetryWait("dataaafkvqhbw")
+            .withMaxConcurrentConnections("dataivqkyaghf").withDisableMetricsCollection("datablszsvegu")
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datavcv")
+                .withDisableMetricsCollection("datalsb").withAdditionalProperties(mapOf("type", "StoreReadSettings")))
+            .withFormatSettings(new XmlReadSettings()
+                .withCompressionProperties(
+                    new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings")))
+                .withValidationMode("databskinmxanjgua").withDetectDataType("dataipgfxstw").withNamespaces("datazeqjno")
+                .withNamespacePrefixes("dataujliti"))
+            .withAdditionalColumns("datatjb");
         model = BinaryData.fromObject(model).toObject(XmlSource.class);
     }
 

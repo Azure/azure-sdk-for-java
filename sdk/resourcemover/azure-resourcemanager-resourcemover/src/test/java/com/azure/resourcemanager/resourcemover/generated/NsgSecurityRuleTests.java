@@ -14,44 +14,44 @@ public final class NsgSecurityRuleTests {
         NsgSecurityRule model =
             BinaryData
                 .fromString(
-                    "{\"name\":\"ghxpkdw\",\"access\":\"aiuebbaumnyqu\",\"description\":\"deoj\",\"destinationAddressPrefix\":\"bckhsmtxpsi\",\"destinationPortRange\":\"tfhvpesapskrdqmh\",\"direction\":\"dhtldwkyz\",\"priority\":1335454628,\"protocol\":\"kn\",\"sourceAddressPrefix\":\"scwsv\",\"sourcePortRange\":\"otogtwrupqs\"}")
+                    "{\"name\":\"vfadmws\",\"access\":\"r\",\"description\":\"xpvgo\",\"destinationAddressPrefix\":\"lf\",\"destinationPortRange\":\"sgwbnbbeld\",\"direction\":\"k\",\"priority\":585337534,\"protocol\":\"io\",\"sourceAddressPrefix\":\"qhakauhashsf\",\"sourcePortRange\":\"osow\"}")
                 .toObject(NsgSecurityRule.class);
-        Assertions.assertEquals("ghxpkdw", model.name());
-        Assertions.assertEquals("aiuebbaumnyqu", model.access());
-        Assertions.assertEquals("deoj", model.description());
-        Assertions.assertEquals("bckhsmtxpsi", model.destinationAddressPrefix());
-        Assertions.assertEquals("tfhvpesapskrdqmh", model.destinationPortRange());
-        Assertions.assertEquals("dhtldwkyz", model.direction());
-        Assertions.assertEquals(1335454628, model.priority());
-        Assertions.assertEquals("kn", model.protocol());
-        Assertions.assertEquals("scwsv", model.sourceAddressPrefix());
-        Assertions.assertEquals("otogtwrupqs", model.sourcePortRange());
+        Assertions.assertEquals("vfadmws", model.name());
+        Assertions.assertEquals("r", model.access());
+        Assertions.assertEquals("xpvgo", model.description());
+        Assertions.assertEquals("lf", model.destinationAddressPrefix());
+        Assertions.assertEquals("sgwbnbbeld", model.destinationPortRange());
+        Assertions.assertEquals("k", model.direction());
+        Assertions.assertEquals(585337534, model.priority());
+        Assertions.assertEquals("io", model.protocol());
+        Assertions.assertEquals("qhakauhashsf", model.sourceAddressPrefix());
+        Assertions.assertEquals("osow", model.sourcePortRange());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NsgSecurityRule model =
             new NsgSecurityRule()
-                .withName("ghxpkdw")
-                .withAccess("aiuebbaumnyqu")
-                .withDescription("deoj")
-                .withDestinationAddressPrefix("bckhsmtxpsi")
-                .withDestinationPortRange("tfhvpesapskrdqmh")
-                .withDirection("dhtldwkyz")
-                .withPriority(1335454628)
-                .withProtocol("kn")
-                .withSourceAddressPrefix("scwsv")
-                .withSourcePortRange("otogtwrupqs");
+                .withName("vfadmws")
+                .withAccess("r")
+                .withDescription("xpvgo")
+                .withDestinationAddressPrefix("lf")
+                .withDestinationPortRange("sgwbnbbeld")
+                .withDirection("k")
+                .withPriority(585337534)
+                .withProtocol("io")
+                .withSourceAddressPrefix("qhakauhashsf")
+                .withSourcePortRange("osow");
         model = BinaryData.fromObject(model).toObject(NsgSecurityRule.class);
-        Assertions.assertEquals("ghxpkdw", model.name());
-        Assertions.assertEquals("aiuebbaumnyqu", model.access());
-        Assertions.assertEquals("deoj", model.description());
-        Assertions.assertEquals("bckhsmtxpsi", model.destinationAddressPrefix());
-        Assertions.assertEquals("tfhvpesapskrdqmh", model.destinationPortRange());
-        Assertions.assertEquals("dhtldwkyz", model.direction());
-        Assertions.assertEquals(1335454628, model.priority());
-        Assertions.assertEquals("kn", model.protocol());
-        Assertions.assertEquals("scwsv", model.sourceAddressPrefix());
-        Assertions.assertEquals("otogtwrupqs", model.sourcePortRange());
+        Assertions.assertEquals("vfadmws", model.name());
+        Assertions.assertEquals("r", model.access());
+        Assertions.assertEquals("xpvgo", model.description());
+        Assertions.assertEquals("lf", model.destinationAddressPrefix());
+        Assertions.assertEquals("sgwbnbbeld", model.destinationPortRange());
+        Assertions.assertEquals("k", model.direction());
+        Assertions.assertEquals(585337534, model.priority());
+        Assertions.assertEquals("io", model.protocol());
+        Assertions.assertEquals("qhakauhashsf", model.sourceAddressPrefix());
+        Assertions.assertEquals("osow", model.sourcePortRange());
     }
 }

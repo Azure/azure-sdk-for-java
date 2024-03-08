@@ -6,7 +6,15 @@ package com.azure.core.models;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Represents the JSON Patch operation kind.
+ * <p>Represents the kind of operation in a JSON Patch document.</p>
+ *
+ * <p>This enum encapsulates the kinds of operations that can be included in a JSON Patch document, such as
+ * {@link #ADD}, {@link #REMOVE}, {@link #REPLACE}, {@link #MOVE}, {@link #COPY}, and {@link #TEST}.</p>
+ *
+ * <p>This enum also provides a {@link #fromString(String)} method to create or get a JsonPatchOperationKind from its string representation,
+ * and a {@link #toString()} method to get the string representation of the operation kind.</p>
+ *
+ * <p>Note: The operation kinds are defined by the JSON Patch specification (RFC 6902).</p>
  */
 enum JsonPatchOperationKind {
     /**
@@ -43,6 +51,20 @@ enum JsonPatchOperationKind {
 
     JsonPatchOperationKind(String op) {
         this.op = op;
+    }
+
+    static JsonPatchOperationKind fromString(String op) {
+        if (op == null) {
+            return null;
+        }
+
+        for (JsonPatchOperationKind kind : values()) {
+            if (kind.op.equals(op)) {
+                return kind;
+            }
+        }
+
+        return null;
     }
 
     /**

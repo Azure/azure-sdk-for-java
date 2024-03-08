@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ConnectionError model. */
+/**
+ * The ConnectionError model.
+ */
 @Fluent
 public final class ConnectionError {
     /*
@@ -40,13 +42,15 @@ public final class ConnectionError {
     @JsonProperty(value = "exception")
     private String exception;
 
-    /** Creates an instance of ConnectionError class. */
+    /**
+     * Creates an instance of ConnectionError class.
+     */
     public ConnectionError() {
     }
 
     /**
      * Get the connectionState property: The kind of connection error that occurred.
-     *
+     * 
      * @return the connectionState value.
      */
     public ConnectionState connectionState() {
@@ -55,7 +59,7 @@ public final class ConnectionError {
 
     /**
      * Set the connectionState property: The kind of connection error that occurred.
-     *
+     * 
      * @param connectionState the connectionState value to set.
      * @return the ConnectionError object itself.
      */
@@ -66,7 +70,7 @@ public final class ConnectionError {
 
     /**
      * Get the iPFrom property: The IP of host that originated the failed connection.
-     *
+     * 
      * @return the iPFrom value.
      */
     public String iPFrom() {
@@ -75,7 +79,7 @@ public final class ConnectionError {
 
     /**
      * Set the iPFrom property: The IP of host that originated the failed connection.
-     *
+     * 
      * @param iPFrom the iPFrom value to set.
      * @return the ConnectionError object itself.
      */
@@ -86,7 +90,7 @@ public final class ConnectionError {
 
     /**
      * Get the iPTo property: The IP that the connection attempted to reach.
-     *
+     * 
      * @return the iPTo value.
      */
     public String iPTo() {
@@ -95,7 +99,7 @@ public final class ConnectionError {
 
     /**
      * Set the iPTo property: The IP that the connection attempted to reach.
-     *
+     * 
      * @param iPTo the iPTo value to set.
      * @return the ConnectionError object itself.
      */
@@ -106,7 +110,7 @@ public final class ConnectionError {
 
     /**
      * Get the port property: The TCP port the connection was attempted on.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -115,7 +119,7 @@ public final class ConnectionError {
 
     /**
      * Set the port property: The TCP port the connection was attempted on.
-     *
+     * 
      * @param port the port value to set.
      * @return the ConnectionError object itself.
      */
@@ -126,7 +130,7 @@ public final class ConnectionError {
 
     /**
      * Get the exception property: Detailed error message about the failed connection.
-     *
+     * 
      * @return the exception value.
      */
     public String exception() {
@@ -135,7 +139,7 @@ public final class ConnectionError {
 
     /**
      * Set the exception property: Detailed error message about the failed connection.
-     *
+     * 
      * @param exception the exception value to set.
      * @return the ConnectionError object itself.
      */
@@ -146,7 +150,7 @@ public final class ConnectionError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sql upsert option settings. */
+/**
+ * Sql upsert option settings.
+ */
 @Fluent
 public final class SqlUpsertSettings {
     /*
@@ -30,14 +32,16 @@ public final class SqlUpsertSettings {
     @JsonProperty(value = "keys")
     private Object keys;
 
-    /** Creates an instance of SqlUpsertSettings class. */
+    /**
+     * Creates an instance of SqlUpsertSettings class.
+     */
     public SqlUpsertSettings() {
     }
 
     /**
      * Get the useTempDB property: Specifies whether to use temp db for upsert interim table. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the useTempDB value.
      */
     public Object useTempDB() {
@@ -47,7 +51,7 @@ public final class SqlUpsertSettings {
     /**
      * Set the useTempDB property: Specifies whether to use temp db for upsert interim table. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param useTempDB the useTempDB value to set.
      * @return the SqlUpsertSettings object itself.
      */
@@ -59,7 +63,7 @@ public final class SqlUpsertSettings {
     /**
      * Get the interimSchemaName property: Schema name for interim table. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the interimSchemaName value.
      */
     public Object interimSchemaName() {
@@ -69,7 +73,7 @@ public final class SqlUpsertSettings {
     /**
      * Set the interimSchemaName property: Schema name for interim table. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param interimSchemaName the interimSchemaName value to set.
      * @return the SqlUpsertSettings object itself.
      */
@@ -79,9 +83,9 @@ public final class SqlUpsertSettings {
     }
 
     /**
-     * Get the keys property: Key column names for unique row identification. Type: array of strings (or Expression with
-     * resultType array of strings).
-     *
+     * Get the keys property: Key column names for unique row identification. Type: array of strings (or Expression
+     * with resultType array of strings).
+     * 
      * @return the keys value.
      */
     public Object keys() {
@@ -89,9 +93,9 @@ public final class SqlUpsertSettings {
     }
 
     /**
-     * Set the keys property: Key column names for unique row identification. Type: array of strings (or Expression with
-     * resultType array of strings).
-     *
+     * Set the keys property: Key column names for unique row identification. Type: array of strings (or Expression
+     * with resultType array of strings).
+     * 
      * @param keys the keys value to set.
      * @return the SqlUpsertSettings object itself.
      */
@@ -102,7 +106,7 @@ public final class SqlUpsertSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

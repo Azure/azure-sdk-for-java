@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resourcehealth.generated;
 /** Samples for EventsOperation ListBySingleResource. */
 public final class EventsOperationListBySingleResourceSamples {
     /*
-     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/stable/2022-10-01/examples/Events_ListBySingleResource.json
+     * x-ms-original-file: specification/resourcehealth/resource-manager/Microsoft.ResourceHealth/preview/2023-10-01-preview/examples/Events_ListBySingleResource.json
      */
     /**
      * Sample code: ListEventsBySingleResource.

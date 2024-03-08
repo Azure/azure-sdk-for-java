@@ -11,7 +11,9 @@ import com.azure.resourcemanager.datafactory.models.Transformation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Flowlet type properties. */
+/**
+ * Flowlet type properties.
+ */
 @Fluent
 public final class FlowletTypeProperties {
     /*
@@ -44,13 +46,15 @@ public final class FlowletTypeProperties {
     @JsonProperty(value = "scriptLines")
     private List<String> scriptLines;
 
-    /** Creates an instance of FlowletTypeProperties class. */
+    /**
+     * Creates an instance of FlowletTypeProperties class.
+     */
     public FlowletTypeProperties() {
     }
 
     /**
      * Get the sources property: List of sources in Flowlet.
-     *
+     * 
      * @return the sources value.
      */
     public List<DataFlowSource> sources() {
@@ -59,7 +63,7 @@ public final class FlowletTypeProperties {
 
     /**
      * Set the sources property: List of sources in Flowlet.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the FlowletTypeProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class FlowletTypeProperties {
 
     /**
      * Get the sinks property: List of sinks in Flowlet.
-     *
+     * 
      * @return the sinks value.
      */
     public List<DataFlowSink> sinks() {
@@ -79,7 +83,7 @@ public final class FlowletTypeProperties {
 
     /**
      * Set the sinks property: List of sinks in Flowlet.
-     *
+     * 
      * @param sinks the sinks value to set.
      * @return the FlowletTypeProperties object itself.
      */
@@ -90,7 +94,7 @@ public final class FlowletTypeProperties {
 
     /**
      * Get the transformations property: List of transformations in Flowlet.
-     *
+     * 
      * @return the transformations value.
      */
     public List<Transformation> transformations() {
@@ -99,7 +103,7 @@ public final class FlowletTypeProperties {
 
     /**
      * Set the transformations property: List of transformations in Flowlet.
-     *
+     * 
      * @param transformations the transformations value to set.
      * @return the FlowletTypeProperties object itself.
      */
@@ -110,7 +114,7 @@ public final class FlowletTypeProperties {
 
     /**
      * Get the script property: Flowlet script.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -119,7 +123,7 @@ public final class FlowletTypeProperties {
 
     /**
      * Set the script property: Flowlet script.
-     *
+     * 
      * @param script the script value to set.
      * @return the FlowletTypeProperties object itself.
      */
@@ -130,7 +134,7 @@ public final class FlowletTypeProperties {
 
     /**
      * Get the scriptLines property: Flowlet script lines.
-     *
+     * 
      * @return the scriptLines value.
      */
     public List<String> scriptLines() {
@@ -139,7 +143,7 @@ public final class FlowletTypeProperties {
 
     /**
      * Set the scriptLines property: Flowlet script lines.
-     *
+     * 
      * @param scriptLines the scriptLines value to set.
      * @return the FlowletTypeProperties object itself.
      */
@@ -150,7 +154,7 @@ public final class FlowletTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

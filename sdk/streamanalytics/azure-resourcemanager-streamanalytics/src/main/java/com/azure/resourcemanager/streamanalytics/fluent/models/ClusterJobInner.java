@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.JobState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A streaming job. */
+/**
+ * A streaming job.
+ */
 @Immutable
 public final class ClusterJobInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterJobInner.class);
-
     /*
      * Resource ID of the streaming job.
      */
@@ -34,8 +32,14 @@ public final class ClusterJobInner {
     private JobState jobState;
 
     /**
+     * Creates an instance of ClusterJobInner class.
+     */
+    public ClusterJobInner() {
+    }
+
+    /**
      * Get the id property: Resource ID of the streaming job.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +48,7 @@ public final class ClusterJobInner {
 
     /**
      * Get the streamingUnits property: The number of streaming units that are used by the streaming job.
-     *
+     * 
      * @return the streamingUnits value.
      */
     public Integer streamingUnits() {
@@ -53,7 +57,7 @@ public final class ClusterJobInner {
 
     /**
      * Get the jobState property: The current execution state of the streaming job.
-     *
+     * 
      * @return the jobState value.
      */
     public JobState jobState() {
@@ -62,7 +66,7 @@ public final class ClusterJobInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

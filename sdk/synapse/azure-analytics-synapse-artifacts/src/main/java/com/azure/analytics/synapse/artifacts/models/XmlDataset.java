@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Xml dataset. */
+/**
+ * Xml dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Xml")
 @JsonFlatten
@@ -45,12 +47,15 @@ public class XmlDataset extends Dataset {
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
-    /** Creates an instance of XmlDataset class. */
-    public XmlDataset() {}
+    /**
+     * Creates an instance of XmlDataset class.
+     */
+    public XmlDataset() {
+    }
 
     /**
      * Get the location property: The location of the json data storage.
-     *
+     * 
      * @return the location value.
      */
     public DatasetLocation getLocation() {
@@ -59,7 +64,7 @@ public class XmlDataset extends Dataset {
 
     /**
      * Set the location property: The location of the json data storage.
-     *
+     * 
      * @param location the location value to set.
      * @return the XmlDataset object itself.
      */
@@ -73,7 +78,7 @@ public class XmlDataset extends Dataset {
      * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following
      * link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the encodingName value.
      */
     public Object getEncodingName() {
@@ -85,7 +90,7 @@ public class XmlDataset extends Dataset {
      * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following
      * link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param encodingName the encodingName value to set.
      * @return the XmlDataset object itself.
      */
@@ -96,7 +101,7 @@ public class XmlDataset extends Dataset {
 
     /**
      * Get the nullValue property: The null value string. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the nullValue value.
      */
     public Object getNullValue() {
@@ -105,7 +110,7 @@ public class XmlDataset extends Dataset {
 
     /**
      * Set the nullValue property: The null value string. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param nullValue the nullValue value to set.
      * @return the XmlDataset object itself.
      */
@@ -116,7 +121,7 @@ public class XmlDataset extends Dataset {
 
     /**
      * Get the compression property: The data compression method used for the json dataset.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression getCompression() {
@@ -125,7 +130,7 @@ public class XmlDataset extends Dataset {
 
     /**
      * Set the compression property: The data compression method used for the json dataset.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the XmlDataset object itself.
      */
@@ -134,49 +139,63 @@ public class XmlDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public XmlDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public XmlDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public XmlDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public XmlDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public XmlDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public XmlDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public XmlDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

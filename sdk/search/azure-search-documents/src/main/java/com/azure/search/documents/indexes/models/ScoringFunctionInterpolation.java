@@ -6,12 +6,18 @@
 
 package com.azure.search.documents.indexes.models;
 
-/** Defines the function used to interpolate score boosting across a range of documents. */
+/**
+ * Defines the function used to interpolate score boosting across a range of documents.
+ */
 public enum ScoringFunctionInterpolation {
-    /** Boosts scores by a linearly decreasing amount. This is the default interpolation for scoring functions. */
+    /**
+     * Boosts scores by a linearly decreasing amount. This is the default interpolation for scoring functions.
+     */
     LINEAR("linear"),
 
-    /** Boosts scores by a constant factor. */
+    /**
+     * Boosts scores by a constant factor.
+     */
     CONSTANT("constant"),
 
     /**
@@ -26,7 +32,9 @@ public enum ScoringFunctionInterpolation {
      */
     LOGARITHMIC("logarithmic");
 
-    /** The actual serialized value for a ScoringFunctionInterpolation instance. */
+    /**
+     * The actual serialized value for a ScoringFunctionInterpolation instance.
+     */
     private final String value;
 
     ScoringFunctionInterpolation(String value) {
@@ -35,7 +43,7 @@ public enum ScoringFunctionInterpolation {
 
     /**
      * Parses a serialized value to a ScoringFunctionInterpolation instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ScoringFunctionInterpolation object, or null if unable to parse.
      */
@@ -52,7 +60,9 @@ public enum ScoringFunctionInterpolation {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

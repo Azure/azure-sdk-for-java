@@ -13,15 +13,15 @@ public final class EndpointBaseUpdatePropertiesTests {
     public void testDeserialize() throws Exception {
         EndpointBaseUpdateProperties model =
             BinaryData
-                .fromString("{\"endpointType\":\"EndpointBaseUpdateProperties\",\"description\":\"gpbkwtmut\"}")
+                .fromString("{\"endpointType\":\"EndpointBaseUpdateProperties\",\"description\":\"wgcu\"}")
                 .toObject(EndpointBaseUpdateProperties.class);
-        Assertions.assertEquals("gpbkwtmut", model.description());
+        Assertions.assertEquals("wgcu", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EndpointBaseUpdateProperties model = new EndpointBaseUpdateProperties().withDescription("gpbkwtmut");
+        EndpointBaseUpdateProperties model = new EndpointBaseUpdateProperties().withDescription("wgcu");
         model = BinaryData.fromObject(model).toObject(EndpointBaseUpdateProperties.class);
-        Assertions.assertEquals("gpbkwtmut", model.description());
+        Assertions.assertEquals("wgcu", model.description());
     }
 }

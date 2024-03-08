@@ -18,32 +18,38 @@ public final class ReplicaInnerTests {
         ReplicaInner model =
             BinaryData
                 .fromString(
-                    "{\"sku\":{\"name\":\"pfkyrkdbdgiogsj\",\"tier\":\"Basic\",\"size\":\"qjnobaiyhddviac\",\"family\":\"fnmntfpmvmemfn\",\"capacity\":1456475383},\"properties\":{\"provisioningState\":\"Unknown\"},\"location\":\"alxlllchp\",\"tags\":{\"jcswsmys\":\"zevwrdnhfukuv\",\"lerchpq\":\"uluqypfc\"},\"id\":\"mfpjbabw\",\"name\":\"dfc\",\"type\":\"sspuunnoxyhkx\"}")
+                    "{\"sku\":{\"name\":\"zuxylfsbtkadpyso\",\"tier\":\"Premium\",\"size\":\"gkbugrjqct\",\"family\":\"cmisofie\",\"capacity\":860547851},\"properties\":{\"provisioningState\":\"Running\",\"regionEndpointEnabled\":\"qdhcu\",\"resourceStopped\":\"cp\"},\"location\":\"wkhihihlhzdsqt\",\"tags\":{\"ecactx\":\"rgnowcjhfgm\"},\"id\":\"wotey\",\"name\":\"wcluqovekqvgq\",\"type\":\"uwifzmpjwyiv\"}")
                 .toObject(ReplicaInner.class);
-        Assertions.assertEquals("alxlllchp", model.location());
-        Assertions.assertEquals("zevwrdnhfukuv", model.tags().get("jcswsmys"));
-        Assertions.assertEquals("pfkyrkdbdgiogsj", model.sku().name());
-        Assertions.assertEquals(SignalRSkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals(1456475383, model.sku().capacity());
+        Assertions.assertEquals("wkhihihlhzdsqt", model.location());
+        Assertions.assertEquals("rgnowcjhfgm", model.tags().get("ecactx"));
+        Assertions.assertEquals("zuxylfsbtkadpyso", model.sku().name());
+        Assertions.assertEquals(SignalRSkuTier.PREMIUM, model.sku().tier());
+        Assertions.assertEquals(860547851, model.sku().capacity());
+        Assertions.assertEquals("qdhcu", model.regionEndpointEnabled());
+        Assertions.assertEquals("cp", model.resourceStopped());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicaInner model =
             new ReplicaInner()
-                .withLocation("alxlllchp")
-                .withTags(mapOf("jcswsmys", "zevwrdnhfukuv", "lerchpq", "uluqypfc"))
+                .withLocation("wkhihihlhzdsqt")
+                .withTags(mapOf("ecactx", "rgnowcjhfgm"))
                 .withSku(
                     new ResourceSku()
-                        .withName("pfkyrkdbdgiogsj")
-                        .withTier(SignalRSkuTier.BASIC)
-                        .withCapacity(1456475383));
+                        .withName("zuxylfsbtkadpyso")
+                        .withTier(SignalRSkuTier.PREMIUM)
+                        .withCapacity(860547851))
+                .withRegionEndpointEnabled("qdhcu")
+                .withResourceStopped("cp");
         model = BinaryData.fromObject(model).toObject(ReplicaInner.class);
-        Assertions.assertEquals("alxlllchp", model.location());
-        Assertions.assertEquals("zevwrdnhfukuv", model.tags().get("jcswsmys"));
-        Assertions.assertEquals("pfkyrkdbdgiogsj", model.sku().name());
-        Assertions.assertEquals(SignalRSkuTier.BASIC, model.sku().tier());
-        Assertions.assertEquals(1456475383, model.sku().capacity());
+        Assertions.assertEquals("wkhihihlhzdsqt", model.location());
+        Assertions.assertEquals("rgnowcjhfgm", model.tags().get("ecactx"));
+        Assertions.assertEquals("zuxylfsbtkadpyso", model.sku().name());
+        Assertions.assertEquals(SignalRSkuTier.PREMIUM, model.sku().tier());
+        Assertions.assertEquals(860547851, model.sku().capacity());
+        Assertions.assertEquals("qdhcu", model.regionEndpointEnabled());
+        Assertions.assertEquals("cp", model.resourceStopped());
     }
 
     // Use "Map.of" if available

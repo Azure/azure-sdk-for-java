@@ -6,6 +6,7 @@ package com.azure.resourcemanager.webpubsub.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.webpubsub.models.ProvisioningState;
 import com.azure.resourcemanager.webpubsub.models.ResourceReference;
@@ -20,6 +21,12 @@ public final class CustomDomainInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private CustomDomainProperties innerProperties = new CustomDomainProperties();
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
     /** Creates an instance of CustomDomainInner class. */
     public CustomDomainInner() {
     }
@@ -31,6 +38,15 @@ public final class CustomDomainInner extends ProxyResource {
      */
     private CustomDomainProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**

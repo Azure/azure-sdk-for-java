@@ -9,25 +9,32 @@ package com.azure.search.documents.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Enables a debugging tool that can be used to further explore your search results. */
+/**
+ * Enables a debugging tool that can be used to further explore your search results.
+ */
 public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
-    /** No query debugging information will be returned. */
+    /**
+     * No query debugging information will be returned.
+     */
     public static final QueryDebugMode DISABLED = fromString("disabled");
 
-    /** Allows the user to further explore their Semantic search results. */
+    /**
+     * Allows the user to further explore their reranked results.
+     */
     public static final QueryDebugMode SEMANTIC = fromString("semantic");
 
     /**
      * Creates a new instance of QueryDebugMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public QueryDebugMode() {}
+    public QueryDebugMode() {
+    }
 
     /**
      * Creates or finds a QueryDebugMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QueryDebugMode.
      */
@@ -37,7 +44,7 @@ public final class QueryDebugMode extends ExpandableStringEnum<QueryDebugMode> {
 
     /**
      * Gets known QueryDebugMode values.
-     *
+     * 
      * @return known QueryDebugMode values.
      */
     public static Collection<QueryDebugMode> values() {

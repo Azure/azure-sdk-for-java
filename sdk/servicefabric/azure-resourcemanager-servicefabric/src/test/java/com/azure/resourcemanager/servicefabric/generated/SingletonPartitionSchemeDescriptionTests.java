@@ -10,10 +10,8 @@ import com.azure.resourcemanager.servicefabric.models.SingletonPartitionSchemeDe
 public final class SingletonPartitionSchemeDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SingletonPartitionSchemeDescription model =
-            BinaryData
-                .fromString("{\"partitionScheme\":\"Singleton\"}")
-                .toObject(SingletonPartitionSchemeDescription.class);
+        SingletonPartitionSchemeDescription model = BinaryData.fromString("{\"partitionScheme\":\"Singleton\"}")
+            .toObject(SingletonPartitionSchemeDescription.class);
     }
 
     @org.junit.jupiter.api.Test

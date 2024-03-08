@@ -18,6 +18,7 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
+import com.azure.cosmos.implementation.guava25.base.Splitter;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -45,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -54,6 +56,7 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.CREATED;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -70,7 +73,6 @@ public final class DiagnosticsProvider {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DiagnosticsProvider.class);
     private static final ObjectMapper mapper = new ObjectMapper();
-
     public static final String COSMOS_CALL_DEPTH = "cosmosCallDepth";
     public static final String COSMOS_CALL_DEPTH_VAL = "nested";
     public static final int ERROR_CODE = 0;
@@ -92,6 +94,7 @@ public final class DiagnosticsProvider {
     private final CosmosTracer cosmosTracer;
 
     private final CosmosClientTelemetryConfig telemetryConfig;
+    private final boolean shouldSystemExitOnError;
 
 
     public DiagnosticsProvider(
@@ -137,6 +140,7 @@ public final class DiagnosticsProvider {
 
         this.propagatingMono = new PropagatingMono();
         this.propagatingFlux = new PropagatingFlux();
+        this.shouldSystemExitOnError = Configs.shouldDiagnosticsProviderSystemExitOnError();
     }
 
     public boolean isEnabled() {
@@ -247,8 +251,7 @@ public final class DiagnosticsProvider {
         try {
             this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, diagnostics);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9901);
+            this.handleErrors(error, 9901);
         }
     }
 
@@ -361,8 +364,7 @@ public final class DiagnosticsProvider {
                 context,
                 false);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9905);
+            this.handleErrors(error, 9905);
         }
     }
 
@@ -380,8 +382,7 @@ public final class DiagnosticsProvider {
                 context,
                 isForcedEmptyCompletion);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9904);
+            this.handleErrors(error, 9904);
         }
     }
 
@@ -395,8 +396,7 @@ public final class DiagnosticsProvider {
         try {
             this.recordPageCore(cosmosCtx, diagnostics, actualItemCount, requestCharge);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordPage. ", error);
-            System.exit(9902);
+            this.handleErrors(error, 9902);
         }
     }
 
@@ -431,8 +431,7 @@ public final class DiagnosticsProvider {
             this.recordFeedResponseConsumerLatencyCore(
                 context, cosmosCtx, feedResponseConsumerLatency);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordFeedResponseConsumerLatency. ", error);
-            System.exit(9902);
+            this.handleErrors(error, 9903);
         }
     }
 
@@ -464,9 +463,9 @@ public final class DiagnosticsProvider {
 
         if (context != null && this.isRealTracer()) {
             Map<String, Object> attributes = new HashMap<>();
-            attributes.put("Diagnostics", cosmosCtx.toJson());
+            String trigger = "SlowFeedResponse";
+            emitDiagnosticsEvents(tracer, cosmosCtx, trigger, context);
 
-            this.tracer.addEvent("SlowFeedResponseConsumer", attributes, OffsetDateTime.now(), context);
             return;
         }
 
@@ -484,7 +483,11 @@ public final class DiagnosticsProvider {
         // but there is some risk given that diagnostic handlers are custom code of course
         if (this.diagnosticHandlers != null && this.diagnosticHandlers.size() > 0) {
             for (CosmosDiagnosticsHandler handler: this.diagnosticHandlers) {
-                handler.handleDiagnostics(cosmosCtx, context);
+                try {
+                    handler.handleDiagnostics(cosmosCtx, context);
+                } catch (Exception e) {
+                    LOGGER.error("HandledDiagnostics failed. ", e);
+                }
             }
         }
     }
@@ -945,7 +948,7 @@ public final class DiagnosticsProvider {
                 if (eventIterator != null) {
                     while (eventIterator.hasNext()) {
                         RequestTimeline.Event event = eventIterator.next();
-                        if (event.getName().equals("created")) {
+                        if (event.getName().equals(CREATED.getEventName())) {
                             requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
                             break;
                         }
@@ -966,7 +969,7 @@ public final class DiagnosticsProvider {
                 if (statistics.getStoreResult() != null) {
                     for (RequestTimeline.Event event :
                         statistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline()) {
-                        if (event.getName().equals("created")) {
+                        if (event.getName().equals(CREATED.getEventName())) {
                             requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
                             break;
                         }
@@ -983,7 +986,7 @@ public final class DiagnosticsProvider {
                     OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC);
                 if (gatewayStats.getRequestTimeline() != null) {
                     for (RequestTimeline.Event event : gatewayStats.getRequestTimeline()) {
-                        if (event.getName().equals("created")) {
+                        if (event.getName().equals(CREATED.getEventName())) {
                             requestStartTime = OffsetDateTime.ofInstant(event.getStartTime(), ZoneOffset.UTC);
                             break;
                         }
@@ -1112,6 +1115,19 @@ public final class DiagnosticsProvider {
         }
     }
 
+    private static void emitDiagnosticsEvents(Tracer tracer, CosmosDiagnosticsContext cosmosCtx, String trigger, Context context) {
+        Map<String, Object> attributes = new HashMap<>();
+        String message = trigger + " - CTX: " + cosmosCtx.toJson();
+        List<String> messageFragments = Splitter.fixedLength(Configs.getMaxTraceMessageLength()).splitToList(message);
+
+        attributes.put("Trigger", trigger);
+        for (int i = 0; i < messageFragments.size(); i++) {
+            attributes.put("SequenceNumber", String.format(Locale.ROOT,"%05d", i + 1));
+
+            tracer.addEvent(messageFragments.get(i), attributes, OffsetDateTime.now(), context);
+        }
+    }
+
     private final static class OpenTelemetryCosmosTracer implements CosmosTracer {
         private final Tracer tracer;
         private final CosmosClientTelemetryConfig config;
@@ -1229,14 +1245,15 @@ public final class DiagnosticsProvider {
             }
 
             if (cosmosCtx.isFailure() || cosmosCtx.isThresholdViolated()) {
-                Map<String, Object> attributes = new HashMap<>();
-                attributes.put("Diagnostics", cosmosCtx.toJson());
+                String trigger;
 
                 if (cosmosCtx.isFailure()) {
-                    tracer.addEvent("failure", attributes, OffsetDateTime.now(), context);
+                    trigger = "Failure";
                 } else {
-                    tracer.addEvent("threshold_violation", attributes, OffsetDateTime.now(), context);
+                    trigger = "ThresholdViolation";
                 }
+
+                emitDiagnosticsEvents(tracer, cosmosCtx, trigger, context);
             }
 
             if (finalError != null) {
@@ -1435,6 +1452,39 @@ public final class DiagnosticsProvider {
         }
 
         return prettifiedCallstack;
+    }
+
+    private void handleErrors(Throwable throwable, int systemExitCode) {
+        if (throwable instanceof Error) {
+            handleFatalError((Error) throwable, systemExitCode);
+        } else {
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ",  throwable);
+            throw new RuntimeException(throwable);
+        }
+    }
+
+    private void handleFatalError(Error error, int systemExitCode) {
+        Exception exception = DiagnosticsProviderJvmFatalErrorMapper.getMapper().mapFatalError(error);
+        if (exception != null) {
+            String errorMessage = "Runtime exception mapped from fatal error " + error;
+            throw new RuntimeException(errorMessage, exception);
+        }
+
+        // there is no mapping, handle error
+        if (this.shouldSystemExitOnError) {
+            LOGGER.error("Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit({})...", systemExitCode, error);
+            System.err.println(
+                String.format(
+                    "Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit(%d)... %s",
+                    systemExitCode,
+                    error)
+            );
+
+            System.exit(systemExitCode);
+        } else {
+            // bubble up the error
+            throw error;
+        }
     }
 
     private static final class EnabledNoOpTracer implements Tracer {

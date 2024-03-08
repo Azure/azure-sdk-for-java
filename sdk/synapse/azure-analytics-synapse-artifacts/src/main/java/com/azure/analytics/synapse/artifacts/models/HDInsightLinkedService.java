@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** HDInsight linked service. */
+/**
+ * HDInsight linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HDInsight")
 @JsonFlatten
@@ -68,12 +70,15 @@ public class HDInsightLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.fileSystem")
     private Object fileSystem;
 
-    /** Creates an instance of HDInsightLinkedService class. */
-    public HDInsightLinkedService() {}
+    /**
+     * Creates an instance of HDInsightLinkedService class.
+     */
+    public HDInsightLinkedService() {
+    }
 
     /**
      * Get the clusterUri property: HDInsight cluster URI. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the clusterUri value.
      */
     public Object getClusterUri() {
@@ -82,7 +87,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Set the clusterUri property: HDInsight cluster URI. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param clusterUri the clusterUri value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -93,7 +98,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Get the userName property: HDInsight cluster user name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the userName value.
      */
     public Object getUserName() {
@@ -102,7 +107,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Set the userName property: HDInsight cluster user name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param userName the userName value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -113,7 +118,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Get the password property: HDInsight cluster password.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -122,7 +127,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Set the password property: HDInsight cluster password.
-     *
+     * 
      * @param password the password value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -133,7 +138,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Get the linkedServiceName property: The Azure Storage linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference getLinkedServiceName() {
@@ -142,7 +147,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Set the linkedServiceName property: The Azure Storage linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -154,7 +159,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Get the hcatalogLinkedServiceName property: A reference to the Azure SQL linked service that points to the
      * HCatalog database.
-     *
+     * 
      * @return the hcatalogLinkedServiceName value.
      */
     public LinkedServiceReference getHcatalogLinkedServiceName() {
@@ -164,7 +169,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Set the hcatalogLinkedServiceName property: A reference to the Azure SQL linked service that points to the
      * HCatalog database.
-     *
+     * 
      * @param hcatalogLinkedServiceName the hcatalogLinkedServiceName value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -174,9 +179,9 @@ public class HDInsightLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -184,9 +189,9 @@ public class HDInsightLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -198,7 +203,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Get the isEspEnabled property: Specify if the HDInsight is created with ESP (Enterprise Security Package). Type:
      * Boolean.
-     *
+     * 
      * @return the isEspEnabled value.
      */
     public Object getIsEspEnabled() {
@@ -208,7 +213,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Set the isEspEnabled property: Specify if the HDInsight is created with ESP (Enterprise Security Package). Type:
      * Boolean.
-     *
+     * 
      * @param isEspEnabled the isEspEnabled value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -220,7 +225,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Get the fileSystem property: Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the fileSystem value.
      */
     public Object getFileSystem() {
@@ -230,7 +235,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Set the fileSystem property: Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param fileSystem the fileSystem value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -239,28 +244,36 @@ public class HDInsightLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

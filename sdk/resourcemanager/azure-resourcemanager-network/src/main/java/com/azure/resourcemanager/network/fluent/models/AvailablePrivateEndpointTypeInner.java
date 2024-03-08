@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The information of an AvailablePrivateEndpointType. */
+/**
+ * The information of an AvailablePrivateEndpointType.
+ */
 @Fluent
 public final class AvailablePrivateEndpointTypeInner {
     /*
@@ -40,13 +42,15 @@ public final class AvailablePrivateEndpointTypeInner {
     @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of AvailablePrivateEndpointTypeInner class. */
+    /**
+     * Creates an instance of AvailablePrivateEndpointTypeInner class.
+     */
     public AvailablePrivateEndpointTypeInner() {
     }
 
     /**
      * Get the name property: The name of the service and resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +59,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Set the name property: The name of the service and resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the AvailablePrivateEndpointTypeInner object itself.
      */
@@ -66,7 +70,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Get the id property: A unique identifier of the AvailablePrivateEndpoint Type resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -75,7 +79,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Set the id property: A unique identifier of the AvailablePrivateEndpoint Type resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the AvailablePrivateEndpointTypeInner object itself.
      */
@@ -86,7 +90,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -95,7 +99,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Set the type property: Resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the AvailablePrivateEndpointTypeInner object itself.
      */
@@ -106,7 +110,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Get the resourceName property: The name of the service and resource.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -115,7 +119,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Set the resourceName property: The name of the service and resource.
-     *
+     * 
      * @param resourceName the resourceName value to set.
      * @return the AvailablePrivateEndpointTypeInner object itself.
      */
@@ -126,7 +130,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Get the displayName property: Display name of the resource.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -135,7 +139,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Set the displayName property: Display name of the resource.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AvailablePrivateEndpointTypeInner object itself.
      */
@@ -146,7 +150,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.SqlStoredProcedureGetPropertiesRe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB storedProcedure. */
+/**
+ * An Azure Cosmos DB storedProcedure.
+ */
 @Fluent
 public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
     @JsonProperty(value = "properties")
     private SqlStoredProcedureGetProperties innerProperties;
 
-    /** Creates an instance of SqlStoredProcedureGetResultsInner class. */
+    /**
+     * Creates an instance of SqlStoredProcedureGetResultsInner class.
+     */
     public SqlStoredProcedureGetResultsInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB storedProcedure.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlStoredProcedureGetProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlStoredProcedureGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlStoredProcedureGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public SqlStoredProcedureGetPropertiesResource resource() {
@@ -57,7 +65,7 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlStoredProcedureGetResultsInner object itself.
      */
@@ -71,7 +79,7 @@ public final class SqlStoredProcedureGetResultsInner extends ArmResourceProperti
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

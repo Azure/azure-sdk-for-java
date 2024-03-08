@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The response to a metrics query that results in a bad request, with optional additional information. */
+/**
+ * The response to a metrics query that results in a bad request, with optional additional information.
+ */
 @Immutable
 public final class AdditionalInfoErrorResponse {
     /*
@@ -19,18 +21,18 @@ public final class AdditionalInfoErrorResponse {
 
     /**
      * Creates an instance of AdditionalInfoErrorResponse class.
-     *
+     * 
      * @param error the error value to set.
      */
     @JsonCreator
     public AdditionalInfoErrorResponse(
-            @JsonProperty(value = "error", required = true) AdditionalInfoErrorResponseError error) {
+        @JsonProperty(value = "error", required = true) AdditionalInfoErrorResponseError error) {
         this.error = error;
     }
 
     /**
      * Get the error property: Top level error object that contains all relevant information.
-     *
+     * 
      * @return the error value.
      */
     public AdditionalInfoErrorResponseError getError() {

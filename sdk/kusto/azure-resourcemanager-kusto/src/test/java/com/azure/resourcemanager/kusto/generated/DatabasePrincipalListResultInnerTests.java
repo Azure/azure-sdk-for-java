@@ -18,14 +18,14 @@ public final class DatabasePrincipalListResultInnerTests {
         DatabasePrincipalListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"role\":\"Admin\",\"name\":\"cym\",\"type\":\"Group\",\"fqn\":\"l\",\"email\":\"slqlfmmdn\",\"appId\":\"glzpswiydm\",\"tenantName\":\"yhz\"},{\"role\":\"Ingestor\",\"name\":\"ss\",\"type\":\"Group\",\"fqn\":\"zmnvdfznudaod\",\"email\":\"zbn\",\"appId\":\"lylpstdb\",\"tenantName\":\"xsrz\"},{\"role\":\"User\",\"name\":\"ucerscdntnevfi\",\"type\":\"Group\",\"fqn\":\"ygtdsslswt\",\"email\":\"eriofzpyqs\",\"appId\":\"wab\",\"tenantName\":\"tshhszhedp\"},{\"role\":\"Viewer\",\"name\":\"wiwubm\",\"type\":\"User\",\"fqn\":\"esl\",\"email\":\"k\",\"appId\":\"tppjflcx\",\"tenantName\":\"aokonzmnsik\"}]}")
+                    "{\"value\":[{\"role\":\"Admin\",\"name\":\"jfqka\",\"type\":\"Group\",\"fqn\":\"iipfpubj\",\"email\":\"wwiftohqkvpuv\",\"appId\":\"gplsaknynf\",\"tenantName\":\"n\"},{\"role\":\"Ingestor\",\"name\":\"ph\",\"type\":\"App\",\"fqn\":\"xodlqiyntorzih\",\"email\":\"osjswsr\",\"appId\":\"lyzrpzbchckqqzqi\",\"tenantName\":\"iysui\"}]}")
                 .toObject(DatabasePrincipalListResultInner.class);
         Assertions.assertEquals(DatabasePrincipalRole.ADMIN, model.value().get(0).role());
-        Assertions.assertEquals("cym", model.value().get(0).name());
+        Assertions.assertEquals("jfqka", model.value().get(0).name());
         Assertions.assertEquals(DatabasePrincipalType.GROUP, model.value().get(0).type());
-        Assertions.assertEquals("l", model.value().get(0).fqn());
-        Assertions.assertEquals("slqlfmmdn", model.value().get(0).email());
-        Assertions.assertEquals("glzpswiydm", model.value().get(0).appId());
+        Assertions.assertEquals("iipfpubj", model.value().get(0).fqn());
+        Assertions.assertEquals("wwiftohqkvpuv", model.value().get(0).email());
+        Assertions.assertEquals("gplsaknynf", model.value().get(0).appId());
     }
 
     @org.junit.jupiter.api.Test
@@ -37,38 +37,24 @@ public final class DatabasePrincipalListResultInnerTests {
                         .asList(
                             new DatabasePrincipalInner()
                                 .withRole(DatabasePrincipalRole.ADMIN)
-                                .withName("cym")
+                                .withName("jfqka")
                                 .withType(DatabasePrincipalType.GROUP)
-                                .withFqn("l")
-                                .withEmail("slqlfmmdn")
-                                .withAppId("glzpswiydm"),
+                                .withFqn("iipfpubj")
+                                .withEmail("wwiftohqkvpuv")
+                                .withAppId("gplsaknynf"),
                             new DatabasePrincipalInner()
                                 .withRole(DatabasePrincipalRole.INGESTOR)
-                                .withName("ss")
-                                .withType(DatabasePrincipalType.GROUP)
-                                .withFqn("zmnvdfznudaod")
-                                .withEmail("zbn")
-                                .withAppId("lylpstdb"),
-                            new DatabasePrincipalInner()
-                                .withRole(DatabasePrincipalRole.USER)
-                                .withName("ucerscdntnevfi")
-                                .withType(DatabasePrincipalType.GROUP)
-                                .withFqn("ygtdsslswt")
-                                .withEmail("eriofzpyqs")
-                                .withAppId("wab"),
-                            new DatabasePrincipalInner()
-                                .withRole(DatabasePrincipalRole.VIEWER)
-                                .withName("wiwubm")
-                                .withType(DatabasePrincipalType.USER)
-                                .withFqn("esl")
-                                .withEmail("k")
-                                .withAppId("tppjflcx")));
+                                .withName("ph")
+                                .withType(DatabasePrincipalType.APP)
+                                .withFqn("xodlqiyntorzih")
+                                .withEmail("osjswsr")
+                                .withAppId("lyzrpzbchckqqzqi")));
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalListResultInner.class);
         Assertions.assertEquals(DatabasePrincipalRole.ADMIN, model.value().get(0).role());
-        Assertions.assertEquals("cym", model.value().get(0).name());
+        Assertions.assertEquals("jfqka", model.value().get(0).name());
         Assertions.assertEquals(DatabasePrincipalType.GROUP, model.value().get(0).type());
-        Assertions.assertEquals("l", model.value().get(0).fqn());
-        Assertions.assertEquals("slqlfmmdn", model.value().get(0).email());
-        Assertions.assertEquals("glzpswiydm", model.value().get(0).appId());
+        Assertions.assertEquals("iipfpubj", model.value().get(0).fqn());
+        Assertions.assertEquals("wwiftohqkvpuv", model.value().get(0).email());
+        Assertions.assertEquals("gplsaknynf", model.value().get(0).appId());
     }
 }

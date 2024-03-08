@@ -15,18 +15,24 @@ import java.util.Collection;
  * above. If you are using a marketplace image, you also use the plan element previously described.
  */
 public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreateOptionTypes> {
-    /** Static value FromImage for DiskCreateOptionTypes. */
+    /**
+     * Static value FromImage for DiskCreateOptionTypes.
+     */
     public static final DiskCreateOptionTypes FROM_IMAGE = fromString("FromImage");
 
-    /** Static value Empty for DiskCreateOptionTypes. */
+    /**
+     * Static value Empty for DiskCreateOptionTypes.
+     */
     public static final DiskCreateOptionTypes EMPTY = fromString("Empty");
 
-    /** Static value Attach for DiskCreateOptionTypes. */
+    /**
+     * Static value Attach for DiskCreateOptionTypes.
+     */
     public static final DiskCreateOptionTypes ATTACH = fromString("Attach");
 
     /**
      * Creates a new instance of DiskCreateOptionTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -35,7 +41,7 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
 
     /**
      * Creates or finds a DiskCreateOptionTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskCreateOptionTypes.
      */
@@ -46,7 +52,7 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
 
     /**
      * Gets known DiskCreateOptionTypes values.
-     *
+     * 
      * @return known DiskCreateOptionTypes values.
      */
     public static Collection<DiskCreateOptionTypes> values() {

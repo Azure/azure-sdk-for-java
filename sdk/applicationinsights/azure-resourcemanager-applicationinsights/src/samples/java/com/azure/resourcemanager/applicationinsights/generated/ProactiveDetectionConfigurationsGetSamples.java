@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.applicationinsights.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ProactiveDetectionConfigurations Get. */
 public final class ProactiveDetectionConfigurationsGetSamples {
     /*
@@ -20,6 +18,6 @@ public final class ProactiveDetectionConfigurationsGetSamples {
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager manager) {
         manager
             .proactiveDetectionConfigurations()
-            .getWithResponse("my-resource-group", "my-component", "slowpageloadtime", Context.NONE);
+            .getWithResponse("my-resource-group", "my-component", "slowpageloadtime", com.azure.core.util.Context.NONE);
     }
 }

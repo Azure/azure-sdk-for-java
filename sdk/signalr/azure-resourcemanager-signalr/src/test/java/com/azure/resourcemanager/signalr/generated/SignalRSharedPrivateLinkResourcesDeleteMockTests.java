@@ -58,6 +58,6 @@ public final class SignalRSharedPrivateLinkResourcesDeleteMockTests {
 
         manager
             .signalRSharedPrivateLinkResources()
-            .delete("wphqlkccuzgygqw", "hoi", "lwgniiprglvawu", com.azure.core.util.Context.NONE);
+            .delete("e", "oyzbamwineofvf", "akpoldtvevbo", com.azure.core.util.Context.NONE);
     }
 }

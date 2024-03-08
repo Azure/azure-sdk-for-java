@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Big data pool reference type. */
+/**
+ * Big data pool reference type.
+ */
 @Fluent
 public final class BigDataPoolParametrizationReference {
     /*
@@ -23,13 +25,15 @@ public final class BigDataPoolParametrizationReference {
     @JsonProperty(value = "referenceName", required = true)
     private Object referenceName;
 
-    /** Creates an instance of BigDataPoolParametrizationReference class. */
+    /**
+     * Creates an instance of BigDataPoolParametrizationReference class.
+     */
     public BigDataPoolParametrizationReference() {
     }
 
     /**
      * Get the type property: Big data pool reference type.
-     *
+     * 
      * @return the type value.
      */
     public BigDataPoolReferenceType type() {
@@ -38,7 +42,7 @@ public final class BigDataPoolParametrizationReference {
 
     /**
      * Set the type property: Big data pool reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the BigDataPoolParametrizationReference object itself.
      */
@@ -50,7 +54,7 @@ public final class BigDataPoolParametrizationReference {
     /**
      * Get the referenceName property: Reference big data pool name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the referenceName value.
      */
     public Object referenceName() {
@@ -60,7 +64,7 @@ public final class BigDataPoolParametrizationReference {
     /**
      * Set the referenceName property: Reference big data pool name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the BigDataPoolParametrizationReference object itself.
      */
@@ -71,21 +75,17 @@ public final class BigDataPoolParametrizationReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property type in model BigDataPoolParametrizationReference"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property type in model BigDataPoolParametrizationReference"));
         }
         if (referenceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property referenceName in model BigDataPoolParametrizationReference"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property referenceName in model BigDataPoolParametrizationReference"));
         }
     }
 

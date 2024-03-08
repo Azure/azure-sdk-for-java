@@ -17,7 +17,7 @@ public interface DatadogHost {
     String name();
 
     /**
-     * Gets the aliases property: The aliases for the host.
+     * Gets the aliases property: The aliases for the host installed via the Datadog agent.
      *
      * @return the aliases value.
      */

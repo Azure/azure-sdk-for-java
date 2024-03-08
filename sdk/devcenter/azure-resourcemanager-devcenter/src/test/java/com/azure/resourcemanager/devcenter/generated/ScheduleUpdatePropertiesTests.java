@@ -17,12 +17,12 @@ public final class ScheduleUpdatePropertiesTests {
         ScheduleUpdateProperties model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jkniodko\",\"timeZone\":\"bw\",\"state\":\"Enabled\"}")
+                    "{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"zuo\",\"timeZone\":\"jw\",\"state\":\"Enabled\"}")
                 .toObject(ScheduleUpdateProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("jkniodko", model.time());
-        Assertions.assertEquals("bw", model.timeZone());
+        Assertions.assertEquals("zuo", model.time());
+        Assertions.assertEquals("jw", model.timeZone());
         Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
     }
 
@@ -32,14 +32,14 @@ public final class ScheduleUpdatePropertiesTests {
             new ScheduleUpdateProperties()
                 .withType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("jkniodko")
-                .withTimeZone("bw")
+                .withTime("zuo")
+                .withTimeZone("jw")
                 .withState(ScheduleEnableStatus.ENABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleUpdateProperties.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("jkniodko", model.time());
-        Assertions.assertEquals("bw", model.timeZone());
+        Assertions.assertEquals("zuo", model.time());
+        Assertions.assertEquals("jw", model.timeZone());
         Assertions.assertEquals(ScheduleEnableStatus.ENABLED, model.state());
     }
 }

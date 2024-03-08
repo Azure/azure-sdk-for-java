@@ -13,38 +13,33 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupPolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupPolicyInner model =
-            BinaryData
-                .fromString(
-                    "{\"etag\":\"qtvcofudflvkgj\",\"properties\":{\"backupPolicyId\":\"gdknnqv\",\"provisioningState\":\"znqntoru\",\"dailyBackupsToKeep\":1292575401,\"weeklyBackupsToKeep\":63235261,\"monthlyBackupsToKeep\":1726398247,\"volumesAssigned\":332873704,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"wjue\",\"backupsCount\":1169859080,\"policyEnabled\":false},{\"volumeName\":\"u\",\"backupsCount\":1850094254,\"policyEnabled\":true},{\"volumeName\":\"mz\",\"backupsCount\":866846651,\"policyEnabled\":false}]},\"location\":\"q\",\"tags\":{\"vtpuqujmqlgk\":\"kif\",\"ongbjcnt\":\"btndo\"},\"id\":\"jitcjedftwwaez\",\"name\":\"ojvdcpzfoqo\",\"type\":\"i\"}")
-                .toObject(BackupPolicyInner.class);
-        Assertions.assertEquals("q", model.location());
-        Assertions.assertEquals("kif", model.tags().get("vtpuqujmqlgk"));
-        Assertions.assertEquals(1292575401, model.dailyBackupsToKeep());
-        Assertions.assertEquals(63235261, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1726398247, model.monthlyBackupsToKeep());
+        BackupPolicyInner model = BinaryData.fromString(
+            "{\"etag\":\"nhlmctlpdng\",\"properties\":{\"backupPolicyId\":\"vgbmhr\",\"provisioningState\":\"kw\",\"dailyBackupsToKeep\":881216516,\"weeklyBackupsToKeep\":1630324691,\"monthlyBackupsToKeep\":568576807,\"volumesAssigned\":1374422252,\"enabled\":true,\"volumeBackups\":[{\"volumeName\":\"aixexccbdreaxh\",\"backupsCount\":1486564388,\"policyEnabled\":false}]},\"location\":\"vqahqkghtpwi\",\"tags\":{\"z\":\"yjsvfyc\",\"rvmtgjq\":\"fvoow\",\"nsxkmcwaekrrjr\":\"pyostronzmyhgfi\"},\"id\":\"afxtsgum\",\"name\":\"jglikkxwslolb\",\"type\":\"pvuzlmv\"}")
+            .toObject(BackupPolicyInner.class);
+        Assertions.assertEquals("vqahqkghtpwi", model.location());
+        Assertions.assertEquals("yjsvfyc", model.tags().get("z"));
+        Assertions.assertEquals(881216516, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1630324691, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(568576807, model.monthlyBackupsToKeep());
         Assertions.assertEquals(true, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupPolicyInner model =
-            new BackupPolicyInner()
-                .withLocation("q")
-                .withTags(mapOf("vtpuqujmqlgk", "kif", "ongbjcnt", "btndo"))
-                .withDailyBackupsToKeep(1292575401)
-                .withWeeklyBackupsToKeep(63235261)
-                .withMonthlyBackupsToKeep(1726398247)
-                .withEnabled(true);
+        BackupPolicyInner model = new BackupPolicyInner().withLocation("vqahqkghtpwi")
+            .withTags(mapOf("z", "yjsvfyc", "rvmtgjq", "fvoow", "nsxkmcwaekrrjr", "pyostronzmyhgfi"))
+            .withDailyBackupsToKeep(881216516).withWeeklyBackupsToKeep(1630324691).withMonthlyBackupsToKeep(568576807)
+            .withEnabled(true);
         model = BinaryData.fromObject(model).toObject(BackupPolicyInner.class);
-        Assertions.assertEquals("q", model.location());
-        Assertions.assertEquals("kif", model.tags().get("vtpuqujmqlgk"));
-        Assertions.assertEquals(1292575401, model.dailyBackupsToKeep());
-        Assertions.assertEquals(63235261, model.weeklyBackupsToKeep());
-        Assertions.assertEquals(1726398247, model.monthlyBackupsToKeep());
+        Assertions.assertEquals("vqahqkghtpwi", model.location());
+        Assertions.assertEquals("yjsvfyc", model.tags().get("z"));
+        Assertions.assertEquals(881216516, model.dailyBackupsToKeep());
+        Assertions.assertEquals(1630324691, model.weeklyBackupsToKeep());
+        Assertions.assertEquals(568576807, model.monthlyBackupsToKeep());
         Assertions.assertEquals(true, model.enabled());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

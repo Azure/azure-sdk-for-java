@@ -12,14 +12,14 @@ public final class AzureStackHciClusterResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureStackHciClusterResourceId model =
-            BinaryData.fromString("{\"id\":\"cykvceo\"}").toObject(AzureStackHciClusterResourceId.class);
-        Assertions.assertEquals("cykvceo", model.id());
+            BinaryData.fromString("{\"id\":\"sapskr\"}").toObject(AzureStackHciClusterResourceId.class);
+        Assertions.assertEquals("sapskr", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureStackHciClusterResourceId model = new AzureStackHciClusterResourceId().withId("cykvceo");
+        AzureStackHciClusterResourceId model = new AzureStackHciClusterResourceId().withId("sapskr");
         model = BinaryData.fromObject(model).toObject(AzureStackHciClusterResourceId.class);
-        Assertions.assertEquals("cykvceo", model.id());
+        Assertions.assertEquals("sapskr", model.id());
     }
 }

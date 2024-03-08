@@ -63,6 +63,12 @@ public final class PacketCapturePropertiesFormat {
     @JsonProperty(value = "timeLimitInSeconds")
     private Integer timeLimitInSeconds;
 
+    /*
+     * The list of output files of a packet capture session.
+     */
+    @JsonProperty(value = "outputFiles", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> outputFiles;
+
     /** Creates an instance of PacketCapturePropertiesFormat class. */
     public PacketCapturePropertiesFormat() {
     }
@@ -183,6 +189,15 @@ public final class PacketCapturePropertiesFormat {
     public PacketCapturePropertiesFormat withTimeLimitInSeconds(Integer timeLimitInSeconds) {
         this.timeLimitInSeconds = timeLimitInSeconds;
         return this;
+    }
+
+    /**
+     * Get the outputFiles property: The list of output files of a packet capture session.
+     *
+     * @return the outputFiles value.
+     */
+    public List<String> outputFiles() {
+        return this.outputFiles;
     }
 
     /**

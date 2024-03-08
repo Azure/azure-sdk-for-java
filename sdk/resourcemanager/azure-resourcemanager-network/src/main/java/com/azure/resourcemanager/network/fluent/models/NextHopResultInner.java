@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.NextHopType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The information about next hop from the specified VM. */
+/**
+ * The information about next hop from the specified VM.
+ */
 @Fluent
 public final class NextHopResultInner {
     /*
@@ -30,13 +32,15 @@ public final class NextHopResultInner {
     @JsonProperty(value = "routeTableId")
     private String routeTableId;
 
-    /** Creates an instance of NextHopResultInner class. */
+    /**
+     * Creates an instance of NextHopResultInner class.
+     */
     public NextHopResultInner() {
     }
 
     /**
      * Get the nextHopType property: Next hop type.
-     *
+     * 
      * @return the nextHopType value.
      */
     public NextHopType nextHopType() {
@@ -45,7 +49,7 @@ public final class NextHopResultInner {
 
     /**
      * Set the nextHopType property: Next hop type.
-     *
+     * 
      * @param nextHopType the nextHopType value to set.
      * @return the NextHopResultInner object itself.
      */
@@ -56,7 +60,7 @@ public final class NextHopResultInner {
 
     /**
      * Get the nextHopIpAddress property: Next hop IP Address.
-     *
+     * 
      * @return the nextHopIpAddress value.
      */
     public String nextHopIpAddress() {
@@ -65,7 +69,7 @@ public final class NextHopResultInner {
 
     /**
      * Set the nextHopIpAddress property: Next hop IP Address.
-     *
+     * 
      * @param nextHopIpAddress the nextHopIpAddress value to set.
      * @return the NextHopResultInner object itself.
      */
@@ -78,7 +82,7 @@ public final class NextHopResultInner {
      * Get the routeTableId property: The resource identifier for the route table associated with the route being
      * returned. If the route being returned does not correspond to any user created routes then this field will be the
      * string 'System Route'.
-     *
+     * 
      * @return the routeTableId value.
      */
     public String routeTableId() {
@@ -89,7 +93,7 @@ public final class NextHopResultInner {
      * Set the routeTableId property: The resource identifier for the route table associated with the route being
      * returned. If the route being returned does not correspond to any user created routes then this field will be the
      * string 'System Route'.
-     *
+     * 
      * @param routeTableId the routeTableId value to set.
      * @return the NextHopResultInner object itself.
      */
@@ -100,7 +104,7 @@ public final class NextHopResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

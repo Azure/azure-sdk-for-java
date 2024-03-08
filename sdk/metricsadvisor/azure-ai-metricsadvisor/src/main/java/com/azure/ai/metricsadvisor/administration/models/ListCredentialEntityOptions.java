@@ -14,6 +14,12 @@ public final class ListCredentialEntityOptions {
     private Integer skip;
 
     /**
+     * Creates an instance of ListCredentialEntityOptions.
+     */
+    public ListCredentialEntityOptions() {
+    }
+
+    /**
      * Gets limit indicating the number of items that will be included in a service returned page.
      *
      * @return The max page size value.

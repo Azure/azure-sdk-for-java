@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.netapp.models.VolumeGroupMetadata;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Volume group resource. */
+/**
+ * Volume group resource.
+ */
 @Fluent
 public final class VolumeGroupInner {
     /*
@@ -41,13 +43,15 @@ public final class VolumeGroupInner {
     @JsonProperty(value = "properties")
     private VolumeGroupListProperties innerProperties;
 
-    /** Creates an instance of VolumeGroupInner class. */
+    /**
+     * Creates an instance of VolumeGroupInner class.
+     */
     public VolumeGroupInner() {
     }
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -56,7 +60,7 @@ public final class VolumeGroupInner {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the VolumeGroupInner object itself.
      */
@@ -67,7 +71,7 @@ public final class VolumeGroupInner {
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +80,7 @@ public final class VolumeGroupInner {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -85,7 +89,7 @@ public final class VolumeGroupInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -94,7 +98,7 @@ public final class VolumeGroupInner {
 
     /**
      * Get the innerProperties property: Volume group properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VolumeGroupListProperties innerProperties() {
@@ -103,7 +107,7 @@ public final class VolumeGroupInner {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -112,7 +116,7 @@ public final class VolumeGroupInner {
 
     /**
      * Get the groupMetadata property: Volume group details.
-     *
+     * 
      * @return the groupMetadata value.
      */
     public VolumeGroupMetadata groupMetadata() {
@@ -121,7 +125,7 @@ public final class VolumeGroupInner {
 
     /**
      * Set the groupMetadata property: Volume group details.
-     *
+     * 
      * @param groupMetadata the groupMetadata value to set.
      * @return the VolumeGroupInner object itself.
      */
@@ -135,7 +139,7 @@ public final class VolumeGroupInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

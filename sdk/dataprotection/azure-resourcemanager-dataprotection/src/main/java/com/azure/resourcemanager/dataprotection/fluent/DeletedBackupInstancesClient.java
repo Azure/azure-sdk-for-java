@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.dataprotection.fluent.models.DeletedBackupInstanceResourceInner;
 
-/** An instance of this class provides access to all the operations defined in DeletedBackupInstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DeletedBackupInstancesClient.
+ */
 public interface DeletedBackupInstancesClient {
     /**
      * Gets deleted backup instances belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface DeletedBackupInstancesClient {
 
     /**
      * Gets deleted backup instances belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -44,7 +46,7 @@ public interface DeletedBackupInstancesClient {
 
     /**
      * Gets a deleted backup instance with name in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.
@@ -55,12 +57,12 @@ public interface DeletedBackupInstancesClient {
      * @return a deleted backup instance with name in a backup vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeletedBackupInstanceResourceInner> getWithResponse(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    Response<DeletedBackupInstanceResourceInner> getWithResponse(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context);
 
     /**
      * Gets a deleted backup instance with name in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.
@@ -74,7 +76,7 @@ public interface DeletedBackupInstancesClient {
 
     /**
      * The undelete operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.
@@ -84,12 +86,12 @@ public interface DeletedBackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUndelete(
-        String resourceGroupName, String vaultName, String backupInstanceName);
+    SyncPoller<PollResult<Void>, Void> beginUndelete(String resourceGroupName, String vaultName,
+        String backupInstanceName);
 
     /**
      * The undelete operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.
@@ -100,12 +102,12 @@ public interface DeletedBackupInstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUndelete(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginUndelete(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context);
 
     /**
      * The undelete operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.
@@ -118,7 +120,7 @@ public interface DeletedBackupInstancesClient {
 
     /**
      * The undelete operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the deleted backup instance.

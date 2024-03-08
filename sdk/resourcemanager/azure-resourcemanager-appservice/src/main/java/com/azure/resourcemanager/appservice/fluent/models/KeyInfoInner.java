@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Function key info. */
+/**
+ * Function key info.
+ */
 @Fluent
 public final class KeyInfoInner {
     /*
@@ -22,13 +24,15 @@ public final class KeyInfoInner {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of KeyInfoInner class. */
+    /**
+     * Creates an instance of KeyInfoInner class.
+     */
     public KeyInfoInner() {
     }
 
     /**
      * Get the name property: Key name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class KeyInfoInner {
 
     /**
      * Set the name property: Key name.
-     *
+     * 
      * @param name the name value to set.
      * @return the KeyInfoInner object itself.
      */
@@ -48,7 +52,7 @@ public final class KeyInfoInner {
 
     /**
      * Get the value property: Key value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class KeyInfoInner {
 
     /**
      * Set the value property: Key value.
-     *
+     * 
      * @param value the value value to set.
      * @return the KeyInfoInner object itself.
      */
@@ -68,7 +72,7 @@ public final class KeyInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

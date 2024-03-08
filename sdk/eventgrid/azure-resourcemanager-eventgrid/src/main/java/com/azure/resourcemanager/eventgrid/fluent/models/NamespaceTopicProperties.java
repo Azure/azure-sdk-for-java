@@ -10,7 +10,9 @@ import com.azure.resourcemanager.eventgrid.models.NamespaceTopicProvisioningStat
 import com.azure.resourcemanager.eventgrid.models.PublisherType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the namespace topic. */
+/**
+ * Properties of the namespace topic.
+ */
 @Fluent
 public final class NamespaceTopicProperties {
     /*
@@ -38,13 +40,15 @@ public final class NamespaceTopicProperties {
     @JsonProperty(value = "eventRetentionInDays")
     private Integer eventRetentionInDays;
 
-    /** Creates an instance of NamespaceTopicProperties class. */
+    /**
+     * Creates an instance of NamespaceTopicProperties class.
+     */
     public NamespaceTopicProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the namespace topic.
-     *
+     * 
      * @return the provisioningState value.
      */
     public NamespaceTopicProvisioningState provisioningState() {
@@ -53,7 +57,7 @@ public final class NamespaceTopicProperties {
 
     /**
      * Get the publisherType property: Publisher type of the namespace topic.
-     *
+     * 
      * @return the publisherType value.
      */
     public PublisherType publisherType() {
@@ -62,7 +66,7 @@ public final class NamespaceTopicProperties {
 
     /**
      * Set the publisherType property: Publisher type of the namespace topic.
-     *
+     * 
      * @param publisherType the publisherType value to set.
      * @return the NamespaceTopicProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class NamespaceTopicProperties {
     /**
      * Get the inputSchema property: This determines the format that is expected for incoming events published to the
      * topic.
-     *
+     * 
      * @return the inputSchema value.
      */
     public EventInputSchema inputSchema() {
@@ -84,7 +88,7 @@ public final class NamespaceTopicProperties {
     /**
      * Set the inputSchema property: This determines the format that is expected for incoming events published to the
      * topic.
-     *
+     * 
      * @param inputSchema the inputSchema value to set.
      * @return the NamespaceTopicProperties object itself.
      */
@@ -95,9 +99,9 @@ public final class NamespaceTopicProperties {
 
     /**
      * Get the eventRetentionInDays property: Event retention for the namespace topic expressed in days. The property
-     * default value is 1 day. Min event retention duration value is 1 day and max event retention duration value is 1
-     * day.
-     *
+     * default value is 1 day.
+     * Min event retention duration value is 1 day and max event retention duration value is 1 day.
+     * 
      * @return the eventRetentionInDays value.
      */
     public Integer eventRetentionInDays() {
@@ -106,9 +110,9 @@ public final class NamespaceTopicProperties {
 
     /**
      * Set the eventRetentionInDays property: Event retention for the namespace topic expressed in days. The property
-     * default value is 1 day. Min event retention duration value is 1 day and max event retention duration value is 1
-     * day.
-     *
+     * default value is 1 day.
+     * Min event retention duration value is 1 day and max event retention duration value is 1 day.
+     * 
      * @param eventRetentionInDays the eventRetentionInDays value to set.
      * @return the NamespaceTopicProperties object itself.
      */
@@ -119,7 +123,7 @@ public final class NamespaceTopicProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

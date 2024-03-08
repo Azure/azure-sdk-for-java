@@ -20,7 +20,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.TagInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** LocalRulestack rule list. */
+/**
+ * LocalRulestack rule list.
+ */
 @Fluent
 public final class LocalRulesResourceInner extends ProxyResource {
     /*
@@ -35,13 +37,15 @@ public final class LocalRulesResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of LocalRulesResourceInner class. */
+    /**
+     * Creates an instance of LocalRulesResourceInner class.
+     */
     public LocalRulesResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The resource-specific properties for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RuleEntry innerProperties() {
@@ -50,7 +54,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -59,7 +63,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the etag property: etag info.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -68,7 +72,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the etag property: etag info.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -82,7 +86,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the ruleName property: rule name.
-     *
+     * 
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -91,7 +95,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the ruleName property: rule name.
-     *
+     * 
      * @param ruleName the ruleName value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -105,7 +109,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the priority property: The priority property.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -114,7 +118,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the description property: rule description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -123,7 +127,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the description property: rule description.
-     *
+     * 
      * @param description the description value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -137,7 +141,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the ruleState property: state of this rule.
-     *
+     * 
      * @return the ruleState value.
      */
     public StateEnum ruleState() {
@@ -146,7 +150,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the ruleState property: state of this rule.
-     *
+     * 
      * @param ruleState the ruleState value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -160,7 +164,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the source property: source address.
-     *
+     * 
      * @return the source value.
      */
     public SourceAddr source() {
@@ -169,7 +173,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the source property: source address.
-     *
+     * 
      * @param source the source value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -183,7 +187,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the negateSource property: cidr should not be 'any'.
-     *
+     * 
      * @return the negateSource value.
      */
     public BooleanEnum negateSource() {
@@ -192,7 +196,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the negateSource property: cidr should not be 'any'.
-     *
+     * 
      * @param negateSource the negateSource value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -206,7 +210,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the destination property: destination address.
-     *
+     * 
      * @return the destination value.
      */
     public DestinationAddr destination() {
@@ -215,7 +219,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the destination property: destination address.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -229,7 +233,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the negateDestination property: cidr should not be 'any'.
-     *
+     * 
      * @return the negateDestination value.
      */
     public BooleanEnum negateDestination() {
@@ -238,7 +242,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the negateDestination property: cidr should not be 'any'.
-     *
+     * 
      * @param negateDestination the negateDestination value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -252,7 +256,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the applications property: array of rule applications.
-     *
+     * 
      * @return the applications value.
      */
     public List<String> applications() {
@@ -261,7 +265,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the applications property: array of rule applications.
-     *
+     * 
      * @param applications the applications value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -275,7 +279,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the category property: rule category.
-     *
+     * 
      * @return the category value.
      */
     public Category category() {
@@ -284,7 +288,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the category property: rule category.
-     *
+     * 
      * @param category the category value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -298,7 +302,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the protocol property: any, application-default, TCP:number, UDP:number.
-     *
+     * 
      * @return the protocol value.
      */
     public String protocol() {
@@ -307,7 +311,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the protocol property: any, application-default, TCP:number, UDP:number.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -321,7 +325,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the protocolPortList property: prot port list.
-     *
+     * 
      * @return the protocolPortList value.
      */
     public List<String> protocolPortList() {
@@ -330,7 +334,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the protocolPortList property: prot port list.
-     *
+     * 
      * @param protocolPortList the protocolPortList value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -344,7 +348,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the inboundInspectionCertificate property: inbound Inspection Certificate.
-     *
+     * 
      * @return the inboundInspectionCertificate value.
      */
     public String inboundInspectionCertificate() {
@@ -353,7 +357,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the inboundInspectionCertificate property: inbound Inspection Certificate.
-     *
+     * 
      * @param inboundInspectionCertificate the inboundInspectionCertificate value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -367,7 +371,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the auditComment property: rule comment.
-     *
+     * 
      * @return the auditComment value.
      */
     public String auditComment() {
@@ -376,7 +380,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the auditComment property: rule comment.
-     *
+     * 
      * @param auditComment the auditComment value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -390,7 +394,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the actionType property: rule action.
-     *
+     * 
      * @return the actionType value.
      */
     public ActionEnum actionType() {
@@ -399,7 +403,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the actionType property: rule action.
-     *
+     * 
      * @param actionType the actionType value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -413,7 +417,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the enableLogging property: enable or disable logging.
-     *
+     * 
      * @return the enableLogging value.
      */
     public StateEnum enableLogging() {
@@ -422,7 +426,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the enableLogging property: enable or disable logging.
-     *
+     * 
      * @param enableLogging the enableLogging value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -436,7 +440,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the decryptionRuleType property: enable or disable decryption.
-     *
+     * 
      * @return the decryptionRuleType value.
      */
     public DecryptionRuleTypeEnum decryptionRuleType() {
@@ -445,7 +449,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the decryptionRuleType property: enable or disable decryption.
-     *
+     * 
      * @param decryptionRuleType the decryptionRuleType value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -459,7 +463,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the tags property: tag for rule.
-     *
+     * 
      * @return the tags value.
      */
     public List<TagInfo> tags() {
@@ -468,7 +472,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Set the tags property: tag for rule.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the LocalRulesResourceInner object itself.
      */
@@ -482,7 +486,7 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -491,15 +495,13 @@ public final class LocalRulesResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LocalRulesResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model LocalRulesResourceInner"));
         } else {
             innerProperties().validate();
         }

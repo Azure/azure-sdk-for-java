@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Http logs configuration. */
+/**
+ * Http logs configuration.
+ */
 @Fluent
 public final class HttpLogsConfig {
     /*
@@ -22,13 +24,15 @@ public final class HttpLogsConfig {
     @JsonProperty(value = "azureBlobStorage")
     private AzureBlobStorageHttpLogsConfig azureBlobStorage;
 
-    /** Creates an instance of HttpLogsConfig class. */
+    /**
+     * Creates an instance of HttpLogsConfig class.
+     */
     public HttpLogsConfig() {
     }
 
     /**
      * Get the fileSystem property: Http logs to file system configuration.
-     *
+     * 
      * @return the fileSystem value.
      */
     public FileSystemHttpLogsConfig fileSystem() {
@@ -37,7 +41,7 @@ public final class HttpLogsConfig {
 
     /**
      * Set the fileSystem property: Http logs to file system configuration.
-     *
+     * 
      * @param fileSystem the fileSystem value to set.
      * @return the HttpLogsConfig object itself.
      */
@@ -48,7 +52,7 @@ public final class HttpLogsConfig {
 
     /**
      * Get the azureBlobStorage property: Http logs to azure blob storage configuration.
-     *
+     * 
      * @return the azureBlobStorage value.
      */
     public AzureBlobStorageHttpLogsConfig azureBlobStorage() {
@@ -57,7 +61,7 @@ public final class HttpLogsConfig {
 
     /**
      * Set the azureBlobStorage property: Http logs to azure blob storage configuration.
-     *
+     * 
      * @param azureBlobStorage the azureBlobStorage value to set.
      * @return the HttpLogsConfig object itself.
      */
@@ -68,7 +72,7 @@ public final class HttpLogsConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

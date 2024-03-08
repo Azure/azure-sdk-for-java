@@ -7,11 +7,13 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationRuntimeObjectMetadatas. */
+/**
+ * Resource collection API of IntegrationRuntimeObjectMetadatas.
+ */
 public interface IntegrationRuntimeObjectMetadatas {
     /**
      * Refresh a SSIS integration runtime object metadata.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -20,12 +22,12 @@ public interface IntegrationRuntimeObjectMetadatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    SsisObjectMetadataStatusResponse refresh(
-        String resourceGroupName, String factoryName, String integrationRuntimeName);
+    SsisObjectMetadataStatusResponse refresh(String resourceGroupName, String factoryName,
+        String integrationRuntimeName);
 
     /**
      * Refresh a SSIS integration runtime object metadata.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -35,12 +37,12 @@ public interface IntegrationRuntimeObjectMetadatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    SsisObjectMetadataStatusResponse refresh(
-        String resourceGroupName, String factoryName, String integrationRuntimeName, Context context);
+    SsisObjectMetadataStatusResponse refresh(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, Context context);
 
     /**
      * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
@@ -51,16 +53,12 @@ public interface IntegrationRuntimeObjectMetadatas {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a SSIS integration runtime object metadata by specified path along with {@link Response}.
      */
-    Response<SsisObjectMetadataListResponse> getWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        GetSsisObjectMetadataRequest getMetadataRequest,
-        Context context);
+    Response<SsisObjectMetadataListResponse> getWithResponse(String resourceGroupName, String factoryName,
+        String integrationRuntimeName, GetSsisObjectMetadataRequest getMetadataRequest, Context context);
 
     /**
      * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.

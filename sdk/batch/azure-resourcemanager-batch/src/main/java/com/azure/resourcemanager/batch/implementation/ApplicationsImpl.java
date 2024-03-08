@@ -21,14 +21,14 @@ public final class ApplicationsImpl implements Applications {
 
     private final com.azure.resourcemanager.batch.BatchManager serviceManager;
 
-    public ApplicationsImpl(
-        ApplicationsClient innerClient, com.azure.resourcemanager.batch.BatchManager serviceManager) {
+    public ApplicationsImpl(ApplicationsClient innerClient,
+        com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String applicationName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String applicationName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, applicationName, context);
     }
 
@@ -36,15 +36,12 @@ public final class ApplicationsImpl implements Applications {
         this.serviceClient().delete(resourceGroupName, accountName, applicationName);
     }
 
-    public Response<Application> getWithResponse(
-        String resourceGroupName, String accountName, String applicationName, Context context) {
-        Response<ApplicationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, applicationName, context);
+    public Response<Application> getWithResponse(String resourceGroupName, String accountName, String applicationName,
+        Context context) {
+        Response<ApplicationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, applicationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -65,35 +62,28 @@ public final class ApplicationsImpl implements Applications {
         return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Application> list(
-        String resourceGroupName, String accountName, Integer maxresults, Context context) {
-        PagedIterable<ApplicationInner> inner =
-            this.serviceClient().list(resourceGroupName, accountName, maxresults, context);
+    public PagedIterable<Application> list(String resourceGroupName, String accountName, Integer maxresults,
+        Context context) {
+        PagedIterable<ApplicationInner> inner
+            = this.serviceClient().list(resourceGroupName, accountName, maxresults, context);
         return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public Application getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, applicationName, Context.NONE).getValue();
     }
@@ -101,25 +91,18 @@ public final class ApplicationsImpl implements Applications {
     public Response<Application> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, applicationName, context);
     }
@@ -127,25 +110,18 @@ public final class ApplicationsImpl implements Applications {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, accountName, applicationName, Context.NONE);
     }
@@ -153,25 +129,18 @@ public final class ApplicationsImpl implements Applications {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "batchAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchAccounts'.", id)));
         }
         String applicationName = Utils.getValueFromIdByName(id, "applications");
         if (applicationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'applications'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, accountName, applicationName, context);
     }

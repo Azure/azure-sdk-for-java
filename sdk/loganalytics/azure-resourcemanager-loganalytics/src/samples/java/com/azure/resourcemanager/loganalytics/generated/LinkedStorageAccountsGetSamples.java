@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
 
 /** Samples for LinkedStorageAccounts Get. */
@@ -20,6 +19,7 @@ public final class LinkedStorageAccountsGetSamples {
     public static void linkedStorageAccountsGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
         manager
             .linkedStorageAccounts()
-            .getWithResponse("mms-eus", "testLinkStorageAccountsWS", DataSourceType.CUSTOM_LOGS, Context.NONE);
+            .getWithResponse(
+                "mms-eus", "testLinkStorageAccountsWS", DataSourceType.CUSTOM_LOGS, com.azure.core.util.Context.NONE);
     }
 }

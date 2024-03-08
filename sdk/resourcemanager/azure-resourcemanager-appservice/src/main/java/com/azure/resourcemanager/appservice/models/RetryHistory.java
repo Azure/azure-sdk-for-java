@@ -9,7 +9,9 @@ import com.azure.core.management.exception.ManagementError;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The retry history. */
+/**
+ * The retry history.
+ */
 @Fluent
 public final class RetryHistory {
     /*
@@ -48,13 +50,15 @@ public final class RetryHistory {
     @JsonProperty(value = "error")
     private ManagementError error;
 
-    /** Creates an instance of RetryHistory class. */
+    /**
+     * Creates an instance of RetryHistory class.
+     */
     public RetryHistory() {
     }
 
     /**
      * Get the startTime property: Gets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -63,7 +67,7 @@ public final class RetryHistory {
 
     /**
      * Set the startTime property: Gets the start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the RetryHistory object itself.
      */
@@ -74,7 +78,7 @@ public final class RetryHistory {
 
     /**
      * Get the endTime property: Gets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -83,7 +87,7 @@ public final class RetryHistory {
 
     /**
      * Set the endTime property: Gets the end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the RetryHistory object itself.
      */
@@ -94,7 +98,7 @@ public final class RetryHistory {
 
     /**
      * Get the code property: Gets the status code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -103,7 +107,7 @@ public final class RetryHistory {
 
     /**
      * Set the code property: Gets the status code.
-     *
+     * 
      * @param code the code value to set.
      * @return the RetryHistory object itself.
      */
@@ -114,7 +118,7 @@ public final class RetryHistory {
 
     /**
      * Get the clientRequestId property: Gets the client request Id.
-     *
+     * 
      * @return the clientRequestId value.
      */
     public String clientRequestId() {
@@ -123,7 +127,7 @@ public final class RetryHistory {
 
     /**
      * Set the clientRequestId property: Gets the client request Id.
-     *
+     * 
      * @param clientRequestId the clientRequestId value to set.
      * @return the RetryHistory object itself.
      */
@@ -134,7 +138,7 @@ public final class RetryHistory {
 
     /**
      * Get the serviceRequestId property: Gets the service request Id.
-     *
+     * 
      * @return the serviceRequestId value.
      */
     public String serviceRequestId() {
@@ -143,7 +147,7 @@ public final class RetryHistory {
 
     /**
      * Set the serviceRequestId property: Gets the service request Id.
-     *
+     * 
      * @param serviceRequestId the serviceRequestId value to set.
      * @return the RetryHistory object itself.
      */
@@ -154,7 +158,7 @@ public final class RetryHistory {
 
     /**
      * Get the error property: Gets the error response.
-     *
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -163,7 +167,7 @@ public final class RetryHistory {
 
     /**
      * Set the error property: Gets the error response.
-     *
+     * 
      * @param error the error value to set.
      * @return the RetryHistory object itself.
      */
@@ -174,7 +178,7 @@ public final class RetryHistory {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

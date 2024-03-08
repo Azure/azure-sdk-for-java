@@ -56,6 +56,6 @@ public final class SimPoliciesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.simPolicies().delete("ygzc", "yf", "x", com.azure.core.util.Context.NONE);
+        manager.simPolicies().delete("bfw", "rzx", "dew", com.azure.core.util.Context.NONE);
     }
 }

@@ -42,17 +42,6 @@ public final class ApiKeysImpl implements ApiKeys {
         return Utils.mapPage(inner, inner1 -> new ApplicationInsightsComponentApiKeyImpl(inner1, this.manager()));
     }
 
-    public ApplicationInsightsComponentApiKey create(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties) {
-        ApplicationInsightsComponentApiKeyInner inner =
-            this.serviceClient().create(resourceGroupName, resourceName, apiKeyProperties);
-        if (inner != null) {
-            return new ApplicationInsightsComponentApiKeyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ApplicationInsightsComponentApiKey> createWithResponse(
         String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties, Context context) {
         Response<ApplicationInsightsComponentApiKeyInner> inner =
@@ -68,9 +57,10 @@ public final class ApiKeysImpl implements ApiKeys {
         }
     }
 
-    public ApplicationInsightsComponentApiKey delete(String resourceGroupName, String resourceName, String keyId) {
+    public ApplicationInsightsComponentApiKey create(
+        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties) {
         ApplicationInsightsComponentApiKeyInner inner =
-            this.serviceClient().delete(resourceGroupName, resourceName, keyId);
+            this.serviceClient().create(resourceGroupName, resourceName, apiKeyProperties);
         if (inner != null) {
             return new ApplicationInsightsComponentApiKeyImpl(inner, this.manager());
         } else {
@@ -93,9 +83,9 @@ public final class ApiKeysImpl implements ApiKeys {
         }
     }
 
-    public ApplicationInsightsComponentApiKey get(String resourceGroupName, String resourceName, String keyId) {
+    public ApplicationInsightsComponentApiKey delete(String resourceGroupName, String resourceName, String keyId) {
         ApplicationInsightsComponentApiKeyInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, keyId);
+            this.serviceClient().delete(resourceGroupName, resourceName, keyId);
         if (inner != null) {
             return new ApplicationInsightsComponentApiKeyImpl(inner, this.manager());
         } else {
@@ -113,6 +103,16 @@ public final class ApiKeysImpl implements ApiKeys {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ApplicationInsightsComponentApiKeyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationInsightsComponentApiKey get(String resourceGroupName, String resourceName, String keyId) {
+        ApplicationInsightsComponentApiKeyInner inner =
+            this.serviceClient().get(resourceGroupName, resourceName, keyId);
+        if (inner != null) {
+            return new ApplicationInsightsComponentApiKeyImpl(inner, this.manager());
         } else {
             return null;
         }

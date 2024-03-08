@@ -16,18 +16,6 @@ public interface DataSources {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param dataSourceName Name of the datasource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String workspaceName, String dataSourceName);
-
-    /**
-     * Deletes a data source instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dataSourceName Name of the datasource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,7 +26,7 @@ public interface DataSources {
         String resourceGroupName, String workspaceName, String dataSourceName, Context context);
 
     /**
-     * Gets a datasource instance.
+     * Deletes a data source instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -46,9 +34,8 @@ public interface DataSources {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datasource instance.
      */
-    DataSource get(String resourceGroupName, String workspaceName, String dataSourceName);
+    void delete(String resourceGroupName, String workspaceName, String dataSourceName);
 
     /**
      * Gets a datasource instance.
@@ -64,6 +51,19 @@ public interface DataSources {
      */
     Response<DataSource> getWithResponse(
         String resourceGroupName, String workspaceName, String dataSourceName, Context context);
+
+    /**
+     * Gets a datasource instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param dataSourceName Name of the datasource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a datasource instance.
+     */
+    DataSource get(String resourceGroupName, String workspaceName, String dataSourceName);
 
     /**
      * Gets the first page of data source instances in a workspace with the link to the next page.

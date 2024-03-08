@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Salesforce Marketing Cloud linked service. */
+/**
+ * Salesforce Marketing Cloud linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SalesforceMarketingCloud")
 @JsonFlatten
@@ -67,13 +69,16 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of SalesforceMarketingCloudLinkedService class. */
-    public SalesforceMarketingCloudLinkedService() {}
+    /**
+     * Creates an instance of SalesforceMarketingCloudLinkedService class.
+     */
+    public SalesforceMarketingCloudLinkedService() {
+    }
 
     /**
      * Get the connectionProperties property: Properties used to connect to Salesforce Marketing Cloud. It is mutually
      * exclusive with any other properties in the linked service. Type: object.
-     *
+     * 
      * @return the connectionProperties value.
      */
     public Object getConnectionProperties() {
@@ -83,7 +88,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Set the connectionProperties property: Properties used to connect to Salesforce Marketing Cloud. It is mutually
      * exclusive with any other properties in the linked service. Type: object.
-     *
+     * 
      * @param connectionProperties the connectionProperties value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -93,9 +98,9 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Get the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type: string
-     * (or Expression with resultType string).
-     *
+     * Get the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type:
+     * string (or Expression with resultType string).
+     * 
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -103,9 +108,9 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Set the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type: string
-     * (or Expression with resultType string).
-     *
+     * Set the clientId property: The client ID associated with the Salesforce Marketing Cloud application. Type:
+     * string (or Expression with resultType string).
+     * 
      * @param clientId the clientId value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -117,7 +122,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Get the clientSecret property: The client secret associated with the Salesforce Marketing Cloud application.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase getClientSecret() {
@@ -127,7 +132,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Set the clientSecret property: The client secret associated with the Salesforce Marketing Cloud application.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -139,7 +144,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object getUseEncryptedEndpoints() {
@@ -149,7 +154,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -162,7 +167,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object getUseHostVerification() {
@@ -173,7 +178,7 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -183,9 +188,9 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * 
      * @return the usePeerVerification value.
      */
     public Object getUsePeerVerification() {
@@ -193,9 +198,9 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -205,9 +210,9 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -215,9 +220,9 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SalesforceMarketingCloudLinkedService object itself.
      */
@@ -226,28 +231,36 @@ public class SalesforceMarketingCloudLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

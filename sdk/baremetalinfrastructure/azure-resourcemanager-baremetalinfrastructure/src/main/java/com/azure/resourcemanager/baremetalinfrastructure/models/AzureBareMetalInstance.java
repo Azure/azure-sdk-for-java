@@ -46,42 +46,42 @@ public interface AzureBareMetalInstance {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: The system metadata relating to this resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the hardwareProfile property: Specifies the hardware settings for the AzureBareMetal instance.
+     * Gets the hardwareProfile property: Specifies the hardware settings for the Azure Bare Metal Instance.
      *
      * @return the hardwareProfile value.
      */
     HardwareProfile hardwareProfile();
 
     /**
-     * Gets the storageProfile property: Specifies the storage settings for the AzureBareMetal instance disks.
+     * Gets the storageProfile property: Specifies the storage settings for the Azure Bare Metal Instance disks.
      *
      * @return the storageProfile value.
      */
     StorageProfile storageProfile();
 
     /**
-     * Gets the osProfile property: Specifies the operating system settings for the AzureBareMetal instance.
+     * Gets the osProfile property: Specifies the operating system settings for the Azure Bare Metal Instance.
      *
      * @return the osProfile value.
      */
     OSProfile osProfile();
 
     /**
-     * Gets the networkProfile property: Specifies the network settings for the AzureBareMetal instance.
+     * Gets the networkProfile property: Specifies the network settings for the Azure Bare Metal Instance.
      *
      * @return the networkProfile value.
      */
     NetworkProfile networkProfile();
 
     /**
-     * Gets the azureBareMetalInstanceId property: Specifies the AzureBareMetal instance unique ID.
+     * Gets the azureBareMetalInstanceId property: Specifies the Azure Bare Metal Instance unique ID.
      *
      * @return the azureBareMetalInstanceId value.
      */
@@ -102,7 +102,7 @@ public interface AzureBareMetalInstance {
     String proximityPlacementGroup();
 
     /**
-     * Gets the hwRevision property: Hardware revision of an AzureBareMetal instance.
+     * Gets the hwRevision property: Hardware revision of an Azure Bare Metal Instance.
      *
      * @return the hwRevision value.
      */

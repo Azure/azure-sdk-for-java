@@ -28,22 +28,28 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemsCli
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectedItemResourceInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProtectedItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ProtectedItemsClient.
+ */
 public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProtectedItemsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of ProtectedItemsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProtectedItemsClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy.create(ProtectedItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ProtectedItemsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -54,64 +60,45 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface ProtectedItemsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectedItemResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<ProtectedItemResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("containerName") String containerName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("containerName") String containerName, @PathParam("protectedItemName") String protectedItemName,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ProtectedItemResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("containerName") String containerName, @PathParam("protectedItemName") String protectedItemName,
+            @BodyParam("application/json") ProtectedItemResourceInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProtectedItemResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("containerName") String containerName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @BodyParam("application/json") ProtectedItemResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("containerName") String containerName,
-            @PathParam("protectedItemName") String protectedItemName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("vaultName") String vaultName, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("containerName") String containerName, @PathParam("protectedItemName") String protectedItemName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call the GetItemOperationResult API.
-     *
+     * operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -124,18 +111,11 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return base class for backup items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectedItemResourceInner>> getWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String filter) {
+    private Mono<Response<ProtectedItemResourceInner>> getWithResponseAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -145,10 +125,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -162,28 +140,17 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            containerName,
-                            protectedItemName,
-                            filter,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName, protectedItemName,
+                filter, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call the GetItemOperationResult API.
-     *
+     * operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -197,19 +164,11 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return base class for backup items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectedItemResourceInner>> getWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String filter,
-        Context context) {
+    private Mono<Response<ProtectedItemResourceInner>> getWithResponseAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -219,10 +178,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -236,25 +193,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                containerName,
-                protectedItemName,
-                filter,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, containerName, protectedItemName, filter, accept, context);
     }
 
     /**
      * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call the GetItemOperationResult API.
-     *
+     * operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -266,8 +213,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return base class for backup items on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectedItemResourceInner> getAsync(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
+    private Mono<ProtectedItemResourceInner> getAsync(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName) {
         final String filter = null;
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -275,8 +222,9 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
 
     /**
      * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call the GetItemOperationResult API.
-     *
+     * operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -290,23 +238,17 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return base class for backup items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectedItemResourceInner> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String filter,
-        Context context) {
-        return getWithResponseAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter, context)
-            .block();
+    public Response<ProtectedItemResourceInner> getWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String filter, Context context) {
+        return getWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter,
+            context).block();
     }
 
     /**
      * Provides the details of the backed up item. This is an asynchronous operation. To know the status of the
-     * operation, call the GetItemOperationResult API.
-     *
+     * operation,
+     * call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -318,18 +260,17 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return base class for backup items.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectedItemResourceInner get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
+    public ProtectedItemResourceInner get(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName) {
         final String filter = null;
-        return getWithResponse(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter, Context.NONE)
-            .getValue();
+        return getWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter,
+            Context.NONE).getValue();
     }
 
     /**
      * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
      * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -342,18 +283,12 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return base class for backup items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectedItemResourceInner>> createOrUpdateWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
+    private Mono<Response<ProtectedItemResourceInner>> createOrUpdateWithResponseAsync(String vaultName,
+        String resourceGroupName, String fabricName, String containerName, String protectedItemName,
         ProtectedItemResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -363,10 +298,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -385,28 +318,16 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            containerName,
-                            protectedItemName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                vaultName, resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName,
+                protectedItemName, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
      * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -420,19 +341,12 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return base class for backup items along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectedItemResourceInner>> createOrUpdateWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ProtectedItemResourceInner parameters,
-        Context context) {
+    private Mono<Response<ProtectedItemResourceInner>> createOrUpdateWithResponseAsync(String vaultName,
+        String resourceGroupName, String fabricName, String containerName, String protectedItemName,
+        ProtectedItemResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -442,10 +356,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -464,25 +376,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                containerName,
-                protectedItemName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+            resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName, protectedItemName,
+            parameters, accept, context);
     }
 
     /**
      * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
      * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -495,22 +397,16 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return base class for backup items on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectedItemResourceInner> createOrUpdateAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ProtectedItemResourceInner parameters) {
-        return createOrUpdateWithResponseAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<ProtectedItemResourceInner> createOrUpdateAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, ProtectedItemResourceInner parameters) {
+        return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
      * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -524,23 +420,17 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return base class for backup items along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectedItemResourceInner> createOrUpdateWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ProtectedItemResourceInner parameters,
+    public Response<ProtectedItemResourceInner> createOrUpdateWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, ProtectedItemResourceInner parameters,
         Context context) {
-        return createOrUpdateWithResponseAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, context)
-            .block();
+        return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, parameters, context).block();
     }
 
     /**
      * Enables backup of an item or to modifies the backup policy information of an already backed up item. This is an
      * asynchronous operation. To know the status of the operation, call the GetItemOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backup item.
@@ -553,22 +443,17 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return base class for backup items.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectedItemResourceInner createOrUpdate(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ProtectedItemResourceInner parameters) {
-        return createOrUpdateWithResponse(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, Context.NONE)
-            .getValue();
+    public ProtectedItemResourceInner createOrUpdate(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, ProtectedItemResourceInner parameters) {
+        return createOrUpdateWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            parameters, Context.NONE).getValue();
     }
 
     /**
      * Used to disable backup of an item within a container. This is an asynchronous operation. To know the status of
-     * the request, call the GetItemOperationResult API.
-     *
+     * the
+     * request, call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -580,13 +465,11 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -596,10 +479,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -613,27 +494,17 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            containerName,
-                            protectedItemName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName, protectedItemName,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Used to disable backup of an item within a container. This is an asynchronous operation. To know the status of
-     * the request, call the GetItemOperationResult API.
-     *
+     * the
+     * request, call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -646,18 +517,11 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -667,10 +531,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -684,24 +546,15 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                containerName,
-                protectedItemName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, containerName, protectedItemName, accept, context);
     }
 
     /**
      * Used to disable backup of an item within a container. This is an asynchronous operation. To know the status of
-     * the request, call the GetItemOperationResult API.
-     *
+     * the
+     * request, call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -713,16 +566,17 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
+    private Mono<Void> deleteAsync(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName) {
         return deleteWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Used to disable backup of an item within a container. This is an asynchronous operation. To know the status of
-     * the request, call the GetItemOperationResult API.
-     *
+     * the
+     * request, call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -735,22 +589,17 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        Context context) {
-        return deleteWithResponseAsync(
-                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, context)
-            .block();
+    public Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, Context context) {
+        return deleteWithResponseAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            context).block();
     }
 
     /**
      * Used to disable backup of an item within a container. This is an asynchronous operation. To know the status of
-     * the request, call the GetItemOperationResult API.
-     *
+     * the
+     * request, call the GetItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -761,8 +610,8 @@ public final class ProtectedItemsClientImpl implements ProtectedItemsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
+    public void delete(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName) {
         deleteWithResponse(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, Context.NONE);
     }
 }

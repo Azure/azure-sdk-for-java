@@ -15,6 +15,12 @@ public final class ListMetricDimensionValuesOptions {
     private String dimensionValueToFilter;
 
     /**
+     * Creates an instance of ListMetricDimensionValuesOptions.
+     */
+    public ListMetricDimensionValuesOptions() {
+    }
+
+    /**
      * Get the dimension value to filter the query result.
      *
      * @return the dimension value to filter the query result.

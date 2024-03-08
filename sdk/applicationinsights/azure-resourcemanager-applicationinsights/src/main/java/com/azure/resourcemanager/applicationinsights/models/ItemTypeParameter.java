@@ -26,6 +26,15 @@ public final class ItemTypeParameter extends ExpandableStringEnum<ItemTypeParame
     public static final ItemTypeParameter RECENT = fromString("recent");
 
     /**
+     * Creates a new instance of ItemTypeParameter value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ItemTypeParameter() {
+    }
+
+    /**
      * Creates or finds a ItemTypeParameter from its string representation.
      *
      * @param name a name to look for.

@@ -14,8 +14,7 @@ public final class ConfluentAgreementResourceImpl implements ConfluentAgreementR
 
     private final com.azure.resourcemanager.confluent.ConfluentManager serviceManager;
 
-    ConfluentAgreementResourceImpl(
-        ConfluentAgreementResourceInner innerObject,
+    ConfluentAgreementResourceImpl(ConfluentAgreementResourceInner innerObject,
         com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

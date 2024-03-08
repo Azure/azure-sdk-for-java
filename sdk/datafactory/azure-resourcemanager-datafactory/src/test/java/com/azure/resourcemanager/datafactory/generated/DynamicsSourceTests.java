@@ -10,23 +10,16 @@ import com.azure.resourcemanager.datafactory.models.DynamicsSource;
 public final class DynamicsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynamicsSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DynamicsSource\",\"query\":\"datasyntc\",\"additionalColumns\":\"dataluqaqnlygfvbfej\",\"sourceRetryCount\":\"datazklgpifv\",\"sourceRetryWait\":\"datamvk\",\"maxConcurrentConnections\":\"datauw\",\"disableMetricsCollection\":\"datanplqf\",\"\":{\"ov\":\"datafqmdjz\",\"rjkmpaxoe\":\"datakp\",\"mqzagrqcqhwfs\":\"datalpofaog\"}}")
-                .toObject(DynamicsSource.class);
+        DynamicsSource model = BinaryData.fromString(
+            "{\"type\":\"DynamicsSource\",\"query\":\"datarelokxklgluareg\",\"additionalColumns\":\"datay\",\"sourceRetryCount\":\"dataoisbmv\",\"sourceRetryWait\":\"dataenrcqickhvps\",\"maxConcurrentConnections\":\"datauiuvingmonq\",\"disableMetricsCollection\":\"datatyuqdz\",\"\":{\"kydqy\":\"datajzvaykfjgakays\"}}")
+            .toObject(DynamicsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicsSource model =
-            new DynamicsSource()
-                .withSourceRetryCount("datazklgpifv")
-                .withSourceRetryWait("datamvk")
-                .withMaxConcurrentConnections("datauw")
-                .withDisableMetricsCollection("datanplqf")
-                .withQuery("datasyntc")
-                .withAdditionalColumns("dataluqaqnlygfvbfej");
+        DynamicsSource model = new DynamicsSource().withSourceRetryCount("dataoisbmv")
+            .withSourceRetryWait("dataenrcqickhvps").withMaxConcurrentConnections("datauiuvingmonq")
+            .withDisableMetricsCollection("datatyuqdz").withQuery("datarelokxklgluareg").withAdditionalColumns("datay");
         model = BinaryData.fromObject(model).toObject(DynamicsSource.class);
     }
 }

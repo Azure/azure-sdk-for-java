@@ -90,6 +90,36 @@
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> void com.azure.spring.data.cosmos.core.CosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> java.lang.Iterable<S> com.azure.spring.data.cosmos.core.CosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Mono<java.lang.Void> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, reactor.core.publisher.Flux<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Flux<S> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, reactor.core.publisher.Flux<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Mono<java.lang.Void> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::deleteEntities(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
+          "code": "java.method.addedToInterface",
+          "new": "method <S extends T, T> reactor.core.publisher.Flux<S> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insertAll(com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation<T, ?>, java.lang.Iterable<S>)",
+          "justification": "Spring interfaces are allowed to add methods."
+        },
+        {
           "regex": true,
           "code": "java\\.annotation\\.(added|attributeValueChanged)",
           "old": ".*",
@@ -196,12 +226,6 @@
           "justification": "Skip customized getters on class when serialization and deserialization."
         },
         {
-          "regex": true,
-          "code": "java.annotation.added",
-          "new": "class com.azure.ai.textanalytics.models.HealthcareEntityRelationType",
-          "justification": "Skip JsonCreator annotation on the method fromString when serialization and deserialization."
-        },
-        {
           "code": "java.class.removed",
           "old": "enum com.azure.messaging.eventhubs.checkpointstore.blob.Messages",
           "justification": "Messages class was accidentally made public. Reverting the public change since this should be implementation detail."
@@ -259,16 +283,59 @@
           "justification": "Previous constant value had a typo and was never functional."
         },
         {
-          "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.containers\\.containerregistry\\.models.*",
-          "justification": "Removing Jackson annotations from ACR in transition to stream-style."
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_CREATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_CREATED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_DELETED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_DELETED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_CREATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_CREATED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_DELETED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_DELETED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_UPDATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_RELEASE_UPDATED",
+          "justification": "Previous value did was incorrect."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.constantValueChanged",
+          "old": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_UPDATED",
+          "new": "field com.azure.messaging.eventgrid.SystemEventNames.API_MANAGEMENT_API_UPDATED",
+          "justification": "Previous value did was incorrect."
         },
         {
           "regex": true,
           "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.search\\.documents(\\.indexes)?\\.models.*",
-          "justification": "Removing Jackson annotations from Search in transition to stream-style."
+          "old": ".*? com\\.azure\\.(containers\\.containerregistry|search\\.documents(\\.indexes)?|security\\.keyvault\\.(administration|certificates|keys|keys\\.cryptography)|ai\\.textanalytics|ai\\.formrecognizer(\\.(documentanalysis(\\.administration)?|training))?|ai\\.metricsadvisor(\\.administration)?|messaging.servicebus(\\.administration)?)\\.models.*",
+          "description": ".*com.fasterxml.jackson.*",
+          "justification": "Removing Jackson annotations from ACR, Form Recognizer, KeyVault, Metrics Advisor, Search, ServiceBus, and Text Analytics in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.messaging\\.eventgrid\\.systemevents.*",
+          "justification": "Removing Jackson annotations from EventGrid in transition to stream-style."
         },
         {
           "code": "java.field.removed",
@@ -291,12 +358,6 @@
         },
         {
           "regex": true,
-          "code": "java\\.annotation\\.removed",
-          "old": ".*? com\\.azure\\.security\\.keyvault\\.administration\\.models.*",
-          "justification": "Removing Jackson annotations from KeyVault Administration in transition to stream-style."
-        },
-        {
-          "regex": true,
           "code" : "java.field.enumConstantOrderChanged",
           "old" : "field com.mysql.cj.conf.PropertyKey.*",
           "new" : "field com.mysql.cj.conf.PropertyKey.*",
@@ -311,6 +372,12 @@
           "code" : "java.method.removed",
           "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
           "justification" : "Fix method removed."
+        },
+        {
+          "regex": true,
+          "code": "java\\.annotation\\.removed",
+          "old": ".*? com\\.azure\\.data\\.tables\\.models.*",
+          "justification": "Removing Jackson annotations from Tables in transition to stream-style."
         },
         {
           "regex": true,

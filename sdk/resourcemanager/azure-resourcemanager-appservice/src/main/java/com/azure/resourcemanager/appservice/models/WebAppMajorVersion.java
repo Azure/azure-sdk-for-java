@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Web App stack major version. */
+/**
+ * Web App stack major version.
+ */
 @Immutable
 public final class WebAppMajorVersion {
     /*
@@ -29,13 +31,15 @@ public final class WebAppMajorVersion {
     @JsonProperty(value = "minorVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<WebAppMinorVersion> minorVersions;
 
-    /** Creates an instance of WebAppMajorVersion class. */
+    /**
+     * Creates an instance of WebAppMajorVersion class.
+     */
     public WebAppMajorVersion() {
     }
 
     /**
      * Get the displayText property: Web App stack major version (display only).
-     *
+     * 
      * @return the displayText value.
      */
     public String displayText() {
@@ -44,7 +48,7 @@ public final class WebAppMajorVersion {
 
     /**
      * Get the value property: Web App stack major version name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -53,7 +57,7 @@ public final class WebAppMajorVersion {
 
     /**
      * Get the minorVersions property: Minor versions associated with the major version.
-     *
+     * 
      * @return the minorVersions value.
      */
     public List<WebAppMinorVersion> minorVersions() {
@@ -62,7 +66,7 @@ public final class WebAppMajorVersion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

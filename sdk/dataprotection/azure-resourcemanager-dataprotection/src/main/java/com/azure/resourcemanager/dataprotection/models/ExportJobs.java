@@ -6,11 +6,13 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.util.Context;
 
-/** Resource collection API of ExportJobs. */
+/**
+ * Resource collection API of ExportJobs.
+ */
 public interface ExportJobs {
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -21,7 +23,7 @@ public interface ExportJobs {
 
     /**
      * Triggers export of jobs and returns an OperationID to track.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.

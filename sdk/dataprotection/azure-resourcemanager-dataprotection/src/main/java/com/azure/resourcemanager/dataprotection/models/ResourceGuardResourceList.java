@@ -9,7 +9,9 @@ import com.azure.resourcemanager.dataprotection.fluent.models.ResourceGuardResou
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of ResourceGuard resources. */
+/**
+ * List of ResourceGuard resources.
+ */
 @Fluent
 public final class ResourceGuardResourceList extends DppTrackedResourceList {
     /*
@@ -18,13 +20,15 @@ public final class ResourceGuardResourceList extends DppTrackedResourceList {
     @JsonProperty(value = "value")
     private List<ResourceGuardResourceInner> value;
 
-    /** Creates an instance of ResourceGuardResourceList class. */
+    /**
+     * Creates an instance of ResourceGuardResourceList class.
+     */
     public ResourceGuardResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceGuardResourceInner> value() {
@@ -33,7 +37,7 @@ public final class ResourceGuardResourceList extends DppTrackedResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceGuardResourceList object itself.
      */
@@ -42,7 +46,9 @@ public final class ResourceGuardResourceList extends DppTrackedResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceGuardResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -51,7 +57,7 @@ public final class ResourceGuardResourceList extends DppTrackedResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

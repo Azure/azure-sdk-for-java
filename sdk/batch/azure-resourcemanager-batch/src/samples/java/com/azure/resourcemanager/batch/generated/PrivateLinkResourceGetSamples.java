@@ -4,20 +4,21 @@
 
 package com.azure.resourcemanager.batch.generated;
 
-/** Samples for PrivateLinkResource Get. */
+/**
+ * Samples for PrivateLinkResource Get.
+ */
 public final class PrivateLinkResourceGetSamples {
     /*
-     * x-ms-original-file: specification/batch/resource-manager/Microsoft.Batch/stable/2023-05-01/examples/PrivateLinkResourceGet.json
+     * x-ms-original-file:
+     * specification/batch/resource-manager/Microsoft.Batch/stable/2023-11-01/examples/PrivateLinkResourceGet.json
      */
     /**
      * Sample code: GetPrivateLinkResource.
-     *
+     * 
      * @param manager Entry point to BatchManager.
      */
     public static void getPrivateLinkResource(com.azure.resourcemanager.batch.BatchManager manager) {
-        manager
-            .privateLinkResources()
-            .getWithResponse(
-                "default-azurebatch-japaneast", "sampleacct", "batchAccount", com.azure.core.util.Context.NONE);
+        manager.privateLinkResources().getWithResponse("default-azurebatch-japaneast", "sampleacct", "batchAccount",
+            com.azure.core.util.Context.NONE);
     }
 }

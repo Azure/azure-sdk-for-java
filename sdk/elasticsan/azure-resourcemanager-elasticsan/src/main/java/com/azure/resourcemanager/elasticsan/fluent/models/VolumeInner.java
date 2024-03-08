@@ -6,12 +6,17 @@ package com.azure.resourcemanager.elasticsan.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elasticsan.models.IscsiTargetInfo;
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
+import com.azure.resourcemanager.elasticsan.models.ProvisioningStates;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response for Volume request. */
+/**
+ * Response for Volume request.
+ */
 @Fluent
 public final class VolumeInner extends ProxyResource {
     /*
@@ -20,13 +25,21 @@ public final class VolumeInner extends ProxyResource {
     @JsonProperty(value = "properties", required = true)
     private VolumeProperties innerProperties = new VolumeProperties();
 
-    /** Creates an instance of VolumeInner class. */
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of VolumeInner class.
+     */
     public VolumeInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of Volume.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VolumeProperties innerProperties() {
@@ -34,8 +47,17 @@ public final class VolumeInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
      * Get the volumeId property: Unique Id of the volume in GUID format.
-     *
+     * 
      * @return the volumeId value.
      */
     public String volumeId() {
@@ -44,7 +66,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Get the creationData property: State of the operation on the resource.
-     *
+     * 
      * @return the creationData value.
      */
     public SourceCreationData creationData() {
@@ -53,7 +75,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Set the creationData property: State of the operation on the resource.
-     *
+     * 
      * @param creationData the creationData value to set.
      * @return the VolumeInner object itself.
      */
@@ -67,7 +89,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Get the sizeGiB property: Volume size.
-     *
+     * 
      * @return the sizeGiB value.
      */
     public long sizeGiB() {
@@ -76,7 +98,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Set the sizeGiB property: Volume size.
-     *
+     * 
      * @param sizeGiB the sizeGiB value to set.
      * @return the VolumeInner object itself.
      */
@@ -90,7 +112,7 @@ public final class VolumeInner extends ProxyResource {
 
     /**
      * Get the storageTarget property: Storage target information.
-     *
+     * 
      * @return the storageTarget value.
      */
     public IscsiTargetInfo storageTarget() {
@@ -98,15 +120,46 @@ public final class VolumeInner extends ProxyResource {
     }
 
     /**
+     * Get the managedBy property: Parent resource information.
+     * 
+     * @return the managedBy value.
+     */
+    public ManagedByInfo managedBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedBy();
+    }
+
+    /**
+     * Set the managedBy property: Parent resource information.
+     * 
+     * @param managedBy the managedBy value to set.
+     * @return the VolumeInner object itself.
+     */
+    public VolumeInner withManagedBy(ManagedByInfo managedBy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VolumeProperties();
+        }
+        this.innerProperties().withManagedBy(managedBy);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: State of the operation on the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningStates provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model VolumeInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model VolumeInner"));
         } else {
             innerProperties().validate();
         }

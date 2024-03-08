@@ -8,32 +8,34 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.ChangelogIn
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An immutable client-side representation of Changelog. */
+/**
+ * An immutable client-side representation of Changelog.
+ */
 public interface Changelog {
     /**
      * Gets the changes property: list of changes.
-     *
+     * 
      * @return the changes value.
      */
     List<String> changes();
 
     /**
      * Gets the lastCommitted property: lastCommitted timestamp.
-     *
+     * 
      * @return the lastCommitted value.
      */
     OffsetDateTime lastCommitted();
 
     /**
      * Gets the lastModified property: lastModified timestamp.
-     *
+     * 
      * @return the lastModified value.
      */
     OffsetDateTime lastModified();
 
     /**
      * Gets the inner com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.ChangelogInner object.
-     *
+     * 
      * @return the inner object.
      */
     ChangelogInner innerModel();

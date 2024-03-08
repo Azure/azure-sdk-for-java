@@ -15,8 +15,8 @@ import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsR
 import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
 import com.azure.monitor.query.implementation.metricsbatch.models.ResourceIdList;
 import com.azure.monitor.query.models.AggregationType;
-import com.azure.monitor.query.models.MetricsBatchResult;
-import com.azure.monitor.query.models.MetricsQueryOptions;
+import com.azure.monitor.query.models.MetricsBatchQueryResult;
+import com.azure.monitor.query.models.MetricsBatchQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 import reactor.core.publisher.Mono;
 
@@ -52,8 +52,8 @@ public final class MetricsBatchQueryAsyncClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricsBatchResult> queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
-        return this.queryBatchWithResponse(resourceUris, metricsNames, metricsNamespace, new MetricsQueryOptions())
+    public Mono<MetricsBatchQueryResult> queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
+        return this.queryBatchWithResponse(resourceUris, metricsNames, metricsNamespace, new MetricsBatchQueryOptions())
             .map(Response::getValue);
     }
 
@@ -63,14 +63,14 @@ public final class MetricsBatchQueryAsyncClient {
      * @param resourceUris The resource URIs for which the metrics is requested.
      * @param metricsNames The names of the metrics to query.
      * @param metricsNamespace The namespace of the metrics to query.
-     * @param options The {@link MetricsQueryOptions} to include for the request.
+     * @param options The {@link MetricsBatchQueryOptions} to include for the request.
      * @return A time-series metrics result for the requested metric names.
      * @throws IllegalArgumentException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are empty.
      * @throws NullPointerException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricsBatchResult>> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
-                                                                     String metricsNamespace, MetricsQueryOptions options) {
+    public Mono<Response<MetricsBatchQueryResult>> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
+                                                                          String metricsNamespace, MetricsBatchQueryOptions options) {
 
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceUris, "'resourceUris cannot be null."))) {
             return monoError(LOGGER, new IllegalArgumentException("resourceUris cannot be empty"));
@@ -120,9 +120,9 @@ public final class MetricsBatchQueryAsyncClient {
         String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
         ResourceIdList resourceIdList = new ResourceIdList();
         resourceIdList.setResourceids(resourceUris);
-        Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetrics()
+        Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetricsBatches()
             .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
-                endTime, granularity, aggregations, top, orderBy, filter);
+                endTime, granularity, aggregations, top, orderBy, filter, null);
 
 
         return responseMono.map(response -> {
@@ -131,9 +131,9 @@ public final class MetricsBatchQueryAsyncClient {
             List<MetricsQueryResult> metricsQueryResults = values.stream()
                 .map(result -> mapToMetricsQueryResult(result))
                 .collect(Collectors.toList());
-            MetricsBatchResult metricsBatchResult = new MetricsBatchResult(metricsQueryResults);
+            MetricsBatchQueryResult metricsBatchQueryResult = new MetricsBatchQueryResult(metricsQueryResults);
             return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                response.getHeaders(), metricsBatchResult);
+                response.getHeaders(), metricsBatchQueryResult);
         });
     }
 }

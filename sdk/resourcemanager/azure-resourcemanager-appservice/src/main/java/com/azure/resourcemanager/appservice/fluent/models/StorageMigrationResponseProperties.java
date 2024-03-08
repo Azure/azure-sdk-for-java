@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** StorageMigrationResponse resource specific properties. */
+/**
+ * StorageMigrationResponse resource specific properties.
+ */
 @Immutable
 public final class StorageMigrationResponseProperties {
     /*
@@ -17,14 +19,16 @@ public final class StorageMigrationResponseProperties {
     @JsonProperty(value = "operationId", access = JsonProperty.Access.WRITE_ONLY)
     private String operationId;
 
-    /** Creates an instance of StorageMigrationResponseProperties class. */
+    /**
+     * Creates an instance of StorageMigrationResponseProperties class.
+     */
     public StorageMigrationResponseProperties() {
     }
 
     /**
      * Get the operationId property: When server starts the migration process, it will return an operation ID
      * identifying that particular migration operation.
-     *
+     * 
      * @return the operationId value.
      */
     public String operationId() {
@@ -33,7 +37,7 @@ public final class StorageMigrationResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

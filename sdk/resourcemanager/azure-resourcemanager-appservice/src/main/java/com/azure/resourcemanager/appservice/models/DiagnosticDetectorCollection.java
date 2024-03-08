@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.DetectorDefinitionReso
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Diagnostic Detectors. */
+/**
+ * Collection of Diagnostic Detectors.
+ */
 @Fluent
 public final class DiagnosticDetectorCollection {
     /*
@@ -25,13 +27,15 @@ public final class DiagnosticDetectorCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DiagnosticDetectorCollection class. */
+    /**
+     * Creates an instance of DiagnosticDetectorCollection class.
+     */
     public DiagnosticDetectorCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<DetectorDefinitionResourceInner> value() {
@@ -40,7 +44,7 @@ public final class DiagnosticDetectorCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the DiagnosticDetectorCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class DiagnosticDetectorCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class DiagnosticDetectorCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model DiagnosticDetectorCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model DiagnosticDetectorCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

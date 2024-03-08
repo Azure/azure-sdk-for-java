@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure Cosmos DB Role Assignment. */
+/**
+ * An Azure Cosmos DB Role Assignment.
+ */
 @Fluent
 public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
     /*
@@ -17,13 +19,15 @@ public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private SqlRoleAssignmentResource innerProperties;
 
-    /** Creates an instance of SqlRoleAssignmentGetResultsInner class. */
+    /**
+     * Creates an instance of SqlRoleAssignmentGetResultsInner class.
+     */
     public SqlRoleAssignmentGetResultsInner() {
     }
 
     /**
      * Get the innerProperties property: Properties related to the Role Assignment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlRoleAssignmentResource innerProperties() {
@@ -32,7 +36,7 @@ public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the roleDefinitionId property: The unique identifier for the associated Role Definition.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -41,7 +45,7 @@ public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the roleDefinitionId property: The unique identifier for the associated Role Definition.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the SqlRoleAssignmentGetResultsInner object itself.
      */
@@ -56,7 +60,7 @@ public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
     /**
      * Get the scope property: The data plane resource path for which access is being granted through this Role
      * Assignment.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -66,7 +70,7 @@ public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
     /**
      * Set the scope property: The data plane resource path for which access is being granted through this Role
      * Assignment.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the SqlRoleAssignmentGetResultsInner object itself.
      */
@@ -82,7 +86,7 @@ public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
      * Get the principalId property: The unique identifier for the associated AAD principal in the AAD graph to which
      * access is being granted through this Role Assignment. Tenant ID for the principal is inferred using the tenant
      * associated with the subscription.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -93,7 +97,7 @@ public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
      * Set the principalId property: The unique identifier for the associated AAD principal in the AAD graph to which
      * access is being granted through this Role Assignment. Tenant ID for the principal is inferred using the tenant
      * associated with the subscription.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the SqlRoleAssignmentGetResultsInner object itself.
      */
@@ -107,7 +111,7 @@ public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

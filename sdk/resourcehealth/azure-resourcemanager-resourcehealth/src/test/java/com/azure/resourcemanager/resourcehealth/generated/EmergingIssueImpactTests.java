@@ -16,30 +16,29 @@ public final class EmergingIssueImpactTests {
         EmergingIssueImpact model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"fxoblytkb\",\"name\":\"pe\",\"regions\":[{\"id\":\"bkrvrnsvshqj\",\"name\":\"xc\"},{\"id\":\"bfovasrruvwbhsq\",\"name\":\"ubcgjbirxb\"},{\"id\":\"bsrfbj\",\"name\":\"twss\"}]}")
+                    "{\"id\":\"yrqufegxuvwz\",\"name\":\"nhlmctlpdng\",\"regions\":[{\"id\":\"bmhrixkwmyijejv\",\"name\":\"rh\"},{\"id\":\"nai\",\"name\":\"xccbdreaxhcex\"}]}")
                 .toObject(EmergingIssueImpact.class);
-        Assertions.assertEquals("fxoblytkb", model.id());
-        Assertions.assertEquals("pe", model.name());
-        Assertions.assertEquals("bkrvrnsvshqj", model.regions().get(0).id());
-        Assertions.assertEquals("xc", model.regions().get(0).name());
+        Assertions.assertEquals("yrqufegxuvwz", model.id());
+        Assertions.assertEquals("nhlmctlpdng", model.name());
+        Assertions.assertEquals("bmhrixkwmyijejv", model.regions().get(0).id());
+        Assertions.assertEquals("rh", model.regions().get(0).name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EmergingIssueImpact model =
             new EmergingIssueImpact()
-                .withId("fxoblytkb")
-                .withName("pe")
+                .withId("yrqufegxuvwz")
+                .withName("nhlmctlpdng")
                 .withRegions(
                     Arrays
                         .asList(
-                            new ImpactedRegion().withId("bkrvrnsvshqj").withName("xc"),
-                            new ImpactedRegion().withId("bfovasrruvwbhsq").withName("ubcgjbirxb"),
-                            new ImpactedRegion().withId("bsrfbj").withName("twss")));
+                            new ImpactedRegion().withId("bmhrixkwmyijejv").withName("rh"),
+                            new ImpactedRegion().withId("nai").withName("xccbdreaxhcex")));
         model = BinaryData.fromObject(model).toObject(EmergingIssueImpact.class);
-        Assertions.assertEquals("fxoblytkb", model.id());
-        Assertions.assertEquals("pe", model.name());
-        Assertions.assertEquals("bkrvrnsvshqj", model.regions().get(0).id());
-        Assertions.assertEquals("xc", model.regions().get(0).name());
+        Assertions.assertEquals("yrqufegxuvwz", model.id());
+        Assertions.assertEquals("nhlmctlpdng", model.name());
+        Assertions.assertEquals("bmhrixkwmyijejv", model.regions().get(0).id());
+        Assertions.assertEquals("rh", model.regions().get(0).name());
     }
 }

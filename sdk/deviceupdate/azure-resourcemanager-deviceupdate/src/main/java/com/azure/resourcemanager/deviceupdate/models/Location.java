@@ -7,7 +7,9 @@ package com.azure.resourcemanager.deviceupdate.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Location model. */
+/**
+ * The Location model.
+ */
 @Fluent
 public final class Location {
     /*
@@ -23,8 +25,14 @@ public final class Location {
     private Role role;
 
     /**
+     * Creates an instance of Location class.
+     */
+    public Location() {
+    }
+
+    /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +41,7 @@ public final class Location {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the Location object itself.
      */
@@ -44,7 +52,7 @@ public final class Location {
 
     /**
      * Get the role property: Whether the location is primary or failover.
-     *
+     * 
      * @return the role value.
      */
     public Role role() {
@@ -53,7 +61,7 @@ public final class Location {
 
     /**
      * Set the role property: Whether the location is primary or failover.
-     *
+     * 
      * @param role the role value to set.
      * @return the Location object itself.
      */
@@ -64,7 +72,7 @@ public final class Location {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

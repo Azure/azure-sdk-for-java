@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Istio components configuration. */
+/**
+ * Istio components configuration.
+ */
 @Fluent
 public final class IstioComponents {
     /*
@@ -23,13 +25,15 @@ public final class IstioComponents {
     @JsonProperty(value = "egressGateways")
     private List<IstioEgressGateway> egressGateways;
 
-    /** Creates an instance of IstioComponents class. */
+    /**
+     * Creates an instance of IstioComponents class.
+     */
     public IstioComponents() {
     }
 
     /**
      * Get the ingressGateways property: Istio ingress gateways.
-     *
+     * 
      * @return the ingressGateways value.
      */
     public List<IstioIngressGateway> ingressGateways() {
@@ -38,7 +42,7 @@ public final class IstioComponents {
 
     /**
      * Set the ingressGateways property: Istio ingress gateways.
-     *
+     * 
      * @param ingressGateways the ingressGateways value to set.
      * @return the IstioComponents object itself.
      */
@@ -49,7 +53,7 @@ public final class IstioComponents {
 
     /**
      * Get the egressGateways property: Istio egress gateways.
-     *
+     * 
      * @return the egressGateways value.
      */
     public List<IstioEgressGateway> egressGateways() {
@@ -58,7 +62,7 @@ public final class IstioComponents {
 
     /**
      * Set the egressGateways property: Istio egress gateways.
-     *
+     * 
      * @param egressGateways the egressGateways value to set.
      * @return the IstioComponents object itself.
      */
@@ -69,7 +73,7 @@ public final class IstioComponents {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

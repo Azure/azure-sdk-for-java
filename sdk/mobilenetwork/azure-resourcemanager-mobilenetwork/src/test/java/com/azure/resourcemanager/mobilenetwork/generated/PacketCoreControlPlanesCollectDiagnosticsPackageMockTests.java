@@ -32,7 +32,7 @@ public final class PacketCoreControlPlanesCollectDiagnosticsPackageMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"id\":\"dsxwefoh\",\"name\":\"bvopwndyqle\",\"status\":\"llklmtk\",\"resourceId\":\"owkxxpv\",\"startTime\":\"2021-05-25T20:35:41Z\",\"endTime\":\"2021-03-26T11:09:49Z\",\"percentComplete\":57.798705970841546,\"properties\":\"datazfhotlh\"}";
+            "{\"id\":\"kujrllfojui\",\"name\":\"puuyjucejik\",\"status\":\"oeo\",\"resourceId\":\"tzejetjklnt\",\"startTime\":\"2021-05-29T06:35:10Z\",\"endTime\":\"2021-10-12T06:41:45Z\",\"percentComplete\":4.448023219350572,\"properties\":\"dataqzolxrzvhqjw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,17 +64,17 @@ public final class PacketCoreControlPlanesCollectDiagnosticsPackageMockTests {
             manager
                 .packetCoreControlPlanes()
                 .collectDiagnosticsPackage(
-                    "oafcluqvox",
-                    "ycjimryvwgcwwpbm",
-                    new PacketCoreControlPlaneCollectDiagnosticsPackage().withStorageAccountBlobUrl("gwe"),
+                    "w",
+                    "dqlvhukoveof",
+                    new PacketCoreControlPlaneCollectDiagnosticsPackage().withStorageAccountBlobUrl("zrvjfnmjmvlwyzgi"),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dsxwefoh", response.id());
-        Assertions.assertEquals("bvopwndyqle", response.name());
-        Assertions.assertEquals("llklmtk", response.status());
-        Assertions.assertEquals("owkxxpv", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-25T20:35:41Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-26T11:09:49Z"), response.endTime());
-        Assertions.assertEquals(57.798705970841546D, response.percentComplete());
+        Assertions.assertEquals("kujrllfojui", response.id());
+        Assertions.assertEquals("puuyjucejik", response.name());
+        Assertions.assertEquals("oeo", response.status());
+        Assertions.assertEquals("tzejetjklnt", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T06:35:10Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T06:41:45Z"), response.endTime());
+        Assertions.assertEquals(4.448023219350572D, response.percentComplete());
     }
 }

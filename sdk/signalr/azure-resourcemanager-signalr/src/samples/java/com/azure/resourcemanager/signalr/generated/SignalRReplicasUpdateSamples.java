@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for SignalRReplicas Update. */
 public final class SignalRReplicasUpdateSamples {
     /*
-     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-06-01-preview/examples/SignalRReplicas_Update.json
+     * x-ms-original-file: specification/signalr/resource-manager/Microsoft.SignalRService/preview/2023-08-01-preview/examples/SignalRReplicas_Update.json
      */
     /**
      * Sample code: SignalRReplicas_Update.
@@ -31,6 +31,7 @@ public final class SignalRReplicasUpdateSamples {
             .update()
             .withTags(mapOf("key1", "fakeTokenPlaceholder"))
             .withSku(new ResourceSku().withName("Premium_P1").withTier(SignalRSkuTier.PREMIUM).withCapacity(1))
+            .withResourceStopped("false")
             .apply();
     }
 

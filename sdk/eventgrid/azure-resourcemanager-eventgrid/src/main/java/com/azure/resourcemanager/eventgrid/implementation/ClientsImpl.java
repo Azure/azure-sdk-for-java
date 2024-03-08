@@ -26,15 +26,12 @@ public final class ClientsImpl implements Clients {
         this.serviceManager = serviceManager;
     }
 
-    public Response<Client> getWithResponse(
-        String resourceGroupName, String namespaceName, String clientName, Context context) {
-        Response<ClientInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, namespaceName, clientName, context);
+    public Response<Client> getWithResponse(String resourceGroupName, String namespaceName, String clientName,
+        Context context) {
+        Response<ClientInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, namespaceName, clientName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ClientImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -63,35 +60,28 @@ public final class ClientsImpl implements Clients {
         return Utils.mapPage(inner, inner1 -> new ClientImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Client> listByNamespace(
-        String resourceGroupName, String namespaceName, String filter, Integer top, Context context) {
-        PagedIterable<ClientInner> inner =
-            this.serviceClient().listByNamespace(resourceGroupName, namespaceName, filter, top, context);
+    public PagedIterable<Client> listByNamespace(String resourceGroupName, String namespaceName, String filter,
+        Integer top, Context context) {
+        PagedIterable<ClientInner> inner
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new ClientImpl(inner1, this.manager()));
     }
 
     public Client getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String clientName = Utils.getValueFromIdByName(id, "clients");
         if (clientName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clients'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clients'.", id)));
         }
         return this.getWithResponse(resourceGroupName, namespaceName, clientName, Context.NONE).getValue();
     }
@@ -99,25 +89,18 @@ public final class ClientsImpl implements Clients {
     public Response<Client> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String clientName = Utils.getValueFromIdByName(id, "clients");
         if (clientName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clients'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clients'.", id)));
         }
         return this.getWithResponse(resourceGroupName, namespaceName, clientName, context);
     }
@@ -125,25 +108,18 @@ public final class ClientsImpl implements Clients {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String clientName = Utils.getValueFromIdByName(id, "clients");
         if (clientName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clients'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clients'.", id)));
         }
         this.delete(resourceGroupName, namespaceName, clientName, Context.NONE);
     }
@@ -151,25 +127,18 @@ public final class ClientsImpl implements Clients {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String clientName = Utils.getValueFromIdByName(id, "clients");
         if (clientName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clients'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clients'.", id)));
         }
         this.delete(resourceGroupName, namespaceName, clientName, context);
     }

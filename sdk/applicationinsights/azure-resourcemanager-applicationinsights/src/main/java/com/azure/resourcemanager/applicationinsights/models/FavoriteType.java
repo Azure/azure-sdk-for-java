@@ -7,7 +7,10 @@ package com.azure.resourcemanager.applicationinsights.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for FavoriteType. */
+/**
+ * Enum indicating if this favorite definition is owned by a specific user or is shared between all users with access to
+ * the Application Insights component.
+ */
 public enum FavoriteType {
     /** Enum value shared. */
     SHARED("shared"),
@@ -30,6 +33,9 @@ public enum FavoriteType {
      */
     @JsonCreator
     public static FavoriteType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FavoriteType[] items = FavoriteType.values();
         for (FavoriteType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +45,7 @@ public enum FavoriteType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

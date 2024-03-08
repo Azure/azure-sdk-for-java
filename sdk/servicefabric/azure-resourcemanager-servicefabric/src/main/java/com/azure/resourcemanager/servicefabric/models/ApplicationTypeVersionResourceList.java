@@ -4,30 +4,71 @@
 
 package com.azure.resourcemanager.servicefabric.models;
 
-import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeVersionResourceListInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeVersionResourceInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An immutable client-side representation of ApplicationTypeVersionResourceList. */
-public interface ApplicationTypeVersionResourceList {
+/**
+ * The list of application type version resources for the specified application type name resource.
+ */
+@Fluent
+public final class ApplicationTypeVersionResourceList {
+    /*
+     * The value property.
+     */
+    @JsonProperty(value = "value")
+    private List<ApplicationTypeVersionResourceInner> value;
+
+    /*
+     * URL to get the next set of application type version list results if there are any.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
     /**
-     * Gets the value property: The value property.
-     *
+     * Creates an instance of ApplicationTypeVersionResourceList class.
+     */
+    public ApplicationTypeVersionResourceList() {
+    }
+
+    /**
+     * Get the value property: The value property.
+     * 
      * @return the value value.
      */
-    List<ApplicationTypeVersionResource> value();
+    public List<ApplicationTypeVersionResourceInner> value() {
+        return this.value;
+    }
 
     /**
-     * Gets the nextLink property: URL to get the next set of application type version list results if there are any.
-     *
+     * Set the value property: The value property.
+     * 
+     * @param value the value value to set.
+     * @return the ApplicationTypeVersionResourceList object itself.
+     */
+    public ApplicationTypeVersionResourceList withValue(List<ApplicationTypeVersionResourceInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: URL to get the next set of application type version list results if there are any.
+     * 
      * @return the nextLink value.
      */
-    String nextLink();
+    public String nextLink() {
+        return this.nextLink;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeVersionResourceListInner
-     * object.
-     *
-     * @return the inner object.
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    ApplicationTypeVersionResourceListInner innerModel();
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
+    }
 }

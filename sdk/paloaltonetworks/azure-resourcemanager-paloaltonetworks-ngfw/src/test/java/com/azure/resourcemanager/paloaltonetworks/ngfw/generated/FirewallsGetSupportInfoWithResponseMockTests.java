@@ -31,52 +31,38 @@ public final class FirewallsGetSupportInfoWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"productSku\":\"mfcsserx\",\"productSerial\":\"vs\",\"accountRegistered\":\"FALSE\",\"accountId\":\"wntsjgqrsxy\",\"userDomainSupported\":\"FALSE\",\"userRegistered\":\"TRUE\",\"freeTrial\":\"FALSE\",\"freeTrialDaysLeft\":1409089319,\"freeTrialCreditLeft\":21848178,\"helpURL\":\"zizoyuely\",\"supportURL\":\"ndnbfqy\",\"registerURL\":\"agfl\"}";
+        String responseStr
+            = "{\"productSku\":\"crkdlbn\",\"productSerial\":\"xvhcs\",\"accountRegistered\":\"FALSE\",\"accountId\":\"wxaeaovure\",\"userDomainSupported\":\"TRUE\",\"userRegistered\":\"FALSE\",\"freeTrial\":\"TRUE\",\"freeTrialDaysLeft\":793524985,\"freeTrialCreditLeft\":187101645,\"helpURL\":\"rzmwn\",\"supportURL\":\"pag\",\"registerURL\":\"mvmmagoaqylkjz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PaloAltoNetworksNgfwManager manager =
-            PaloAltoNetworksNgfwManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PaloAltoNetworksNgfwManager manager = PaloAltoNetworksNgfwManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SupportInfo response =
-            manager
-                .firewalls()
-                .getSupportInfoWithResponse("ucmfdj", "nlaxpunjqikcz", "vitac", com.azure.core.util.Context.NONE)
-                .getValue();
+        SupportInfo response = manager.firewalls()
+            .getSupportInfoWithResponse("byl", "ui", "vxva", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("mfcsserx", response.productSku());
-        Assertions.assertEquals("vs", response.productSerial());
+        Assertions.assertEquals("crkdlbn", response.productSku());
+        Assertions.assertEquals("xvhcs", response.productSerial());
         Assertions.assertEquals(BooleanEnum.FALSE, response.accountRegistered());
-        Assertions.assertEquals("wntsjgqrsxy", response.accountId());
-        Assertions.assertEquals(BooleanEnum.FALSE, response.userDomainSupported());
-        Assertions.assertEquals(BooleanEnum.TRUE, response.userRegistered());
-        Assertions.assertEquals(BooleanEnum.FALSE, response.freeTrial());
-        Assertions.assertEquals(1409089319, response.freeTrialDaysLeft());
-        Assertions.assertEquals(21848178, response.freeTrialCreditLeft());
-        Assertions.assertEquals("zizoyuely", response.helpUrl());
-        Assertions.assertEquals("ndnbfqy", response.supportUrl());
-        Assertions.assertEquals("agfl", response.registerUrl());
+        Assertions.assertEquals("wxaeaovure", response.accountId());
+        Assertions.assertEquals(BooleanEnum.TRUE, response.userDomainSupported());
+        Assertions.assertEquals(BooleanEnum.FALSE, response.userRegistered());
+        Assertions.assertEquals(BooleanEnum.TRUE, response.freeTrial());
+        Assertions.assertEquals(793524985, response.freeTrialDaysLeft());
+        Assertions.assertEquals(187101645, response.freeTrialCreditLeft());
+        Assertions.assertEquals("rzmwn", response.helpUrl());
+        Assertions.assertEquals("pag", response.supportUrl());
+        Assertions.assertEquals("mvmmagoaqylkjz", response.registerUrl());
     }
 }

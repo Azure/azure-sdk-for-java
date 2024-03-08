@@ -13,18 +13,24 @@ import java.util.Collection;
  * scale set. Default value is replace.
  */
 public final class RepairAction extends ExpandableStringEnum<RepairAction> {
-    /** Static value Replace for RepairAction. */
+    /**
+     * Static value Replace for RepairAction.
+     */
     public static final RepairAction REPLACE = fromString("Replace");
 
-    /** Static value Restart for RepairAction. */
+    /**
+     * Static value Restart for RepairAction.
+     */
     public static final RepairAction RESTART = fromString("Restart");
 
-    /** Static value Reimage for RepairAction. */
+    /**
+     * Static value Reimage for RepairAction.
+     */
     public static final RepairAction REIMAGE = fromString("Reimage");
 
     /**
      * Creates a new instance of RepairAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +39,7 @@ public final class RepairAction extends ExpandableStringEnum<RepairAction> {
 
     /**
      * Creates or finds a RepairAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RepairAction.
      */
@@ -44,7 +50,7 @@ public final class RepairAction extends ExpandableStringEnum<RepairAction> {
 
     /**
      * Gets known RepairAction values.
-     *
+     * 
      * @return known RepairAction values.
      */
     public static Collection<RepairAction> values() {

@@ -16,11 +16,11 @@ public final class FleetMemberListResultTests {
         FleetMemberListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"clusterResourceId\":\"tynqgoul\",\"group\":\"dlikwyqkgfgibma\",\"provisioningState\":\"Leaving\"},\"eTag\":\"eqsrxybzqqedqyt\",\"id\":\"iqfouflmmnkz\",\"name\":\"modmglougpb\",\"type\":\"wtmutduq\"}],\"nextLink\":\"ap\"}")
+                    "{\"value\":[{\"properties\":{\"clusterResourceId\":\"kocrcjdkwtnhx\",\"group\":\"jbiksqrglssai\",\"provisioningState\":\"Leaving\"},\"eTag\":\"wnzlljfmppeeb\",\"id\":\"gxsabkyq\",\"name\":\"uujitcjc\",\"type\":\"dzevndhkrw\"},{\"properties\":{\"clusterResourceId\":\"appd\",\"group\":\"dkvwrwjfe\",\"provisioningState\":\"Succeeded\"},\"eTag\":\"utjeltmrldhugj\",\"id\":\"datqxhocdgeabl\",\"name\":\"phut\",\"type\":\"cndvkaozwyiftyhx\"}],\"nextLink\":\"rokft\"}")
                 .toObject(FleetMemberListResult.class);
-        Assertions.assertEquals("tynqgoul", model.value().get(0).clusterResourceId());
-        Assertions.assertEquals("dlikwyqkgfgibma", model.value().get(0).group());
-        Assertions.assertEquals("ap", model.nextLink());
+        Assertions.assertEquals("kocrcjdkwtnhx", model.value().get(0).clusterResourceId());
+        Assertions.assertEquals("jbiksqrglssai", model.value().get(0).group());
+        Assertions.assertEquals("rokft", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,11 +29,13 @@ public final class FleetMemberListResultTests {
             new FleetMemberListResult()
                 .withValue(
                     Arrays
-                        .asList(new FleetMemberInner().withClusterResourceId("tynqgoul").withGroup("dlikwyqkgfgibma")))
-                .withNextLink("ap");
+                        .asList(
+                            new FleetMemberInner().withClusterResourceId("kocrcjdkwtnhx").withGroup("jbiksqrglssai"),
+                            new FleetMemberInner().withClusterResourceId("appd").withGroup("dkvwrwjfe")))
+                .withNextLink("rokft");
         model = BinaryData.fromObject(model).toObject(FleetMemberListResult.class);
-        Assertions.assertEquals("tynqgoul", model.value().get(0).clusterResourceId());
-        Assertions.assertEquals("dlikwyqkgfgibma", model.value().get(0).group());
-        Assertions.assertEquals("ap", model.nextLink());
+        Assertions.assertEquals("kocrcjdkwtnhx", model.value().get(0).clusterResourceId());
+        Assertions.assertEquals("jbiksqrglssai", model.value().get(0).group());
+        Assertions.assertEquals("rokft", model.nextLink());
     }
 }

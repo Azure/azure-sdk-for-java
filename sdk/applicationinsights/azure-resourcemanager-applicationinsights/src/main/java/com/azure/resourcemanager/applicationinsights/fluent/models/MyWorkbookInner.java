@@ -34,6 +34,10 @@ public final class MyWorkbookInner extends MyWorkbookResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of MyWorkbookInner class. */
+    public MyWorkbookInner() {
+    }
+
     /**
      * Get the kind property: The kind of workbook. Choices are user and shared.
      *

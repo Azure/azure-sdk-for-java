@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 import com.azure.resourcemanager.servicenetworking.models.AssociationUpdate;
+import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -15,38 +16,27 @@ import org.junit.jupiter.api.Assertions;
 public final class AssociationUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AssociationUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"hwxmnteiwa\":\"sdkf\",\"fsrpymzidnse\":\"pvkmijcmmxdcuf\",\"yc\":\"cxtbzsg\",\"mdwzjeiachboo\":\"sne\"},\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"sfqpteehz\"}}}")
-                .toObject(AssociationUpdate.class);
-        Assertions.assertEquals("sdkf", model.tags().get("hwxmnteiwa"));
-        Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("sfqpteehz", model.subnet().id());
+        AssociationUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"hr\":\"fizuckyf\",\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"c\"}}}")
+            .toObject(AssociationUpdate.class);
+        Assertions.assertEquals("fizuckyf", model.tags().get("hr"));
+        Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
+        Assertions.assertEquals("c", model.properties().subnet().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AssociationUpdate model =
-            new AssociationUpdate()
-                .withTags(
-                    mapOf(
-                        "hwxmnteiwa",
-                        "sdkf",
-                        "fsrpymzidnse",
-                        "pvkmijcmmxdcuf",
-                        "yc",
-                        "cxtbzsg",
-                        "mdwzjeiachboo",
-                        "sne"))
-                .withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnetUpdate().withId("sfqpteehz"));
+        AssociationUpdate model
+            = new AssociationUpdate().withTags(mapOf("hr", "fizuckyf", "zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"))
+                .withProperties(new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
+                    .withSubnet(new AssociationSubnetUpdate().withId("c")));
         model = BinaryData.fromObject(model).toObject(AssociationUpdate.class);
-        Assertions.assertEquals("sdkf", model.tags().get("hwxmnteiwa"));
-        Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("sfqpteehz", model.subnet().id());
+        Assertions.assertEquals("fizuckyf", model.tags().get("hr"));
+        Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
+        Assertions.assertEquals("c", model.properties().subnet().id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

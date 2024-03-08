@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for P2SVpnGateway. */
+/**
+ * Parameters for P2SVpnGateway.
+ */
 @Fluent
 public final class P2SVpnGatewayProperties {
     /*
@@ -63,13 +65,15 @@ public final class P2SVpnGatewayProperties {
     @JsonProperty(value = "isRoutingPreferenceInternet")
     private Boolean isRoutingPreferenceInternet;
 
-    /** Creates an instance of P2SVpnGatewayProperties class. */
+    /**
+     * Creates an instance of P2SVpnGatewayProperties class.
+     */
     public P2SVpnGatewayProperties() {
     }
 
     /**
      * Get the virtualHub property: The VirtualHub to which the gateway belongs.
-     *
+     * 
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -78,7 +82,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Set the virtualHub property: The VirtualHub to which the gateway belongs.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Get the p2SConnectionConfigurations property: List of all p2s connection configurations of the gateway.
-     *
+     * 
      * @return the p2SConnectionConfigurations value.
      */
     public List<P2SConnectionConfiguration> p2SConnectionConfigurations() {
@@ -98,19 +102,19 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Set the p2SConnectionConfigurations property: List of all p2s connection configurations of the gateway.
-     *
+     * 
      * @param p2SConnectionConfigurations the p2SConnectionConfigurations value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
-    public P2SVpnGatewayProperties withP2SConnectionConfigurations(
-        List<P2SConnectionConfiguration> p2SConnectionConfigurations) {
+    public P2SVpnGatewayProperties
+        withP2SConnectionConfigurations(List<P2SConnectionConfiguration> p2SConnectionConfigurations) {
         this.p2SConnectionConfigurations = p2SConnectionConfigurations;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the P2S VPN gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -119,7 +123,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Get the vpnGatewayScaleUnit property: The scale unit for this p2s vpn gateway.
-     *
+     * 
      * @return the vpnGatewayScaleUnit value.
      */
     public Integer vpnGatewayScaleUnit() {
@@ -128,7 +132,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Set the vpnGatewayScaleUnit property: The scale unit for this p2s vpn gateway.
-     *
+     * 
      * @param vpnGatewayScaleUnit the vpnGatewayScaleUnit value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -139,7 +143,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Get the vpnServerConfiguration property: The VpnServerConfiguration to which the p2sVpnGateway is attached to.
-     *
+     * 
      * @return the vpnServerConfiguration value.
      */
     public SubResource vpnServerConfiguration() {
@@ -148,7 +152,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Set the vpnServerConfiguration property: The VpnServerConfiguration to which the p2sVpnGateway is attached to.
-     *
+     * 
      * @param vpnServerConfiguration the vpnServerConfiguration value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -159,7 +163,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Get the vpnClientConnectionHealth property: All P2S VPN clients' connection health status.
-     *
+     * 
      * @return the vpnClientConnectionHealth value.
      */
     public VpnClientConnectionHealth vpnClientConnectionHealth() {
@@ -168,7 +172,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Get the customDnsServers property: List of all customer specified DNS servers IP addresses.
-     *
+     * 
      * @return the customDnsServers value.
      */
     public List<String> customDnsServers() {
@@ -177,7 +181,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Set the customDnsServers property: List of all customer specified DNS servers IP addresses.
-     *
+     * 
      * @param customDnsServers the customDnsServers value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -189,7 +193,7 @@ public final class P2SVpnGatewayProperties {
     /**
      * Get the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
      * the P2SVpnGateway.
-     *
+     * 
      * @return the isRoutingPreferenceInternet value.
      */
     public Boolean isRoutingPreferenceInternet() {
@@ -199,7 +203,7 @@ public final class P2SVpnGatewayProperties {
     /**
      * Set the isRoutingPreferenceInternet property: Enable Routing Preference property for the Public IP Interface of
      * the P2SVpnGateway.
-     *
+     * 
      * @param isRoutingPreferenceInternet the isRoutingPreferenceInternet value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -210,7 +214,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -23,11 +23,6 @@ import java.util.List;
 @Immutable
 public final class PatternReplaceCharFilter extends CharFilter {
     /*
-     * Identifies the concrete type of the char filter.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.PatternReplaceCharFilter";
-
-    /*
      * A regular expression pattern.
      */
     private final String pattern;
@@ -39,7 +34,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
 
     /**
      * Creates an instance of PatternReplaceCharFilter class.
-     *
+     * 
      * @param name the name value to set.
      * @param pattern the pattern value to set.
      * @param replacement the replacement value to set.
@@ -52,7 +47,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
 
     /**
      * Get the pattern property: A regular expression pattern.
-     *
+     * 
      * @return the pattern value.
      */
     public String getPattern() {
@@ -61,7 +56,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
 
     /**
      * Get the replacement property: The replacement text.
-     *
+     * 
      * @return the replacement value.
      */
     public String getReplacement() {
@@ -71,7 +66,7 @@ public final class PatternReplaceCharFilter extends CharFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.PatternReplaceCharFilter");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("pattern", this.pattern);
         jsonWriter.writeStringField("replacement", this.replacement);
@@ -80,69 +75,62 @@ public final class PatternReplaceCharFilter extends CharFilter {
 
     /**
      * Reads an instance of PatternReplaceCharFilter from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of PatternReplaceCharFilter if the JsonReader was pointing to an instance of it, or null if
-     *     it was pointing to JSON null.
+     * it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the PatternReplaceCharFilter.
      */
     public static PatternReplaceCharFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    boolean patternFound = false;
-                    String pattern = null;
-                    boolean replacementFound = false;
-                    String replacement = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean patternFound = false;
+            String pattern = null;
+            boolean replacementFound = false;
+            String replacement = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("pattern".equals(fieldName)) {
-                            pattern = reader.getString();
-                            patternFound = true;
-                        } else if ("replacement".equals(fieldName)) {
-                            replacement = reader.getString();
-                            replacementFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("@odata.type".equals(fieldName)) {
+                    String odataType = reader.getString();
+                    if (!"#Microsoft.Azure.Search.PatternReplaceCharFilter".equals(odataType)) {
+                        throw new IllegalStateException(
+                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PatternReplaceCharFilter'. The found '@odata.type' was '"
+                                + odataType + "'.");
                     }
-                    if (nameFound && patternFound && replacementFound) {
-                        PatternReplaceCharFilter deserializedPatternReplaceCharFilter =
-                                new PatternReplaceCharFilter(name, pattern, replacement);
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("pattern".equals(fieldName)) {
+                    pattern = reader.getString();
+                    patternFound = true;
+                } else if ("replacement".equals(fieldName)) {
+                    replacement = reader.getString();
+                    replacementFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && patternFound && replacementFound) {
+                return new PatternReplaceCharFilter(name, pattern, replacement);
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!patternFound) {
+                missingProperties.add("pattern");
+            }
+            if (!replacementFound) {
+                missingProperties.add("replacement");
+            }
 
-                        return deserializedPatternReplaceCharFilter;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-                    if (!patternFound) {
-                        missingProperties.add("pattern");
-                    }
-                    if (!replacementFound) {
-                        missingProperties.add("replacement");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

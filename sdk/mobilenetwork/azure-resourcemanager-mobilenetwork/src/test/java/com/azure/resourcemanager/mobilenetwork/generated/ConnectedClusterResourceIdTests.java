@@ -12,14 +12,14 @@ public final class ConnectedClusterResourceIdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ConnectedClusterResourceId model =
-            BinaryData.fromString("{\"id\":\"eil\"}").toObject(ConnectedClusterResourceId.class);
-        Assertions.assertEquals("eil", model.id());
+            BinaryData.fromString("{\"id\":\"qmhjjdhtld\"}").toObject(ConnectedClusterResourceId.class);
+        Assertions.assertEquals("qmhjjdhtld", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConnectedClusterResourceId model = new ConnectedClusterResourceId().withId("eil");
+        ConnectedClusterResourceId model = new ConnectedClusterResourceId().withId("qmhjjdhtld");
         model = BinaryData.fromObject(model).toObject(ConnectedClusterResourceId.class);
-        Assertions.assertEquals("eil", model.id());
+        Assertions.assertEquals("qmhjjdhtld", model.id());
     }
 }

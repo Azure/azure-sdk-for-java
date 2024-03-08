@@ -13,21 +13,23 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Contains the parameters specific to using an Azure Open AI service for vectorization at query time. */
+/**
+ * Specifies the parameters for connecting to the Azure OpenAI resource.
+ */
 @Fluent
 public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAIParameters> {
     /*
-     * The resource uri for your Azure Open AI resource.
+     * The resource URI of the Azure OpenAI resource.
      */
     private String resourceUri;
 
     /*
-     * ID of your Azure Open AI model deployment on the designated resource.
+     * ID of the Azure OpenAI model deployment on the designated resource.
      */
     private String deploymentId;
 
     /*
-     * API key for the designated Azure Open AI resource.
+     * API key of the designated Azure OpenAI resource.
      */
     private String apiKey;
 
@@ -36,12 +38,15 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
      */
     private SearchIndexerDataIdentity authIdentity;
 
-    /** Creates an instance of AzureOpenAIParameters class. */
-    public AzureOpenAIParameters() {}
+    /**
+     * Creates an instance of AzureOpenAIParameters class.
+     */
+    public AzureOpenAIParameters() {
+    }
 
     /**
-     * Get the resourceUri property: The resource uri for your Azure Open AI resource.
-     *
+     * Get the resourceUri property: The resource URI of the Azure OpenAI resource.
+     * 
      * @return the resourceUri value.
      */
     public String getResourceUri() {
@@ -49,8 +54,8 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
     }
 
     /**
-     * Set the resourceUri property: The resource uri for your Azure Open AI resource.
-     *
+     * Set the resourceUri property: The resource URI of the Azure OpenAI resource.
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the AzureOpenAIParameters object itself.
      */
@@ -60,8 +65,8 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
     }
 
     /**
-     * Get the deploymentId property: ID of your Azure Open AI model deployment on the designated resource.
-     *
+     * Get the deploymentId property: ID of the Azure OpenAI model deployment on the designated resource.
+     * 
      * @return the deploymentId value.
      */
     public String getDeploymentId() {
@@ -69,8 +74,8 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
     }
 
     /**
-     * Set the deploymentId property: ID of your Azure Open AI model deployment on the designated resource.
-     *
+     * Set the deploymentId property: ID of the Azure OpenAI model deployment on the designated resource.
+     * 
      * @param deploymentId the deploymentId value to set.
      * @return the AzureOpenAIParameters object itself.
      */
@@ -80,8 +85,8 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
     }
 
     /**
-     * Get the apiKey property: API key for the designated Azure Open AI resource.
-     *
+     * Get the apiKey property: API key of the designated Azure OpenAI resource.
+     * 
      * @return the apiKey value.
      */
     public String getApiKey() {
@@ -89,8 +94,8 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
     }
 
     /**
-     * Set the apiKey property: API key for the designated Azure Open AI resource.
-     *
+     * Set the apiKey property: API key of the designated Azure OpenAI resource.
+     * 
      * @param apiKey the apiKey value to set.
      * @return the AzureOpenAIParameters object itself.
      */
@@ -101,7 +106,7 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
 
     /**
      * Get the authIdentity property: The user-assigned managed identity used for outbound connections.
-     *
+     * 
      * @return the authIdentity value.
      */
     public SearchIndexerDataIdentity getAuthIdentity() {
@@ -110,7 +115,7 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
 
     /**
      * Set the authIdentity property: The user-assigned managed identity used for outbound connections.
-     *
+     * 
      * @param authIdentity the authIdentity value to set.
      * @return the AzureOpenAIParameters object itself.
      */
@@ -131,34 +136,33 @@ public final class AzureOpenAIParameters implements JsonSerializable<AzureOpenAI
 
     /**
      * Reads an instance of AzureOpenAIParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureOpenAIParameters if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the AzureOpenAIParameters.
      */
     public static AzureOpenAIParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    AzureOpenAIParameters deserializedAzureOpenAIParameters = new AzureOpenAIParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            AzureOpenAIParameters deserializedAzureOpenAIParameters = new AzureOpenAIParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("resourceUri".equals(fieldName)) {
-                            deserializedAzureOpenAIParameters.resourceUri = reader.getString();
-                        } else if ("deploymentId".equals(fieldName)) {
-                            deserializedAzureOpenAIParameters.deploymentId = reader.getString();
-                        } else if ("apiKey".equals(fieldName)) {
-                            deserializedAzureOpenAIParameters.apiKey = reader.getString();
-                        } else if ("authIdentity".equals(fieldName)) {
-                            deserializedAzureOpenAIParameters.authIdentity = SearchIndexerDataIdentity.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("resourceUri".equals(fieldName)) {
+                    deserializedAzureOpenAIParameters.resourceUri = reader.getString();
+                } else if ("deploymentId".equals(fieldName)) {
+                    deserializedAzureOpenAIParameters.deploymentId = reader.getString();
+                } else if ("apiKey".equals(fieldName)) {
+                    deserializedAzureOpenAIParameters.apiKey = reader.getString();
+                } else if ("authIdentity".equals(fieldName)) {
+                    deserializedAzureOpenAIParameters.authIdentity = SearchIndexerDataIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedAzureOpenAIParameters;
-                });
+            return deserializedAzureOpenAIParameters;
+        });
     }
 }

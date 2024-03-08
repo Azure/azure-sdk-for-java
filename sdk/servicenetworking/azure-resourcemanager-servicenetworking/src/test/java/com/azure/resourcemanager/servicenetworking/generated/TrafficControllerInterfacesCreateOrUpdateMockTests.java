@@ -13,6 +13,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.TrafficController;
+import com.azure.resourcemanager.servicenetworking.models.TrafficControllerProperties;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -32,48 +33,34 @@ public final class TrafficControllerInterfacesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"configurationEndpoints\":[\"jiwkuofoskghsau\",\"imjm\"],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Succeeded\"},\"location\":\"idyjrrfbyaosvexc\",\"tags\":{\"vleggzfbuhfmvfax\":\"pclhocohslk\"},\"id\":\"ffeii\",\"name\":\"hl\",\"type\":\"m\"}";
+        String responseStr
+            = "{\"properties\":{\"configurationEndpoints\":[\"kpnpulexxbczwtr\"],\"frontends\":[{\"id\":\"qzbqjvsov\"},{\"id\":\"yokacspkw\"}],\"associations\":[{\"id\":\"dobpxjmflbvvn\"},{\"id\":\"hrk\"},{\"id\":\"ciwwzjuqkhr\"},{\"id\":\"ajiwkuo\"}],\"provisioningState\":\"Succeeded\"},\"location\":\"ghsauuimjmvxied\",\"tags\":{\"onpc\":\"idyjrrfbyaosvexc\",\"eggzfb\":\"hocohslkev\"},\"id\":\"hfmvfaxkffe\",\"name\":\"ithlvmezyvshxm\",\"type\":\"sbbzo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        TrafficControllerManager manager =
-            TrafficControllerManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        TrafficControllerManager manager = TrafficControllerManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        TrafficController response =
-            manager
-                .trafficControllerInterfaces()
-                .define("ys")
-                .withRegion("lrmv")
-                .withExistingResourceGroup("ksymd")
-                .withTags(mapOf("zwtruwiqzbqjvsov", "watkpnpulexxb"))
-                .create();
+        TrafficController response = manager.trafficControllerInterfaces().define("eypvhezrkg").withRegion("fcp")
+            .withExistingResourceGroup("qsc").withTags(mapOf("uaxbezyiuokkt", "odpuozmyzydag", "reximoryocfs",
+                "hrdxwzywqsmbs", "ys", "ksymd", "qn", "kiiuxhqyudxor"))
+            .withProperties(new TrafficControllerProperties()).create();
 
-        Assertions.assertEquals("idyjrrfbyaosvexc", response.location());
-        Assertions.assertEquals("pclhocohslk", response.tags().get("vleggzfbuhfmvfax"));
+        Assertions.assertEquals("ghsauuimjmvxied", response.location());
+        Assertions.assertEquals("idyjrrfbyaosvexc", response.tags().get("onpc"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

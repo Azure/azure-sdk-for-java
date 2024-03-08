@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Will contain the filter name and values to operate on. */
+/**
+ * Will contain the filter name and values to operate on.
+ */
 @Fluent
 public final class FilterItems {
     /*
@@ -23,13 +25,15 @@ public final class FilterItems {
     @JsonProperty(value = "values")
     private List<String> values;
 
-    /** Creates an instance of FilterItems class. */
+    /**
+     * Creates an instance of FilterItems class.
+     */
     public FilterItems() {
     }
 
     /**
      * Get the field property: The name of the field we would like to filter.
-     *
+     * 
      * @return the field value.
      */
     public String field() {
@@ -38,7 +42,7 @@ public final class FilterItems {
 
     /**
      * Set the field property: The name of the field we would like to filter.
-     *
+     * 
      * @param field the field value to set.
      * @return the FilterItems object itself.
      */
@@ -49,7 +53,7 @@ public final class FilterItems {
 
     /**
      * Get the values property: List of values to filter the current field by.
-     *
+     * 
      * @return the values value.
      */
     public List<String> values() {
@@ -58,7 +62,7 @@ public final class FilterItems {
 
     /**
      * Set the values property: List of values to filter the current field by.
-     *
+     * 
      * @param values the values value to set.
      * @return the FilterItems object itself.
      */
@@ -69,7 +73,7 @@ public final class FilterItems {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

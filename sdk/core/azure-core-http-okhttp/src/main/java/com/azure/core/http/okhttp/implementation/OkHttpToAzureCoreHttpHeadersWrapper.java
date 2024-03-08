@@ -27,6 +27,11 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     private HttpHeaders azureCoreHeaders;
     private boolean converted = false;
 
+    /**
+     * Creates an OkHttpToAzureCoreHttpHeadersWrapper.
+     *
+     * @param okhttpHeaders The OkHttp headers to wrap.
+     */
     public OkHttpToAzureCoreHttpHeadersWrapper(Headers okhttpHeaders) {
         this.okhttpHeaders = okhttpHeaders;
         this.azureCoreHeaders = new HttpHeaders(okhttpHeaders.size() * 2);
