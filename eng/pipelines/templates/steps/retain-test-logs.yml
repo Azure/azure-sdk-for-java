@@ -21,7 +21,9 @@ steps:
     displayName: 'Check for and copy test logs'
     condition: always()
 
-  - publish: $(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}.zip
-    displayName: 'Publish test logs'
-    artifact: ${{ parameters.TestLogsArtifactName }}-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-    condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
+  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+    parameters:
+      DisplayName: 'Publish test logs'
+      ArtifactName: ${{ parameters.TestLogsArtifactName }}-$(System.StageName)-$(System.JobName)
+      ArtifactPath: $(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}.zip
+      CustomCondition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
