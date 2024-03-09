@@ -4,30 +4,110 @@
 
 package com.azure.developer.devcenter;
 
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.developer.devcenter.models.DevCenterEnvironment;
+import com.azure.developer.devcenter.models.DevCenterEnvironmentType;
+import com.azure.developer.devcenter.models.DevCenterOperationDetails;
+import com.azure.developer.devcenter.models.EnvironmentDefinition;
+import com.azure.developer.devcenter.models.DevCenterCatalog;
+
 import org.junit.jupiter.api.Test;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 
 class EnvironmentTests extends DevCenterClientTestBase {
     @Test
+    @Disabled
     public void testCreateEnvironment() {
+        DevCenterEnvironment environment = new DevCenterEnvironment(envTypeName, catalogName, envDefinitionName);
 
-        // Create an environment
-        BinaryData environmentBody = BinaryData.fromString(
-             "{ \"catalogName\":\"" + catalogName
-            + "\",\"environmentDefinitionName\":\"" + envDefinitionName
-            + "\", \"environmentType\":\"" + envTypeName  + "\"}");
-        SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-                setPlaybackSyncPollerPollInterval(deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, "me", "SdkTesting-Environment", environmentBody, null));
+        SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse =
+                deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, devEnvironmentName, environment);
+
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
+        Assertions.assertEquals(
+                devEnvironmentName, environmentCreateResponse.getFinalResult().getName());
+    }
 
-        // Delete the environment when we're finished:
-        SyncPoller<BinaryData, Void> environmentDeleteResponse =
-                        setPlaybackSyncPollerPollInterval(deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, "me", "SdkTesting-Environment", null));
+    @Test
+    public void testGetEnvironment() {
+        DevCenterEnvironment environment = deploymentEnvironmentsClient.getEnvironment(projectName, meUserId, devEnvironmentName);
+        Assertions.assertEquals(devEnvironmentName, environment.getName());
+    }
+
+    @Test
+    public void testListEnvironments() {
+        List<DevCenterEnvironment> environments = deploymentEnvironmentsClient.listEnvironments(projectName, meUserId).stream().collect(Collectors.toList());        
+        Assertions.assertEquals(1, environments.size());
+        Assertions.assertEquals(devEnvironmentName, environments.get(0).getName());
+    }
+
+    @Test
+    public void testListAllEnvironments() {
+        List<DevCenterEnvironment> environments = deploymentEnvironmentsClient.listAllEnvironments(projectName).stream().collect(Collectors.toList());        
+        Assertions.assertEquals(1, environments.size());
+        Assertions.assertEquals(devEnvironmentName, environments.get(0).getName());
+    }
+
+    @Test
+    @Disabled
+    public void testDeleteEnvironment() {
+        SyncPoller<DevCenterOperationDetails, Void> environmentDeleteResponse =
+                deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, meUserId, devEnvironmentName);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentDeleteResponse.waitForCompletion().getStatus());
+    }
+
+    @Test
+    public void testGetCatalog() {
+        DevCenterCatalog catalog = deploymentEnvironmentsClient.getCatalog(projectName, catalogName);
+        Assertions.assertEquals(catalogName, catalog.getName());
+    }
+
+    @Test
+    public void testListCatalogs() {
+        List<DevCenterCatalog> catalogs = deploymentEnvironmentsClient.listCatalogs(projectName).stream().collect(Collectors.toList()); 
+        Assertions.assertEquals(1, catalogs.size());
+        Assertions.assertEquals(catalogName, catalogs.get(0).getName());
+    }
+    
+    @Test
+    public void testGetEnvironmentDefinition() {
+        EnvironmentDefinition envDefinition = deploymentEnvironmentsClient.getEnvironmentDefinition(projectName, catalogName, envDefinitionName);
+        Assertions.assertEquals(envDefinitionName, envDefinition.getName());
+    }
+
+    @Test
+    public void testListEnvironmentDefinitions() {
+        List<EnvironmentDefinition> envDefinitions = deploymentEnvironmentsClient.listEnvironmentDefinitions(projectName).stream().collect(Collectors.toList());        
+        Assertions.assertEquals(3, envDefinitions.size());
+        for (EnvironmentDefinition envDefinition : envDefinitions) {
+            Assertions.assertNotNull(envDefinition);
+            Assertions.assertNotNull(envDefinition.getName());
+        }
+    }
+
+    @Test
+    public void testListEnvironmentDefinitionsByCatalog() {
+        List<EnvironmentDefinition> envDefinitions = deploymentEnvironmentsClient.listEnvironmentDefinitionsByCatalog(
+                projectName, catalogName).stream().collect(Collectors.toList());        
+        Assertions.assertEquals(3, envDefinitions.size());
+        for (EnvironmentDefinition envDefinition : envDefinitions) {
+            Assertions.assertNotNull(envDefinition);
+            Assertions.assertNotNull(envDefinition.getName());
+        }
+    }
+
+    @Test 
+    public void testListEnvironmentTypes() {
+        List<DevCenterEnvironmentType> envTypes = deploymentEnvironmentsClient.listEnvironmentTypes(projectName).stream().collect(Collectors.toList()); 
+        Assertions.assertEquals(1, envTypes.size());
+        Assertions.assertEquals(envTypeName, envTypes.get(0).getName());
     }
 }

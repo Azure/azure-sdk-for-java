@@ -36,6 +36,8 @@ public class DevCenterClientTestBase extends TestProxyTestBase {
 
     protected String devBoxName = "myDevBox".toLowerCase();
 
+    protected String meUserId = "me";
+
     protected String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "proj-sdk-tests");
 
     protected String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "sdk-default-catalog");
@@ -46,7 +48,7 @@ public class DevCenterClientTestBase extends TestProxyTestBase {
 
     protected String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "sdk-default-pool");
 
-    protected String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT", "https://8ab2df1c-ed88-4946-a8a9-e1bbb3e4d1fd-dc-sdk-tests.centraluseuap.devcenter.azure.com/");
+    protected String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT", "https://8ab2df1c-ed88-4946-a8a9-e1bbb3e4d1fd-dc-sdk-tests.centraluseuap.devcenter.azure.com/");
 
     @Override
     protected void beforeTest() {
