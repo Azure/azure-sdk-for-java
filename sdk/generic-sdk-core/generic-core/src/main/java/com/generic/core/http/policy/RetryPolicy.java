@@ -221,7 +221,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
             return tryCount < maxRetries && shouldRetryCondition.test(new RequestRetryCondition(response, null, tryCount,
                 retriedExceptions));
         } else {
-            return tryCount < maxRetries && shouldRetryCondition(new RequestRetryCondition(response, null, tryCount,
+            return tryCount < maxRetries && defaultShouldRetryCondition(new RequestRetryCondition(response, null, tryCount,
                 retriedExceptions));
         }
     }
@@ -245,7 +245,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     return true;
                 }
             } else {
-                return shouldRetryCondition(requestRetryCondition);
+                return defaultShouldRetryCondition(requestRetryCondition);
             }
 
             causalThrowable = causalThrowable.getCause();
@@ -286,7 +286,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return Duration.ofNanos(Math.min((1L << retryAttempts) * delayWithJitterInNanos, maxDelayNanos));
     }
 
-    private boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
+    private boolean defaultShouldRetryCondition(RequestRetryCondition requestRetryCondition) {
         if (requestRetryCondition.getResponse() != null) {
             int code = requestRetryCondition.getResponse().getStatusCode();
             return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
