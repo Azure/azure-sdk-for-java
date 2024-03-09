@@ -70,7 +70,7 @@ jobs:
 
     pool:
       name: $(LINUXPOOL)
-      vmImage: $(LINUXVMIMAGE)
+      image: $(LINUXVMIMAGE)
       os: linux
 
     steps:
@@ -221,7 +221,7 @@ jobs:
 
     pool:
       name: $(LINUXPOOL)
-      vmImage: $(LINUXVMIMAGE)
+      image: $(LINUXVMIMAGE)
       os: linux
 
     steps:
