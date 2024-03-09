@@ -17,6 +17,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.developer.devcenter.implementation.DevCenterClientImpl;
+import com.azure.developer.devcenter.models.DevCenterProject;
 
 /**
  * Initializes a new instance of the synchronous DevCenterClient type.
@@ -39,31 +40,6 @@ public final class DevCenterClient {
     /**
      * Lists all projects.
      * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>filter</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>An OData filter clause to apply to the operation.</td>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -79,7 +55,7 @@ public final class DevCenterClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the project list operation as paginated response with {@link PagedIterable}.
+     * @return paged collection of Project items as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -100,7 +76,7 @@ public final class DevCenterClient {
      * }
      * }</pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -112,5 +88,44 @@ public final class DevCenterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getProjectWithResponse(String projectName, RequestOptions requestOptions) {
         return this.serviceClient.getProjectWithResponse(projectName, requestOptions);
+    }
+
+    /**
+     * Lists all projects.
+     * 
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return paged collection of Project items as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<DevCenterProject> listProjects() {
+        // Generated convenience method for listProjects
+        RequestOptions requestOptions = new RequestOptions();
+        return serviceClient.listProjects(requestOptions)
+            .mapPage(bodyItemValue -> bodyItemValue.toObject(DevCenterProject.class));
+    }
+
+    /**
+     * Gets a project.
+     * 
+     * @param projectName Name of the project.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a project.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DevCenterProject getProject(String projectName) {
+        // Generated convenience method for getProjectWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getProjectWithResponse(projectName, requestOptions).getValue().toObject(DevCenterProject.class);
     }
 }
