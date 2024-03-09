@@ -125,9 +125,6 @@ stages:
               - '!sdk/**/test-recordings/*'
               - '!sdk/**/session-records/*'
             JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
-            OsVmImage: $(LINUXVMIMAGE)
-            Pool: $(LINUXPOOL)
-            Os: linux
             AdditionalParameters:
               PreSteps:
                 - ${{ parameters.PlatformPreSteps }}

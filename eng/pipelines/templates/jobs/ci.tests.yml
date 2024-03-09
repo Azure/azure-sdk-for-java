@@ -50,9 +50,9 @@ parameters:
     type: string
 
 jobs:
-  - job: 
+  - job:
     displayName: 'Test'
-    dependsOn: 
+    dependsOn:
       - ${{ parameters.DependsOn }}
     condition: and(succeeded(), ne(variables['Skip.Test'], 'true'), ne(${{ parameters.Matrix }}, '{}'))
 
@@ -60,8 +60,13 @@ jobs:
       matrix: $[ ${{ parameters.Matrix }} ]
 
     pool:
+      # 1es pipeline templates converts `image` to demands: ImageOverride under the hood
+      # which is incompatible with image selection in the default non-1es hosted pools
+      ${{ if eq(parameters.OSName, 'macOS') }}:
+        vmImage: $(OSVmImage)
+      ${{ else }}:
+        image: $(OSVmImage)
       name: $(Pool)
-      vmImage: $(OSVmImage)
       os: ${{ parameters.OSName }}
 
     ${{ if eq(parameters.UsePlatformContainer, 'true') }}:
@@ -79,7 +84,7 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
           SDKType: ${{ parameters.SDKType }}
-          OSVmImage: ${{ parameters.OSName }}
+          OS: ${{ parameters.OSName }}
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:

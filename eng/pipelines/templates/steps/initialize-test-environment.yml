@@ -13,7 +13,7 @@ parameters:
   - name: SDKType
     type: string
     default: client
-  - name: OSVmImage
+  - name: OS
     type: string
     default: $(OSVmImage)
 
@@ -36,7 +36,7 @@ steps:
 
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:
-      AgentImage: ${{ parameters.OSVmImage }}
+      AgentImage: ${{ parameters.OS }}
 
   - task: PythonScript@0
     displayName: 'Set versions for source build'

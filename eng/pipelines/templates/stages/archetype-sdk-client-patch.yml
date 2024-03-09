@@ -46,7 +46,7 @@ stages:
 
       pool:
         name: $(LINUXPOOL)
-        vmImage: $(LINUXVMIMAGE)
+        image: $(LINUXVMIMAGE)
         os: linux
 
       steps:
@@ -182,7 +182,7 @@ stages:
 
       pool:
         name: $(LINUXPOOL)
-        vmImage: $(LINUXVMIMAGE)
+        image: $(LINUXVMIMAGE)
         os: linux
 
       steps:
