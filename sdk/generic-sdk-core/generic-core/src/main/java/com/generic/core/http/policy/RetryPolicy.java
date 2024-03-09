@@ -5,7 +5,7 @@ package com.generic.core.http.policy;
 
 import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.RetryOptions;
+import com.generic.core.http.models.HttpRetryOptions;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.implementation.util.ImplUtils;
@@ -76,18 +76,18 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     /**
-     * Creates a {@link RetryPolicy} with the provided {@link RetryOptions}.
+     * Creates a {@link RetryPolicy} with the provided {@link HttpRetryOptions}.
      *
-     * @param retryOptions The {@link RetryOptions} used to configure this {@link RetryPolicy}.
+     * @param retryOptions The {@link HttpRetryOptions} used to configure this {@link RetryPolicy}.
      * @throws NullPointerException If {@code retryOptions} is null.
      */
-    public RetryPolicy(RetryOptions retryOptions) {
+    public RetryPolicy(HttpRetryOptions retryOptions) {
         this(retryOptions.getBaseDelay(), retryOptions.getMaxDelay(), retryOptions.getFixedDelay(),
             retryOptions.getMaxRetries(), retryOptions.getDelayFromHeaders(), retryOptions.getShouldRetryCondition());
     }
 
     /**
-     * Creates {@link RetryPolicy} with the provided {@link RetryOptions}.
+     * Creates {@link RetryPolicy} with the provided {@link HttpRetryOptions}.
      * <p>
      * By default, the retry policy uses an exponential backoff delay. If both 'fixedDelay' and 'baseDelay' are null,
      * the 'baseDelay' is set to 800 milliseconds and the 'maxDelay' if not provided is set to 8 seconds.

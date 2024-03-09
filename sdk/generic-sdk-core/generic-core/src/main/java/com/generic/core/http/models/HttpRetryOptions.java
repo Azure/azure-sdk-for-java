@@ -16,8 +16,8 @@ import java.util.function.Predicate;
 /**
  * Options to configure the retry policy's behavior.
  */
-public final class RetryOptions {
-    private static final ClientLogger LOGGER = new ClientLogger(RetryOptions.class);
+public final class HttpRetryOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(HttpRetryOptions.class);
     private final int maxRetries;
     private final Duration baseDelay;
     private final Duration maxDelay;
@@ -26,14 +26,14 @@ public final class RetryOptions {
     private Function<Headers, Duration> delayFromHeaders;
 
     /**
-     * Creates an instance of {@link RetryOptions} with values for {@code baseDelay} and {@code maxDelay}. Use this
+     * Creates an instance of {@link HttpRetryOptions} with values for {@code baseDelay} and {@code maxDelay}. Use this
      * constructor for exponential retry delay strategy.
      *
      * @param maxRetries The maximum number of retry attempts to be made.
      * @param baseDelay The base delay duration for retry.
      * @param maxDelay The max delay duration for retry.
      */
-    public RetryOptions(int maxRetries, Duration baseDelay, Duration maxDelay) {
+    public HttpRetryOptions(int maxRetries, Duration baseDelay, Duration maxDelay) {
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
         if (maxRetries < 0) {
@@ -48,13 +48,13 @@ public final class RetryOptions {
     }
 
     /**
-     * Creates an instance of {@link RetryOptions} with values for {@code fixedDelay}. Use this constructor for
+     * Creates an instance of {@link HttpRetryOptions} with values for {@code fixedDelay}. Use this constructor for
      * fixed retry delay strategy.
      *
      * @param maxRetries The maximum number of retry attempts to be made.
      * @param fixedDelay The fixed delay duration between retry attempts.
      */
-    public RetryOptions(int maxRetries, Duration fixedDelay) {
+    public HttpRetryOptions(int maxRetries, Duration fixedDelay) {
         Objects.requireNonNull(fixedDelay, "'fixedDelay' cannot be null.");
         if (maxRetries < 0) {
             LOGGER.atVerbose()
@@ -119,9 +119,9 @@ public final class RetryOptions {
      *
      * @param shouldRetryCondition The predicate that determines if a retry should be attempted for the given
      * {@link Response}.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link HttpRetryOptions} object.
      */
-    public RetryOptions setShouldRetryCondition(Predicate<RequestRetryCondition> shouldRetryCondition) {
+    public HttpRetryOptions setShouldRetryCondition(Predicate<RequestRetryCondition> shouldRetryCondition) {
         this.shouldRetryCondition = shouldRetryCondition;
         return this;
     }
@@ -137,9 +137,9 @@ public final class RetryOptions {
     /**
      * Sets the headers that will be added to a retry request.
      * @param delayFromHeaders the map of headers to add to a retry request.
-     * @return The updated {@link RetryOptions} object.
+     * @return The updated {@link HttpRetryOptions} object.
      */
-    public RetryOptions setDelayFromHeaders(Function<Headers, Duration> delayFromHeaders) {
+    public HttpRetryOptions setDelayFromHeaders(Function<Headers, Duration> delayFromHeaders) {
         this.delayFromHeaders = delayFromHeaders;
         return this;
     }

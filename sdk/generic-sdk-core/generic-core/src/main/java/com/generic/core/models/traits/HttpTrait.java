@@ -5,7 +5,7 @@ package com.generic.core.models.traits;
 
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpLogOptions;
-import com.generic.core.http.models.RetryOptions;
+import com.generic.core.http.models.HttpRetryOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 
@@ -29,7 +29,7 @@ import com.generic.core.http.pipeline.HttpPipelinePolicy;
  * @see HttpClient
  * @see HttpPipeline
  * @see HttpPipelinePolicy
- * @see RetryOptions
+ * @see HttpRetryOptions
  * @see HttpLogOptions
  */
 public interface HttpTrait<T extends HttpTrait<T>> {
@@ -87,7 +87,7 @@ public interface HttpTrait<T extends HttpTrait<T>> {
     T addPolicy(HttpPipelinePolicy pipelinePolicy);
 
     /**
-     * Sets the {@link RetryOptions} for all the requests made through the client.
+     * Sets the {@link HttpRetryOptions} for all the requests made through the client.
      *
      * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
      * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
@@ -96,12 +96,12 @@ public interface HttpTrait<T extends HttpTrait<T>> {
      * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     * @param retryOptions The {@link HttpRetryOptions} to use for all the requests made through the client.
      *
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
      * operations.
      */
-    T retryOptions(RetryOptions retryOptions);
+    T retryOptions(HttpRetryOptions retryOptions);
 
     /**
      * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving
