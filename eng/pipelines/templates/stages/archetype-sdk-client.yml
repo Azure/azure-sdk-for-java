@@ -115,6 +115,9 @@ extends:
 
     stages:
       - stage: Build
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml@self
+          - template: /eng/pipelines/templates/variables/image.yml@self
         jobs:
           - template: /eng/pipelines/templates/jobs/ci.yml@self
             parameters:
@@ -157,9 +160,6 @@ extends:
                 JavaBuildVersion: '1.11'
               ${{ else }}:
                 JavaBuildVersion: ${{ parameters.JavaBuildVersion }}
-
-        variables:
-          - template: /eng/pipelines/templates/variables/globals.yml@self
 
       - ${{ if parameters.AdditionalStagesAfterBuild }}:
           - ${{ parameters.AdditionalStagesAfterBuild }}

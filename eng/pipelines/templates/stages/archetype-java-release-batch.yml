@@ -41,6 +41,7 @@ stages:
         timeoutInMinutes: 20
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
         pool:
           name: $(LINUXPOOL)
           vmImage: $(LINUXVMIMAGE)
@@ -163,6 +164,7 @@ stages:
           dependsOn: VerifyReleaseVersion
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
+            - template: /eng/pipelines/templates/variables/image.yml
           pool:
             name: $(WINDOWSPOOL)
             vmImage: $(WINDOWSVMIMAGE)
@@ -194,6 +196,7 @@ stages:
           dependsOn: TagRepository
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
+            - template: /eng/pipelines/templates/variables/image.yml
           pool:
             name: $(WINDOWSPOOL)
             vmImage: $(WINDOWSVMIMAGE)
@@ -260,6 +263,7 @@ stages:
           dependsOn: PublishPackage
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
+            - template: /eng/pipelines/templates/variables/image.yml
           pool:
             name: $(WINDOWSPOOL)
             vmImage: $(WINDOWSVMIMAGE)
@@ -319,6 +323,7 @@ stages:
 
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
+            - template: /eng/pipelines/templates/variables/image.yml
             - name: DocValidationImageId
               value: azuresdkimages.azurecr.io/javarefautocr:latest
 
@@ -370,6 +375,7 @@ stages:
           dependsOn: PublishPackage
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
+            - template: /eng/pipelines/templates/variables/image.yml
           pool:
             name: $(WINDOWSPOOL)
             vmImage: $(WINDOWSVMIMAGE)
@@ -407,6 +413,7 @@ stages:
         displayName: Publish package to daily feed
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
           - name: RepositoryUrl
             value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
 
@@ -467,6 +474,7 @@ stages:
           os: linux
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
           - name: DocValidationImageId
             value: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
