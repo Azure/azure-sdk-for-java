@@ -4,17 +4,23 @@
 package com.generic.core.http.policy;
 
 import com.generic.core.http.Response;
+import com.generic.core.http.models.HttpMethod;
+import com.generic.core.http.models.HttpRedirectOptions;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
+import com.generic.core.implementation.util.LoggingKeys;
 import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.HttpURLConnection;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as a
@@ -22,19 +28,36 @@ import java.util.Set;
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RedirectPolicy.class);
-
-    private final RedirectStrategy redirectStrategy;
+    private final int maxAttempts;
+    private Predicate<RequestRedirectCondition> shouldRedirectCondition;
+    private static final int DEFAULT_MAX_REDIRECT_ATTEMPTS = 3;
+    private static final String REDIRECT_URLS_KEY = "redirectUrls";
+    private static final Set<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
+    private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
+    private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
+    private final Set<HttpMethod> allowedRedirectHttpMethods;
+    private final HeaderName locationHeader;
 
     /**
-     * Creates {@link RedirectPolicy} with the provided {@code redirectStrategy} as {@link RedirectStrategy} to
+     * Creates {@link RedirectPolicy} with the provided {@code redirectOptions} to
      * determine if this request should be redirected.
      *
-     * @param redirectStrategy The {@link RedirectStrategy} used for redirection.
+     * @param redirectOptions The configured {@link HttpRedirectOptions} to modify redirect policy behavior.
      *
-     * @throws NullPointerException When {@code redirectStrategy} is {@code null}.
+     * @throws NullPointerException When {@code redirectOptions} is {@code null}.
      */
-    public RedirectPolicy(RedirectStrategy redirectStrategy) {
-        this.redirectStrategy = Objects.requireNonNull(redirectStrategy, "'redirectStrategy' cannot be null.");
+    public RedirectPolicy(HttpRedirectOptions redirectOptions) {
+        Objects.requireNonNull(redirectOptions, "'redirectOptions' cannot be null.");
+        this.maxAttempts = redirectOptions.getMaxAttempts() == 0
+            ? DEFAULT_MAX_REDIRECT_ATTEMPTS
+            : redirectOptions.getMaxAttempts();
+        this.shouldRedirectCondition = redirectOptions.getShouldRedirectCondition();
+        this.allowedRedirectHttpMethods = redirectOptions.getAllowedRedirectHttpMethods().isEmpty()
+            ? DEFAULT_REDIRECT_ALLOWED_METHODS
+            : redirectOptions.getAllowedRedirectHttpMethods();
+        this.locationHeader = redirectOptions.getLocationHeader() == null
+            ? HeaderName.LOCATION
+            : redirectOptions.getLocationHeader();
     }
 
     @Override
@@ -47,18 +70,129 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URL.
      */
-    private Response<?> attemptRedirect(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
+    private Response<?> attemptRedirect(HttpRequest httpRequest, final HttpPipelineNextPolicy next,
                                         final int redirectAttempt, Set<String> attemptedRedirectUrls) {
         // Make sure the context is not modified during retry, except for the URL
         Response<?> response = next.clone().process();
 
-        if (redirectStrategy.shouldAttemptRedirect(httpRequest, response, redirectAttempt, attemptedRedirectUrls)) {
-            HttpRequest redirectRequestCopy = createRedirectRequest(response);
-
-            return attemptRedirect(redirectRequestCopy, next, redirectAttempt + 1, attemptedRedirectUrls);
+        RequestRedirectCondition requestRedirectCondition = new RequestRedirectCondition(response, redirectAttempt, attemptedRedirectUrls);
+        if (shouldRedirectCondition != null) {
+            if(!shouldRedirectCondition.test(requestRedirectCondition)) {
+                HttpRequest redirectRequestCopy = createRedirectRequest(requestRedirectCondition.getResponse());
+                return attemptRedirect(redirectRequestCopy, next, redirectAttempt + 1, attemptedRedirectUrls);
+            }
         } else {
-            return response;
+            if (defaultShouldAttemptRedirect(requestRedirectCondition)) {
+                HttpRequest redirectRequestCopy = createRedirectRequest(response);
+                return attemptRedirect(redirectRequestCopy, next, redirectAttempt + 1, attemptedRedirectUrls);
+            } else {
+                return response;
+            }
         }
+        return response;
+    }
+
+    public boolean defaultShouldAttemptRedirect(RequestRedirectCondition requestRedirectCondition) {
+        Response<?> response = requestRedirectCondition.getResponse();
+        int tryCount = requestRedirectCondition.getTryCount();
+        Set<String> attemptedRedirectUrls = requestRedirectCondition.getRedirectedUrls();
+
+        if (isValidRedirectStatusCode(response.getStatusCode())
+            && isValidRedirectCount(tryCount)
+            && isAllowedRedirectMethod(response.getRequest().getHttpMethod())) {
+
+            String redirectUrl = response.getHeaders().getValue(this.locationHeader);
+
+            if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
+                LOGGER.atVerbose()
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                    .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString)
+                    .log(() -> "Redirecting.");
+
+                attemptedRedirectUrls.add(redirectUrl);
+
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Check if the attempt count of the redirect is less than the {@code maxAttempts}
+     *
+     * @param tryCount the try count for the HTTP request associated to the HTTP response.
+     *
+     * @return {@code true} if the {@code tryCount} is greater than the {@code maxAttempts}, {@code false} otherwise.
+     */
+    private boolean isValidRedirectCount(int tryCount) {
+        if (tryCount >= this.maxAttempts) {
+            LOGGER.atError()
+                .addKeyValue("maxAttempts", this.maxAttempts)
+                .log(() -> "Redirect attempts have been exhausted.");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if the redirect url provided in the response headers is already attempted.
+     *
+     * @param redirectUrl the redirect url provided in the response header.
+     * @param attemptedRedirectUrls the set containing a list of attempted redirect locations.
+     *
+     * @return {@code true} if the redirectUrl provided in the response header is already being attempted for redirect,
+     * {@code false} otherwise.
+     */
+    private boolean alreadyAttemptedRedirectUrl(String redirectUrl,
+                                                Set<String> attemptedRedirectUrls) {
+        if (attemptedRedirectUrls.contains(redirectUrl)) {
+            LOGGER.atError()
+                .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
+                .log(() -> "Request was redirected more than once to the same URL.");
+
+            return true;
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Check if the request http method is a valid redirect method.
+     *
+     * @param httpMethod the http method of the request.
+     *
+     * @return {@code true} if the request {@code httpMethod} is a valid http redirect method, {@code false} otherwise.
+     */
+    private boolean isAllowedRedirectMethod(HttpMethod httpMethod) {
+        if (allowedRedirectHttpMethods.contains(httpMethod)) {
+            return true;
+        } else {
+            LOGGER.atError()
+                .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
+                .log(() -> "Request was redirected from an invalid redirect allowed method.");
+
+            return false;
+        }
+    }
+
+    /**
+     * Checks if the incoming request status code is a valid redirect status code.
+     *
+     * @param statusCode the status code of the incoming request.
+     *
+     * @return {@code true} if the request {@code statusCode} is a valid http redirect method, {@code false} otherwise.
+     */
+    private boolean isValidRedirectStatusCode(int statusCode) {
+        return statusCode == HttpURLConnection.HTTP_MOVED_TEMP
+            || statusCode == HttpURLConnection.HTTP_MOVED_PERM
+            || statusCode == PERMANENT_REDIRECT_STATUS_CODE
+            || statusCode == TEMPORARY_REDIRECT_STATUS_CODE;
     }
 
     private HttpRequest createRedirectRequest(Response<?> redirectResponse) {
@@ -66,7 +200,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         // causing it to leak your authorization token to.
         redirectResponse.getRequest().getHeaders().remove(HeaderName.AUTHORIZATION);
 
-        HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(redirectResponse);
+        HttpRequest redirectRequestCopy = redirectResponse.getRequest().setUrl(redirectResponse.getHeaders().getValue(this.locationHeader));
 
         try {
             redirectResponse.close();
