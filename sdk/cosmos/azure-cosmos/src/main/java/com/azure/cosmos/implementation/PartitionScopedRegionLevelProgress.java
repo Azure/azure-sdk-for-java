@@ -184,5 +184,18 @@ public class PartitionScopedRegionLevelProgress {
         public VectorSessionToken getVectorSessionToken() {
             return vectorSessionToken;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            RegionLevelProgress that = (RegionLevelProgress) o;
+            return maxGlobalLsnSeen == that.maxGlobalLsnSeen && maxLocalLsnSeen == that.maxLocalLsnSeen && Objects.equals(vectorSessionToken, that.vectorSessionToken);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(maxGlobalLsnSeen, maxLocalLsnSeen, vectorSessionToken);
+        }
     }
 }

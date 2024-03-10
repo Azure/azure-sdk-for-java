@@ -1046,9 +1046,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
                     if (regionLevelProgress1 != null && regionLevelProgress2 != null) {
 
-                        return regionLevelProgress1.getMaxGlobalLsnSeen() == regionLevelProgress2.getMaxGlobalLsnSeen()
-                            && regionLevelProgress1.getMaxLocalLsnSeen() == regionLevelProgress2.getMaxLocalLsnSeen()
-                            && regionLevelProgress1.getVectorSessionToken().equals(regionLevelProgress2.getVectorSessionToken());
+                        return regionLevelProgress1.equals(regionLevelProgress2);
                     }
                 }
             }
