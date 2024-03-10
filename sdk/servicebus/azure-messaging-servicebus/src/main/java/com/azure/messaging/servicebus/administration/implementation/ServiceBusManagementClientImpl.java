@@ -17,6 +17,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
@@ -30,121 +31,101 @@ import com.azure.messaging.servicebus.administration.implementation.models.Servi
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
 import reactor.core.publisher.Mono;
 
-/**
- * Initializes a new instance of the ServiceBusManagementClient type.
- */
+/** Initializes a new instance of the ServiceBusManagementClient type. */
 public final class ServiceBusManagementClientImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final ServiceBusManagementClientService service;
 
-    /**
-     * The Service Bus fully qualified domain name.
-     */
+    /** The Service Bus fully qualified domain name. */
     private final String endpoint;
 
     /**
      * Gets The Service Bus fully qualified domain name.
-     * 
+     *
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /**
-     * Api Version.
-     */
+    /** Api Version. */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     * 
+     *
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /**
-     * The HTTP pipeline to send requests through.
-     */
+    /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     * 
+     *
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /**
-     * The serializer to serialize an object into a string.
-     */
+    /** The serializer to serialize an object into a string. */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     * 
+     *
      * @return the serializerAdapter value.
      */
     public SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /**
-     * The EntitiesImpl object to access its operations.
-     */
+    /** The EntitiesImpl object to access its operations. */
     private final EntitiesImpl entities;
 
     /**
      * Gets the EntitiesImpl object to access its operations.
-     * 
+     *
      * @return the EntitiesImpl object.
      */
     public EntitiesImpl getEntities() {
         return this.entities;
     }
 
-    /**
-     * The SubscriptionsImpl object to access its operations.
-     */
+    /** The SubscriptionsImpl object to access its operations. */
     private final SubscriptionsImpl subscriptions;
 
     /**
      * Gets the SubscriptionsImpl object to access its operations.
-     * 
+     *
      * @return the SubscriptionsImpl object.
      */
     public SubscriptionsImpl getSubscriptions() {
         return this.subscriptions;
     }
 
-    /**
-     * The RulesImpl object to access its operations.
-     */
+    /** The RulesImpl object to access its operations. */
     private final RulesImpl rules;
 
     /**
      * Gets the RulesImpl object to access its operations.
-     * 
+     *
      * @return the RulesImpl object.
      */
     public RulesImpl getRules() {
         return this.rules;
     }
 
-    /**
-     * The NamespacesImpl object to access its operations.
-     */
+    /** The NamespacesImpl object to access its operations. */
     private final NamespacesImpl namespaces;
 
     /**
      * Gets the NamespacesImpl object to access its operations.
-     * 
+     *
      * @return the NamespacesImpl object.
      */
     public NamespacesImpl getNamespaces() {
@@ -153,18 +134,23 @@ public final class ServiceBusManagementClientImpl {
 
     /**
      * Initializes an instance of ServiceBusManagementClient client.
-     * 
+     *
      * @param endpoint The Service Bus fully qualified domain name.
      * @param apiVersion Api Version.
      */
     public ServiceBusManagementClientImpl(String endpoint, String apiVersion) {
-        this(new HttpPipelineBuilder().policies(new UserAgentPolicy(), new RetryPolicy()).build(),
-            JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
+        this(
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                endpoint,
+                apiVersion);
     }
 
     /**
      * Initializes an instance of ServiceBusManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint The Service Bus fully qualified domain name.
      * @param apiVersion Api Version.
@@ -175,14 +161,14 @@ public final class ServiceBusManagementClientImpl {
 
     /**
      * Initializes an instance of ServiceBusManagementClient client.
-     * 
+     *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint The Service Bus fully qualified domain name.
      * @param apiVersion Api Version.
      */
-    public ServiceBusManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
-        String endpoint, String apiVersion) {
+    public ServiceBusManagementClientImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
@@ -191,71 +177,98 @@ public final class ServiceBusManagementClientImpl {
         this.subscriptions = new SubscriptionsImpl(this);
         this.rules = new RulesImpl(this);
         this.namespaces = new NamespacesImpl(this);
-        this.service
-            = RestProxy.create(ServiceBusManagementClientService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service =
+                RestProxy.create(
+                        ServiceBusManagementClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
-     * The interface defining all the services for ServiceBusManagementClient to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for ServiceBusManagementClient to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("https://{endpoint}")
     @ServiceInterface(name = "ServiceBusManagement")
     public interface ServiceBusManagementClientService {
         @Get("/{topicName}/subscriptions")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<SubscriptionDescriptionFeedImpl>> listSubscriptions(@HostParam("endpoint") String endpoint,
-            @PathParam("topicName") String topicName, @QueryParam("$skip") Integer skip,
-            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<SubscriptionDescriptionFeedImpl>> listSubscriptions(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("topicName") String topicName,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{topicName}/subscriptions")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<SubscriptionDescriptionFeedImpl> listSubscriptionsSync(@HostParam("endpoint") String endpoint,
-            @PathParam("topicName") String topicName, @QueryParam("$skip") Integer skip,
-            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<SubscriptionDescriptionFeedImpl> listSubscriptionsSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("topicName") String topicName,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<RuleDescriptionFeedImpl>> listRules(@HostParam("endpoint") String endpoint,
-            @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
-            @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<RuleDescriptionFeedImpl>> listRules(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("topicName") String topicName,
+                @PathParam("subscriptionName") String subscriptionName,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{topicName}/subscriptions/{subscriptionName}/rules")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<RuleDescriptionFeedImpl> listRulesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("topicName") String topicName, @PathParam("subscriptionName") String subscriptionName,
-            @QueryParam("$skip") Integer skip, @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Response<RuleDescriptionFeedImpl> listRulesSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("topicName") String topicName,
+                @PathParam("subscriptionName") String subscriptionName,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/$Resources/{entityType}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Mono<Response<Object>> listEntities(@HostParam("endpoint") String endpoint,
-            @PathParam("entityType") String entityType, @QueryParam("$skip") Integer skip,
-            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Object>> listEntities(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("entityType") String entityType,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/$Resources/{entityType}")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ServiceBusManagementErrorException.class)
-        Response<Object> listEntitiesSync(@HostParam("endpoint") String endpoint,
-            @PathParam("entityType") String entityType, @QueryParam("$skip") Integer skip,
-            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept, Context context);
+        Response<Object> listEntitiesSync(
+                @HostParam("endpoint") String endpoint,
+                @PathParam("entityType") String entityType,
+                @QueryParam("$skip") Integer skip,
+                @QueryParam("$top") Integer top,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
      * Get subscriptions
-     * 
-     * Get the details about the subscriptions of the given topic.
-     * 
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
      * @param topicName name of the topic.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -263,21 +276,23 @@ public final class ServiceBusManagementClientImpl {
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the subscriptions of the given topic along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescriptionFeedImpl>> listSubscriptionsWithResponseAsync(String topicName,
-        Integer skip, Integer top) {
+    public Mono<Response<SubscriptionDescriptionFeedImpl>> listSubscriptionsWithResponseAsync(
+            String topicName, Integer skip, Integer top) {
         final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.listSubscriptions(this.getEndpoint(), topicName, skip, top,
-            this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.listSubscriptions(
+                                this.getEndpoint(), topicName, skip, top, this.getApiVersion(), accept, context));
     }
 
     /**
      * Get subscriptions
-     * 
-     * Get the details about the subscriptions of the given topic.
-     * 
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
      * @param topicName name of the topic.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -286,21 +301,21 @@ public final class ServiceBusManagementClientImpl {
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the subscriptions of the given topic along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SubscriptionDescriptionFeedImpl>> listSubscriptionsWithResponseAsync(String topicName,
-        Integer skip, Integer top, Context context) {
+    public Mono<Response<SubscriptionDescriptionFeedImpl>> listSubscriptionsWithResponseAsync(
+            String topicName, Integer skip, Integer top, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.listSubscriptions(this.getEndpoint(), topicName, skip, top, this.getApiVersion(), accept,
-            context);
+        return service.listSubscriptions(
+                this.getEndpoint(), topicName, skip, top, this.getApiVersion(), accept, context);
     }
 
     /**
      * Get subscriptions
-     * 
-     * Get the details about the subscriptions of the given topic.
-     * 
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
      * @param topicName name of the topic.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -312,14 +327,14 @@ public final class ServiceBusManagementClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionDescriptionFeedImpl> listSubscriptionsAsync(String topicName, Integer skip, Integer top) {
         return listSubscriptionsWithResponseAsync(topicName, skip, top)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get subscriptions
-     * 
-     * Get the details about the subscriptions of the given topic.
-     * 
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
      * @param topicName name of the topic.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -330,17 +345,17 @@ public final class ServiceBusManagementClientImpl {
      * @return the details about the subscriptions of the given topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SubscriptionDescriptionFeedImpl> listSubscriptionsAsync(String topicName, Integer skip, Integer top,
-        Context context) {
+    public Mono<SubscriptionDescriptionFeedImpl> listSubscriptionsAsync(
+            String topicName, Integer skip, Integer top, Context context) {
         return listSubscriptionsWithResponseAsync(topicName, skip, top, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get subscriptions
-     * 
-     * Get the details about the subscriptions of the given topic.
-     * 
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
      * @param topicName name of the topic.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -351,18 +366,18 @@ public final class ServiceBusManagementClientImpl {
      * @return the details about the subscriptions of the given topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionDescriptionFeedImpl> listSubscriptionsWithResponse(String topicName, Integer skip,
-        Integer top, Context context) {
+    public Response<SubscriptionDescriptionFeedImpl> listSubscriptionsWithResponse(
+            String topicName, Integer skip, Integer top, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.listSubscriptionsSync(this.getEndpoint(), topicName, skip, top, this.getApiVersion(), accept,
-            context);
+        return service.listSubscriptionsSync(
+                this.getEndpoint(), topicName, skip, top, this.getApiVersion(), accept, context);
     }
 
     /**
      * Get subscriptions
-     * 
-     * Get the details about the subscriptions of the given topic.
-     * 
+     *
+     * <p>Get the details about the subscriptions of the given topic.
+     *
      * @param topicName name of the topic.
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -378,9 +393,9 @@ public final class ServiceBusManagementClientImpl {
 
     /**
      * Get rules of a topic subscription
-     * 
-     * Get the details about the rules of the given topic subscription.
-     * 
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param skip The skip parameter.
@@ -389,21 +404,30 @@ public final class ServiceBusManagementClientImpl {
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the rules of the given topic subscription along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RuleDescriptionFeedImpl>> listRulesWithResponseAsync(String topicName, String subscriptionName,
-        Integer skip, Integer top) {
+    public Mono<Response<RuleDescriptionFeedImpl>> listRulesWithResponseAsync(
+            String topicName, String subscriptionName, Integer skip, Integer top) {
         final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.listRules(this.getEndpoint(), topicName, subscriptionName, skip,
-            top, this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.listRules(
+                                this.getEndpoint(),
+                                topicName,
+                                subscriptionName,
+                                skip,
+                                top,
+                                this.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
      * Get rules of a topic subscription
-     * 
-     * Get the details about the rules of the given topic subscription.
-     * 
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param skip The skip parameter.
@@ -413,21 +437,21 @@ public final class ServiceBusManagementClientImpl {
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the rules of the given topic subscription along with {@link Response} on successful
-     * completion of {@link Mono}.
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RuleDescriptionFeedImpl>> listRulesWithResponseAsync(String topicName, String subscriptionName,
-        Integer skip, Integer top, Context context) {
+    public Mono<Response<RuleDescriptionFeedImpl>> listRulesWithResponseAsync(
+            String topicName, String subscriptionName, Integer skip, Integer top, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.listRules(this.getEndpoint(), topicName, subscriptionName, skip, top, this.getApiVersion(),
-            accept, context);
+        return service.listRules(
+                this.getEndpoint(), topicName, subscriptionName, skip, top, this.getApiVersion(), accept, context);
     }
 
     /**
      * Get rules of a topic subscription
-     * 
-     * Get the details about the rules of the given topic subscription.
-     * 
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param skip The skip parameter.
@@ -438,17 +462,17 @@ public final class ServiceBusManagementClientImpl {
      * @return the details about the rules of the given topic subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleDescriptionFeedImpl> listRulesAsync(String topicName, String subscriptionName, Integer skip,
-        Integer top) {
+    public Mono<RuleDescriptionFeedImpl> listRulesAsync(
+            String topicName, String subscriptionName, Integer skip, Integer top) {
         return listRulesWithResponseAsync(topicName, subscriptionName, skip, top)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get rules of a topic subscription
-     * 
-     * Get the details about the rules of the given topic subscription.
-     * 
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param skip The skip parameter.
@@ -460,17 +484,17 @@ public final class ServiceBusManagementClientImpl {
      * @return the details about the rules of the given topic subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RuleDescriptionFeedImpl> listRulesAsync(String topicName, String subscriptionName, Integer skip,
-        Integer top, Context context) {
+    public Mono<RuleDescriptionFeedImpl> listRulesAsync(
+            String topicName, String subscriptionName, Integer skip, Integer top, Context context) {
         return listRulesWithResponseAsync(topicName, subscriptionName, skip, top, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get rules of a topic subscription
-     * 
-     * Get the details about the rules of the given topic subscription.
-     * 
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param skip The skip parameter.
@@ -482,18 +506,18 @@ public final class ServiceBusManagementClientImpl {
      * @return the details about the rules of the given topic subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RuleDescriptionFeedImpl> listRulesWithResponse(String topicName, String subscriptionName,
-        Integer skip, Integer top, Context context) {
+    public Response<RuleDescriptionFeedImpl> listRulesWithResponse(
+            String topicName, String subscriptionName, Integer skip, Integer top, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.listRulesSync(this.getEndpoint(), topicName, subscriptionName, skip, top, this.getApiVersion(),
-            accept, context);
+        return service.listRulesSync(
+                this.getEndpoint(), topicName, subscriptionName, skip, top, this.getApiVersion(), accept, context);
     }
 
     /**
      * Get rules of a topic subscription
-     * 
-     * Get the details about the rules of the given topic subscription.
-     * 
+     *
+     * <p>Get the details about the rules of the given topic subscription.
+     *
      * @param topicName name of the topic.
      * @param subscriptionName name of the subscription.
      * @param skip The skip parameter.
@@ -510,9 +534,9 @@ public final class ServiceBusManagementClientImpl {
 
     /**
      * Get Queues or topics
-     * 
-     * Get the details about the entities of the given Service Bus namespace.
-     * 
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
      * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -520,20 +544,22 @@ public final class ServiceBusManagementClientImpl {
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the entities of the given Service Bus namespace along with {@link Response} on
-     * successful completion of {@link Mono}.
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Object>> listEntitiesWithResponseAsync(String entityType, Integer skip, Integer top) {
         final String accept = "application/xml, application/atom+xml";
-        return FluxUtil.withContext(context -> service.listEntities(this.getEndpoint(), entityType, skip, top,
-            this.getApiVersion(), accept, context));
+        return FluxUtil.withContext(
+                context ->
+                        service.listEntities(
+                                this.getEndpoint(), entityType, skip, top, this.getApiVersion(), accept, context));
     }
 
     /**
      * Get Queues or topics
-     * 
-     * Get the details about the entities of the given Service Bus namespace.
-     * 
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
      * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -542,28 +568,28 @@ public final class ServiceBusManagementClientImpl {
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details about the entities of the given Service Bus namespace along with {@link Response} on
-     * successful completion of {@link Mono}.
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Object>> listEntitiesWithResponseAsync(String entityType, Integer skip, Integer top,
-        Context context) {
+    public Mono<Response<Object>> listEntitiesWithResponseAsync(
+            String entityType, Integer skip, Integer top, Context context) {
         final String accept = "application/xml, application/atom+xml";
         return service.listEntities(this.getEndpoint(), entityType, skip, top, this.getApiVersion(), accept, context);
     }
 
     /**
      * Get Queues or topics
-     * 
-     * Get the details about the entities of the given Service Bus namespace.
-     * 
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
      * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
      * @param skip The skip parameter.
      * @param top The top parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details about the entities of the given Service Bus namespace on successful completion of
-     * {@link Mono}.
+     * @return the details about the entities of the given Service Bus namespace on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> listEntitiesAsync(String entityType, Integer skip, Integer top) {
@@ -572,9 +598,9 @@ public final class ServiceBusManagementClientImpl {
 
     /**
      * Get Queues or topics
-     * 
-     * Get the details about the entities of the given Service Bus namespace.
-     * 
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
      * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -582,20 +608,20 @@ public final class ServiceBusManagementClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ServiceBusManagementErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details about the entities of the given Service Bus namespace on successful completion of
-     * {@link Mono}.
+     * @return the details about the entities of the given Service Bus namespace on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Object> listEntitiesAsync(String entityType, Integer skip, Integer top, Context context) {
         return listEntitiesWithResponseAsync(entityType, skip, top, context)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Queues or topics
-     * 
-     * Get the details about the entities of the given Service Bus namespace.
-     * 
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
      * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
      * @param skip The skip parameter.
      * @param top The top parameter.
@@ -608,15 +634,15 @@ public final class ServiceBusManagementClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Object> listEntitiesWithResponse(String entityType, Integer skip, Integer top, Context context) {
         final String accept = "application/xml, application/atom+xml";
-        return service.listEntitiesSync(this.getEndpoint(), entityType, skip, top, this.getApiVersion(), accept,
-            context);
+        return service.listEntitiesSync(
+                this.getEndpoint(), entityType, skip, top, this.getApiVersion(), accept, context);
     }
 
     /**
      * Get Queues or topics
-     * 
-     * Get the details about the entities of the given Service Bus namespace.
-     * 
+     *
+     * <p>Get the details about the entities of the given Service Bus namespace.
+     *
      * @param entityType List all queues or all topics of the service bus. Value can be "queues" or "topics".
      * @param skip The skip parameter.
      * @param top The top parameter.

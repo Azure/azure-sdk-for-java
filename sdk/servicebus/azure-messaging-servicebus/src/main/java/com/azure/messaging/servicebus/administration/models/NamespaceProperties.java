@@ -5,68 +5,78 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
-/**
- * The metadata related to a Service Bus namespace.
- */
+/** The metadata related to a Service Bus namespace. */
+@JacksonXmlRootElement(
+        localName = "NamespaceInfo",
+        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Fluent
-public final class NamespaceProperties implements XmlSerializable<NamespaceProperties> {
-    private static final String SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT
-        = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect";
-
+public final class NamespaceProperties {
     /*
      * Alias for the geo-disaster recovery Service Bus namespace.
      */
+    @JacksonXmlProperty(
+            localName = "Alias",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String alias;
 
     /*
      * The exact time the namespace was created.
      */
+    @JacksonXmlProperty(
+            localName = "CreatedTime",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private OffsetDateTime createdTime;
 
     /*
      * The SKU for the messaging entity.
      */
+    @JacksonXmlProperty(
+            localName = "MessagingSKU",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private MessagingSku messagingSku;
 
     /*
      * The number of messaging units allocated to the namespace.
      */
+    @JacksonXmlProperty(
+            localName = "MessagingUnits",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Integer messagingUnits;
 
     /*
      * The exact time the namespace was last modified.
      */
+    @JacksonXmlProperty(
+            localName = "ModifiedTime",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private OffsetDateTime modifiedTime;
 
     /*
      * Name of the namespace
      */
+    @JacksonXmlProperty(
+            localName = "Name",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String name;
 
     /*
      * The type of entities the namespace can contain.
      */
+    @JacksonXmlProperty(
+            localName = "NamespaceType",
+            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private NamespaceType namespaceType;
 
-    /**
-     * Creates an instance of NamespaceProperties class.
-     */
-    public NamespaceProperties() {
-    }
+    /** Creates an instance of NamespaceProperties class. */
+    public NamespaceProperties() {}
 
     /**
      * Get the alias property: Alias for the geo-disaster recovery Service Bus namespace.
-     * 
+     *
      * @return the alias value.
      */
     public String getAlias() {
@@ -75,7 +85,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Set the alias property: Alias for the geo-disaster recovery Service Bus namespace.
-     * 
+     *
      * @param alias the alias value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -86,7 +96,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Get the createdTime property: The exact time the namespace was created.
-     * 
+     *
      * @return the createdTime value.
      */
     public OffsetDateTime getCreatedTime() {
@@ -95,7 +105,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Set the createdTime property: The exact time the namespace was created.
-     * 
+     *
      * @param createdTime the createdTime value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -106,7 +116,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Get the messagingSku property: The SKU for the messaging entity.
-     * 
+     *
      * @return the messagingSku value.
      */
     public MessagingSku getMessagingSku() {
@@ -115,7 +125,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Set the messagingSku property: The SKU for the messaging entity.
-     * 
+     *
      * @param messagingSku the messagingSku value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -126,7 +136,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Get the messagingUnits property: The number of messaging units allocated to the namespace.
-     * 
+     *
      * @return the messagingUnits value.
      */
     public Integer getMessagingUnits() {
@@ -135,7 +145,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Set the messagingUnits property: The number of messaging units allocated to the namespace.
-     * 
+     *
      * @param messagingUnits the messagingUnits value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -146,7 +156,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Get the modifiedTime property: The exact time the namespace was last modified.
-     * 
+     *
      * @return the modifiedTime value.
      */
     public OffsetDateTime getModifiedTime() {
@@ -155,7 +165,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Set the modifiedTime property: The exact time the namespace was last modified.
-     * 
+     *
      * @param modifiedTime the modifiedTime value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -166,7 +176,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Get the name property: Name of the namespace.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -175,7 +185,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Set the name property: Name of the namespace.
-     * 
+     *
      * @param name the name value to set.
      * @return the NamespaceProperties object itself.
      */
@@ -186,7 +196,7 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Get the namespaceType property: The type of entities the namespace can contain.
-     * 
+     *
      * @return the namespaceType value.
      */
     public NamespaceType getNamespaceType() {
@@ -195,97 +205,12 @@ public final class NamespaceProperties implements XmlSerializable<NamespacePrope
 
     /**
      * Set the namespaceType property: The type of entities the namespace can contain.
-     * 
+     *
      * @param namespaceType the namespaceType value to set.
      * @return the NamespaceProperties object itself.
      */
     public NamespaceProperties setNamespaceType(NamespaceType namespaceType) {
         this.namespaceType = namespaceType;
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "NamespaceInfo" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeNamespace(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT);
-        xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "Alias", this.alias);
-        xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "CreatedTime",
-            this.createdTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdTime));
-        xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MessagingSKU",
-            this.messagingSku == null ? null : this.messagingSku.toString());
-        xmlWriter.writeNumberElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "MessagingUnits", this.messagingUnits);
-        xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "ModifiedTime",
-            this.modifiedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.modifiedTime));
-        xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "Name", this.name);
-        xmlWriter.writeStringElement(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, "NamespaceType",
-            this.namespaceType == null ? null : this.namespaceType.toString());
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of NamespaceProperties from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of NamespaceProperties if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the NamespaceProperties.
-     */
-    public static NamespaceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of NamespaceProperties from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of NamespaceProperties if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the NamespaceProperties.
-     */
-    public static NamespaceProperties fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "NamespaceInfo" : rootElementName;
-        return xmlReader.readObject(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, finalRootElementName, reader -> {
-            NamespaceProperties deserializedNamespaceProperties = new NamespaceProperties();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("Alias".equals(elementName.getLocalPart())
-                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
-                    deserializedNamespaceProperties.alias = reader.getStringElement();
-                } else if ("CreatedTime".equals(elementName.getLocalPart())
-                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
-                    deserializedNamespaceProperties.createdTime
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
-                } else if ("MessagingSKU".equals(elementName.getLocalPart())
-                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
-                    deserializedNamespaceProperties.messagingSku = MessagingSku.fromString(reader.getStringElement());
-                } else if ("MessagingUnits".equals(elementName.getLocalPart())
-                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
-                    deserializedNamespaceProperties.messagingUnits = reader.getNullableElement(Integer::parseInt);
-                } else if ("ModifiedTime".equals(elementName.getLocalPart())
-                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
-                    deserializedNamespaceProperties.modifiedTime
-                        = reader.getNullableElement(dateString -> OffsetDateTime.parse(dateString));
-                } else if ("Name".equals(elementName.getLocalPart())
-                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
-                    deserializedNamespaceProperties.name = reader.getStringElement();
-                } else if ("NamespaceType".equals(elementName.getLocalPart())
-                    && SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT.equals(elementName.getNamespaceURI())) {
-                    deserializedNamespaceProperties.namespaceType = NamespaceType.fromString(reader.getStringElement());
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedNamespaceProperties;
-        });
     }
 }

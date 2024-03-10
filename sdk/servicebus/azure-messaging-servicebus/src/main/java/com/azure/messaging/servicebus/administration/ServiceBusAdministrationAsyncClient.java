@@ -23,6 +23,7 @@ import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
@@ -181,6 +182,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
     private final ServiceBusManagementClientImpl managementClient;
     private final EntitiesImpl entityClient;
+    private final ServiceBusManagementSerializer serializer;
     private final RulesImpl rulesClient;
     private final AdministrationModelConverter converter;
 
@@ -188,14 +190,18 @@ public final class ServiceBusAdministrationAsyncClient {
      * Creates a new instance with the given management client and serializer.
      *
      * @param managementClient Client to make management calls.
-     * @throws NullPointerException if {@code managementClient} is null.
+     * @param serializer Serializer to deserialize ATOM XML responses.
+     *
+     * @throws NullPointerException if any one of {@code managementClient, serializer, credential} is null.
      */
-    ServiceBusAdministrationAsyncClient(ServiceBusManagementClientImpl managementClient) {
+    ServiceBusAdministrationAsyncClient(ServiceBusManagementClientImpl managementClient,
+        ServiceBusManagementSerializer serializer) {
+        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
         this.rulesClient = managementClient.getRules();
 
-        this.converter = new AdministrationModelConverter(LOGGER, managementClient.getEndpoint());
+        this.converter = new AdministrationModelConverter(LOGGER, managementClient.getEndpoint(), serializer);
     }
 
     /**
@@ -2144,7 +2150,7 @@ public final class ServiceBusAdministrationAsyncClient {
         return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(AdministrationModelConverter::mapException)
             .flatMap(response -> {
-                final Response<QueueDescriptionFeedImpl> feedResponse = converter.deserializeQueueFeed(response);
+                final Response<QueueDescriptionFeedImpl> feedResponse = converter.deserialize(response, QueueDescriptionFeedImpl.class);
                 final QueueDescriptionFeedImpl feed = feedResponse.getValue();
                 if (feed == null) {
                     LOGGER.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip,
@@ -2238,7 +2244,7 @@ public final class ServiceBusAdministrationAsyncClient {
         return managementClient.listEntitiesWithResponseAsync(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(AdministrationModelConverter::mapException)
             .flatMap(response -> {
-                final Response<TopicDescriptionFeedImpl> feedResponse = converter.deserializeTopicFeed(response);
+                final Response<TopicDescriptionFeedImpl> feedResponse = converter.deserialize(response, TopicDescriptionFeedImpl.class);
                 final TopicDescriptionFeedImpl feed = feedResponse.getValue();
                 if (feed == null) {
                     LOGGER.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip,

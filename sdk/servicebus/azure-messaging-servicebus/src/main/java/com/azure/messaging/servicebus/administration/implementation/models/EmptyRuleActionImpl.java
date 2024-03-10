@@ -5,84 +5,16 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.CoreUtils;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
-import javax.xml.stream.XMLStreamException;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * The EmptyRuleAction model.
- */
+/** The EmptyRuleAction model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeName("EmptyRuleAction")
+@JacksonXmlRootElement(localName = "EmptyRuleAction")
 @Immutable
 public final class EmptyRuleActionImpl extends RuleActionImpl {
-    private static final String SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT
-        = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect";
-
-    private static final String WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE
-        = "http://www.w3.org/2001/XMLSchema-instance";
-
-    /**
-     * Creates an instance of EmptyRuleAction class.
-     */
-    public EmptyRuleActionImpl() {
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeNamespace(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT);
-        xmlWriter.writeNamespace("xsi", WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE);
-        xmlWriter.writeStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type", "EmptyRuleAction");
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of EmptyRuleAction from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of EmptyRuleAction if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
-     * @throws XMLStreamException If an error occurs while reading the EmptyRuleAction.
-     */
-    public static EmptyRuleActionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of EmptyRuleAction from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of EmptyRuleAction if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
-     * @throws XMLStreamException If an error occurs while reading the EmptyRuleAction.
-     */
-    public static EmptyRuleActionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;
-        return xmlReader.readObject(SCHEMAS_MICROSOFT_COM_SERVICEBUS_CONNECT, finalRootElementName, reader -> {
-            EmptyRuleActionImpl deserializedEmptyRuleAction = new EmptyRuleActionImpl();
-            String discriminatorValue
-                = reader.getStringAttribute(WWW_W3_ORG_TWO_ZERO_ZERO_ONE_XMLSCHEMA_INSTANCE, "type");
-            if (!"EmptyRuleAction".equals(discriminatorValue)) {
-                throw new IllegalStateException(
-                    "'type' was expected to be non-null and equal to 'EmptyRuleAction'. The found 'type' was '"
-                        + discriminatorValue + "'.");
-            }
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                reader.skipElement();
-            }
-
-            return deserializedEmptyRuleAction;
-        });
-    }
+    /** Creates an instance of EmptyRuleAction class. */
+    public EmptyRuleActionImpl() {}
 }
