@@ -12,10 +12,11 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionAdded event.
+ * Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionUpdated event.
  */
 @Fluent
-public final class ApiDefinitionAddedEventData implements JsonSerializable<ApiDefinitionAddedEventData> {
+public final class ApiCenterApiDefinitionUpdatedEventData
+    implements JsonSerializable<ApiCenterApiDefinitionUpdatedEventData> {
     /*
      * API definition title.
      */
@@ -29,12 +30,12 @@ public final class ApiDefinitionAddedEventData implements JsonSerializable<ApiDe
     /*
      * API specification details.
      */
-    private ApiSpecificationDetails specification;
+    private ApiCenterApiSpecification specification;
 
     /**
-     * Creates an instance of ApiDefinitionAddedEventData class.
+     * Creates an instance of ApiCenterApiDefinitionUpdatedEventData class.
      */
-    public ApiDefinitionAddedEventData() {
+    public ApiCenterApiDefinitionUpdatedEventData() {
     }
 
     /**
@@ -50,9 +51,9 @@ public final class ApiDefinitionAddedEventData implements JsonSerializable<ApiDe
      * Set the title property: API definition title.
      * 
      * @param title the title value to set.
-     * @return the ApiDefinitionAddedEventData object itself.
+     * @return the ApiCenterApiDefinitionUpdatedEventData object itself.
      */
-    public ApiDefinitionAddedEventData setTitle(String title) {
+    public ApiCenterApiDefinitionUpdatedEventData setTitle(String title) {
         this.title = title;
         return this;
     }
@@ -70,9 +71,9 @@ public final class ApiDefinitionAddedEventData implements JsonSerializable<ApiDe
      * Set the description property: API definition description.
      * 
      * @param description the description value to set.
-     * @return the ApiDefinitionAddedEventData object itself.
+     * @return the ApiCenterApiDefinitionUpdatedEventData object itself.
      */
-    public ApiDefinitionAddedEventData setDescription(String description) {
+    public ApiCenterApiDefinitionUpdatedEventData setDescription(String description) {
         this.description = description;
         return this;
     }
@@ -82,7 +83,7 @@ public final class ApiDefinitionAddedEventData implements JsonSerializable<ApiDe
      * 
      * @return the specification value.
      */
-    public ApiSpecificationDetails getSpecification() {
+    public ApiCenterApiSpecification getSpecification() {
         return this.specification;
     }
 
@@ -90,9 +91,9 @@ public final class ApiDefinitionAddedEventData implements JsonSerializable<ApiDe
      * Set the specification property: API specification details.
      * 
      * @param specification the specification value to set.
-     * @return the ApiDefinitionAddedEventData object itself.
+     * @return the ApiCenterApiDefinitionUpdatedEventData object itself.
      */
-    public ApiDefinitionAddedEventData setSpecification(ApiSpecificationDetails specification) {
+    public ApiCenterApiDefinitionUpdatedEventData setSpecification(ApiCenterApiSpecification specification) {
         this.specification = specification;
         return this;
     }
@@ -107,32 +108,34 @@ public final class ApiDefinitionAddedEventData implements JsonSerializable<ApiDe
     }
 
     /**
-     * Reads an instance of ApiDefinitionAddedEventData from the JsonReader.
+     * Reads an instance of ApiCenterApiDefinitionUpdatedEventData from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ApiDefinitionAddedEventData if the JsonReader was pointing to an instance of it, or null
-     * if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ApiDefinitionAddedEventData.
+     * @return An instance of ApiCenterApiDefinitionUpdatedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiCenterApiDefinitionUpdatedEventData.
      */
-    public static ApiDefinitionAddedEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static ApiCenterApiDefinitionUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ApiDefinitionAddedEventData deserializedApiDefinitionAddedEventData = new ApiDefinitionAddedEventData();
+            ApiCenterApiDefinitionUpdatedEventData deserializedApiCenterApiDefinitionUpdatedEventData
+                = new ApiCenterApiDefinitionUpdatedEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("title".equals(fieldName)) {
-                    deserializedApiDefinitionAddedEventData.title = reader.getString();
+                    deserializedApiCenterApiDefinitionUpdatedEventData.title = reader.getString();
                 } else if ("description".equals(fieldName)) {
-                    deserializedApiDefinitionAddedEventData.description = reader.getString();
+                    deserializedApiCenterApiDefinitionUpdatedEventData.description = reader.getString();
                 } else if ("specification".equals(fieldName)) {
-                    deserializedApiDefinitionAddedEventData.specification = ApiSpecificationDetails.fromJson(reader);
+                    deserializedApiCenterApiDefinitionUpdatedEventData.specification
+                        = ApiCenterApiSpecification.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedApiDefinitionAddedEventData;
+            return deserializedApiCenterApiDefinitionUpdatedEventData;
         });
     }
 }

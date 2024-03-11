@@ -15,7 +15,7 @@ import java.io.IOException;
  * API specification details.
  */
 @Fluent
-public final class ApiSpecificationDetails implements JsonSerializable<ApiSpecificationDetails> {
+public final class ApiCenterApiSpecification implements JsonSerializable<ApiCenterApiSpecification> {
     /*
      * Specification name.
      */
@@ -27,9 +27,9 @@ public final class ApiSpecificationDetails implements JsonSerializable<ApiSpecif
     private String version;
 
     /**
-     * Creates an instance of ApiSpecificationDetails class.
+     * Creates an instance of ApiCenterApiSpecification class.
      */
-    public ApiSpecificationDetails() {
+    public ApiCenterApiSpecification() {
     }
 
     /**
@@ -45,9 +45,9 @@ public final class ApiSpecificationDetails implements JsonSerializable<ApiSpecif
      * Set the name property: Specification name.
      * 
      * @param name the name value to set.
-     * @return the ApiSpecificationDetails object itself.
+     * @return the ApiCenterApiSpecification object itself.
      */
-    public ApiSpecificationDetails setName(String name) {
+    public ApiCenterApiSpecification setName(String name) {
         this.name = name;
         return this;
     }
@@ -65,9 +65,9 @@ public final class ApiSpecificationDetails implements JsonSerializable<ApiSpecif
      * Set the version property: Specification version.
      * 
      * @param version the version value to set.
-     * @return the ApiSpecificationDetails object itself.
+     * @return the ApiCenterApiSpecification object itself.
      */
-    public ApiSpecificationDetails setVersion(String version) {
+    public ApiCenterApiSpecification setVersion(String version) {
         this.version = version;
         return this;
     }
@@ -81,30 +81,30 @@ public final class ApiSpecificationDetails implements JsonSerializable<ApiSpecif
     }
 
     /**
-     * Reads an instance of ApiSpecificationDetails from the JsonReader.
+     * Reads an instance of ApiCenterApiSpecification from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of ApiSpecificationDetails if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ApiSpecificationDetails.
+     * @return An instance of ApiCenterApiSpecification if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiCenterApiSpecification.
      */
-    public static ApiSpecificationDetails fromJson(JsonReader jsonReader) throws IOException {
+    public static ApiCenterApiSpecification fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            ApiSpecificationDetails deserializedApiSpecificationDetails = new ApiSpecificationDetails();
+            ApiCenterApiSpecification deserializedApiCenterApiSpecification = new ApiCenterApiSpecification();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("name".equals(fieldName)) {
-                    deserializedApiSpecificationDetails.name = reader.getString();
+                    deserializedApiCenterApiSpecification.name = reader.getString();
                 } else if ("version".equals(fieldName)) {
-                    deserializedApiSpecificationDetails.version = reader.getString();
+                    deserializedApiCenterApiSpecification.version = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedApiSpecificationDetails;
+            return deserializedApiCenterApiSpecification;
         });
     }
 }
