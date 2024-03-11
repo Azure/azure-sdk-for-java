@@ -41,7 +41,7 @@ public final class MonitorQueryTestUtils {
 
     public static String getLogWorkspaceId(boolean isPlaybackMode) {
         if (isPlaybackMode) {
-            return "d2d0e126-fa1e-4b0a-b647-250cdd471e68";
+            return "f87c198a-4353-4612-ae3c-9fe34076b771";
         } else {
             return LOG_WORKSPACE_ID;
         }
@@ -49,7 +49,7 @@ public final class MonitorQueryTestUtils {
 
     public static String getAdditionalLogWorkspaceId(boolean isPlaybackMode) {
         if (isPlaybackMode) {
-            return "d2d0e126-fa1e-4b0a-b647-250cdd471e68";
+            return "e9512cff-dd93-4a96-8583-e614eacda4fd";
         } else {
             return ADDITIONAL_LOG_WORKSPACE_ID;
         }
@@ -57,7 +57,7 @@ public final class MonitorQueryTestUtils {
 
     public static String getLogResourceId(boolean isPlaybackMode) {
         if (isPlaybackMode) {
-            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage";
+            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-marchtest7/providers/Microsoft.OperationalInsights/workspaces/marchtest7-azmonitorlogsws";
         } else {
             return LOG_RESOURCE_ID.substring(LOG_RESOURCE_ID.indexOf("/subscriptions"));
         }
@@ -65,7 +65,7 @@ public final class MonitorQueryTestUtils {
 
     public static String getMetricResourceUri(boolean isPlaybackMode) {
         if (isPlaybackMode) {
-            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-jairmyree-test/providers/Microsoft.EventHub/namespaces/eventhubt9a76fe3bdd7263f8";
+            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-marchtest7/providers/Microsoft.Eventhub/Namespaces/eventhubmarchtest7";
         } else {
             return METRIC_RESOURCE_URI.substring(METRIC_RESOURCE_URI.indexOf("/subscriptions"));
         }

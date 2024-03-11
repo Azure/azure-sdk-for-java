@@ -131,7 +131,7 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     }
 
     @Test
-    @DoNotRecord
+    @DoNotRecord(skipInPlayback = true)
     public void testLogsQueryAllowPartialSuccess() {
         // Arrange
         final String query =  "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
