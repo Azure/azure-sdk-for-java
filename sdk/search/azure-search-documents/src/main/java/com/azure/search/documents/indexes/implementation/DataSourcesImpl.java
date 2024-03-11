@@ -25,9 +25,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListDataSourcesResult;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
-import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -66,7 +66,7 @@ public final class DataSourcesImpl {
     public interface DataSourcesService {
         @Put("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchIndexerDataSourceConnection>> createOrUpdate(@HostParam("endpoint") String endpoint,
             @PathParam("dataSourceName") String dataSourceName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
@@ -78,7 +78,7 @@ public final class DataSourcesImpl {
 
         @Put("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200, 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchIndexerDataSourceConnection> createOrUpdateSync(@HostParam("endpoint") String endpoint,
             @PathParam("dataSourceName") String dataSourceName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
@@ -90,7 +90,7 @@ public final class DataSourcesImpl {
 
         @Delete("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 204, 404 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint,
             @PathParam("dataSourceName") String dataSourceName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
@@ -99,7 +99,7 @@ public final class DataSourcesImpl {
 
         @Delete("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 204, 404 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<Void> deleteSync(@HostParam("endpoint") String endpoint,
             @PathParam("dataSourceName") String dataSourceName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
@@ -108,7 +108,7 @@ public final class DataSourcesImpl {
 
         @Get("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchIndexerDataSourceConnection>> get(@HostParam("endpoint") String endpoint,
             @PathParam("dataSourceName") String dataSourceName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -116,7 +116,7 @@ public final class DataSourcesImpl {
 
         @Get("/datasources('{dataSourceName}')")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchIndexerDataSourceConnection> getSync(@HostParam("endpoint") String endpoint,
             @PathParam("dataSourceName") String dataSourceName,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
@@ -124,21 +124,21 @@ public final class DataSourcesImpl {
 
         @Get("/datasources")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ListDataSourcesResult>> list(@HostParam("endpoint") String endpoint,
             @QueryParam("$select") String select, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/datasources")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<ListDataSourcesResult> listSync(@HostParam("endpoint") String endpoint,
             @QueryParam("$select") String select, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Post("/datasources")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchIndexerDataSourceConnection>> create(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -146,7 +146,7 @@ public final class DataSourcesImpl {
 
         @Post("/datasources")
         @ExpectedResponses({ 201 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchIndexerDataSourceConnection> createSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
@@ -165,7 +165,7 @@ public final class DataSourcesImpl {
      * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer along with {@link Response}
      * on successful completion of {@link Mono}.
@@ -199,7 +199,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer along with {@link Response}
      * on successful completion of {@link Mono}.
@@ -232,7 +232,7 @@ public final class DataSourcesImpl {
      * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
      * {@link Mono}.
@@ -258,7 +258,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
      * {@link Mono}.
@@ -285,7 +285,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer along with
      * {@link Response}.
@@ -318,7 +318,7 @@ public final class DataSourcesImpl {
      * @param skipIndexerResetRequirementForCache Ignores cache reset requirements.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer.
      */
@@ -340,7 +340,7 @@ public final class DataSourcesImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -368,7 +368,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -395,7 +395,7 @@ public final class DataSourcesImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -417,7 +417,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -439,7 +439,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -466,7 +466,7 @@ public final class DataSourcesImpl {
      * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -480,7 +480,7 @@ public final class DataSourcesImpl {
      * @param dataSourceName The name of the datasource to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer along with {@link Response}
      * on successful completion of {@link Mono}.
@@ -505,7 +505,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer along with {@link Response}
      * on successful completion of {@link Mono}.
@@ -529,7 +529,7 @@ public final class DataSourcesImpl {
      * @param dataSourceName The name of the datasource to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
      * {@link Mono}.
@@ -546,7 +546,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
      * {@link Mono}.
@@ -565,7 +565,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer along with
      * {@link Response}.
@@ -589,7 +589,7 @@ public final class DataSourcesImpl {
      * @param dataSourceName The name of the datasource to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer.
      */
@@ -605,7 +605,7 @@ public final class DataSourcesImpl {
      * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Datasources request along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -630,7 +630,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Datasources request along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -655,7 +655,7 @@ public final class DataSourcesImpl {
      * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Datasources request on successful completion of {@link Mono}.
      */
@@ -672,7 +672,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Datasources request on successful completion of {@link Mono}.
      */
@@ -689,7 +689,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Datasources request along with {@link Response}.
      */
@@ -713,7 +713,7 @@ public final class DataSourcesImpl {
      * list of JSON property names, or '*' for all properties. The default is all properties.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response from a List Datasources request.
      */
@@ -728,7 +728,7 @@ public final class DataSourcesImpl {
      * @param dataSource The definition of the datasource to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer along with {@link Response}
      * on successful completion of {@link Mono}.
@@ -753,7 +753,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer along with {@link Response}
      * on successful completion of {@link Mono}.
@@ -777,7 +777,7 @@ public final class DataSourcesImpl {
      * @param dataSource The definition of the datasource to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
      * {@link Mono}.
@@ -795,7 +795,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer on successful completion of
      * {@link Mono}.
@@ -814,7 +814,7 @@ public final class DataSourcesImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer along with
      * {@link Response}.
@@ -838,7 +838,7 @@ public final class DataSourcesImpl {
      * @param dataSource The definition of the datasource to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents a datasource definition, which can be used to configure an indexer.
      */
