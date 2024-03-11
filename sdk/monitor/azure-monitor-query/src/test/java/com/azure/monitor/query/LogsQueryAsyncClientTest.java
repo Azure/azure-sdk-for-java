@@ -244,7 +244,6 @@ public class LogsQueryAsyncClientTest extends TestProxyTestBase {
     }
 
     @Test
-    @DoNotRecord
     public void testBatchQueryPartialSuccess() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING + " | take 2", null);

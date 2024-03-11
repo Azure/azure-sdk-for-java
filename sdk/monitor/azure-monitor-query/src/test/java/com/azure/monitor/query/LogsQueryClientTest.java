@@ -213,7 +213,6 @@ public class LogsQueryClientTest extends TestProxyTestBase {
             + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}}), \"" + additionalWorkspaceId + "\"];"
             + "range x from 1 to 2 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
 
-        System.out.println(multipleWorkspacesQuery);
         LogsQueryResult queryResults = client.queryWorkspaceWithResponse(workspaceId,
                 multipleWorkspacesQuery, null,
                 new LogsQueryOptions()
@@ -291,7 +290,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     }
 
     @Test
-    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "PLAYBACK", disabledReason = "server timeout is "
+    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "server timeout is "
             + " not readily reproducible and because the service caches query results, the queries that require extended time "
             + "to complete if run the first time can return immediately if a cached result is available. So, this test can "
             + " wait for a long time before succeeding. So, disabling this in LIVE test mode")
