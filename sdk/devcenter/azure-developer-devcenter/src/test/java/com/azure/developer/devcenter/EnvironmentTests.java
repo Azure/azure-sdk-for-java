@@ -18,31 +18,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 
 class EnvironmentTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testCreateEnvironment() {
-        DevCenterEnvironment environment = new DevCenterEnvironment(envTypeName, catalogName, envDefinitionName);
-
-        SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse =
-                deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, devEnvironmentName, environment);
-
-        Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
-        Assertions.assertEquals(
-                devEnvironmentName, environmentCreateResponse.getFinalResult().getName());
+        createEnvironment();
     }
 
     @Test
     public void testGetEnvironment() {
+        createEnvironment();
+        
         DevCenterEnvironment environment = deploymentEnvironmentsClient.getEnvironment(projectName, meUserId, devEnvironmentName);
         Assertions.assertEquals(devEnvironmentName, environment.getName());
     }
 
     @Test
     public void testListEnvironments() {
+        createEnvironment();
+        
         List<DevCenterEnvironment> environments = deploymentEnvironmentsClient.listEnvironments(projectName, meUserId).stream().collect(Collectors.toList());        
         Assertions.assertEquals(1, environments.size());
         Assertions.assertEquals(devEnvironmentName, environments.get(0).getName());
@@ -50,14 +44,17 @@ class EnvironmentTests extends DevCenterClientTestBase {
 
     @Test
     public void testListAllEnvironments() {
+        createEnvironment();
+        
         List<DevCenterEnvironment> environments = deploymentEnvironmentsClient.listAllEnvironments(projectName).stream().collect(Collectors.toList());        
         Assertions.assertEquals(1, environments.size());
         Assertions.assertEquals(devEnvironmentName, environments.get(0).getName());
     }
 
     @Test
-    @Disabled
     public void testDeleteEnvironment() {
+        createEnvironment();
+
         SyncPoller<DevCenterOperationDetails, Void> environmentDeleteResponse =
                 deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, meUserId, devEnvironmentName);
         Assertions.assertEquals(
@@ -110,4 +107,19 @@ class EnvironmentTests extends DevCenterClientTestBase {
         Assertions.assertEquals(1, envTypes.size());
         Assertions.assertEquals(envTypeName, envTypes.get(0).getName());
     }
+
+    public DevCenterEnvironment createEnvironment() {
+        DevCenterEnvironment environment = new DevCenterEnvironment(envTypeName, catalogName, envDefinitionName);
+
+        SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse =
+                deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, devEnvironmentName, environment);
+        Assertions.assertEquals(
+            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
+                
+        environment = environmentCreateResponse.getFinalResult();
+        Assertions.assertEquals(devEnvironmentName, environment.getName());
+
+        return environment;
+    }
+    
 }
