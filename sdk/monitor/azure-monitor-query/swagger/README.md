@@ -5,7 +5,7 @@
 These settings apply only when `--tag=package-log` is specified on the command line.
 
 ```yaml $(tag) == 'package-log'
-use: '@autorest/java@4.1.25'
+use: '@autorest/java@4.1.27'
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/21f5332f2dc7437d1446edf240e9a3d4c90c6431/specification/operationalinsights/data-plane/Microsoft.OperationalInsights/stable/2022-10-27/OperationalInsights.json
 java: true
 output-folder: ../
@@ -29,8 +29,8 @@ enable-sync-stack: true
 These settings apply only when `--tag=package-metrics` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics'
-use: '@autorest/java@4.1.25'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f3a3eaf2ec086f3d0502b7987783dd3bbfb6a685/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metrics_API.json
+use: '@autorest/java@4.1.27'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0b64ca7cbe3af8cd13228dfb783a16b8272b8be2/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metrics_API.json
 java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.metrics
@@ -75,9 +75,9 @@ directive:
 These settings apply only when `--tag=package-metrics-namespaces` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics-namespaces'
-use: '@autorest/java@4.1.25'
+use: '@autorest/java@4.1.27'
 service-name: MetricsNamespaces
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f3a3eaf2ec086f3d0502b7987783dd3bbfb6a685/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metricNamespaces_API.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0b64ca7cbe3af8cd13228dfb783a16b8272b8be2/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metricNamespaces_API.json
 java: true
 output-folder: ../
 namespace: com.azure.monitor.query.implementation.metricsnamespaces
@@ -100,8 +100,8 @@ enable-sync-stack: true
 These settings apply only when `--tag=package-metrics-definitions` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics-definitions'
-use: '@autorest/java@4.1.25'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/f3a3eaf2ec086f3d0502b7987783dd3bbfb6a685/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metricDefinitions_API.json
+use: '@autorest/java@4.1.27'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0b64ca7cbe3af8cd13228dfb783a16b8272b8be2/specification/monitor/resource-manager/Microsoft.Insights/stable/2024-02-01/metricDefinitions_API.json
 service-name: MetricsDefinitions
 java: true
 output-folder: ../
@@ -125,8 +125,8 @@ enable-sync-stack: true
 These settings apply only when `--tag=package-metrics-batch` is specified on the command line.
 
 ```yaml $(tag) == 'package-metrics-batch'
-use: '@autorest/java@4.1.25'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0e000791847cec21ef5eb9e8f41cd120f3b2a95c/specification/monitor/data-plane/Microsoft.Insights/stable/2024-02-01/metricBatch.json
+use: '@autorest/java@4.1.27'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0550754fb421cd3a5859abf6713a542b682f626c/specification/monitor/data-plane/Microsoft.Insights/stable/2024-02-01/metricBatch.json
 service-name: MetricsBatch
 java: true
 output-folder: ../

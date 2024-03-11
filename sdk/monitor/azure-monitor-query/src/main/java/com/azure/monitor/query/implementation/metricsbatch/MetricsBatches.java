@@ -280,7 +280,7 @@ public final class MetricsBatches {
         String aggregation, Integer top, String orderBy, String filter, String rollupby, Context context) {
         return batchWithResponseAsync(subscriptionId, metricnamespace, metricnames, batchRequest, starttime, endtime,
             interval, aggregation, top, orderBy, filter, rollupby, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
