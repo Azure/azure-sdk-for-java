@@ -19,6 +19,7 @@ import com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParame
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DatabaseRestoreResource;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
+import com.azure.resourcemanager.cosmos.models.DefaultPriorityLevel;
 import com.azure.resourcemanager.cosmos.models.IpAddressOrRange;
 import com.azure.resourcemanager.cosmos.models.Location;
 import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
@@ -43,7 +44,8 @@ import java.util.Map;
  */
 public final class DatabaseAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBRestoreDatabaseAccountCreateUpdate.json
      */
     /**
@@ -69,18 +71,20 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                 .withRestoreParameters(new RestoreParameters().withRestoreSource(
                     "/subscriptions/subid/providers/Microsoft.DocumentDB/locations/westus/restorableDatabaseAccounts/1a97b4bb-f6a0-430e-ade1-638d781830cc")
                     .withRestoreTimestampInUtc(OffsetDateTime.parse("2021-03-11T22:05:09Z"))
-                    .withRestoreMode(RestoreMode.POINT_IN_TIME)
+                    .withRestoreWithTtlDisabled(false).withRestoreMode(RestoreMode.POINT_IN_TIME)
                     .withDatabasesToRestore(Arrays.asList(
                         new DatabaseRestoreResource().withDatabaseName("db1")
                             .withCollectionNames(Arrays.asList("collection1", "collection2")),
                         new DatabaseRestoreResource().withDatabaseName("db2")
-                            .withCollectionNames(Arrays.asList("collection3", "collection4")))))
-                .withMinimalTlsVersion(MinimalTlsVersion.TLS),
+                            .withCollectionNames(Arrays.asList("collection3", "collection4"))))
+                    .withSourceBackupLocation("westus"))
+                .withEnableMaterializedViews(false).withMinimalTlsVersion(MinimalTlsVersion.TLS),
             com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBDatabaseAccountCreateMax.json
      */
     /**
@@ -91,11 +95,11 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
     public static void cosmosDBDatabaseAccountCreateMax(com.azure.resourcemanager.AzureResourceManager azure) {
         azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts().createOrUpdate("rg1", "ddb1",
             new DatabaseAccountCreateUpdateParameters().withLocation("westus").withTags(mapOf())
-                .withKind(DatabaseAccountKind.MONGO_DB)
                 .withIdentity(new ManagedServiceIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                     .withUserAssignedIdentities(mapOf(
                         "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
                         new ManagedServiceIdentityUserAssignedIdentities())))
+                .withKind(DatabaseAccountKind.MONGO_DB)
                 .withConsistencyPolicy(
                     new ConsistencyPolicy().withDefaultConsistencyLevel(DefaultConsistencyLevel.BOUNDED_STALENESS)
                         .withMaxStalenessPrefix(200L).withMaxIntervalInSeconds(10))
@@ -123,13 +127,16 @@ public final class DatabaseAccountsCreateOrUpdateSamples {
                 .withNetworkAclBypass(NetworkAclBypass.AZURE_SERVICES)
                 .withNetworkAclBypassResourceIds(Arrays.asList(
                     "/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName"))
-                .withCapacity(new Capacity().withTotalThroughputLimit(2000))
-                .withMinimalTlsVersion(MinimalTlsVersion.TLS12).withEnableBurstCapacity(true),
+                .withCapacity(new Capacity().withTotalThroughputLimit(2000)).withEnableMaterializedViews(false)
+                .withEnableBurstCapacity(true).withMinimalTlsVersion(MinimalTlsVersion.TLS12)
+                .withEnablePriorityBasedExecution(true).withDefaultPriorityLevel(DefaultPriorityLevel.LOW)
+                .withEnablePerRegionPerPartitionAutoscale(true),
             com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBDatabaseAccountCreateMin.json
      */
     /**

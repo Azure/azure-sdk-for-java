@@ -37,6 +37,15 @@ public final class ResourceRestoreParameters extends RestoreParametersBase {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ResourceRestoreParameters withRestoreWithTtlDisabled(Boolean restoreWithTtlDisabled) {
+        super.withRestoreWithTtlDisabled(restoreWithTtlDisabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
