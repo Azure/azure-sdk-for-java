@@ -122,12 +122,16 @@
 /sdk/modelsrepository/                               @drwill-ms @timtay-microsoft @abhipsaMisra @digimaun @andyk-ms @brycewang-microsoft @tmahmood-microsoft @ngastelum-ms
 
 # AzureSdkOwners: @billwert
+# ServiceOwners:                                     @jfggdl
 # ServiceLabel: %Event Grid
+
 # PRLabel: %Event Grid
 /sdk/eventgrid/                                     @billwert @mssfang @srnagar @lmolkova
 
 # AzureSdkOwners: @conniey @anuchandy @lmolkova
+# ServiceOwners:                                    @serkantkaraca @sjkwak 
 # ServiceLabel: %Event Hubs
+
 # PRLabel: %Event Hubs
 /sdk/eventhubs/                                      @conniey @anuchandy @lmolkova
 
@@ -196,9 +200,11 @@
 /sdk/remoterendering/                                @MichaelZp0 @ChristopherManthei
 
 # AzureSdkOwners: @conniey
+# ServiceOwners:                                     @hmlam                 
 # ServiceLabel: %Schema Registry
+
 # PRLabel: %Schema Registry
-/sdk/schemaregistry/                                 @conniey @sjkwak @srnagar
+/sdk/schemaregistry/                                 @conniey @srnagar
 
 # AzureSdkOwners: @alzimmermsft @jairmyree
 # ServiceLabel: %Search
@@ -211,11 +217,13 @@
 /sdk/serialization/                                  @alzimmermsft @srnagar
 
 # AzureSdkOwners: @anuchandy
+# ServiceOwners:                                     @EldertGrootenboer 
 # ServiceLabel: %Service Bus
+
 # PRLabel: %Service Bus
 /sdk/servicebus/                                     @anuchandy @conniey @lmolkova
 
-# ServiceLabel: %Service Bus %Service Attention %Track 1
+# ServiceLabel: %Service Bus %Track 1
 # PRLabel: %Service Bus
 /sdk/servicebus/microsoft-azure-servicebus/          @shankarsama @yvgopal
 
@@ -533,12 +541,6 @@
 # ServiceLabel: %Digital Twins %Service Attention
 #/<NotInRepo>/          @@drwill-ms @@timtay-microsoft @@abhipsaMisra @@vinagesh @@azabbasi @@barustum @@jamdavi
 
-# ServiceLabel: %Event Grid %Service Attention
-#/<NotInRepo>/          @jfggdl
-
-# ServiceLabel: %Event Hubs %Service Attention
-#/<NotInRepo>/          @kasun04
-
 # ServiceLabel: %Functions %Service Attention
 #/<NotInRepo>/          @ahmedelnably @fabiocav
 
@@ -701,14 +703,8 @@
 # ServiceLabel: %Security %Service Attention
 #/<NotInRepo>/          @chlahav
 
-# ServiceLabel: %Service Attention %Service Bus
-#/<NotInRepo>/          @EldertGrootenboer
-
 # ServiceLabel: %Service Attention %Service Fabric
 #/<NotInRepo>/          @QingChenmsft @vaishnavk @juhacket
-
-# ServiceLabel: %Schema Registry %Service Attention
-#/<NotInRepo>/          @arerlend @alzimmermsft
 
 # ServiceLabel: %Service Attention %SignalR
 #/<NotInRepo>/          @sffamily @chenkennt
