@@ -665,7 +665,7 @@ public final class SpanDataMapper {
         sb.append(scheme);
         sb.append("://");
         sb.append(host);
-        if (port != null && port > 0) {
+        if (port != null && port > 0 && !isDefaultPortForScheme(port, scheme)) {
             sb.append(':');
             sb.append(port);
         }
@@ -675,6 +675,10 @@ public final class SpanDataMapper {
             sb.append(query);
         }
         return sb.toString();
+    }
+
+    private static boolean isDefaultPortForScheme(Long port, String scheme) {
+        return (port == 80 && scheme.equals("http")) || (port == 443 && scheme.equals("https"));
     }
 
     @Nullable
