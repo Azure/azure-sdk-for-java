@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A resource SKU capability. */
+/**
+ * A resource SKU capability.
+ */
 @Fluent
 public final class ResourceSkuCapabilities {
     /*
@@ -22,13 +24,15 @@ public final class ResourceSkuCapabilities {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of ResourceSkuCapabilities class. */
+    /**
+     * Creates an instance of ResourceSkuCapabilities class.
+     */
     public ResourceSkuCapabilities() {
     }
 
     /**
      * Get the name property: Name of a capability, such as ops/sec.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Set the name property: Name of a capability, such as ops/sec.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceSkuCapabilities object itself.
      */
@@ -48,7 +52,7 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Get the value property: Quantity, if the capability is measured by quantity.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Set the value property: Quantity, if the capability is measured by quantity.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceSkuCapabilities object itself.
      */
@@ -68,7 +72,7 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

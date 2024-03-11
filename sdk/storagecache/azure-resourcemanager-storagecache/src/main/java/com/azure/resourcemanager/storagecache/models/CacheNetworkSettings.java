@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cache network settings. */
+/**
+ * Cache network settings.
+ */
 @Fluent
 public final class CacheNetworkSettings {
     /*
@@ -24,7 +26,7 @@ public final class CacheNetworkSettings {
     private List<String> utilityAddresses;
 
     /*
-     * DNS servers for the cache to use.  It will be set from the network configuration if no value is provided.
+     * DNS servers for the cache to use. It will be set from the network configuration if no value is provided.
      */
     @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
@@ -41,13 +43,15 @@ public final class CacheNetworkSettings {
     @JsonProperty(value = "ntpServer")
     private String ntpServer;
 
-    /** Creates an instance of CacheNetworkSettings class. */
+    /**
+     * Creates an instance of CacheNetworkSettings class.
+     */
     public CacheNetworkSettings() {
     }
 
     /**
      * Get the mtu property: The IPv4 maximum transmission unit configured for the subnet.
-     *
+     * 
      * @return the mtu value.
      */
     public Integer mtu() {
@@ -56,7 +60,7 @@ public final class CacheNetworkSettings {
 
     /**
      * Set the mtu property: The IPv4 maximum transmission unit configured for the subnet.
-     *
+     * 
      * @param mtu the mtu value to set.
      * @return the CacheNetworkSettings object itself.
      */
@@ -67,7 +71,7 @@ public final class CacheNetworkSettings {
 
     /**
      * Get the utilityAddresses property: Array of additional IP addresses used by this cache.
-     *
+     * 
      * @return the utilityAddresses value.
      */
     public List<String> utilityAddresses() {
@@ -77,7 +81,7 @@ public final class CacheNetworkSettings {
     /**
      * Get the dnsServers property: DNS servers for the cache to use. It will be set from the network configuration if
      * no value is provided.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -87,7 +91,7 @@ public final class CacheNetworkSettings {
     /**
      * Set the dnsServers property: DNS servers for the cache to use. It will be set from the network configuration if
      * no value is provided.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the CacheNetworkSettings object itself.
      */
@@ -98,7 +102,7 @@ public final class CacheNetworkSettings {
 
     /**
      * Get the dnsSearchDomain property: DNS search domain.
-     *
+     * 
      * @return the dnsSearchDomain value.
      */
     public String dnsSearchDomain() {
@@ -107,7 +111,7 @@ public final class CacheNetworkSettings {
 
     /**
      * Set the dnsSearchDomain property: DNS search domain.
-     *
+     * 
      * @param dnsSearchDomain the dnsSearchDomain value to set.
      * @return the CacheNetworkSettings object itself.
      */
@@ -118,7 +122,7 @@ public final class CacheNetworkSettings {
 
     /**
      * Get the ntpServer property: NTP server IP Address or FQDN for the cache to use. The default is time.windows.com.
-     *
+     * 
      * @return the ntpServer value.
      */
     public String ntpServer() {
@@ -127,7 +131,7 @@ public final class CacheNetworkSettings {
 
     /**
      * Set the ntpServer property: NTP server IP Address or FQDN for the cache to use. The default is time.windows.com.
-     *
+     * 
      * @param ntpServer the ntpServer value to set.
      * @return the CacheNetworkSettings object itself.
      */
@@ -138,7 +142,7 @@ public final class CacheNetworkSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

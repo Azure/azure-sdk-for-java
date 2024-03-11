@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-/** The free-trial properties. */
+/**
+ * The free-trial properties.
+ */
 @Immutable
 public final class FreeTrialProperties {
     /*
@@ -54,13 +56,15 @@ public final class FreeTrialProperties {
     @JsonProperty(value = "state", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private FreeTrialState state;
 
-    /** Creates an instance of FreeTrialProperties class. */
+    /**
+     * Creates an instance of FreeTrialProperties class.
+     */
     public FreeTrialProperties() {
     }
 
     /**
      * Get the accountId property: The playwright account id.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -69,7 +73,7 @@ public final class FreeTrialProperties {
 
     /**
      * Get the createdAt property: The free-trial createdAt utcDateTime.
-     *
+     * 
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
@@ -78,7 +82,7 @@ public final class FreeTrialProperties {
 
     /**
      * Get the expiryAt property: The free-trial expiryAt utcDateTime.
-     *
+     * 
      * @return the expiryAt value.
      */
     public OffsetDateTime expiryAt() {
@@ -87,7 +91,7 @@ public final class FreeTrialProperties {
 
     /**
      * Get the allocatedValue property: The free-trial allocated limit value eg. allocated free minutes.
-     *
+     * 
      * @return the allocatedValue value.
      */
     public int allocatedValue() {
@@ -96,7 +100,7 @@ public final class FreeTrialProperties {
 
     /**
      * Get the usedValue property: The free-trial used value eg. used free minutes.
-     *
+     * 
      * @return the usedValue value.
      */
     public int usedValue() {
@@ -105,7 +109,7 @@ public final class FreeTrialProperties {
 
     /**
      * Get the percentageUsed property: The free-trial percentage used.
-     *
+     * 
      * @return the percentageUsed value.
      */
     public BigDecimal percentageUsed() {
@@ -114,7 +118,7 @@ public final class FreeTrialProperties {
 
     /**
      * Get the state property: The free-trial state.
-     *
+     * 
      * @return the state value.
      */
     public FreeTrialState state() {
@@ -123,7 +127,7 @@ public final class FreeTrialProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

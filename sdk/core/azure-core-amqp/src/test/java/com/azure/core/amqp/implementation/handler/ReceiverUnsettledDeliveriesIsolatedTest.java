@@ -36,7 +36,8 @@ import static org.mockito.Mockito.doAnswer;
 /**
  * Tests for {@link ReceiverUnsettledDeliveries}.
  * <p>
- * See <a href="https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
+ * See <a href=
+ * "https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing#stepverifierwithvirtualtime">stepverifierwithvirtualtime</a>
  * for why this test class needs to run in Isolated mode.
  * </p>
  */
@@ -82,22 +83,21 @@ public class ReceiverUnsettledDeliveriesIsolatedTest {
 
         try (ReceiverUnsettledDeliveries deliveries = createUnsettledDeliveries()) {
             deliveries.onDelivery(deliveryTag, delivery);
-            final Mono<Void> dispositionMono = deliveries.sendDisposition(deliveryTag.toString(), Accepted.getInstance());
+            final Mono<Void> dispositionMono
+                = deliveries.sendDisposition(deliveryTag.toString(), Accepted.getInstance());
             try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-                verifier.create(() -> dispositionMono, VIRTUAL_TIME_SHIFT)
-                    .expectErrorSatisfies(error -> {
-                        Assertions.assertTrue(error instanceof AmqpException);
-                        final AmqpException amqpError = (AmqpException) error;
-                        Assertions.assertEquals(AmqpErrorCondition.TIMEOUT_ERROR, amqpError.getErrorCondition());
-                    })
-                    .verify(VERIFY_TIMEOUT);
+                verifier.create(() -> dispositionMono, VIRTUAL_TIME_SHIFT).expectErrorSatisfies(error -> {
+                    Assertions.assertTrue(error instanceof AmqpException);
+                    final AmqpException amqpError = (AmqpException) error;
+                    Assertions.assertEquals(AmqpErrorCondition.TIMEOUT_ERROR, amqpError.getErrorCondition());
+                }).verify(VERIFY_TIMEOUT);
             }
         }
     }
 
     private ReceiverUnsettledDeliveries createUnsettledDeliveries() {
-        return new ReceiverUnsettledDeliveries(HOSTNAME, ENTITY_PATH, RECEIVER_LINK_NAME,
-            reactorDispatcher, retryOptions, DELIVERY_EMPTY_TAG, logger);
+        return new ReceiverUnsettledDeliveries(HOSTNAME, ENTITY_PATH, RECEIVER_LINK_NAME, reactorDispatcher,
+            retryOptions, DELIVERY_EMPTY_TAG, logger);
     }
 
     private static Answer<Void> byRunningRunnable() {
@@ -116,8 +116,7 @@ public class ReceiverUnsettledDeliveriesIsolatedTest {
         }
 
         <T> StepVerifier.Step<T> create(Supplier<Mono<T>> scenarioSupplier, Duration timeShift) {
-            return StepVerifier.withVirtualTime(scenarioSupplier, () -> scheduler, 1)
-                .thenAwait(timeShift);
+            return StepVerifier.withVirtualTime(scenarioSupplier, () -> scheduler, 1).thenAwait(timeShift);
         }
 
         @Override

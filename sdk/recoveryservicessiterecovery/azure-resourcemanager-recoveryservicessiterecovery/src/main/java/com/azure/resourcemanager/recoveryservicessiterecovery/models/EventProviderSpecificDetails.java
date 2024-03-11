@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Model class for provider specific details for an event. */
+/**
+ * Model class for provider specific details for an event.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -25,17 +27,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2EventDetails.class),
     @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmEventDetails.class),
     @JsonSubTypes.Type(name = "InMageRcmFailback", value = InMageRcmFailbackEventDetails.class),
-    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtEventDetails.class)
-})
+    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtEventDetails.class) })
 @Immutable
 public class EventProviderSpecificDetails {
-    /** Creates an instance of EventProviderSpecificDetails class. */
+    /**
+     * Creates an instance of EventProviderSpecificDetails class.
+     */
     public EventProviderSpecificDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

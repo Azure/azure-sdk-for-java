@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -18,57 +19,36 @@ public final class PineconeFieldMappingOptions {
      * The name of the index field to use as a title.
      */
     @Generated
-    @JsonProperty(value = "titleField")
+    @JsonProperty(value = "title_field")
     private String titleField;
 
     /*
      * The name of the index field to use as a URL.
      */
     @Generated
-    @JsonProperty(value = "urlField")
+    @JsonProperty(value = "url_field")
     private String urlField;
 
     /*
      * The name of the index field to use as a filepath.
      */
     @Generated
-    @JsonProperty(value = "filepathField")
+    @JsonProperty(value = "filepath_field")
     private String filepathField;
 
     /*
      * The names of index fields that should be treated as content.
      */
     @Generated
-    @JsonProperty(value = "contentFields")
+    @JsonProperty(value = "content_fields")
     private List<String> contentFields;
 
     /*
      * The separator pattern that content fields should use.
      */
     @Generated
-    @JsonProperty(value = "contentFieldsSeparator")
+    @JsonProperty(value = "content_fields_separator")
     private String contentFieldsSeparator;
-
-    /*
-     * The names of fields that represent vector data.
-     */
-    @Generated
-    @JsonProperty(value = "vectorFields")
-    private List<String> vectorFields;
-
-    /*
-     * The names of fields that represent image vector data.
-     */
-    @Generated
-    @JsonProperty(value = "imageVectorFields")
-    private List<String> imageVectorFields;
-
-    /**
-     * Creates an instance of PineconeFieldMappingOptions class.
-     */
-    @Generated
-    public PineconeFieldMappingOptions() {
-    }
 
     /**
      * Get the titleField property: The name of the index field to use as a title.
@@ -147,18 +127,6 @@ public final class PineconeFieldMappingOptions {
     }
 
     /**
-     * Set the contentFields property: The names of index fields that should be treated as content.
-     *
-     * @param contentFields the contentFields value to set.
-     * @return the PineconeFieldMappingOptions object itself.
-     */
-    @Generated
-    public PineconeFieldMappingOptions setContentFields(List<String> contentFields) {
-        this.contentFields = contentFields;
-        return this;
-    }
-
-    /**
      * Get the contentFieldsSeparator property: The separator pattern that content fields should use.
      *
      * @return the contentFieldsSeparator value.
@@ -181,46 +149,13 @@ public final class PineconeFieldMappingOptions {
     }
 
     /**
-     * Get the vectorFields property: The names of fields that represent vector data.
+     * Creates an instance of PineconeFieldMappingOptions class.
      *
-     * @return the vectorFields value.
+     * @param contentFields the contentFields value to set.
      */
     @Generated
-    public List<String> getVectorFields() {
-        return this.vectorFields;
-    }
-
-    /**
-     * Set the vectorFields property: The names of fields that represent vector data.
-     *
-     * @param vectorFields the vectorFields value to set.
-     * @return the PineconeFieldMappingOptions object itself.
-     */
-    @Generated
-    public PineconeFieldMappingOptions setVectorFields(List<String> vectorFields) {
-        this.vectorFields = vectorFields;
-        return this;
-    }
-
-    /**
-     * Get the imageVectorFields property: The names of fields that represent image vector data.
-     *
-     * @return the imageVectorFields value.
-     */
-    @Generated
-    public List<String> getImageVectorFields() {
-        return this.imageVectorFields;
-    }
-
-    /**
-     * Set the imageVectorFields property: The names of fields that represent image vector data.
-     *
-     * @param imageVectorFields the imageVectorFields value to set.
-     * @return the PineconeFieldMappingOptions object itself.
-     */
-    @Generated
-    public PineconeFieldMappingOptions setImageVectorFields(List<String> imageVectorFields) {
-        this.imageVectorFields = imageVectorFields;
-        return this;
+    @JsonCreator
+    public PineconeFieldMappingOptions(@JsonProperty(value = "content_fields") List<String> contentFields) {
+        this.contentFields = contentFields;
     }
 }

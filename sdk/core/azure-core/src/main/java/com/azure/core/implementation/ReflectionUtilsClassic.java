@@ -15,7 +15,8 @@ final class ReflectionUtilsClassic implements ReflectionUtilsApi {
     }
 
     @Override
-    public ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor, boolean scopeToAzureCore) {
+    public ReflectiveInvoker getConstructorInvoker(Class<?> targetClass, Constructor<?> constructor,
+        boolean scopeToAzureCore) {
         return new ConstructorReflectiveInvoker(constructor);
     }
 

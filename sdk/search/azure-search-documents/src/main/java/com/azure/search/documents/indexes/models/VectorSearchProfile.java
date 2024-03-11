@@ -35,6 +35,11 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
      */
     private String vectorizer;
 
+    /*
+     * The name of the compression method configuration that specifies the compression method and optional parameters.
+     */
+    private String compressionConfigurationName;
+
     /**
      * Creates an instance of VectorSearchProfile class.
      * 
@@ -87,12 +92,35 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
         return this;
     }
 
+    /**
+     * Get the compressionConfigurationName property: The name of the compression method configuration that specifies
+     * the compression method and optional parameters.
+     * 
+     * @return the compressionConfigurationName value.
+     */
+    public String getCompressionConfigurationName() {
+        return this.compressionConfigurationName;
+    }
+
+    /**
+     * Set the compressionConfigurationName property: The name of the compression method configuration that specifies
+     * the compression method and optional parameters.
+     * 
+     * @param compressionConfigurationName the compressionConfigurationName value to set.
+     * @return the VectorSearchProfile object itself.
+     */
+    public VectorSearchProfile setCompressionConfigurationName(String compressionConfigurationName) {
+        this.compressionConfigurationName = compressionConfigurationName;
+        return this;
+    }
+
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("algorithm", this.algorithmConfigurationName);
         jsonWriter.writeStringField("vectorizer", this.vectorizer);
+        jsonWriter.writeStringField("compression", this.compressionConfigurationName);
         return jsonWriter.writeEndObject();
     }
 
@@ -112,6 +140,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
             boolean algorithmConfigurationNameFound = false;
             String algorithmConfigurationName = null;
             String vectorizer = null;
+            String compressionConfigurationName = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -124,6 +153,8 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
                     algorithmConfigurationNameFound = true;
                 } else if ("vectorizer".equals(fieldName)) {
                     vectorizer = reader.getString();
+                } else if ("compression".equals(fieldName)) {
+                    compressionConfigurationName = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
@@ -132,6 +163,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
                 VectorSearchProfile deserializedVectorSearchProfile
                     = new VectorSearchProfile(name, algorithmConfigurationName);
                 deserializedVectorSearchProfile.vectorizer = vectorizer;
+                deserializedVectorSearchProfile.compressionConfigurationName = compressionConfigurationName;
 
                 return deserializedVectorSearchProfile;
             }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** InMageRcmFailback NIC details. */
+/**
+ * InMageRcmFailback NIC details.
+ */
 @Immutable
 public final class InMageRcmFailbackNicDetails {
     /*
@@ -34,13 +36,15 @@ public final class InMageRcmFailbackNicDetails {
     @JsonProperty(value = "sourceIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceIpAddress;
 
-    /** Creates an instance of InMageRcmFailbackNicDetails class. */
+    /**
+     * Creates an instance of InMageRcmFailbackNicDetails class.
+     */
     public InMageRcmFailbackNicDetails() {
     }
 
     /**
      * Get the macAddress property: The mac address.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -49,7 +53,7 @@ public final class InMageRcmFailbackNicDetails {
 
     /**
      * Get the networkName property: The network name.
-     *
+     * 
      * @return the networkName value.
      */
     public String networkName() {
@@ -58,7 +62,7 @@ public final class InMageRcmFailbackNicDetails {
 
     /**
      * Get the adapterType property: The adapter type.
-     *
+     * 
      * @return the adapterType value.
      */
     public String adapterType() {
@@ -67,7 +71,7 @@ public final class InMageRcmFailbackNicDetails {
 
     /**
      * Get the sourceIpAddress property: The IP address.
-     *
+     * 
      * @return the sourceIpAddress value.
      */
     public String sourceIpAddress() {
@@ -76,7 +80,7 @@ public final class InMageRcmFailbackNicDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

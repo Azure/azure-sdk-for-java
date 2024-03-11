@@ -32,7 +32,8 @@ public class RegionTests {
 
         // create region with new name
         Region newRegion = Region.create("centraluseuap2", "Central US 2 EUAP");
-        Assertions.assertTrue(Region.values().size() >= size + 1);  // 'testFromLabel' might create region in parallel, hence use >= instead of ==
+        Assertions.assertTrue(Region.values().size() >= size + 1);  // 'testFromLabel' might create region in parallel,
+                                                                  // hence use >= instead of ==
         Region newRegionSame = Region.fromName("centraluseuap2");
         Assertions.assertTrue(newRegion.equals(newRegionSame));
         Assertions.assertEquals("Central US 2 EUAP", newRegionSame.label());

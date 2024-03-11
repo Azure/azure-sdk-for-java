@@ -22,6 +22,7 @@
     <module>sdk/appconfiguration</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/astro</module>
     <module>sdk/attestation</module>
     <module>sdk/automanage</module>
     <module>sdk/automation</module>
@@ -110,6 +111,7 @@
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
+    <module>sdk/largeinstance</module>
     <module>sdk/loadtesting</module>
     <module>sdk/loganalytics</module>
     <module>sdk/logic</module>
@@ -125,6 +127,7 @@
     <module>sdk/marketplaceordering</module>
     <module>sdk/mediaservices</module>
     <module>sdk/metricsadvisor</module>
+    <module>sdk/migrationdiscoverysap</module>
     <module>sdk/mixedreality</module>
     <module>sdk/mobilenetwork</module>
     <module>sdk/modelsrepository</module>
@@ -176,6 +179,7 @@
     <module>sdk/securitydevops</module>
     <module>sdk/securityinsights</module>
     <module>sdk/selfhelp</module>
+    <module>sdk/serialization</module>
     <module>sdk/servicebus</module>
     <module>sdk/servicefabric</module>
     <module>sdk/servicelinker</module>
@@ -207,5 +211,6 @@
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
     <module>sdk/workloads</module>
+    <module>sdk/workloadssapvirtualinstance</module>
   </modules>
 </project>

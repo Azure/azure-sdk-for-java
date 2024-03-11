@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Disk input details. */
+/**
+ * Disk input details.
+ */
 @Fluent
 public final class InMageAzureV2DiskInputDetails {
     /*
@@ -34,13 +36,15 @@ public final class InMageAzureV2DiskInputDetails {
     @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
-    /** Creates an instance of InMageAzureV2DiskInputDetails class. */
+    /**
+     * Creates an instance of InMageAzureV2DiskInputDetails class.
+     */
     public InMageAzureV2DiskInputDetails() {
     }
 
     /**
      * Get the diskId property: The DiskId.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -49,7 +53,7 @@ public final class InMageAzureV2DiskInputDetails {
 
     /**
      * Set the diskId property: The DiskId.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the InMageAzureV2DiskInputDetails object itself.
      */
@@ -60,7 +64,7 @@ public final class InMageAzureV2DiskInputDetails {
 
     /**
      * Get the logStorageAccountId property: The LogStorageAccountId.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -69,7 +73,7 @@ public final class InMageAzureV2DiskInputDetails {
 
     /**
      * Set the logStorageAccountId property: The LogStorageAccountId.
-     *
+     * 
      * @param logStorageAccountId the logStorageAccountId value to set.
      * @return the InMageAzureV2DiskInputDetails object itself.
      */
@@ -80,7 +84,7 @@ public final class InMageAzureV2DiskInputDetails {
 
     /**
      * Get the diskType property: The DiskType.
-     *
+     * 
      * @return the diskType value.
      */
     public DiskAccountType diskType() {
@@ -89,7 +93,7 @@ public final class InMageAzureV2DiskInputDetails {
 
     /**
      * Set the diskType property: The DiskType.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the InMageAzureV2DiskInputDetails object itself.
      */
@@ -100,7 +104,7 @@ public final class InMageAzureV2DiskInputDetails {
 
     /**
      * Get the diskEncryptionSetId property: The DiskEncryptionSet ARM ID.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -109,7 +113,7 @@ public final class InMageAzureV2DiskInputDetails {
 
     /**
      * Set the diskEncryptionSetId property: The DiskEncryptionSet ARM ID.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the InMageAzureV2DiskInputDetails object itself.
      */
@@ -120,7 +124,7 @@ public final class InMageAzureV2DiskInputDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

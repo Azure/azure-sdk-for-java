@@ -17,10 +17,8 @@ public class AmqpRetryPolicyTest {
     private final int maxRetries = 10;
     private final Duration maxDelay = Duration.ofSeconds(120);
     private final Duration delay = Duration.ofSeconds(20);
-    private final AmqpRetryOptions options = new AmqpRetryOptions()
-        .setMaxRetries(maxRetries)
-        .setMaxDelay(maxDelay)
-        .setDelay(delay);
+    private final AmqpRetryOptions options
+        = new AmqpRetryOptions().setMaxRetries(maxRetries).setMaxDelay(maxDelay).setDelay(delay);
 
     /**
      * Verifies we retry on a retriable AmqpException.
@@ -128,7 +126,8 @@ public class AmqpRetryPolicyTest {
         }
 
         @Override
-        protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter, ThreadLocalRandom random) {
+        protected Duration calculateRetryDelay(int retryCount, Duration baseDelay, Duration baseJitter,
+            ThreadLocalRandom random) {
             return expectedDuration;
         }
 

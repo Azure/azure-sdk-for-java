@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Current job details of the migration item. */
+/**
+ * Current job details of the migration item.
+ */
 @Immutable
 public final class CurrentJobDetails {
     /*
@@ -29,13 +31,15 @@ public final class CurrentJobDetails {
     @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
-    /** Creates an instance of CurrentJobDetails class. */
+    /**
+     * Creates an instance of CurrentJobDetails class.
+     */
     public CurrentJobDetails() {
     }
 
     /**
      * Get the jobName property: The job name.
-     *
+     * 
      * @return the jobName value.
      */
     public String jobName() {
@@ -44,7 +48,7 @@ public final class CurrentJobDetails {
 
     /**
      * Get the jobId property: The ARM Id of the job being executed.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -53,7 +57,7 @@ public final class CurrentJobDetails {
 
     /**
      * Get the startTime property: The start time of the job.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -62,7 +66,7 @@ public final class CurrentJobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

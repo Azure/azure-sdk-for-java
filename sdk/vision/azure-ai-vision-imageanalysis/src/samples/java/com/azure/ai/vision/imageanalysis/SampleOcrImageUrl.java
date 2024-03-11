@@ -1,33 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-//
-// DESCRIPTION:
-//     This sample demonstrates how to extract printed or hand-written text for of a publicly accessible
-//     image URL, using a synchronous client.
-//
-//     The synchronous (blocking) `analyzeFromUrl` method call returns an `ImageAnalysisResult` object.
-//     A call to `getRead()` on the result will return a `ReadResult` object. It includes a list of 
-//     `DetectedTextBlock` objects. Currently, the list will always contain one block, as the service does 
-//     not yet support grouping text lines into separate blocks. The `DetectedTextBlock` object contains a 
-//     list of `DetectedTextLine` object. Each one includes: 
-//     - The text content of the line.
-//     - A polygon coordinates in pixels, for a polygon surrounding the line of text in the image.
-//     - A list of `DetectedTextWord` objects.
-//     Each `DetectedTextWord` object contains:
-//     - The text content of the word.
-//     - A polygon coordinates in pixels, for a polygon surrounding the word in the image.
-//     - A confidence score in the range [0, 1], with higher values indicating greater confidences in
-//       the recognition of the word. 
-//
-//     Set these two environment variables before running the sample:
-//     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
-//                          where `your-resource-name` is your unique Azure Computer Vision resource name.
-//     2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
 import com.azure.core.credential.KeyCredential;
-import java.net.MalformedURLException;
 
 // BEGIN: imports-ocr-url-snippet
 import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
@@ -37,9 +13,32 @@ import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import java.util.Arrays;
 // END: imports-ocr-url-snippet
 
+/**
+ *  This sample demonstrates how to extract printed or hand-written text from a publicly accessible
+ *  image URL, using a synchronous client.
+ *
+ *  The synchronous (blocking) `analyzeFromUrl` method call returns an `ImageAnalysisResult` object.
+ *  A call to `getRead()` on the result will return a `ReadResult` object. It includes a list of 
+ *  `DetectedTextBlock` objects. Currently, the list will always contain one block, as the service does 
+ *  not yet support grouping text lines into separate blocks. The `DetectedTextBlock` object contains a 
+ *  list of `DetectedTextLine` object. Each one includes: 
+ *  - The text content of the line.
+ *  - A polygon coordinates in pixels, for a polygon surrounding the line of text in the image.
+ *  - A list of `DetectedTextWord` objects.
+ *  Each `DetectedTextWord` object contains:
+ *  - The text content of the word.
+ *  - A polygon coordinates in pixels, for a polygon surrounding the word in the image.
+ *  - A confidence score in the range [0, 1], with higher values indicating greater confidences in
+ *    the recognition of the word. 
+ *
+ *  Set these two environment variables before running the sample:
+ *  1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
+ *                       where `your-resource-name` is your unique Azure Computer Vision resource name.
+ *  2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
+ */
 public class SampleOcrImageUrl {
 
-    public static void main(String[] args) throws MalformedURLException {
+    public static void main(String[] args) {
 
         String endpoint = System.getenv("VISION_ENDPOINT");
         String key = System.getenv("VISION_KEY");
