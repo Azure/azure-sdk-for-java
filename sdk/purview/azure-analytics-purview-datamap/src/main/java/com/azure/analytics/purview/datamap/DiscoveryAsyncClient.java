@@ -45,9 +45,7 @@ public final class DiscoveryAsyncClient {
 
     /**
      * Get data using search.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -75,15 +73,13 @@ public final class DiscoveryAsyncClient {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     &#64;search.count: Integer (Optional)
-     *     &#64;search.count.approximate: Boolean (Optional)
+     *     @search.count: Integer (Optional)
+     *     @search.count.approximate: Boolean (Optional)
      *     continuationToken: String (Optional)
-     *     &#64;search.facets (Optional): {
+     *     @search.facets (Optional): {
      *         entityType (Optional): [
      *              (Optional){
      *                 count: Integer (Optional)
@@ -120,7 +116,7 @@ public final class DiscoveryAsyncClient {
      *     }
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
+     *             @search.score: Double (Optional)
      *             @search.highlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
@@ -199,9 +195,7 @@ public final class DiscoveryAsyncClient {
 
     /**
      * Get search suggestions by query criteria.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -209,14 +203,12 @@ public final class DiscoveryAsyncClient {
      *     filter: Object (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
+     *             @search.score: Double (Optional)
      *             @search.text: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
@@ -269,8 +261,7 @@ public final class DiscoveryAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return search suggestions by query criteria along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return search suggestions by query criteria along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -280,9 +271,7 @@ public final class DiscoveryAsyncClient {
 
     /**
      * Get auto complete options.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -290,9 +279,7 @@ public final class DiscoveryAsyncClient {
      *     filter: Object (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     value (Optional): [
@@ -379,6 +366,7 @@ public final class DiscoveryAsyncClient {
         // Generated convenience method for autoCompleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return autoCompleteWithResponse(BinaryData.fromObject(autoCompleteOptions), requestOptions)
-            .flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(AutoCompleteResult.class));
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(AutoCompleteResult.class));
     }
 }

@@ -5,27 +5,28 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The ResearchStudyObjective model.
  */
 @Fluent
-public final class ResearchStudyObjective {
+public final class ResearchStudyObjective implements JsonSerializable<ResearchStudyObjective> {
 
     /*
      * Label for the objective
      */
     @Generated
-    @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * primary | secondary | exploratory
      */
     @Generated
-    @JsonProperty(value = "type")
     private FhirR4CodeableConcept type;
 
     /**
@@ -34,8 +35,7 @@ public final class ResearchStudyObjective {
      * @param name the name value to set.
      */
     @Generated
-    @JsonCreator
-    public ResearchStudyObjective(@JsonProperty(value = "name") String name) {
+    public ResearchStudyObjective(String name) {
         this.name = name;
     }
 
@@ -69,5 +69,47 @@ public final class ResearchStudyObjective {
     public ResearchStudyObjective setType(FhirR4CodeableConcept type) {
         this.type = type;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResearchStudyObjective from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResearchStudyObjective if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResearchStudyObjective.
+     */
+    @Generated
+    public static ResearchStudyObjective fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String name = null;
+            FhirR4CodeableConcept type = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = FhirR4CodeableConcept.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ResearchStudyObjective deserializedResearchStudyObjective = new ResearchStudyObjective(name);
+            deserializedResearchStudyObjective.type = type;
+            return deserializedResearchStudyObjective;
+        });
     }
 }

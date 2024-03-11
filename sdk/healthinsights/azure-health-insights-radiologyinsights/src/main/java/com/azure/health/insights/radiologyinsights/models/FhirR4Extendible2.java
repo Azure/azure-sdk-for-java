@@ -5,43 +5,42 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Finding reference for recommendation.
  */
 @Immutable
-public final class FhirR4Extendible2 {
+public final class FhirR4Extendible2 implements JsonSerializable<FhirR4Extendible2> {
 
     /*
      * Additional Content defined by implementations
      */
     @Generated
-    @JsonProperty(value = "extension")
     private List<FhirR4Extension> extension;
 
     /*
      * Finding linked to a recommendation.
      */
     @Generated
-    @JsonProperty(value = "finding")
     private FhirR4Observation finding;
 
     /*
      * Critical result linked to a recommendation.
      */
     @Generated
-    @JsonProperty(value = "criticalFinding")
     private CriticalResult criticalFinding;
 
     /*
      * Recommendation finding status.
      */
     @Generated
-    @JsonProperty(value = "recommendationFindingStatus")
-    private RecommendationFindingStatusType recommendationFindingStatus;
+    private final RecommendationFindingStatusType recommendationFindingStatus;
 
     /**
      * Creates an instance of FhirR4Extendible2 class.
@@ -49,9 +48,7 @@ public final class FhirR4Extendible2 {
      * @param recommendationFindingStatus the recommendationFindingStatus value to set.
      */
     @Generated
-    @JsonCreator
-    private FhirR4Extendible2(@JsonProperty(
-        value = "recommendationFindingStatus") RecommendationFindingStatusType recommendationFindingStatus) {
+    private FhirR4Extendible2(RecommendationFindingStatusType recommendationFindingStatus) {
         this.recommendationFindingStatus = recommendationFindingStatus;
     }
 
@@ -93,5 +90,58 @@ public final class FhirR4Extendible2 {
     @Generated
     public RecommendationFindingStatusType getRecommendationFindingStatus() {
         return this.recommendationFindingStatus;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("recommendationFindingStatus",
+            this.recommendationFindingStatus == null ? null : this.recommendationFindingStatus.toString());
+        jsonWriter.writeArrayField("extension", this.extension, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("finding", this.finding);
+        jsonWriter.writeJsonField("criticalFinding", this.criticalFinding);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4Extendible2 from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4Extendible2 if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirR4Extendible2.
+     */
+    @Generated
+    public static FhirR4Extendible2 fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecommendationFindingStatusType recommendationFindingStatus = null;
+            List<FhirR4Extension> extension = null;
+            FhirR4Observation finding = null;
+            CriticalResult criticalFinding = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("recommendationFindingStatus".equals(fieldName)) {
+                    recommendationFindingStatus = RecommendationFindingStatusType.fromString(reader.getString());
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("finding".equals(fieldName)) {
+                    finding = FhirR4Observation.fromJson(reader);
+                } else if ("criticalFinding".equals(fieldName)) {
+                    criticalFinding = CriticalResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FhirR4Extendible2 deserializedFhirR4Extendible2 = new FhirR4Extendible2(recommendationFindingStatus);
+            deserializedFhirR4Extendible2.extension = extension;
+            deserializedFhirR4Extendible2.finding = finding;
+            deserializedFhirR4Extendible2.criticalFinding = criticalFinding;
+            return deserializedFhirR4Extendible2;
+        });
     }
 }

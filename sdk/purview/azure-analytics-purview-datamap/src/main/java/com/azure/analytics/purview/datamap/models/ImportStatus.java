@@ -6,7 +6,6 @@ package com.azure.analytics.purview.datamap.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class ImportStatus extends ExpandableStringEnum<ImportStatus> {
      * @return the corresponding ImportStatus.
      */
     @Generated
-    @JsonCreator
     public static ImportStatus fromString(String name) {
         return fromString(name, ImportStatus.class);
     }

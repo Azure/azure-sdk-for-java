@@ -5,18 +5,15 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
- * A notification for a sex mismatch is displayed when the gender, personal pronouns, gender-related body parts, or
- * gender-related procedures mentioned in a patient's clinical document are either inconsistent or do not match the
- * gender specified in the patient information.
+ * A notification for a sex mismatch is displayed when the gender, personal pronouns, gender-related body parts, or gender-related procedures mentioned in a patient's clinical document are either inconsistent or do not match the gender specified in the patient information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("sexMismatch")
 @Immutable
 public final class SexMismatchInference extends FhirR4Extendible1 {
 
@@ -24,8 +21,7 @@ public final class SexMismatchInference extends FhirR4Extendible1 {
      * Sex indication : SNOMED CT code for gender finding.
      */
     @Generated
-    @JsonProperty(value = "sexIndication")
-    private FhirR4CodeableConcept sexIndication;
+    private final FhirR4CodeableConcept sexIndication;
 
     /**
      * Creates an instance of SexMismatchInference class.
@@ -33,8 +29,8 @@ public final class SexMismatchInference extends FhirR4Extendible1 {
      * @param sexIndication the sexIndication value to set.
      */
     @Generated
-    @JsonCreator
-    private SexMismatchInference(@JsonProperty(value = "sexIndication") FhirR4CodeableConcept sexIndication) {
+    private SexMismatchInference(FhirR4CodeableConcept sexIndication) {
+        setKind(RadiologyInsightsInferenceType.SEX_MISMATCH);
         this.sexIndication = sexIndication;
     }
 
@@ -46,5 +42,52 @@ public final class SexMismatchInference extends FhirR4Extendible1 {
     @Generated
     public FhirR4CodeableConcept getSexIndication() {
         return this.sexIndication;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("sexIndication", this.sexIndication);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SexMismatchInference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SexMismatchInference if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SexMismatchInference.
+     */
+    @Generated
+    public static SexMismatchInference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.SEX_MISMATCH;
+            List<FhirR4Extension> extension = null;
+            FhirR4CodeableConcept sexIndication = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("kind".equals(fieldName)) {
+                    kind = RadiologyInsightsInferenceType.fromString(reader.getString());
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("sexIndication".equals(fieldName)) {
+                    sexIndication = FhirR4CodeableConcept.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            SexMismatchInference deserializedSexMismatchInference = new SexMismatchInference(sexIndication);
+            deserializedSexMismatchInference.setKind(kind);
+            deserializedSexMismatchInference.setExtension(extension);
+            return deserializedSexMismatchInference;
+        });
     }
 }

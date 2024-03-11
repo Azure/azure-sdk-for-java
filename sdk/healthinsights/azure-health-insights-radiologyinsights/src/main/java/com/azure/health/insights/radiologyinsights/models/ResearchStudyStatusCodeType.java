@@ -5,7 +5,6 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -39,16 +38,14 @@ public final class ResearchStudyStatusCodeType extends ExpandableStringEnum<Rese
     public static final ResearchStudyStatusCodeType CLOSED_TO_ACCRUAL = fromString("closed-to-accrual");
 
     /**
-     * The study is closed to accrual and intervention, i.e. the study is closed to enrollment, all study subjects have
-     * completed treatment or intervention but are still being followed according to the primary objective of the study.
+     * The study is closed to accrual and intervention, i.e. the study is closed to enrollment, all study subjects have completed treatment or intervention but are still being followed according to the primary objective of the study.
      */
     @Generated
     public static final ResearchStudyStatusCodeType CLOSED_TO_ACCRUAL_AND_INTERVENTION
         = fromString("closed-to-accrual-and-intervention");
 
     /**
-     * Study is closed to accrual and intervention, i.e. the study is closed to enrollment, all study subjects have
-     * completed treatment or intervention but are still being followed according to the primary objective of the study.
+     * Study is closed to accrual and intervention, i.e. the study is closed to enrollment, all study subjects have completed treatment or intervention but are still being followed according to the primary objective of the study.
      */
     @Generated
     public static final ResearchStudyStatusCodeType COMPLETED = fromString("completed");
@@ -66,8 +63,7 @@ public final class ResearchStudyStatusCodeType extends ExpandableStringEnum<Rese
     public static final ResearchStudyStatusCodeType IN_REVIEW = fromString("in-review");
 
     /**
-     * The study is temporarily closed to accrual; a pause in accrual while study is reviewed, but is expected to
-     * resume.
+     * The study is temporarily closed to accrual; a pause in accrual while study is reviewed, but is expected to resume.
      */
     @Generated
     public static final ResearchStudyStatusCodeType TEMPORARILY_CLOSED_TO_ACCRUAL
@@ -103,7 +99,6 @@ public final class ResearchStudyStatusCodeType extends ExpandableStringEnum<Rese
      * @return the corresponding ResearchStudyStatusCodeType.
      */
     @Generated
-    @JsonCreator
     public static ResearchStudyStatusCodeType fromString(String name) {
         return fromString(name, ResearchStudyStatusCodeType.class);
     }

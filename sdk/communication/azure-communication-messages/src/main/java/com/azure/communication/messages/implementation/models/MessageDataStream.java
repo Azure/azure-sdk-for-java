@@ -6,28 +6,29 @@ package com.azure.communication.messages.implementation.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A data stream.
  */
 @Immutable
-public final class MessageDataStream {
+public final class MessageDataStream implements JsonSerializable<MessageDataStream> {
 
     /*
      * The stream ID.
      */
     @Generated
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String mediaId;
 
     /*
      * The stream body.
      */
     @Generated
-    @JsonProperty(value = "body")
-    private byte[] body;
+    private final byte[] body;
 
     /**
      * Creates an instance of MessageDataStream class.
@@ -35,8 +36,7 @@ public final class MessageDataStream {
      * @param body the body value to set.
      */
     @Generated
-    @JsonCreator
-    private MessageDataStream(@JsonProperty(value = "body") byte[] body) {
+    private MessageDataStream(byte[] body) {
         this.body = body;
     }
 
@@ -58,5 +58,46 @@ public final class MessageDataStream {
     @Generated
     public byte[] getBody() {
         return CoreUtils.clone(this.body);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBinaryField("body", this.body);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageDataStream from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageDataStream if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MessageDataStream.
+     */
+    @Generated
+    public static MessageDataStream fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String mediaId = null;
+            byte[] body = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    mediaId = reader.getString();
+                } else if ("body".equals(fieldName)) {
+                    body = reader.getBinary();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            MessageDataStream deserializedMessageDataStream = new MessageDataStream(body);
+            deserializedMessageDataStream.mediaId = mediaId;
+            return deserializedMessageDataStream;
+        });
     }
 }

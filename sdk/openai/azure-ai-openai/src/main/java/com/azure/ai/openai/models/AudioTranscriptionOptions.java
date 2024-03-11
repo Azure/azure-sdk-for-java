@@ -20,15 +20,13 @@ public final class AudioTranscriptionOptions {
     private final byte[] file;
 
     /*
-     * The requested format of the transcription response data, which will influence the content and detail of the
-     * result.
+     * The requested format of the transcription response data, which will influence the content and detail of the result.
      */
     @Generated
     private AudioTranscriptionFormat responseFormat;
 
     /*
-     * The primary spoken language of the audio data to be transcribed, supplied as a two-letter ISO-639-1 language
-     * code
+     * The primary spoken language of the audio data to be transcribed, supplied as a two-letter ISO-639-1 language code
      * such as 'en' or 'fr'.
      * Providing this known input language is optional but may improve the accuracy and/or latency of transcription.
      */
@@ -44,10 +42,8 @@ public final class AudioTranscriptionOptions {
 
     /*
      * The sampling temperature, between 0 and 1.
-     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused
-     * and deterministic.
-     * If set to 0, the model will use log probability to automatically increase the temperature until certain
-     * thresholds are hit.
+     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
+     * If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit.
      */
     @Generated
     private Double temperature;
@@ -70,8 +66,7 @@ public final class AudioTranscriptionOptions {
     }
 
     /**
-     * Get the responseFormat property: The requested format of the transcription response data, which will influence
-     * the content and detail of the result.
+     * Get the responseFormat property: The requested format of the transcription response data, which will influence the content and detail of the result.
      *
      * @return the responseFormat value.
      */
@@ -81,8 +76,7 @@ public final class AudioTranscriptionOptions {
     }
 
     /**
-     * Set the responseFormat property: The requested format of the transcription response data, which will influence
-     * the content and detail of the result.
+     * Set the responseFormat property: The requested format of the transcription response data, which will influence the content and detail of the result.
      *
      * @param responseFormat the responseFormat value to set.
      * @return the AudioTranscriptionOptions object itself.
@@ -94,8 +88,7 @@ public final class AudioTranscriptionOptions {
     }
 
     /**
-     * Get the language property: The primary spoken language of the audio data to be transcribed, supplied as a
-     * two-letter ISO-639-1 language code
+     * Get the language property: The primary spoken language of the audio data to be transcribed, supplied as a two-letter ISO-639-1 language code
      * such as 'en' or 'fr'.
      * Providing this known input language is optional but may improve the accuracy and/or latency of transcription.
      *
@@ -107,8 +100,7 @@ public final class AudioTranscriptionOptions {
     }
 
     /**
-     * Set the language property: The primary spoken language of the audio data to be transcribed, supplied as a
-     * two-letter ISO-639-1 language code
+     * Set the language property: The primary spoken language of the audio data to be transcribed, supplied as a two-letter ISO-639-1 language code
      * such as 'en' or 'fr'.
      * Providing this known input language is optional but may improve the accuracy and/or latency of transcription.
      *
@@ -122,8 +114,7 @@ public final class AudioTranscriptionOptions {
     }
 
     /**
-     * Get the prompt property: An optional hint to guide the model's style or continue from a prior audio segment. The
-     * written language of the
+     * Get the prompt property: An optional hint to guide the model's style or continue from a prior audio segment. The written language of the
      * prompt should match the primary spoken language of the audio data.
      *
      * @return the prompt value.
@@ -134,8 +125,7 @@ public final class AudioTranscriptionOptions {
     }
 
     /**
-     * Set the prompt property: An optional hint to guide the model's style or continue from a prior audio segment. The
-     * written language of the
+     * Set the prompt property: An optional hint to guide the model's style or continue from a prior audio segment. The written language of the
      * prompt should match the primary spoken language of the audio data.
      *
      * @param prompt the prompt value to set.
@@ -149,10 +139,8 @@ public final class AudioTranscriptionOptions {
 
     /**
      * Get the temperature property: The sampling temperature, between 0 and 1.
-     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused
-     * and deterministic.
-     * If set to 0, the model will use log probability to automatically increase the temperature until certain
-     * thresholds are hit.
+     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
+     * If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit.
      *
      * @return the temperature value.
      */
@@ -163,10 +151,8 @@ public final class AudioTranscriptionOptions {
 
     /**
      * Set the temperature property: The sampling temperature, between 0 and 1.
-     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused
-     * and deterministic.
-     * If set to 0, the model will use log probability to automatically increase the temperature until certain
-     * thresholds are hit.
+     * Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
+     * If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit.
      *
      * @param temperature the temperature value to set.
      * @return the AudioTranscriptionOptions object itself.
@@ -206,8 +192,7 @@ public final class AudioTranscriptionOptions {
     private String filename;
 
     /**
-     * Get the filename property: The optional filename or descriptive identifier to associate with with the audio
-     * data.
+     * Get the filename property: The optional filename or descriptive identifier to associate with with the audio data.
      *
      * @return the filename value.
      */
@@ -217,8 +202,7 @@ public final class AudioTranscriptionOptions {
     }
 
     /**
-     * Set the filename property: The optional filename or descriptive identifier to associate with with the audio
-     * data.
+     * Set the filename property: The optional filename or descriptive identifier to associate with with the audio data.
      *
      * @param filename the filename value to set.
      * @return the AudioTranscriptionOptions object itself.

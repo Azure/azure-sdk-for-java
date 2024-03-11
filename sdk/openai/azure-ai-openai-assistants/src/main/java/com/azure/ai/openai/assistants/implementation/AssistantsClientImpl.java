@@ -141,8 +141,7 @@ public final class AssistantsClientImpl {
     }
 
     /**
-     * The interface defining all the services for AssistantsClient to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for AssistantsClient to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "AssistantsClient")
@@ -799,9 +798,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new assistant.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     model: String (Required)
@@ -810,6 +807,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -820,9 +818,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -834,6 +830,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -851,8 +848,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createAssistantWithResponseAsync(BinaryData assistantCreationOptions,
@@ -864,9 +860,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new assistant.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     model: String (Required)
@@ -875,6 +869,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -885,9 +880,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -899,6 +892,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -928,52 +922,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of assistants that were previously created.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -988,6 +947,7 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             file_ids (Required): [
@@ -1009,8 +969,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of assistants that were previously created along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a list of assistants that were previously created along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listAssistantsWithResponseAsync(RequestOptions requestOptions) {
@@ -1021,52 +980,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of assistants that were previously created.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1081,6 +1005,7 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             file_ids (Required): [
@@ -1112,9 +1037,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Retrieves an existing assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1126,6 +1049,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -1143,8 +1067,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAssistantWithResponseAsync(String assistantId, RequestOptions requestOptions) {
@@ -1155,9 +1078,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Retrieves an existing assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1169,6 +1090,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -1196,9 +1118,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing assistant.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1207,6 +1127,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -1217,9 +1138,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1231,6 +1150,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -1249,8 +1169,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAssistantWithResponseAsync(String assistantId,
@@ -1262,9 +1181,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing assistant.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1273,6 +1190,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -1283,9 +1201,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1297,6 +1213,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -1327,9 +1244,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Deletes an assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1344,8 +1259,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of an assistant deletion operation along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the status of an assistant deletion operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteAssistantWithResponseAsync(String assistantId,
@@ -1357,9 +1271,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Deletes an assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1384,17 +1296,13 @@ public final class AssistantsClientImpl {
 
     /**
      * Attaches a previously uploaded file to an assistant for use by tools that can read files.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     file_id: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1411,8 +1319,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant, as used by tools that can read files along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return information about a file attached to an assistant, as used by tools that can read files along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createAssistantFileWithResponseAsync(String assistantId, BinaryData request,
@@ -1424,17 +1331,13 @@ public final class AssistantsClientImpl {
 
     /**
      * Attaches a previously uploaded file to an assistant for use by tools that can read files.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     file_id: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1451,8 +1354,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant, as used by tools that can read files along with
-     * {@link Response}.
+     * @return information about a file attached to an assistant, as used by tools that can read files along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createAssistantFileWithResponse(String assistantId, BinaryData request,
@@ -1464,52 +1366,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of files attached to a specific assistant, as used by tools that can read files.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1533,8 +1400,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of files attached to a specific assistant, as used by tools that can read files along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listAssistantFilesWithResponseAsync(String assistantId,
@@ -1546,52 +1412,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of files attached to a specific assistant, as used by tools that can read files.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -1615,8 +1446,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of files attached to a specific assistant, as used by tools that can read files along with
-     * {@link Response}.
+     * @return a list of files attached to a specific assistant, as used by tools that can read files along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listAssistantFilesWithResponse(String assistantId, RequestOptions requestOptions) {
@@ -1626,9 +1456,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Retrieves a file attached to an assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1645,8 +1473,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant, as used by tools that can read files along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return information about a file attached to an assistant, as used by tools that can read files along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAssistantFileWithResponseAsync(String assistantId, String fileId,
@@ -1658,9 +1485,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Retrieves a file attached to an assistant.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1677,8 +1502,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attached to an assistant, as used by tools that can read files along with
-     * {@link Response}.
+     * @return information about a file attached to an assistant, as used by tools that can read files along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAssistantFileWithResponse(String assistantId, String fileId,
@@ -1691,9 +1515,7 @@ public final class AssistantsClientImpl {
     /**
      * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
      * files.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1709,8 +1531,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of an assistant file deletion operation along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return the status of an assistant file deletion operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteAssistantFileWithResponseAsync(String assistantId, String fileId,
@@ -1723,9 +1544,7 @@ public final class AssistantsClientImpl {
     /**
      * Unlinks a previously attached file from an assistant, rendering it unavailable for use by tools that can read
      * files.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1753,9 +1572,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     messages (Optional): [
@@ -1775,9 +1592,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1795,8 +1610,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a single thread associated with an assistant along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return information about a single thread associated with an assistant along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createThreadWithResponseAsync(BinaryData assistantThreadCreationOptions,
@@ -1808,9 +1622,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new thread. Threads contain messages and can be run by assistants.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     messages (Optional): [
@@ -1830,9 +1642,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1862,9 +1672,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets information about an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1882,8 +1690,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about an existing thread along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return information about an existing thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
@@ -1894,9 +1701,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets information about an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1924,9 +1729,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -1934,9 +1737,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1955,8 +1756,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a single thread associated with an assistant along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return information about a single thread associated with an assistant along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateThreadWithResponseAsync(String threadId, BinaryData request,
@@ -1968,9 +1768,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -1978,9 +1776,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2010,9 +1806,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Deletes an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2027,8 +1821,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the status of a thread deletion operation along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return the status of a thread deletion operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteThreadWithResponseAsync(String threadId, RequestOptions requestOptions) {
@@ -2039,9 +1832,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Deletes an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2066,9 +1857,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new message on a specified thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     role: String(user/assistant) (Required)
@@ -2081,9 +1870,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2093,6 +1880,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2113,8 +1901,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single, existing message within an assistant thread along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a single, existing message within an assistant thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createMessageWithResponseAsync(String threadId, BinaryData request,
@@ -2126,9 +1913,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new message on a specified thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     role: String(user/assistant) (Required)
@@ -2141,9 +1926,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2153,6 +1936,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2184,52 +1968,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of messages that exist on a thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2242,6 +1991,7 @@ public final class AssistantsClientImpl {
      *             role: String(user/assistant) (Required)
      *             content (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             assistant_id: String (Optional)
@@ -2266,8 +2016,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of messages that exist on a thread along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a list of messages that exist on a thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listMessagesWithResponseAsync(String threadId, RequestOptions requestOptions) {
@@ -2278,52 +2027,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of messages that exist on a thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2336,6 +2050,7 @@ public final class AssistantsClientImpl {
      *             role: String(user/assistant) (Required)
      *             content (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             assistant_id: String (Optional)
@@ -2370,9 +2085,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets an existing message from an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2382,6 +2095,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2402,8 +2116,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an existing message from an existing thread along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return an existing message from an existing thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMessageWithResponseAsync(String threadId, String messageId,
@@ -2415,9 +2128,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets an existing message from an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2427,6 +2138,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2458,9 +2170,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing message on an existing thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -2468,9 +2178,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2480,6 +2188,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2501,8 +2210,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a single, existing message within an assistant thread along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return a single, existing message within an assistant thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateMessageWithResponseAsync(String threadId, String messageId,
@@ -2514,9 +2222,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing message on an existing thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -2524,9 +2230,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2536,6 +2240,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2569,52 +2274,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of previously uploaded files associated with a message from a thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2639,8 +2309,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of previously uploaded files associated with a message from a thread along with {@link Response}
-     * on successful completion of {@link Mono}.
+     * @return a list of previously uploaded files associated with a message from a thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listMessageFilesWithResponseAsync(String threadId, String messageId,
@@ -2652,52 +2321,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of previously uploaded files associated with a message from a thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -2734,9 +2368,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets information about a file attachment to a message within a thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2754,8 +2386,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return information about a file attachment to a message within a thread along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return information about a file attachment to a message within a thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getMessageFileWithResponseAsync(String threadId, String messageId, String fileId,
@@ -2767,9 +2398,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets information about a file attachment to a message within a thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2799,9 +2428,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new run for an assistant thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -2810,6 +2437,7 @@ public final class AssistantsClientImpl {
      *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -2817,9 +2445,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2828,6 +2454,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -2837,6 +2464,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -2861,8 +2489,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createRunWithResponseAsync(String threadId, BinaryData createRunOptions,
@@ -2874,9 +2501,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new run for an assistant thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -2885,6 +2510,7 @@ public final class AssistantsClientImpl {
      *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -2892,9 +2518,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -2903,6 +2527,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -2912,6 +2537,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -2948,52 +2574,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of runs for a specified thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -3005,6 +2596,7 @@ public final class AssistantsClientImpl {
      *             assistant_id: String (Required)
      *             status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *             required_action (Optional): {
+     *                 type: String (Optional)
      *             }
      *             last_error (Required): {
      *                 code: String (Required)
@@ -3014,6 +2606,7 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             file_ids (Required): [
@@ -3042,8 +2635,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of runs for a specified thread along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a list of runs for a specified thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRunsWithResponseAsync(String threadId, RequestOptions requestOptions) {
@@ -3054,52 +2646,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of runs for a specified thread.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -3111,6 +2668,7 @@ public final class AssistantsClientImpl {
      *             assistant_id: String (Required)
      *             status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *             required_action (Optional): {
+     *                 type: String (Optional)
      *             }
      *             last_error (Required): {
      *                 code: String (Required)
@@ -3120,6 +2678,7 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             file_ids (Required): [
@@ -3158,9 +2717,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets an existing run from an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3169,6 +2726,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3178,6 +2736,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3202,8 +2761,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return an existing run from an existing thread along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return an existing run from an existing thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRunWithResponseAsync(String threadId, String runId,
@@ -3215,9 +2773,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets an existing run from an existing thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3226,6 +2782,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3235,6 +2792,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3269,9 +2827,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing thread run.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -3279,9 +2835,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3290,6 +2844,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3299,6 +2854,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3324,8 +2880,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateRunWithResponseAsync(String threadId, String runId, BinaryData request,
@@ -3337,9 +2892,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing thread run.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     metadata (Optional): {
@@ -3347,9 +2900,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3358,6 +2909,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3367,6 +2919,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3403,11 +2956,8 @@ public final class AssistantsClientImpl {
     }
 
     /**
-     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
-     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     tool_outputs (Required): [
@@ -3418,9 +2968,7 @@ public final class AssistantsClientImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3429,6 +2977,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3438,6 +2987,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3463,8 +3013,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> submitToolOutputsToRunWithResponseAsync(String threadId, String runId,
@@ -3475,11 +3024,8 @@ public final class AssistantsClientImpl {
     }
 
     /**
-     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a
-     * status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * Submits outputs from tools as requested by tool calls in a run. Runs that need submitted tool outputs will have a status of 'requires_action' with a required_action.type of 'submit_tool_outputs'.
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     tool_outputs (Required): [
@@ -3490,9 +3036,7 @@ public final class AssistantsClientImpl {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3501,6 +3045,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3510,6 +3055,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3547,9 +3093,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Cancels a run of an in progress thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3558,6 +3102,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3567,6 +3112,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3591,8 +3137,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelRunWithResponseAsync(String threadId, String runId,
@@ -3604,9 +3149,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Cancels a run of an in progress thread.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3615,6 +3158,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3624,6 +3168,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3658,9 +3203,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new assistant thread and immediately starts a run using that new thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -3685,6 +3228,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -3692,9 +3236,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3703,6 +3245,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3712,6 +3255,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3735,8 +3279,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return data representing a single evaluation run of an assistant thread along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createThreadAndRunWithResponseAsync(BinaryData createAndRunThreadOptions,
@@ -3748,9 +3291,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Creates a new assistant thread and immediately starts a run using that new thread.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     assistant_id: String (Required)
@@ -3775,6 +3316,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -3782,9 +3324,7 @@ public final class AssistantsClientImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3793,6 +3333,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3802,6 +3343,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3837,9 +3379,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a single run step from a thread run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3850,6 +3390,7 @@ public final class AssistantsClientImpl {
      *     run_id: String (Required)
      *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Optional)
      *     }
      *     last_error (Required): {
      *         code: String(server_error/rate_limit_exceeded) (Required)
@@ -3886,9 +3427,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a single run step from a thread run.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -3899,6 +3438,7 @@ public final class AssistantsClientImpl {
      *     run_id: String (Required)
      *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *     step_details (Required): {
+     *         type: String(message_creation/tool_calls) (Optional)
      *     }
      *     last_error (Required): {
      *         code: String(server_error/rate_limit_exceeded) (Required)
@@ -3935,52 +3475,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of run steps from a thread run.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -3994,6 +3499,7 @@ public final class AssistantsClientImpl {
      *             run_id: String (Required)
      *             status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *             step_details (Required): {
+     *                 type: String(message_creation/tool_calls) (Optional)
      *             }
      *             last_error (Required): {
      *                 code: String(server_error/rate_limit_exceeded) (Required)
@@ -4022,8 +3528,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a list of run steps from a thread run along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a list of run steps from a thread run along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRunStepsWithResponseAsync(String threadId, String runId,
@@ -4035,52 +3540,17 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of run steps from a thread run.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>limit</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is
-     * 20.</td>
-     * </tr>
-     * <tr>
-     * <td>order</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order.
-     * Allowed values: "asc", "desc".</td>
-     * </tr>
-     * <tr>
-     * <td>after</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * after=obj_foo in order to fetch the next page of the list.</td>
-     * </tr>
-     * <tr>
-     * <td>before</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if
-     * you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include
-     * before=obj_foo in order to fetch the previous page of the list.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range between 1 and 100, and the default is 20.</td></tr>
+     *     <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     *     <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     *     <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the list.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4094,6 +3564,7 @@ public final class AssistantsClientImpl {
      *             run_id: String (Required)
      *             status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *             step_details (Required): {
+     *                 type: String(message_creation/tool_calls) (Optional)
      *             }
      *             last_error (Required): {
      *                 code: String(server_error/rate_limit_exceeded) (Required)
@@ -4132,29 +3603,14 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of previously uploaded files.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>purpose</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A value that, when provided, limits list results to files matching the corresponding purpose. Allowed values:
-     * "fine-tune", "fine-tune-results", "assistants", "assistants_output".</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>purpose</td><td>String</td><td>No</td><td>A value that, when provided, limits list results to files matching the corresponding purpose. Allowed values: "fine-tune", "fine-tune-results", "assistants", "assistants_output".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4186,29 +3642,14 @@ public final class AssistantsClientImpl {
 
     /**
      * Gets a list of previously uploaded files.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>purpose</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>A value that, when provided, limits list results to files matching the corresponding purpose. Allowed values:
-     * "fine-tune", "fine-tune-results", "assistants", "assistants_output".</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>purpose</td><td>String</td><td>No</td><td>A value that, when provided, limits list results to files matching the corresponding purpose. Allowed values: "fine-tune", "fine-tune-results", "assistants", "assistants_output".</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4240,9 +3681,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Uploads a file for use by other operations.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4260,8 +3699,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData request, RequestOptions requestOptions) {
@@ -4273,9 +3711,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Uploads a file for use by other operations.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4304,9 +3740,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Delete a previously uploaded file.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -4321,8 +3755,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return a status response from a file deletion operation along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return a status response from a file deletion operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
@@ -4333,9 +3766,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Delete a previously uploaded file.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -4360,9 +3791,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Returns information about a specific file. Does not retrieve file content.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)
@@ -4380,8 +3809,7 @@ public final class AssistantsClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return represents an assistant that can call the model and use tools along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileWithResponseAsync(String fileId, RequestOptions requestOptions) {
@@ -4392,9 +3820,7 @@ public final class AssistantsClientImpl {
 
     /**
      * Returns information about a specific file. Does not retrieve file content.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     object: String (Required)

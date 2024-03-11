@@ -5,7 +5,6 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class SslCertAssetValidationType extends ExpandableStringEnum<SslCe
      * @return the corresponding SslCertAssetValidationType.
      */
     @Generated
-    @JsonCreator
     public static SslCertAssetValidationType fromString(String name) {
         return fromString(name, SslCertAssetValidationType.class);
     }

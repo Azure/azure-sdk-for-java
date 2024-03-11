@@ -63,8 +63,7 @@ public final class DiscoveriesImpl {
     }
 
     /**
-     * The interface defining all the services for DataMapClientDiscoveries to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for DataMapClientDiscoveries to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}/datamap/api")
     @ServiceInterface(name = "DataMapClientDiscove")
@@ -134,9 +133,7 @@ public final class DiscoveriesImpl {
 
     /**
      * Get data using search.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -164,15 +161,13 @@ public final class DiscoveriesImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     &#64;search.count: Integer (Optional)
-     *     &#64;search.count.approximate: Boolean (Optional)
+     *     @search.count: Integer (Optional)
+     *     @search.count.approximate: Boolean (Optional)
      *     continuationToken: String (Optional)
-     *     &#64;search.facets (Optional): {
+     *     @search.facets (Optional): {
      *         entityType (Optional): [
      *              (Optional){
      *                 count: Integer (Optional)
@@ -209,7 +204,7 @@ public final class DiscoveriesImpl {
      *     }
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
+     *             @search.score: Double (Optional)
      *             @search.highlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
@@ -289,9 +284,7 @@ public final class DiscoveriesImpl {
 
     /**
      * Get data using search.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -319,15 +312,13 @@ public final class DiscoveriesImpl {
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
-     *     &#64;search.count: Integer (Optional)
-     *     &#64;search.count.approximate: Boolean (Optional)
+     *     @search.count: Integer (Optional)
+     *     @search.count.approximate: Boolean (Optional)
      *     continuationToken: String (Optional)
-     *     &#64;search.facets (Optional): {
+     *     @search.facets (Optional): {
      *         entityType (Optional): [
      *              (Optional){
      *                 count: Integer (Optional)
@@ -364,7 +355,7 @@ public final class DiscoveriesImpl {
      *     }
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
+     *             @search.score: Double (Optional)
      *             @search.highlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
@@ -444,9 +435,7 @@ public final class DiscoveriesImpl {
 
     /**
      * Get search suggestions by query criteria.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -454,14 +443,12 @@ public final class DiscoveriesImpl {
      *     filter: Object (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
+     *             @search.score: Double (Optional)
      *             @search.text: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
@@ -514,8 +501,7 @@ public final class DiscoveriesImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return search suggestions by query criteria along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return search suggestions by query criteria along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> suggestWithResponseAsync(BinaryData suggestOptions,
@@ -527,9 +513,7 @@ public final class DiscoveriesImpl {
 
     /**
      * Get search suggestions by query criteria.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -537,14 +521,12 @@ public final class DiscoveriesImpl {
      *     filter: Object (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     value (Optional): [
      *          (Optional){
-     *             &#64;search.score: Double (Optional)
+     *             @search.score: Double (Optional)
      *             @search.text: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
@@ -608,9 +590,7 @@ public final class DiscoveriesImpl {
 
     /**
      * Get auto complete options.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -618,9 +598,7 @@ public final class DiscoveriesImpl {
      *     filter: Object (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     value (Optional): [
@@ -650,9 +628,7 @@ public final class DiscoveriesImpl {
 
     /**
      * Get auto complete options.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     keywords: String (Optional)
@@ -660,9 +636,7 @@ public final class DiscoveriesImpl {
      *     filter: Object (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     value (Optional): [

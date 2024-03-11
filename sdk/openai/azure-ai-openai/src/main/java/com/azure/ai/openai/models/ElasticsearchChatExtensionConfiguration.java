@@ -5,17 +5,15 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * A specific representation of configurable options for Elasticsearch when using it as an Azure OpenAI chat
  * extension.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("elasticsearch")
 @Immutable
 public final class ElasticsearchChatExtensionConfiguration extends AzureChatExtensionConfiguration {
 
@@ -23,8 +21,7 @@ public final class ElasticsearchChatExtensionConfiguration extends AzureChatExte
      * The parameters to use when configuring Elasticsearch®.
      */
     @Generated
-    @JsonProperty(value = "parameters")
-    private ElasticsearchChatExtensionParameters parameters;
+    private final ElasticsearchChatExtensionParameters parameters;
 
     /**
      * Get the parameters property: The parameters to use when configuring Elasticsearch®.
@@ -42,9 +39,51 @@ public final class ElasticsearchChatExtensionConfiguration extends AzureChatExte
      * @param parameters the parameters value to set.
      */
     @Generated
-    @JsonCreator
-    public ElasticsearchChatExtensionConfiguration(
-        @JsonProperty(value = "parameters") ElasticsearchChatExtensionParameters parameters) {
+    public ElasticsearchChatExtensionConfiguration(ElasticsearchChatExtensionParameters parameters) {
+        setType(AzureChatExtensionType.ELASTICSEARCH);
         this.parameters = parameters;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", getType() == null ? null : getType().toString());
+        jsonWriter.writeJsonField("parameters", this.parameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ElasticsearchChatExtensionConfiguration from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ElasticsearchChatExtensionConfiguration if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ElasticsearchChatExtensionConfiguration.
+     */
+    @Generated
+    public static ElasticsearchChatExtensionConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureChatExtensionType type = AzureChatExtensionType.ELASTICSEARCH;
+            ElasticsearchChatExtensionParameters parameters = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("type".equals(fieldName)) {
+                    type = AzureChatExtensionType.fromString(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    parameters = ElasticsearchChatExtensionParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ElasticsearchChatExtensionConfiguration deserializedElasticsearchChatExtensionConfiguration
+                = new ElasticsearchChatExtensionConfiguration(parameters);
+            deserializedElasticsearchChatExtensionConfiguration.setType(type);
+            return deserializedElasticsearchChatExtensionConfiguration;
+        });
     }
 }

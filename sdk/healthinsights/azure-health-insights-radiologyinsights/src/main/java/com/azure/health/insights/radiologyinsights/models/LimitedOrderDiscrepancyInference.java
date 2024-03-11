@@ -5,18 +5,15 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * A limited order discrepancy occurs when there is a limited order, but all body parts and measurements that are
- * needed for a complete order are present in the document.
+ * A limited order discrepancy occurs when there is a limited order, but all body parts and measurements that are needed for a complete order are present in the document.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("limitedOrderDiscrepancy")
 @Immutable
 public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
 
@@ -24,21 +21,18 @@ public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
      * Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
      */
     @Generated
-    @JsonProperty(value = "orderType")
-    private FhirR4CodeableConcept orderType;
+    private final FhirR4CodeableConcept orderType;
 
     /*
      * List of body parts found in the document : SNOMED CT codes.
      */
     @Generated
-    @JsonProperty(value = "presentBodyParts")
     private List<FhirR4CodeableConcept> presentBodyParts;
 
     /*
      * List of body parts that are measured according to the document : SNOMED CT codes.
      */
     @Generated
-    @JsonProperty(value = "presentBodyPartMeasurements")
     private List<FhirR4CodeableConcept> presentBodyPartMeasurements;
 
     /**
@@ -47,14 +41,13 @@ public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
      * @param orderType the orderType value to set.
      */
     @Generated
-    @JsonCreator
-    private LimitedOrderDiscrepancyInference(@JsonProperty(value = "orderType") FhirR4CodeableConcept orderType) {
+    private LimitedOrderDiscrepancyInference(FhirR4CodeableConcept orderType) {
+        setKind(RadiologyInsightsInferenceType.LIMITED_ORDER_DISCREPANCY);
         this.orderType = orderType;
     }
 
     /**
-     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or
-     * breast.
+     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
      *
      * @return the orderType value.
      */
@@ -74,13 +67,72 @@ public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the presentBodyPartMeasurements property: List of body parts that are measured according to the document :
-     * SNOMED CT codes.
+     * Get the presentBodyPartMeasurements property: List of body parts that are measured according to the document : SNOMED CT codes.
      *
      * @return the presentBodyPartMeasurements value.
      */
     @Generated
     public List<FhirR4CodeableConcept> getPresentBodyPartMeasurements() {
         return this.presentBodyPartMeasurements;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("orderType", this.orderType);
+        jsonWriter.writeArrayField("presentBodyParts", this.presentBodyParts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("presentBodyPartMeasurements", this.presentBodyPartMeasurements,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LimitedOrderDiscrepancyInference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LimitedOrderDiscrepancyInference if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LimitedOrderDiscrepancyInference.
+     */
+    @Generated
+    public static LimitedOrderDiscrepancyInference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.LIMITED_ORDER_DISCREPANCY;
+            List<FhirR4Extension> extension = null;
+            FhirR4CodeableConcept orderType = null;
+            List<FhirR4CodeableConcept> presentBodyParts = null;
+            List<FhirR4CodeableConcept> presentBodyPartMeasurements = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("kind".equals(fieldName)) {
+                    kind = RadiologyInsightsInferenceType.fromString(reader.getString());
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("orderType".equals(fieldName)) {
+                    orderType = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("presentBodyParts".equals(fieldName)) {
+                    presentBodyParts = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else if ("presentBodyPartMeasurements".equals(fieldName)) {
+                    presentBodyPartMeasurements = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            LimitedOrderDiscrepancyInference deserializedLimitedOrderDiscrepancyInference
+                = new LimitedOrderDiscrepancyInference(orderType);
+            deserializedLimitedOrderDiscrepancyInference.setKind(kind);
+            deserializedLimitedOrderDiscrepancyInference.setExtension(extension);
+            deserializedLimitedOrderDiscrepancyInference.presentBodyParts = presentBodyParts;
+            deserializedLimitedOrderDiscrepancyInference.presentBodyPartMeasurements = presentBodyPartMeasurements;
+            return deserializedLimitedOrderDiscrepancyInference;
+        });
     }
 }

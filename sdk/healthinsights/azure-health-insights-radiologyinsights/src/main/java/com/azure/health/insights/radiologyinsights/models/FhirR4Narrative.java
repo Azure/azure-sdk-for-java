@@ -5,14 +5,14 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * Any resource that is a [DomainResource](https://www.hl7.org/fhir/domainresource.html) may include a human-readable
- * narrative that contains a summary of the resource and may be used to represent the content of the resource to a
- * human.
+ * Any resource that is a [DomainResource](https://www.hl7.org/fhir/domainresource.html) may include a human-readable narrative that contains a summary of the resource and may be used to represent the content of the resource to a human.
  * Based on [FHIR Narrative](https://www.hl7.org/fhir/R4/narrative.html#Narrative).
  */
 @Fluent
@@ -22,15 +22,13 @@ public final class FhirR4Narrative extends FhirR4Element {
      * generated, extensions, additional, empty
      */
     @Generated
-    @JsonProperty(value = "status")
-    private String status;
+    private final String status;
 
     /*
      * xhtml
      */
     @Generated
-    @JsonProperty(value = "div")
-    private String div;
+    private final String div;
 
     /**
      * Creates an instance of FhirR4Narrative class.
@@ -39,8 +37,7 @@ public final class FhirR4Narrative extends FhirR4Element {
      * @param div the div value to set.
      */
     @Generated
-    @JsonCreator
-    public FhirR4Narrative(@JsonProperty(value = "status") String status, @JsonProperty(value = "div") String div) {
+    public FhirR4Narrative(String status, String div) {
         this.status = status;
         this.div = div;
     }
@@ -83,5 +80,56 @@ public final class FhirR4Narrative extends FhirR4Element {
     public FhirR4Narrative setExtension(List<FhirR4Extension> extension) {
         super.setExtension(extension);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("div", this.div);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4Narrative from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4Narrative if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirR4Narrative.
+     */
+    @Generated
+    public static FhirR4Narrative fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            List<FhirR4Extension> extension = null;
+            String status = null;
+            String div = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("status".equals(fieldName)) {
+                    status = reader.getString();
+                } else if ("div".equals(fieldName)) {
+                    div = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FhirR4Narrative deserializedFhirR4Narrative = new FhirR4Narrative(status, div);
+            deserializedFhirR4Narrative.setId(id);
+            deserializedFhirR4Narrative.setExtension(extension);
+            return deserializedFhirR4Narrative;
+        });
     }
 }

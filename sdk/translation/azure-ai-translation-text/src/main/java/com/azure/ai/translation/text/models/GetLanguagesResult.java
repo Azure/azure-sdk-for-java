@@ -5,34 +5,35 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Response for the languages API.
  */
 @Immutable
-public final class GetLanguagesResult {
+public final class GetLanguagesResult implements JsonSerializable<GetLanguagesResult> {
 
     /*
      * Languages that support translate API.
      */
     @Generated
-    @JsonProperty(value = "translation")
     private Map<String, TranslationLanguage> translation;
 
     /*
      * Languages that support transliteration API.
      */
     @Generated
-    @JsonProperty(value = "transliteration")
     private Map<String, TransliterationLanguage> transliteration;
 
     /*
      * Languages that support dictionary API.
      */
     @Generated
-    @JsonProperty(value = "dictionary")
     private Map<String, SourceDictionaryLanguage> dictionary;
 
     /**
@@ -70,5 +71,53 @@ public final class GetLanguagesResult {
     @Generated
     public Map<String, SourceDictionaryLanguage> getDictionary() {
         return this.dictionary;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("translation", this.translation, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("transliteration", this.transliteration,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("dictionary", this.dictionary, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetLanguagesResult from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetLanguagesResult if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetLanguagesResult.
+     */
+    @Generated
+    public static GetLanguagesResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetLanguagesResult deserializedGetLanguagesResult = new GetLanguagesResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("translation".equals(fieldName)) {
+                    Map<String, TranslationLanguage> translation
+                        = reader.readMap(reader1 -> TranslationLanguage.fromJson(reader1));
+                    deserializedGetLanguagesResult.translation = translation;
+                } else if ("transliteration".equals(fieldName)) {
+                    Map<String, TransliterationLanguage> transliteration
+                        = reader.readMap(reader1 -> TransliterationLanguage.fromJson(reader1));
+                    deserializedGetLanguagesResult.transliteration = transliteration;
+                } else if ("dictionary".equals(fieldName)) {
+                    Map<String, SourceDictionaryLanguage> dictionary
+                        = reader.readMap(reader1 -> SourceDictionaryLanguage.fromJson(reader1));
+                    deserializedGetLanguagesResult.dictionary = dictionary;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedGetLanguagesResult;
+        });
     }
 }

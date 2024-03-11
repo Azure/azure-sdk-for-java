@@ -5,16 +5,14 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The message template's video value information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("video")
 @Fluent
 public final class MessageTemplateVideo extends MessageTemplateValue {
 
@@ -22,21 +20,18 @@ public final class MessageTemplateVideo extends MessageTemplateValue {
      * The (public) URL of the media.
      */
     @Generated
-    @JsonProperty(value = "url")
-    private String url;
+    private final String url;
 
     /*
      * The [optional] caption of the media object.
      */
     @Generated
-    @JsonProperty(value = "caption")
     private String caption;
 
     /*
      * The [optional] filename of the media file.
      */
     @Generated
-    @JsonProperty(value = "fileName")
     private String fileName;
 
     /**
@@ -46,10 +41,9 @@ public final class MessageTemplateVideo extends MessageTemplateValue {
      * @param url the url value to set.
      */
     @Generated
-    @JsonCreator
-    public MessageTemplateVideo(@JsonProperty(value = "name") String refValue,
-        @JsonProperty(value = "url") String url) {
+    public MessageTemplateVideo(String refValue, String url) {
         super(refValue);
+        setKind(MessageTemplateValueKind.VIDEO);
         this.url = url;
     }
 
@@ -105,5 +99,61 @@ public final class MessageTemplateVideo extends MessageTemplateValue {
     public MessageTemplateVideo setFileName(String fileName) {
         this.fileName = fileName;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getRefValue());
+        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("caption", this.caption);
+        jsonWriter.writeStringField("fileName", this.fileName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageTemplateVideo from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageTemplateVideo if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MessageTemplateVideo.
+     */
+    @Generated
+    public static MessageTemplateVideo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String refValue = null;
+            MessageTemplateValueKind kind = MessageTemplateValueKind.VIDEO;
+            String url = null;
+            String caption = null;
+            String fileName = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    refValue = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    kind = MessageTemplateValueKind.fromString(reader.getString());
+                } else if ("url".equals(fieldName)) {
+                    url = reader.getString();
+                } else if ("caption".equals(fieldName)) {
+                    caption = reader.getString();
+                } else if ("fileName".equals(fieldName)) {
+                    fileName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            MessageTemplateVideo deserializedMessageTemplateVideo = new MessageTemplateVideo(refValue, url);
+            deserializedMessageTemplateVideo.setKind(kind);
+            deserializedMessageTemplateVideo.caption = caption;
+            deserializedMessageTemplateVideo.fileName = fileName;
+            return deserializedMessageTemplateVideo;
+        });
     }
 }

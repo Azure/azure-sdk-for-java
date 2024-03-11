@@ -5,18 +5,15 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * Follow-up recommendations offer guidance to healthcare providers on managing and monitoring patients based on the
- * findings of imaging studies.
+ * Follow-up recommendations offer guidance to healthcare providers on managing and monitoring patients based on the findings of imaging studies.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("followupRecommendation")
 @Immutable
 public final class FollowupRecommendationInference extends FhirR4Extendible1 {
 
@@ -24,61 +21,49 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      * Date and time are displayed when the procedure is recommended to be done at a specific point in time.
      */
     @Generated
-    @JsonProperty(value = "effectiveDateTime")
     private String effectiveDateTime;
 
     /*
      * The period is shown if a specific period is mentioned, with a start and end date-time.
      */
     @Generated
-    @JsonProperty(value = "effectivePeriod")
     private FhirR4Period effectivePeriod;
 
     /*
      * Findings related to the recommendation.
      */
     @Generated
-    @JsonProperty(value = "findings")
     private List<FhirR4Extendible2> findings;
 
     /*
-     * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional
-     * statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
+     * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
      */
     @Generated
-    @JsonProperty(value = "isConditional")
-    private boolean isConditional;
+    private final boolean isConditional;
 
     /*
-     * The option value indicates whether or not the sentence containing the recommendation includes an optional
-     * statement. Keywords for optional statements include 'recommend', 'consider', and so on.
+     * The option value indicates whether or not the sentence containing the recommendation includes an optional statement. Keywords for optional statements include 'recommend', 'consider', and so on.
      */
     @Generated
-    @JsonProperty(value = "isOption")
-    private boolean isOption;
+    private final boolean isOption;
 
     /*
-     * The guideline value indicates whether or not the recommendation is part of a guideline section that compiles all
-     * recommendations applicable to various findings.
+     * The guideline value indicates whether or not the recommendation is part of a guideline section that compiles all recommendations applicable to various findings.
      */
     @Generated
-    @JsonProperty(value = "isGuideline")
-    private boolean isGuideline;
+    private final boolean isGuideline;
 
     /*
-     * Hedging refers to ambiguous, vague or imprecise language within the sentence of the recommendation. Keywords for
-     * hedging are 'can be','may be',and so on.
+     * Hedging refers to ambiguous, vague or imprecise language within the sentence of the recommendation. Keywords for hedging are 'can be','may be',and so on.
      */
     @Generated
-    @JsonProperty(value = "isHedging")
-    private boolean isHedging;
+    private final boolean isHedging;
 
     /*
      * The procedure recommendation can be a generic procedure or an imaging procedure.
      */
     @Generated
-    @JsonProperty(value = "recommendedProcedure")
-    private ProcedureRecommendation recommendedProcedure;
+    private final ProcedureRecommendation recommendedProcedure;
 
     /**
      * Creates an instance of FollowupRecommendationInference class.
@@ -90,11 +75,9 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
      * @param recommendedProcedure the recommendedProcedure value to set.
      */
     @Generated
-    @JsonCreator
-    private FollowupRecommendationInference(@JsonProperty(value = "isConditional") boolean isConditional,
-        @JsonProperty(value = "isOption") boolean isOption, @JsonProperty(value = "isGuideline") boolean isGuideline,
-        @JsonProperty(value = "isHedging") boolean isHedging,
-        @JsonProperty(value = "recommendedProcedure") ProcedureRecommendation recommendedProcedure) {
+    private FollowupRecommendationInference(boolean isConditional, boolean isOption, boolean isGuideline,
+        boolean isHedging, ProcedureRecommendation recommendedProcedure) {
+        setKind(RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION);
         this.isConditional = isConditional;
         this.isOption = isOption;
         this.isGuideline = isGuideline;
@@ -103,8 +86,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at
-     * a specific point in time.
+     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at a specific point in time.
      *
      * @return the effectiveDateTime value.
      */
@@ -114,8 +96,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the effectivePeriod property: The period is shown if a specific period is mentioned, with a start and end
-     * date-time.
+     * Get the effectivePeriod property: The period is shown if a specific period is mentioned, with a start and end date-time.
      *
      * @return the effectivePeriod value.
      */
@@ -135,9 +116,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isConditional property: The conditional value indicates whether or not the sentence containing the
-     * recommendation includes a conditional statement. Keywords for conditional statements include 'if', 'when',
-     * 'unless', and so on.
+     * Get the isConditional property: The conditional value indicates whether or not the sentence containing the recommendation includes a conditional statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
      *
      * @return the isConditional value.
      */
@@ -147,8 +126,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isOption property: The option value indicates whether or not the sentence containing the recommendation
-     * includes an optional statement. Keywords for optional statements include 'recommend', 'consider', and so on.
+     * Get the isOption property: The option value indicates whether or not the sentence containing the recommendation includes an optional statement. Keywords for optional statements include 'recommend', 'consider', and so on.
      *
      * @return the isOption value.
      */
@@ -158,8 +136,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isGuideline property: The guideline value indicates whether or not the recommendation is part of a
-     * guideline section that compiles all recommendations applicable to various findings.
+     * Get the isGuideline property: The guideline value indicates whether or not the recommendation is part of a guideline section that compiles all recommendations applicable to various findings.
      *
      * @return the isGuideline value.
      */
@@ -169,8 +146,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isHedging property: Hedging refers to ambiguous, vague or imprecise language within the sentence of the
-     * recommendation. Keywords for hedging are 'can be','may be',and so on.
+     * Get the isHedging property: Hedging refers to ambiguous, vague or imprecise language within the sentence of the recommendation. Keywords for hedging are 'can be','may be',and so on.
      *
      * @return the isHedging value.
      */
@@ -180,13 +156,92 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the recommendedProcedure property: The procedure recommendation can be a generic procedure or an imaging
-     * procedure.
+     * Get the recommendedProcedure property: The procedure recommendation can be a generic procedure or an imaging procedure.
      *
      * @return the recommendedProcedure value.
      */
     @Generated
     public ProcedureRecommendation getRecommendedProcedure() {
         return this.recommendedProcedure;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("isConditional", this.isConditional);
+        jsonWriter.writeBooleanField("isOption", this.isOption);
+        jsonWriter.writeBooleanField("isGuideline", this.isGuideline);
+        jsonWriter.writeBooleanField("isHedging", this.isHedging);
+        jsonWriter.writeJsonField("recommendedProcedure", this.recommendedProcedure);
+        jsonWriter.writeStringField("effectiveDateTime", this.effectiveDateTime);
+        jsonWriter.writeJsonField("effectivePeriod", this.effectivePeriod);
+        jsonWriter.writeArrayField("findings", this.findings, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FollowupRecommendationInference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FollowupRecommendationInference if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FollowupRecommendationInference.
+     */
+    @Generated
+    public static FollowupRecommendationInference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION;
+            List<FhirR4Extension> extension = null;
+            boolean isConditional = false;
+            boolean isOption = false;
+            boolean isGuideline = false;
+            boolean isHedging = false;
+            ProcedureRecommendation recommendedProcedure = null;
+            String effectiveDateTime = null;
+            FhirR4Period effectivePeriod = null;
+            List<FhirR4Extendible2> findings = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("kind".equals(fieldName)) {
+                    kind = RadiologyInsightsInferenceType.fromString(reader.getString());
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("isConditional".equals(fieldName)) {
+                    isConditional = reader.getBoolean();
+                } else if ("isOption".equals(fieldName)) {
+                    isOption = reader.getBoolean();
+                } else if ("isGuideline".equals(fieldName)) {
+                    isGuideline = reader.getBoolean();
+                } else if ("isHedging".equals(fieldName)) {
+                    isHedging = reader.getBoolean();
+                } else if ("recommendedProcedure".equals(fieldName)) {
+                    recommendedProcedure = ProcedureRecommendation.fromJson(reader);
+                } else if ("effectiveDateTime".equals(fieldName)) {
+                    effectiveDateTime = reader.getString();
+                } else if ("effectivePeriod".equals(fieldName)) {
+                    effectivePeriod = FhirR4Period.fromJson(reader);
+                } else if ("findings".equals(fieldName)) {
+                    findings = reader.readArray(reader1 -> FhirR4Extendible2.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            FollowupRecommendationInference deserializedFollowupRecommendationInference
+                = new FollowupRecommendationInference(isConditional, isOption, isGuideline, isHedging,
+                    recommendedProcedure);
+            deserializedFollowupRecommendationInference.setKind(kind);
+            deserializedFollowupRecommendationInference.setExtension(extension);
+            deserializedFollowupRecommendationInference.effectiveDateTime = effectiveDateTime;
+            deserializedFollowupRecommendationInference.effectivePeriod = effectivePeriod;
+            deserializedFollowupRecommendationInference.findings = findings;
+            return deserializedFollowupRecommendationInference;
+        });
     }
 }

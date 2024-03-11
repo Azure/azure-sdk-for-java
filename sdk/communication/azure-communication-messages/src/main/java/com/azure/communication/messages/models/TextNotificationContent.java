@@ -5,17 +5,15 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A request to send a text notification.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("text")
 @Immutable
 public final class TextNotificationContent extends NotificationContent {
 
@@ -23,8 +21,7 @@ public final class TextNotificationContent extends NotificationContent {
      * Message content.
      */
     @Generated
-    @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /**
      * Creates an instance of TextNotificationContent class.
@@ -34,10 +31,9 @@ public final class TextNotificationContent extends NotificationContent {
      * @param content the content value to set.
      */
     @Generated
-    @JsonCreator
-    public TextNotificationContent(@JsonProperty(value = "channelRegistrationId") String channelRegistrationId,
-        @JsonProperty(value = "to") List<String> to, @JsonProperty(value = "content") String content) {
+    public TextNotificationContent(String channelRegistrationId, List<String> to, String content) {
         super(channelRegistrationId, to);
+        setKind(CommunicationMessageKind.TEXT);
         this.content = content;
     }
 
@@ -49,5 +45,56 @@ public final class TextNotificationContent extends NotificationContent {
     @Generated
     public String getContent() {
         return this.content;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("channelRegistrationId", getChannelRegistrationId());
+        jsonWriter.writeArrayField("to", getTo(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeStringField("content", this.content);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TextNotificationContent from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TextNotificationContent if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TextNotificationContent.
+     */
+    @Generated
+    public static TextNotificationContent fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String channelRegistrationId = null;
+            List<String> to = null;
+            CommunicationMessageKind kind = CommunicationMessageKind.TEXT;
+            String content = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("channelRegistrationId".equals(fieldName)) {
+                    channelRegistrationId = reader.getString();
+                } else if ("to".equals(fieldName)) {
+                    to = reader.readArray(reader1 -> reader1.getString());
+                } else if ("kind".equals(fieldName)) {
+                    kind = CommunicationMessageKind.fromString(reader.getString());
+                } else if ("content".equals(fieldName)) {
+                    content = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            TextNotificationContent deserializedTextNotificationContent
+                = new TextNotificationContent(channelRegistrationId, to, content);
+            deserializedTextNotificationContent.setKind(kind);
+            return deserializedTextNotificationContent;
+        });
     }
 }

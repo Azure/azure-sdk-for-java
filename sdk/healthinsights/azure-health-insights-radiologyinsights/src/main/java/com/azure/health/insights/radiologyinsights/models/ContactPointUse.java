@@ -5,12 +5,11 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * Contact Point Use
- * See: http://hl7.org/fhir/ValueSet/contact-point-use.
+ * See: 	http://hl7.org/fhir/ValueSet/contact-point-use.
  */
 public final class ContactPointUse extends ExpandableStringEnum<ContactPointUse> {
 
@@ -61,7 +60,6 @@ public final class ContactPointUse extends ExpandableStringEnum<ContactPointUse>
      * @return the corresponding ContactPointUse.
      */
     @Generated
-    @JsonCreator
     public static ContactPointUse fromString(String name) {
         return fromString(name, ContactPointUse.class);
     }

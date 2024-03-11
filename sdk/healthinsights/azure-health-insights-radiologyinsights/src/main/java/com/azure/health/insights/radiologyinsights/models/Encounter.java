@@ -5,36 +5,35 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * visit/encounter information.
  */
 @Fluent
-public final class Encounter {
+public final class Encounter implements JsonSerializable<Encounter> {
 
     /*
      * The id of the visit.
      */
     @Generated
-    @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * Time period of the visit.
-     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the
-     * discharge time.
+     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the discharge time.
      */
     @Generated
-    @JsonProperty(value = "period")
     private TimePeriod period;
 
     /*
      * The class of the encounter.
      */
     @Generated
-    @JsonProperty(value = "class")
     private EncounterClass classProperty;
 
     /**
@@ -43,8 +42,7 @@ public final class Encounter {
      * @param id the id value to set.
      */
     @Generated
-    @JsonCreator
-    public Encounter(@JsonProperty(value = "id") String id) {
+    public Encounter(String id) {
         this.id = id;
     }
 
@@ -60,8 +58,7 @@ public final class Encounter {
 
     /**
      * Get the period property: Time period of the visit.
-     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the
-     * discharge time.
+     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the discharge time.
      *
      * @return the period value.
      */
@@ -72,8 +69,7 @@ public final class Encounter {
 
     /**
      * Set the period property: Time period of the visit.
-     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the
-     * discharge time.
+     * In case of admission, use timePeriod.start to indicate the admission time and timePeriod.end to indicate the discharge time.
      *
      * @param period the period value to set.
      * @return the Encounter object itself.
@@ -104,5 +100,52 @@ public final class Encounter {
     public Encounter setClassProperty(EncounterClass classProperty) {
         this.classProperty = classProperty;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("period", this.period);
+        jsonWriter.writeStringField("class", this.classProperty == null ? null : this.classProperty.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Encounter from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Encounter if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Encounter.
+     */
+    @Generated
+    public static Encounter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            TimePeriod period = null;
+            EncounterClass classProperty = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("period".equals(fieldName)) {
+                    period = TimePeriod.fromJson(reader);
+                } else if ("class".equals(fieldName)) {
+                    classProperty = EncounterClass.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            Encounter deserializedEncounter = new Encounter(id);
+            deserializedEncounter.period = period;
+            deserializedEncounter.classProperty = classProperty;
+            return deserializedEncounter;
+        });
     }
 }

@@ -5,7 +5,6 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,13 +13,13 @@ import java.util.Collection;
 public final class ScoringRuleParameterSelector extends ExpandableStringEnum<ScoringRuleParameterSelector> {
 
     /**
-     * Parameter to add job labels to scoring payload. Property is sent as `job`.
+     * Parameter to add job labels to scoring payload.  Property is sent as `job`.
      */
     @Generated
     public static final ScoringRuleParameterSelector JOB_LABELS = fromString("jobLabels");
 
     /**
-     * Parameter to add worker selectors from a job to scoring payload. Property is sent as `selectors`.
+     * Parameter to add worker selectors from a job to scoring payload.  Property is sent as `selectors`.
      */
     @Generated
     public static final ScoringRuleParameterSelector WORKER_SELECTORS = fromString("workerSelectors");
@@ -42,7 +41,6 @@ public final class ScoringRuleParameterSelector extends ExpandableStringEnum<Sco
      * @return the corresponding ScoringRuleParameterSelector.
      */
     @Generated
-    @JsonCreator
     public static ScoringRuleParameterSelector fromString(String name) {
         return fromString(name, ScoringRuleParameterSelector.class);
     }
