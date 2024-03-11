@@ -519,7 +519,7 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         assertThat(partitionKeyBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilter.PartitionKeyBasedBloomFilterType("pk2", "eastus", 1L))).isFalse();
     }
 
-    @Test(groups = {"multi-group", "multi-master"})
+    @Test(groups = {"multi-region", "multi-master"})
     @AfterClass
     public void afterClass() {
 
