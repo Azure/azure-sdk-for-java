@@ -7,7 +7,6 @@ package com.azure.monitor.query.implementation.metricsbatch.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.Duration;
 import java.util.List;
 
 /**
@@ -28,12 +27,13 @@ public final class MetricResultsResponseValuesItem {
     private String endtime;
 
     /*
-     * The interval (window size) for which the metric data was returned in. Follows the IS8601/RFC3339 duration format
-     * (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from what was originally requested.
-     * This is not present if a metadata request was made.
+     * The interval (window size) for which the metric data was returned in ISO 8601 duration format with a special
+     * case for 'FULL' value that returns single datapoint for entire time span requested (*Examples: PT15M, PT1H, P1D,
+     * FULL*).
+     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      */
     @JsonProperty(value = "interval")
-    private Duration interval;
+    private String interval;
 
     /*
      * The namespace of the metrics been queried
@@ -94,25 +94,27 @@ public final class MetricResultsResponseValuesItem {
     }
 
     /**
-     * Get the interval property: The interval (window size) for which the metric data was returned in. Follows the
-     * IS8601/RFC3339 duration format (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from
-     * what was originally requested. This is not present if a metadata request was made.
+     * Get the interval property: The interval (window size) for which the metric data was returned in ISO 8601
+     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
+     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
+     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      * 
      * @return the interval value.
      */
-    public Duration getInterval() {
+    public String getInterval() {
         return this.interval;
     }
 
     /**
-     * Set the interval property: The interval (window size) for which the metric data was returned in. Follows the
-     * IS8601/RFC3339 duration format (e.g. 'P1D' for 1 day). This may be adjusted in the future and returned back from
-     * what was originally requested. This is not present if a metadata request was made.
+     * Set the interval property: The interval (window size) for which the metric data was returned in ISO 8601
+     * duration format with a special case for 'FULL' value that returns single datapoint for entire time span
+     * requested (*Examples: PT15M, PT1H, P1D, FULL*).
+     * This may be adjusted and different from what was originally requested if AutoAdjustTimegrain=true is specified.
      * 
      * @param interval the interval value to set.
      * @return the MetricResultsResponseValuesItem object itself.
      */
-    public MetricResultsResponseValuesItem setInterval(Duration interval) {
+    public MetricResultsResponseValuesItem setInterval(String interval) {
         this.interval = interval;
         return this;
     }

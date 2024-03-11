@@ -12,7 +12,7 @@ import java.util.List;
  * Metric definition class specifies the metadata for a metric.
  */
 @Fluent
-public final class MetricDefinition {
+public final class SubscriptionScopeMetricDefinition {
     /*
      * Flag to indicate whether the dimension is required.
      */
@@ -65,13 +65,13 @@ public final class MetricDefinition {
      * The primary aggregation type value defining how to use the values for display.
      */
     @JsonProperty(value = "primaryAggregationType")
-    private AggregationType primaryAggregationType;
+    private MetricAggregationType primaryAggregationType;
 
     /*
      * The collection of what aggregation types are supported.
      */
     @JsonProperty(value = "supportedAggregationTypes")
-    private List<AggregationType> supportedAggregationTypes;
+    private List<MetricAggregationType> supportedAggregationTypes;
 
     /*
      * The collection of what aggregation intervals are available to be queried.
@@ -92,9 +92,9 @@ public final class MetricDefinition {
     private List<LocalizableString> dimensions;
 
     /**
-     * Creates an instance of MetricDefinition class.
+     * Creates an instance of SubscriptionScopeMetricDefinition class.
      */
-    public MetricDefinition() {
+    public SubscriptionScopeMetricDefinition() {
     }
 
     /**
@@ -110,9 +110,9 @@ public final class MetricDefinition {
      * Set the isDimensionRequired property: Flag to indicate whether the dimension is required.
      * 
      * @param isDimensionRequired the isDimensionRequired value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setIsDimensionRequired(Boolean isDimensionRequired) {
+    public SubscriptionScopeMetricDefinition setIsDimensionRequired(Boolean isDimensionRequired) {
         this.isDimensionRequired = isDimensionRequired;
         return this;
     }
@@ -130,9 +130,9 @@ public final class MetricDefinition {
      * Set the resourceId property: The resource identifier of the resource that emitted the metric.
      * 
      * @param resourceId the resourceId value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setResourceId(String resourceId) {
+    public SubscriptionScopeMetricDefinition setResourceId(String resourceId) {
         this.resourceId = resourceId;
         return this;
     }
@@ -150,9 +150,9 @@ public final class MetricDefinition {
      * Set the namespace property: The namespace the metric belongs to.
      * 
      * @param namespace the namespace value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setNamespace(String namespace) {
+    public SubscriptionScopeMetricDefinition setNamespace(String namespace) {
         this.namespace = namespace;
         return this;
     }
@@ -170,9 +170,9 @@ public final class MetricDefinition {
      * Set the name property: The name and the display name of the metric, i.e. it is a localizable string.
      * 
      * @param name the name value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setName(LocalizableString name) {
+    public SubscriptionScopeMetricDefinition setName(LocalizableString name) {
         this.name = name;
         return this;
     }
@@ -190,9 +190,9 @@ public final class MetricDefinition {
      * Set the displayDescription property: Detailed description of this metric.
      * 
      * @param displayDescription the displayDescription value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setDisplayDescription(String displayDescription) {
+    public SubscriptionScopeMetricDefinition setDisplayDescription(String displayDescription) {
         this.displayDescription = displayDescription;
         return this;
     }
@@ -210,9 +210,9 @@ public final class MetricDefinition {
      * Set the category property: Custom category name for this metric.
      * 
      * @param category the category value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setCategory(String category) {
+    public SubscriptionScopeMetricDefinition setCategory(String category) {
         this.category = category;
         return this;
     }
@@ -230,9 +230,9 @@ public final class MetricDefinition {
      * Set the metricClass property: The class of the metric.
      * 
      * @param metricClass the metricClass value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setMetricClass(MetricClass metricClass) {
+    public SubscriptionScopeMetricDefinition setMetricClass(MetricClass metricClass) {
         this.metricClass = metricClass;
         return this;
     }
@@ -250,9 +250,9 @@ public final class MetricDefinition {
      * Set the unit property: The unit of the metric.
      * 
      * @param unit the unit value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setUnit(MetricUnit unit) {
+    public SubscriptionScopeMetricDefinition setUnit(MetricUnit unit) {
         this.unit = unit;
         return this;
     }
@@ -263,7 +263,7 @@ public final class MetricDefinition {
      * 
      * @return the primaryAggregationType value.
      */
-    public AggregationType getPrimaryAggregationType() {
+    public MetricAggregationType getPrimaryAggregationType() {
         return this.primaryAggregationType;
     }
 
@@ -272,9 +272,9 @@ public final class MetricDefinition {
      * display.
      * 
      * @param primaryAggregationType the primaryAggregationType value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setPrimaryAggregationType(AggregationType primaryAggregationType) {
+    public SubscriptionScopeMetricDefinition setPrimaryAggregationType(MetricAggregationType primaryAggregationType) {
         this.primaryAggregationType = primaryAggregationType;
         return this;
     }
@@ -284,7 +284,7 @@ public final class MetricDefinition {
      * 
      * @return the supportedAggregationTypes value.
      */
-    public List<AggregationType> getSupportedAggregationTypes() {
+    public List<MetricAggregationType> getSupportedAggregationTypes() {
         return this.supportedAggregationTypes;
     }
 
@@ -292,9 +292,10 @@ public final class MetricDefinition {
      * Set the supportedAggregationTypes property: The collection of what aggregation types are supported.
      * 
      * @param supportedAggregationTypes the supportedAggregationTypes value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setSupportedAggregationTypes(List<AggregationType> supportedAggregationTypes) {
+    public SubscriptionScopeMetricDefinition
+        setSupportedAggregationTypes(List<MetricAggregationType> supportedAggregationTypes) {
         this.supportedAggregationTypes = supportedAggregationTypes;
         return this;
     }
@@ -312,9 +313,9 @@ public final class MetricDefinition {
      * Set the metricAvailabilities property: The collection of what aggregation intervals are available to be queried.
      * 
      * @param metricAvailabilities the metricAvailabilities value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setMetricAvailabilities(List<MetricAvailability> metricAvailabilities) {
+    public SubscriptionScopeMetricDefinition setMetricAvailabilities(List<MetricAvailability> metricAvailabilities) {
         this.metricAvailabilities = metricAvailabilities;
         return this;
     }
@@ -332,9 +333,9 @@ public final class MetricDefinition {
      * Set the id property: The resource identifier of the metric definition.
      * 
      * @param id the id value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setId(String id) {
+    public SubscriptionScopeMetricDefinition setId(String id) {
         this.id = id;
         return this;
     }
@@ -352,9 +353,9 @@ public final class MetricDefinition {
      * Set the dimensions property: The name and the display name of the dimension, i.e. it is a localizable string.
      * 
      * @param dimensions the dimensions value to set.
-     * @return the MetricDefinition object itself.
+     * @return the SubscriptionScopeMetricDefinition object itself.
      */
-    public MetricDefinition setDimensions(List<LocalizableString> dimensions) {
+    public SubscriptionScopeMetricDefinition setDimensions(List<LocalizableString> dimensions) {
         this.dimensions = dimensions;
         return this;
     }

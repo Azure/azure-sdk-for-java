@@ -33,13 +33,13 @@ import static com.azure.monitor.query.implementation.metrics.models.MetricsHelpe
  * This class provides an asynchronous client that contains all the query operations that use batch requests to retrieve
  * metrics for multiple resources.
  */
-@ServiceClient(builder = MetricsBatchQueryClientBuilder.class, isAsync = true)
-public final class MetricsBatchQueryAsyncClient {
-    private static final ClientLogger LOGGER = new ClientLogger(MetricsBatchQueryAsyncClient.class);
+@ServiceClient(builder = MetricsClientBuilder.class, isAsync = true)
+public final class MetricsAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(MetricsAsyncClient.class);
 
     private final AzureMonitorMetricBatch serviceClient;
 
-    MetricsBatchQueryAsyncClient(AzureMonitorMetricBatch azureMonitorMetricBatch) {
+    MetricsAsyncClient(AzureMonitorMetricBatch azureMonitorMetricBatch) {
         this.serviceClient = azureMonitorMetricBatch;
     }
 
@@ -91,7 +91,9 @@ public final class MetricsBatchQueryAsyncClient {
         Integer top = null;
         String orderBy = null;
         String endTime = null;
+        String rollupBy = null;
         if (options != null) {
+            rollupBy = options.getRollupBy();
             filter = options.getFilter();
             granularity = options.getGranularity();
 
@@ -122,7 +124,7 @@ public final class MetricsBatchQueryAsyncClient {
         resourceIdList.setResourceids(resourceUris);
         Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetricsBatches()
             .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
-                endTime, granularity, aggregations, top, orderBy, filter, null);
+                endTime, granularity, aggregations, top, orderBy, filter, rollupBy);
 
 
         return responseMono.map(response -> {
