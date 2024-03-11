@@ -4,6 +4,8 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
+import com.azure.communication.phonenumbers.models.BillingFrequency;
+import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
@@ -335,7 +337,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                     assertNotNull(BillingFrequency.values());
                     assertNotNull(offering.getCost().getCurrencyCode());
                     assertNotNull(offering.getCost().getAmount());
-                    })
+                })
                 .verifyComplete();
     }
 
