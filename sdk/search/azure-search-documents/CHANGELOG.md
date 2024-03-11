@@ -12,9 +12,13 @@
 
 - Replaced `SearchErrorException` with `ErrorResponseException`
 
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` to version `1.4.10`.
+- Upgraded `azure-core-http-netty` to version `1.14.1`.
+- Upgraded `azure-core` to version `1.47.0`.
 
 ## 11.7.0-beta.1 (2024-02-09)
 
