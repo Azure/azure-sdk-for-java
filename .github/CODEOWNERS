@@ -223,8 +223,11 @@
 # ServiceLabel: %Cognitive - Content Moderator
 # ServiceOwners:                                     @swiftarrow11
 
-# ServiceLabel: %Cognitive - Personalizer
+# PRLabel: %Cognitive - Personalizer
 /sdk/personalizer/                                   @sharathmalladi
+
+# ServiceLabel: %Cognitive - Personalizer
+# ServiceOwners:                                     @sharathmalladi
 
 # ServiceLabel: %Cognitive - Immersive Reader
 # ServiceOwners:                                     @metanMSFT
@@ -695,9 +698,11 @@
 # PRLabel: %Service Bus
 /sdk/servicebus/                                     @anuchandy @conniey @lmolkova
 
-# ServiceLabel: %Service Bus %Track 1
-# PRLabel: %Service Bus
+# PRLabel: %Service Bus %Track 1
 /sdk/servicebus/microsoft-azure-servicebus/          @shankarsama @yvgopal
+
+# ServiceLabel: %Service Bus %Track 1
+# AzureSdkOwners:                                    @shankarsama @yvgopal
 
 # ServiceLabel: %Service Bus
 # AzureSdkOwners:                                    @anuchandy
