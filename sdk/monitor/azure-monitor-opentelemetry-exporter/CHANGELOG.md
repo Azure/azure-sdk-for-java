@@ -3,7 +3,7 @@
 ## 1.0.0-beta.21 (2024-03-11)
 
 ### Bugs Fixed
-- [Support url.query](https://github.com/Azure/azure-sdk-for-java/pull/39133)
+- [Support stable HTTP semconv url.query](https://github.com/Azure/azure-sdk-for-java/pull/39133)
 
 ## 1.0.0-beta.20 (2024-03-07)
 
