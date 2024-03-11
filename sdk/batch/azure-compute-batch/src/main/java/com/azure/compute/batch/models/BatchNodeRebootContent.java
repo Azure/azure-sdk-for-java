@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Parameters for rebooting an Azure Batch Compute Node.
  */
 @Fluent
-public final class BatchNodeRebootParameters {
+public final class BatchNodeRebootContent {
 
     /*
      * When to reboot the Compute Node and what to do with currently running Tasks. The default value is requeue.
@@ -21,10 +21,10 @@ public final class BatchNodeRebootParameters {
     private BatchNodeRebootOption nodeRebootOption;
 
     /**
-     * Creates an instance of BatchNodeRebootParameters class.
+     * Creates an instance of BatchNodeRebootContent class.
      */
     @Generated
-    public BatchNodeRebootParameters() {
+    public BatchNodeRebootContent() {
     }
 
     /**
@@ -43,10 +43,10 @@ public final class BatchNodeRebootParameters {
      * The default value is requeue.
      *
      * @param nodeRebootOption the nodeRebootOption value to set.
-     * @return the BatchNodeRebootParameters object itself.
+     * @return the BatchNodeRebootContent object itself.
      */
     @Generated
-    public BatchNodeRebootParameters setNodeRebootOption(BatchNodeRebootOption nodeRebootOption) {
+    public BatchNodeRebootContent setNodeRebootOption(BatchNodeRebootOption nodeRebootOption) {
         this.nodeRebootOption = nodeRebootOption;
         return this;
     }

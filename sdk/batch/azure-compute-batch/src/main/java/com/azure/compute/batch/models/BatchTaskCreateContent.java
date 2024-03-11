@@ -13,7 +13,7 @@ import java.util.List;
  * Parameters for creating an Azure Batch Task.
  */
 @Fluent
-public final class BatchTaskCreateParameters {
+public final class BatchTaskCreateContent {
 
     /*
      * A string that uniquely identifies the Task within the Job. The ID can contain any combination of alphanumeric
@@ -167,14 +167,14 @@ public final class BatchTaskCreateParameters {
     private AuthenticationTokenSettings authenticationTokenSettings;
 
     /**
-     * Creates an instance of BatchTaskCreateParameters class.
+     * Creates an instance of BatchTaskCreateContent class.
      *
      * @param id the id value to set.
      * @param commandLine the commandLine value to set.
      */
     @Generated
     @JsonCreator
-    public BatchTaskCreateParameters(@JsonProperty(value = "id") String id,
+    public BatchTaskCreateContent(@JsonProperty(value = "id") String id,
         @JsonProperty(value = "commandLine") String commandLine) {
         this.id = id;
         this.commandLine = commandLine;
@@ -209,10 +209,10 @@ public final class BatchTaskCreateParameters {
      * any Unicode characters up to a maximum length of 1024.
      *
      * @param displayName the displayName value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setDisplayName(String displayName) {
+    public BatchTaskCreateContent setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -231,10 +231,10 @@ public final class BatchTaskCreateParameters {
      * Set the exitConditions property: How the Batch service should respond when the Task completes.
      *
      * @param exitConditions the exitConditions value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setExitConditions(ExitConditions exitConditions) {
+    public BatchTaskCreateContent setExitConditions(ExitConditions exitConditions) {
         this.exitConditions = exitConditions;
         return this;
     }
@@ -282,10 +282,10 @@ public final class BatchTaskCreateParameters {
      * reflected to the host disk, meaning that Batch file APIs will not be able to access those files.
      *
      * @param containerSettings the containerSettings value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setContainerSettings(BatchTaskContainerSettings containerSettings) {
+    public BatchTaskCreateContent setContainerSettings(BatchTaskContainerSettings containerSettings) {
         this.containerSettings = containerSettings;
         return this;
     }
@@ -314,10 +314,10 @@ public final class BatchTaskCreateParameters {
      * Application Packages, or Docker Containers.
      *
      * @param resourceFiles the resourceFiles value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setResourceFiles(List<ResourceFile> resourceFiles) {
+    public BatchTaskCreateContent setResourceFiles(List<ResourceFile> resourceFiles) {
         this.resourceFiles = resourceFiles;
         return this;
     }
@@ -340,10 +340,10 @@ public final class BatchTaskCreateParameters {
      * which the primary Task is executed.
      *
      * @param outputFiles the outputFiles value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setOutputFiles(List<OutputFile> outputFiles) {
+    public BatchTaskCreateContent setOutputFiles(List<OutputFile> outputFiles) {
         this.outputFiles = outputFiles;
         return this;
     }
@@ -362,10 +362,10 @@ public final class BatchTaskCreateParameters {
      * Set the environmentSettings property: A list of environment variable settings for the Task.
      *
      * @param environmentSettings the environmentSettings value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setEnvironmentSettings(List<EnvironmentSetting> environmentSettings) {
+    public BatchTaskCreateContent setEnvironmentSettings(List<EnvironmentSetting> environmentSettings) {
         this.environmentSettings = environmentSettings;
         return this;
     }
@@ -386,10 +386,10 @@ public final class BatchTaskCreateParameters {
      * which to start the new Task.
      *
      * @param affinityInfo the affinityInfo value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setAffinityInfo(AffinityInfo affinityInfo) {
+    public BatchTaskCreateContent setAffinityInfo(AffinityInfo affinityInfo) {
         this.affinityInfo = affinityInfo;
         return this;
     }
@@ -412,10 +412,10 @@ public final class BatchTaskCreateParameters {
      * infinite, and the retentionTime is 7 days.
      *
      * @param constraints the constraints value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setConstraints(BatchTaskConstraints constraints) {
+    public BatchTaskCreateContent setConstraints(BatchTaskConstraints constraints) {
         this.constraints = constraints;
         return this;
     }
@@ -438,10 +438,10 @@ public final class BatchTaskCreateParameters {
      * For multi-instance Tasks, this must be 1.
      *
      * @param requiredSlots the requiredSlots value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setRequiredSlots(Integer requiredSlots) {
+    public BatchTaskCreateContent setRequiredSlots(Integer requiredSlots) {
         this.requiredSlots = requiredSlots;
         return this;
     }
@@ -462,10 +462,10 @@ public final class BatchTaskCreateParameters {
      * non-administrative user unique to the Task.
      *
      * @param userIdentity the userIdentity value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setUserIdentity(UserIdentity userIdentity) {
+    public BatchTaskCreateContent setUserIdentity(UserIdentity userIdentity) {
         this.userIdentity = userIdentity;
         return this;
     }
@@ -486,10 +486,10 @@ public final class BatchTaskCreateParameters {
      * contains information about how to run the multi-instance Task.
      *
      * @param multiInstanceSettings the multiInstanceSettings value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setMultiInstanceSettings(MultiInstanceSettings multiInstanceSettings) {
+    public BatchTaskCreateContent setMultiInstanceSettings(MultiInstanceSettings multiInstanceSettings) {
         this.multiInstanceSettings = multiInstanceSettings;
         return this;
     }
@@ -514,10 +514,10 @@ public final class BatchTaskCreateParameters {
      * present, the request fails with error code TaskDependenciesNotSpecifiedOnJob.
      *
      * @param dependsOn the dependsOn value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters setDependsOn(BatchTaskDependencies dependsOn) {
+    public BatchTaskCreateContent setDependsOn(BatchTaskDependencies dependsOn) {
         this.dependsOn = dependsOn;
         return this;
     }
@@ -546,10 +546,10 @@ public final class BatchTaskCreateParameters {
      * fails.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters
+    public BatchTaskCreateContent
         setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
@@ -581,10 +581,10 @@ public final class BatchTaskCreateParameters {
      * Job.
      *
      * @param authenticationTokenSettings the authenticationTokenSettings value to set.
-     * @return the BatchTaskCreateParameters object itself.
+     * @return the BatchTaskCreateContent object itself.
      */
     @Generated
-    public BatchTaskCreateParameters
+    public BatchTaskCreateContent
         setAuthenticationTokenSettings(AuthenticationTokenSettings authenticationTokenSettings) {
         this.authenticationTokenSettings = authenticationTokenSettings;
         return this;

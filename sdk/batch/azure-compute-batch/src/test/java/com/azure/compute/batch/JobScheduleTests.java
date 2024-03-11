@@ -44,9 +44,9 @@ public class JobScheduleTests extends BatchClientTestBase {
         BatchPoolInfo poolInfo = new BatchPoolInfo();
         poolInfo.setPoolId(poolId);
 
-        Schedule schedule = new Schedule().setDoNotRunUntil(now()).setDoNotRunAfter(now().plusHours(5)).setStartWindow(Duration.ofDays(5));
+        BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now()).setDoNotRunAfter(now().plusHours(5)).setStartWindow(Duration.ofDays(5));
         BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
-        batchClient.createJobSchedule(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
+        batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, schedule, spec));
 
         try {
             // GET
@@ -91,9 +91,9 @@ public class JobScheduleTests extends BatchClientTestBase {
             // UPDATE
             LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
             metadata.add((new MetadataItem("key1", "value1")));
-            BatchJobScheduleUpdateParameters jobScheduleUpdateOptions = new BatchJobScheduleUpdateParameters();
-            jobScheduleUpdateOptions.setMetadata(metadata);
-            batchClient.updateJobSchedule(jobScheduleId, jobScheduleUpdateOptions);
+            BatchJobScheduleUpdateContent jobScheduleUpdateContent = new BatchJobScheduleUpdateContent();
+            jobScheduleUpdateContent.setMetadata(metadata);
+            batchClient.updateJobSchedule(jobScheduleId, jobScheduleUpdateContent);
 
             jobSchedule = batchClient.getJobSchedule(jobScheduleId);
             Assert.assertTrue(jobSchedule.getMetadata().size() == 1);
@@ -130,8 +130,8 @@ public class JobScheduleTests extends BatchClientTestBase {
         poolInfo.setPoolId(poolId);
 
         BatchJobSpecification spec = new BatchJobSpecification(poolInfo).setPriority(100);
-        Schedule schedule = new Schedule().setDoNotRunUntil(now()).setDoNotRunAfter(now().plusHours(5)).setStartWindow(Duration.ofDays(5));
-        batchClient.createJobSchedule(new BatchJobScheduleCreateParameters(jobScheduleId, schedule, spec));
+        BatchJobScheduleConfiguration schedule = new BatchJobScheduleConfiguration().setDoNotRunUntil(now()).setDoNotRunAfter(now().plusHours(5)).setStartWindow(Duration.ofDays(5));
+        batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, schedule, spec));
 
         try {
             // GET

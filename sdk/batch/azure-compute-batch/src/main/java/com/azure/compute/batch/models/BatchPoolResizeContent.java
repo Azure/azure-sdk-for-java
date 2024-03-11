@@ -12,7 +12,7 @@ import java.time.Duration;
  * Parameters for changing the size of an Azure Batch Pool.
  */
 @Fluent
-public final class BatchPoolResizeParameters {
+public final class BatchPoolResizeContent {
 
     /*
      * The desired number of dedicated Compute Nodes in the Pool.
@@ -46,10 +46,10 @@ public final class BatchPoolResizeParameters {
     private BatchNodeDeallocationOption nodeDeallocationOption;
 
     /**
-     * Creates an instance of BatchPoolResizeParameters class.
+     * Creates an instance of BatchPoolResizeContent class.
      */
     @Generated
-    public BatchPoolResizeParameters() {
+    public BatchPoolResizeContent() {
     }
 
     /**
@@ -66,10 +66,10 @@ public final class BatchPoolResizeParameters {
      * Set the targetDedicatedNodes property: The desired number of dedicated Compute Nodes in the Pool.
      *
      * @param targetDedicatedNodes the targetDedicatedNodes value to set.
-     * @return the BatchPoolResizeParameters object itself.
+     * @return the BatchPoolResizeContent object itself.
      */
     @Generated
-    public BatchPoolResizeParameters setTargetDedicatedNodes(Integer targetDedicatedNodes) {
+    public BatchPoolResizeContent setTargetDedicatedNodes(Integer targetDedicatedNodes) {
         this.targetDedicatedNodes = targetDedicatedNodes;
         return this;
     }
@@ -88,10 +88,10 @@ public final class BatchPoolResizeParameters {
      * Set the targetLowPriorityNodes property: The desired number of Spot/Low-priority Compute Nodes in the Pool.
      *
      * @param targetLowPriorityNodes the targetLowPriorityNodes value to set.
-     * @return the BatchPoolResizeParameters object itself.
+     * @return the BatchPoolResizeContent object itself.
      */
     @Generated
-    public BatchPoolResizeParameters setTargetLowPriorityNodes(Integer targetLowPriorityNodes) {
+    public BatchPoolResizeContent setTargetLowPriorityNodes(Integer targetLowPriorityNodes) {
         this.targetLowPriorityNodes = targetLowPriorityNodes;
         return this;
     }
@@ -116,10 +116,10 @@ public final class BatchPoolResizeParameters {
      * 400 (Bad Request).
      *
      * @param resizeTimeout the resizeTimeout value to set.
-     * @return the BatchPoolResizeParameters object itself.
+     * @return the BatchPoolResizeContent object itself.
      */
     @Generated
-    public BatchPoolResizeParameters setResizeTimeout(Duration resizeTimeout) {
+    public BatchPoolResizeContent setResizeTimeout(Duration resizeTimeout) {
         this.resizeTimeout = resizeTimeout;
         return this;
     }
@@ -140,10 +140,10 @@ public final class BatchPoolResizeParameters {
      * the Pool size is decreasing. The default value is requeue.
      *
      * @param nodeDeallocationOption the nodeDeallocationOption value to set.
-     * @return the BatchPoolResizeParameters object itself.
+     * @return the BatchPoolResizeContent object itself.
      */
     @Generated
-    public BatchPoolResizeParameters setNodeDeallocationOption(BatchNodeDeallocationOption nodeDeallocationOption) {
+    public BatchPoolResizeContent setNodeDeallocationOption(BatchNodeDeallocationOption nodeDeallocationOption) {
         this.nodeDeallocationOption = nodeDeallocationOption;
         return this;
     }

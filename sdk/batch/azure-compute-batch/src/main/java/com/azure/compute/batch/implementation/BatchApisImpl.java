@@ -44,13 +44,13 @@ import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in Batches.
+ * An instance of this class provides access to all the operations defined in BatchApis.
  */
-public final class BatchesImpl {
+public final class BatchApisImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final BatchesService service;
+    private final BatchApisService service;
 
     /**
      * The service client containing this operation class.
@@ -58,12 +58,13 @@ public final class BatchesImpl {
     private final BatchClientImpl client;
 
     /**
-     * Initializes an instance of BatchesImpl.
+     * Initializes an instance of BatchApisImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    BatchesImpl(BatchClientImpl client) {
-        this.service = RestProxy.create(BatchesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    BatchApisImpl(BatchClientImpl client) {
+        this.service
+            = RestProxy.create(BatchApisService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -77,12 +78,12 @@ public final class BatchesImpl {
     }
 
     /**
-     * The interface defining all the services for BatchClientBatches to be used by the proxy service to perform REST
+     * The interface defining all the services for BatchClientBatchApis to be used by the proxy service to perform REST
      * calls.
      */
     @Host("{endpoint}")
-    @ServiceInterface(name = "BatchClientBatches")
-    public interface BatchesService {
+    @ServiceInterface(name = "BatchClientBatchApis")
+    public interface BatchApisService {
         @Get("/applications")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -296,7 +297,7 @@ public final class BatchesImpl {
         Mono<Response<Void>> enablePoolAutoScaleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/enableautoscale")
@@ -308,7 +309,7 @@ public final class BatchesImpl {
         Response<Void> enablePoolAutoScaleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/evaluateautoscale")
@@ -320,7 +321,7 @@ public final class BatchesImpl {
         Mono<Response<BinaryData>> evaluatePoolAutoScaleInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/evaluateautoscale")
@@ -332,7 +333,7 @@ public final class BatchesImpl {
         Response<BinaryData> evaluatePoolAutoScaleInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/resize")
@@ -344,7 +345,7 @@ public final class BatchesImpl {
         Mono<Response<Void>> resizePoolInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/resize")
@@ -356,7 +357,7 @@ public final class BatchesImpl {
         Response<Void> resizePoolInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/stopresize")
@@ -412,7 +413,7 @@ public final class BatchesImpl {
         Mono<Response<Void>> removeNodesInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/removenodes")
@@ -424,7 +425,7 @@ public final class BatchesImpl {
         Response<Void> removeNodesInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("poolId") String poolId,
             @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Get("/supportedimages")
@@ -564,7 +565,7 @@ public final class BatchesImpl {
         Mono<Response<Void>> disableJobInternal(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Post("/jobs/{jobId}/disable")
@@ -576,7 +577,7 @@ public final class BatchesImpl {
         Response<Void> disableJobInternalSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("jobId") String jobId, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Post("/jobs/{jobId}/enable")
@@ -1390,7 +1391,7 @@ public final class BatchesImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @PathParam("userName") String userName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Put("/pools/{poolId}/nodes/{nodeId}/users/{userName}")
@@ -1403,7 +1404,7 @@ public final class BatchesImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @PathParam("userName") String userName, @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Get("/pools/{poolId}/nodes/{nodeId}")
@@ -1570,7 +1571,7 @@ public final class BatchesImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Post("/pools/{poolId}/nodes/{nodeId}/uploadbatchservicelogs")
@@ -1583,7 +1584,7 @@ public final class BatchesImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @PathParam("poolId") String poolId, @PathParam("nodeId") String nodeId,
             @HeaderParam("accept") String accept,
-            @BodyParam("application/json; odata=minimalmetadata") BinaryData parameters, RequestOptions requestOptions,
+            @BodyParam("application/json; odata=minimalmetadata") BinaryData content, RequestOptions requestOptions,
             Context context);
 
         @Get("/pools/{poolId}/nodes")
@@ -2082,8 +2083,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -2148,8 +2149,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -2233,8 +2234,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -2297,8 +2298,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -2382,8 +2383,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2440,8 +2441,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2499,8 +2500,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -2590,8 +2591,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -2699,8 +2700,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -2788,8 +2789,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -2894,8 +2895,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -2966,10 +2967,10 @@ public final class BatchesImpl {
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 enableAutomaticUpgrade: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -3001,7 +3002,7 @@ public final class BatchesImpl {
      *     }
      *     resizeTimeout: Duration (Optional)
      *     resourceTags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
@@ -3154,6 +3155,24 @@ public final class BatchesImpl {
      *         }
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOsUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }</pre>
      * 
@@ -3194,8 +3213,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -3266,10 +3285,10 @@ public final class BatchesImpl {
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 enableAutomaticUpgrade: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -3301,7 +3320,7 @@ public final class BatchesImpl {
      *     }
      *     resizeTimeout: Duration (Optional)
      *     resourceTags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     targetDedicatedNodes: Integer (Optional)
      *     targetLowPriorityNodes: Integer (Optional)
@@ -3454,6 +3473,24 @@ public final class BatchesImpl {
      *         }
      *     ]
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOsUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }</pre>
      * 
@@ -3490,8 +3527,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -3596,10 +3633,10 @@ public final class BatchesImpl {
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 enableAutomaticUpgrade: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -3643,7 +3680,7 @@ public final class BatchesImpl {
      *         }
      *     ]
      *     resourceTags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     currentDedicatedNodes: Integer (Optional)
      *     currentLowPriorityNodes: Integer (Optional)
@@ -3845,6 +3882,24 @@ public final class BatchesImpl {
      *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOsUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }</pre>
      * 
@@ -3883,8 +3938,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -3989,10 +4044,10 @@ public final class BatchesImpl {
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 enableAutomaticUpgrade: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -4036,7 +4091,7 @@ public final class BatchesImpl {
      *         }
      *     ]
      *     resourceTags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     currentDedicatedNodes: Integer (Optional)
      *     currentLowPriorityNodes: Integer (Optional)
@@ -4238,6 +4293,24 @@ public final class BatchesImpl {
      *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOsUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }</pre>
      * 
@@ -4294,8 +4367,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -4400,10 +4473,10 @@ public final class BatchesImpl {
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 enableAutomaticUpgrade: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -4447,7 +4520,7 @@ public final class BatchesImpl {
      *         }
      *     ]
      *     resourceTags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     currentDedicatedNodes: Integer (Optional)
      *     currentLowPriorityNodes: Integer (Optional)
@@ -4649,6 +4722,24 @@ public final class BatchesImpl {
      *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOsUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }</pre>
      * 
@@ -4685,8 +4776,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -4791,10 +4882,10 @@ public final class BatchesImpl {
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 enableAutomaticUpgrade: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -4838,7 +4929,7 @@ public final class BatchesImpl {
      *         }
      *     ]
      *     resourceTags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     currentDedicatedNodes: Integer (Optional)
      *     currentLowPriorityNodes: Integer (Optional)
@@ -5040,6 +5131,24 @@ public final class BatchesImpl {
      *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOsUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }</pre>
      * 
@@ -5109,8 +5218,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -5205,8 +5314,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -5288,8 +5397,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -5376,8 +5485,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -5464,8 +5573,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -5601,10 +5710,10 @@ public final class BatchesImpl {
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 enableAutomaticUpgrade: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -5648,7 +5757,7 @@ public final class BatchesImpl {
      *         }
      *     ]
      *     resourceTags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     currentDedicatedNodes: Integer (Optional)
      *     currentLowPriorityNodes: Integer (Optional)
@@ -5850,6 +5959,24 @@ public final class BatchesImpl {
      *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOsUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }</pre>
      * 
@@ -5886,8 +6013,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -6023,10 +6150,10 @@ public final class BatchesImpl {
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 enableAutomaticUpgrade: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -6070,7 +6197,7 @@ public final class BatchesImpl {
      *         }
      *     ]
      *     resourceTags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     currentDedicatedNodes: Integer (Optional)
      *     currentLowPriorityNodes: Integer (Optional)
@@ -6272,6 +6399,24 @@ public final class BatchesImpl {
      *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOsUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }</pre>
      * 
@@ -6311,8 +6456,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6474,8 +6619,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6633,8 +6778,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6672,8 +6817,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6717,8 +6862,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6778,7 +6923,7 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for enabling automatic scaling.
+     * @param content The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6787,12 +6932,12 @@ public final class BatchesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> enablePoolAutoScaleInternalWithResponseAsync(String poolId, BinaryData parameters,
+    public Mono<Response<Void>> enablePoolAutoScaleInternalWithResponseAsync(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.enablePoolAutoScaleInternal(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), poolId, contentType, accept, parameters, requestOptions,
+            this.client.getServiceVersion().getVersion(), poolId, contentType, accept, content, requestOptions,
             context));
     }
 
@@ -6820,8 +6965,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6881,7 +7026,7 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for enabling automatic scaling.
+     * @param content The options to use for enabling automatic scaling.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6890,12 +7035,12 @@ public final class BatchesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enablePoolAutoScaleInternalWithResponse(String poolId, BinaryData parameters,
+    public Response<Void> enablePoolAutoScaleInternalWithResponse(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.enablePoolAutoScaleInternalSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), poolId, contentType, accept, parameters, requestOptions,
+            this.client.getServiceVersion().getVersion(), poolId, contentType, accept, content, requestOptions,
             Context.NONE);
     }
 
@@ -6920,8 +7065,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -6954,7 +7099,7 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param parameters The options to use for evaluating the automatic scaling formula.
+     * @param content The options to use for evaluating the automatic scaling formula.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -6964,12 +7109,12 @@ public final class BatchesImpl {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> evaluatePoolAutoScaleInternalWithResponseAsync(String poolId,
-        BinaryData parameters, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> evaluatePoolAutoScaleInternalWithResponseAsync(String poolId, BinaryData content,
+        RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.evaluatePoolAutoScaleInternal(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions,
+            this.client.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions,
             context));
     }
 
@@ -6994,8 +7139,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7028,7 +7173,7 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param parameters The options to use for evaluating the automatic scaling formula.
+     * @param content The options to use for evaluating the automatic scaling formula.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7037,12 +7182,12 @@ public final class BatchesImpl {
      * @return the results and errors from an execution of a Pool autoscale formula along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> evaluatePoolAutoScaleInternalWithResponse(String poolId, BinaryData parameters,
+    public Response<BinaryData> evaluatePoolAutoScaleInternalWithResponse(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.evaluatePoolAutoScaleInternalSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, poolId, accept, parameters, requestOptions,
+            this.client.getServiceVersion().getVersion(), contentType, poolId, accept, content, requestOptions,
             Context.NONE);
     }
 
@@ -7071,8 +7216,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7134,7 +7279,7 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for resizing the pool.
+     * @param content The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7143,12 +7288,12 @@ public final class BatchesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> resizePoolInternalWithResponseAsync(String poolId, BinaryData parameters,
+    public Mono<Response<Void>> resizePoolInternalWithResponseAsync(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.resizePoolInternal(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), poolId, contentType, accept, parameters, requestOptions,
+            this.client.getServiceVersion().getVersion(), poolId, contentType, accept, content, requestOptions,
             context));
     }
 
@@ -7177,8 +7322,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7240,7 +7385,7 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for resizing the pool.
+     * @param content The options to use for resizing the pool.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7249,12 +7394,12 @@ public final class BatchesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> resizePoolInternalWithResponse(String poolId, BinaryData parameters,
+    public Response<Void> resizePoolInternalWithResponse(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.resizePoolInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            poolId, contentType, accept, parameters, requestOptions, Context.NONE);
+            poolId, contentType, accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -7282,8 +7427,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7373,8 +7518,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7460,8 +7605,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7578,8 +7723,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7697,8 +7842,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7761,7 +7906,7 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for removing the node.
+     * @param content The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7770,12 +7915,12 @@ public final class BatchesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeNodesInternalWithResponseAsync(String poolId, BinaryData parameters,
+    public Mono<Response<Void>> removeNodesInternalWithResponseAsync(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.removeNodesInternal(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), poolId, contentType, accept, parameters, requestOptions,
+            this.client.getServiceVersion().getVersion(), poolId, contentType, accept, content, requestOptions,
             context));
     }
 
@@ -7800,8 +7945,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -7864,7 +8009,7 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param poolId The ID of the Pool to get.
-     * @param parameters The options to use for removing the node.
+     * @param content The options to use for removing the node.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -7873,12 +8018,12 @@ public final class BatchesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeNodesInternalWithResponse(String poolId, BinaryData parameters,
+    public Response<Void> removeNodesInternalWithResponse(String poolId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.removeNodesInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            poolId, contentType, accept, parameters, requestOptions, Context.NONE);
+            poolId, contentType, accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -7898,8 +8043,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -7975,8 +8120,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -8070,8 +8215,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -8145,8 +8290,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -8243,8 +8388,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -8283,6 +8428,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
+     *         upgradingOs: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -8325,8 +8471,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -8365,6 +8511,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
+     *         upgradingOs: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -8425,8 +8572,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -8465,6 +8612,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
+     *         upgradingOs: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -8505,8 +8653,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -8545,6 +8693,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
+     *         upgradingOs: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -8613,8 +8762,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -8705,8 +8854,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -8788,8 +8937,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -9049,10 +9198,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -9210,6 +9359,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -9289,8 +9456,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -9550,10 +9717,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -9711,6 +9878,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -9794,8 +9979,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -9924,10 +10109,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -10110,6 +10295,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -10159,8 +10362,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -10289,10 +10492,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -10475,6 +10678,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -10523,8 +10744,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -10772,10 +10993,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -10933,6 +11154,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -11019,8 +11258,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -11268,10 +11507,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -11429,6 +11668,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -11519,8 +11776,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -11579,7 +11836,7 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param jobId The ID of the Job to disable.
-     * @param parameters The options to use for disabling the Job.
+     * @param content The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11588,12 +11845,12 @@ public final class BatchesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> disableJobInternalWithResponseAsync(String jobId, BinaryData parameters,
+    public Mono<Response<Void>> disableJobInternalWithResponseAsync(String jobId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.disableJobInternal(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, jobId, accept, parameters, requestOptions,
+            this.client.getServiceVersion().getVersion(), contentType, jobId, accept, content, requestOptions,
             context));
     }
 
@@ -11623,8 +11880,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -11683,7 +11940,7 @@ public final class BatchesImpl {
      * }</pre>
      * 
      * @param jobId The ID of the Job to disable.
-     * @param parameters The options to use for disabling the Job.
+     * @param content The options to use for disabling the Job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -11692,12 +11949,12 @@ public final class BatchesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> disableJobInternalWithResponse(String jobId, BinaryData parameters,
+    public Response<Void> disableJobInternalWithResponse(String jobId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.disableJobInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
-            contentType, jobId, accept, parameters, requestOptions, Context.NONE);
+            contentType, jobId, accept, content, requestOptions, Context.NONE);
     }
 
     /**
@@ -11724,8 +11981,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -11814,8 +12071,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -11904,8 +12161,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -12009,8 +12266,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -12117,8 +12374,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -12313,10 +12570,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -12474,6 +12731,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -12531,8 +12806,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -12727,10 +13002,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -12888,6 +13163,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -12935,8 +13228,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -13165,10 +13458,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -13326,6 +13619,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -13408,8 +13719,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -13638,10 +13949,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -13799,6 +14110,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -13899,8 +14228,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -14129,10 +14458,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -14290,6 +14619,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -14370,8 +14717,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -14600,10 +14947,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -14761,6 +15108,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -14861,8 +15226,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -15091,10 +15456,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -15252,6 +15617,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -15336,8 +15719,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -15566,10 +15949,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -15727,6 +16110,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -15829,8 +16230,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -16059,10 +16460,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -16220,6 +16621,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -16302,8 +16721,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -16532,10 +16951,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -16693,6 +17112,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -16802,8 +17239,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -16921,8 +17358,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -17059,8 +17496,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -17177,8 +17614,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -17312,8 +17749,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -17378,8 +17815,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -17437,8 +17874,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -17505,8 +17942,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -17573,8 +18010,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -17662,8 +18099,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -17769,8 +18206,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -17856,8 +18293,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -17971,8 +18408,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -18020,8 +18457,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -18071,8 +18508,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -18122,8 +18559,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -18163,8 +18600,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -18239,8 +18676,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -18314,8 +18751,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -18403,8 +18840,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -18498,8 +18935,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -18588,8 +19025,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -18671,8 +19108,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -18945,10 +19382,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -19106,6 +19543,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -19177,8 +19632,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -19451,10 +19906,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -19612,6 +20067,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -19688,8 +20161,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -19940,10 +20413,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -20101,6 +20574,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -20156,8 +20647,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -20408,10 +20899,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -20569,6 +21060,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -20624,8 +21133,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -20886,10 +21395,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -21047,6 +21556,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -21126,8 +21653,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -21388,10 +21915,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -21549,6 +22076,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -21624,8 +22169,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -21710,8 +22255,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -21793,8 +22338,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -21877,8 +22422,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -21960,8 +22505,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -22044,8 +22589,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -22128,8 +22673,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -22337,10 +22882,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -22498,6 +23043,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -22545,8 +23108,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -22754,10 +23317,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -22915,6 +23478,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -22962,8 +23543,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -23205,10 +23786,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -23366,6 +23947,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -23438,8 +24037,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -23681,10 +24280,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -23842,6 +24441,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -23932,8 +24549,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -24175,10 +24792,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -24336,6 +24953,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -24406,8 +25041,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -24649,10 +25284,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -24810,6 +25445,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -24904,8 +25557,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -25076,8 +25729,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -25247,8 +25900,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -25502,8 +26155,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -25774,8 +26427,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -26026,8 +26679,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -26309,8 +26962,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -26527,8 +27180,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -26735,8 +27388,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -26826,8 +27479,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -26914,8 +27567,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -27201,8 +27854,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -27484,8 +28137,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -27754,8 +28407,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -28026,8 +28679,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -28119,8 +28772,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -28209,8 +28862,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -28300,8 +28953,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -28391,8 +29044,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -28480,8 +29133,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -28574,8 +29227,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -28668,8 +29321,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -28753,8 +29406,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>recursive</td>
@@ -28803,8 +29456,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>recursive</td>
@@ -28854,8 +29507,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -28915,7 +29568,7 @@ public final class BatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTaskFileInternalWithResponseAsync(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/json, application/octet-stream";
+        final String accept = "application/octet-stream, application/json";
         return FluxUtil.withContext(context -> service.getTaskFileInternal(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), jobId, taskId, filePath, accept, requestOptions, context));
     }
@@ -28937,8 +29590,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -28998,7 +29651,7 @@ public final class BatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getTaskFileInternalWithResponse(String jobId, String taskId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/json, application/octet-stream";
+        final String accept = "application/octet-stream, application/json";
         return service.getTaskFileInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             jobId, taskId, filePath, accept, requestOptions, Context.NONE);
     }
@@ -29020,8 +29673,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29091,8 +29744,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29162,8 +29815,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -29244,8 +29897,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -29345,8 +29998,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -29426,8 +30079,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -29529,8 +30182,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29587,8 +30240,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29645,8 +30298,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29689,8 +30342,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29736,8 +30389,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29755,7 +30408,7 @@ public final class BatchesImpl {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
-     * @param parameters The options to use for updating the user.
+     * @param content The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -29765,11 +30418,11 @@ public final class BatchesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> replaceNodeUserInternalWithResponseAsync(String poolId, String nodeId, String userName,
-        BinaryData parameters, RequestOptions requestOptions) {
+        BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.replaceNodeUserInternal(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, poolId, nodeId, userName, accept, parameters,
+            this.client.getServiceVersion().getVersion(), contentType, poolId, nodeId, userName, accept, content,
             requestOptions, context));
     }
 
@@ -29795,8 +30448,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -29814,7 +30467,7 @@ public final class BatchesImpl {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the machine on which you want to update a user Account.
      * @param userName The name of the user Account to update.
-     * @param parameters The options to use for updating the user.
+     * @param content The options to use for updating the user.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -29824,11 +30477,11 @@ public final class BatchesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> replaceNodeUserInternalWithResponse(String poolId, String nodeId, String userName,
-        BinaryData parameters, RequestOptions requestOptions) {
+        BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.replaceNodeUserInternalSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, poolId, nodeId, userName, accept, parameters,
+            this.client.getServiceVersion().getVersion(), contentType, poolId, nodeId, userName, accept, content,
             requestOptions, Context.NONE);
     }
 
@@ -29849,8 +30502,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -29867,7 +30520,7 @@ public final class BatchesImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -30053,8 +30706,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -30071,7 +30724,7 @@ public final class BatchesImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -30258,8 +30911,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30316,8 +30969,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30374,8 +31027,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30434,8 +31087,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30491,8 +31144,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30550,8 +31203,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30609,8 +31262,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30652,8 +31305,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30698,8 +31351,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30754,8 +31407,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30808,8 +31461,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30833,7 +31486,7 @@ public final class BatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getNodeRemoteDesktopFileInternalWithResponseAsync(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String accept = "application/json, application/octet-stream";
+        final String accept = "application/octet-stream, application/json";
         return FluxUtil.withContext(context -> service.getNodeRemoteDesktopFileInternal(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, context));
     }
@@ -30860,8 +31513,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30885,7 +31538,7 @@ public final class BatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getNodeRemoteDesktopFileInternalWithResponse(String poolId, String nodeId,
         RequestOptions requestOptions) {
-        final String accept = "application/json, application/octet-stream";
+        final String accept = "application/octet-stream, application/json";
         return service.getNodeRemoteDesktopFileInternalSync(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), poolId, nodeId, accept, requestOptions, Context.NONE);
     }
@@ -30913,8 +31566,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -30944,7 +31597,7 @@ public final class BatchesImpl {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
      * Protocol file.
-     * @param parameters The Azure Batch service log files upload options.
+     * @param content The Azure Batch service log files upload options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -30955,12 +31608,12 @@ public final class BatchesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> uploadNodeLogsInternalWithResponseAsync(String poolId, String nodeId,
-        BinaryData parameters, RequestOptions requestOptions) {
+        BinaryData content, RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.uploadNodeLogsInternal(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, poolId, nodeId, accept, parameters,
-            requestOptions, context));
+            this.client.getServiceVersion().getVersion(), contentType, poolId, nodeId, accept, content, requestOptions,
+            context));
     }
 
     /**
@@ -30986,8 +31639,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -31017,7 +31670,7 @@ public final class BatchesImpl {
      * @param poolId The ID of the Pool that contains the Compute Node.
      * @param nodeId The ID of the Compute Node for which you want to get the Remote Desktop
      * Protocol file.
-     * @param parameters The Azure Batch service log files upload options.
+     * @param content The Azure Batch service log files upload options.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -31026,13 +31679,13 @@ public final class BatchesImpl {
      * @return the result of uploading Batch service log files from a specific Compute Node along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadNodeLogsInternalWithResponse(String poolId, String nodeId, BinaryData parameters,
+    public Response<BinaryData> uploadNodeLogsInternalWithResponse(String poolId, String nodeId, BinaryData content,
         RequestOptions requestOptions) {
         final String contentType = "application/json; odata=minimalmetadata";
         final String accept = "application/json";
         return service.uploadNodeLogsInternalSync(this.client.getEndpoint(),
-            this.client.getServiceVersion().getVersion(), contentType, poolId, nodeId, accept, parameters,
-            requestOptions, Context.NONE);
+            this.client.getServiceVersion().getVersion(), contentType, poolId, nodeId, accept, content, requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -31052,8 +31705,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -31084,7 +31737,7 @@ public final class BatchesImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -31272,8 +31925,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -31304,7 +31957,7 @@ public final class BatchesImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -31509,8 +32162,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -31541,7 +32194,7 @@ public final class BatchesImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -31726,8 +32379,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -31758,7 +32411,7 @@ public final class BatchesImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -31963,8 +32616,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -31988,10 +32641,10 @@ public final class BatchesImpl {
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         protectedSettings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -32052,8 +32705,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>$select</td>
@@ -32077,10 +32730,10 @@ public final class BatchesImpl {
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         protectedSettings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -32140,8 +32793,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -32172,10 +32825,10 @@ public final class BatchesImpl {
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         protectedSettings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -32237,8 +32890,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -32269,10 +32922,10 @@ public final class BatchesImpl {
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         protectedSettings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -32352,8 +33005,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -32384,10 +33037,10 @@ public final class BatchesImpl {
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         protectedSettings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -32447,8 +33100,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -32479,10 +33132,10 @@ public final class BatchesImpl {
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         protectedSettings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -32563,8 +33216,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>recursive</td>
@@ -32613,8 +33266,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>recursive</td>
@@ -32664,8 +33317,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -32725,7 +33378,7 @@ public final class BatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getNodeFileInternalWithResponseAsync(String poolId, String nodeId,
         String filePath, RequestOptions requestOptions) {
-        final String accept = "application/json, application/octet-stream";
+        final String accept = "application/octet-stream, application/json";
         return FluxUtil.withContext(context -> service.getNodeFileInternal(this.client.getEndpoint(),
             this.client.getServiceVersion().getVersion(), poolId, nodeId, filePath, accept, requestOptions, context));
     }
@@ -32747,8 +33400,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -32808,7 +33461,7 @@ public final class BatchesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getNodeFileInternalWithResponse(String poolId, String nodeId, String filePath,
         RequestOptions requestOptions) {
-        final String accept = "application/json, application/octet-stream";
+        final String accept = "application/octet-stream, application/json";
         return service.getNodeFileInternalSync(this.client.getEndpoint(), this.client.getServiceVersion().getVersion(),
             poolId, nodeId, filePath, accept, requestOptions, Context.NONE);
     }
@@ -32830,8 +33483,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -32901,8 +33554,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -32972,8 +33625,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -33053,8 +33706,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -33153,8 +33806,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -33233,8 +33886,8 @@ public final class BatchesImpl {
      * <td>timeOut</td>
      * <td>Integer</td>
      * <td>No</td>
-     * <td>Sets the maximum time that the server can spend processing the request,
-     * in seconds. The default is 30 seconds.</td>
+     * <td>The maximum time that the server can spend processing the request, in seconds. The default is 30 seconds. If
+     * the value is larger than 30, the default will be used instead.".</td>
      * </tr>
      * <tr>
      * <td>maxresults</td>
@@ -33549,10 +34202,10 @@ public final class BatchesImpl {
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 enableAutomaticUpgrade: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -33596,7 +34249,7 @@ public final class BatchesImpl {
      *         }
      *     ]
      *     resourceTags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     currentDedicatedNodes: Integer (Optional)
      *     currentLowPriorityNodes: Integer (Optional)
@@ -33798,6 +34451,24 @@ public final class BatchesImpl {
      *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOsUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }</pre>
      * 
@@ -33902,10 +34573,10 @@ public final class BatchesImpl {
      *                 autoUpgradeMinorVersion: Boolean (Optional)
      *                 enableAutomaticUpgrade: Boolean (Optional)
      *                 settings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 protectedSettings (Optional): {
-     *                     String: String (Optional)
+     *                     String: String (Required)
      *                 }
      *                 provisionAfterExtensions (Optional): [
      *                     String (Optional)
@@ -33949,7 +34620,7 @@ public final class BatchesImpl {
      *         }
      *     ]
      *     resourceTags (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     currentDedicatedNodes: Integer (Optional)
      *     currentLowPriorityNodes: Integer (Optional)
@@ -34151,6 +34822,24 @@ public final class BatchesImpl {
      *     }
      *     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
      *     currentNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *     upgradePolicy (Optional): {
+     *         mode: String(automatic/manual/rolling) (Required)
+     *         automaticOsUpgradePolicy (Optional): {
+     *             disableAutomaticRollback: Boolean (Optional)
+     *             enableAutomaticOsUpgrade: Boolean (Optional)
+     *             useRollingUpgradePolicy: Boolean (Optional)
+     *             osRollingUpgradeDeferral: Boolean (Optional)
+     *         }
+     *         rollingUpgradePolicy (Optional): {
+     *             enableCrossZoneUpgrade: Boolean (Optional)
+     *             maxBatchInstancePercent: Integer (Optional)
+     *             maxUnhealthyInstancePercent: Integer (Optional)
+     *             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *             pauseTimeBetweenBatches: Duration (Optional)
+     *             prioritizeUnhealthyInstances: Boolean (Optional)
+     *             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *         }
+     *     }
      * }
      * }</pre>
      * 
@@ -34292,6 +34981,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
+     *         upgradingOs: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -34342,6 +35032,7 @@ public final class BatchesImpl {
      *         unusable: int (Required)
      *         waitingForStartTask: int (Required)
      *         total: int (Required)
+     *         upgradingOs: int (Required)
      *     }
      *     lowPriority (Optional): (recursive schema, see lowPriority above)
      * }
@@ -34570,10 +35261,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -34731,6 +35422,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -35003,10 +35712,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -35164,6 +35873,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -35433,10 +36160,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -35594,6 +36321,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -35866,10 +36611,10 @@ public final class BatchesImpl {
      *                             autoUpgradeMinorVersion: Boolean (Optional)
      *                             enableAutomaticUpgrade: Boolean (Optional)
      *                             settings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             protectedSettings (Optional): {
-     *                                 String: String (Optional)
+     *                                 String: String (Required)
      *                             }
      *                             provisionAfterExtensions (Optional): [
      *                                 String (Optional)
@@ -36027,6 +36772,24 @@ public final class BatchesImpl {
      *                     }
      *                 ]
      *                 targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                 upgradePolicy (Optional): {
+     *                     mode: String(automatic/manual/rolling) (Required)
+     *                     automaticOsUpgradePolicy (Optional): {
+     *                         disableAutomaticRollback: Boolean (Optional)
+     *                         enableAutomaticOsUpgrade: Boolean (Optional)
+     *                         useRollingUpgradePolicy: Boolean (Optional)
+     *                         osRollingUpgradeDeferral: Boolean (Optional)
+     *                     }
+     *                     rollingUpgradePolicy (Optional): {
+     *                         enableCrossZoneUpgrade: Boolean (Optional)
+     *                         maxBatchInstancePercent: Integer (Optional)
+     *                         maxUnhealthyInstancePercent: Integer (Optional)
+     *                         maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                         pauseTimeBetweenBatches: Duration (Optional)
+     *                         prioritizeUnhealthyInstances: Boolean (Optional)
+     *                         rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                     }
+     *                 }
      *             }
      *         }
      *     }
@@ -36569,10 +37332,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -36730,6 +37493,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -37005,10 +37786,10 @@ public final class BatchesImpl {
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
      *                                 enableAutomaticUpgrade: Boolean (Optional)
      *                                 settings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 protectedSettings (Optional): {
-     *                                     String: String (Optional)
+     *                                     String: String (Required)
      *                                 }
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
@@ -37166,6 +37947,24 @@ public final class BatchesImpl {
      *                         }
      *                     ]
      *                     targetNodeCommunicationMode: String(default/classic/simplified) (Optional)
+     *                     upgradePolicy (Optional): {
+     *                         mode: String(automatic/manual/rolling) (Required)
+     *                         automaticOsUpgradePolicy (Optional): {
+     *                             disableAutomaticRollback: Boolean (Optional)
+     *                             enableAutomaticOsUpgrade: Boolean (Optional)
+     *                             useRollingUpgradePolicy: Boolean (Optional)
+     *                             osRollingUpgradeDeferral: Boolean (Optional)
+     *                         }
+     *                         rollingUpgradePolicy (Optional): {
+     *                             enableCrossZoneUpgrade: Boolean (Optional)
+     *                             maxBatchInstancePercent: Integer (Optional)
+     *                             maxUnhealthyInstancePercent: Integer (Optional)
+     *                             maxUnhealthyUpgradedInstancePercent: Integer (Optional)
+     *                             pauseTimeBetweenBatches: Duration (Optional)
+     *                             prioritizeUnhealthyInstances: Boolean (Optional)
+     *                             rollbackFailedInstancesOnPolicyBreach: Boolean (Optional)
+     *                         }
+     *                     }
      *                 }
      *             }
      *         }
@@ -37870,7 +38669,7 @@ public final class BatchesImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -38054,7 +38853,7 @@ public final class BatchesImpl {
      * {
      *     id: String (Optional)
      *     url: String (Optional)
-     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted) (Optional)
+     *     state: String(idle/rebooting/reimaging/running/unusable/creating/starting/waitingforstarttask/starttaskfailed/unknown/leavingpool/offline/preempted/upgradingos) (Optional)
      *     schedulingState: String(enabled/disabled) (Optional)
      *     stateTransitionTime: OffsetDateTime (Optional)
      *     lastBootTime: OffsetDateTime (Optional)
@@ -38242,10 +39041,10 @@ public final class BatchesImpl {
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         protectedSettings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)
@@ -38309,10 +39108,10 @@ public final class BatchesImpl {
      *         autoUpgradeMinorVersion: Boolean (Optional)
      *         enableAutomaticUpgrade: Boolean (Optional)
      *         settings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         protectedSettings (Optional): {
-     *             String: String (Optional)
+     *             String: String (Required)
      *         }
      *         provisionAfterExtensions (Optional): [
      *             String (Optional)

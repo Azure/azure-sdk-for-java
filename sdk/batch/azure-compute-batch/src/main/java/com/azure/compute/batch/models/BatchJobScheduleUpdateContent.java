@@ -12,7 +12,7 @@ import java.util.List;
  * Parameters for updating an Azure Batch Job Schedule.
  */
 @Fluent
-public final class BatchJobScheduleUpdateParameters {
+public final class BatchJobScheduleUpdateContent {
 
     /*
      * The schedule according to which Jobs will be created. All times are fixed respective to UTC and are not impacted
@@ -20,7 +20,7 @@ public final class BatchJobScheduleUpdateParameters {
      */
     @Generated
     @JsonProperty(value = "schedule")
-    private Schedule schedule;
+    private BatchJobScheduleConfiguration schedule;
 
     /*
      * The details of the Jobs to be created on this schedule. Updates affect only Jobs that are started after the
@@ -39,10 +39,10 @@ public final class BatchJobScheduleUpdateParameters {
     private List<MetadataItem> metadata;
 
     /**
-     * Creates an instance of BatchJobScheduleUpdateParameters class.
+     * Creates an instance of BatchJobScheduleUpdateContent class.
      */
     @Generated
-    public BatchJobScheduleUpdateParameters() {
+    public BatchJobScheduleUpdateContent() {
     }
 
     /**
@@ -53,7 +53,7 @@ public final class BatchJobScheduleUpdateParameters {
      * @return the schedule value.
      */
     @Generated
-    public Schedule getSchedule() {
+    public BatchJobScheduleConfiguration getSchedule() {
         return this.schedule;
     }
 
@@ -63,10 +63,10 @@ public final class BatchJobScheduleUpdateParameters {
      * is left unchanged.
      *
      * @param schedule the schedule value to set.
-     * @return the BatchJobScheduleUpdateParameters object itself.
+     * @return the BatchJobScheduleUpdateContent object itself.
      */
     @Generated
-    public BatchJobScheduleUpdateParameters setSchedule(Schedule schedule) {
+    public BatchJobScheduleUpdateContent setSchedule(BatchJobScheduleConfiguration schedule) {
         this.schedule = schedule;
         return this;
     }
@@ -89,10 +89,10 @@ public final class BatchJobScheduleUpdateParameters {
      * specification.
      *
      * @param jobSpecification the jobSpecification value to set.
-     * @return the BatchJobScheduleUpdateParameters object itself.
+     * @return the BatchJobScheduleUpdateContent object itself.
      */
     @Generated
-    public BatchJobScheduleUpdateParameters setJobSpecification(BatchJobSpecification jobSpecification) {
+    public BatchJobScheduleUpdateContent setJobSpecification(BatchJobSpecification jobSpecification) {
         this.jobSpecification = jobSpecification;
         return this;
     }
@@ -113,10 +113,10 @@ public final class BatchJobScheduleUpdateParameters {
      * not specify this element, existing metadata is left unchanged.
      *
      * @param metadata the metadata value to set.
-     * @return the BatchJobScheduleUpdateParameters object itself.
+     * @return the BatchJobScheduleUpdateContent object itself.
      */
     @Generated
-    public BatchJobScheduleUpdateParameters setMetadata(List<MetadataItem> metadata) {
+    public BatchJobScheduleUpdateContent setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }

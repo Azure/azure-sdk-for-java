@@ -13,7 +13,7 @@ import java.util.List;
  * Parameters for creating an Azure Batch Job.
  */
 @Fluent
-public final class BatchJobCreateParameters {
+public final class BatchJobCreateContent {
 
     /*
      * A string that uniquely identifies the Job within the Account. The ID can contain any combination of alphanumeric
@@ -160,14 +160,14 @@ public final class BatchJobCreateParameters {
     private List<MetadataItem> metadata;
 
     /**
-     * Creates an instance of BatchJobCreateParameters class.
+     * Creates an instance of BatchJobCreateContent class.
      *
      * @param id the id value to set.
      * @param poolInfo the poolInfo value to set.
      */
     @Generated
     @JsonCreator
-    public BatchJobCreateParameters(@JsonProperty(value = "id") String id,
+    public BatchJobCreateContent(@JsonProperty(value = "id") String id,
         @JsonProperty(value = "poolInfo") BatchPoolInfo poolInfo) {
         this.id = id;
         this.poolInfo = poolInfo;
@@ -202,10 +202,10 @@ public final class BatchJobCreateParameters {
      * any Unicode characters up to a maximum length of 1024.
      *
      * @param displayName the displayName value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setDisplayName(String displayName) {
+    public BatchJobCreateContent setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -226,10 +226,10 @@ public final class BatchJobCreateParameters {
      * default is false.
      *
      * @param usesTaskDependencies the usesTaskDependencies value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setUsesTaskDependencies(Boolean usesTaskDependencies) {
+    public BatchJobCreateContent setUsesTaskDependencies(Boolean usesTaskDependencies) {
         this.usesTaskDependencies = usesTaskDependencies;
         return this;
     }
@@ -250,10 +250,10 @@ public final class BatchJobCreateParameters {
      * being the lowest priority and 1000 being the highest priority. The default value is 0.
      *
      * @param priority the priority value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setPriority(Integer priority) {
+    public BatchJobCreateContent setPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -278,10 +278,10 @@ public final class BatchJobCreateParameters {
      * update job API.
      *
      * @param allowTaskPreemption the allowTaskPreemption value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setAllowTaskPreemption(Boolean allowTaskPreemption) {
+    public BatchJobCreateContent setAllowTaskPreemption(Boolean allowTaskPreemption) {
         this.allowTaskPreemption = allowTaskPreemption;
         return this;
     }
@@ -306,10 +306,10 @@ public final class BatchJobCreateParameters {
      * maxParallelTasks after it has been created using the update job API.
      *
      * @param maxParallelTasks the maxParallelTasks value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setMaxParallelTasks(Integer maxParallelTasks) {
+    public BatchJobCreateContent setMaxParallelTasks(Integer maxParallelTasks) {
         this.maxParallelTasks = maxParallelTasks;
         return this;
     }
@@ -328,10 +328,10 @@ public final class BatchJobCreateParameters {
      * Set the constraints property: The execution constraints for the Job.
      *
      * @param constraints the constraints value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setConstraints(BatchJobConstraints constraints) {
+    public BatchJobCreateContent setConstraints(BatchJobConstraints constraints) {
         this.constraints = constraints;
         return this;
     }
@@ -366,10 +366,10 @@ public final class BatchJobCreateParameters {
      * additional Tasks based on those contents.
      *
      * @param jobManagerTask the jobManagerTask value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setJobManagerTask(BatchJobManagerTask jobManagerTask) {
+    public BatchJobCreateContent setJobManagerTask(BatchJobManagerTask jobManagerTask) {
         this.jobManagerTask = jobManagerTask;
         return this;
     }
@@ -390,10 +390,10 @@ public final class BatchJobCreateParameters {
      * service will run the Job Preparation Task on a Node before starting any Tasks of that Job on that Compute Node.
      *
      * @param jobPreparationTask the jobPreparationTask value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setJobPreparationTask(BatchJobPreparationTask jobPreparationTask) {
+    public BatchJobCreateContent setJobPreparationTask(BatchJobPreparationTask jobPreparationTask) {
         this.jobPreparationTask = jobPreparationTask;
         return this;
     }
@@ -420,10 +420,10 @@ public final class BatchJobCreateParameters {
      * services that were started as part of Job preparation.
      *
      * @param jobReleaseTask the jobReleaseTask value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setJobReleaseTask(BatchJobReleaseTask jobReleaseTask) {
+    public BatchJobCreateContent setJobReleaseTask(BatchJobReleaseTask jobReleaseTask) {
         this.jobReleaseTask = jobReleaseTask;
         return this;
     }
@@ -448,10 +448,10 @@ public final class BatchJobCreateParameters {
      * different value.
      *
      * @param commonEnvironmentSettings the commonEnvironmentSettings value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setCommonEnvironmentSettings(List<EnvironmentSetting> commonEnvironmentSettings) {
+    public BatchJobCreateContent setCommonEnvironmentSettings(List<EnvironmentSetting> commonEnvironmentSettings) {
         this.commonEnvironmentSettings = commonEnvironmentSettings;
         return this;
     }
@@ -488,10 +488,10 @@ public final class BatchJobCreateParameters {
      * onAllTasksComplete to terminatejob once you have finished adding Tasks. The default is noaction.
      *
      * @param onAllTasksComplete the onAllTasksComplete value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setOnAllTasksComplete(OnAllBatchTasksComplete onAllTasksComplete) {
+    public BatchJobCreateContent setOnAllTasksComplete(OnAllBatchTasksComplete onAllTasksComplete) {
         this.onAllTasksComplete = onAllTasksComplete;
         return this;
     }
@@ -516,10 +516,10 @@ public final class BatchJobCreateParameters {
      * resource file download error. The default is noaction.
      *
      * @param onTaskFailure the onTaskFailure value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setOnTaskFailure(OnBatchTaskFailure onTaskFailure) {
+    public BatchJobCreateContent setOnTaskFailure(OnBatchTaskFailure onTaskFailure) {
         this.onTaskFailure = onTaskFailure;
         return this;
     }
@@ -538,10 +538,10 @@ public final class BatchJobCreateParameters {
      * Set the networkConfiguration property: The network configuration for the Job.
      *
      * @param networkConfiguration the networkConfiguration value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setNetworkConfiguration(BatchJobNetworkConfiguration networkConfiguration) {
+    public BatchJobCreateContent setNetworkConfiguration(BatchJobNetworkConfiguration networkConfiguration) {
         this.networkConfiguration = networkConfiguration;
         return this;
     }
@@ -562,10 +562,10 @@ public final class BatchJobCreateParameters {
      * does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @param metadata the metadata value to set.
-     * @return the BatchJobCreateParameters object itself.
+     * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateParameters setMetadata(List<MetadataItem> metadata) {
+    public BatchJobCreateContent setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }

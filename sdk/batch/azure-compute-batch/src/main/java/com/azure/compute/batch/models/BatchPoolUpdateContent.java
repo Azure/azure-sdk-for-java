@@ -12,7 +12,7 @@ import java.util.List;
  * Parameters for updating an Azure Batch Pool.
  */
 @Fluent
-public final class BatchPoolUpdateParameters {
+public final class BatchPoolUpdateContent {
 
     /*
      * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the
@@ -67,10 +67,10 @@ public final class BatchPoolUpdateParameters {
     private BatchNodeCommunicationMode targetNodeCommunicationMode;
 
     /**
-     * Creates an instance of BatchPoolUpdateParameters class.
+     * Creates an instance of BatchPoolUpdateContent class.
      */
     @Generated
-    public BatchPoolUpdateParameters() {
+    public BatchPoolUpdateContent() {
     }
 
     /**
@@ -91,10 +91,10 @@ public final class BatchPoolUpdateParameters {
      * overwrites any existing StartTask. If omitted, any existing StartTask is left unchanged.
      *
      * @param startTask the startTask value to set.
-     * @return the BatchPoolUpdateParameters object itself.
+     * @return the BatchPoolUpdateContent object itself.
      */
     @Generated
-    public BatchPoolUpdateParameters setStartTask(BatchStartTask startTask) {
+    public BatchPoolUpdateContent setStartTask(BatchStartTask startTask) {
         this.startTask = startTask;
         return this;
     }
@@ -131,10 +131,10 @@ public final class BatchPoolUpdateParameters {
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @param certificateReferences the certificateReferences value to set.
-     * @return the BatchPoolUpdateParameters object itself.
+     * @return the BatchPoolUpdateContent object itself.
      */
     @Generated
-    public BatchPoolUpdateParameters setCertificateReferences(List<BatchCertificateReference> certificateReferences) {
+    public BatchPoolUpdateContent setCertificateReferences(List<BatchCertificateReference> certificateReferences) {
         this.certificateReferences = certificateReferences;
         return this;
     }
@@ -161,10 +161,10 @@ public final class BatchPoolUpdateParameters {
      * the Pool. If omitted, any existing Package references are left unchanged.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set.
-     * @return the BatchPoolUpdateParameters object itself.
+     * @return the BatchPoolUpdateContent object itself.
      */
     @Generated
-    public BatchPoolUpdateParameters
+    public BatchPoolUpdateContent
         setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
@@ -188,10 +188,10 @@ public final class BatchPoolUpdateParameters {
      * metadata is removed from the Pool. If omitted, any existing metadata is left unchanged.
      *
      * @param metadata the metadata value to set.
-     * @return the BatchPoolUpdateParameters object itself.
+     * @return the BatchPoolUpdateContent object itself.
      */
     @Generated
-    public BatchPoolUpdateParameters setMetadata(List<MetadataItem> metadata) {
+    public BatchPoolUpdateContent setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -214,10 +214,10 @@ public final class BatchPoolUpdateParameters {
      * existing metadata is left unchanged.
      *
      * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set.
-     * @return the BatchPoolUpdateParameters object itself.
+     * @return the BatchPoolUpdateContent object itself.
      */
     @Generated
-    public BatchPoolUpdateParameters
+    public BatchPoolUpdateContent
         setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
         return this;

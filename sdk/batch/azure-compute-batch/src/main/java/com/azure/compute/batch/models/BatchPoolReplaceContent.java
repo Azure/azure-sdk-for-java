@@ -13,7 +13,7 @@ import java.util.List;
  * Parameters for replacing properties on an Azure Batch Pool.
  */
 @Fluent
-public final class BatchPoolReplaceParameters {
+public final class BatchPoolReplaceContent {
 
     /*
      * A Task to run on each Compute Node as it joins the Pool. The Task runs when the Compute Node is added to the
@@ -69,7 +69,7 @@ public final class BatchPoolReplaceParameters {
     private BatchNodeCommunicationMode targetNodeCommunicationMode;
 
     /**
-     * Creates an instance of BatchPoolReplaceParameters class.
+     * Creates an instance of BatchPoolReplaceContent class.
      *
      * @param certificateReferences the certificateReferences value to set.
      * @param applicationPackageReferences the applicationPackageReferences value to set.
@@ -77,7 +77,7 @@ public final class BatchPoolReplaceParameters {
      */
     @Generated
     @JsonCreator
-    public BatchPoolReplaceParameters(
+    public BatchPoolReplaceContent(
         @JsonProperty(value = "certificateReferences") List<BatchCertificateReference> certificateReferences,
         @JsonProperty(
             value = "applicationPackageReferences") List<BatchApplicationPackageReference> applicationPackageReferences,
@@ -105,10 +105,10 @@ public final class BatchPoolReplaceParameters {
      * overwrites any existing StartTask. If omitted, any existing StartTask is removed from the Pool.
      *
      * @param startTask the startTask value to set.
-     * @return the BatchPoolReplaceParameters object itself.
+     * @return the BatchPoolReplaceContent object itself.
      */
     @Generated
-    public BatchPoolReplaceParameters setStartTask(BatchStartTask startTask) {
+    public BatchPoolReplaceContent setStartTask(BatchStartTask startTask) {
         this.startTask = startTask;
         return this;
     }
@@ -175,10 +175,10 @@ public final class BatchPoolReplaceParameters {
      * replaces any existing targetNodeCommunication setting on the Pool. If omitted, the existing setting is default.
      *
      * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set.
-     * @return the BatchPoolReplaceParameters object itself.
+     * @return the BatchPoolReplaceContent object itself.
      */
     @Generated
-    public BatchPoolReplaceParameters
+    public BatchPoolReplaceContent
         setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
         return this;

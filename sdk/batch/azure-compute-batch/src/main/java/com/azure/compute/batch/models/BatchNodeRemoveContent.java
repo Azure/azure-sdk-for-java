@@ -14,7 +14,7 @@ import java.util.List;
  * Parameters for removing nodes from an Azure Batch Pool.
  */
 @Fluent
-public final class BatchNodeRemoveParameters {
+public final class BatchNodeRemoveContent {
 
     /*
      * A list containing the IDs of the Compute Nodes to be removed from the specified Pool. A maximum of 100 nodes may
@@ -42,13 +42,13 @@ public final class BatchNodeRemoveParameters {
     private BatchNodeDeallocationOption nodeDeallocationOption;
 
     /**
-     * Creates an instance of BatchNodeRemoveParameters class.
+     * Creates an instance of BatchNodeRemoveContent class.
      *
      * @param nodeList the nodeList value to set.
      */
     @Generated
     @JsonCreator
-    public BatchNodeRemoveParameters(@JsonProperty(value = "nodeList") List<String> nodeList) {
+    public BatchNodeRemoveContent(@JsonProperty(value = "nodeList") List<String> nodeList) {
         this.nodeList = nodeList;
     }
 
@@ -81,10 +81,10 @@ public final class BatchNodeRemoveParameters {
      * an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @param resizeTimeout the resizeTimeout value to set.
-     * @return the BatchNodeRemoveParameters object itself.
+     * @return the BatchNodeRemoveContent object itself.
      */
     @Generated
-    public BatchNodeRemoveParameters setResizeTimeout(Duration resizeTimeout) {
+    public BatchNodeRemoveContent setResizeTimeout(Duration resizeTimeout) {
         this.resizeTimeout = resizeTimeout;
         return this;
     }
@@ -105,10 +105,10 @@ public final class BatchNodeRemoveParameters {
      * it has been selected for deallocation. The default value is requeue.
      *
      * @param nodeDeallocationOption the nodeDeallocationOption value to set.
-     * @return the BatchNodeRemoveParameters object itself.
+     * @return the BatchNodeRemoveContent object itself.
      */
     @Generated
-    public BatchNodeRemoveParameters setNodeDeallocationOption(BatchNodeDeallocationOption nodeDeallocationOption) {
+    public BatchNodeRemoveContent setNodeDeallocationOption(BatchNodeDeallocationOption nodeDeallocationOption) {
         this.nodeDeallocationOption = nodeDeallocationOption;
         return this;
     }

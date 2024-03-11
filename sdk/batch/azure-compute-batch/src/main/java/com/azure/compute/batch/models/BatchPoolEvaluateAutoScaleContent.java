@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Parameters for evaluating an automatic scaling formula on an Azure Batch Pool.
  */
 @Immutable
-public final class BatchPoolEvaluateAutoScaleParameters {
+public final class BatchPoolEvaluateAutoScaleContent {
 
     /*
      * The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results
@@ -25,13 +25,13 @@ public final class BatchPoolEvaluateAutoScaleParameters {
     private String autoScaleFormula;
 
     /**
-     * Creates an instance of BatchPoolEvaluateAutoScaleParameters class.
+     * Creates an instance of BatchPoolEvaluateAutoScaleContent class.
      *
      * @param autoScaleFormula the autoScaleFormula value to set.
      */
     @Generated
     @JsonCreator
-    public BatchPoolEvaluateAutoScaleParameters(@JsonProperty(value = "autoScaleFormula") String autoScaleFormula) {
+    public BatchPoolEvaluateAutoScaleContent(@JsonProperty(value = "autoScaleFormula") String autoScaleFormula) {
         this.autoScaleFormula = autoScaleFormula;
     }
 

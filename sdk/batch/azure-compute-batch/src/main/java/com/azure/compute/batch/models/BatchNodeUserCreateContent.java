@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  * Parameters for creating a user account for RDP or SSH access on an Azure Batch Compute Node.
  */
 @Fluent
-public final class BatchNodeUserCreateParameters {
+public final class BatchNodeUserCreateContent {
 
     /*
      * The user name of the Account.
@@ -57,13 +57,13 @@ public final class BatchNodeUserCreateParameters {
     private String sshPublicKey;
 
     /**
-     * Creates an instance of BatchNodeUserCreateParameters class.
+     * Creates an instance of BatchNodeUserCreateContent class.
      *
      * @param name the name value to set.
      */
     @Generated
     @JsonCreator
-    public BatchNodeUserCreateParameters(@JsonProperty(value = "name") String name) {
+    public BatchNodeUserCreateContent(@JsonProperty(value = "name") String name) {
         this.name = name;
     }
 
@@ -93,10 +93,10 @@ public final class BatchNodeUserCreateParameters {
      * is false.
      *
      * @param isAdmin the isAdmin value to set.
-     * @return the BatchNodeUserCreateParameters object itself.
+     * @return the BatchNodeUserCreateContent object itself.
      */
     @Generated
-    public BatchNodeUserCreateParameters setIsAdmin(Boolean isAdmin) {
+    public BatchNodeUserCreateContent setIsAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
         return this;
     }
@@ -117,10 +117,10 @@ public final class BatchNodeUserCreateParameters {
      * the current time. For Linux Compute Nodes, the expiryTime has a precision up to a day.
      *
      * @param expiryTime the expiryTime value to set.
-     * @return the BatchNodeUserCreateParameters object itself.
+     * @return the BatchNodeUserCreateContent object itself.
      */
     @Generated
-    public BatchNodeUserCreateParameters setExpiryTime(OffsetDateTime expiryTime) {
+    public BatchNodeUserCreateContent setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }
@@ -145,10 +145,10 @@ public final class BatchNodeUserCreateParameters {
      * property.
      *
      * @param password the password value to set.
-     * @return the BatchNodeUserCreateParameters object itself.
+     * @return the BatchNodeUserCreateContent object itself.
      */
     @Generated
-    public BatchNodeUserCreateParameters setPassword(String password) {
+    public BatchNodeUserCreateContent setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -173,10 +173,10 @@ public final class BatchNodeUserCreateParameters {
      * rejects the request; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @param sshPublicKey the sshPublicKey value to set.
-     * @return the BatchNodeUserCreateParameters object itself.
+     * @return the BatchNodeUserCreateContent object itself.
      */
     @Generated
-    public BatchNodeUserCreateParameters setSshPublicKey(String sshPublicKey) {
+    public BatchNodeUserCreateContent setSshPublicKey(String sshPublicKey) {
         this.sshPublicKey = sshPublicKey;
         return this;
     }

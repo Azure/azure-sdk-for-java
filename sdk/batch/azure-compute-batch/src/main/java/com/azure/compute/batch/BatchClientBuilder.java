@@ -324,7 +324,7 @@ public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, 
      */
     @Generated
     public BatchAsyncClient buildAsyncClient() {
-        return new BatchAsyncClient(buildInnerClient().getBatches());
+        return new BatchAsyncClient(buildInnerClient().getBatchApis());
     }
 
     /**
@@ -334,7 +334,7 @@ public final class BatchClientBuilder implements HttpTrait<BatchClientBuilder>, 
      */
     @Generated
     public BatchClient buildClient() {
-        return new BatchClient(buildInnerClient().getBatches());
+        return new BatchClient(buildInnerClient().getBatchApis());
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(BatchClientBuilder.class);

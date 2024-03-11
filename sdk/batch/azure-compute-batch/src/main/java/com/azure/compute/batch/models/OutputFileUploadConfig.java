@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * to perform the upload.
  */
 @Immutable
-public final class OutputFileUploadOptions {
+public final class OutputFileUploadConfig {
 
     /*
      * The conditions under which the Task output file or set of files should be uploaded. The default is
@@ -24,13 +24,13 @@ public final class OutputFileUploadOptions {
     private OutputFileUploadCondition uploadCondition;
 
     /**
-     * Creates an instance of OutputFileUploadOptions class.
+     * Creates an instance of OutputFileUploadConfig class.
      *
      * @param uploadCondition the uploadCondition value to set.
      */
     @Generated
     @JsonCreator
-    public OutputFileUploadOptions(@JsonProperty(value = "uploadCondition") OutputFileUploadCondition uploadCondition) {
+    public OutputFileUploadConfig(@JsonProperty(value = "uploadCondition") OutputFileUploadCondition uploadCondition) {
         this.uploadCondition = uploadCondition;
     }
 

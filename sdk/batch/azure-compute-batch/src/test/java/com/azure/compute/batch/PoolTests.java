@@ -94,12 +94,12 @@ public class PoolTests extends BatchClientTestBase {
         VirtualMachineConfiguration configuration = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
         configuration.setDataDisks(dataDisks);
 
-        BatchPoolCreateParameters poolCreateOptions = new BatchPoolCreateParameters(poolId, poolVmSize);
-        poolCreateOptions.setNetworkConfiguration(networkConfiguration).setTargetDedicatedNodes(poolVmCount)
+        BatchPoolCreateContent poolToCreate = new BatchPoolCreateContent(poolId, poolVmSize);
+        poolToCreate.setNetworkConfiguration(networkConfiguration).setTargetDedicatedNodes(poolVmCount)
             .setVirtualMachineConfiguration(configuration);
 
         try {
-            batchClient.createPool(poolCreateOptions);
+            batchClient.createPool(poolToCreate);
 
             BatchPool pool = batchClient.getPool(poolId);
             Assertions.assertEquals(lun, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getLogicalUnitNumber());
@@ -142,14 +142,14 @@ public class PoolTests extends BatchClientTestBase {
             BatchPoolEndpointConfiguration endpointConfig = new BatchPoolEndpointConfiguration(inbounds);
             netConfig.setEndpointConfiguration(endpointConfig);
 
-            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, poolVmSize);
-            poolCreateParameters.setTargetDedicatedNodes(poolVmCount)
+            BatchPoolCreateContent poolToCreate = new BatchPoolCreateContent(poolId, poolVmSize);
+            poolToCreate.setTargetDedicatedNodes(poolVmCount)
                 .setTargetLowPriorityNodes(poolLowPriVmCount)
                 .setVirtualMachineConfiguration(configuration).setNetworkConfiguration(netConfig)
                 .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.DEFAULT);
 
 
-            batchClient.createPool(poolCreateParameters);
+            batchClient.createPool(poolToCreate);
         }
 
         try {
@@ -201,14 +201,14 @@ public class PoolTests extends BatchClientTestBase {
 
             // Update NodeCommunicationMode to Simplified
 
-            BatchPoolUpdateParameters poolUpdateParameters = new BatchPoolUpdateParameters();
-            poolUpdateParameters.setCertificateReferences(new LinkedList<BatchCertificateReference>())
+            BatchPoolUpdateContent poolUpdateContent = new BatchPoolUpdateContent();
+            poolUpdateContent.setCertificateReferences(new LinkedList<BatchCertificateReference>())
                 .setApplicationPackageReferences(new LinkedList<BatchApplicationPackageReference>())
                 .setMetadata(new LinkedList<MetadataItem>());
 
-            poolUpdateParameters.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
+            poolUpdateContent.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
 
-            batchClient.updatePool(poolId, poolUpdateParameters);
+            batchClient.updatePool(poolId, poolUpdateContent);
 
             pool = batchClient.getPool(poolId);
             Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
@@ -216,16 +216,16 @@ public class PoolTests extends BatchClientTestBase {
 
             // Patch NodeCommunicationMode to Classic
 
-            BatchPoolUpdateParameters poolUpdateOptions2 = new BatchPoolUpdateParameters();
-            poolUpdateOptions2.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
-            batchClient.updatePool(poolId, poolUpdateOptions2);
+            BatchPoolUpdateContent poolUpdateContent2 = new BatchPoolUpdateContent();
+            poolUpdateContent2.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
+            batchClient.updatePool(poolId, poolUpdateContent2);
 
             pool = batchClient.getPool(poolId);
             Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
             Assertions.assertEquals(BatchNodeCommunicationMode.CLASSIC, pool.getTargetNodeCommunicationMode());
 
             // RESIZE
-            batchClient.resizePool(poolId, new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1));
+            batchClient.resizePool(poolId, new BatchPoolResizeContent().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1));
 
             pool = batchClient.getPool(poolId);
             Assertions.assertEquals(1, (long) pool.getTargetDedicatedNodes());

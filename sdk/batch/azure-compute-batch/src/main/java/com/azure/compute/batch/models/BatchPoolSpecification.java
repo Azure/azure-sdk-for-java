@@ -845,4 +845,35 @@ public final class BatchPoolSpecification {
         this.resourceTags = resourceTags;
         return this;
     }
+
+    /*
+     * The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual, or rolling.
+     */
+    @Generated
+    @JsonProperty(value = "upgradePolicy")
+    private UpgradePolicy upgradePolicy;
+
+    /**
+     * Get the upgradePolicy property: The upgrade policy for the Pool. Describes an upgrade policy - automatic,
+     * manual, or rolling.
+     *
+     * @return the upgradePolicy value.
+     */
+    @Generated
+    public UpgradePolicy getUpgradePolicy() {
+        return this.upgradePolicy;
+    }
+
+    /**
+     * Set the upgradePolicy property: The upgrade policy for the Pool. Describes an upgrade policy - automatic,
+     * manual, or rolling.
+     *
+     * @param upgradePolicy the upgradePolicy value to set.
+     * @return the BatchPoolSpecification object itself.
+     */
+    @Generated
+    public BatchPoolSpecification setUpgradePolicy(UpgradePolicy upgradePolicy) {
+        this.upgradePolicy = upgradePolicy;
+        return this;
+    }
 }

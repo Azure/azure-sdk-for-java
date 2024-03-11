@@ -4,7 +4,7 @@ package com.azure.compute.batch.implementation.task;
 
 import com.azure.compute.batch.BatchAsyncClient;
 import com.azure.compute.batch.models.BatchTaskAddCollectionResult;
-import com.azure.compute.batch.models.BatchTaskCollection;
+import com.azure.compute.batch.models.BatchTaskGroup;
 import reactor.core.publisher.Mono;
 
 /**
@@ -32,7 +32,7 @@ public class AsyncTaskSubmitter implements TaskSubmitter {
      * @throws Exception if the task submission fails.
      */
     @Override
-    public Mono<BatchTaskAddCollectionResult> submitTasks(String jobId, BatchTaskCollection taskCollection) throws Exception {
+    public Mono<BatchTaskAddCollectionResult> submitTasks(String jobId, BatchTaskGroup taskCollection) throws Exception {
         return client.createTaskCollection(jobId, taskCollection);
     }
 }

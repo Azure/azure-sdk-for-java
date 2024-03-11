@@ -127,4 +127,10 @@ public final class BatchNodeState extends ExpandableStringEnum<BatchNodeState> {
     public static Collection<BatchNodeState> values() {
         return values(BatchNodeState.class);
     }
+
+    /**
+     * The Compute Node is undergoing an OS upgrade operation.
+     */
+    @Generated
+    public static final BatchNodeState UPGRADING_OS = fromString("upgradingos");
 }

@@ -12,7 +12,7 @@ import java.util.List;
  * Parameters for updating an Azure Batch Job.
  */
 @Fluent
-public final class BatchJobUpdateParameters {
+public final class BatchJobUpdateContent {
 
     /*
      * The priority of the Job. Priority values can range from -1000 to 1000, with -1000 being the lowest priority and
@@ -79,10 +79,10 @@ public final class BatchJobUpdateParameters {
     private List<MetadataItem> metadata;
 
     /**
-     * Creates an instance of BatchJobUpdateParameters class.
+     * Creates an instance of BatchJobUpdateContent class.
      */
     @Generated
-    public BatchJobUpdateParameters() {
+    public BatchJobUpdateContent() {
     }
 
     /**
@@ -103,10 +103,10 @@ public final class BatchJobUpdateParameters {
      * unchanged.
      *
      * @param priority the priority value to set.
-     * @return the BatchJobUpdateParameters object itself.
+     * @return the BatchJobUpdateContent object itself.
      */
     @Generated
-    public BatchJobUpdateParameters setPriority(Integer priority) {
+    public BatchJobUpdateContent setPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -131,10 +131,10 @@ public final class BatchJobUpdateParameters {
      * update job API.
      *
      * @param allowTaskPreemption the allowTaskPreemption value to set.
-     * @return the BatchJobUpdateParameters object itself.
+     * @return the BatchJobUpdateContent object itself.
      */
     @Generated
-    public BatchJobUpdateParameters setAllowTaskPreemption(Boolean allowTaskPreemption) {
+    public BatchJobUpdateContent setAllowTaskPreemption(Boolean allowTaskPreemption) {
         this.allowTaskPreemption = allowTaskPreemption;
         return this;
     }
@@ -159,10 +159,10 @@ public final class BatchJobUpdateParameters {
      * maxParallelTasks after it has been created using the update job API.
      *
      * @param maxParallelTasks the maxParallelTasks value to set.
-     * @return the BatchJobUpdateParameters object itself.
+     * @return the BatchJobUpdateContent object itself.
      */
     @Generated
-    public BatchJobUpdateParameters setMaxParallelTasks(Integer maxParallelTasks) {
+    public BatchJobUpdateContent setMaxParallelTasks(Integer maxParallelTasks) {
         this.maxParallelTasks = maxParallelTasks;
         return this;
     }
@@ -183,10 +183,10 @@ public final class BatchJobUpdateParameters {
      * constraints are left unchanged.
      *
      * @param constraints the constraints value to set.
-     * @return the BatchJobUpdateParameters object itself.
+     * @return the BatchJobUpdateContent object itself.
      */
     @Generated
-    public BatchJobUpdateParameters setConstraints(BatchJobConstraints constraints) {
+    public BatchJobUpdateContent setConstraints(BatchJobConstraints constraints) {
         this.constraints = constraints;
         return this;
     }
@@ -213,10 +213,10 @@ public final class BatchJobUpdateParameters {
      * (other job properties can be updated as normal). If omitted, the Job continues to run on its current Pool.
      *
      * @param poolInfo the poolInfo value to set.
-     * @return the BatchJobUpdateParameters object itself.
+     * @return the BatchJobUpdateContent object itself.
      */
     @Generated
-    public BatchJobUpdateParameters setPoolInfo(BatchPoolInfo poolInfo) {
+    public BatchJobUpdateContent setPoolInfo(BatchPoolInfo poolInfo) {
         this.poolInfo = poolInfo;
         return this;
     }
@@ -243,10 +243,10 @@ public final class BatchJobUpdateParameters {
      * calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @param onAllTasksComplete the onAllTasksComplete value to set.
-     * @return the BatchJobUpdateParameters object itself.
+     * @return the BatchJobUpdateContent object itself.
      */
     @Generated
-    public BatchJobUpdateParameters setOnAllTasksComplete(OnAllBatchTasksComplete onAllTasksComplete) {
+    public BatchJobUpdateContent setOnAllTasksComplete(OnAllBatchTasksComplete onAllTasksComplete) {
         this.onAllTasksComplete = onAllTasksComplete;
         return this;
     }
@@ -267,10 +267,10 @@ public final class BatchJobUpdateParameters {
      * existing Job metadata is left unchanged.
      *
      * @param metadata the metadata value to set.
-     * @return the BatchJobUpdateParameters object itself.
+     * @return the BatchJobUpdateContent object itself.
      */
     @Generated
-    public BatchJobUpdateParameters setMetadata(List<MetadataItem> metadata) {
+    public BatchJobUpdateContent setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
