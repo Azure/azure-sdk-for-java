@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Parameters for disabling an Azure Batch Job.
  */
 @Immutable
-public final class BatchJobDisableParameters {
+public final class BatchJobDisableContent {
 
     /*
      * What to do with active Tasks associated with the Job.
@@ -22,13 +22,13 @@ public final class BatchJobDisableParameters {
     private DisableBatchJobOption disableTasks;
 
     /**
-     * Creates an instance of BatchJobDisableParameters class.
+     * Creates an instance of BatchJobDisableContent class.
      *
      * @param disableTasks the disableTasks value to set.
      */
     @Generated
     @JsonCreator
-    public BatchJobDisableParameters(@JsonProperty(value = "disableTasks") DisableBatchJobOption disableTasks) {
+    public BatchJobDisableContent(@JsonProperty(value = "disableTasks") DisableBatchJobOption disableTasks) {
         this.disableTasks = disableTasks;
     }
 

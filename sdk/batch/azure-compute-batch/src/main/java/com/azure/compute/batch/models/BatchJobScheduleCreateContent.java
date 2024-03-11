@@ -13,7 +13,7 @@ import java.util.List;
  * Parameters for creating an Azure Batch Job Schedule.
  */
 @Fluent
-public final class BatchJobScheduleCreateParameters {
+public final class BatchJobScheduleCreateContent {
 
     /*
      * A string that uniquely identifies the schedule within the Account. The ID can contain any combination of
@@ -39,7 +39,7 @@ public final class BatchJobScheduleCreateParameters {
      */
     @Generated
     @JsonProperty(value = "schedule")
-    private Schedule schedule;
+    private BatchJobScheduleConfiguration schedule;
 
     /*
      * The details of the Jobs to be created on this schedule.
@@ -57,7 +57,7 @@ public final class BatchJobScheduleCreateParameters {
     private List<MetadataItem> metadata;
 
     /**
-     * Creates an instance of BatchJobScheduleCreateParameters class.
+     * Creates an instance of BatchJobScheduleCreateContent class.
      *
      * @param id the id value to set.
      * @param schedule the schedule value to set.
@@ -65,8 +65,8 @@ public final class BatchJobScheduleCreateParameters {
      */
     @Generated
     @JsonCreator
-    public BatchJobScheduleCreateParameters(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "schedule") Schedule schedule,
+    public BatchJobScheduleCreateContent(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "schedule") BatchJobScheduleConfiguration schedule,
         @JsonProperty(value = "jobSpecification") BatchJobSpecification jobSpecification) {
         this.id = id;
         this.schedule = schedule;
@@ -102,10 +102,10 @@ public final class BatchJobScheduleCreateParameters {
      * contain any Unicode characters up to a maximum length of 1024.
      *
      * @param displayName the displayName value to set.
-     * @return the BatchJobScheduleCreateParameters object itself.
+     * @return the BatchJobScheduleCreateContent object itself.
      */
     @Generated
-    public BatchJobScheduleCreateParameters setDisplayName(String displayName) {
+    public BatchJobScheduleCreateContent setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -117,7 +117,7 @@ public final class BatchJobScheduleCreateParameters {
      * @return the schedule value.
      */
     @Generated
-    public Schedule getSchedule() {
+    public BatchJobScheduleConfiguration getSchedule() {
         return this.schedule;
     }
 
@@ -147,10 +147,10 @@ public final class BatchJobScheduleCreateParameters {
      * service does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @param metadata the metadata value to set.
-     * @return the BatchJobScheduleCreateParameters object itself.
+     * @return the BatchJobScheduleCreateContent object itself.
      */
     @Generated
-    public BatchJobScheduleCreateParameters setMetadata(List<MetadataItem> metadata) {
+    public BatchJobScheduleCreateContent setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }

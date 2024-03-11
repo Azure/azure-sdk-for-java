@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  * The Azure Batch service log files upload parameters for a Compute Node.
  */
 @Fluent
-public final class UploadBatchServiceLogsParameters {
+public final class UploadBatchServiceLogsContent {
 
     /*
      * The URL of the container within Azure Blob Storage to which to upload the Batch Service log file(s). If a user
@@ -54,14 +54,14 @@ public final class UploadBatchServiceLogsParameters {
     private BatchNodeIdentityReference identityReference;
 
     /**
-     * Creates an instance of UploadBatchServiceLogsParameters class.
+     * Creates an instance of UploadBatchServiceLogsContent class.
      *
      * @param containerUrl the containerUrl value to set.
      * @param startTime the startTime value to set.
      */
     @Generated
     @JsonCreator
-    public UploadBatchServiceLogsParameters(@JsonProperty(value = "containerUrl") String containerUrl,
+    public UploadBatchServiceLogsContent(@JsonProperty(value = "containerUrl") String containerUrl,
         @JsonProperty(value = "startTime") OffsetDateTime startTime) {
         this.containerUrl = containerUrl;
         this.startTime = startTime;
@@ -115,10 +115,10 @@ public final class UploadBatchServiceLogsParameters {
      * startTime.
      *
      * @param endTime the endTime value to set.
-     * @return the UploadBatchServiceLogsParameters object itself.
+     * @return the UploadBatchServiceLogsContent object itself.
      */
     @Generated
-    public UploadBatchServiceLogsParameters setEndTime(OffsetDateTime endTime) {
+    public UploadBatchServiceLogsContent setEndTime(OffsetDateTime endTime) {
         this.endTime = endTime;
         return this;
     }
@@ -139,10 +139,10 @@ public final class UploadBatchServiceLogsParameters {
      * Storage specified by containerUrl. The identity must have write access to the Azure Blob Storage container.
      *
      * @param identityReference the identityReference value to set.
-     * @return the UploadBatchServiceLogsParameters object itself.
+     * @return the UploadBatchServiceLogsContent object itself.
      */
     @Generated
-    public UploadBatchServiceLogsParameters setIdentityReference(BatchNodeIdentityReference identityReference) {
+    public UploadBatchServiceLogsContent setIdentityReference(BatchNodeIdentityReference identityReference) {
         this.identityReference = identityReference;
         return this;
     }

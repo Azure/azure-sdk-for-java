@@ -12,7 +12,7 @@ import java.time.OffsetDateTime;
  * Parameters for updating a user account for RDP or SSH access on an Azure Batch Compute Node.
  */
 @Fluent
-public final class BatchNodeUserUpdateParameters {
+public final class BatchNodeUserUpdateContent {
 
     /*
      * The password of the Account. The password is required for Windows Compute Nodes (those created with
@@ -44,10 +44,10 @@ public final class BatchNodeUserUpdateParameters {
     private String sshPublicKey;
 
     /**
-     * Creates an instance of BatchNodeUserUpdateParameters class.
+     * Creates an instance of BatchNodeUserUpdateContent class.
      */
     @Generated
-    public BatchNodeUserUpdateParameters() {
+    public BatchNodeUserUpdateContent() {
     }
 
     /**
@@ -70,10 +70,10 @@ public final class BatchNodeUserUpdateParameters {
      * property. If omitted, any existing password is removed.
      *
      * @param password the password value to set.
-     * @return the BatchNodeUserUpdateParameters object itself.
+     * @return the BatchNodeUserUpdateContent object itself.
      */
     @Generated
-    public BatchNodeUserUpdateParameters setPassword(String password) {
+    public BatchNodeUserUpdateContent setPassword(String password) {
         this.password = password;
         return this;
     }
@@ -94,10 +94,10 @@ public final class BatchNodeUserUpdateParameters {
      * the current time. For Linux Compute Nodes, the expiryTime has a precision up to a day.
      *
      * @param expiryTime the expiryTime value to set.
-     * @return the BatchNodeUserUpdateParameters object itself.
+     * @return the BatchNodeUserUpdateContent object itself.
      */
     @Generated
-    public BatchNodeUserUpdateParameters setExpiryTime(OffsetDateTime expiryTime) {
+    public BatchNodeUserUpdateContent setExpiryTime(OffsetDateTime expiryTime) {
         this.expiryTime = expiryTime;
         return this;
     }
@@ -124,10 +124,10 @@ public final class BatchNodeUserUpdateParameters {
      * omitted, any existing SSH public key is removed.
      *
      * @param sshPublicKey the sshPublicKey value to set.
-     * @return the BatchNodeUserUpdateParameters object itself.
+     * @return the BatchNodeUserUpdateContent object itself.
      */
     @Generated
-    public BatchNodeUserUpdateParameters setSshPublicKey(String sshPublicKey) {
+    public BatchNodeUserUpdateContent setSshPublicKey(String sshPublicKey) {
         this.sshPublicKey = sshPublicKey;
         return this;
     }

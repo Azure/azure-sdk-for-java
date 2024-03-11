@@ -45,11 +45,11 @@ public class FileTests extends BatchClientTestBase {
             BatchPoolInfo poolInfo = new BatchPoolInfo();
             poolInfo.setPoolId(poolId);
 
-            batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo));
+            batchClient.createJob(new BatchJobCreateContent(jobId, poolInfo));
 
-            BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
+            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "/bin/bash -c \"echo hello\"");
 
-            batchClient.createTask(jobId, taskToAdd);
+            batchClient.createTask(jobId, taskToCreate);
 
             if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
                 PagedIterable<BatchNodeFile> filesIterable = batchClient.listTaskFiles(jobId, taskId);
@@ -95,9 +95,9 @@ public class FileTests extends BatchClientTestBase {
             BatchPoolInfo poolInfo = new BatchPoolInfo();
             poolInfo.setPoolId(poolId);
 
-            batchClient.createJob(new BatchJobCreateParameters(jobId, poolInfo));
-            BatchTaskCreateParameters taskToAdd = new BatchTaskCreateParameters(taskId, "/bin/bash -c \"echo hello\"");
-            batchClient.createTask(jobId, taskToAdd);
+            batchClient.createJob(new BatchJobCreateContent(jobId, poolInfo));
+            BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "/bin/bash -c \"echo hello\"");
+            batchClient.createTask(jobId, taskToCreate);
 
             if (waitForTasksToComplete(batchClient, jobId, taskCompleteTimeoutInSeconds)) {
                 BatchTask task = batchClient.getTask(jobId, taskId);

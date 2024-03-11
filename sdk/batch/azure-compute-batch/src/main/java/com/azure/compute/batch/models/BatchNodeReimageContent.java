@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Parameters for reimaging an Azure Batch Compute Node.
  */
 @Fluent
-public final class BatchNodeReimageParameters {
+public final class BatchNodeReimageContent {
 
     /*
      * When to reimage the Compute Node and what to do with currently running Tasks. The default value is requeue.
@@ -21,10 +21,10 @@ public final class BatchNodeReimageParameters {
     private BatchNodeReimageOption nodeReimageOption;
 
     /**
-     * Creates an instance of BatchNodeReimageParameters class.
+     * Creates an instance of BatchNodeReimageContent class.
      */
     @Generated
-    public BatchNodeReimageParameters() {
+    public BatchNodeReimageContent() {
     }
 
     /**
@@ -43,10 +43,10 @@ public final class BatchNodeReimageParameters {
      * Tasks. The default value is requeue.
      *
      * @param nodeReimageOption the nodeReimageOption value to set.
-     * @return the BatchNodeReimageParameters object itself.
+     * @return the BatchNodeReimageContent object itself.
      */
     @Generated
-    public BatchNodeReimageParameters setNodeReimageOption(BatchNodeReimageOption nodeReimageOption) {
+    public BatchNodeReimageContent setNodeReimageOption(BatchNodeReimageOption nodeReimageOption) {
         this.nodeReimageOption = nodeReimageOption;
         return this;
     }

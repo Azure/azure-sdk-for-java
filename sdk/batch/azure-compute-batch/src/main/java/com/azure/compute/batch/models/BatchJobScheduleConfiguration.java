@@ -14,7 +14,7 @@ import java.time.OffsetDateTime;
  * respective to UTC and are not impacted by daylight saving time.
  */
 @Fluent
-public final class Schedule {
+public final class BatchJobScheduleConfiguration {
 
     /*
      * The earliest time at which any Job may be created under this Job Schedule. If you do not specify a doNotRunUntil
@@ -65,10 +65,10 @@ public final class Schedule {
     private Duration recurrenceInterval;
 
     /**
-     * Creates an instance of Schedule class.
+     * Creates an instance of BatchJobScheduleConfiguration class.
      */
     @Generated
-    public Schedule() {
+    public BatchJobScheduleConfiguration() {
     }
 
     /**
@@ -87,10 +87,10 @@ public final class Schedule {
      * you do not specify a doNotRunUntil time, the schedule becomes ready to create Jobs immediately.
      *
      * @param doNotRunUntil the doNotRunUntil value to set.
-     * @return the Schedule object itself.
+     * @return the BatchJobScheduleConfiguration object itself.
      */
     @Generated
-    public Schedule setDoNotRunUntil(OffsetDateTime doNotRunUntil) {
+    public BatchJobScheduleConfiguration setDoNotRunUntil(OffsetDateTime doNotRunUntil) {
         this.doNotRunUntil = doNotRunUntil;
         return this;
     }
@@ -115,10 +115,10 @@ public final class Schedule {
      * Schedule will remain active until you explicitly terminate it.
      *
      * @param doNotRunAfter the doNotRunAfter value to set.
-     * @return the Schedule object itself.
+     * @return the BatchJobScheduleConfiguration object itself.
      */
     @Generated
-    public Schedule setDoNotRunAfter(OffsetDateTime doNotRunAfter) {
+    public BatchJobScheduleConfiguration setDoNotRunAfter(OffsetDateTime doNotRunAfter) {
         this.doNotRunAfter = doNotRunAfter;
         return this;
     }
@@ -151,10 +151,10 @@ public final class Schedule {
      * code is 400 (Bad Request).
      *
      * @param startWindow the startWindow value to set.
-     * @return the Schedule object itself.
+     * @return the BatchJobScheduleConfiguration object itself.
      */
     @Generated
-    public Schedule setStartWindow(Duration startWindow) {
+    public BatchJobScheduleConfiguration setStartWindow(Duration startWindow) {
         this.startWindow = startWindow;
         return this;
     }
@@ -195,10 +195,10 @@ public final class Schedule {
      * the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @param recurrenceInterval the recurrenceInterval value to set.
-     * @return the Schedule object itself.
+     * @return the BatchJobScheduleConfiguration object itself.
      */
     @Generated
-    public Schedule setRecurrenceInterval(Duration recurrenceInterval) {
+    public BatchJobScheduleConfiguration setRecurrenceInterval(Duration recurrenceInterval) {
         this.recurrenceInterval = recurrenceInterval;
         return this;
     }

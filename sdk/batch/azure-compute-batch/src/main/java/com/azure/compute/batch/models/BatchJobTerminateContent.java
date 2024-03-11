@@ -11,14 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Parameters for terminating an Azure Batch Job.
  */
 @Fluent
-public final class BatchJobTerminateParameters {
-
-    /**
-     * Creates an instance of BatchJobTerminateParameters class.
-     */
-    @Generated
-    public BatchJobTerminateParameters() {
-    }
+public final class BatchJobTerminateContent {
 
     /*
      * The text you want to appear as the Job's TerminationReason. The default is 'UserTerminate'.
@@ -26,6 +19,13 @@ public final class BatchJobTerminateParameters {
     @Generated
     @JsonProperty(value = "terminateReason")
     private String terminationReason;
+
+    /**
+     * Creates an instance of BatchJobTerminateContent class.
+     */
+    @Generated
+    public BatchJobTerminateContent() {
+    }
 
     /**
      * Get the terminationReason property: The text you want to appear as the Job's TerminationReason. The default is
@@ -43,10 +43,10 @@ public final class BatchJobTerminateParameters {
      * 'UserTerminate'.
      *
      * @param terminationReason the terminationReason value to set.
-     * @return the BatchJobTerminateParameters object itself.
+     * @return the BatchJobTerminateContent object itself.
      */
     @Generated
-    public BatchJobTerminateParameters setTerminationReason(String terminationReason) {
+    public BatchJobTerminateContent setTerminationReason(String terminationReason) {
         this.terminationReason = terminationReason;
         return this;
     }

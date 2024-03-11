@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Parameters for disabling scheduling on an Azure Batch Compute Node.
  */
 @Fluent
-public final class BatchNodeDisableSchedulingParameters {
+public final class BatchNodeDisableSchedulingContent {
 
     /*
      * What to do with currently running Tasks when disabling Task scheduling on the Compute Node. The default value is
@@ -22,10 +22,10 @@ public final class BatchNodeDisableSchedulingParameters {
     private BatchNodeDisableSchedulingOption nodeDisableSchedulingOption;
 
     /**
-     * Creates an instance of BatchNodeDisableSchedulingParameters class.
+     * Creates an instance of BatchNodeDisableSchedulingContent class.
      */
     @Generated
-    public BatchNodeDisableSchedulingParameters() {
+    public BatchNodeDisableSchedulingContent() {
     }
 
     /**
@@ -44,10 +44,10 @@ public final class BatchNodeDisableSchedulingParameters {
      * scheduling on the Compute Node. The default value is requeue.
      *
      * @param nodeDisableSchedulingOption the nodeDisableSchedulingOption value to set.
-     * @return the BatchNodeDisableSchedulingParameters object itself.
+     * @return the BatchNodeDisableSchedulingContent object itself.
      */
     @Generated
-    public BatchNodeDisableSchedulingParameters
+    public BatchNodeDisableSchedulingContent
         setNodeDisableSchedulingOption(BatchNodeDisableSchedulingOption nodeDisableSchedulingOption) {
         this.nodeDisableSchedulingOption = nodeDisableSchedulingOption;
         return this;

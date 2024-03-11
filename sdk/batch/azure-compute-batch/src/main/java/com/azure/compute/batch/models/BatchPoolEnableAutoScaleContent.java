@@ -12,7 +12,7 @@ import java.time.Duration;
  * Parameters for enabling automatic scaling on an Azure Batch Pool.
  */
 @Fluent
-public final class BatchPoolEnableAutoScaleParameters {
+public final class BatchPoolEnableAutoScaleContent {
 
     /*
      * The formula for the desired number of Compute Nodes in the Pool. The formula is checked for validity before it
@@ -37,10 +37,10 @@ public final class BatchPoolEnableAutoScaleParameters {
     private Duration autoScaleEvaluationInterval;
 
     /**
-     * Creates an instance of BatchPoolEnableAutoScaleParameters class.
+     * Creates an instance of BatchPoolEnableAutoScaleContent class.
      */
     @Generated
-    public BatchPoolEnableAutoScaleParameters() {
+    public BatchPoolEnableAutoScaleContent() {
     }
 
     /**
@@ -65,10 +65,10 @@ public final class BatchPoolEnableAutoScaleParameters {
      * (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
      *
      * @param autoScaleFormula the autoScaleFormula value to set.
-     * @return the BatchPoolEnableAutoScaleParameters object itself.
+     * @return the BatchPoolEnableAutoScaleContent object itself.
      */
     @Generated
-    public BatchPoolEnableAutoScaleParameters setAutoScaleFormula(String autoScaleFormula) {
+    public BatchPoolEnableAutoScaleContent setAutoScaleFormula(String autoScaleFormula) {
         this.autoScaleFormula = autoScaleFormula;
         return this;
     }
@@ -99,10 +99,10 @@ public final class BatchPoolEnableAutoScaleParameters {
      * the time when this request was issued.
      *
      * @param autoScaleEvaluationInterval the autoScaleEvaluationInterval value to set.
-     * @return the BatchPoolEnableAutoScaleParameters object itself.
+     * @return the BatchPoolEnableAutoScaleContent object itself.
      */
     @Generated
-    public BatchPoolEnableAutoScaleParameters setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval) {
+    public BatchPoolEnableAutoScaleContent setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval) {
         this.autoScaleEvaluationInterval = autoScaleEvaluationInterval;
         return this;
     }

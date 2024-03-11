@@ -113,51 +113,6 @@ public final class BatchNodeCounts {
     private int total;
 
     /**
-     * Creates an instance of BatchNodeCounts class.
-     *
-     * @param creating the creating value to set.
-     * @param idle the idle value to set.
-     * @param offline the offline value to set.
-     * @param preempted the preempted value to set.
-     * @param rebooting the rebooting value to set.
-     * @param reimaging the reimaging value to set.
-     * @param running the running value to set.
-     * @param starting the starting value to set.
-     * @param startTaskFailed the startTaskFailed value to set.
-     * @param leavingPool the leavingPool value to set.
-     * @param unknown the unknown value to set.
-     * @param unusable the unusable value to set.
-     * @param waitingForStartTask the waitingForStartTask value to set.
-     * @param total the total value to set.
-     */
-    @Generated
-    @JsonCreator
-    private BatchNodeCounts(@JsonProperty(value = "creating") int creating, @JsonProperty(value = "idle") int idle,
-        @JsonProperty(value = "offline") int offline, @JsonProperty(value = "preempted") int preempted,
-        @JsonProperty(value = "rebooting") int rebooting, @JsonProperty(value = "reimaging") int reimaging,
-        @JsonProperty(value = "running") int running, @JsonProperty(value = "starting") int starting,
-        @JsonProperty(value = "startTaskFailed") int startTaskFailed,
-        @JsonProperty(value = "leavingPool") int leavingPool, @JsonProperty(value = "unknown") int unknown,
-        @JsonProperty(value = "unusable") int unusable,
-        @JsonProperty(value = "waitingForStartTask") int waitingForStartTask,
-        @JsonProperty(value = "total") int total) {
-        this.creating = creating;
-        this.idle = idle;
-        this.offline = offline;
-        this.preempted = preempted;
-        this.rebooting = rebooting;
-        this.reimaging = reimaging;
-        this.running = running;
-        this.starting = starting;
-        this.startTaskFailed = startTaskFailed;
-        this.leavingPool = leavingPool;
-        this.unknown = unknown;
-        this.unusable = unusable;
-        this.waitingForStartTask = waitingForStartTask;
-        this.total = total;
-    }
-
-    /**
      * Get the creating property: The number of Compute Nodes in the creating state.
      *
      * @return the creating value.
@@ -295,5 +250,69 @@ public final class BatchNodeCounts {
     @Generated
     public int getTotal() {
         return this.total;
+    }
+
+    /*
+     * The number of Compute Nodes in the upgradingOS state.
+     */
+    @Generated
+    @JsonProperty(value = "upgradingOs")
+    private int upgradingOS;
+
+    /**
+     * Creates an instance of BatchNodeCounts class.
+     *
+     * @param creating the creating value to set.
+     * @param idle the idle value to set.
+     * @param offline the offline value to set.
+     * @param preempted the preempted value to set.
+     * @param rebooting the rebooting value to set.
+     * @param reimaging the reimaging value to set.
+     * @param running the running value to set.
+     * @param starting the starting value to set.
+     * @param startTaskFailed the startTaskFailed value to set.
+     * @param leavingPool the leavingPool value to set.
+     * @param unknown the unknown value to set.
+     * @param unusable the unusable value to set.
+     * @param waitingForStartTask the waitingForStartTask value to set.
+     * @param total the total value to set.
+     * @param upgradingOS the upgradingOS value to set.
+     */
+    @Generated
+    @JsonCreator
+    private BatchNodeCounts(@JsonProperty(value = "creating") int creating, @JsonProperty(value = "idle") int idle,
+        @JsonProperty(value = "offline") int offline, @JsonProperty(value = "preempted") int preempted,
+        @JsonProperty(value = "rebooting") int rebooting, @JsonProperty(value = "reimaging") int reimaging,
+        @JsonProperty(value = "running") int running, @JsonProperty(value = "starting") int starting,
+        @JsonProperty(value = "startTaskFailed") int startTaskFailed,
+        @JsonProperty(value = "leavingPool") int leavingPool, @JsonProperty(value = "unknown") int unknown,
+        @JsonProperty(value = "unusable") int unusable,
+        @JsonProperty(value = "waitingForStartTask") int waitingForStartTask, @JsonProperty(value = "total") int total,
+        @JsonProperty(value = "upgradingOs") int upgradingOS) {
+        this.creating = creating;
+        this.idle = idle;
+        this.offline = offline;
+        this.preempted = preempted;
+        this.rebooting = rebooting;
+        this.reimaging = reimaging;
+        this.running = running;
+        this.starting = starting;
+        this.startTaskFailed = startTaskFailed;
+        this.leavingPool = leavingPool;
+        this.unknown = unknown;
+        this.unusable = unusable;
+        this.waitingForStartTask = waitingForStartTask;
+        this.total = total;
+        this.upgradingOS = upgradingOS;
+    }
+
+    /**
+     * Get the upgradingOS property: The number of Compute Nodes in the upgradingOS state.
+     *
+     * @return the upgradingOS value.
+     */
+    @Generated
+    public int getUpgradingOS() {
+        return this.upgradingOS;
     }
 }

@@ -159,13 +159,13 @@ class BatchClientTestBase extends TestProxyTestBase {
             // Need VNet to allow security to inject NSGs
             NetworkConfiguration networkConfiguration = createNetworkConfiguration();
 
-            BatchPoolCreateParameters poolCreateParameters = new BatchPoolCreateParameters(poolId, poolVmSize);
-            poolCreateParameters.setTargetDedicatedNodes(poolVmCount)
+            BatchPoolCreateContent poolToCreate = new BatchPoolCreateContent(poolId, poolVmSize);
+            poolToCreate.setTargetDedicatedNodes(poolVmCount)
                 .setVirtualMachineConfiguration(configuration)
                 .setUserAccounts(userList)
                 .setNetworkConfiguration(networkConfiguration);
 
-            batchClient.createPool(poolCreateParameters);
+            batchClient.createPool(poolToCreate);
         } else {
             System.out.println(String.format("The %s already exists.", poolId));
             //logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));

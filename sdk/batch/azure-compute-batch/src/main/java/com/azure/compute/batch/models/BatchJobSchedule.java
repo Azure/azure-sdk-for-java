@@ -99,7 +99,7 @@ public final class BatchJobSchedule {
      */
     @Generated
     @JsonProperty(value = "schedule")
-    private Schedule schedule;
+    private BatchJobScheduleConfiguration schedule;
 
     /*
      * The details of the Jobs to be created on this schedule.
@@ -245,7 +245,7 @@ public final class BatchJobSchedule {
      * @return the schedule value.
      */
     @Generated
-    public Schedule getSchedule() {
+    public BatchJobScheduleConfiguration getSchedule() {
         return this.schedule;
     }
 
@@ -324,7 +324,7 @@ public final class BatchJobSchedule {
      * @return the BatchJobSchedule object itself.
      */
     @Generated
-    public BatchJobSchedule setSchedule(Schedule schedule) {
+    public BatchJobSchedule setSchedule(BatchJobScheduleConfiguration schedule) {
         this.schedule = schedule;
         return this;
     }

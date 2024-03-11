@@ -15,7 +15,7 @@ import java.util.Map;
  * Parameters for creating an Azure Batch Pool.
  */
 @Fluent
-public final class BatchPoolCreateParameters {
+public final class BatchPoolCreateContent {
 
     /*
      * A string that uniquely identifies the Pool within the Account. The ID can contain any combination of
@@ -77,6 +77,16 @@ public final class BatchPoolCreateParameters {
     @Generated
     @JsonProperty(value = "resizeTimeout")
     private Duration resizeTimeout;
+
+    /*
+     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
+     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
+     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
+     * 'UserSubscription'.
+     */
+    @Generated
+    @JsonProperty(value = "resourceTags")
+    private Map<String, String> resourceTags;
 
     /*
      * The desired number of dedicated Compute Nodes in the Pool. This property must not be specified if
@@ -231,15 +241,22 @@ public final class BatchPoolCreateParameters {
     @JsonProperty(value = "targetNodeCommunicationMode")
     private BatchNodeCommunicationMode targetNodeCommunicationMode;
 
+    /*
+     * The upgrade policy for the Pool. Describes an upgrade policy - automatic, manual, or rolling.
+     */
+    @Generated
+    @JsonProperty(value = "upgradePolicy")
+    private UpgradePolicy upgradePolicy;
+
     /**
-     * Creates an instance of BatchPoolCreateParameters class.
+     * Creates an instance of BatchPoolCreateContent class.
      *
      * @param id the id value to set.
      * @param vmSize the vmSize value to set.
      */
     @Generated
     @JsonCreator
-    public BatchPoolCreateParameters(@JsonProperty(value = "id") String id,
+    public BatchPoolCreateContent(@JsonProperty(value = "id") String id,
         @JsonProperty(value = "vmSize") String vmSize) {
         this.id = id;
         this.vmSize = vmSize;
@@ -274,10 +291,10 @@ public final class BatchPoolCreateParameters {
      * any Unicode characters up to a maximum length of 1024.
      *
      * @param displayName the displayName value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setDisplayName(String displayName) {
+    public BatchPoolCreateContent setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -321,10 +338,10 @@ public final class BatchPoolCreateParameters {
      * 'UserSubscription'.
      *
      * @param cloudServiceConfiguration the cloudServiceConfiguration value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setCloudServiceConfiguration(CloudServiceConfiguration cloudServiceConfiguration) {
+    public BatchPoolCreateContent setCloudServiceConfiguration(CloudServiceConfiguration cloudServiceConfiguration) {
         this.cloudServiceConfiguration = cloudServiceConfiguration;
         return this;
     }
@@ -345,10 +362,10 @@ public final class BatchPoolCreateParameters {
      * cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
      *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters
+    public BatchPoolCreateContent
         setVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
@@ -374,11 +391,39 @@ public final class BatchPoolCreateParameters {
      * if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @param resizeTimeout the resizeTimeout value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setResizeTimeout(Duration resizeTimeout) {
+    public BatchPoolCreateContent setResizeTimeout(Duration resizeTimeout) {
         this.resizeTimeout = resizeTimeout;
+        return this;
+    }
+
+    /**
+     * Get the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
+     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the Batch account was created with the
+     * poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @return the resourceTags value.
+     */
+    @Generated
+    public Map<String, String> getResourceTags() {
+        return this.resourceTags;
+    }
+
+    /**
+     * Set the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
+     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
+     * associated with the pool. This property can only be specified when the Batch account was created with the
+     * poolAllocationMode property set to 'UserSubscription'.
+     *
+     * @param resourceTags the resourceTags value to set.
+     * @return the BatchPoolCreateContent object itself.
+     */
+    @Generated
+    public BatchPoolCreateContent setResourceTags(Map<String, String> resourceTags) {
+        this.resourceTags = resourceTags;
         return this;
     }
 
@@ -400,10 +445,10 @@ public final class BatchPoolCreateParameters {
      * either targetDedicatedNodes, targetLowPriorityNodes, or both.
      *
      * @param targetDedicatedNodes the targetDedicatedNodes value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setTargetDedicatedNodes(Integer targetDedicatedNodes) {
+    public BatchPoolCreateContent setTargetDedicatedNodes(Integer targetDedicatedNodes) {
         this.targetDedicatedNodes = targetDedicatedNodes;
         return this;
     }
@@ -426,10 +471,10 @@ public final class BatchPoolCreateParameters {
      * must set either targetDedicatedNodes, targetLowPriorityNodes, or both.
      *
      * @param targetLowPriorityNodes the targetLowPriorityNodes value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setTargetLowPriorityNodes(Integer targetLowPriorityNodes) {
+    public BatchPoolCreateContent setTargetLowPriorityNodes(Integer targetLowPriorityNodes) {
         this.targetLowPriorityNodes = targetLowPriorityNodes;
         return this;
     }
@@ -452,10 +497,10 @@ public final class BatchPoolCreateParameters {
      * property is required and the Pool automatically resizes according to the formula. The default value is false.
      *
      * @param enableAutoScale the enableAutoScale value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setEnableAutoScale(Boolean enableAutoScale) {
+    public BatchPoolCreateContent setEnableAutoScale(Boolean enableAutoScale) {
         this.enableAutoScale = enableAutoScale;
         return this;
     }
@@ -484,10 +529,10 @@ public final class BatchPoolCreateParameters {
      * (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling/).
      *
      * @param autoScaleFormula the autoScaleFormula value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setAutoScaleFormula(String autoScaleFormula) {
+    public BatchPoolCreateContent setAutoScaleFormula(String autoScaleFormula) {
         this.autoScaleFormula = autoScaleFormula;
         return this;
     }
@@ -512,10 +557,10 @@ public final class BatchPoolCreateParameters {
      * service returns an error; if you are calling the REST API directly, the HTTP status code is 400 (Bad Request).
      *
      * @param autoScaleEvaluationInterval the autoScaleEvaluationInterval value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval) {
+    public BatchPoolCreateContent setAutoScaleEvaluationInterval(Duration autoScaleEvaluationInterval) {
         this.autoScaleEvaluationInterval = autoScaleEvaluationInterval;
         return this;
     }
@@ -540,10 +585,10 @@ public final class BatchPoolCreateParameters {
      * false.
      *
      * @param enableInterNodeCommunication the enableInterNodeCommunication value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setEnableInterNodeCommunication(Boolean enableInterNodeCommunication) {
+    public BatchPoolCreateContent setEnableInterNodeCommunication(Boolean enableInterNodeCommunication) {
         this.enableInterNodeCommunication = enableInterNodeCommunication;
         return this;
     }
@@ -562,10 +607,10 @@ public final class BatchPoolCreateParameters {
      * Set the networkConfiguration property: The network configuration for the Pool.
      *
      * @param networkConfiguration the networkConfiguration value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setNetworkConfiguration(NetworkConfiguration networkConfiguration) {
+    public BatchPoolCreateContent setNetworkConfiguration(NetworkConfiguration networkConfiguration) {
         this.networkConfiguration = networkConfiguration;
         return this;
     }
@@ -586,10 +631,10 @@ public final class BatchPoolCreateParameters {
      * when the Compute Node is added to the Pool or when the Compute Node is restarted.
      *
      * @param startTask the startTask value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setStartTask(BatchStartTask startTask) {
+    public BatchPoolCreateContent setStartTask(BatchStartTask startTask) {
         this.startTask = startTask;
         return this;
     }
@@ -622,10 +667,10 @@ public final class BatchPoolCreateParameters {
      * Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @param certificateReferences the certificateReferences value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setCertificateReferences(List<BatchCertificateReference> certificateReferences) {
+    public BatchPoolCreateContent setCertificateReferences(List<BatchCertificateReference> certificateReferences) {
         this.certificateReferences = certificateReferences;
         return this;
     }
@@ -654,10 +699,10 @@ public final class BatchPoolCreateParameters {
      * given Pool.
      *
      * @param applicationPackageReferences the applicationPackageReferences value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters
+    public BatchPoolCreateContent
         setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
         return this;
@@ -681,10 +726,10 @@ public final class BatchPoolCreateParameters {
      * application licenses. If a license is requested which is not supported, Pool creation will fail.
      *
      * @param applicationLicenses the applicationLicenses value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setApplicationLicenses(List<String> applicationLicenses) {
+    public BatchPoolCreateContent setApplicationLicenses(List<String> applicationLicenses) {
         this.applicationLicenses = applicationLicenses;
         return this;
     }
@@ -707,10 +752,10 @@ public final class BatchPoolCreateParameters {
      * cores of the vmSize of the pool or 256.
      *
      * @param taskSlotsPerNode the taskSlotsPerNode value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setTaskSlotsPerNode(Integer taskSlotsPerNode) {
+    public BatchPoolCreateContent setTaskSlotsPerNode(Integer taskSlotsPerNode) {
         this.taskSlotsPerNode = taskSlotsPerNode;
         return this;
     }
@@ -731,10 +776,10 @@ public final class BatchPoolCreateParameters {
      * specified, the default is spread.
      *
      * @param taskSchedulingPolicy the taskSchedulingPolicy value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setTaskSchedulingPolicy(BatchTaskSchedulingPolicy taskSchedulingPolicy) {
+    public BatchPoolCreateContent setTaskSchedulingPolicy(BatchTaskSchedulingPolicy taskSchedulingPolicy) {
         this.taskSchedulingPolicy = taskSchedulingPolicy;
         return this;
     }
@@ -753,10 +798,10 @@ public final class BatchPoolCreateParameters {
      * Set the userAccounts property: The list of user Accounts to be created on each Compute Node in the Pool.
      *
      * @param userAccounts the userAccounts value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setUserAccounts(List<UserAccount> userAccounts) {
+    public BatchPoolCreateContent setUserAccounts(List<UserAccount> userAccounts) {
         this.userAccounts = userAccounts;
         return this;
     }
@@ -777,10 +822,10 @@ public final class BatchPoolCreateParameters {
      * does not assign any meaning to metadata; it is solely for the use of user code.
      *
      * @param metadata the metadata value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setMetadata(List<MetadataItem> metadata) {
+    public BatchPoolCreateContent setMetadata(List<MetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -801,10 +846,10 @@ public final class BatchPoolCreateParameters {
      * pool. Mount the storage using Azure fileshare, NFS, CIFS or Blobfuse based file system.
      *
      * @param mountConfiguration the mountConfiguration value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setMountConfiguration(List<MountConfiguration> mountConfiguration) {
+    public BatchPoolCreateContent setMountConfiguration(List<MountConfiguration> mountConfiguration) {
         this.mountConfiguration = mountConfiguration;
         return this;
     }
@@ -825,50 +870,36 @@ public final class BatchPoolCreateParameters {
      * default value is Default.
      *
      * @param targetNodeCommunicationMode the targetNodeCommunicationMode value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters
+    public BatchPoolCreateContent
         setTargetNodeCommunicationMode(BatchNodeCommunicationMode targetNodeCommunicationMode) {
         this.targetNodeCommunicationMode = targetNodeCommunicationMode;
         return this;
     }
 
-    /*
-     * The user-specified tags associated with the pool. The user-defined tags to be associated with the Azure Batch
-     * Pool. When specified, these tags are propagated to the backing Azure resources associated with the pool. This
-     * property can only be specified when the Batch account was created with the poolAllocationMode property set to
-     * 'UserSubscription'.
-     */
-    @Generated
-    @JsonProperty(value = "resourceTags")
-    private Map<String, String> resourceTags;
-
     /**
-     * Get the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
-     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
-     * associated with the pool. This property can only be specified when the Batch account was created with the
-     * poolAllocationMode property set to 'UserSubscription'.
+     * Get the upgradePolicy property: The upgrade policy for the Pool. Describes an upgrade policy - automatic,
+     * manual, or rolling.
      *
-     * @return the resourceTags value.
+     * @return the upgradePolicy value.
      */
     @Generated
-    public Map<String, String> getResourceTags() {
-        return this.resourceTags;
+    public UpgradePolicy getUpgradePolicy() {
+        return this.upgradePolicy;
     }
 
     /**
-     * Set the resourceTags property: The user-specified tags associated with the pool. The user-defined tags to be
-     * associated with the Azure Batch Pool. When specified, these tags are propagated to the backing Azure resources
-     * associated with the pool. This property can only be specified when the Batch account was created with the
-     * poolAllocationMode property set to 'UserSubscription'.
+     * Set the upgradePolicy property: The upgrade policy for the Pool. Describes an upgrade policy - automatic,
+     * manual, or rolling.
      *
-     * @param resourceTags the resourceTags value to set.
-     * @return the BatchPoolCreateParameters object itself.
+     * @param upgradePolicy the upgradePolicy value to set.
+     * @return the BatchPoolCreateContent object itself.
      */
     @Generated
-    public BatchPoolCreateParameters setResourceTags(Map<String, String> resourceTags) {
-        this.resourceTags = resourceTags;
+    public BatchPoolCreateContent setUpgradePolicy(UpgradePolicy upgradePolicy) {
+        this.upgradePolicy = upgradePolicy;
         return this;
     }
 }

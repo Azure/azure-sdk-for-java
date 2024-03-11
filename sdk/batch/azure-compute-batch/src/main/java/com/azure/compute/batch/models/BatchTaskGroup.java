@@ -13,7 +13,7 @@ import java.util.List;
  * A collection of Azure Batch Tasks to add.
  */
 @Immutable
-public final class BatchTaskCollection {
+public final class BatchTaskGroup {
 
     /*
      * The collection of Tasks to add. The maximum count of Tasks is 100. The total serialized size of this collection
@@ -23,16 +23,16 @@ public final class BatchTaskCollection {
      */
     @Generated
     @JsonProperty(value = "value")
-    private List<BatchTaskCreateParameters> value;
+    private List<BatchTaskCreateContent> value;
 
     /**
-     * Creates an instance of BatchTaskCollection class.
+     * Creates an instance of BatchTaskGroup class.
      *
      * @param value the value value to set.
      */
     @Generated
     @JsonCreator
-    public BatchTaskCollection(@JsonProperty(value = "value") List<BatchTaskCreateParameters> value) {
+    public BatchTaskGroup(@JsonProperty(value = "value") List<BatchTaskCreateContent> value) {
         this.value = value;
     }
 
@@ -45,7 +45,7 @@ public final class BatchTaskCollection {
      * @return the value value.
      */
     @Generated
-    public List<BatchTaskCreateParameters> getValue() {
+    public List<BatchTaskCreateContent> getValue() {
         return this.value;
     }
 }

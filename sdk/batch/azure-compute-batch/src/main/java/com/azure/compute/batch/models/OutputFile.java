@@ -44,24 +44,7 @@ public final class OutputFile {
      */
     @Generated
     @JsonProperty(value = "uploadOptions")
-    private OutputFileUploadOptions uploadOptions;
-
-    /**
-     * Creates an instance of OutputFile class.
-     *
-     * @param filePattern the filePattern value to set.
-     * @param destination the destination value to set.
-     * @param uploadOptions the uploadOptions value to set.
-     */
-    @Generated
-    @JsonCreator
-    public OutputFile(@JsonProperty(value = "filePattern") String filePattern,
-        @JsonProperty(value = "destination") OutputFileDestination destination,
-        @JsonProperty(value = "uploadOptions") OutputFileUploadOptions uploadOptions) {
-        this.filePattern = filePattern;
-        this.destination = destination;
-        this.uploadOptions = uploadOptions;
-    }
+    private OutputFileUploadConfig uploadOptions;
 
     /**
      * Get the filePattern property: A pattern indicating which file(s) to upload. Both relative and absolute paths are
@@ -101,7 +84,24 @@ public final class OutputFile {
      * @return the uploadOptions value.
      */
     @Generated
-    public OutputFileUploadOptions getUploadOptions() {
+    public OutputFileUploadConfig getUploadOptions() {
         return this.uploadOptions;
+    }
+
+    /**
+     * Creates an instance of OutputFile class.
+     *
+     * @param filePattern the filePattern value to set.
+     * @param destination the destination value to set.
+     * @param uploadOptions the uploadOptions value to set.
+     */
+    @Generated
+    @JsonCreator
+    public OutputFile(@JsonProperty(value = "filePattern") String filePattern,
+        @JsonProperty(value = "destination") OutputFileDestination destination,
+        @JsonProperty(value = "uploadOptions") OutputFileUploadConfig uploadOptions) {
+        this.filePattern = filePattern;
+        this.destination = destination;
+        this.uploadOptions = uploadOptions;
     }
 }
