@@ -431,7 +431,7 @@
 
 # ServiceLabel: %Event Hubs
 # AzureSdkOwners:                                    @conniey @anuchandy @lmolkova
-# ServiceOwners:                                     @kasun04
+# ServiceOwners:                                     @serkantkaraca @sjkwak
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/        @sjkwak
@@ -660,7 +660,7 @@
 # ServiceOwners:                                     @derek1ee
 
 # PRLabel: %Schema Registry
-/sdk/schemaregistry/                                 @conniey @sjkwak @srnagar
+/sdk/schemaregistry/                                 @conniey @srnagar
 
 # ServiceLabel: %Schema Registry
 # AzureSdkOwners:                                    @conniey
@@ -678,6 +678,10 @@
 
 # ServiceLabel: %SecurityInsights
 # ServiceOwners:                                     @amirkeren
+
+# ServiceLabel: %Service Bus
+# AzureSdkOwners:                                    @anuchandy
+# ServiceOwners:                                     @EldertGrootenboer
 
 # PRLabel: %Service Bus
 /sdk/servicebus/                                     @anuchandy @conniey @lmolkova
