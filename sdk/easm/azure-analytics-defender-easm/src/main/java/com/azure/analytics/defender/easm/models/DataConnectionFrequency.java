@@ -5,7 +5,6 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,7 +47,6 @@ public final class DataConnectionFrequency extends ExpandableStringEnum<DataConn
      * @return the corresponding DataConnectionFrequency.
      */
     @Generated
-    @JsonCreator
     public static DataConnectionFrequency fromString(String name) {
         return fromString(name, DataConnectionFrequency.class);
     }

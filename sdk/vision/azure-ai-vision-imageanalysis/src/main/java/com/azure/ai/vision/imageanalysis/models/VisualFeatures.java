@@ -5,7 +5,6 @@ package com.azure.ai.vision.imageanalysis.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,8 +13,7 @@ import java.util.Collection;
 public final class VisualFeatures extends ExpandableStringEnum<VisualFeatures> {
 
     /**
-     * Extract content tags for thousands of recognizable objects, living beings, scenery, and actions that appear in
-     * the image.
+     * Extract content tags for thousands of recognizable objects, living beings, scenery, and actions that appear in the image.
      */
     @Generated
     public static final VisualFeatures TAGS = fromString("tags");
@@ -27,15 +25,13 @@ public final class VisualFeatures extends ExpandableStringEnum<VisualFeatures> {
     public static final VisualFeatures CAPTION = fromString("caption");
 
     /**
-     * Generate human-readable caption sentences for up to 10 different regions in the image, including one for the
-     * whole image.
+     * Generate human-readable caption sentences for up to 10 different regions in the image, including one for the whole image.
      */
     @Generated
     public static final VisualFeatures DENSE_CAPTIONS = fromString("denseCaptions");
 
     /**
-     * Object detection. This is similar to tags, but focused on detecting physical objects in the image and returning
-     * their location.
+     * Object detection. This is similar to tags, but focused on detecting physical objects in the image and returning their location.
      */
     @Generated
     public static final VisualFeatures OBJECTS = fromString("objects");
@@ -47,8 +43,7 @@ public final class VisualFeatures extends ExpandableStringEnum<VisualFeatures> {
     public static final VisualFeatures READ = fromString("read");
 
     /**
-     * Find representative sub-regions of the image for thumbnail generation, at desired aspect ratios, with priority
-     * given to detected faces.
+     * Find representative sub-regions of the image for thumbnail generation, at desired aspect ratios, with priority given to detected faces.
      */
     @Generated
     public static final VisualFeatures SMART_CROPS = fromString("smartCrops");
@@ -76,7 +71,6 @@ public final class VisualFeatures extends ExpandableStringEnum<VisualFeatures> {
      * @return the corresponding VisualFeatures.
      */
     @Generated
-    @JsonCreator
     public static VisualFeatures fromString(String name) {
         return fromString(name, VisualFeatures.class);
     }

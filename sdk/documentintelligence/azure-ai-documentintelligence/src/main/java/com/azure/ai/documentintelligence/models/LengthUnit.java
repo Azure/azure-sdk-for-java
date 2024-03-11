@@ -6,12 +6,10 @@ package com.azure.ai.documentintelligence.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit is
- * "inch".
+ * The unit used by the width, height, and polygon properties. For images, the unit is "pixel". For PDF, the unit is "inch".
  */
 public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
     /**
@@ -43,7 +41,6 @@ public final class LengthUnit extends ExpandableStringEnum<LengthUnit> {
      * @return the corresponding LengthUnit.
      */
     @Generated
-    @JsonCreator
     public static LengthUnit fromString(String name) {
         return fromString(name, LengthUnit.class);
     }

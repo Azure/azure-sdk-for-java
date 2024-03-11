@@ -5,42 +5,41 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Common properties of language script.
  */
 @Immutable
-public class CommonScriptModel {
+public class CommonScriptModel implements JsonSerializable<CommonScriptModel> {
 
     /*
      * Code identifying the script.
      */
     @Generated
-    @JsonProperty(value = "code")
-    private String code;
+    private final String code;
 
     /*
      * Display name of the script in the locale requested via Accept-Language header.
      */
     @Generated
-    @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * Display name of the language in the locale native for the language.
      */
     @Generated
-    @JsonProperty(value = "nativeName")
-    private String nativeName;
+    private final String nativeName;
 
     /*
      * Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
      */
     @Generated
-    @JsonProperty(value = "dir")
-    private String dir;
+    private final String dir;
 
     /**
      * Creates an instance of CommonScriptModel class.
@@ -51,9 +50,7 @@ public class CommonScriptModel {
      * @param dir the dir value to set.
      */
     @Generated
-    @JsonCreator
-    protected CommonScriptModel(@JsonProperty(value = "code") String code, @JsonProperty(value = "name") String name,
-        @JsonProperty(value = "nativeName") String nativeName, @JsonProperty(value = "dir") String dir) {
+    protected CommonScriptModel(String code, String name, String nativeName, String dir) {
         this.code = code;
         this.name = name;
         this.nativeName = nativeName;
@@ -91,13 +88,60 @@ public class CommonScriptModel {
     }
 
     /**
-     * Get the dir property: Directionality, which is rtl for right-to-left languages or ltr for left-to-right
-     * languages.
+     * Get the dir property: Directionality, which is rtl for right-to-left languages or ltr for left-to-right languages.
      *
      * @return the dir value.
      */
     @Generated
     public String getDir() {
         return this.dir;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("nativeName", this.nativeName);
+        jsonWriter.writeStringField("dir", this.dir);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonScriptModel from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonScriptModel if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommonScriptModel.
+     */
+    @Generated
+    public static CommonScriptModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String code = null;
+            String name = null;
+            String nativeName = null;
+            String dir = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("code".equals(fieldName)) {
+                    code = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                } else if ("nativeName".equals(fieldName)) {
+                    nativeName = reader.getString();
+                } else if ("dir".equals(fieldName)) {
+                    dir = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return new CommonScriptModel(code, name, nativeName, dir);
+        });
     }
 }

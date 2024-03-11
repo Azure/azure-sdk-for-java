@@ -149,8 +149,7 @@ public final class ImageAnalysisClientImpl {
     }
 
     /**
-     * The interface defining all the services for ImageAnalysisClient to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for ImageAnalysisClient to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}/computervision")
     @ServiceInterface(name = "ImageAnalysisClient")
@@ -204,66 +203,32 @@ public final class ImageAnalysisClientImpl {
 
     /**
      * Performs a single Image Analysis operation.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>language</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The desired language for result generation (a two-letter language code).
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>language</td><td>String</td><td>No</td><td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.</td>
-     * </tr>
-     * <tr>
-     * <td>gender-neutral-caption</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
-     * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl').
-     * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or
-     * 'child').</td>
-     * </tr>
-     * <tr>
-     * <td>smartcrops-aspect-ratios</td>
-     * <td>List&lt;Double&gt;</td>
-     * <td>No</td>
-     * <td>A list of aspect ratios to use for smart cropping.
+     * See https://aka.ms/cv-languages for a list of supported languages.</td></tr>
+     *     <tr><td>gender-neutral-caption</td><td>Boolean</td><td>No</td><td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
+     * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl'). 
+     * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or 'child').</td></tr>
+     *     <tr><td>smartcrops-aspect-ratios</td><td>List&lt;Double&gt;</td><td>No</td><td>A list of aspect ratios to use for smart cropping.
      * Aspect ratios are calculated by dividing the target crop width in pixels by the height in pixels.
      * Supported values are between 0.75 and 1.8 (inclusive).
      * If this parameter is not specified, the service will return one crop region with an aspect
-     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>model-version</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The version of cloud AI-model used for analysis.
-     * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY',
-     * 'MM', 'DD' are the year, month and day associated with the model.
+     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td></tr>
+     *     <tr><td>model-version</td><td>String</td><td>No</td><td>The version of cloud AI-model used for analysis.
+     * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY', 'MM', 'DD' are the year, month and day associated with the model.
      * This is not commonly set, as the default always gives the latest AI model with recent improvements.
-     * If however you would like to make sure analysis results do not change over time, set this value to a specific
-     * model version.</td>
-     * </tr>
+     * If however you would like to make sure analysis results do not change over time, set this value to a specific model version.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * BinaryData
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     captionResult (Optional): {
@@ -361,8 +326,7 @@ public final class ImageAnalysisClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the outcome of an Image Analysis operation along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return represents the outcome of an Image Analysis operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> analyzeFromImageDataWithResponseAsync(List<String> visualFeatures,
@@ -370,7 +334,8 @@ public final class ImageAnalysisClientImpl {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
         String visualFeaturesConverted = visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining(","));
         return FluxUtil.withContext(
             context -> service.analyzeFromImageData(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 contentType, visualFeaturesConverted, accept, imageContent, requestOptions, context));
@@ -378,66 +343,32 @@ public final class ImageAnalysisClientImpl {
 
     /**
      * Performs a single Image Analysis operation.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>language</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The desired language for result generation (a two-letter language code).
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>language</td><td>String</td><td>No</td><td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.</td>
-     * </tr>
-     * <tr>
-     * <td>gender-neutral-caption</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
-     * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl').
-     * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or
-     * 'child').</td>
-     * </tr>
-     * <tr>
-     * <td>smartcrops-aspect-ratios</td>
-     * <td>List&lt;Double&gt;</td>
-     * <td>No</td>
-     * <td>A list of aspect ratios to use for smart cropping.
+     * See https://aka.ms/cv-languages for a list of supported languages.</td></tr>
+     *     <tr><td>gender-neutral-caption</td><td>Boolean</td><td>No</td><td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
+     * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl'). 
+     * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or 'child').</td></tr>
+     *     <tr><td>smartcrops-aspect-ratios</td><td>List&lt;Double&gt;</td><td>No</td><td>A list of aspect ratios to use for smart cropping.
      * Aspect ratios are calculated by dividing the target crop width in pixels by the height in pixels.
      * Supported values are between 0.75 and 1.8 (inclusive).
      * If this parameter is not specified, the service will return one crop region with an aspect
-     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>model-version</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The version of cloud AI-model used for analysis.
-     * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY',
-     * 'MM', 'DD' are the year, month and day associated with the model.
+     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td></tr>
+     *     <tr><td>model-version</td><td>String</td><td>No</td><td>The version of cloud AI-model used for analysis.
+     * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY', 'MM', 'DD' are the year, month and day associated with the model.
      * This is not commonly set, as the default always gives the latest AI model with recent improvements.
-     * If however you would like to make sure analysis results do not change over time, set this value to a specific
-     * model version.</td>
-     * </tr>
+     * If however you would like to make sure analysis results do not change over time, set this value to a specific model version.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * BinaryData
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     captionResult (Optional): {
@@ -543,75 +474,42 @@ public final class ImageAnalysisClientImpl {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
         String visualFeaturesConverted = visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining(","));
         return service.analyzeFromImageDataSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
             visualFeaturesConverted, accept, imageContent, requestOptions, Context.NONE);
     }
 
     /**
      * Performs a single Image Analysis operation.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>language</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The desired language for result generation (a two-letter language code).
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>language</td><td>String</td><td>No</td><td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.</td>
-     * </tr>
-     * <tr>
-     * <td>gender-neutral-caption</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
-     * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl').
-     * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or
-     * 'child').</td>
-     * </tr>
-     * <tr>
-     * <td>smartcrops-aspect-ratios</td>
-     * <td>List&lt;Double&gt;</td>
-     * <td>No</td>
-     * <td>A list of aspect ratios to use for smart cropping.
+     * See https://aka.ms/cv-languages for a list of supported languages.</td></tr>
+     *     <tr><td>gender-neutral-caption</td><td>Boolean</td><td>No</td><td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
+     * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl'). 
+     * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or 'child').</td></tr>
+     *     <tr><td>smartcrops-aspect-ratios</td><td>List&lt;Double&gt;</td><td>No</td><td>A list of aspect ratios to use for smart cropping.
      * Aspect ratios are calculated by dividing the target crop width in pixels by the height in pixels.
      * Supported values are between 0.75 and 1.8 (inclusive).
      * If this parameter is not specified, the service will return one crop region with an aspect
-     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>model-version</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The version of cloud AI-model used for analysis.
-     * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY',
-     * 'MM', 'DD' are the year, month and day associated with the model.
+     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td></tr>
+     *     <tr><td>model-version</td><td>String</td><td>No</td><td>The version of cloud AI-model used for analysis.
+     * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY', 'MM', 'DD' are the year, month and day associated with the model.
      * This is not commonly set, as the default always gives the latest AI model with recent improvements.
-     * If however you would like to make sure analysis results do not change over time, set this value to a specific
-     * model version.</td>
-     * </tr>
+     * If however you would like to make sure analysis results do not change over time, set this value to a specific model version.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     url: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     captionResult (Optional): {
@@ -709,8 +607,7 @@ public final class ImageAnalysisClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represents the outcome of an Image Analysis operation along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return represents the outcome of an Image Analysis operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> analyzeFromUrlWithResponseAsync(List<String> visualFeatures,
@@ -718,7 +615,8 @@ public final class ImageAnalysisClientImpl {
         final String contentType = "application/json";
         final String accept = "application/json";
         String visualFeaturesConverted = visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining(","));
         return FluxUtil
             .withContext(context -> service.analyzeFromUrl(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 contentType, visualFeaturesConverted, accept, imageContent, requestOptions, context));
@@ -726,68 +624,34 @@ public final class ImageAnalysisClientImpl {
 
     /**
      * Performs a single Image Analysis operation.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>language</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The desired language for result generation (a two-letter language code).
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>language</td><td>String</td><td>No</td><td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.</td>
-     * </tr>
-     * <tr>
-     * <td>gender-neutral-caption</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
-     * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl').
-     * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or
-     * 'child').</td>
-     * </tr>
-     * <tr>
-     * <td>smartcrops-aspect-ratios</td>
-     * <td>List&lt;Double&gt;</td>
-     * <td>No</td>
-     * <td>A list of aspect ratios to use for smart cropping.
+     * See https://aka.ms/cv-languages for a list of supported languages.</td></tr>
+     *     <tr><td>gender-neutral-caption</td><td>Boolean</td><td>No</td><td>Boolean flag for enabling gender-neutral captioning for Caption and Dense Captions features.
+     * By default captions may contain gender terms (for example: 'man', 'woman', or 'boy', 'girl'). 
+     * If you set this to "true", those will be replaced with gender-neutral terms (for example: 'person' or 'child').</td></tr>
+     *     <tr><td>smartcrops-aspect-ratios</td><td>List&lt;Double&gt;</td><td>No</td><td>A list of aspect ratios to use for smart cropping.
      * Aspect ratios are calculated by dividing the target crop width in pixels by the height in pixels.
      * Supported values are between 0.75 and 1.8 (inclusive).
      * If this parameter is not specified, the service will return one crop region with an aspect
-     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td>
-     * </tr>
-     * <tr>
-     * <td>model-version</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The version of cloud AI-model used for analysis.
-     * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY',
-     * 'MM', 'DD' are the year, month and day associated with the model.
+     * ratio it sees fit between 0.5 and 2.0 (inclusive). In the form of "," separated string.</td></tr>
+     *     <tr><td>model-version</td><td>String</td><td>No</td><td>The version of cloud AI-model used for analysis.
+     * The format is the following: 'latest' (default value) or 'YYYY-MM-DD' or 'YYYY-MM-DD-preview', where 'YYYY', 'MM', 'DD' are the year, month and day associated with the model.
      * This is not commonly set, as the default always gives the latest AI model with recent improvements.
-     * If however you would like to make sure analysis results do not change over time, set this value to a specific
-     * model version.</td>
-     * </tr>
+     * If however you would like to make sure analysis results do not change over time, set this value to a specific model version.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     url: String (Required)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     captionResult (Optional): {
@@ -893,7 +757,8 @@ public final class ImageAnalysisClientImpl {
         final String contentType = "application/json";
         final String accept = "application/json";
         String visualFeaturesConverted = visualFeatures.stream()
-            .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
+            .map(paramItemValue -> Objects.toString(paramItemValue, ""))
+            .collect(Collectors.joining(","));
         return service.analyzeFromUrlSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
             visualFeaturesConverted, accept, imageContent, requestOptions, Context.NONE);
     }

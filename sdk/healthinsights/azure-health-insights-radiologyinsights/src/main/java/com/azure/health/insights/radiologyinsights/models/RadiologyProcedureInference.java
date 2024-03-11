@@ -5,18 +5,15 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * Radiology procedures are the specific imaging studies or examinations ordered for the patient, extracted from the
- * document information and text.
+ * Radiology procedures are the specific imaging studies or examinations ordered for the patient, extracted from the document information and text.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("radiologyProcedure")
 @Immutable
 public final class RadiologyProcedureInference extends FhirR4Extendible1 {
 
@@ -24,22 +21,19 @@ public final class RadiologyProcedureInference extends FhirR4Extendible1 {
      * LOINC codes for the procedure.
      */
     @Generated
-    @JsonProperty(value = "procedureCodes")
     private List<FhirR4CodeableConcept> procedureCodes;
 
     /*
      * Imaging procedures.
      */
     @Generated
-    @JsonProperty(value = "imagingProcedures")
-    private List<ImagingProcedure> imagingProcedures;
+    private final List<ImagingProcedure> imagingProcedures;
 
     /*
      * Ordered procedure information from the document information or text.
      */
     @Generated
-    @JsonProperty(value = "orderedProcedure")
-    private FhirR4Extendible orderedProcedure;
+    private final FhirR4Extendible orderedProcedure;
 
     /**
      * Creates an instance of RadiologyProcedureInference class.
@@ -48,10 +42,8 @@ public final class RadiologyProcedureInference extends FhirR4Extendible1 {
      * @param orderedProcedure the orderedProcedure value to set.
      */
     @Generated
-    @JsonCreator
-    private RadiologyProcedureInference(
-        @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures,
-        @JsonProperty(value = "orderedProcedure") FhirR4Extendible orderedProcedure) {
+    private RadiologyProcedureInference(List<ImagingProcedure> imagingProcedures, FhirR4Extendible orderedProcedure) {
+        setKind(RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE);
         this.imagingProcedures = imagingProcedures;
         this.orderedProcedure = orderedProcedure;
     }
@@ -84,5 +76,64 @@ public final class RadiologyProcedureInference extends FhirR4Extendible1 {
     @Generated
     public FhirR4Extendible getOrderedProcedure() {
         return this.orderedProcedure;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("imagingProcedures", this.imagingProcedures,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("orderedProcedure", this.orderedProcedure);
+        jsonWriter.writeArrayField("procedureCodes", this.procedureCodes,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RadiologyProcedureInference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RadiologyProcedureInference if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RadiologyProcedureInference.
+     */
+    @Generated
+    public static RadiologyProcedureInference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE;
+            List<FhirR4Extension> extension = null;
+            List<ImagingProcedure> imagingProcedures = null;
+            FhirR4Extendible orderedProcedure = null;
+            List<FhirR4CodeableConcept> procedureCodes = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("kind".equals(fieldName)) {
+                    kind = RadiologyInsightsInferenceType.fromString(reader.getString());
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("imagingProcedures".equals(fieldName)) {
+                    imagingProcedures = reader.readArray(reader1 -> ImagingProcedure.fromJson(reader1));
+                } else if ("orderedProcedure".equals(fieldName)) {
+                    orderedProcedure = FhirR4Extendible.fromJson(reader);
+                } else if ("procedureCodes".equals(fieldName)) {
+                    procedureCodes = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            RadiologyProcedureInference deserializedRadiologyProcedureInference
+                = new RadiologyProcedureInference(imagingProcedures, orderedProcedure);
+            deserializedRadiologyProcedureInference.setKind(kind);
+            deserializedRadiologyProcedureInference.setExtension(extension);
+            deserializedRadiologyProcedureInference.procedureCodes = procedureCodes;
+            return deserializedRadiologyProcedureInference;
+        });
     }
 }

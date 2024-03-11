@@ -4,26 +4,11 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationClientImpl;
-import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
-import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
-import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
+import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.communication.jobrouter.implementation.models.ClassificationPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.DistributionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.ExceptionPolicyInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterQueueInternal;
-import com.azure.communication.jobrouter.models.ClassificationPolicy;
-import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
-import com.azure.communication.jobrouter.models.CreateQueueOptions;
-import com.azure.communication.jobrouter.models.DistributionPolicy;
-import com.azure.communication.jobrouter.models.ExceptionPolicy;
-import com.azure.communication.jobrouter.models.RouterQueue;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -32,11 +17,30 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
+import java.time.OffsetDateTime;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ClassificationPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.DistributionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.ExceptionPolicyConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterQueueConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.ClassificationPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.DistributionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.ExceptionPolicyAdapter;
+import com.azure.communication.jobrouter.implementation.converters.QueueAdapter;
+import com.azure.communication.jobrouter.models.ClassificationPolicy;
+import com.azure.communication.jobrouter.models.CreateClassificationPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateDistributionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateExceptionPolicyOptions;
+import com.azure.communication.jobrouter.models.CreateQueueOptions;
+import com.azure.communication.jobrouter.models.DistributionPolicy;
+import com.azure.communication.jobrouter.models.ExceptionPolicy;
+import com.azure.communication.jobrouter.models.RouterQueue;
 
 /**
  * Initializes a new instance of the synchronous JobRouterAdministrationClient type.
@@ -59,34 +63,15 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Creates or updates a distribution policy.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
+     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -94,15 +79,14 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Optional)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -110,6 +94,7 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Optional)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -130,8 +115,6 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertDistributionPolicyWithResponse(String distributionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertDistributionPolicy' is 'application/merge-patch+json'
-        // and stream-style-serialization is not enabled
         return this.serviceClient.upsertDistributionPolicyWithResponse(distributionPolicyId, resource, requestOptions);
     }
 
@@ -326,9 +309,7 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves an existing distribution policy by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -336,6 +317,7 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Optional)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -360,28 +342,14 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves existing distribution policies.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -389,6 +357,7 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     offerExpiresAfterSeconds: Double (Optional)
      *     mode (Optional): {
+     *         kind: String(bestWorker/longestIdle/roundRobin) (Optional)
      *         minConcurrentOffers: Integer (Optional)
      *         maxConcurrentOffers: Integer (Optional)
      *         bypassSelectors: Boolean (Optional)
@@ -429,34 +398,15 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Creates or updates a classification policy.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
+     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -465,19 +415,20 @@ public final class JobRouterAdministrationClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Optional)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Optional)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Optional)
      *         }
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -486,12 +437,15 @@ public final class JobRouterAdministrationClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Optional)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Optional)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Optional)
      *         }
      *     ]
      * }
@@ -510,8 +464,6 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertClassificationPolicyWithResponse(String classificationPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertClassificationPolicy' is 'application/merge-patch+json'
-        // and stream-style-serialization is not enabled
         return this.serviceClient.upsertClassificationPolicyWithResponse(classificationPolicyId, resource,
             requestOptions);
     }
@@ -729,9 +681,7 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves an existing classification policy by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -740,12 +690,15 @@ public final class JobRouterAdministrationClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Optional)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Optional)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Optional)
      *         }
      *     ]
      * }
@@ -768,28 +721,14 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves existing classification policies.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -798,12 +737,15 @@ public final class JobRouterAdministrationClient {
      *     fallbackQueueId: String (Optional)
      *     queueSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Optional)
      *         }
      *     ]
      *     prioritizationRule (Optional): {
+     *         kind: String(directMap/expression/function/static/webhook) (Optional)
      *     }
      *     workerSelectorAttachments (Optional): [
      *          (Optional){
+     *             kind: String(conditional/passThrough/ruleEngine/static/weightedAllocation) (Optional)
      *         }
      *     ]
      * }
@@ -842,34 +784,15 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Creates or updates a exception policy.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
+     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -877,11 +800,13 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
+     *                 kind: String(queueLength/waitTime) (Optional)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     kind: String(cancel/manualReclassify/reclassify) (Optional)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -889,9 +814,7 @@ public final class JobRouterAdministrationClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -899,11 +822,13 @@ public final class JobRouterAdministrationClient {
      *     name: String (Optional)
      *     exceptionRules (Optional): [
      *          (Optional){
-     *             id: String (Required)
-     *             trigger (Required): {
+     *             id: String (Optional, Required on create)
+     *             trigger (Optional, Required on create): {
+     *                 kind: String(queueLength/waitTime) (Optional)
      *             }
-     *             actions (Required): [
-     *                  (Required){
+     *             actions (Optional, Required on create): [
+     *                  (Optional, Required on create){
+     *                     kind: String(cancel/manualReclassify/reclassify) (Optional)
      *                     id: String (Optional)
      *                 }
      *             ]
@@ -925,8 +850,6 @@ public final class JobRouterAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertExceptionPolicyWithResponse(String exceptionPolicyId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertExceptionPolicy' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
         return this.serviceClient.upsertExceptionPolicyWithResponse(exceptionPolicyId, resource, requestOptions);
     }
 
@@ -1248,34 +1171,15 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Creates or updates a queue.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
+     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1288,9 +1192,7 @@ public final class JobRouterAdministrationClient {
      *     exceptionPolicyId: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1316,8 +1218,6 @@ public final class JobRouterAdministrationClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertQueueWithResponse(String queueId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertQueue' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
         return this.serviceClient.upsertQueueWithResponse(queueId, resource, requestOptions);
     }
 
@@ -1503,9 +1403,7 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves an existing queue by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1535,28 +1433,14 @@ public final class JobRouterAdministrationClient {
 
     /**
      * Retrieves existing queues.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1825,5 +1709,251 @@ public final class JobRouterAdministrationClient {
         // Generated convenience method for deleteQueueWithResponse
         RequestOptions requestOptions = new RequestOptions();
         deleteQueueWithResponse(queueId, requestOptions).getValue();
+    }
+
+    /**
+     * Creates or updates a distribution policy.
+     *
+     * @param distributionPolicyId Id of a distribution policy.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy governing how jobs are distributed to workers.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DistributionPolicyInternal upsertDistributionPolicy(String distributionPolicyId,
+        DistributionPolicyInternal resource, String ifMatch, OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertDistributionPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getDistributionPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getDistributionPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertDistributionPolicyWithResponse(distributionPolicyId, resourceInBinaryData, requestOptions)
+            .getValue()
+            .toObject(DistributionPolicyInternal.class);
+    }
+
+    /**
+     * Creates or updates a distribution policy.
+     *
+     * @param distributionPolicyId Id of a distribution policy.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy governing how jobs are distributed to workers.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DistributionPolicyInternal upsertDistributionPolicy(String distributionPolicyId,
+        DistributionPolicyInternal resource) {
+        // Generated convenience method for upsertDistributionPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getDistributionPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getDistributionPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertDistributionPolicyWithResponse(distributionPolicyId, resourceInBinaryData, requestOptions)
+            .getValue()
+            .toObject(DistributionPolicyInternal.class);
+    }
+
+    /**
+     * Creates or updates a classification policy.
+     *
+     * @param classificationPolicyId Id of a classification policy.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for the rules that govern how jobs are classified.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClassificationPolicyInternal upsertClassificationPolicy(String classificationPolicyId,
+        ClassificationPolicyInternal resource, String ifMatch, OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertClassificationPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getClassificationPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getClassificationPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertClassificationPolicyWithResponse(classificationPolicyId, resourceInBinaryData, requestOptions)
+            .getValue()
+            .toObject(ClassificationPolicyInternal.class);
+    }
+
+    /**
+     * Creates or updates a classification policy.
+     *
+     * @param classificationPolicyId Id of a classification policy.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for the rules that govern how jobs are classified.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ClassificationPolicyInternal upsertClassificationPolicy(String classificationPolicyId,
+        ClassificationPolicyInternal resource) {
+        // Generated convenience method for upsertClassificationPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getClassificationPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getClassificationPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertClassificationPolicyWithResponse(classificationPolicyId, resourceInBinaryData, requestOptions)
+            .getValue()
+            .toObject(ClassificationPolicyInternal.class);
+    }
+
+    /**
+     * Creates or updates a exception policy.
+     *
+     * @param exceptionPolicyId Id of an exception policy.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy that defines actions to execute when exception are triggered.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExceptionPolicyInternal upsertExceptionPolicy(String exceptionPolicyId, ExceptionPolicyInternal resource,
+        String ifMatch, OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertExceptionPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getExceptionPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getExceptionPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertExceptionPolicyWithResponse(exceptionPolicyId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(ExceptionPolicyInternal.class);
+    }
+
+    /**
+     * Creates or updates a exception policy.
+     *
+     * @param exceptionPolicyId Id of an exception policy.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a policy that defines actions to execute when exception are triggered.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExceptionPolicyInternal upsertExceptionPolicy(String exceptionPolicyId, ExceptionPolicyInternal resource) {
+        // Generated convenience method for upsertExceptionPolicyWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getExceptionPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getExceptionPolicyInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertExceptionPolicyWithResponse(exceptionPolicyId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(ExceptionPolicyInternal.class);
+    }
+
+    /**
+     * Creates or updates a queue.
+     *
+     * @param queueId Id of a queue.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a queue that can contain jobs to be routed.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouterQueueInternal upsertQueue(String queueId, RouterQueueInternal resource, String ifMatch,
+        OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertQueueWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getRouterQueueInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getRouterQueueInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertQueueWithResponse(queueId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(RouterQueueInternal.class);
+    }
+
+    /**
+     * Creates or updates a queue.
+     *
+     * @param queueId Id of a queue.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a queue that can contain jobs to be routed.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouterQueueInternal upsertQueue(String queueId, RouterQueueInternal resource) {
+        // Generated convenience method for upsertQueueWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getRouterQueueInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getRouterQueueInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertQueueWithResponse(queueId, resourceInBinaryData, requestOptions).getValue()
+            .toObject(RouterQueueInternal.class);
     }
 }

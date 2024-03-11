@@ -5,42 +5,41 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A patient record, including their clinical information and data.
  */
 @Fluent
-public final class PatientRecord {
+public final class PatientRecord implements JsonSerializable<PatientRecord> {
 
     /*
      * A given identifier for the patient. Has to be unique across all patients in a single request.
      */
     @Generated
-    @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * Patient structured information, including demographics and known structured clinical information.
      */
     @Generated
-    @JsonProperty(value = "info")
     private PatientDetails info;
 
     /*
      * Patient encounters/visits.
      */
     @Generated
-    @JsonProperty(value = "encounters")
     private List<Encounter> encounters;
 
     /*
      * Patient unstructured clinical data, given as documents.
      */
     @Generated
-    @JsonProperty(value = "patientDocuments")
     private List<PatientDocument> patientDocuments;
 
     /**
@@ -49,14 +48,12 @@ public final class PatientRecord {
      * @param id the id value to set.
      */
     @Generated
-    @JsonCreator
-    public PatientRecord(@JsonProperty(value = "id") String id) {
+    public PatientRecord(String id) {
         this.id = id;
     }
 
     /**
-     * Get the id property: A given identifier for the patient. Has to be unique across all patients in a single
-     * request.
+     * Get the id property: A given identifier for the patient. Has to be unique across all patients in a single request.
      *
      * @return the id value.
      */
@@ -66,8 +63,7 @@ public final class PatientRecord {
     }
 
     /**
-     * Get the info property: Patient structured information, including demographics and known structured clinical
-     * information.
+     * Get the info property: Patient structured information, including demographics and known structured clinical information.
      *
      * @return the info value.
      */
@@ -77,8 +73,7 @@ public final class PatientRecord {
     }
 
     /**
-     * Set the info property: Patient structured information, including demographics and known structured clinical
-     * information.
+     * Set the info property: Patient structured information, including demographics and known structured clinical information.
      *
      * @param info the info value to set.
      * @return the PatientRecord object itself.
@@ -131,5 +126,58 @@ public final class PatientRecord {
     public PatientRecord setPatientDocuments(List<PatientDocument> patientDocuments) {
         this.patientDocuments = patientDocuments;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeJsonField("info", this.info);
+        jsonWriter.writeArrayField("encounters", this.encounters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("patientDocuments", this.patientDocuments,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PatientRecord from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PatientRecord if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PatientRecord.
+     */
+    @Generated
+    public static PatientRecord fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String id = null;
+            PatientDetails info = null;
+            List<Encounter> encounters = null;
+            List<PatientDocument> patientDocuments = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("info".equals(fieldName)) {
+                    info = PatientDetails.fromJson(reader);
+                } else if ("encounters".equals(fieldName)) {
+                    encounters = reader.readArray(reader1 -> Encounter.fromJson(reader1));
+                } else if ("patientDocuments".equals(fieldName)) {
+                    patientDocuments = reader.readArray(reader1 -> PatientDocument.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            PatientRecord deserializedPatientRecord = new PatientRecord(id);
+            deserializedPatientRecord.info = info;
+            deserializedPatientRecord.encounters = encounters;
+            deserializedPatientRecord.patientDocuments = patientDocuments;
+            return deserializedPatientRecord;
+        });
     }
 }
