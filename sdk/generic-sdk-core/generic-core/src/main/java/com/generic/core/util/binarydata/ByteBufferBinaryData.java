@@ -4,7 +4,7 @@
 package com.generic.core.util.binarydata;
 
 import com.generic.core.implementation.util.ImplUtils;
-import com.generic.core.models.TypeReference;
+import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;

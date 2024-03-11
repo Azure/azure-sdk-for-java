@@ -10,8 +10,8 @@ import com.generic.core.http.models.Response;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.DateTimeRfc1123;
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;

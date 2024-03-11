@@ -3,6 +3,8 @@
 
 package com.generic.core.models;
 
+import com.generic.core.util.TypeReference;
+
 import java.util.Map;
 
 /**

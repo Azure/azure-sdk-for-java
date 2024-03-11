@@ -4,7 +4,7 @@
 package com.generic.core.implementation.serializer;
 
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.models.TypeReference;
+import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonReader;
 import com.generic.json.JsonSerializable;

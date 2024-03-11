@@ -6,9 +6,9 @@ package com.generic.core.http.models;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.implementation.http.rest.ErrorOptions;
 import com.generic.core.implementation.http.rest.UrlEscapers;
-import com.generic.core.models.Context;
 import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.Context;
 import com.generic.core.util.binarydata.BinaryData;
 
 import java.util.EnumSet;

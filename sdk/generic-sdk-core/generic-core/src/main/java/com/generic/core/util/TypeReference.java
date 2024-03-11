@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.models;
+package com.generic.core.util;
 
 import com.generic.core.implementation.TypeUtil;
-import com.generic.core.util.ClientLogger;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

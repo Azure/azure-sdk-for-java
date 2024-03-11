@@ -24,11 +24,11 @@ import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.DateTimeRfc1123;
 import com.generic.core.implementation.util.UrlBuilder;
-import com.generic.core.models.Context;
 import com.generic.core.models.ExpandableStringEnum;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.Context;
 import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
 

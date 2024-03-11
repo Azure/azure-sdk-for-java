@@ -7,8 +7,8 @@ import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.generic.core.implementation.util.StreamUtil;
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;

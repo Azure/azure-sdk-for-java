@@ -4,8 +4,8 @@
 package com.generic.core.util.binarydata;
 
 import com.generic.core.implementation.util.SliceInputStream;
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.BufferedInputStream;

@@ -7,7 +7,7 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.models.SimpleClass;
-import com.generic.core.models.TypeReference;
+import com.generic.core.util.TypeReference;
 import com.generic.json.JsonReader;
 import com.generic.json.JsonSerializable;
 import com.generic.json.JsonToken;

@@ -3,7 +3,7 @@
 
 package com.generic.core.util.serializer;
 
-import com.generic.core.models.TypeReference;
+import com.generic.core.util.TypeReference;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;

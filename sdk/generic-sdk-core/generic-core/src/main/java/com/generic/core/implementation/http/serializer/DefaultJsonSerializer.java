@@ -3,8 +3,8 @@
 
 package com.generic.core.implementation.http.serializer;
 
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.JsonSerializer;
 import com.generic.json.JsonProviders;
 import com.generic.json.JsonReader;
