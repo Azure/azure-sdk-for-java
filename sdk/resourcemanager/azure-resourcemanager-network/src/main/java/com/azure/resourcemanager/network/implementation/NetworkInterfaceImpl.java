@@ -66,8 +66,6 @@ class NetworkInterfaceImpl
     private NetworkSecurityGroup existingNetworkSecurityGroupToAssociate;
     /** cached related resources. */
     private NetworkSecurityGroup networkSecurityGroup;
-    /** the delete option of public ip address */
-    private DeleteOptions publicIpAddressDeleteOption;
     /** the name of specified ip config name */
     private Map<DeleteOptions, Set<String>> specifiedIpConfigNames;
     private boolean isInUpdateIpConfigMode = false;
@@ -76,6 +74,8 @@ class NetworkInterfaceImpl
         super(name, innerModel, networkManager);
         this.nicName = name;
         this.namer = this.manager().resourceManager().internalContext().createIdentifierProvider(this.nicName);
+        this.isInUpdateIpConfigMode = false;
+        this.specifiedIpConfigNames = new LinkedHashMap<>();
         initializeChildrenFromInner();
     }
 
@@ -584,7 +584,6 @@ class NetworkInterfaceImpl
 
         if (Objects.nonNull(this.specifiedIpConfigNames)) {
             NicIpConfigurationImpl.deleteOptionConfigurations(this.nicIPConfigurations.values(), this.specifiedIpConfigNames);
-            this.isInUpdateIpConfigMode = false;
         }
 
         // Reset and update IP configs
@@ -603,9 +602,6 @@ class NetworkInterfaceImpl
                     nicIpConfiguration.innerModel().publicIpAddress().withDeleteOption(deleteOptions);
                 });
         } else {
-            if (Objects.isNull(this.specifiedIpConfigNames)) {
-                this.specifiedIpConfigNames = new LinkedHashMap<>();
-            }
             if (this.specifiedIpConfigNames.containsKey(deleteOptions)) {
                 this.specifiedIpConfigNames.get(deleteOptions).addAll(ipConfigNameSet);
             } else {
