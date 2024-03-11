@@ -57,22 +57,20 @@ public final class HttpRedirectOptions {
     /**
      * Gets the predicate that determines if a redirect should be attempted.
      * <p>
-     * If null, the default behavior is to retry HTTP responses with status codes 408, 429, and any 500 status code that
-     * isn't 501 or 505. And to retry any {@link Exception}.
+     * If null, the default behavior is to redirect HTTP responses with status response code (301, 302, 307, 308).
      *
-     * @return The predicate that determines if a retry should be attempted.
+     * @return The predicate that determines if a redirect should be attempted.
      */
     public Predicate<RequestRedirectCondition> getShouldRedirectCondition() {
         return shouldRedirectCondition;
     }
 
     /**
-     * Sets the predicate that determines if a retry should be attempted.
+     * Sets the predicate that determines if a redirect should be attempted.
      * <p>
-     * If null, the default behavior is to retry HTTP responses with status codes 408, 429, and any 500 status code that
-     * isn't 501 or 505. And to retry any {@link Exception}.
+     * If null, the default behavior is to redirect HTTP responses with status response code (301, 302, 307, 308).
      *
-     * @param shouldRedirectCondition The predicate that determines if a retry should be attempted for the given
+     * @param shouldRedirectCondition The predicate that determines if a redirect should be attempted for the given
      * {@link Response}.
      * @return The updated {@link HttpRedirectOptions} object.
      */
@@ -94,6 +92,8 @@ public final class HttpRedirectOptions {
 
     /**
      * Gets the header name containing the redirect URL.
+     * <p>
+     * If null, the default behavior is to use the "Location" header to locate the redirect URL in the response headers.
      *
      * @return The header name containing the redirect URL.
      */
