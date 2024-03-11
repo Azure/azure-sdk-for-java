@@ -21,27 +21,32 @@
 /sdk/                                                @joshfree @srnagar @anuchandy @conniey @lmolkova @jonathangiles
 
 # BOM
-# AzureSdkOwners: @vcolin7 @alzimmermsft
-# ServiceLabel: %azure-sdk-bom
+
 # PRLabel: %azure-sdk-bom
 /sdk/boms/azure-sdk-bom/                             @vcolin7 @alzimmermsft @jonathangiles @srnagar @anuchandy
 
-# ServiceLabel: %azure-spring
+# ServiceLabel: %azure-sdk-bom
+# AzureSdkOwners:                                    @vcolin7 @alzimmermsft
+
 # PRLabel: %azure-spring
 /sdk/boms/spring-cloud-azure-dependencies/           @saragluna @chenrujun @netyyyy @moarychan
 
+# ServiceLabel: %azure-spring
+# AzureSdkOwners:                                    @saragluna @chenrujun @netyyyy @moarychan
 
 # ######## Core Libraries ########
 
-# AzureSdkOwners: @alzimmermsft
-# ServiceLabel: %Azure.Core
 # PRLabel: %Azure.Core
 /sdk/core/                                           @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
 
-# AzureSdkOwners: @anuchandy @conniey @lmolkova
-# ServiceLabel: %Azure.Core.AMQP
+# ServiceLabel: %Azure.Core
+# AzureSdkOwners:                                    @alzimmermsft
+
 # PRLabel: %Azure.Core.AMQP
 /sdk/core/azure-core-amqp/                           @anuchandy @conniey @lmolkova
+
+# ServiceLabel: %Azure.Core.AMQP
+# AzureSdkOwners:                                    @anuchandy @conniey @lmolkova
 
 # PRLabel: %OpenTelemetry
 /sdk/core/azure-core-tracing-opentelemetry/          @lmolkova @trask
@@ -52,8 +57,6 @@
 
 /sdk/parents/                                        @alzimmermsft
 
-# AzureSdkOwners: @alzimmermsft
-# ServiceLabel: %Azure.Core
 # PRLabel: %Azure.Core
 /sdk/serialization/                                  @alzimmermsft @srnagar
 
@@ -114,10 +117,11 @@
 # ServiceLabel: %ARO
 # ServiceOwners:                                     @mjudeikis @jim-minter @julienstroheker @amanohar
 
-# AzureSdkOwners: @srnagar
-# ServiceLabel: %graalvm
 # PRLabel: %graalvm
 /sdk/aot/                                            @srnagar @jonathangiles
+
+# ServiceLabel: %graalvm
+# AzureSdkOwners:                                    @srnagar
 
 # PRLabel: %Attestation
 /sdk/attestation/                                    @Azure/azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
@@ -457,10 +461,11 @@
 # ServiceLabel: %HPC Cache
 # ServiceOwners:                                    @romahamu @omzevall
 
-# AzureSdkOwners: @g2vinay @billwert
-# ServiceLabel: %Azure.Identity
 # PRLabel: %Azure.Identity
 /sdk/identity/                                       @g2vinay @billwert @joshfree @Azure/azure-sdk-write-identity
+
+# ServiceLabel: %Azure.Identity
+# AzureSdkOwners:                                    @g2vinay @billwert
 
 # PRLabel: %Image Analysis
 # ServiceLabel: %Image Analysis
@@ -762,10 +767,11 @@
 # ServiceLabel:  %Web Apps
 # ServiceOwners:                                     @AzureAppServiceCLI @antcp
 
-# AzureSdkOwners: @srnagar @jonathangiles
-# ServiceLabel: %Azure SDK Tools
 # PRLabel: %Azure SDK Tools
 /sdk/tools/                                          @srnagar @jonathangiles
+
+# ServiceLabel: %Azure SDK Tools
+# AzureSdkOwners:                                    @srnagar @jonathangiles
 
 # ######## Spring ########
 
@@ -798,30 +804,29 @@
 
 # ######## End-to-end tests ########
 
-# AzureSdkOwners: @g2vinay @billwert
-# ServiceLabel: %Azure.Identity
 # PRLabel: %Azure.Identity
 /sdk/e2e/                                            @g2vinay @billwert
 
-# AzureSdkOwners: @alzimmermsft @srnagar
-# ServiceLabel: %common
+# ServiceLabel: %Azure.Identity
+# AzureSdkOwners:                                    @g2vinay @billwert
+
 # PRLabel: %common
 /common/smoke-tests/                                 @alzimmermsft @srnagar @joshfree @jonathangiles @g2vinay @conniey
 
+# ServiceLabel: %common
+# AzureSdkOwners:                                    @alzimmermsft @srnagar
+
 # ######## Management Plane ########
 
-# AzureSdkOwners: @weidongxu-microsoft
-# ServiceLabel: %Mgmt
 # PRLabel: %Mgmt
 /sdk/resourcemanager/                                @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978
 
-# AzureSdkOwners: @weidongxu-microsoft
 # ServiceLabel: %Mgmt
+# AzureSdkOwners:                                    @weidongxu-microsoft
+
 # PRLabel: %Mgmt
 /sdk/**/azure-resourcemanager-*/                     @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978
 
-# AzureSdkOwners: @weidongxu-microsoft
-# ServiceLabel: %Mgmt
 # PRLabel: %Mgmt
 /sdk/resourcemanagerhybrid/                          @weidongxu-microsoft @haolingdong-msft @XiaofeiCao @arthurma1978 @bganapa
 
