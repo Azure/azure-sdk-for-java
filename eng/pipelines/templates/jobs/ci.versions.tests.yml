@@ -50,6 +50,22 @@ jobs:
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
 
+    templateContext:
+      outputs:
+        - ${{ each versionOverride in parameters.VersionOverrides }}:
+          # Artifacts created in /eng/pipelines/templates/steps/retain-test-logs.yml via build-and-test.yml
+          - output: pipelineArtifact
+            artifactName: 'test-logs-vo-${{ versionOverride }}-$(System.StageName)-$(System.JobName)'
+            targetPath: '$(Build.ArtifactStagingDirectory)/test-logs-vo-${{ versionOverride }}.zip'
+            condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
+            sbomEnabled: false
+          # Artifacts created in /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml via build-and-test.yml
+          - output: pipelineArtifact
+            artifactName: 'oom-vo-${{ versionOverride }}-$(System.StageName)-$(System.JobName)'
+            targetPath: '$(Build.ArtifactStagingDirectory)/oom-vo-{{ versionOverride }}-zipped'
+            condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
+            sbomEnabled: false
+
     steps:
       - pwsh: |
           Write-Host "##vso[task.setvariable variable=AZURE_VERSION_OVERRIDE_TESTS]true"
