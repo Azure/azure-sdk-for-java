@@ -41,6 +41,8 @@
       --add-opens com.azure.storage.blob.cryptography/com.azure.storage.blob.specialized.cryptography=ALL-UNNAMED
       --add-reads com.azure.storage.blob.cryptography=com.azure.http.netty
       --add-reads com.azure.storage.blob.cryptography=com.azure.core.http.okhttp
+      --add-reads com.azure.storage.blob.cryptography=com.azure.core.http.jdk.httpclient
+      --add-reads com.azure.storage.blob.cryptography=com.azure.core.http.vertx
     </javaModulesSurefireArgLine>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
   </properties>

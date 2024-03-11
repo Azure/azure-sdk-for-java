@@ -44,6 +44,7 @@ import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -119,7 +120,14 @@ public class ContainerApiTests extends BlobTestBase {
         cc.createWithResponse(metadata, null, null, null);
         Response<BlobContainerProperties> response = cc.getPropertiesWithResponse(null, null, null);
 
-        assertEquals(metadata, response.getValue().getMetadata());
+        if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
+            // JDK HttpClient returns headers with names lowercased.
+            Map<String, String> lowercasedMetadata = metadata.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
+            assertEquals(lowercasedMetadata, response.getValue().getMetadata());
+        } else {
+            assertEquals(metadata, response.getValue().getMetadata());
+        }
     }
 
     private static Stream<Arguments> createMetadataSupplier() {
@@ -214,7 +222,14 @@ public class ContainerApiTests extends BlobTestBase {
         Response<Boolean> result = cc.createIfNotExistsWithResponse(options, null, null);
         Response<BlobContainerProperties> response = cc.getPropertiesWithResponse(null, null, null);
 
-        assertEquals(metadata, response.getValue().getMetadata());
+        if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
+            // JDK HttpClient returns headers with names lowercased.
+            Map<String, String> lowercasedMetadata = metadata.entrySet().stream()
+                .collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
+            assertEquals(lowercasedMetadata, response.getValue().getMetadata());
+        } else {
+            assertEquals(metadata, response.getValue().getMetadata());
+        }
         assertTrue(result.getValue());
     }
 

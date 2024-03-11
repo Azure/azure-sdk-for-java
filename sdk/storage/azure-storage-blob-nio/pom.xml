@@ -38,6 +38,8 @@
       --add-opens com.azure.storage.blob.nio/com.azure.storage.blob.nio=ALL-UNNAMED
       --add-reads com.azure.storage.blob.nio=com.azure.http.netty
       --add-reads com.azure.storage.blob.nio=com.azure.core.http.okhttp
+      --add-reads com.azure.storage.blob.nio=com.azure.core.http.jdk.httpclient
+      --add-reads com.azure.storage.blob.nio=com.azure.core.http.vertx
     </javaModulesSurefireArgLine>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
   </properties>

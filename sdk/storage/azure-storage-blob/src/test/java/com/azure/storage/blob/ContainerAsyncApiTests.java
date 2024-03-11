@@ -40,6 +40,7 @@ import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.test.shared.TestHttpClientType;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
@@ -118,7 +119,16 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         ccAsync.createWithResponse(metadata, null).block();
         StepVerifier.create(ccAsync.getPropertiesWithResponse(null))
-            .assertNext(r -> assertEquals(metadata, r.getValue().getMetadata()))
+            .assertNext(r -> {
+                if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
+                    // JDK HttpClient returns headers with names lowercased.
+                    Map<String, String> lowercasedMetadata = metadata.entrySet().stream()
+                        .collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
+                    assertEquals(lowercasedMetadata, r.getValue().getMetadata());
+                } else {
+                    assertEquals(metadata, r.getValue().getMetadata());
+                }
+            })
             .verifyComplete();
     }
 
@@ -222,7 +232,16 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(ccAsync.getPropertiesWithResponse(null))
-            .assertNext(r -> assertEquals(metadata, r.getValue().getMetadata()))
+            .assertNext(r -> {
+                if (ENVIRONMENT.getHttpClientType() == TestHttpClientType.JDK_HTTP) {
+                    // JDK HttpClient returns headers with names lowercased.
+                    Map<String, String> lowercasedMetadata = metadata.entrySet().stream()
+                        .collect(Collectors.toMap(e -> e.getKey().toLowerCase(), Map.Entry::getValue));
+                    assertEquals(lowercasedMetadata, r.getValue().getMetadata());
+                } else {
+                    assertEquals(metadata, r.getValue().getMetadata());
+                }
+            })
             .verifyComplete();
     }
 

@@ -49,6 +49,8 @@
       --add-reads com.azure.storage.common=ALL-UNNAMED
       --add-reads com.azure.storage.file.share=com.azure.http.netty
       --add-reads com.azure.storage.file.share=com.azure.core.http.okhttp
+      --add-reads com.azure.storage.file.share=com.azure.core.http.jdk.httpclient
+      --add-reads com.azure.storage.file.share=com.azure.core.http.vertx
     </javaModulesSurefireArgLine>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
   </properties>

@@ -54,6 +54,8 @@
       --add-reads com.azure.storage.internal.avro=ALL-UNNAMED
       --add-reads com.azure.storage.blob=com.azure.http.netty
       --add-reads com.azure.storage.blob=com.azure.core.http.okhttp
+      --add-reads com.azure.storage.blob=com.azure.core.http.jdk.httpclient
+      --add-reads com.azure.storage.blob=com.azure.core.http.vertx
     </javaModulesSurefireArgLine>
     <graalvm.disable>false</graalvm.disable>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>

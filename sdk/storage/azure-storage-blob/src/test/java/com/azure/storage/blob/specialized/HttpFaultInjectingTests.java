@@ -140,7 +140,7 @@ public class HttpFaultInjectingTests {
                     null, Context.NONE);
                 byte[] actualFileBytes = Files.readAllBytes(it.toPath());
                 TestUtils.assertArraysEqual(realFileBytes, actualFileBytes);
-                successCount.incrementAndGet();
+                LOGGER.atVerbose().log(() -> "Successful complete count: " + successCount.incrementAndGet());
                 Files.deleteIfExists(it.toPath());
             } catch (Exception ex) {
                 // Don't let network exceptions fail the download
