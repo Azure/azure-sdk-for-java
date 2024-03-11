@@ -20,6 +20,7 @@ stages:
           - template: ../variables/globals.yml
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
+
           image: azsdk-pool-mms-ubuntu-2004-1espt
           os: linux
         strategy:

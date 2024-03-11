@@ -38,8 +38,8 @@ stages:
           - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
         pool:
-          name: $(LINUXPOOL)
-          image: $(LINUXVMIMAGE)
+          name: azsdk-pool-mms-ubuntu-2004-general
+          image: azsdk-pool-mms-ubuntu-2004-1espt
           os: linux
         strategy:
           runOnce:
@@ -80,8 +80,8 @@ stages:
               - template: /eng/pipelines/templates/variables/globals.yml
               - template: /eng/pipelines/templates/variables/image.yml
             pool:
-              name: $(LINUXPOOL)
-              image: $(LINUXVMIMAGE)
+              name: azsdk-pool-mms-ubuntu-2004-general
+              image: azsdk-pool-mms-ubuntu-2004-1espt
               os: linux
 
             steps:
@@ -346,8 +346,8 @@ stages:
                 - template: /eng/pipelines/templates/variables/globals.yml
                 - template: /eng/pipelines/templates/variables/image.yml
               pool:
-                name: $(WINDOWSPOOL)
-                image: $(WINDOWSVMIMAGE)
+                name: azsdk-pool-mms-win-2022-general
+                image: azsdk-pool-mms-win-2022-1espt
                 os: windows
               strategy:
                 runOnce:
@@ -399,8 +399,8 @@ stages:
             value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
 
         pool:
-          name: $(WINDOWSPOOL)
-          image: $(WINDOWSVMIMAGE)
+          name: azsdk-pool-mms-win-2022-general
+          image: azsdk-pool-mms-win-2022-1espt
           os: windows
         steps:
         - checkout: azure-sdk-build-tools
@@ -450,12 +450,12 @@ stages:
         dependsOn: PublishPackages
         condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
         pool:
-          name: $(LINUXPOOL)
-          image: $(LINUXVMIMAGE)
+          name: azsdk-pool-mms-ubuntu-2004-general
+          image: azsdk-pool-mms-ubuntu-2004-1espt
           os: linux
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
-          - template: /eng/pipelines/templates/variables/image.yml
+          - template: /eng/pipelines/templates/variables/globals.yml
           - name: DocValidationImageId
             value: azuresdkimages.azurecr.io/javarefautocr:latest
         steps:
