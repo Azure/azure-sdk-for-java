@@ -52,7 +52,7 @@ public class Headers implements Iterable<Header> {
         this.headers = new HashMap<>((int) (headers.headers.size() / 0.75f));
 
         headers.headers.forEach((key, value) ->
-            this.headers.put(key, new Header(value.getName(), value.getValuesList())));
+            this.headers.put(key, new Header(value.getName(), value.getValues())));
     }
 
     /**
@@ -228,7 +228,7 @@ public class Headers implements Iterable<Header> {
     public Headers setAllHeaders(Headers headers) {
         if (headers != null) {
             headers.headers.forEach((headerName, header) ->
-                setInternal(headerName, header.getName(), header.getValuesList()));
+                setInternal(headerName, header.getName(), header.getValues()));
         }
 
         return this;
@@ -300,7 +300,7 @@ public class Headers implements Iterable<Header> {
     private String[] getValuesInternal(String formattedName) {
         final Header header = getInternal(formattedName);
 
-        return header == null ? null : header.getValues();
+        return header == null ? null : header.getValuesArray();
     }
 
     /**
@@ -343,7 +343,7 @@ public class Headers implements Iterable<Header> {
         final Map<String, String[]> result = new HashMap<>();
 
         for (final Header header : headers.values()) {
-            result.put(header.getName(), header.getValues());
+            result.put(header.getName(), header.getValuesArray());
         }
 
         return Collections.unmodifiableMap(result);

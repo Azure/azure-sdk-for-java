@@ -114,7 +114,7 @@ public class Header {
      *
      * @return the values of this {@link Header} that are separated by a comma
      */
-    public String[] getValues() {
+    String[] getValuesArray() {
         if (value != null) {
             return new String[] {value};
         } else if (!CoreUtils.isNullOrEmpty(values)) {
@@ -129,7 +129,7 @@ public class Header {
      *
      * @return An unmodifiable list containing all values associated with this header.
      */
-    public List<String> getValuesList() {
+    public List<String> getValues() {
         if (value != null) {
             return Collections.singletonList(value);
         } else if (!CoreUtils.isNullOrEmpty(values)) {
