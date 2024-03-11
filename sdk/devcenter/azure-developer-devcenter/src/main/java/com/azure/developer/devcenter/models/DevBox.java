@@ -140,18 +140,19 @@ public final class DevBox {
 
     /**
      * Creates an instance of DevBox class.
-     * 
-     * @param poolName the poolName value to set.
+     *
+     * @param devBoxName the dev box name value to set.
+     * @param poolName the pool name value to set.
      */
-    @Generated
     @JsonCreator
-    public DevBox(@JsonProperty(value = "poolName") String poolName) {
+    public DevBox(@JsonProperty(value = "name") String devBoxName, @JsonProperty(value = "poolName") String poolName) {
+        this.name = devBoxName;
         this.poolName = poolName;
     }
 
     /**
      * Get the name property: Display name for the Dev Box.
-     * 
+     *
      * @return the name value.
      */
     @Generated
@@ -161,7 +162,7 @@ public final class DevBox {
 
     /**
      * Get the projectName property: Name of the project this Dev Box belongs to.
-     * 
+     *
      * @return the projectName value.
      */
     @Generated
@@ -171,7 +172,7 @@ public final class DevBox {
 
     /**
      * Get the poolName property: The name of the Dev Box pool this machine belongs to.
-     * 
+     *
      * @return the poolName value.
      */
     @Generated
@@ -181,7 +182,7 @@ public final class DevBox {
 
     /**
      * Get the hibernateSupport property: Indicates whether hibernate is enabled/disabled or unknown.
-     * 
+     *
      * @return the hibernateSupport value.
      */
     @Generated
@@ -191,7 +192,7 @@ public final class DevBox {
 
     /**
      * Get the provisioningState property: The current provisioning state of the Dev Box.
-     * 
+     *
      * @return the provisioningState value.
      */
     @Generated
@@ -202,7 +203,7 @@ public final class DevBox {
     /**
      * Get the actionState property: The current action state of the Dev Box. This is state is based on previous
      * action performed by user.
-     * 
+     *
      * @return the actionState value.
      */
     @Generated
@@ -212,7 +213,7 @@ public final class DevBox {
 
     /**
      * Get the powerState property: The current power state of the Dev Box.
-     * 
+     *
      * @return the powerState value.
      */
     @Generated
@@ -223,7 +224,7 @@ public final class DevBox {
     /**
      * Get the uniqueId property: A unique identifier for the Dev Box. This is a GUID-formatted string (e.g.
      * 00000000-0000-0000-0000-000000000000).
-     * 
+     *
      * @return the uniqueId value.
      */
     @Generated
@@ -233,7 +234,7 @@ public final class DevBox {
 
     /**
      * Get the error property: Provisioning or action error details. Populated only for error states.
-     * 
+     *
      * @return the error value.
      */
     @Generated
@@ -244,7 +245,7 @@ public final class DevBox {
     /**
      * Get the location property: Azure region where this Dev Box is located. This will be the same region as the
      * Virtual Network it is attached to.
-     * 
+     *
      * @return the location value.
      */
     @Generated
@@ -254,7 +255,7 @@ public final class DevBox {
 
     /**
      * Get the osType property: The operating system type of this Dev Box.
-     * 
+     *
      * @return the osType value.
      */
     @Generated
@@ -264,7 +265,7 @@ public final class DevBox {
 
     /**
      * Get the userId property: The AAD object id of the user this Dev Box is assigned to.
-     * 
+     *
      * @return the userId value.
      */
     @Generated
@@ -274,7 +275,7 @@ public final class DevBox {
 
     /**
      * Get the hardwareProfile property: Information about the Dev Box's hardware resources.
-     * 
+     *
      * @return the hardwareProfile value.
      */
     @Generated
@@ -284,7 +285,7 @@ public final class DevBox {
 
     /**
      * Get the storageProfile property: Storage settings for this Dev Box.
-     * 
+     *
      * @return the storageProfile value.
      */
     @Generated
@@ -294,7 +295,7 @@ public final class DevBox {
 
     /**
      * Get the imageReference property: Information about the image used for this Dev Box.
-     * 
+     *
      * @return the imageReference value.
      */
     @Generated
@@ -304,7 +305,7 @@ public final class DevBox {
 
     /**
      * Get the createdTime property: Creation time of this Dev Box.
-     * 
+     *
      * @return the createdTime value.
      */
     @Generated
@@ -314,7 +315,7 @@ public final class DevBox {
 
     /**
      * Get the localAdministratorStatus property: Indicates whether the owner of the Dev Box is a local administrator.
-     * 
+     *
      * @return the localAdministratorStatus value.
      */
     @Generated
@@ -324,7 +325,7 @@ public final class DevBox {
 
     /**
      * Set the localAdministratorStatus property: Indicates whether the owner of the Dev Box is a local administrator.
-     * 
+     *
      * @param localAdministratorStatus the localAdministratorStatus value to set.
      * @return the DevBox object itself.
      */

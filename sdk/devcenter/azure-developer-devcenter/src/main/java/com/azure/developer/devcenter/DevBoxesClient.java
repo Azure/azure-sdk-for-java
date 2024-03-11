@@ -37,7 +37,7 @@ public final class DevBoxesClient {
 
     /**
      * Initializes an instance of DevBoxesClient class.
-     * 
+     *
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -81,7 +81,7 @@ public final class DevBoxesClient {
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -132,7 +132,7 @@ public final class DevBoxesClient {
      *     healthStatus: String(Unknown/Pending/Healthy/Warning/Unhealthy) (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param poolName Pool name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -163,7 +163,7 @@ public final class DevBoxesClient {
      *     timeZone: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param poolName Pool name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -193,7 +193,7 @@ public final class DevBoxesClient {
      *     timeZone: String (Required)
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param poolName Pool name.
      * @param scheduleName Display name for the Schedule.
@@ -262,7 +262,7 @@ public final class DevBoxesClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -327,7 +327,7 @@ public final class DevBoxesClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -394,7 +394,7 @@ public final class DevBoxesClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -462,7 +462,7 @@ public final class DevBoxesClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -581,7 +581,7 @@ public final class DevBoxesClient {
      *     localAdministrator: String(Enabled/Disabled) (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param projectName The DevCenter Project upon which to execute the operation.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -631,7 +631,7 @@ public final class DevBoxesClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -679,7 +679,7 @@ public final class DevBoxesClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -746,7 +746,7 @@ public final class DevBoxesClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -794,7 +794,7 @@ public final class DevBoxesClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -824,7 +824,7 @@ public final class DevBoxesClient {
      *     rdpConnectionUrl: String (Optional)
      * }
      * }</pre>
-     * 
+     *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -859,7 +859,7 @@ public final class DevBoxesClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -894,7 +894,7 @@ public final class DevBoxesClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -917,7 +917,7 @@ public final class DevBoxesClient {
 
     /**
      * Skips an occurrence of an action.
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -953,7 +953,7 @@ public final class DevBoxesClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1007,7 +1007,7 @@ public final class DevBoxesClient {
      *     }
      * }
      * }</pre>
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1029,7 +1029,7 @@ public final class DevBoxesClient {
 
     /**
      * Lists available pools.
-     * 
+     *
      * @param projectName Name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1050,7 +1050,7 @@ public final class DevBoxesClient {
 
     /**
      * Gets a pool.
-     * 
+     *
      * @param projectName Name of the project.
      * @param poolName Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1071,7 +1071,7 @@ public final class DevBoxesClient {
 
     /**
      * Lists available schedules for a pool.
-     * 
+     *
      * @param projectName Name of the project.
      * @param poolName Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1093,7 +1093,7 @@ public final class DevBoxesClient {
 
     /**
      * Gets a schedule.
-     * 
+     *
      * @param projectName Name of the project.
      * @param poolName Pool name.
      * @param scheduleName Display name for the Schedule.
@@ -1116,7 +1116,7 @@ public final class DevBoxesClient {
 
     /**
      * Lists Dev Boxes that the caller has access to in the DevCenter.
-     * 
+     *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
@@ -1135,7 +1135,7 @@ public final class DevBoxesClient {
 
     /**
      * Lists Dev Boxes in the Dev Center for a particular user.
-     * 
+     *
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1157,7 +1157,7 @@ public final class DevBoxesClient {
 
     /**
      * Lists Dev Boxes in the project for a particular user.
-     * 
+     *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1180,7 +1180,7 @@ public final class DevBoxesClient {
 
     /**
      * Gets a Dev Box.
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1203,13 +1203,11 @@ public final class DevBoxesClient {
 
     /**
      * Creates or replaces a Dev Box.
-     * 
+     *
      * @param projectName The DevCenter Project upon which to execute the operation.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
-     * @param devBoxName The name of a Dev Box.
-     * @param body Represents the body request of a Dev Box creation. Dev Box Pool name is required. Optionally set the
-     * owner of the Dev Box as local administrator.
+     * @param devBox A DevBox object the requires dev box name and pool. Setting local administrator status is optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1218,19 +1216,18 @@ public final class DevBoxesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of a Dev Box.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DevCenterOperationDetails, DevBox> beginCreateDevBox(String projectName, String userId,
-        String devBoxName, DevBox body) {
-        // Generated convenience method for beginCreateDevBoxWithModel
+        DevBox devBox) {
+        // Customized convenience method for beginCreateDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateDevBoxWithModel(projectName, userId, devBoxName, BinaryData.fromObject(body),
-            requestOptions);
+        return serviceClient.beginCreateDevBoxWithModel(projectName, userId, devBox.getName(),
+            BinaryData.fromObject(devBox), requestOptions);
     }
 
     /**
      * Deletes a Dev Box.
-     * 
+     *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1254,7 +1251,7 @@ public final class DevBoxesClient {
 
     /**
      * Starts a Dev Box.
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1278,7 +1275,7 @@ public final class DevBoxesClient {
 
     /**
      * Stops a Dev Box.
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1306,7 +1303,7 @@ public final class DevBoxesClient {
 
     /**
      * Stops a Dev Box.
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1330,7 +1327,7 @@ public final class DevBoxesClient {
 
     /**
      * Restarts a Dev Box.
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1354,7 +1351,7 @@ public final class DevBoxesClient {
 
     /**
      * Gets RDP Connection info.
-     * 
+     *
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1378,7 +1375,7 @@ public final class DevBoxesClient {
 
     /**
      * Lists actions on a Dev Box.
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1402,7 +1399,7 @@ public final class DevBoxesClient {
 
     /**
      * Gets an action.
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1427,7 +1424,7 @@ public final class DevBoxesClient {
 
     /**
      * Skips an occurrence of an action.
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1450,7 +1447,7 @@ public final class DevBoxesClient {
 
     /**
      * Delays the occurrence of an action.
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
@@ -1477,7 +1474,7 @@ public final class DevBoxesClient {
 
     /**
      * Delays all actions.
-     * 
+     *
      * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.

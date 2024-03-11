@@ -176,7 +176,7 @@ class DevBoxTests extends DevCenterClientTestBase {
 
     public DevBox createDevBox() {
         SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
-                devBoxesClient.beginCreateDevBox(projectName, meUserId, devBoxName, new DevBox(poolName));
+                devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName));
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
 

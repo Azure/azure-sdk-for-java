@@ -1256,9 +1256,7 @@ public final class DevBoxesAsyncClient {
      * @param projectName The DevCenter Project upon which to execute the operation.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
-     * @param devBoxName The name of a Dev Box.
-     * @param body Represents the body request of a Dev Box creation. Dev Box Pool name is required. Optionally set the
-     * owner of the Dev Box as local administrator.
+     * @param devBox A DevBox object the requires dev box name and pool. Setting local administrator status is optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1267,14 +1265,13 @@ public final class DevBoxesAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of a Dev Box.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<DevCenterOperationDetails, DevBox> beginCreateDevBox(String projectName, String userId,
-        String devBoxName, DevBox body) {
-        // Generated convenience method for beginCreateDevBoxWithModel
+        DevBox devBox) {
+        // Customized convenience method for beginCreateDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateDevBoxWithModelAsync(projectName, userId, devBoxName,
-            BinaryData.fromObject(body), requestOptions);
+        return serviceClient.beginCreateDevBoxWithModelAsync(projectName, userId, devBox.getName(),
+            BinaryData.fromObject(devBox), requestOptions);
     }
 
     /**
