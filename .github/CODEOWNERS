@@ -52,6 +52,7 @@
 # AzureSdkOwners:                                    @lmolkova
 # ServiceOwners:                                     @cijothomas @reyang @rajkumar-rangaraj @TimothyMothra @vishweshbankwar @ramthi
 
+# PRLabel: %Azure.Core
 /sdk/parents/                                        @alzimmermsft
 
 # PRLabel: %Azure.Core
@@ -122,7 +123,11 @@
 
 # PRLabel: %Attestation
 /sdk/attestation/                                    @Azure/azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+
+# PRLabel: %Attestation
 /sdk/attestation/azure-security-attestation/         @Azure/azure-sdk-write-attestation @anilba06 @gkostal @larryosterman
+
+# PRLabel: %Attestation
 /sdk/attestation/azure-resourcemanager-attestation/  @Azure/azure-sdk-write-attestation @anilba06 @gkostal
 
 # ServiceLabel: %Attestation
@@ -465,7 +470,6 @@
 # AzureSdkOwners:                                    @g2vinay @billwert
 
 # PRLabel: %Image Analysis
-# ServiceLabel: %Image Analysis
 /sdk/vision/azure-ai-vision-imageanalysis/           @dargilco @rhurey
 
 # ServiceLabel: %Image Analysis
@@ -539,6 +543,8 @@
 
 # PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-query*/                   @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane
+
+# PRLabel:  %Monitor
 /sdk/monitor/azure-monitor-ingestion*/               @srnagar @jairmyree @lmolkova @Azure/azure-sdk-write-monitor-data-plane
 
 # ServiceLabel: %Monitor
@@ -613,6 +619,8 @@
 
 # PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai/                         @brandom-msft @jpalvarezl @mssfang
+
+# PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai-assistants/              @brandom-msft @jpalvarezl @mssfang
 
 # ServiceLabel: %Operational Insights
@@ -627,7 +635,6 @@
 # ServiceLabel: %PostgreSQL
 # ServiceOwners:                                     @sunilagarwal @lfittl-msft @sr-msft @niklarin
 
-# Quantum
 # PRLabel: %Azure Quantum
 /sdk/quantum/                                        @vxfield @cgranade @ricardo-espinoza @anjbur @msoeken @guenp
 
@@ -790,9 +797,11 @@
 # PRLabel: %azure-spring
 /sdk/spring-experimental/                            @chenrujun @netyyyy @saragluna @moarychan
 
-# ServiceLabel:  %Monitor - Spring
 # PRLabel:  %Monitor - Spring
 /sdk/spring/spring-cloud-azure-starter-monitor*      @jeanbisutti @trask @ramthi @heyams
+
+# ServiceLabel:  %Monitor - Spring
+# AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams
 
 # PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
