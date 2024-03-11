@@ -73,10 +73,6 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
         }
     }
 
-    // 1. Set the required boolean to capture region-specific session token.
-    // 2. Create a container with 1 physical partition.
-    // 3. Perform a point create on the first preferred region.
-    // 4. Perform a point read on the item created in step 3 from the first preferred region.
     @Test(groups = {"multi-region"})
     public void pointReadYourPointCreate_BothFromFirstPreferredRegion() throws InterruptedException {
         List<String> preferredRegions = new ArrayList<>(this.readRegionMap.keySet());
