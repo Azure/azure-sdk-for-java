@@ -3,8 +3,8 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.Response;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 

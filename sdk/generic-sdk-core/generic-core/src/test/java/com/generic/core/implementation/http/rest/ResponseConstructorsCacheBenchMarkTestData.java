@@ -4,10 +4,10 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.MockHttpResponse;
-import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.models.Response;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.HeaderName;

@@ -3,7 +3,7 @@
 
 package com.generic.core.http.exception;
 
-import com.generic.core.http.Response;
+import com.generic.core.http.models.Response;
 
 /**
  * The exception thrown when an unsuccessful response is received with http status code (e.g. {@code 3XX}, {@code 4XX},

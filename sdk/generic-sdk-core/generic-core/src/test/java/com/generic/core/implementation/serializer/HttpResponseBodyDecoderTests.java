@@ -5,11 +5,11 @@ package com.generic.core.implementation.serializer;
 
 import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.MockHttpResponseDecodeData;
-import com.generic.core.http.Response;
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.Response;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.http.serializer.HttpResponseBodyDecoder;

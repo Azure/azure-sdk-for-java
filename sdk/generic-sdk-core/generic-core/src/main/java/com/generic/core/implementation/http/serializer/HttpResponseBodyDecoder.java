@@ -3,10 +3,10 @@
 
 package com.generic.core.implementation.http.serializer;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpMethod;
+import com.generic.core.http.models.Response;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.DateTimeRfc1123;
