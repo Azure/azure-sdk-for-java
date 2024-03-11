@@ -24,7 +24,9 @@ public final class HttpRedirectOptions {
 
     /**
      * Creates an instance of {@link HttpRedirectOptions} with values for {@code maxAttempts}
-     * defaulting to 3, if not specified.
+     * defaulting to 3, if not specified, and the default set of allowed HTTP methods {@link HttpMethod#GET}
+     * and {@link HttpMethod#HEAD} and the default header name "Location" to locate the redirect url in the response
+     * headers.
      *
      * @param maxAttempts The maximum number of redirect attempts to be made.
      * @param allowedRedirectHttpMethods The set of HTTP methods that are allowed to be redirected.

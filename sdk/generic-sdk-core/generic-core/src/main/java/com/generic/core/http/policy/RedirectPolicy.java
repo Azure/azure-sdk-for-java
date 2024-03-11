@@ -29,7 +29,7 @@ import java.util.function.Predicate;
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RedirectPolicy.class);
     private final int maxAttempts;
-    private Predicate<RequestRedirectCondition> shouldRedirectCondition;
+    private final Predicate<RequestRedirectCondition> shouldRedirectCondition;
     private static final int DEFAULT_MAX_REDIRECT_ATTEMPTS = 3;
     private static final String REDIRECT_URLS_KEY = "redirectUrls";
     private static final Set<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
@@ -37,6 +37,18 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
     private final Set<HttpMethod> allowedRedirectHttpMethods;
     private final HeaderName locationHeader;
+
+    /**
+     * Creates {@link RedirectPolicy} with default with a maximum number of redirect attempts 3,
+     * header name "Location" to locate the redirect url in the response headers and {@link HttpMethod#GET}
+     * and {@link HttpMethod#HEAD} as allowed methods for performing the redirect.
+     * This redirect policy uses the redirect status response code (301, 302, 307, 308) to determine if this request
+     * should be redirected.
+     */
+    public RedirectPolicy() {
+        this(new HttpRedirectOptions(DEFAULT_MAX_REDIRECT_ATTEMPTS, HeaderName.LOCATION,
+            DEFAULT_REDIRECT_ALLOWED_METHODS));
+    }
 
     /**
      * Creates {@link RedirectPolicy} with the provided {@code redirectOptions} to
@@ -63,32 +75,25 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUrls for each individual request.
-        return attemptRedirect(httpRequest, next, 1, new HashSet<>());
+        return attemptRedirect(next, 1, new HashSet<>());
     }
 
     /**
      * Function to process through the HTTP Response received in the pipeline and redirect sending the request with a
      * new redirect URL.
      */
-    private Response<?> attemptRedirect(HttpRequest httpRequest, final HttpPipelineNextPolicy next,
+    private Response<?> attemptRedirect(final HttpPipelineNextPolicy next,
                                         final int redirectAttempt, Set<String> attemptedRedirectUrls) {
         // Make sure the context is not modified during retry, except for the URL
         Response<?> response = next.clone().process();
 
         RequestRedirectCondition requestRedirectCondition = new RequestRedirectCondition(response, redirectAttempt, attemptedRedirectUrls);
-        if (shouldRedirectCondition != null) {
-            if(!shouldRedirectCondition.test(requestRedirectCondition)) {
-                HttpRequest redirectRequestCopy = createRedirectRequest(requestRedirectCondition.getResponse());
-                return attemptRedirect(redirectRequestCopy, next, redirectAttempt + 1, attemptedRedirectUrls);
-            }
-        } else {
-            if (defaultShouldAttemptRedirect(requestRedirectCondition)) {
-                HttpRequest redirectRequestCopy = createRedirectRequest(response);
-                return attemptRedirect(redirectRequestCopy, next, redirectAttempt + 1, attemptedRedirectUrls);
-            } else {
-                return response;
-            }
+        if ((shouldRedirectCondition != null && shouldRedirectCondition.test(requestRedirectCondition))
+            || (shouldRedirectCondition == null && defaultShouldAttemptRedirect(requestRedirectCondition))) {
+            createRedirectRequest(response);
+            return attemptRedirect(next, redirectAttempt + 1, attemptedRedirectUrls);
         }
+
         return response;
     }
 
@@ -96,28 +101,25 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         Response<?> response = requestRedirectCondition.getResponse();
         int tryCount = requestRedirectCondition.getTryCount();
         Set<String> attemptedRedirectUrls = requestRedirectCondition.getRedirectedUrls();
+        String redirectUrl = response.getHeaders().getValue(this.locationHeader);
 
         if (isValidRedirectStatusCode(response.getStatusCode())
             && isValidRedirectCount(tryCount)
-            && isAllowedRedirectMethod(response.getRequest().getHttpMethod())) {
+            && isAllowedRedirectMethod(response.getRequest().getHttpMethod())
+            && redirectUrl != null
+            && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
 
-            String redirectUrl = response.getHeaders().getValue(this.locationHeader);
+            LOGGER.atVerbose()
+                .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString)
+                .log(() -> "Redirecting.");
 
-            if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
-                LOGGER.atVerbose()
-                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                    .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString)
-                    .log(() -> "Redirecting.");
+            attemptedRedirectUrls.add(redirectUrl);
 
-                attemptedRedirectUrls.add(redirectUrl);
-
-                return true;
-            } else {
-                return false;
-            }
-        } else {
-            return false;
+            return true;
         }
+
+        return false;
     }
 
     /**
@@ -195,12 +197,11 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
             || statusCode == TEMPORARY_REDIRECT_STATUS_CODE;
     }
 
-    private HttpRequest createRedirectRequest(Response<?> redirectResponse) {
+    private void createRedirectRequest(Response<?> redirectResponse) {
         // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
         // causing it to leak your authorization token to.
         redirectResponse.getRequest().getHeaders().remove(HeaderName.AUTHORIZATION);
-
-        HttpRequest redirectRequestCopy = redirectResponse.getRequest().setUrl(redirectResponse.getHeaders().getValue(this.locationHeader));
+        redirectResponse.getRequest().setUrl(redirectResponse.getHeaders().getValue(this.locationHeader));
 
         try {
             redirectResponse.close();
@@ -208,6 +209,5 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
 
-        return redirectRequestCopy;
     }
 }

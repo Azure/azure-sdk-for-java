@@ -18,8 +18,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.Set;
@@ -328,6 +330,33 @@ public class RedirectPolicyTest {
         try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
             assertEquals(200, response.getStatusCode());
             assertNull(response.getRequest().getHeaders().getValue(HeaderName.AUTHORIZATION));
+        }
+    }
+
+    @Test
+    public void redirectOptionsCanConfigureStatusCodeRedirectLogic() throws IOException {
+        // Only redirects on 429 responses
+        HttpRedirectOptions httpRedirectOptions
+            = new HttpRedirectOptions(1, HeaderName.LOCATION, Collections.singleton(HttpMethod.GET))
+            .setShouldRedirectCondition(
+                redirectCondition -> redirectCondition.getResponse() != null
+                    && redirectCondition.getResponse().getStatusCode() == 429);
+
+        AtomicInteger attemptCount = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RedirectPolicy(httpRedirectOptions))
+            .httpClient(request -> {
+                int count = attemptCount.getAndIncrement();
+                if (count == 0) {
+                    return new MockHttpResponse(request, 429);
+                } else {
+                    return new MockHttpResponse(request, 200);
+                }
+            })
+            .build();
+
+        try (Response<?> response = pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/"))) {
+            assertEquals(200, response.getStatusCode());
+            assertEquals(2, attemptCount.get());
         }
     }
 
