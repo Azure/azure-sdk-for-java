@@ -10,8 +10,8 @@ package com.azure.resourcemanager.cosmos.generated;
 public final class ThroughputPoolOperationGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * throughputPool/CosmosDBThroughputPoolGet.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/throughputPool/
+     * CosmosDBThroughputPoolGet.json
      */
     /**
      * Sample code: CosmosDB ThroughputPool Get.

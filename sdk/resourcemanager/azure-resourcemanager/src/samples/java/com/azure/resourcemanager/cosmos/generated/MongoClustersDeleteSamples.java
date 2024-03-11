@@ -10,8 +10,8 @@ package com.azure.resourcemanager.cosmos.generated;
 public final class MongoClustersDeleteSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * mongo-cluster/CosmosDBMongoClusterDelete.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/mongo-cluster/
+     * CosmosDBMongoClusterDelete.json
      */
     /**
      * Sample code: Delete the mongo cluster.

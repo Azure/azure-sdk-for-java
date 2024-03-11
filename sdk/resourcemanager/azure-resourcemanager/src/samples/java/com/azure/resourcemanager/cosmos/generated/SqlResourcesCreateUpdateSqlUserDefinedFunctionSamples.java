@@ -14,7 +14,7 @@ import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionResource;
 public final class SqlResourcesCreateUpdateSqlUserDefinedFunctionSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBSqlUserDefinedFunctionCreateUpdate.json
      */
     /**

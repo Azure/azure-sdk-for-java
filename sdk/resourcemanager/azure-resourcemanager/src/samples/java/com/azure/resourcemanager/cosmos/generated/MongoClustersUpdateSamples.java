@@ -15,8 +15,8 @@ import java.util.Arrays;
 public final class MongoClustersUpdateSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * mongo-cluster/CosmosDBMongoClusterAddNode.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/mongo-cluster/
+     * CosmosDBMongoClusterAddNode.json
      */
     /**
      * Sample code: Add new shard nodes.
@@ -33,8 +33,8 @@ public final class MongoClustersUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * mongo-cluster/CosmosDBMongoClusterUpdate.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/mongo-cluster/
+     * CosmosDBMongoClusterUpdate.json
      */
     /**
      * Sample code: Update the mongo cluster.

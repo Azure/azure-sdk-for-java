@@ -18,8 +18,8 @@ import java.util.Arrays;
 public final class MongoClustersCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * mongo-cluster/CosmosDBMongoClusterCreatePITR.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/mongo-cluster/
+     * CosmosDBMongoClusterCreatePITR.json
      */
     /**
      * Sample code: Create a new mongo cluster with point in time restore.
@@ -39,8 +39,8 @@ public final class MongoClustersCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * mongo-cluster/CosmosDBMongoClusterCreate.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/mongo-cluster/
+     * CosmosDBMongoClusterCreate.json
      */
     /**
      * Sample code: Create a new mongo cluster.

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.cosmos.models.MergeParameters;
 public final class SqlResourcesListSqlContainerPartitionMergeSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBSqlContainerPartitionMerge.json
      */
     /**

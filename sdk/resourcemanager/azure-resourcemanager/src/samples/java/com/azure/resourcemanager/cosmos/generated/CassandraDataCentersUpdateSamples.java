@@ -13,7 +13,7 @@ import com.azure.resourcemanager.cosmos.models.DataCenterResourceProperties;
 public final class CassandraDataCentersUpdateSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBManagedCassandraDataCenterPatch.json
      */
     /**

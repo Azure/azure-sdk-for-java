@@ -15,8 +15,8 @@ import com.azure.resourcemanager.cosmos.models.CreateJobRequest;
 public final class DataTransferJobsCreateSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * data-transfer-service/CosmosDBDataTransferJobCreate.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/data-transfer-
+     * service/CosmosDBDataTransferJobCreate.json
      */
     /**
      * Sample code: CosmosDBDataTransferJobCreate.

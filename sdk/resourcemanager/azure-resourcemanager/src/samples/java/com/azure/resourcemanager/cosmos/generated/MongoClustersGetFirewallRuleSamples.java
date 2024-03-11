@@ -10,8 +10,8 @@ package com.azure.resourcemanager.cosmos.generated;
 public final class MongoClustersGetFirewallRuleSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * mongo-cluster/CosmosDBMongoClusterFirewallRuleGet.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/mongo-cluster/
+     * CosmosDBMongoClusterFirewallRuleGet.json
      */
     /**
      * Sample code: Get the firewall rule of the mongo cluster.

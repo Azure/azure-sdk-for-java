@@ -14,7 +14,7 @@ import com.azure.resourcemanager.cosmos.models.ServiceType;
 public final class ServiceCreateSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBSqlDedicatedGatewayServiceCreate.json
      */
     /**
@@ -32,7 +32,7 @@ public final class ServiceCreateSamples {
 
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBDataTransferServiceCreate.json
      */
     /**
@@ -49,7 +49,7 @@ public final class ServiceCreateSamples {
 
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBMaterializedViewsBuilderServiceCreate.json
      */
     /**
@@ -67,7 +67,7 @@ public final class ServiceCreateSamples {
 
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBGraphAPIComputeServiceCreate.json
      */
     /**

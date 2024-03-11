@@ -12,8 +12,8 @@ import com.azure.resourcemanager.cosmos.fluent.models.FirewallRuleInner;
 public final class MongoClustersCreateOrUpdateFirewallRuleSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * mongo-cluster/CosmosDBMongoClusterFirewallRuleCreate.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/mongo-cluster/
+     * CosmosDBMongoClusterFirewallRuleCreate.json
      */
     /**
      * Sample code: Create a firewall rule of the mongo cluster.

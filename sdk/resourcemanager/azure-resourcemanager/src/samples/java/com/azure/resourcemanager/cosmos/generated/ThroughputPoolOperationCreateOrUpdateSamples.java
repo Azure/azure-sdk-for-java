@@ -14,8 +14,8 @@ import java.util.Map;
 public final class ThroughputPoolOperationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * throughputPool/CosmosDBThroughputPoolCreate.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/throughputPool/
+     * CosmosDBThroughputPoolCreate.json
      */
     /**
      * Sample code: CosmosDB ThroughputPool Create.

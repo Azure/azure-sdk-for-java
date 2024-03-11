@@ -12,8 +12,8 @@ import com.azure.resourcemanager.cosmos.models.CheckNameAvailabilityRequest;
 public final class MongoClustersCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * mongo-cluster/CosmosDBMongoClusterNameAvailability_AlreadyExists.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/mongo-cluster/
+     * CosmosDBMongoClusterNameAvailability_AlreadyExists.json
      */
     /**
      * Sample code: Check name availability already exists result.
@@ -29,8 +29,8 @@ public final class MongoClustersCheckNameAvailabilitySamples {
 
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
-     * mongo-cluster/CosmosDBMongoClusterNameAvailability.json
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/mongo-cluster/
+     * CosmosDBMongoClusterNameAvailability.json
      */
     /**
      * Sample code: Check name availability.

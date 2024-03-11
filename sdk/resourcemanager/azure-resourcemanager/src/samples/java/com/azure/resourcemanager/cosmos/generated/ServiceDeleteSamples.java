@@ -10,7 +10,7 @@ package com.azure.resourcemanager.cosmos.generated;
 public final class ServiceDeleteSamples {
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBSqlDedicatedGatewayServiceDelete.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ServiceDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBMaterializedViewsBuilderServiceDelete.json
      */
     /**
@@ -40,7 +40,7 @@ public final class ServiceDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBDataTransferServiceDelete.json
      */
     /**
@@ -55,7 +55,7 @@ public final class ServiceDeleteSamples {
 
     /*
      * x-ms-original-file:
-     * issue%234977/specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/preview/2024-02-15-preview/examples/
      * CosmosDBGraphAPIComputeServiceDelete.json
      */
     /**
