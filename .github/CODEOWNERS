@@ -31,9 +31,6 @@
 # PRLabel: %azure-spring
 /sdk/boms/spring-cloud-azure-dependencies/           @saragluna @chenrujun @netyyyy @moarychan
 
-# ServiceLabel: %azure-spring
-# AzureSdkOwners:                                    @saragluna @chenrujun @netyyyy @moarychan
-
 # ######## Core Libraries ########
 
 # PRLabel: %Azure.Core
@@ -775,6 +772,9 @@
 
 # ######## Spring ########
 
+# ServiceLabel: %azure-spring
+# AzureSdkOwners:                                    @saragluna @chenrujun @netyyyy @moarychan
+
 # ServiceLabel: %Azure.Spring - Cosmos
 # ServiceOwners:                                     @kushagraThapar
 
@@ -784,21 +784,25 @@
 # PRLabel: %azure-spring
 /sdk/keyvault/azure-security-keyvault-jca/           @chenrujun @netyyyy @saragluna @moarychan
 
-# ServiceLabel: %azure-spring
 # PRLabel: %azure-spring
 /sdk/spring/                                         @chenrujun @netyyyy @saragluna @moarychan
+
 # PRLabel: %azure-spring
 /sdk/spring-experimental/                            @chenrujun @netyyyy @saragluna @moarychan
 
 # ServiceLabel:  %Monitor - Spring
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams
-/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams
+/sdk/spring/spring-cloud-azure-starter-monitor*      @jeanbisutti @trask @ramthi @heyams
 
 # PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-appconfiguration-config*/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+
+# PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-feature-management*/   @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+
+# PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-starter-appconfiguration-config/ @mrm9084 @chenrujun @netyyyy @saragluna @moarychan
+
 # PRLabel: %azure-spring
 /sdk/spring/azure-spring-data-cosmos/                @kushagraThapar @FabianMeiswinkel @trande4884 @TheovanKraay @xinlian12 @chenrujun @netyyyy @saragluna @moarychan @aayush3011 @simorenoh @jeet1995 @Pilchie
 
@@ -806,9 +810,6 @@
 
 # PRLabel: %Azure.Identity
 /sdk/e2e/                                            @g2vinay @billwert
-
-# ServiceLabel: %Azure.Identity
-# AzureSdkOwners:                                    @g2vinay @billwert
 
 # PRLabel: %common
 /common/smoke-tests/                                 @alzimmermsft @srnagar @joshfree @jonathangiles @g2vinay @conniey
