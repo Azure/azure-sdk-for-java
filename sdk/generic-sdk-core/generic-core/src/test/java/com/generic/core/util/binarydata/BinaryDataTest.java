@@ -6,8 +6,6 @@ package com.generic.core.util.binarydata;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.generic.core.models.MockFile;
-import com.generic.core.models.MockFileBinaryData;
-import com.generic.core.models.MockFileInputStream;
 import com.generic.core.models.MockPath;
 import com.generic.core.models.Person;
 import com.generic.core.util.TypeReference;
