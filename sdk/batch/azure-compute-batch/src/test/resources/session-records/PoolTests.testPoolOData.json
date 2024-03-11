@@ -1,24 +1,24 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/pools/BatchUser-testpool?api-version=2023-11-01.18.0",
+      "RequestUri": "https://REDACTED/pools/BatchUser-testpool?api-version=2024-02-01.19.0",
       "RequestMethod": "HEAD",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "fe217d0d-5178-4675-8793-8ace877fa13a",
+        "client-request-id": "a8be0ef3-3ea4-47db-8535-4e2aaf5af1fd",
         "Content-Length": "0",
-        "Date": "Tue, 06 Feb 2024 11:00:57 GMT",
+        "Date": "Mon, 11 Mar 2024 01:48:30 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 06 Feb 2024 11:01:00 GMT",
+        "Date": "Mon, 11 Mar 2024 01:48:34 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "ffa211cf-e7cd-42d8-9623-326817aebdcc",
+        "request-id": "3702b1dd-addb-46de-be6d-88981e0c9321",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -27,14 +27,14 @@
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/pools/BatchUser-testpool?api-version=2023-11-01.18.0",
+      "RequestUri": "https://REDACTED/pools/BatchUser-testpool?api-version=2024-02-01.19.0",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "158a3c3c-ee71-4c33-a57e-6802926e1d4e",
+        "client-request-id": "dde81ba0-9e95-4490-88bc-a0213e1f0f87",
         "Content-Length": "0",
-        "Date": "Tue, 06 Feb 2024 11:01:00 GMT",
+        "Date": "Mon, 11 Mar 2024 01:48:32 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -42,10 +42,10 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 06 Feb 2024 11:01:00 GMT",
+        "Date": "Mon, 11 Mar 2024 01:48:34 GMT",
         "ETag": "0x8DBC52C54B88553",
         "Last-Modified": "Wed, 04 Oct 2023 22:50:39 GMT",
-        "request-id": "a06eff8b-abed-45d6-9371-49cd4df4bef3",
+        "request-id": "653af8c2-20f5-422d-a74d-4174c8a5dfb2",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -102,14 +102,14 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/pools?api-version=2023-11-01.18.0\u0026%24select=id%2Cstate",
+      "RequestUri": "https://REDACTED/pools?api-version=2024-02-01.19.0\u0026%24select=id%2Cstate",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
-        "client-request-id": "0c771e81-3ec7-4c3b-b5b4-5d151f13b6ad",
+        "client-request-id": "9573601a-e232-48f5-9b55-fbfed6de6e1b",
         "Content-Length": "0",
-        "Date": "Tue, 06 Feb 2024 11:01:04 GMT",
+        "Date": "Mon, 11 Mar 2024 01:48:34 GMT",
         "User-Agent": "azsdk-java-azure-compute-batch/1.0.0-beta.1 (17.0.9; Windows 11; 10.0)"
       },
       "RequestBody": null,
@@ -117,8 +117,8 @@
       "ResponseHeaders": {
         "Content-Type": "application/json; odata=minimalmetadata",
         "DataServiceVersion": "3.0",
-        "Date": "Tue, 06 Feb 2024 11:01:04 GMT",
-        "request-id": "2d9df0e9-10d9-4823-b1e6-7194b1c984a1",
+        "Date": "Mon, 11 Mar 2024 01:48:36 GMT",
+        "request-id": "7e607b8f-c743-4e74-9003-16c8042dd907",
         "Server": "Microsoft-HTTPAPI/2.0",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
         "Transfer-Encoding": "chunked",
@@ -128,7 +128,7 @@
         "odata.metadata": "https://sanjbatch.eastus.batch.azure.com/$metadata#pools",
         "value": [
           {
-            "id": "8365B50B-7C43-44AD-A816-738D4D5D9C21",
+            "id": "755D177B-E4BB-4574-A14B-F1AA73939B16",
             "state": "deleting"
           },
           {
