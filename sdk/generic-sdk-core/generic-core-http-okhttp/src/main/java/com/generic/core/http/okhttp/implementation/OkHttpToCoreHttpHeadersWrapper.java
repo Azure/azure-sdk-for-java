@@ -116,7 +116,7 @@ public final class OkHttpToCoreHttpHeadersWrapper extends Headers {
     }
 
     @Override
-    public String[] getValues(HeaderName name) {
+    public List<String> getValues(HeaderName name) {
         convertIfNeeded();
 
         return coreHeaders.getValues(name);

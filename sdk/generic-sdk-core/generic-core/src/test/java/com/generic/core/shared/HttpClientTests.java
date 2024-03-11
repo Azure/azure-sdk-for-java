@@ -56,6 +56,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -672,10 +674,10 @@ public abstract class HttpClientTests {
         final Headers headers = new Headers().setAll(json.headers());
 
         assertEquals("A", headers.getValue(HEADER_A));
-        assertArrayEquals(new String[]{"A"}, headers.getValues(HEADER_A));
+        assertListEquals(Collections.singletonList("A"), headers.getValues(HEADER_A));
 
         assertEquals("15", headers.getValue(HEADER_B));
-        assertArrayEquals(new String[]{"15"}, headers.getValues(HEADER_B));
+        assertListEquals(Collections.singletonList("15"), headers.getValues(HEADER_B));
     }
 
     @Test
@@ -685,10 +687,10 @@ public abstract class HttpClientTests {
         final Headers headers = new Headers().setAll(json.headers());
 
         assertNull(headers.getValue(HEADER_A));
-        assertArrayEquals(null, headers.getValues(HEADER_A));
+        assertListEquals(null, headers.getValues(HEADER_A));
 
         assertEquals("15", headers.getValue(HEADER_B));
-        assertArrayEquals(new String[]{"15"}, headers.getValues(HEADER_B));
+        assertListEquals(Collections.singletonList("15"), headers.getValues(HEADER_B));
     }
 
     @ServiceInterface(name = "Service8", host = "{url}")
@@ -891,9 +893,9 @@ public abstract class HttpClientTests {
         final Headers headers = new Headers().setAll(json.headers());
 
         assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
-        assertArrayEquals(new String[]{"MyHeaderValue"}, headers.getValues(MY_HEADER));
+        assertListEquals(Collections.singletonList("MyHeaderValue"), headers.getValues(MY_HEADER));
         assertEquals("My,Header,Value", headers.getValue(MY_OTHER_HEADER));
-        assertArrayEquals(new String[]{"My", "Header", "Value"}, headers.getValues(MY_OTHER_HEADER));
+        assertListEquals(Arrays.asList("My", "Header", "Value"), headers.getValues(MY_OTHER_HEADER));
     }
 
     @ServiceInterface(name = "Service14", host = "{url}")
@@ -1758,6 +1760,18 @@ public abstract class HttpClientTests {
 
         while ((length = source.read(buf)) != -1) {
             target.write(buf, 0, length);
+        }
+    }
+
+    public static void assertListEquals(List<?> source, List<?> target) {
+        if (source != null && target != null) {
+            assertEquals(source.size(), target.size());
+
+            for (int i = 0; i < source.size(); i++) {
+                assertEquals(source.get(i), target.get(i));
+            }
+        } else if (source != null || target != null) {
+            fail("One list is null but the other is not.");
         }
     }
 }

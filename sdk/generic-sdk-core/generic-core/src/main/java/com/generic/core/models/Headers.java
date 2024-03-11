@@ -293,14 +293,14 @@ public class Headers implements Iterable<Header> {
      *
      * @return The values of the {@link Header}, or {@code null} if the {@link Header} isn't found.
      */
-    public String[] getValues(HeaderName name) {
+    public List<String> getValues(HeaderName name) {
         return getValuesInternal(name.getCaseInsensitiveName());
     }
 
-    private String[] getValuesInternal(String formattedName) {
+    private List<String> getValuesInternal(String formattedName) {
         final Header header = getInternal(formattedName);
 
-        return header == null ? null : header.getValuesArray();
+        return header == null ? null : header.getValues();
     }
 
     /**
