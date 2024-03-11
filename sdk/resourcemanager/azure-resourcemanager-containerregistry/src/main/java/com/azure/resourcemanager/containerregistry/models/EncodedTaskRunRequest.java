@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The parameters for a quick task run request. */
+/**
+ * The parameters for a quick task run request.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("EncodedTaskRunRequest")
 @Fluent
@@ -65,13 +67,15 @@ public final class EncodedTaskRunRequest extends RunRequest {
     @JsonProperty(value = "credentials")
     private Credentials credentials;
 
-    /** Creates an instance of EncodedTaskRunRequest class. */
+    /**
+     * Creates an instance of EncodedTaskRunRequest class.
+     */
     public EncodedTaskRunRequest() {
     }
 
     /**
      * Get the encodedTaskContent property: Base64 encoded value of the template/definition file content.
-     *
+     * 
      * @return the encodedTaskContent value.
      */
     public String encodedTaskContent() {
@@ -80,7 +84,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the encodedTaskContent property: Base64 encoded value of the template/definition file content.
-     *
+     * 
      * @param encodedTaskContent the encodedTaskContent value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -91,7 +95,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the encodedValuesContent property: Base64 encoded value of the parameters/values file content.
-     *
+     * 
      * @return the encodedValuesContent value.
      */
     public String encodedValuesContent() {
@@ -100,7 +104,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the encodedValuesContent property: Base64 encoded value of the parameters/values file content.
-     *
+     * 
      * @param encodedValuesContent the encodedValuesContent value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -111,7 +115,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @return the values value.
      */
     public List<SetValue> values() {
@@ -120,7 +124,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @param values the values value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -131,7 +135,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the timeout property: Run timeout in seconds.
-     *
+     * 
      * @return the timeout value.
      */
     public Integer timeout() {
@@ -140,7 +144,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the timeout property: Run timeout in seconds.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -151,7 +155,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @return the platform value.
      */
     public PlatformProperties platform() {
@@ -160,7 +164,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the platform property: The platform properties against which the run has to happen.
-     *
+     * 
      * @param platform the platform value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -171,7 +175,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @return the agentConfiguration value.
      */
     public AgentProperties agentConfiguration() {
@@ -180,7 +184,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the agentConfiguration property: The machine configuration of the run agent.
-     *
+     * 
      * @param agentConfiguration the agentConfiguration value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -191,9 +195,9 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Get the sourceLocation property: The URL(absolute or relative) of the source context. It can be an URL to a tar
-     * or git repository. If it is relative URL, the relative path should be obtained from calling
-     * listBuildSourceUploadUrl API.
-     *
+     * or git repository.
+     * If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+     * 
      * @return the sourceLocation value.
      */
     public String sourceLocation() {
@@ -202,9 +206,9 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Set the sourceLocation property: The URL(absolute or relative) of the source context. It can be an URL to a tar
-     * or git repository. If it is relative URL, the relative path should be obtained from calling
-     * listBuildSourceUploadUrl API.
-     *
+     * or git repository.
+     * If it is relative URL, the relative path should be obtained from calling listBuildSourceUploadUrl API.
+     * 
      * @param sourceLocation the sourceLocation value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -216,7 +220,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
     /**
      * Get the credentials property: The properties that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @return the credentials value.
      */
     public Credentials credentials() {
@@ -226,7 +230,7 @@ public final class EncodedTaskRunRequest extends RunRequest {
     /**
      * Set the credentials property: The properties that describes a set of credentials that will be used when this run
      * is invoked.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the EncodedTaskRunRequest object itself.
      */
@@ -235,21 +239,27 @@ public final class EncodedTaskRunRequest extends RunRequest {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncodedTaskRunRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
         super.withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncodedTaskRunRequest withAgentPoolName(String agentPoolName) {
         super.withAgentPoolName(agentPoolName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncodedTaskRunRequest withLogTemplate(String logTemplate) {
         super.withLogTemplate(logTemplate);
@@ -258,25 +268,22 @@ public final class EncodedTaskRunRequest extends RunRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (encodedTaskContent() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property encodedTaskContent in model EncodedTaskRunRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property encodedTaskContent in model EncodedTaskRunRequest"));
         }
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
         if (platform() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property platform in model EncodedTaskRunRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property platform in model EncodedTaskRunRequest"));
         } else {
             platform().validate();
         }

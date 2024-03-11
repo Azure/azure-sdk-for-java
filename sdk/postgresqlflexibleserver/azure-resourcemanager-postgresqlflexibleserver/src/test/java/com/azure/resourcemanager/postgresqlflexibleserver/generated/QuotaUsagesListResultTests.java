@@ -10,11 +10,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.QuotaUsagesList
 public final class QuotaUsagesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        QuotaUsagesListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":{\"value\":\"ntwjch\",\"localizedValue\":\"goihx\"},\"limit\":2515461157355899585,\"unit\":\"ond\",\"currentValue\":6696397319755254067,\"id\":\"dfdlwggyts\"}],\"nextLink\":\"tov\"}")
-                .toObject(QuotaUsagesListResult.class);
+        QuotaUsagesListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":{\"value\":\"ntwjch\",\"localizedValue\":\"goihx\"},\"limit\":2515461157355899585,\"unit\":\"ond\",\"currentValue\":6696397319755254067,\"id\":\"dfdlwggyts\"}],\"nextLink\":\"tov\"}")
+            .toObject(QuotaUsagesListResult.class);
     }
 
     @org.junit.jupiter.api.Test

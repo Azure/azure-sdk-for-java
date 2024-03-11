@@ -25,24 +25,28 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperation
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationStatusInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ValidateOperationStatusesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ValidateOperationStatusesClient.
+ */
 public final class ValidateOperationStatusesClientImpl implements ValidateOperationStatusesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ValidateOperationStatusesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of ValidateOperationStatusesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ValidateOperationStatusesClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    ValidateOperationStatusesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ValidateOperationStatusesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,27 +57,22 @@ public final class ValidateOperationStatusesClientImpl implements ValidateOperat
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface ValidateOperationStatusesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupValidateOperationsStatuses/{operationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupValidateOperationsStatuses/{operationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<OperationStatusInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<OperationStatusInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Fetches the status of a triggered validate operation. The status can be in progress, completed or failed. You can
-     * refer to the OperationStatus enum for all the possible states of the operation. If operation has completed, this
-     * method returns the list of errors obtained while validating the operation.
-     *
+     * Fetches the status of a triggered validate operation. The status can be in progress, completed
+     * or failed. You can refer to the OperationStatus enum for all the possible states of the operation.
+     * If operation has completed, this method returns the list of errors obtained while validating the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID represents the operation whose status needs to be fetched.
@@ -83,13 +82,11 @@ public final class ValidateOperationStatusesClientImpl implements ValidateOperat
      * @return operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String operationId) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String vaultName, String resourceGroupName,
+        String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -99,36 +96,24 @@ public final class ValidateOperationStatusesClientImpl implements ValidateOperat
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Fetches the status of a triggered validate operation. The status can be in progress, completed or failed. You can
-     * refer to the OperationStatus enum for all the possible states of the operation. If operation has completed, this
-     * method returns the list of errors obtained while validating the operation.
-     *
+     * Fetches the status of a triggered validate operation. The status can be in progress, completed
+     * or failed. You can refer to the OperationStatus enum for all the possible states of the operation.
+     * If operation has completed, this method returns the list of errors obtained while validating the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID represents the operation whose status needs to be fetched.
@@ -139,13 +124,11 @@ public final class ValidateOperationStatusesClientImpl implements ValidateOperat
      * @return operation status along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<OperationStatusInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
+    private Mono<Response<OperationStatusInner>> getWithResponseAsync(String vaultName, String resourceGroupName,
+        String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -155,33 +138,23 @@ public final class ValidateOperationStatusesClientImpl implements ValidateOperat
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                operationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), operationId, accept, context);
     }
 
     /**
-     * Fetches the status of a triggered validate operation. The status can be in progress, completed or failed. You can
-     * refer to the OperationStatus enum for all the possible states of the operation. If operation has completed, this
-     * method returns the list of errors obtained while validating the operation.
-     *
+     * Fetches the status of a triggered validate operation. The status can be in progress, completed
+     * or failed. You can refer to the OperationStatus enum for all the possible states of the operation.
+     * If operation has completed, this method returns the list of errors obtained while validating the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID represents the operation whose status needs to be fetched.
@@ -197,10 +170,10 @@ public final class ValidateOperationStatusesClientImpl implements ValidateOperat
     }
 
     /**
-     * Fetches the status of a triggered validate operation. The status can be in progress, completed or failed. You can
-     * refer to the OperationStatus enum for all the possible states of the operation. If operation has completed, this
-     * method returns the list of errors obtained while validating the operation.
-     *
+     * Fetches the status of a triggered validate operation. The status can be in progress, completed
+     * or failed. You can refer to the OperationStatus enum for all the possible states of the operation.
+     * If operation has completed, this method returns the list of errors obtained while validating the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID represents the operation whose status needs to be fetched.
@@ -211,16 +184,16 @@ public final class ValidateOperationStatusesClientImpl implements ValidateOperat
      * @return operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusInner> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
+    public Response<OperationStatusInner> getWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, operationId, context).block();
     }
 
     /**
-     * Fetches the status of a triggered validate operation. The status can be in progress, completed or failed. You can
-     * refer to the OperationStatus enum for all the possible states of the operation. If operation has completed, this
-     * method returns the list of errors obtained while validating the operation.
-     *
+     * Fetches the status of a triggered validate operation. The status can be in progress, completed
+     * or failed. You can refer to the OperationStatus enum for all the possible states of the operation.
+     * If operation has completed, this method returns the list of errors obtained while validating the operation.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID represents the operation whose status needs to be fetched.

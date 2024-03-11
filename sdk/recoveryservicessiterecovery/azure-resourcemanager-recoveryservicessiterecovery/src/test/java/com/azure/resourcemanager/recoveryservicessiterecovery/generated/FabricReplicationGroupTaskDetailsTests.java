@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class FabricReplicationGroupTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FabricReplicationGroupTaskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"FabricReplicationGroupTaskDetails\",\"skippedReason\":\"nmfbc\",\"skippedReasonString\":\"qktkrumzuedkyzbf\",\"jobTask\":{\"jobId\":\"vqkxiuxqggvq\",\"jobFriendlyName\":\"hyhlwcjsqg\",\"targetObjectId\":\"hffbxrq\",\"targetObjectName\":\"ijpeuql\",\"targetInstanceType\":\"x\",\"jobScenarioName\":\"ztv\"}}")
-                .toObject(FabricReplicationGroupTaskDetails.class);
+        FabricReplicationGroupTaskDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"FabricReplicationGroupTaskDetails\",\"skippedReason\":\"nmfbc\",\"skippedReasonString\":\"qktkrumzuedkyzbf\",\"jobTask\":{\"jobId\":\"vqkxiuxqggvq\",\"jobFriendlyName\":\"hyhlwcjsqg\",\"targetObjectId\":\"hffbxrq\",\"targetObjectName\":\"ijpeuql\",\"targetInstanceType\":\"x\",\"jobScenarioName\":\"ztv\"}}")
+            .toObject(FabricReplicationGroupTaskDetails.class);
         Assertions.assertEquals("vqkxiuxqggvq", model.jobTask().jobId());
         Assertions.assertEquals("hyhlwcjsqg", model.jobTask().jobFriendlyName());
         Assertions.assertEquals("hffbxrq", model.jobTask().targetObjectId());
@@ -29,18 +27,10 @@ public final class FabricReplicationGroupTaskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FabricReplicationGroupTaskDetails model =
-            new FabricReplicationGroupTaskDetails()
-                .withJobTask(
-                    new JobEntity()
-                        .withJobId("vqkxiuxqggvq")
-                        .withJobFriendlyName("hyhlwcjsqg")
-                        .withTargetObjectId("hffbxrq")
-                        .withTargetObjectName("ijpeuql")
-                        .withTargetInstanceType("x")
-                        .withJobScenarioName("ztv"))
-                .withSkippedReason("nmfbc")
-                .withSkippedReasonString("qktkrumzuedkyzbf");
+        FabricReplicationGroupTaskDetails model = new FabricReplicationGroupTaskDetails().withJobTask(
+            new JobEntity().withJobId("vqkxiuxqggvq").withJobFriendlyName("hyhlwcjsqg").withTargetObjectId("hffbxrq")
+                .withTargetObjectName("ijpeuql").withTargetInstanceType("x").withJobScenarioName("ztv"))
+            .withSkippedReason("nmfbc").withSkippedReasonString("qktkrumzuedkyzbf");
         model = BinaryData.fromObject(model).toObject(FabricReplicationGroupTaskDetails.class);
         Assertions.assertEquals("vqkxiuxqggvq", model.jobTask().jobId());
         Assertions.assertEquals("hyhlwcjsqg", model.jobTask().jobFriendlyName());

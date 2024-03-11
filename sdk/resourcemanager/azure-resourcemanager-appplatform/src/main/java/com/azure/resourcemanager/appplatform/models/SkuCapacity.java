@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SKU capacity. */
+/**
+ * The SKU capacity.
+ */
 @Fluent
 public final class SkuCapacity {
     /*
@@ -35,8 +37,14 @@ public final class SkuCapacity {
     private SkuScaleType scaleType;
 
     /**
+     * Creates an instance of SkuCapacity class.
+     */
+    public SkuCapacity() {
+    }
+
+    /**
      * Get the minimum property: Gets or sets the minimum.
-     *
+     * 
      * @return the minimum value.
      */
     public int minimum() {
@@ -45,7 +53,7 @@ public final class SkuCapacity {
 
     /**
      * Set the minimum property: Gets or sets the minimum.
-     *
+     * 
      * @param minimum the minimum value to set.
      * @return the SkuCapacity object itself.
      */
@@ -56,7 +64,7 @@ public final class SkuCapacity {
 
     /**
      * Get the maximum property: Gets or sets the maximum.
-     *
+     * 
      * @return the maximum value.
      */
     public Integer maximum() {
@@ -65,7 +73,7 @@ public final class SkuCapacity {
 
     /**
      * Set the maximum property: Gets or sets the maximum.
-     *
+     * 
      * @param maximum the maximum value to set.
      * @return the SkuCapacity object itself.
      */
@@ -76,7 +84,7 @@ public final class SkuCapacity {
 
     /**
      * Get the defaultProperty property: Gets or sets the default.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Integer defaultProperty() {
@@ -85,7 +93,7 @@ public final class SkuCapacity {
 
     /**
      * Set the defaultProperty property: Gets or sets the default.
-     *
+     * 
      * @param defaultProperty the defaultProperty value to set.
      * @return the SkuCapacity object itself.
      */
@@ -96,7 +104,7 @@ public final class SkuCapacity {
 
     /**
      * Get the scaleType property: Gets or sets the type of the scale.
-     *
+     * 
      * @return the scaleType value.
      */
     public SkuScaleType scaleType() {
@@ -105,7 +113,7 @@ public final class SkuCapacity {
 
     /**
      * Set the scaleType property: Gets or sets the type of the scale.
-     *
+     * 
      * @param scaleType the scaleType value to set.
      * @return the SkuCapacity object itself.
      */
@@ -116,7 +124,7 @@ public final class SkuCapacity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -17,7 +17,8 @@ import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * Temporary type to support receive link handler in v1 ({@link ReceiveLinkHandler}) and v2 ({@link ReceiveLinkHandler2})
+ * Temporary type to support receive link handler in v1 ({@link ReceiveLinkHandler}) and v2
+ * ({@link ReceiveLinkHandler2})
  * side by side.
  * <p>
  * ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
@@ -32,22 +33,42 @@ public final class ReceiveLinkHandlerWrapper {
     private final ReceiveLinkHandler2 receiveLinkHandler2;
     private ClientLogger logger;
 
+    /**
+     * Creates an instance of {@link ReceiveLinkHandlerWrapper} that wraps {@link ReceiveLinkHandler}.
+     *
+     * @param receiveLinkHandler The receive link handler.
+     */
     public ReceiveLinkHandlerWrapper(ReceiveLinkHandler receiveLinkHandler) {
         this.isV2 = false;
         this.receiveLinkHandler = receiveLinkHandler;
         this.receiveLinkHandler2 = null;
     }
 
+    /**
+     * Creates an instance of {@link ReceiveLinkHandlerWrapper} that wraps {@link ReceiveLinkHandler2}.
+     *
+     * @param receiveLinkHandler2 The receive link handler.
+     */
     public ReceiveLinkHandlerWrapper(ReceiveLinkHandler2 receiveLinkHandler2) {
         this.isV2 = true;
         this.receiveLinkHandler = null;
         this.receiveLinkHandler2 = receiveLinkHandler2;
     }
 
+    /**
+     * Sets the logger.
+     *
+     * @param logger The logger.
+     */
     public void setLogger(ClientLogger logger) {
         this.logger = logger;
     }
 
+    /**
+     * Whether the receive link handler is v2.
+     *
+     * @return Whether the receive link handler is v2.
+     */
     public boolean isV2() {
         return this.isV2;
     }
@@ -56,10 +77,20 @@ public final class ReceiveLinkHandlerWrapper {
         return isV2 ? receiveLinkHandler2.getConnectionId() : receiveLinkHandler.getConnectionId();
     }
 
+    /**
+     * Gets the link name.
+     *
+     * @return The link name.
+     */
     public String getLinkName() {
         return isV2 ? receiveLinkHandler2.getLinkName() : receiveLinkHandler.getLinkName();
     }
 
+    /**
+     * Gets the hostname.
+     *
+     * @return The hostname.
+     */
     public String getHostname() {
         return isV2 ? receiveLinkHandler2.getHostname() : receiveLinkHandler.getHostname();
     }
@@ -110,6 +141,7 @@ public final class ReceiveLinkHandlerWrapper {
     }
 
     private static RuntimeException unsupportedOperation(String operation, String unsupportedStack) {
-        return new UnsupportedOperationException("The " + operation + " is not needed or supported in " + unsupportedStack + ".");
+        return new UnsupportedOperationException(
+            "The " + operation + " is not needed or supported in " + unsupportedStack + ".");
     }
 }

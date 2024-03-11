@@ -93,15 +93,16 @@ public class ReactorReceiverIsolatedTest {
         when(reactor.attachments()).thenReturn(record);
 
         final String entityPath = "test-entity-path";
-        receiverHandler = new ReceiveLinkHandler("test-connection-id", "test-host",
-            "test-receiver-name", entityPath, null);
+        receiverHandler
+            = new ReceiveLinkHandler("test-connection-id", "test-host", "test-receiver-name", entityPath, null);
 
         when(tokenManager.getAuthorizationResults()).thenReturn(authorizationResults.flux());
 
         when(amqpConnection.getShutdownSignals()).thenReturn(shutdownSignals.flux());
 
-        reactorReceiver = new ReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(receiverHandler), tokenManager,
-            reactorDispatcher, retryOptions, AmqpMetricsProvider.noop());
+        reactorReceiver
+            = new ReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(receiverHandler),
+                tokenManager, reactorDispatcher, retryOptions, AmqpMetricsProvider.noop());
     }
 
     @AfterEach
@@ -124,8 +125,8 @@ public class ReactorReceiverIsolatedTest {
         // Arrange
         final String message = "some-message";
         final AmqpErrorCondition errorCondition = AmqpErrorCondition.UNAUTHORIZED_ACCESS;
-        final ErrorCondition condition = new ErrorCondition(Symbol.getSymbol(errorCondition.getErrorCondition()),
-            "Test-users");
+        final ErrorCondition condition
+            = new ErrorCondition(Symbol.getSymbol(errorCondition.getErrorCondition()), "Test-users");
 
         when(receiver.getLocalState()).thenReturn(EndpointState.ACTIVE);
 
@@ -145,8 +146,8 @@ public class ReactorReceiverIsolatedTest {
         final VirtualTimeScheduler virtualTimeScheduler = VirtualTimeScheduler.create();
 
         try {
-            StepVerifier.withVirtualTime(() -> reactorReceiver.closeAsync(message, condition),
-                    () -> virtualTimeScheduler, 1)
+            StepVerifier
+                .withVirtualTime(() -> reactorReceiver.closeAsync(message, condition), () -> virtualTimeScheduler, 1)
                 // Advance virtual time beyond the default timeout of 60 sec, so endpoint state
                 // completion timeout kicks in.
                 .thenAwait(Duration.ofSeconds(100))

@@ -221,7 +221,8 @@ public final class JobRouterAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json'
+        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json' and
+        // stream-style-serialization is not enabled
         return this.serviceClient.upsertJobWithResponseAsync(jobId, resource, requestOptions);
     }
 
@@ -1150,6 +1151,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * <p>
@@ -1196,6 +1198,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1212,7 +1215,8 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertWorkerWithResponse(String workerId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json'
+        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json' and
+        // stream-style-serialization is not enabled
         return this.serviceClient.upsertWorkerWithResponseAsync(workerId, resource, requestOptions);
     }
 
@@ -1500,9 +1504,9 @@ public final class JobRouterAsyncClient {
         RouterWorkerInternal routerWorker = WorkerAdapter.convertCreateWorkerOptionsToRouterWorker(createWorkerOptions);
         return upsertWorkerWithResponse(createWorkerOptions.getWorkerId(), BinaryData.fromObject(routerWorker),
             requestOptions)
-                .map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(),
-                    RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class))));
+            .map(response -> new SimpleResponse<RouterWorker>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(),
+                RouterWorkerConstructorProxy.create(response.getValue().toObject(RouterWorkerInternal.class))));
     }
 
     /**
@@ -1566,6 +1570,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1691,6 +1696,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.imagebuilder.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Optimization is applied on the image for a faster VM boot. */
+/**
+ * Optimization is applied on the image for a faster VM boot.
+ */
 @Fluent
 public final class ImageTemplatePropertiesOptimizeVmBoot {
     /*
@@ -16,14 +18,16 @@ public final class ImageTemplatePropertiesOptimizeVmBoot {
     @JsonProperty(value = "state")
     private VMBootOptimizationState state;
 
-    /** Creates an instance of ImageTemplatePropertiesOptimizeVmBoot class. */
+    /**
+     * Creates an instance of ImageTemplatePropertiesOptimizeVmBoot class.
+     */
     public ImageTemplatePropertiesOptimizeVmBoot() {
     }
 
     /**
      * Get the state property: Enabling this field will improve VM boot time by optimizing the final customized image
      * output.
-     *
+     * 
      * @return the state value.
      */
     public VMBootOptimizationState state() {
@@ -33,7 +37,7 @@ public final class ImageTemplatePropertiesOptimizeVmBoot {
     /**
      * Set the state property: Enabling this field will improve VM boot time by optimizing the final customized image
      * output.
-     *
+     * 
      * @param state the state value to set.
      * @return the ImageTemplatePropertiesOptimizeVmBoot object itself.
      */
@@ -44,7 +48,7 @@ public final class ImageTemplatePropertiesOptimizeVmBoot {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

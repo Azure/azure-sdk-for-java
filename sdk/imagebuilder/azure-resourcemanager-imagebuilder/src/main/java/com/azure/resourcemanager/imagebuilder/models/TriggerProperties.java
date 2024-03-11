@@ -10,14 +10,16 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes the properties of a trigger. */
+/**
+ * Describes the properties of a trigger.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "kind",
     defaultImpl = TriggerProperties.class)
 @JsonTypeName("TriggerProperties")
-@JsonSubTypes({@JsonSubTypes.Type(name = "SourceImage", value = SourceImageTriggerProperties.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "SourceImage", value = SourceImageTriggerProperties.class) })
 @Immutable
 public class TriggerProperties {
     /*
@@ -32,13 +34,15 @@ public class TriggerProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of TriggerProperties class. */
+    /**
+     * Creates an instance of TriggerProperties class.
+     */
     public TriggerProperties() {
     }
 
     /**
      * Get the status property: Trigger status.
-     *
+     * 
      * @return the status value.
      */
     public TriggerStatus status() {
@@ -47,7 +51,7 @@ public class TriggerProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -56,7 +60,7 @@ public class TriggerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

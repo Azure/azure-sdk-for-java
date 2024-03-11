@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VMwareCbt NIC input. */
+/**
+ * VMwareCbt NIC input.
+ */
 @Fluent
 public final class VMwareCbtNicInput {
     /*
@@ -59,13 +61,15 @@ public final class VMwareCbtNicInput {
     @JsonProperty(value = "testStaticIPAddress")
     private String testStaticIpAddress;
 
-    /** Creates an instance of VMwareCbtNicInput class. */
+    /**
+     * Creates an instance of VMwareCbtNicInput class.
+     */
     public VMwareCbtNicInput() {
     }
 
     /**
      * Get the nicId property: The NIC Id.
-     *
+     * 
      * @return the nicId value.
      */
     public String nicId() {
@@ -74,7 +78,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the nicId property: The NIC Id.
-     *
+     * 
      * @param nicId the nicId value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -85,7 +89,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @return the isPrimaryNic value.
      */
     public String isPrimaryNic() {
@@ -94,7 +98,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @param isPrimaryNic the isPrimaryNic value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -105,7 +109,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @return the targetSubnetName value.
      */
     public String targetSubnetName() {
@@ -114,7 +118,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @param targetSubnetName the targetSubnetName value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -125,7 +129,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the targetStaticIpAddress property: The static IP address.
-     *
+     * 
      * @return the targetStaticIpAddress value.
      */
     public String targetStaticIpAddress() {
@@ -134,7 +138,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the targetStaticIpAddress property: The static IP address.
-     *
+     * 
      * @param targetStaticIpAddress the targetStaticIpAddress value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -145,7 +149,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the isSelectedForMigration property: A value indicating whether this NIC is selected for migration.
-     *
+     * 
      * @return the isSelectedForMigration value.
      */
     public String isSelectedForMigration() {
@@ -154,7 +158,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the isSelectedForMigration property: A value indicating whether this NIC is selected for migration.
-     *
+     * 
      * @param isSelectedForMigration the isSelectedForMigration value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -165,7 +169,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the targetNicName property: Target NIC name.
-     *
+     * 
      * @return the targetNicName value.
      */
     public String targetNicName() {
@@ -174,7 +178,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the targetNicName property: Target NIC name.
-     *
+     * 
      * @param targetNicName the targetNicName value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -185,7 +189,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the testSubnetName property: The test subnet name.
-     *
+     * 
      * @return the testSubnetName value.
      */
     public String testSubnetName() {
@@ -194,7 +198,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the testSubnetName property: The test subnet name.
-     *
+     * 
      * @param testSubnetName the testSubnetName value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -205,7 +209,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Get the testStaticIpAddress property: The test static IP address.
-     *
+     * 
      * @return the testStaticIpAddress value.
      */
     public String testStaticIpAddress() {
@@ -214,7 +218,7 @@ public final class VMwareCbtNicInput {
 
     /**
      * Set the testStaticIpAddress property: The test static IP address.
-     *
+     * 
      * @param testStaticIpAddress the testStaticIpAddress value to set.
      * @return the VMwareCbtNicInput object itself.
      */
@@ -225,19 +229,17 @@ public final class VMwareCbtNicInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (nicId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property nicId in model VMwareCbtNicInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property nicId in model VMwareCbtNicInput"));
         }
         if (isPrimaryNic() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property isPrimaryNic in model VMwareCbtNicInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property isPrimaryNic in model VMwareCbtNicInput"));
         }
     }
 

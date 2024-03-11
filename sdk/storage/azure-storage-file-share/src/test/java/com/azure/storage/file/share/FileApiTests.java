@@ -13,6 +13,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
@@ -2417,6 +2418,17 @@ class FileApiTests extends FileShareTestBase {
     }
 
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
+    @ParameterizedTest
+    @ValueSource(strings = {"\u200B", "\u200C", "\u200D", "\uFEFF"})
+    public void renameWithUnicodeChars(String specialChar) {
+        ShareFileClient fileClient = shareClient.getFileClient("test-file-source" + specialChar + " pdf.txt");
+        fileClient.create(512);
+        ShareFileClient destClient = fileClient.rename("test-file-destination" + specialChar + " pdf.txt");
+        assertNotNull(destClient);
+        assertTrue(Utility.urlEncode(destClient.getFileUrl()).contains(Utility.urlEncode(specialChar)));
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-04-10")
     @Test
     public void renameWithResponse() {
         primaryFileClient.create(512);
@@ -2694,6 +2706,24 @@ class FileApiTests extends FileShareTestBase {
     @Test
     public void getFilePath() {
         assertEquals(filePath, primaryFileClient.getFilePath());
+    }
+
+    private static Stream<Arguments> getNonEncodedFileNameSupplier() {
+        return Stream.of(
+            Arguments.of("test%test"),
+            Arguments.of("%Россия 한국 中国!"),
+            Arguments.of("%E6%96%91%E9%BB%9E"),
+            Arguments.of("斑點")
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getNonEncodedFileNameSupplier")
+    public void getNonEncodedFileName(String fileName) {
+        ShareFileClient fileClient = shareClient.getFileClient(fileName);
+        assertEquals(fileName, fileClient.getFilePath());
+        fileClient.create(1024);
+        assertTrue(fileClient.exists());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials

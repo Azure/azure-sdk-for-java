@@ -11,7 +11,9 @@ import com.azure.resourcemanager.containerservice.models.OSType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of available upgrades for an agent pool. */
+/**
+ * The list of available upgrades for an agent pool.
+ */
 @Fluent
 public final class AgentPoolUpgradeProfileInner {
     /*
@@ -38,13 +40,15 @@ public final class AgentPoolUpgradeProfileInner {
     @JsonProperty(value = "properties", required = true)
     private AgentPoolUpgradeProfileProperties innerProperties = new AgentPoolUpgradeProfileProperties();
 
-    /** Creates an instance of AgentPoolUpgradeProfileInner class. */
+    /**
+     * Creates an instance of AgentPoolUpgradeProfileInner class.
+     */
     public AgentPoolUpgradeProfileInner() {
     }
 
     /**
      * Get the id property: The ID of the agent pool upgrade profile.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -53,7 +57,7 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Get the name property: The name of the agent pool upgrade profile.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +66,7 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Get the type property: The type of the agent pool upgrade profile.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -71,7 +75,7 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Get the innerProperties property: The properties of the agent pool upgrade profile.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AgentPoolUpgradeProfileProperties innerProperties() {
@@ -80,7 +84,7 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -89,7 +93,7 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Set the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the AgentPoolUpgradeProfileInner object itself.
      */
@@ -103,7 +107,7 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * 
      * @return the osType value.
      */
     public OSType osType() {
@@ -112,7 +116,7 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the AgentPoolUpgradeProfileInner object itself.
      */
@@ -126,7 +130,7 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Get the upgrades property: List of orchestrator types and versions available for upgrade.
-     *
+     * 
      * @return the upgrades value.
      */
     public List<AgentPoolUpgradeProfilePropertiesUpgradesItem> upgrades() {
@@ -135,7 +139,7 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Set the upgrades property: List of orchestrator types and versions available for upgrade.
-     *
+     * 
      * @param upgrades the upgrades value to set.
      * @return the AgentPoolUpgradeProfileInner object itself.
      */
@@ -149,7 +153,7 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Get the latestNodeImageVersion property: The latest AKS supported node image version.
-     *
+     * 
      * @return the latestNodeImageVersion value.
      */
     public String latestNodeImageVersion() {
@@ -158,7 +162,7 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Set the latestNodeImageVersion property: The latest AKS supported node image version.
-     *
+     * 
      * @param latestNodeImageVersion the latestNodeImageVersion value to set.
      * @return the AgentPoolUpgradeProfileInner object itself.
      */
@@ -172,15 +176,13 @@ public final class AgentPoolUpgradeProfileInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model AgentPoolUpgradeProfileInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model AgentPoolUpgradeProfileInner"));
         } else {
             innerProperties().validate();
         }

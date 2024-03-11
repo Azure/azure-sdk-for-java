@@ -6,7 +6,7 @@ package com.azure.core.implementation.util;
 import java.util.Objects;
 
 /**
- *  This class brings in useful utils added to {@link java.util.Objects} in Java 9+.
+ * This class brings in useful utils added to {@link java.util.Objects} in Java 9+.
  */
 public final class ObjectsUtil {
 

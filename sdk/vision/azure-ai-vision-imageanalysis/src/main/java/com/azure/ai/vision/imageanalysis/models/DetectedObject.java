@@ -31,7 +31,7 @@ public final class DetectedObject {
 
     /**
      * Creates an instance of DetectedObject class.
-     * 
+     *
      * @param boundingBox the boundingBox value to set.
      * @param tags the tags value to set.
      */
@@ -45,7 +45,7 @@ public final class DetectedObject {
 
     /**
      * Get the boundingBox property: A rectangular boundary where the object was detected.
-     * 
+     *
      * @return the boundingBox value.
      */
     @Generated
@@ -55,7 +55,7 @@ public final class DetectedObject {
 
     /**
      * Get the tags property: A single-item list containing the object information.
-     * 
+     *
      * @return the tags value.
      */
     @Generated

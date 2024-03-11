@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.hybridcontainerservice.models.ResourceProvisioningState;
+import com.azure.resourcemanager.hybridcontainerservice.models.HybridIdentityMetadataProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -20,7 +20,7 @@ public final class HybridIdentityMetadataInner extends ProxyResource {
      * Resource properties.
      */
     @JsonProperty(value = "properties", required = true)
-    private HybridIdentityMetadataProperties innerProperties = new HybridIdentityMetadataProperties();
+    private HybridIdentityMetadataProperties properties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -35,12 +35,23 @@ public final class HybridIdentityMetadataInner extends ProxyResource {
     }
 
     /**
-     * Get the innerProperties property: Resource properties.
+     * Get the properties property: Resource properties.
      * 
-     * @return the innerProperties value.
+     * @return the properties value.
      */
-    private HybridIdentityMetadataProperties innerProperties() {
-        return this.innerProperties;
+    public HybridIdentityMetadataProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Resource properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the HybridIdentityMetadataInner object itself.
+     */
+    public HybridIdentityMetadataInner withProperties(HybridIdentityMetadataProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
@@ -53,73 +64,16 @@ public final class HybridIdentityMetadataInner extends ProxyResource {
     }
 
     /**
-     * Get the resourceUid property: Unique id of the parent provisioned cluster resource.
-     * 
-     * @return the resourceUid value.
-     */
-    public String resourceUid() {
-        return this.innerProperties() == null ? null : this.innerProperties().resourceUid();
-    }
-
-    /**
-     * Set the resourceUid property: Unique id of the parent provisioned cluster resource.
-     * 
-     * @param resourceUid the resourceUid value to set.
-     * @return the HybridIdentityMetadataInner object itself.
-     */
-    public HybridIdentityMetadataInner withResourceUid(String resourceUid) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new HybridIdentityMetadataProperties();
-        }
-        this.innerProperties().withResourceUid(resourceUid);
-        return this;
-    }
-
-    /**
-     * Get the publicKey property: Onboarding public key for provisioning the Managed identity for the HybridAKS
-     * cluster.
-     * 
-     * @return the publicKey value.
-     */
-    public String publicKey() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicKey();
-    }
-
-    /**
-     * Set the publicKey property: Onboarding public key for provisioning the Managed identity for the HybridAKS
-     * cluster.
-     * 
-     * @param publicKey the publicKey value to set.
-     * @return the HybridIdentityMetadataInner object itself.
-     */
-    public HybridIdentityMetadataInner withPublicKey(String publicKey) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new HybridIdentityMetadataProperties();
-        }
-        this.innerProperties().withPublicKey(publicKey);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     * 
-     * @return the provisioningState value.
-     */
-    public ResourceProvisioningState provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() == null) {
+        if (properties() == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Missing required property innerProperties in model HybridIdentityMetadataInner"));
+                "Missing required property properties in model HybridIdentityMetadataInner"));
         } else {
-            innerProperties().validate();
+            properties().validate();
         }
     }
 

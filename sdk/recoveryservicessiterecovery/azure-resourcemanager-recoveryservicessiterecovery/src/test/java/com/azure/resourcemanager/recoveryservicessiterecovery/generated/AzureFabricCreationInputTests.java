@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureFabricCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureFabricCreationInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"Azure\",\"location\":\"nefxexlfciatx\"}")
+        AzureFabricCreationInput model
+            = BinaryData.fromString("{\"instanceType\":\"Azure\",\"location\":\"nefxexlfciatx\"}")
                 .toObject(AzureFabricCreationInput.class);
         Assertions.assertEquals("nefxexlfciatx", model.location());
     }

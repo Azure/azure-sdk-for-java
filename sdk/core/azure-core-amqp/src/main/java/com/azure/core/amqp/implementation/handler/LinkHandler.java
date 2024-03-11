@@ -53,8 +53,7 @@ abstract class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getCondition();
 
-        addErrorCondition(logger.atVerbose(), condition)
-            .addKeyValue(LINK_NAME_KEY, link.getName())
+        addErrorCondition(logger.atVerbose(), condition).addKeyValue(LINK_NAME_KEY, link.getName())
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log("onLinkLocalClose");
     }
@@ -71,9 +70,7 @@ abstract class LinkHandler extends Handler {
 
     @Override
     public void onLinkFinal(Event event) {
-        final String linkName = event != null && event.getLink() != null
-            ? event.getLink().getName()
-            : NOT_APPLICABLE;
+        final String linkName = event != null && event.getLink() != null ? event.getLink().getName() : NOT_APPLICABLE;
         logger.atInfo()
             .addKeyValue(LINK_NAME_KEY, linkName)
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
@@ -103,8 +100,7 @@ abstract class LinkHandler extends Handler {
         final Link link = event.getLink();
         final ErrorCondition condition = link.getRemoteCondition();
 
-        addErrorCondition(logger.atInfo(), condition)
-            .addKeyValue(LINK_NAME_KEY, link.getName())
+        addErrorCondition(logger.atInfo(), condition).addKeyValue(LINK_NAME_KEY, link.getName())
             .addKeyValue(ENTITY_PATH_KEY, entityPath)
             .log(eventName);
 

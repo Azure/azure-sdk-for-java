@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Reprotect agent details. */
+/**
+ * Reprotect agent details.
+ */
 @Immutable
 public final class ReprotectAgentDetails {
     /*
@@ -90,13 +92,15 @@ public final class ReprotectAgentDetails {
     @JsonProperty(value = "lastDiscoveryInUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastDiscoveryInUtc;
 
-    /** Creates an instance of ReprotectAgentDetails class. */
+    /**
+     * Creates an instance of ReprotectAgentDetails class.
+     */
     public ReprotectAgentDetails() {
     }
 
     /**
      * Get the id property: The reprotect agent Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -105,7 +109,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the name property: The reprotect agent name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -114,7 +118,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the biosId property: The reprotect agent Bios Id.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -123,7 +127,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the fabricObjectId property: The fabric object Id.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -132,7 +136,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the fqdn property: The reprotect agent Fqdn.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -141,7 +145,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the version property: The version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -150,7 +154,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the lastHeartbeatUtc property: The last heartbeat received from the reprotect agent.
-     *
+     * 
      * @return the lastHeartbeatUtc value.
      */
     public OffsetDateTime lastHeartbeatUtc() {
@@ -159,7 +163,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the health property: The health of the reprotect agent.
-     *
+     * 
      * @return the health value.
      */
     public ProtectionHealth health() {
@@ -168,7 +172,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the healthErrors property: The health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -177,7 +181,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the protectedItemCount property: The protected item count.
-     *
+     * 
      * @return the protectedItemCount value.
      */
     public Integer protectedItemCount() {
@@ -186,7 +190,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the accessibleDatastores property: The list of accessible datastores fetched from discovery.
-     *
+     * 
      * @return the accessibleDatastores value.
      */
     public List<String> accessibleDatastores() {
@@ -195,7 +199,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the vcenterId property: The Vcenter Id.
-     *
+     * 
      * @return the vcenterId value.
      */
     public String vcenterId() {
@@ -204,7 +208,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Get the lastDiscoveryInUtc property: The last time when SDS information discovered in SRS.
-     *
+     * 
      * @return the lastDiscoveryInUtc value.
      */
     public OffsetDateTime lastDiscoveryInUtc() {
@@ -213,7 +217,7 @@ public final class ReprotectAgentDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

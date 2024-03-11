@@ -1,0 +1,2 @@
+Assistants purpose file:
+The word 'apple' has the ID 454545 and the word 'banana' has the ID 232323

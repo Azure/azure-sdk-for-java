@@ -9,6 +9,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -87,6 +88,13 @@ public final class DocumentModelDetails {
     @Generated
     @JsonProperty(value = "docTypes")
     private Map<String, DocumentTypeDetails> docTypes;
+
+    /*
+     * List of warnings encountered while building the model.
+     */
+    @Generated
+    @JsonProperty(value = "warnings")
+    private List<Warning> warnings;
 
     /**
      * Creates an instance of DocumentModelDetails class.
@@ -199,5 +207,15 @@ public final class DocumentModelDetails {
     @Generated
     public Map<String, DocumentTypeDetails> getDocTypes() {
         return this.docTypes;
+    }
+
+    /**
+     * Get the warnings property: List of warnings encountered while building the model.
+     * 
+     * @return the warnings value.
+     */
+    @Generated
+    public List<Warning> getWarnings() {
+        return this.warnings;
     }
 }

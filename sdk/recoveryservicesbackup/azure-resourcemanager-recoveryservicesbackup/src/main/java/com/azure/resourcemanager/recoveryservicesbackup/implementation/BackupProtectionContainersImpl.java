@@ -19,8 +19,7 @@ public final class BackupProtectionContainersImpl implements BackupProtectionCon
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BackupProtectionContainersImpl(
-        BackupProtectionContainersClient innerClient,
+    public BackupProtectionContainersImpl(BackupProtectionContainersClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,14 +27,16 @@ public final class BackupProtectionContainersImpl implements BackupProtectionCon
 
     public PagedIterable<ProtectionContainerResource> list(String vaultName, String resourceGroupName) {
         PagedIterable<ProtectionContainerResourceInner> inner = this.serviceClient().list(vaultName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ProtectionContainerResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ProtectionContainerResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ProtectionContainerResource> list(
-        String vaultName, String resourceGroupName, String filter, Context context) {
-        PagedIterable<ProtectionContainerResourceInner> inner =
-            this.serviceClient().list(vaultName, resourceGroupName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new ProtectionContainerResourceImpl(inner1, this.manager()));
+    public PagedIterable<ProtectionContainerResource> list(String vaultName, String resourceGroupName, String filter,
+        Context context) {
+        PagedIterable<ProtectionContainerResourceInner> inner
+            = this.serviceClient().list(vaultName, resourceGroupName, filter, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ProtectionContainerResourceImpl(inner1, this.manager()));
     }
 
     private BackupProtectionContainersClient serviceClient() {

@@ -9,35 +9,28 @@ import com.azure.resourcemanager.containerregistry.models.OS;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for AgentPools Create. */
+/**
+ * Samples for AgentPools Create.
+ */
 public final class AgentPoolsCreateSamples {
     /*
-     * x-ms-original-file: mgmt_containerregistry_add_readonly/specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/AgentPoolsCreate.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2019-06-01-preview/examples/
+     * AgentPoolsCreate.json
      */
     /**
      * Sample code: AgentPools_Create.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void agentPoolsCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
-            .manager()
-            .serviceClient()
-            .getAgentPools()
-            .create(
-                "myResourceGroup",
-                "myRegistry",
-                "myAgentPool",
-                new AgentPoolInner()
-                    .withLocation("WESTUS")
-                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
-                    .withCount(1)
-                    .withTier("S1")
-                    .withOs(OS.LINUX),
-                com.azure.core.util.Context.NONE);
+        azure.containerRegistries().manager().serviceClient().getAgentPools().create(
+            "myResourceGroup", "myRegistry", "myAgentPool", new AgentPoolInner().withLocation("WESTUS")
+                .withTags(mapOf("key", "fakeTokenPlaceholder")).withCount(1).withTier("S1").withOs(OS.LINUX),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

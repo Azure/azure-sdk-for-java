@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The properties for updating encoded task step. */
+/**
+ * The properties for updating encoded task step.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("EncodedTask")
 @Fluent
@@ -33,13 +35,15 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
     @JsonProperty(value = "values")
     private List<SetValue> values;
 
-    /** Creates an instance of EncodedTaskStepUpdateParameters class. */
+    /**
+     * Creates an instance of EncodedTaskStepUpdateParameters class.
+     */
     public EncodedTaskStepUpdateParameters() {
     }
 
     /**
      * Get the encodedTaskContent property: Base64 encoded value of the template/definition file content.
-     *
+     * 
      * @return the encodedTaskContent value.
      */
     public String encodedTaskContent() {
@@ -48,7 +52,7 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Set the encodedTaskContent property: Base64 encoded value of the template/definition file content.
-     *
+     * 
      * @param encodedTaskContent the encodedTaskContent value to set.
      * @return the EncodedTaskStepUpdateParameters object itself.
      */
@@ -59,7 +63,7 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Get the encodedValuesContent property: Base64 encoded value of the parameters/values file content.
-     *
+     * 
      * @return the encodedValuesContent value.
      */
     public String encodedValuesContent() {
@@ -68,7 +72,7 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Set the encodedValuesContent property: Base64 encoded value of the parameters/values file content.
-     *
+     * 
      * @param encodedValuesContent the encodedValuesContent value to set.
      * @return the EncodedTaskStepUpdateParameters object itself.
      */
@@ -79,7 +83,7 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Get the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @return the values value.
      */
     public List<SetValue> values() {
@@ -88,7 +92,7 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Set the values property: The collection of overridable values that can be passed when running a task.
-     *
+     * 
      * @param values the values value to set.
      * @return the EncodedTaskStepUpdateParameters object itself.
      */
@@ -97,14 +101,18 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncodedTaskStepUpdateParameters withContextPath(String contextPath) {
         super.withContextPath(contextPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EncodedTaskStepUpdateParameters withContextAccessToken(String contextAccessToken) {
         super.withContextAccessToken(contextAccessToken);
@@ -113,7 +121,7 @@ public final class EncodedTaskStepUpdateParameters extends TaskStepUpdateParamet
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

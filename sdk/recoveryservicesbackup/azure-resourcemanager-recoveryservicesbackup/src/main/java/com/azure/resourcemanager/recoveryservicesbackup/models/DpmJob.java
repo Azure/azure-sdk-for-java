@@ -12,7 +12,9 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** DPM workload-specific job object. */
+/**
+ * DPM workload-specific job object.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "jobType")
 @JsonTypeName("DpmJob")
 @Fluent
@@ -65,13 +67,15 @@ public final class DpmJob extends Job {
     @JsonProperty(value = "extendedInfo")
     private DpmJobExtendedInfo extendedInfo;
 
-    /** Creates an instance of DpmJob class. */
+    /**
+     * Creates an instance of DpmJob class.
+     */
     public DpmJob() {
     }
 
     /**
      * Get the duration property: Time elapsed for job.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -80,7 +84,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the duration property: Time elapsed for job.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the DpmJob object itself.
      */
@@ -91,7 +95,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the dpmServerName property: DPM server name managing the backup item or backup job.
-     *
+     * 
      * @return the dpmServerName value.
      */
     public String dpmServerName() {
@@ -100,7 +104,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the dpmServerName property: DPM server name managing the backup item or backup job.
-     *
+     * 
      * @param dpmServerName the dpmServerName value to set.
      * @return the DpmJob object itself.
      */
@@ -111,7 +115,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the containerName property: Name of cluster/server protecting current backup item, if any.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -120,7 +124,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the containerName property: Name of cluster/server protecting current backup item, if any.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the DpmJob object itself.
      */
@@ -131,7 +135,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the containerType property: Type of container.
-     *
+     * 
      * @return the containerType value.
      */
     public String containerType() {
@@ -140,7 +144,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the containerType property: Type of container.
-     *
+     * 
      * @param containerType the containerType value to set.
      * @return the DpmJob object itself.
      */
@@ -151,7 +155,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the workloadType property: Type of backup item.
-     *
+     * 
      * @return the workloadType value.
      */
     public String workloadType() {
@@ -160,7 +164,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the workloadType property: Type of backup item.
-     *
+     * 
      * @param workloadType the workloadType value to set.
      * @return the DpmJob object itself.
      */
@@ -171,7 +175,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the actionsInfo property: The state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @return the actionsInfo value.
      */
     public List<JobSupportedAction> actionsInfo() {
@@ -180,7 +184,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the actionsInfo property: The state/actions applicable on this job like cancel/retry.
-     *
+     * 
      * @param actionsInfo the actionsInfo value to set.
      * @return the DpmJob object itself.
      */
@@ -191,7 +195,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the errorDetails property: The errors.
-     *
+     * 
      * @return the errorDetails value.
      */
     public List<DpmErrorInfo> errorDetails() {
@@ -200,7 +204,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the errorDetails property: The errors.
-     *
+     * 
      * @param errorDetails the errorDetails value to set.
      * @return the DpmJob object itself.
      */
@@ -211,7 +215,7 @@ public final class DpmJob extends Job {
 
     /**
      * Get the extendedInfo property: Additional information for this job.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public DpmJobExtendedInfo extendedInfo() {
@@ -220,7 +224,7 @@ public final class DpmJob extends Job {
 
     /**
      * Set the extendedInfo property: Additional information for this job.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the DpmJob object itself.
      */
@@ -229,49 +233,63 @@ public final class DpmJob extends Job {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withEntityFriendlyName(String entityFriendlyName) {
         super.withEntityFriendlyName(entityFriendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withBackupManagementType(BackupManagementType backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withOperation(String operation) {
         super.withOperation(operation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withStatus(String status) {
         super.withStatus(status);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withStartTime(OffsetDateTime startTime) {
         super.withStartTime(startTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withEndTime(OffsetDateTime endTime) {
         super.withEndTime(endTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DpmJob withActivityId(String activityId) {
         super.withActivityId(activityId);
@@ -280,7 +298,7 @@ public final class DpmJob extends Job {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

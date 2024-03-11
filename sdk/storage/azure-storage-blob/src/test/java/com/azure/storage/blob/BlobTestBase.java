@@ -24,9 +24,11 @@ import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
+import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlobClientBase;
@@ -58,6 +60,7 @@ import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
@@ -127,9 +130,14 @@ public class BlobTestBase extends TestProxyTestBase {
     protected BlobServiceClient primaryBlobServiceClient;
     protected BlobServiceAsyncClient primaryBlobServiceAsyncClient;
     protected BlobServiceClient alternateBlobServiceClient;
+    protected BlobServiceAsyncClient alternateBlobServiceAsyncClient;
+
     protected BlobServiceClient premiumBlobServiceClient;
+    protected BlobServiceAsyncClient premiumBlobServiceAsyncClient;
     protected BlobServiceClient versionedBlobServiceClient;
+    protected BlobServiceAsyncClient versionedBlobServiceAsyncClient;
     protected BlobServiceClient softDeleteServiceClient;
+    protected BlobServiceAsyncClient softDeleteServiceAsyncClient;
 
     protected String containerName;
 
@@ -162,14 +170,19 @@ public class BlobTestBase extends TestProxyTestBase {
         primaryBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
         alternateBlobServiceClient = getServiceClient(ENVIRONMENT.getSecondaryAccount());
+        alternateBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getSecondaryAccount());
         premiumBlobServiceClient = getServiceClient(ENVIRONMENT.getPremiumAccount());
+        premiumBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPremiumAccount());
         versionedBlobServiceClient = getServiceClient(ENVIRONMENT.getVersionedAccount());
+        versionedBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getVersionedAccount());
         softDeleteServiceClient = getServiceClient(ENVIRONMENT.getSoftDeleteAccount());
+        softDeleteServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getSoftDeleteAccount());
 
         containerName = generateContainerName();
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName);
         ccAsync = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(containerName);
         cc.createIfNotExists();
+        ccAsync.createIfNotExists().block();
     }
 
     /**
@@ -321,6 +334,15 @@ public class BlobTestBase extends TestProxyTestBase {
         return setOauthCredentials(builder).buildClient();
     }
 
+    protected BlobServiceAsyncClient getOAuthServiceAsyncClient() {
+        BlobServiceClientBuilder builder = new BlobServiceClientBuilder()
+            .endpoint(ENVIRONMENT.getPrimaryAccount().getBlobEndpoint());
+
+        instrument(builder);
+
+        return setOauthCredentials(builder).buildAsyncClient();
+    }
+
     protected BlobServiceClientBuilder setOauthCredentials(BlobServiceClientBuilder builder) {
         if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
             // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
@@ -355,6 +377,20 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected BlobServiceAsyncClient getServiceAsyncClient(TestAccount account) {
         return getServiceClientBuilder(account.getCredential(), account.getBlobEndpoint()).buildAsyncClient();
+    }
+
+    protected BlobServiceAsyncClient getServiceAsyncClient(String sasToken, String endpoint) {
+        return getServiceClientBuilder(null, endpoint, (HttpPipelinePolicy) null).sasToken(sasToken).buildAsyncClient();
+    }
+
+    protected BlobServiceAsyncClient getServiceAsyncClient(String endpoint) {
+        return getServiceAsyncClient(null, endpoint, (HttpPipelinePolicy) null);
+    }
+
+    protected BlobServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint,
+                                                 HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(credential, endpoint, policies)
+            .buildAsyncClient();
     }
 
     protected BlobServiceClientBuilder getServiceClientBuilder(StorageSharedKeyCredential credential, String endpoint,
@@ -477,6 +513,10 @@ public class BlobTestBase extends TestProxyTestBase {
         return getContainerClientBuilder(endpoint).sasToken(sasToken).buildClient();
     }
 
+    protected BlobContainerAsyncClient getContainerAsyncClient(String sasToken, String endpoint) {
+        return getContainerClientBuilder(endpoint).sasToken(sasToken).buildAsyncClient();
+    }
+
     protected BlobContainerClientBuilder getContainerClientBuilder(String endpoint) {
         BlobContainerClientBuilder builder = new BlobContainerClientBuilder().endpoint(endpoint);
         instrument(builder);
@@ -511,6 +551,17 @@ public class BlobTestBase extends TestProxyTestBase {
         instrument(builder);
 
         return builder.credential(credential).buildAsyncClient();
+    }
+
+    protected BlobAsyncClient getBlobAsyncClient(String sasToken, String endpoint, String blobName, String snapshotId) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint)
+            .blobName(blobName)
+            .snapshot(snapshotId);
+
+        instrument(builder);
+
+        return builder.sasToken(sasToken).buildAsyncClient();
     }
 
     protected BlobClient getBlobClient(String sasToken, String endpoint, String blobName) {
@@ -592,6 +643,17 @@ public class BlobTestBase extends TestProxyTestBase {
             builder.sasToken(sasToken);
         }
         return builder.buildClient();
+    }
+
+    protected BlobAsyncClient getBlobAsyncClient(String endpoint, String sasToken) {
+        BlobClientBuilder builder = new BlobClientBuilder()
+            .endpoint(endpoint);
+        instrument(builder);
+
+        if (!CoreUtils.isNullOrEmpty(sasToken)) {
+            builder.sasToken(sasToken);
+        }
+        return builder.buildAsyncClient();
     }
 
     protected BlobClientBuilder getBlobClientBuilder(String endpoint) {
@@ -829,5 +891,20 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected File getRandomFile(int size) throws IOException {
         return StorageCommonTestUtils.getRandomFile(size, testResourceNamer);
+    }
+
+    /*https://learn.microsoft.com/en-us/rest/api/storageservices/define-stored-access-policy#creating-or-modifying-a-stored-access-policy
+    Second note, it can take up to 30 seconds to set/create an access policy and this was causing flakeyness in the live test pipeline
+    */
+    protected void setAccessPolicySleep(BlobContainerClient cc, PublicAccessType access,
+                                        List<BlobSignedIdentifier> identifiers) {
+        cc.setAccessPolicy(access, identifiers);
+        sleepIfRunningAgainstService(30 * 1000);
+    }
+
+    protected void setAccessPolicySleepAsync(BlobContainerAsyncClient cc, PublicAccessType access,
+                                        List<BlobSignedIdentifier> identifiers) {
+        cc.setAccessPolicy(access, identifiers).block();
+        sleepIfRunningAgainstService(30 * 1000);
     }
 }

@@ -25,8 +25,7 @@ public final class FlexibleServerCapabilityImpl implements FlexibleServerCapabil
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    FlexibleServerCapabilityImpl(
-        FlexibleServerCapabilityInner innerObject,
+    FlexibleServerCapabilityImpl(FlexibleServerCapabilityInner innerObject,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

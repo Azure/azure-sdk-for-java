@@ -5,55 +5,55 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties that are associated with a IoT Hub input containing stream data. */
+/**
+ * The properties that are associated with a IoT Hub input containing stream data.
+ */
 @Fluent
 public final class IoTHubStreamInputDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTHubStreamInputDataSourceProperties.class);
-
     /*
-     * The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace)
-     * requests.
+     * The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "iotHubNamespace")
     private String iotHubNamespace;
 
     /*
-     * The shared access policy name for the IoT Hub. This policy must contain
-     * at least the Service connect permission. Required on PUT
-     * (CreateOrReplace) requests.
+     * The shared access policy name for the IoT Hub. This policy must contain at least the Service connect permission.
+     * Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "sharedAccessPolicyName")
     private String sharedAccessPolicyName;
 
     /*
-     * The shared access policy key for the specified shared access policy.
-     * Required on PUT (CreateOrReplace) requests.
+     * The shared access policy key for the specified shared access policy. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "sharedAccessPolicyKey")
     private String sharedAccessPolicyKey;
 
     /*
-     * The name of an IoT Hub Consumer Group that should be used to read events
-     * from the IoT Hub. If not specified, the input uses the Iot Hub’s default
-     * consumer group.
+     * The name of an IoT Hub Consumer Group that should be used to read events from the IoT Hub. If not specified, the
+     * input uses the Iot Hub’s default consumer group.
      */
     @JsonProperty(value = "consumerGroupName")
     private String consumerGroupName;
 
     /*
-     * The IoT Hub endpoint to connect to (ie. messages/events,
-     * messages/operationsMonitoringEvents, etc.).
+     * The IoT Hub endpoint to connect to (ie. messages/events, messages/operationsMonitoringEvents, etc.).
      */
     @JsonProperty(value = "endpoint")
     private String endpoint;
 
     /**
-     * Get the iotHubNamespace property: The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace) requests.
-     *
+     * Creates an instance of IoTHubStreamInputDataSourceProperties class.
+     */
+    public IoTHubStreamInputDataSourceProperties() {
+    }
+
+    /**
+     * Get the iotHubNamespace property: The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace)
+     * requests.
+     * 
      * @return the iotHubNamespace value.
      */
     public String iotHubNamespace() {
@@ -61,8 +61,9 @@ public final class IoTHubStreamInputDataSourceProperties {
     }
 
     /**
-     * Set the iotHubNamespace property: The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace) requests.
-     *
+     * Set the iotHubNamespace property: The name or the URI of the IoT Hub. Required on PUT (CreateOrReplace)
+     * requests.
+     * 
      * @param iotHubNamespace the iotHubNamespace value to set.
      * @return the IoTHubStreamInputDataSourceProperties object itself.
      */
@@ -74,7 +75,7 @@ public final class IoTHubStreamInputDataSourceProperties {
     /**
      * Get the sharedAccessPolicyName property: The shared access policy name for the IoT Hub. This policy must contain
      * at least the Service connect permission. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyName value.
      */
     public String sharedAccessPolicyName() {
@@ -84,7 +85,7 @@ public final class IoTHubStreamInputDataSourceProperties {
     /**
      * Set the sharedAccessPolicyName property: The shared access policy name for the IoT Hub. This policy must contain
      * at least the Service connect permission. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyName the sharedAccessPolicyName value to set.
      * @return the IoTHubStreamInputDataSourceProperties object itself.
      */
@@ -96,7 +97,7 @@ public final class IoTHubStreamInputDataSourceProperties {
     /**
      * Get the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyKey value.
      */
     public String sharedAccessPolicyKey() {
@@ -106,7 +107,7 @@ public final class IoTHubStreamInputDataSourceProperties {
     /**
      * Set the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyKey the sharedAccessPolicyKey value to set.
      * @return the IoTHubStreamInputDataSourceProperties object itself.
      */
@@ -116,9 +117,9 @@ public final class IoTHubStreamInputDataSourceProperties {
     }
 
     /**
-     * Get the consumerGroupName property: The name of an IoT Hub Consumer Group that should be used to read events from
-     * the IoT Hub. If not specified, the input uses the Iot Hub’s default consumer group.
-     *
+     * Get the consumerGroupName property: The name of an IoT Hub Consumer Group that should be used to read events
+     * from the IoT Hub. If not specified, the input uses the Iot Hub’s default consumer group.
+     * 
      * @return the consumerGroupName value.
      */
     public String consumerGroupName() {
@@ -126,9 +127,9 @@ public final class IoTHubStreamInputDataSourceProperties {
     }
 
     /**
-     * Set the consumerGroupName property: The name of an IoT Hub Consumer Group that should be used to read events from
-     * the IoT Hub. If not specified, the input uses the Iot Hub’s default consumer group.
-     *
+     * Set the consumerGroupName property: The name of an IoT Hub Consumer Group that should be used to read events
+     * from the IoT Hub. If not specified, the input uses the Iot Hub’s default consumer group.
+     * 
      * @param consumerGroupName the consumerGroupName value to set.
      * @return the IoTHubStreamInputDataSourceProperties object itself.
      */
@@ -140,7 +141,7 @@ public final class IoTHubStreamInputDataSourceProperties {
     /**
      * Get the endpoint property: The IoT Hub endpoint to connect to (ie. messages/events,
      * messages/operationsMonitoringEvents, etc.).
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -150,7 +151,7 @@ public final class IoTHubStreamInputDataSourceProperties {
     /**
      * Set the endpoint property: The IoT Hub endpoint to connect to (ie. messages/events,
      * messages/operationsMonitoringEvents, etc.).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the IoTHubStreamInputDataSourceProperties object itself.
      */
@@ -161,7 +162,7 @@ public final class IoTHubStreamInputDataSourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

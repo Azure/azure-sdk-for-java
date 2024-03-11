@@ -44,7 +44,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
     /*
      * Applies to custom endpoints that connect to external code in an Azure function or some other application that
      * provides the transformations. This value should be the application ID created for the function or app when it
-     * was registered with Azure Active Directory. When specified, the vectorization connects to the function or app
+     * was registered with Microsoft Entra ID. When specified, the vectorization connects to the function or app
      * using a managed ID (either system or user-assigned) of the search service and the access token of the function
      * or app, using this value as the resource id for creating the scope of the access token.
      */
@@ -65,7 +65,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
 
     /**
      * Get the uri property: The URI of the Web API providing the vectorizer.
-     * 
+     *
      * @return the uri value.
      */
     public String getUri() {
@@ -74,7 +74,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
 
     /**
      * Set the uri property: The URI of the Web API providing the vectorizer.
-     * 
+     *
      * @param uri the uri value to set.
      * @return the CustomWebApiParameters object itself.
      */
@@ -85,7 +85,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
 
     /**
      * Get the httpHeaders property: The headers required to make the HTTP request.
-     * 
+     *
      * @return the httpHeaders value.
      */
     public Map<String, String> getHttpHeaders() {
@@ -94,7 +94,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
 
     /**
      * Set the httpHeaders property: The headers required to make the HTTP request.
-     * 
+     *
      * @param httpHeaders the httpHeaders value to set.
      * @return the CustomWebApiParameters object itself.
      */
@@ -105,7 +105,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
 
     /**
      * Get the httpMethod property: The method for the HTTP request.
-     * 
+     *
      * @return the httpMethod value.
      */
     public String getHttpMethod() {
@@ -114,7 +114,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
 
     /**
      * Set the httpMethod property: The method for the HTTP request.
-     * 
+     *
      * @param httpMethod the httpMethod value to set.
      * @return the CustomWebApiParameters object itself.
      */
@@ -125,7 +125,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
 
     /**
      * Get the timeout property: The desired timeout for the request. Default is 30 seconds.
-     * 
+     *
      * @return the timeout value.
      */
     public Duration getTimeout() {
@@ -134,7 +134,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
 
     /**
      * Set the timeout property: The desired timeout for the request. Default is 30 seconds.
-     * 
+     *
      * @param timeout the timeout value to set.
      * @return the CustomWebApiParameters object itself.
      */
@@ -146,11 +146,11 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
     /**
      * Get the authResourceId property: Applies to custom endpoints that connect to external code in an Azure function
      * or some other application that provides the transformations. This value should be the application ID created for
-     * the function or app when it was registered with Azure Active Directory. When specified, the vectorization
+     * the function or app when it was registered with Microsoft Entra ID. When specified, the vectorization
      * connects to the function or app using a managed ID (either system or user-assigned) of the search service and
      * the access token of the function or app, using this value as the resource id for creating the scope of the
      * access token.
-     * 
+     *
      * @return the authResourceId value.
      */
     public String getAuthResourceId() {
@@ -160,11 +160,11 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
     /**
      * Set the authResourceId property: Applies to custom endpoints that connect to external code in an Azure function
      * or some other application that provides the transformations. This value should be the application ID created for
-     * the function or app when it was registered with Azure Active Directory. When specified, the vectorization
+     * the function or app when it was registered with Microsoft Entra ID. When specified, the vectorization
      * connects to the function or app using a managed ID (either system or user-assigned) of the search service and
      * the access token of the function or app, using this value as the resource id for creating the scope of the
      * access token.
-     * 
+     *
      * @param authResourceId the authResourceId value to set.
      * @return the CustomWebApiParameters object itself.
      */
@@ -178,7 +178,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
      * authResourceId is provided and it's not specified, the system-assigned managed identity is used. On updates to
      * the indexer, if the identity is unspecified, the value remains unchanged. If set to "none", the value of this
      * property is cleared.
-     * 
+     *
      * @return the authIdentity value.
      */
     public SearchIndexerDataIdentity getAuthIdentity() {
@@ -190,7 +190,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
      * authResourceId is provided and it's not specified, the system-assigned managed identity is used. On updates to
      * the indexer, if the identity is unspecified, the value remains unchanged. If set to "none", the value of this
      * property is cleared.
-     * 
+     *
      * @param authIdentity the authIdentity value to set.
      * @return the CustomWebApiParameters object itself.
      */
@@ -213,7 +213,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
 
     /**
      * Reads an instance of CustomWebApiParameters from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomWebApiParameters if the JsonReader was pointing to an instance of it, or null if it
      * was pointing to JSON null.

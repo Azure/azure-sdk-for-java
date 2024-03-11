@@ -12,19 +12,16 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.Replication
 public final class ReplicationApplianceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReplicationApplianceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ApplianceSpecificDetails\"}}}")
-                .toObject(ReplicationApplianceInner.class);
+        ReplicationApplianceInner model = BinaryData
+            .fromString(
+                "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ApplianceSpecificDetails\"}}}")
+            .toObject(ReplicationApplianceInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReplicationApplianceInner model =
-            new ReplicationApplianceInner()
-                .withProperties(
-                    new ReplicationApplianceProperties().withProviderSpecificDetails(new ApplianceSpecificDetails()));
+        ReplicationApplianceInner model = new ReplicationApplianceInner().withProperties(
+            new ReplicationApplianceProperties().withProviderSpecificDetails(new ApplianceSpecificDetails()));
         model = BinaryData.fromObject(model).toObject(ReplicationApplianceInner.class);
     }
 }

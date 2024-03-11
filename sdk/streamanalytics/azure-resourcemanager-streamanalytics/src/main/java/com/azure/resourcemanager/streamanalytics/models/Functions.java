@@ -9,11 +9,27 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.FunctionInner;
 
-/** Resource collection API of Functions. */
+/**
+ * Resource collection API of Functions.
+ */
 public interface Functions {
     /**
      * Deletes a function from the streaming job.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param functionName The name of the function.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteWithResponse(String resourceGroupName, String jobName, String functionName, Context context);
+
+    /**
+     * Deletes a function from the streaming job.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
@@ -24,35 +40,8 @@ public interface Functions {
     void delete(String resourceGroupName, String jobName, String functionName);
 
     /**
-     * Deletes a function from the streaming job.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(String resourceGroupName, String jobName, String functionName, Context context);
-
-    /**
      * Gets details about the specified function.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified function.
-     */
-    Function get(String resourceGroupName, String jobName, String functionName);
-
-    /**
-     * Gets details about the specified function.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
@@ -65,57 +54,53 @@ public interface Functions {
     Response<Function> getWithResponse(String resourceGroupName, String jobName, String functionName, Context context);
 
     /**
+     * Gets details about the specified function.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param functionName The name of the function.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the specified function.
+     */
+    Function get(String resourceGroupName, String jobName, String functionName);
+
+    /**
      * Lists all of the functions under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of functions under a streaming job.
+     * @return object containing a list of functions under a streaming job as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<Function> listByStreamingJob(String resourceGroupName, String jobName);
 
     /**
      * Lists all of the functions under the specified streaming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param select The $select OData query parameter. This is a comma-separated list of structural properties to
-     *     include in the response, or "*" to include all properties. By default, all properties are returned except
-     *     diagnostics. Currently only accepts '*' as a valid value.
+     * include in the response, or "*" to include all properties. By default, all properties are returned except
+     * diagnostics. Currently only accepts '*' as a valid value.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object containing a list of functions under a streaming job.
+     * @return object containing a list of functions under a streaming job as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<Function> listByStreamingJob(
-        String resourceGroupName, String jobName, String select, Context context);
+    PagedIterable<Function> listByStreamingJob(String resourceGroupName, String jobName, String select,
+        Context context);
 
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
-     */
-    ResourceTestStatus test(String resourceGroupName, String jobName, String functionName, FunctionInner function);
-
-    /**
-     * Tests if the information provided for a function is valid. This can range from testing the connection to the
-     * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
@@ -129,27 +114,45 @@ public interface Functions {
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
      * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
+     * definition intended to be tested. If the function specified already exists, this parameter can be left null to
+     * test the existing function as is or if specified, the properties specified will overwrite the corresponding
+     * properties in the existing function (exactly like a PATCH operation) and the resulting function will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
      */
-    ResourceTestStatus test(
-        String resourceGroupName, String jobName, String functionName, FunctionInner function, Context context);
+    ResourceTestStatus test(String resourceGroupName, String jobName, String functionName, FunctionInner function,
+        Context context);
 
     /**
      * Retrieves the default definition of a function based on the parameters specified.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param jobName The name of the streaming job.
+     * @param functionName The name of the function.
+     * @param functionRetrieveDefaultDefinitionParameters Parameters used to specify the type of function to retrieve
+     * the default definition for.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a function object, containing all information associated with the named function along with
+     * {@link Response}.
+     */
+    Response<Function> retrieveDefaultDefinitionWithResponse(String resourceGroupName, String jobName,
+        String functionName, FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters,
+        Context context);
+
+    /**
+     * Retrieves the default definition of a function based on the parameters specified.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param jobName The name of the streaming job.
      * @param functionName The name of the function.
@@ -161,29 +164,8 @@ public interface Functions {
     Function retrieveDefaultDefinition(String resourceGroupName, String jobName, String functionName);
 
     /**
-     * Retrieves the default definition of a function based on the parameters specified.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param jobName The name of the streaming job.
-     * @param functionName The name of the function.
-     * @param functionRetrieveDefaultDefinitionParameters Parameters used to specify the type of function to retrieve
-     *     the default definition for.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
-     */
-    Response<Function> retrieveDefaultDefinitionWithResponse(
-        String resourceGroupName,
-        String jobName,
-        String functionName,
-        FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters,
-        Context context);
-
-    /**
      * Gets details about the specified function.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -194,7 +176,7 @@ public interface Functions {
 
     /**
      * Gets details about the specified function.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +188,7 @@ public interface Functions {
 
     /**
      * Deletes a function from the streaming job.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -216,19 +198,19 @@ public interface Functions {
 
     /**
      * Deletes a function from the streaming job.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new Function resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Function definition.
      */

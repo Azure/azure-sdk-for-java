@@ -82,14 +82,14 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     /**
      * Lists the supported kubernetes versions
      * 
-     * Lists the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of kubernetes version resources along with {@link PagedResponse} on successful completion of
+     * @return list of supported kubernetes versions along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -114,15 +114,15 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     /**
      * Lists the supported kubernetes versions
      * 
-     * Lists the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of kubernetes version resources along with {@link PagedResponse} on successful completion of
+     * @return list of supported kubernetes versions along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -147,14 +147,14 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     /**
      * Lists the supported kubernetes versions
      * 
-     * Lists the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of kubernetes version resources as paginated response with {@link PagedFlux}.
+     * @return list of supported kubernetes versions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<KubernetesVersionProfileInner> listAsync(String customLocationResourceUri) {
@@ -165,15 +165,15 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     /**
      * Lists the supported kubernetes versions
      * 
-     * Lists the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of kubernetes version resources as paginated response with {@link PagedFlux}.
+     * @return list of supported kubernetes versions as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<KubernetesVersionProfileInner> listAsync(String customLocationResourceUri, Context context) {
@@ -184,14 +184,14 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     /**
      * Lists the supported kubernetes versions
      * 
-     * Lists the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of kubernetes version resources as paginated response with {@link PagedIterable}.
+     * @return list of supported kubernetes versions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesVersionProfileInner> list(String customLocationResourceUri) {
@@ -201,15 +201,15 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
     /**
      * Lists the supported kubernetes versions
      * 
-     * Lists the supported kubernetes versions from the underlying custom location.
+     * Lists the supported kubernetes versions for the specified custom location.
      * 
-     * @param customLocationResourceUri The fully qualified Azure Resource manager identifier of the custom location
+     * @param customLocationResourceUri The fully qualified Azure Resource Manager identifier of the custom location
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of kubernetes version resources as paginated response with {@link PagedIterable}.
+     * @return list of supported kubernetes versions as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KubernetesVersionProfileInner> list(String customLocationResourceUri, Context context) {
@@ -225,7 +225,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of kubernetes version resources along with {@link PagedResponse} on successful completion of
+     * @return list of supported kubernetes versions along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -254,7 +254,7 @@ public final class KubernetesVersionsClientImpl implements KubernetesVersionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of kubernetes version resources along with {@link PagedResponse} on successful completion of
+     * @return list of supported kubernetes versions along with {@link PagedResponse} on successful completion of
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

@@ -27,16 +27,23 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
 
     private final AsynchronousFileChannel fileChannel;
 
-    private static final AtomicLongFieldUpdater<AsynchronousFileChannelAdapter> POSITION_ATOMIC_UPDATER =
-        AtomicLongFieldUpdater.newUpdater(AsynchronousFileChannelAdapter.class, "position");
+    private static final AtomicLongFieldUpdater<AsynchronousFileChannelAdapter> POSITION_ATOMIC_UPDATER
+        = AtomicLongFieldUpdater.newUpdater(AsynchronousFileChannelAdapter.class, "position");
     private volatile long position;
 
     // AsynchronousByteChannel implementation may disallow concurrent reads and writes.
-    private static final AtomicReferenceFieldUpdater<AsynchronousFileChannelAdapter, Operation> PENDING_OPERATION_ATOMIC_UPDATER =
-        AtomicReferenceFieldUpdater.newUpdater(
-            AsynchronousFileChannelAdapter.class, Operation.class, "pendingOperation");
+    private static final AtomicReferenceFieldUpdater<AsynchronousFileChannelAdapter, Operation> PENDING_OPERATION_ATOMIC_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(AsynchronousFileChannelAdapter.class, Operation.class,
+            "pendingOperation");
     private volatile Operation pendingOperation = null;
 
+    /**
+     * Creates an instance of {@link AsynchronousFileChannelAdapter} that adapts {@link AsynchronousFileChannel} to
+     * {@link AsynchronousByteChannel}.
+     *
+     * @param fileChannel The {@link AsynchronousFileChannel} to adapt.
+     * @param position The position to start reading from or writing to.
+     */
     public AsynchronousFileChannelAdapter(AsynchronousFileChannel fileChannel, long position) {
         this.fileChannel = Objects.requireNonNull(fileChannel);
         this.position = position;
@@ -93,8 +100,10 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
             switch (PENDING_OPERATION_ATOMIC_UPDATER.get(this)) {
                 case READ:
                     throw LOGGER.logExceptionAsError(new ReadPendingException());
+
                 case WRITE:
                     throw LOGGER.logExceptionAsError(new WritePendingException());
+
                 default:
                     throw LOGGER.logExceptionAsError(new IllegalStateException("Unknown channel operation"));
             }
@@ -103,7 +112,7 @@ public class AsynchronousFileChannelAdapter implements AsynchronousByteChannel {
 
     private void endOperation(Operation operation) {
         if (!PENDING_OPERATION_ATOMIC_UPDATER.compareAndSet(this, operation, null)) {
-            throw new IllegalStateException("There's no pending " + operation);
+            throw LOGGER.logExceptionAsError(new IllegalStateException("There's no pending " + operation));
         }
     }
 

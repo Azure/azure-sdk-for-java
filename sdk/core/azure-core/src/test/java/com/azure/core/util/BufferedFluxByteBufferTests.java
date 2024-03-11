@@ -21,8 +21,8 @@ public class BufferedFluxByteBufferTests {
         byte[] randomBytes = new byte[1024 * 1024];
         fillArray(randomBytes);
 
-        BufferedFluxByteBuffer bufferedFluxByteBuffer = new BufferedFluxByteBuffer(
-            Flux.fromArray(splitBytesIntoBuffers(randomBytes)));
+        BufferedFluxByteBuffer bufferedFluxByteBuffer
+            = new BufferedFluxByteBuffer(Flux.fromArray(splitBytesIntoBuffers(randomBytes)));
 
         // Run once to verify that the results are expected.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
@@ -40,8 +40,8 @@ public class BufferedFluxByteBufferTests {
         byte[] randomBytes = new byte[1024 * 1024];
         fillArray(randomBytes);
 
-        BufferedFluxByteBuffer bufferedFluxByteBuffer = new BufferedFluxByteBuffer(
-            Flux.fromArray(splitBytesIntoBuffers(randomBytes)).share());
+        BufferedFluxByteBuffer bufferedFluxByteBuffer
+            = new BufferedFluxByteBuffer(Flux.fromArray(splitBytesIntoBuffers(randomBytes)).share());
 
         // Run once to verify that the results are expected.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))

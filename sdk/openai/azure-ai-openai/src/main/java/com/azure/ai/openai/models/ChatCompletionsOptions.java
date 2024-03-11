@@ -567,7 +567,7 @@ public final class ChatCompletionsOptions {
      * This additional specification is only compatible with Azure OpenAI.
      */
     @Generated
-    @JsonProperty(value = "dataSources")
+    @JsonProperty(value = "data_sources")
     private List<AzureChatExtensionConfiguration> dataSources;
 
     /**
@@ -756,6 +756,75 @@ public final class ChatCompletionsOptions {
     @Generated
     public ChatCompletionsOptions setToolChoice(BinaryData toolChoice) {
         this.toolChoice = toolChoice;
+        return this;
+    }
+
+    /*
+     * Whether to return log probabilities of the output tokens or not. If true, returns the log probabilities of each
+     * output token returned in the `content` of `message`. This option is currently not available on the
+     * `gpt-4-vision-preview` model.
+     */
+    @Generated
+    @JsonProperty(value = "logprobs")
+    private Boolean logprobs;
+
+    /*
+     * An integer between 0 and 5 specifying the number of most likely tokens to return at each token position, each
+     * with an associated log probability. `logprobs` must be set to `true` if this parameter is used.
+     */
+    @Generated
+    @JsonProperty(value = "top_logprobs")
+    private Integer topLogprobs;
+
+    /**
+     * Get the logprobs property: Whether to return log probabilities of the output tokens or not. If true, returns the
+     * log probabilities of each output token returned in the `content` of `message`. This option is currently not
+     * available on the `gpt-4-vision-preview` model.
+     *
+     * @return the logprobs value.
+     */
+    @Generated
+    public Boolean isLogprobs() {
+        return this.logprobs;
+    }
+
+    /**
+     * Set the logprobs property: Whether to return log probabilities of the output tokens or not. If true, returns the
+     * log probabilities of each output token returned in the `content` of `message`. This option is currently not
+     * available on the `gpt-4-vision-preview` model.
+     *
+     * @param logprobs the logprobs value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setLogprobs(Boolean logprobs) {
+        this.logprobs = logprobs;
+        return this;
+    }
+
+    /**
+     * Get the topLogprobs property: An integer between 0 and 5 specifying the number of most likely tokens to return
+     * at each token position, each with an associated log probability. `logprobs` must be set to `true` if this
+     * parameter is used.
+     *
+     * @return the topLogprobs value.
+     */
+    @Generated
+    public Integer getTopLogprobs() {
+        return this.topLogprobs;
+    }
+
+    /**
+     * Set the topLogprobs property: An integer between 0 and 5 specifying the number of most likely tokens to return
+     * at each token position, each with an associated log probability. `logprobs` must be set to `true` if this
+     * parameter is used.
+     *
+     * @param topLogprobs the topLogprobs value to set.
+     * @return the ChatCompletionsOptions object itself.
+     */
+    @Generated
+    public ChatCompletionsOptions setTopLogprobs(Integer topLogprobs) {
+        this.topLogprobs = topLogprobs;
         return this;
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response for Volume request. */
+/**
+ * Response for Volume request.
+ */
 @Fluent
 public final class VolumeUpdate {
     /*
@@ -17,13 +19,15 @@ public final class VolumeUpdate {
     @JsonProperty(value = "properties")
     private VolumeUpdateProperties innerProperties;
 
-    /** Creates an instance of VolumeUpdate class. */
+    /**
+     * Creates an instance of VolumeUpdate class.
+     */
     public VolumeUpdate() {
     }
 
     /**
      * Get the innerProperties property: Properties of Volume.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VolumeUpdateProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class VolumeUpdate {
 
     /**
      * Get the sizeGiB property: Volume size.
-     *
+     * 
      * @return the sizeGiB value.
      */
     public Long sizeGiB() {
@@ -41,7 +45,7 @@ public final class VolumeUpdate {
 
     /**
      * Set the sizeGiB property: Volume size.
-     *
+     * 
      * @param sizeGiB the sizeGiB value to set.
      * @return the VolumeUpdate object itself.
      */
@@ -55,7 +59,7 @@ public final class VolumeUpdate {
 
     /**
      * Get the managedBy property: Parent resource information.
-     *
+     * 
      * @return the managedBy value.
      */
     public ManagedByInfo managedBy() {
@@ -64,7 +68,7 @@ public final class VolumeUpdate {
 
     /**
      * Set the managedBy property: Parent resource information.
-     *
+     * 
      * @param managedBy the managedBy value to set.
      * @return the VolumeUpdate object itself.
      */
@@ -78,7 +82,7 @@ public final class VolumeUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

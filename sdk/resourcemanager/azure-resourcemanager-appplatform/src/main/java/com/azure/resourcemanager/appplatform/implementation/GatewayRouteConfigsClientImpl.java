@@ -38,22 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GatewayRouteConfigsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GatewayRouteConfigsClient.
+ */
 public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GatewayRouteConfigsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppPlatformManagementClientImpl client;
 
     /**
      * Initializes an instance of GatewayRouteConfigsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GatewayRouteConfigsClientImpl(AppPlatformManagementClientImpl client) {
-        this.service =
-            RestProxy.create(GatewayRouteConfigsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(GatewayRouteConfigsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -63,114 +69,80 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppPlatformManagemen")
-    private interface GatewayRouteConfigsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
-        @ExpectedResponses({200})
+    public interface GatewayRouteConfigsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GatewayRouteConfigResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("gatewayName") String gatewayName,
-            @PathParam("routeConfigName") String routeConfigName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GatewayRouteConfigResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayName") String gatewayName, @PathParam("routeConfigName") String routeConfigName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("gatewayName") String gatewayName,
-            @PathParam("routeConfigName") String routeConfigName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayName") String gatewayName, @PathParam("routeConfigName") String routeConfigName,
             @BodyParam("application/json") GatewayRouteConfigResourceInner gatewayRouteConfigResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/gateways/{gatewayName}/routeConfigs/{routeConfigName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("gatewayName") String gatewayName,
-            @PathParam("routeConfigName") String routeConfigName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayName") String gatewayName, @PathParam("routeConfigName") String routeConfigName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring"
-                + "/{serviceName}/gateways/{gatewayName}/routeConfigs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppPlatform/Spring/{serviceName}/gateways/{gatewayName}/routeConfigs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<GatewayRouteConfigResourceCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("gatewayName") String gatewayName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<GatewayRouteConfigResourceCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @PathParam("gatewayName") String gatewayName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<GatewayRouteConfigResourceCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get the Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Spring Cloud Gateway route configs along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Spring Cloud Gateway route configs along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<GatewayRouteConfigResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName) {
+    public Mono<Response<GatewayRouteConfigResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String gatewayName, String routeConfigName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -188,27 +160,17 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            gatewayName,
-                            routeConfigName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, gatewayName, routeConfigName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -216,23 +178,19 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Spring Cloud Gateway route configs along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the Spring Cloud Gateway route configs along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<GatewayRouteConfigResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName, Context context) {
+    private Mono<Response<GatewayRouteConfigResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceName, String gatewayName, String routeConfigName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -250,24 +208,15 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                gatewayName,
-                routeConfigName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, gatewayName, routeConfigName, accept, context);
     }
 
     /**
      * Get the Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -277,36 +226,17 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return the Spring Cloud Gateway route configs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GatewayRouteConfigResourceInner> getAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName) {
+    public Mono<GatewayRouteConfigResourceInner> getAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName) {
         return getWithResponseAsync(resourceGroupName, serviceName, gatewayName, routeConfigName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param gatewayName The name of Spring Cloud Gateway.
-     * @param routeConfigName The name of the Spring Cloud Gateway route config.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Spring Cloud Gateway route configs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayRouteConfigResourceInner get(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName) {
-        return getAsync(resourceGroupName, serviceName, gatewayName, routeConfigName).block();
-    }
-
-    /**
-     * Get the Spring Cloud Gateway route configs.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -317,16 +247,35 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return the Spring Cloud Gateway route configs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<GatewayRouteConfigResourceInner> getWithResponse(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName, Context context) {
+    public Response<GatewayRouteConfigResourceInner> getWithResponse(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceName, gatewayName, routeConfigName, context).block();
     }
 
     /**
-     * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.
-     *
+     * Get the Spring Cloud Gateway route configs.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serviceName The name of the Service resource.
+     * @param gatewayName The name of Spring Cloud Gateway.
+     * @param routeConfigName The name of the Spring Cloud Gateway route config.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Spring Cloud Gateway route configs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public GatewayRouteConfigResourceInner get(String resourceGroupName, String serviceName, String gatewayName,
+        String routeConfigName) {
+        return getWithResponse(resourceGroupName, serviceName, gatewayName, routeConfigName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -334,27 +283,20 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spring Cloud Gateway route config resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return spring Cloud Gateway route config resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String routeConfigName,
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String gatewayName, String routeConfigName,
         GatewayRouteConfigResourceInner gatewayRouteConfigResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -371,37 +313,24 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
                 .error(new IllegalArgumentException("Parameter routeConfigName is required and cannot be null."));
         }
         if (gatewayRouteConfigResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter gatewayRouteConfigResource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter gatewayRouteConfigResource is required and cannot be null."));
         } else {
             gatewayRouteConfigResource.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            gatewayName,
-                            routeConfigName,
-                            gatewayRouteConfigResource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, gatewayName, routeConfigName,
+                gatewayRouteConfigResource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -410,28 +339,20 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spring Cloud Gateway route config resource along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return spring Cloud Gateway route config resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String routeConfigName,
-        GatewayRouteConfigResourceInner gatewayRouteConfigResource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, String gatewayName, String routeConfigName,
+        GatewayRouteConfigResourceInner gatewayRouteConfigResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -448,34 +369,23 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
                 .error(new IllegalArgumentException("Parameter routeConfigName is required and cannot be null."));
         }
         if (gatewayRouteConfigResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter gatewayRouteConfigResource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter gatewayRouteConfigResource is required and cannot be null."));
         } else {
             gatewayRouteConfigResource.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                gatewayName,
-                routeConfigName,
-                gatewayRouteConfigResource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, serviceName, gatewayName, routeConfigName,
+            gatewayRouteConfigResource, accept, context);
     }
 
     /**
      * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -487,30 +397,20 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GatewayRouteConfigResourceInner>, GatewayRouteConfigResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serviceName,
-            String gatewayName,
-            String routeConfigName,
-            GatewayRouteConfigResourceInner gatewayRouteConfigResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, gatewayName, routeConfigName, gatewayRouteConfigResource);
-        return this
-            .client
-            .<GatewayRouteConfigResourceInner, GatewayRouteConfigResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GatewayRouteConfigResourceInner.class,
-                GatewayRouteConfigResourceInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String gatewayName,
+            String routeConfigName, GatewayRouteConfigResourceInner gatewayRouteConfigResource) {
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serviceName,
+            gatewayName, routeConfigName, gatewayRouteConfigResource);
+        return this.client.<GatewayRouteConfigResourceInner, GatewayRouteConfigResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayRouteConfigResourceInner.class, GatewayRouteConfigResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -523,32 +423,21 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GatewayRouteConfigResourceInner>, GatewayRouteConfigResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serviceName,
-            String gatewayName,
-            String routeConfigName,
-            GatewayRouteConfigResourceInner gatewayRouteConfigResource,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName, String gatewayName,
+            String routeConfigName, GatewayRouteConfigResourceInner gatewayRouteConfigResource, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceName, gatewayName, routeConfigName, gatewayRouteConfigResource, context);
-        return this
-            .client
-            .<GatewayRouteConfigResourceInner, GatewayRouteConfigResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                GatewayRouteConfigResourceInner.class,
-                GatewayRouteConfigResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serviceName,
+            gatewayName, routeConfigName, gatewayRouteConfigResource, context);
+        return this.client.<GatewayRouteConfigResourceInner, GatewayRouteConfigResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), GatewayRouteConfigResourceInner.class, GatewayRouteConfigResourceInner.class,
+            context);
     }
 
     /**
      * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -560,21 +449,17 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GatewayRouteConfigResourceInner>, GatewayRouteConfigResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String routeConfigName,
+        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName,
         GatewayRouteConfigResourceInner gatewayRouteConfigResource) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, gatewayName, routeConfigName, gatewayRouteConfigResource)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, gatewayName, routeConfigName,
+            gatewayRouteConfigResource).getSyncPoller();
     }
 
     /**
      * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -587,22 +472,17 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GatewayRouteConfigResourceInner>, GatewayRouteConfigResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String routeConfigName,
-        GatewayRouteConfigResourceInner gatewayRouteConfigResource,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, gatewayName, routeConfigName, gatewayRouteConfigResource, context)
-            .getSyncPoller();
+        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName,
+        GatewayRouteConfigResourceInner gatewayRouteConfigResource, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, gatewayName, routeConfigName,
+            gatewayRouteConfigResource, context).getSyncPoller();
     }
 
     /**
      * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -613,23 +493,17 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return spring Cloud Gateway route config resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<GatewayRouteConfigResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String routeConfigName,
-        GatewayRouteConfigResourceInner gatewayRouteConfigResource) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, gatewayName, routeConfigName, gatewayRouteConfigResource)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public Mono<GatewayRouteConfigResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName, GatewayRouteConfigResourceInner gatewayRouteConfigResource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, gatewayName, routeConfigName,
+            gatewayRouteConfigResource).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -641,24 +515,18 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return spring Cloud Gateway route config resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<GatewayRouteConfigResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String routeConfigName,
-        GatewayRouteConfigResourceInner gatewayRouteConfigResource,
+    private Mono<GatewayRouteConfigResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName, GatewayRouteConfigResourceInner gatewayRouteConfigResource,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceName, gatewayName, routeConfigName, gatewayRouteConfigResource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, gatewayName, routeConfigName,
+            gatewayRouteConfigResource, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -669,22 +537,17 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return spring Cloud Gateway route config resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayRouteConfigResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String routeConfigName,
-        GatewayRouteConfigResourceInner gatewayRouteConfigResource) {
-        return createOrUpdateAsync(
-                resourceGroupName, serviceName, gatewayName, routeConfigName, gatewayRouteConfigResource)
-            .block();
+    public GatewayRouteConfigResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName, GatewayRouteConfigResourceInner gatewayRouteConfigResource) {
+        return createOrUpdateAsync(resourceGroupName, serviceName, gatewayName, routeConfigName,
+            gatewayRouteConfigResource).block();
     }
 
     /**
      * Create the default Spring Cloud Gateway route configs or update the existing Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -696,23 +559,18 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return spring Cloud Gateway route config resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public GatewayRouteConfigResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceName,
-        String gatewayName,
-        String routeConfigName,
-        GatewayRouteConfigResourceInner gatewayRouteConfigResource,
+    public GatewayRouteConfigResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName, GatewayRouteConfigResourceInner gatewayRouteConfigResource,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, serviceName, gatewayName, routeConfigName, gatewayRouteConfigResource, context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, serviceName, gatewayName, routeConfigName,
+            gatewayRouteConfigResource, context).block();
     }
 
     /**
      * Delete the Spring Cloud Gateway route config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -722,19 +580,15 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -752,27 +606,17 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            gatewayName,
-                            routeConfigName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, gatewayName, routeConfigName, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete the Spring Cloud Gateway route config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -783,19 +627,15 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -813,24 +653,15 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                gatewayName,
-                routeConfigName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, serviceName, gatewayName, routeConfigName, accept, context);
     }
 
     /**
      * Delete the Spring Cloud Gateway route config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -840,21 +671,19 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serviceName, gatewayName, routeConfigName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serviceName, gatewayName, routeConfigName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete the Spring Cloud Gateway route config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -865,21 +694,20 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, serviceName, gatewayName, routeConfigName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, serviceName, gatewayName, routeConfigName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete the Spring Cloud Gateway route config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -889,16 +717,16 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName).getSyncPoller();
     }
 
     /**
      * Delete the Spring Cloud Gateway route config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -909,16 +737,17 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName,
+        String gatewayName, String routeConfigName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName, context)
+            .getSyncPoller();
     }
 
     /**
      * Delete the Spring Cloud Gateway route config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -928,18 +757,17 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName) {
-        return beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName)
-            .last()
+    public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String gatewayName,
+        String routeConfigName) {
+        return beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the Spring Cloud Gateway route config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -950,18 +778,17 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String gatewayName,
+        String routeConfigName, Context context) {
+        return beginDeleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete the Spring Cloud Gateway route config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -976,9 +803,9 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
 
     /**
      * Delete the Spring Cloud Gateway route config.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param routeConfigName The name of the Spring Cloud Gateway route config.
@@ -988,38 +815,34 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serviceName, String gatewayName, String routeConfigName, Context context) {
+    public void delete(String resourceGroupName, String serviceName, String gatewayName, String routeConfigName,
+        Context context) {
         deleteAsync(resourceGroupName, serviceName, gatewayName, routeConfigName, context).block();
     }
 
     /**
      * Handle requests to list all Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Spring Cloud Gateway route config resources and a possible link for next
-     *     set along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * set along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GatewayRouteConfigResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String gatewayName) {
+    private Mono<PagedResponse<GatewayRouteConfigResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName, String gatewayName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1033,35 +856,18 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceName,
-                            gatewayName,
-                            accept,
-                            context))
-            .<PagedResponse<GatewayRouteConfigResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, serviceName, gatewayName, accept, context))
+            .<PagedResponse<GatewayRouteConfigResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Handle requests to list all Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param context The context to associate with this operation.
@@ -1069,22 +875,18 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Spring Cloud Gateway route config resources and a possible link for next
-     *     set along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * set along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GatewayRouteConfigResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String serviceName, String gatewayName, Context context) {
+    private Mono<PagedResponse<GatewayRouteConfigResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String serviceName, String gatewayName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1099,52 +901,37 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceName,
-                gatewayName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceName, gatewayName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Handle requests to list all Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Spring Cloud Gateway route config resources and a possible link for next
-     *     set as paginated response with {@link PagedFlux}.
+     * set as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<GatewayRouteConfigResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String gatewayName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, gatewayName),
+    public PagedFlux<GatewayRouteConfigResourceInner> listAsync(String resourceGroupName, String serviceName,
+        String gatewayName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName, gatewayName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Handle requests to list all Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param context The context to associate with this operation.
@@ -1152,40 +939,39 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Spring Cloud Gateway route config resources and a possible link for next
-     *     set as paginated response with {@link PagedFlux}.
+     * set as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<GatewayRouteConfigResourceInner> listAsync(
-        String resourceGroupName, String serviceName, String gatewayName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, serviceName, gatewayName, context),
+    private PagedFlux<GatewayRouteConfigResourceInner> listAsync(String resourceGroupName, String serviceName,
+        String gatewayName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, serviceName, gatewayName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Handle requests to list all Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Spring Cloud Gateway route config resources and a possible link for next
-     *     set as paginated response with {@link PagedIterable}.
+     * set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GatewayRouteConfigResourceInner> list(
-        String resourceGroupName, String serviceName, String gatewayName) {
+    public PagedIterable<GatewayRouteConfigResourceInner> list(String resourceGroupName, String serviceName,
+        String gatewayName) {
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, gatewayName));
     }
 
     /**
      * Handle requests to list all Spring Cloud Gateway route configs.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serviceName The name of the Service resource.
      * @param gatewayName The name of Spring Cloud Gateway.
      * @param context The context to associate with this operation.
@@ -1193,23 +979,25 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Spring Cloud Gateway route config resources and a possible link for next
-     *     set as paginated response with {@link PagedIterable}.
+     * set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<GatewayRouteConfigResourceInner> list(
-        String resourceGroupName, String serviceName, String gatewayName, Context context) {
+    public PagedIterable<GatewayRouteConfigResourceInner> list(String resourceGroupName, String serviceName,
+        String gatewayName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, serviceName, gatewayName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Spring Cloud Gateway route config resources and a possible link for next
-     *     set along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * set along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GatewayRouteConfigResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1217,61 +1005,43 @@ public final class GatewayRouteConfigsClientImpl implements GatewayRouteConfigsC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<GatewayRouteConfigResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<GatewayRouteConfigResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Spring Cloud Gateway route config resources and a possible link for next
-     *     set along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * set along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<GatewayRouteConfigResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<GatewayRouteConfigResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

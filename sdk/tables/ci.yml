@@ -34,6 +34,7 @@ extends:
   parameters:
     ServiceDirectory: tables
     EnableBatchRelease: true
+    JavadocSafeJavaBuildVersion: '1.21'
     Artifacts:
       - name: azure-data-tables
         groupId: com.azure

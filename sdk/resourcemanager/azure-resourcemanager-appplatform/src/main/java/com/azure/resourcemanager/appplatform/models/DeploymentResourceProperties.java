@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Deployment resource properties payload. */
+/**
+ * Deployment resource properties payload.
+ */
 @Fluent
 public final class DeploymentResourceProperties {
     /*
@@ -48,8 +50,14 @@ public final class DeploymentResourceProperties {
     private List<DeploymentInstance> instances;
 
     /**
+     * Creates an instance of DeploymentResourceProperties class.
+     */
+    public DeploymentResourceProperties() {
+    }
+
+    /**
      * Get the source property: Uploaded source information of the deployment.
-     *
+     * 
      * @return the source value.
      */
     public UserSourceInfo source() {
@@ -58,7 +66,7 @@ public final class DeploymentResourceProperties {
 
     /**
      * Set the source property: Uploaded source information of the deployment.
-     *
+     * 
      * @param source the source value to set.
      * @return the DeploymentResourceProperties object itself.
      */
@@ -69,7 +77,7 @@ public final class DeploymentResourceProperties {
 
     /**
      * Get the deploymentSettings property: Deployment settings of the Deployment.
-     *
+     * 
      * @return the deploymentSettings value.
      */
     public DeploymentSettings deploymentSettings() {
@@ -78,7 +86,7 @@ public final class DeploymentResourceProperties {
 
     /**
      * Set the deploymentSettings property: Deployment settings of the Deployment.
-     *
+     * 
      * @param deploymentSettings the deploymentSettings value to set.
      * @return the DeploymentResourceProperties object itself.
      */
@@ -89,7 +97,7 @@ public final class DeploymentResourceProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the Deployment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DeploymentResourceProvisioningState provisioningState() {
@@ -98,7 +106,7 @@ public final class DeploymentResourceProperties {
 
     /**
      * Get the status property: Status of the Deployment.
-     *
+     * 
      * @return the status value.
      */
     public DeploymentResourceStatus status() {
@@ -107,7 +115,7 @@ public final class DeploymentResourceProperties {
 
     /**
      * Get the active property: Indicates whether the Deployment is active.
-     *
+     * 
      * @return the active value.
      */
     public Boolean active() {
@@ -116,7 +124,7 @@ public final class DeploymentResourceProperties {
 
     /**
      * Set the active property: Indicates whether the Deployment is active.
-     *
+     * 
      * @param active the active value to set.
      * @return the DeploymentResourceProperties object itself.
      */
@@ -127,7 +135,7 @@ public final class DeploymentResourceProperties {
 
     /**
      * Get the instances property: Collection of instances belong to the Deployment.
-     *
+     * 
      * @return the instances value.
      */
     public List<DeploymentInstance> instances() {
@@ -136,7 +144,7 @@ public final class DeploymentResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrationRecoveryPointProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Recovery point for a migration item. */
+/**
+ * Recovery point for a migration item.
+ */
 @Fluent
 public final class MigrationRecoveryPointInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class MigrationRecoveryPointInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of MigrationRecoveryPointInner class. */
+    /**
+     * Creates an instance of MigrationRecoveryPointInner class.
+     */
     public MigrationRecoveryPointInner() {
     }
 
     /**
      * Get the properties property: Recovery point properties.
-     *
+     * 
      * @return the properties value.
      */
     public MigrationRecoveryPointProperties properties() {
@@ -39,7 +43,7 @@ public final class MigrationRecoveryPointInner extends ProxyResource {
 
     /**
      * Set the properties property: Recovery point properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MigrationRecoveryPointInner object itself.
      */
@@ -50,7 +54,7 @@ public final class MigrationRecoveryPointInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class MigrationRecoveryPointInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the MigrationRecoveryPointInner object itself.
      */
@@ -70,7 +74,7 @@ public final class MigrationRecoveryPointInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

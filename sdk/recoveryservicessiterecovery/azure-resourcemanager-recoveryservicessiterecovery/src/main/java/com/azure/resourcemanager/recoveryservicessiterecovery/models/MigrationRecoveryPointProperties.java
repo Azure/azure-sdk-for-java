@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Migration item recovery point properties. */
+/**
+ * Migration item recovery point properties.
+ */
 @Immutable
 public final class MigrationRecoveryPointProperties {
     /*
@@ -23,13 +25,15 @@ public final class MigrationRecoveryPointProperties {
     @JsonProperty(value = "recoveryPointType", access = JsonProperty.Access.WRITE_ONLY)
     private MigrationRecoveryPointType recoveryPointType;
 
-    /** Creates an instance of MigrationRecoveryPointProperties class. */
+    /**
+     * Creates an instance of MigrationRecoveryPointProperties class.
+     */
     public MigrationRecoveryPointProperties() {
     }
 
     /**
      * Get the recoveryPointTime property: The recovery point time.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public OffsetDateTime recoveryPointTime() {
@@ -38,7 +42,7 @@ public final class MigrationRecoveryPointProperties {
 
     /**
      * Get the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public MigrationRecoveryPointType recoveryPointType() {
@@ -47,7 +51,7 @@ public final class MigrationRecoveryPointProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

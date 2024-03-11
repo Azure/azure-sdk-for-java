@@ -31,7 +31,7 @@ public final class ImagePoint {
 
     /**
      * Creates an instance of ImagePoint class.
-     * 
+     *
      * @param x the x value to set.
      * @param y the y value to set.
      */
@@ -45,7 +45,7 @@ public final class ImagePoint {
     /**
      * Get the x property: The horizontal x-coordinate of this point, in pixels. Zero values corresponds to the
      * left-most pixels in the image.
-     * 
+     *
      * @return the x value.
      */
     @Generated
@@ -56,7 +56,7 @@ public final class ImagePoint {
     /**
      * Get the y property: The vertical y-coordinate of this point, in pixels. Zero values corresponds to the top-most
      * pixels in the image.
-     * 
+     *
      * @return the y value.
      */
     @Generated
@@ -66,7 +66,7 @@ public final class ImagePoint {
 
     /**
      * Returns a compact string containing the image point values in a style suitable for printing.
-     * 
+     *
      * @return A string containing the image point values.
      */
     public String toString() {

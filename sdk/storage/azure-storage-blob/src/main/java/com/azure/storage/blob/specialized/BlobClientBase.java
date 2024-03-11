@@ -55,11 +55,11 @@ import com.azure.storage.blob.options.BlobSeekableByteChannelReadOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.fasterxml.jackson.databind.util.ByteBufferBackedOutputStream;
 import reactor.core.publisher.Mono;
 
@@ -361,7 +361,7 @@ public class BlobClientBase {
 
                 String eTag = properties.getETag();
                 String versionId = properties.getVersionId();
-                BlobAsyncClientBase client = this.client;
+                BlobClientBase client = this;
 
                 switch (consistentReadControl) {
                     case NONE:
@@ -378,8 +378,8 @@ public class BlobClientBase {
                                 new UnsupportedOperationException("Versioning is not supported on this account."));
                         } else {
                             // Target the user specified version by default. If not provided, target the latest version.
-                            if (this.client.getVersionId() == null) {
-                                client = this.client.getVersionClient(versionId);
+                            if (getVersionId() == null) {
+                                client = getVersionClient(versionId);
                             }
                         }
                         break;
@@ -388,8 +388,8 @@ public class BlobClientBase {
                             + "supported."));
                 }
 
-                return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
-                    requestConditions, properties, contextFinal));
+                return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize,
+                    initialBuffer, requestConditions, properties, contextFinal));
             }).block();
     }
 
@@ -864,8 +864,8 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * <p>This method supports downloads up to 2GB of data.
-     * Use {@link #downloadStream(OutputStream)} to download larger blobs.</p>
+     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
+     * use {@link #downloadStream(OutputStream)} to download larger blobs.</p>
      *
      * @return The content of the blob.
      * @throws UncheckedIOException If an I/O error occurs.
@@ -985,8 +985,8 @@ public class BlobClientBase {
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
-     * <p>This method supports downloads up to 2GB of data.
-     * Use {@link #downloadStreamWithResponse(OutputStream, BlobRange,
+     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
+     * use {@link #downloadStreamWithResponse(OutputStream, BlobRange,
      * DownloadRetryOptions, BlobRequestConditions, boolean, Duration, Context)}  to download larger blobs.</p>
      *
      * @param options {@link DownloadRetryOptions}
@@ -1000,6 +1000,59 @@ public class BlobClientBase {
         DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
         Mono<BlobDownloadContentResponse> download = client
             .downloadStreamWithResponse(null, options, requestConditions, false, context)
+            .flatMap(r ->
+                BinaryData.fromFlux(r.getValue())
+                    .map(data ->
+                        new BlobDownloadContentAsyncResponse(
+                            r.getRequest(), r.getStatusCode(),
+                            r.getHeaders(), data,
+                            r.getDeserializedHeaders())
+                    ))
+            .map(BlobDownloadContentResponse::new);
+
+        return blockWithOptionalTimeout(download, timeout);
+    }
+
+    /**
+     * Downloads a range of bytes from a blob into an output stream. Uploading data must be done from the {@link
+     * BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions-BlobRange-boolean-Duration-Context -->
+     * <pre>
+     * DownloadRetryOptions options = new DownloadRetryOptions&#40;&#41;.setMaxRetryRequests&#40;5&#41;;
+     * BlobRange range = new BlobRange&#40;1024, 2048L&#41;;
+     *
+     * BlobDownloadContentResponse contentResponse = client.downloadContentWithResponse&#40;options, null,
+     *     range, false, timeout, new Context&#40;key2, value2&#41;&#41;;
+     * BinaryData content = contentResponse.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Download completed with status %d and content%s%n&quot;,
+     *     contentResponse.getStatusCode&#40;&#41;, content.toString&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.downloadContentWithResponse#DownloadRetryOptions-BlobRequestConditions-BlobRange-boolean-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
+     *
+     * <p>This method supports downloads up to 2GB of data. Content will be buffered in memory. If the blob is larger,
+     * use {@link #downloadStreamWithResponse(OutputStream, BlobRange,
+     * DownloadRetryOptions, BlobRequestConditions, boolean, Duration, Context)}  to download larger blobs.</p>
+     *
+     * @param options {@link DownloadRetryOptions}
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param range {@link BlobRange}
+     * @param getRangeContentMd5 Whether the contentMD5 for the specified blob range should be returned.
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BlobDownloadContentResponse downloadContentWithResponse(DownloadRetryOptions options,
+        BlobRequestConditions requestConditions, BlobRange range,  boolean getRangeContentMd5, Duration timeout,
+        Context context) {
+        Mono<BlobDownloadContentResponse> download = client
+            .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
             .flatMap(r ->
                 BinaryData.fromFlux(r.getValue())
                     .map(data ->

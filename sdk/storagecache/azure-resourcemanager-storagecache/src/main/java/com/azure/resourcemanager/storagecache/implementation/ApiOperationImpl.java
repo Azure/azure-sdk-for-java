@@ -14,8 +14,8 @@ public final class ApiOperationImpl implements ApiOperation {
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    ApiOperationImpl(
-        ApiOperationInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
+    ApiOperationImpl(ApiOperationInner innerObject,
+        com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

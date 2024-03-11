@@ -123,6 +123,13 @@ public final class DocumentField {
     private Boolean valueBoolean;
 
     /*
+     * Selection group value.
+     */
+    @Generated
+    @JsonProperty(value = "valueSelectionGroup")
+    private List<String> valueSelectionGroup;
+
+    /*
      * Field content.
      */
     @Generated
@@ -309,6 +316,16 @@ public final class DocumentField {
     @Generated
     public Boolean isValueBoolean() {
         return this.valueBoolean;
+    }
+
+    /**
+     * Get the valueSelectionGroup property: Selection group value.
+     * 
+     * @return the valueSelectionGroup value.
+     */
+    @Generated
+    public List<String> getValueSelectionGroup() {
+        return this.valueSelectionGroup;
     }
 
     /**

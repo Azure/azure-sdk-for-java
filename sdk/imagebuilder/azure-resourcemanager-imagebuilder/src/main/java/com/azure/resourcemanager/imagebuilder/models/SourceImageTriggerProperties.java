@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Properties of SourceImage kind of trigger. */
+/**
+ * Properties of SourceImage kind of trigger.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("SourceImage")
 @Immutable
 public final class SourceImageTriggerProperties extends TriggerProperties {
-    /** Creates an instance of SourceImageTriggerProperties class. */
+    /**
+     * Creates an instance of SourceImageTriggerProperties class.
+     */
     public SourceImageTriggerProperties() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

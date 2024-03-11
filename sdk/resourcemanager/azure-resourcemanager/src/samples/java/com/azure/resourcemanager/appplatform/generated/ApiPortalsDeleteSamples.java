@@ -4,24 +4,22 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ApiPortals Delete. */
+/**
+ * Samples for ApiPortals Delete.
+ */
 public final class ApiPortalsDeleteSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/ApiPortals_Delete.json
+     * x-ms-original-file:
+     * specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/ApiPortals_Delete.
+     * json
      */
     /**
      * Sample code: ApiPortals_Delete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void apiPortalsDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
-            .manager()
-            .serviceClient()
-            .getApiPortals()
-            .delete("myResourceGroup", "myservice", "default", Context.NONE);
+        azure.springServices().manager().serviceClient().getApiPortals().delete("myResourceGroup", "myservice",
+            "default", com.azure.core.util.Context.NONE);
     }
 }

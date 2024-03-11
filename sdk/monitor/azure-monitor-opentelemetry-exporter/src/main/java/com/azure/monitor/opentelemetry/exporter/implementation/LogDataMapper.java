@@ -100,6 +100,9 @@ public class LogDataMapper {
     }
 
     public TelemetryItem map(LogRecordData log, @Nullable String stack, @Nullable Long itemCount) {
+        if (itemCount == null) {
+            itemCount = getItemCount(log);
+        }
         if (stack == null) {
             return createMessageTelemetryItem(log, itemCount);
         } else {
@@ -114,7 +117,7 @@ public class LogDataMapper {
         // set standard properties
         setOperationTags(telemetryBuilder, log);
         setTime(telemetryBuilder, log);
-        setItemCount(telemetryBuilder, log, itemCount);
+        setItemCount(telemetryBuilder, itemCount);
 
         // update tags
         Attributes attributes = log.getAttributes();
@@ -144,7 +147,7 @@ public class LogDataMapper {
         // set standard properties
         setOperationTags(telemetryBuilder, log);
         setTime(telemetryBuilder, log);
-        setItemCount(telemetryBuilder, log, itemCount);
+        setItemCount(telemetryBuilder, itemCount);
 
         // update tags
         Attributes attributes = log.getAttributes();
@@ -209,14 +212,15 @@ public class LogDataMapper {
     }
 
 
-    private static void setItemCount(
-        AbstractTelemetryBuilder telemetryBuilder, LogRecordData log, @Nullable Long itemCount) {
-        if (itemCount == null) {
-            itemCount = log.getAttributes().get(AiSemanticAttributes.ITEM_COUNT);
-        }
-        if (itemCount != null && itemCount != 1) {
+    private static void setItemCount(AbstractTelemetryBuilder telemetryBuilder, @Nullable Long itemCount) {
+        if (itemCount != null) {
             telemetryBuilder.setSampleRate(100.0f / itemCount);
         }
+    }
+
+    @Nullable
+    private static Long getItemCount(LogRecordData log) {
+        return log.getAttributes().get(AiSemanticAttributes.ITEM_COUNT);
     }
 
     private static void setFunctionExtraTraceAttributes(

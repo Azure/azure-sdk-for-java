@@ -32,14 +32,16 @@ public final class AccessModeSettingsExclusion {
     @JsonProperty(value = "ingestionAccessMode")
     private AccessMode ingestionAccessMode;
 
-    /** Creates an instance of AccessModeSettingsExclusion class. */
+    /**
+     * Creates an instance of AccessModeSettingsExclusion class.
+     */
     public AccessModeSettingsExclusion() {
     }
 
     /**
      * Get the privateEndpointConnectionName property: The private endpoint connection name associated to the private
      * endpoint on which we want to apply the specific access mode settings.
-     *
+     * 
      * @return the privateEndpointConnectionName value.
      */
     public String privateEndpointConnectionName() {
@@ -49,7 +51,7 @@ public final class AccessModeSettingsExclusion {
     /**
      * Set the privateEndpointConnectionName property: The private endpoint connection name associated to the private
      * endpoint on which we want to apply the specific access mode settings.
-     *
+     * 
      * @param privateEndpointConnectionName the privateEndpointConnectionName value to set.
      * @return the AccessModeSettingsExclusion object itself.
      */
@@ -61,7 +63,7 @@ public final class AccessModeSettingsExclusion {
     /**
      * Get the queryAccessMode property: Specifies the access mode of queries through the specified private endpoint
      * connection in the exclusion.
-     *
+     * 
      * @return the queryAccessMode value.
      */
     public AccessMode queryAccessMode() {
@@ -71,7 +73,7 @@ public final class AccessModeSettingsExclusion {
     /**
      * Set the queryAccessMode property: Specifies the access mode of queries through the specified private endpoint
      * connection in the exclusion.
-     *
+     * 
      * @param queryAccessMode the queryAccessMode value to set.
      * @return the AccessModeSettingsExclusion object itself.
      */
@@ -83,7 +85,7 @@ public final class AccessModeSettingsExclusion {
     /**
      * Get the ingestionAccessMode property: Specifies the access mode of ingestion through the specified private
      * endpoint connection in the exclusion.
-     *
+     * 
      * @return the ingestionAccessMode value.
      */
     public AccessMode ingestionAccessMode() {
@@ -93,7 +95,7 @@ public final class AccessModeSettingsExclusion {
     /**
      * Set the ingestionAccessMode property: Specifies the access mode of ingestion through the specified private
      * endpoint connection in the exclusion.
-     *
+     * 
      * @param ingestionAccessMode the ingestionAccessMode value to set.
      * @return the AccessModeSettingsExclusion object itself.
      */
@@ -104,7 +106,7 @@ public final class AccessModeSettingsExclusion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

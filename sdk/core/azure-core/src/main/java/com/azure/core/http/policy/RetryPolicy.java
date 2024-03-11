@@ -29,7 +29,32 @@ import java.util.function.Supplier;
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
- * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
+ * The {@code RetryPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy handles
+ * HTTP retries by determining if an HTTP request should be retried based on the received {@link HttpResponse}.
+ *
+ * <p>This class is useful when you need to handle HTTP retries in a pipeline. It uses a {@link RetryStrategy} to
+ * decide if a request should be retried. By default, it uses the {@link ExponentialBackoff} strategy, which uses
+ * a delay duration that exponentially increases with each retry attempt until an upper bound is reached.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, a {@code RetryPolicy} is created which can then be added to the pipeline. For the request then
+ * sent by the pipeline, if the server responds with a status code that indicates a transient error, the request will be
+ * retried according to the {@link RetryStrategy} used by the {@code RetryPolicy}.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.RetryPolicy.constructor -->
+ * <pre>
+ * RetryPolicy retryPolicy = new RetryPolicy&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.RetryPolicy.constructor -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ * @see com.azure.core.http.policy.RetryStrategy
+ * @see com.azure.core.http.policy.DefaultRedirectStrategy
  */
 public class RetryPolicy implements HttpPipelinePolicy {
     // RetryPolicy is a commonly used policy, use a static logger.
@@ -136,7 +161,6 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return attemptSync(context, next, originalHttpRequest, 0, null);
     }
 
-
     private Mono<HttpResponse> attemptAsync(HttpPipelineCallContext context, HttpPipelineNextPolicy next,
         HttpRequest originalHttpRequest, int tryCount, List<Throwable> suppressed) {
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, tryCount + 1);
@@ -144,7 +168,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         context.setHttpRequest(originalHttpRequest.copy());
 
         return next.clone().process().flatMap(httpResponse -> {
-            if (shouldRetry(retryStrategy, httpResponse, tryCount)) {
+            if (shouldRetry(retryStrategy, httpResponse, tryCount, suppressed)) {
                 final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
                     retryAfterHeader, retryAfterTimeUnit);
                 logRetry(tryCount, delayDuration);
@@ -160,12 +184,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
                 return Mono.just(httpResponse);
             }
         }).onErrorResume(Exception.class, err -> {
-            if (shouldRetryException(retryStrategy, err, tryCount)) {
+            if (shouldRetryException(retryStrategy, err, tryCount, suppressed)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
                 suppressedLocal.add(err);
-                return attemptAsync(context, next, originalHttpRequest, tryCount + 1,
-                    suppressedLocal).delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
+                return attemptAsync(context, next, originalHttpRequest, tryCount + 1, suppressedLocal)
+                    .delaySubscription(retryStrategy.calculateRetryDelay(tryCount));
             } else {
                 logRetryWithError(LOGGER.atError(), tryCount, "Retry attempts have been exhausted.", err);
                 if (suppressed != null) {
@@ -186,12 +210,13 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
             httpResponse = next.clone().processSync();
         } catch (RuntimeException err) {
-            if (shouldRetryException(retryStrategy, err, tryCount)) {
+            if (shouldRetryException(retryStrategy, err, tryCount, suppressed)) {
                 logRetryWithError(LOGGER.atVerbose(), tryCount, "Error resume.", err);
                 try {
                     Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());
-                } catch (InterruptedException ie) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException(ie));
+                } catch (InterruptedException ex) {
+                    err.addSuppressed(ex);
+                    throw LOGGER.logExceptionAsError(err);
                 }
 
                 List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
@@ -207,9 +232,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
             }
         }
 
-        if (shouldRetry(retryStrategy, httpResponse, tryCount)) {
-            final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
-                retryAfterHeader, retryAfterTimeUnit);
+        if (shouldRetry(retryStrategy, httpResponse, tryCount, suppressed)) {
+            final Duration delayDuration
+                = determineDelayDuration(httpResponse, tryCount, retryStrategy, retryAfterHeader, retryAfterTimeUnit);
             logRetry(tryCount, delayDuration);
 
             httpResponse.close();
@@ -227,11 +252,16 @@ public class RetryPolicy implements HttpPipelinePolicy {
             return httpResponse;
         }
     }
-    private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount) {
-        return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetry(response);
+
+    private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount,
+        List<Throwable> retriedExceptions) {
+        return tryCount < retryStrategy.getMaxRetries()
+            && retryStrategy
+                .shouldRetryCondition(new RequestRetryCondition(response, null, tryCount, retriedExceptions));
     }
 
-    private static boolean shouldRetryException(RetryStrategy retryStrategy, Throwable throwable, int tryCount) {
+    private static boolean shouldRetryException(RetryStrategy retryStrategy, Throwable throwable, int tryCount,
+        List<Throwable> retriedExceptions) {
         // Check if there are any retry attempts still available.
         if (tryCount >= retryStrategy.getMaxRetries()) {
             return false;
@@ -239,14 +269,17 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
         // Unwrap the throwable.
         Throwable causalThrowable = Exceptions.unwrap(throwable);
+        RequestRetryCondition requestRetryCondition
+            = new RequestRetryCondition(null, causalThrowable, tryCount, retriedExceptions);
 
         // Check all causal exceptions in the exception chain.
         while (causalThrowable != null) {
-            if (retryStrategy.shouldRetryException(causalThrowable)) {
+            if (retryStrategy.shouldRetryCondition(requestRetryCondition)) {
                 return true;
             }
 
             causalThrowable = causalThrowable.getCause();
+            requestRetryCondition = new RequestRetryCondition(null, causalThrowable, tryCount, retriedExceptions);
         }
 
         // Finally just return false as this can't be retried.
@@ -261,16 +294,12 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private static void logRetryExhausted(int tryCount) {
-        LOGGER.atInfo()
-            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-            .log("Retry attempts have been exhausted.");
+        LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log("Retry attempts have been exhausted.");
     }
 
     private static void logRetryWithError(LoggingEventBuilder loggingEventBuilder, int tryCount, String format,
         Throwable throwable) {
-        loggingEventBuilder
-            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-            .log(format, throwable);
+        loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(format, throwable);
     }
 
     /*

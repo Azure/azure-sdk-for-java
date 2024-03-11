@@ -32,7 +32,7 @@ public final class ResourceProvidersGetKubernetesVersionsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"xqv\"},\"properties\":{\"provisioningState\":\"InProgress\",\"values\":[{\"version\":\"gc\",\"capabilities\":{\"supportPlan\":[\"ezrypql\",\"feo\",\"erqwkyhkobopg\"]},\"isPreview\":false,\"patchVersions\":{\"wep\":{},\"qpcrf\":{},\"bwccsnjvcdwxlpqe\":{}}}]},\"id\":\"tn\",\"name\":\"htjsying\",\"type\":\"fq\"}";
+            = "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"htwdwrftswibyrcd\"},\"properties\":{\"provisioningState\":\"Pending\",\"values\":[{\"version\":\"p\",\"isPreview\":false,\"patchVersions\":{\"wity\":{},\"hevxcced\":{},\"pnmdyodnwzxltjcv\":{}}},{\"version\":\"ltiugcxnavv\",\"isPreview\":false,\"patchVersions\":{\"y\":{},\"unyowxwl\":{}}},{\"version\":\"jrkvfgbvfvpdbo\",\"isPreview\":true,\"patchVersions\":{\"sjq\":{},\"hkr\":{}}}]},\"id\":\"bdeibqipqk\",\"name\":\"hvxndzwmkrefajpj\",\"type\":\"rwkq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,9 +50,9 @@ public final class ResourceProvidersGetKubernetesVersionsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         KubernetesVersionProfile response = manager.resourceProviders()
-            .getKubernetesVersionsWithResponse("emdwzrmuhapfc", com.azure.core.util.Context.NONE).getValue();
+            .getKubernetesVersionsWithResponse("vu", com.azure.core.util.Context.NONE).getValue();
 
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, response.extendedLocation().type());
-        Assertions.assertEquals("xqv", response.extendedLocation().name());
+        Assertions.assertEquals("htwdwrftswibyrcd", response.extendedLocation().name());
     }
 }

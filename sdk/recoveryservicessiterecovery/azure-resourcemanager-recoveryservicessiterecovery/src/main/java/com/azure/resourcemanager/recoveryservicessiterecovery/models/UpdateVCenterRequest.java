@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input required to update vCenter. */
+/**
+ * Input required to update vCenter.
+ */
 @Fluent
 public final class UpdateVCenterRequest {
     /*
@@ -16,13 +18,15 @@ public final class UpdateVCenterRequest {
     @JsonProperty(value = "properties")
     private UpdateVCenterRequestProperties properties;
 
-    /** Creates an instance of UpdateVCenterRequest class. */
+    /**
+     * Creates an instance of UpdateVCenterRequest class.
+     */
     public UpdateVCenterRequest() {
     }
 
     /**
      * Get the properties property: The update VCenter Request Properties.
-     *
+     * 
      * @return the properties value.
      */
     public UpdateVCenterRequestProperties properties() {
@@ -31,7 +35,7 @@ public final class UpdateVCenterRequest {
 
     /**
      * Set the properties property: The update VCenter Request Properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdateVCenterRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class UpdateVCenterRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

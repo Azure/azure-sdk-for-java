@@ -11,16 +11,16 @@ public final class GoogleAdWordsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleAdWordsSource model = BinaryData.fromString(
-            "{\"type\":\"GoogleAdWordsSource\",\"query\":\"datavktuxwzvlhibri\",\"queryTimeout\":\"datagwuv\",\"additionalColumns\":\"dataymoqv\",\"sourceRetryCount\":\"datakrynziudmhed\",\"sourceRetryWait\":\"dataygwagvuioxjwztr\",\"maxConcurrentConnections\":\"datatll\",\"disableMetricsCollection\":\"datacv\",\"\":{\"bt\":\"databccffsbz\",\"xoudjcttavbc\":\"dataxqle\",\"erjwhonnqudexnic\":\"datapzvqzml\"}}")
+            "{\"type\":\"GoogleAdWordsSource\",\"query\":\"datagoodfh\",\"queryTimeout\":\"datauegdynyddp\",\"additionalColumns\":\"dataizlzxht\",\"sourceRetryCount\":\"dataglgmf\",\"sourceRetryWait\":\"dataholaflsjwawlkq\",\"maxConcurrentConnections\":\"datankcwio\",\"disableMetricsCollection\":\"datayk\",\"\":{\"elxrfnp\":\"datamobnehbbchtc\",\"iowandefmebp\":\"dataumgnjmskuveuog\",\"fdsvmpt\":\"datalzpyptgwmrzrh\",\"lgoravovqpnxpufv\":\"datarzilvcncdazw\"}}")
             .toObject(GoogleAdWordsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleAdWordsSource model = new GoogleAdWordsSource().withSourceRetryCount("datakrynziudmhed")
-            .withSourceRetryWait("dataygwagvuioxjwztr").withMaxConcurrentConnections("datatll")
-            .withDisableMetricsCollection("datacv").withQueryTimeout("datagwuv").withAdditionalColumns("dataymoqv")
-            .withQuery("datavktuxwzvlhibri");
+        GoogleAdWordsSource model
+            = new GoogleAdWordsSource().withSourceRetryCount("dataglgmf").withSourceRetryWait("dataholaflsjwawlkq")
+                .withMaxConcurrentConnections("datankcwio").withDisableMetricsCollection("datayk")
+                .withQueryTimeout("datauegdynyddp").withAdditionalColumns("dataizlzxht").withQuery("datagoodfh");
         model = BinaryData.fromObject(model).toObject(GoogleAdWordsSource.class);
     }
 }

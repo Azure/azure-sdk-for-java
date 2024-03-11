@@ -11,7 +11,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectio
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Server's Advanced Threat Protection settings. */
+/**
+ * Server's Advanced Threat Protection settings.
+ */
 @Fluent
 public final class ServerThreatProtectionSettingsModelInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class ServerThreatProtectionSettingsModelInner extends ProxyResourc
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ServerThreatProtectionSettingsModelInner class. */
+    /**
+     * Creates an instance of ServerThreatProtectionSettingsModelInner class.
+     */
     public ServerThreatProtectionSettingsModelInner() {
     }
 
     /**
      * Get the innerProperties property: Advanced Threat Protection properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServerThreatProtectionProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class ServerThreatProtectionSettingsModelInner extends ProxyResourc
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -51,7 +55,7 @@ public final class ServerThreatProtectionSettingsModelInner extends ProxyResourc
     /**
      * Get the state property: Specifies the state of the Threat Protection, whether it is enabled or disabled or a
      * state has not been applied yet on the specific server.
-     *
+     * 
      * @return the state value.
      */
     public ThreatProtectionState state() {
@@ -61,7 +65,7 @@ public final class ServerThreatProtectionSettingsModelInner extends ProxyResourc
     /**
      * Set the state property: Specifies the state of the Threat Protection, whether it is enabled or disabled or a
      * state has not been applied yet on the specific server.
-     *
+     * 
      * @param state the state value to set.
      * @return the ServerThreatProtectionSettingsModelInner object itself.
      */
@@ -75,7 +79,7 @@ public final class ServerThreatProtectionSettingsModelInner extends ProxyResourc
 
     /**
      * Get the creationTime property: Specifies the UTC creation time of the policy.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -84,7 +88,7 @@ public final class ServerThreatProtectionSettingsModelInner extends ProxyResourc
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

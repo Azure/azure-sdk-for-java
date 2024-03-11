@@ -6,8 +6,6 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.CoreUtils;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The configuration information for an audio translation request.
@@ -19,15 +17,13 @@ public final class AudioTranslationOptions {
      * The audio data to translate. This must be the binary content of a file in one of the supported media formats:
      * flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.
      */
-    @JsonProperty(value = "file")
-    private byte[] file;
+    private final byte[] file;
 
     /*
      * The requested format of the translation response data, which will influence the content and detail of the
      * result.
      */
     @Generated
-    @JsonProperty(value = "response_format")
     private AudioTranslationFormat responseFormat;
 
     /*
@@ -35,7 +31,6 @@ public final class AudioTranslationOptions {
      * prompt should match the primary spoken language of the audio data.
      */
     @Generated
-    @JsonProperty(value = "prompt")
     private String prompt;
 
     /*
@@ -46,14 +41,12 @@ public final class AudioTranslationOptions {
      * thresholds are hit.
      */
     @Generated
-    @JsonProperty(value = "temperature")
     private Double temperature;
 
     /*
      * The model to use for this translation request.
      */
     @Generated
-    @JsonProperty(value = "model")
     private String model;
 
     /**
@@ -173,7 +166,6 @@ public final class AudioTranslationOptions {
      * The optional filename or descriptive identifier to associate with with the audio data.
      */
     @Generated
-    @JsonProperty(value = "filename")
     private String filename;
 
     /**
@@ -200,40 +192,12 @@ public final class AudioTranslationOptions {
         return this;
     }
 
-    /*
-     * The filename for file
-     */
-    @Generated
-    @JsonProperty(value = "file")
-    private String fileFilename = "file";
-
     /**
      * Creates an instance of AudioTranslationOptions class.
      *
      * @param file the file value to set.
      */
-    @JsonCreator
-    public AudioTranslationOptions(@JsonProperty(value = "file") byte[] file) {
+    public AudioTranslationOptions(byte[] file) {
         this.file = file;
-    }
-
-    /**
-     * Get the fileFilename property: The filename for file.
-     *
-     * @return the fileFilename value.
-     */
-    String getFileFilename() {
-        return this.fileFilename;
-    }
-
-    /**
-     * Set the fileFilename property: The filename for file.
-     *
-     * @param fileFilename the fileFilename value to set.
-     * @return the AudioTranslationOptions object itself.
-     */
-    AudioTranslationOptions setFileFilename(String fileFilename) {
-        this.fileFilename = fileFilename;
-        return this;
     }
 }

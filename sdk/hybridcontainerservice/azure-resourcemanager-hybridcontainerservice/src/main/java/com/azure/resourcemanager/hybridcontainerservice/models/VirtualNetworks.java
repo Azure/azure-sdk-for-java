@@ -13,9 +13,7 @@ import com.azure.core.util.Context;
  */
 public interface VirtualNetworks {
     /**
-     * Gets the virtual network
-     * 
-     * Gets the Hybrid AKS virtual network.
+     * Gets the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -23,29 +21,25 @@ public interface VirtualNetworks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS virtual network along with {@link Response}.
+     * @return the specified virtual network resource along with {@link Response}.
      */
     Response<VirtualNetwork> getByResourceGroupWithResponse(String resourceGroupName, String virtualNetworkName,
         Context context);
 
     /**
-     * Gets the virtual network
-     * 
-     * Gets the Hybrid AKS virtual network.
+     * Gets the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS virtual network.
+     * @return the specified virtual network resource.
      */
     VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName);
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -56,9 +50,7 @@ public interface VirtualNetworks {
     void deleteByResourceGroup(String resourceGroupName, String virtualNetworkName);
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param virtualNetworkName Parameter for the name of the virtual network.
@@ -70,87 +62,73 @@ public interface VirtualNetworks {
     void delete(String resourceGroupName, String virtualNetworkName, Context context);
 
     /**
-     * List virtual networks by resource group
-     * 
-     * Lists the Hybrid AKS virtual networks by resource group.
+     * Lists the virtual networks in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List virtual networks by resource group
-     * 
-     * Lists the Hybrid AKS virtual networks by resource group.
+     * Lists the virtual networks in the specified resource group.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualNetwork> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * List virtual networks by subscription
-     * 
-     * Lists the Hybrid AKS virtual networks by subscription.
+     * Lists the virtual networks in the specified subscription.
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualNetwork> list();
 
     /**
-     * List virtual networks by subscription
-     * 
-     * Lists the Hybrid AKS virtual networks by subscription.
+     * Lists the virtual networks in the specified subscription.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedIterable}.
+     * @return a list of virtual network resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VirtualNetwork> list(Context context);
 
     /**
-     * Gets the virtual network
-     * 
-     * Gets the Hybrid AKS virtual network.
+     * Gets the specified virtual network resource.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS virtual network along with {@link Response}.
+     * @return the specified virtual network resource along with {@link Response}.
      */
     VirtualNetwork getById(String id);
 
     /**
-     * Gets the virtual network
-     * 
-     * Gets the Hybrid AKS virtual network.
+     * Gets the specified virtual network resource.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Hybrid AKS virtual network along with {@link Response}.
+     * @return the specified virtual network resource along with {@link Response}.
      */
     Response<VirtualNetwork> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,9 +138,7 @@ public interface VirtualNetworks {
     void deleteById(String id);
 
     /**
-     * Deletes the virtual network
-     * 
-     * Deletes the Hybrid AKS virtual network.
+     * Deletes the specified virtual network resource.
      * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.

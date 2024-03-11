@@ -14,15 +14,19 @@ import java.util.Collection;
  */
 public final class ZoneRedundantHaAndGeoBackupSupportedEnum
     extends ExpandableStringEnum<ZoneRedundantHaAndGeoBackupSupportedEnum> {
-    /** Static value Enabled for ZoneRedundantHaAndGeoBackupSupportedEnum. */
+    /**
+     * Static value Enabled for ZoneRedundantHaAndGeoBackupSupportedEnum.
+     */
     public static final ZoneRedundantHaAndGeoBackupSupportedEnum ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for ZoneRedundantHaAndGeoBackupSupportedEnum. */
+    /**
+     * Static value Disabled for ZoneRedundantHaAndGeoBackupSupportedEnum.
+     */
     public static final ZoneRedundantHaAndGeoBackupSupportedEnum DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of ZoneRedundantHaAndGeoBackupSupportedEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +35,7 @@ public final class ZoneRedundantHaAndGeoBackupSupportedEnum
 
     /**
      * Creates or finds a ZoneRedundantHaAndGeoBackupSupportedEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ZoneRedundantHaAndGeoBackupSupportedEnum.
      */
@@ -42,7 +46,7 @@ public final class ZoneRedundantHaAndGeoBackupSupportedEnum
 
     /**
      * Gets known ZoneRedundantHaAndGeoBackupSupportedEnum values.
-     *
+     * 
      * @return known ZoneRedundantHaAndGeoBackupSupportedEnum values.
      */
     public static Collection<ZoneRedundantHaAndGeoBackupSupportedEnum> values() {

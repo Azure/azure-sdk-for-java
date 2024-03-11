@@ -27,6 +27,7 @@ steps:
       Write-Host "Java 8 JDK: $Env:JAVA_HOME_8_X64"
       Write-Host "Java 11 JDK: $Env:JAVA_HOME_11_X64"
       Write-Host "Java 17 JDK: $Env:JAVA_HOME_17_X64"
+      Write-Host "Java 21 JDK: $Env:JAVA_HOME_21_X64"
       Write-Host "Latest JDK: $Env:JAVA_HOME_${{ parameters.LatestJdkFeatureVersion }}_X64"
     displayName: 'Verify Latest JDK Install'
     condition: eq(variables['IsLatestNonLtsJdk'], 'true')

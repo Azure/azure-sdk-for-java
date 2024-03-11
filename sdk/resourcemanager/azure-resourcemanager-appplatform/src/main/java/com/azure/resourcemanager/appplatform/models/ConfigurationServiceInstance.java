@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Collection of instances belong to the Application Configuration Service. */
+/**
+ * Collection of instances belong to the Application Configuration Service.
+ */
 @Immutable
 public final class ConfigurationServiceInstance {
     /*
@@ -23,8 +25,14 @@ public final class ConfigurationServiceInstance {
     private String status;
 
     /**
+     * Creates an instance of ConfigurationServiceInstance class.
+     */
+    public ConfigurationServiceInstance() {
+    }
+
+    /**
      * Get the name property: Name of the Application Configuration Service instance.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +41,7 @@ public final class ConfigurationServiceInstance {
 
     /**
      * Get the status property: Status of the Application Configuration Service instance.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -42,7 +50,7 @@ public final class ConfigurationServiceInstance {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,7 +5,9 @@
 package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
 import com.azure.resourcemanager.datafactory.models.StoreWriteSettings;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,14 +15,19 @@ public final class StoreWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StoreWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"dataisxqmmxjd\",\"disableMetricsCollection\":\"datayzil\",\"copyBehavior\":\"datafgowvvxjqr\",\"\":{\"ewfuwg\":\"datambqyfecnsq\"}}")
+            "{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datakoxqbozezx\",\"disableMetricsCollection\":\"datainrguk\",\"copyBehavior\":\"databov\",\"metadata\":[{\"name\":\"dataqlqufkrnrbnjkco\",\"value\":\"datazqlyputawdmdikuf\"},{\"name\":\"datav\",\"value\":\"dataujzofyldxk\"},{\"name\":\"datavfojcvnhpebuiy\",\"value\":\"dataysgq\"},{\"name\":\"databeauvldb\",\"value\":\"datamguifqjtoxz\"}],\"\":{\"aii\":\"datajpzauugdarfumit\",\"wbgmjrvrsq\":\"datamokfdybv\",\"cttvxkxgffpvv\":\"datajcozrwry\"}}")
             .toObject(StoreWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StoreWriteSettings model = new StoreWriteSettings().withMaxConcurrentConnections("dataisxqmmxjd")
-            .withDisableMetricsCollection("datayzil").withCopyBehavior("datafgowvvxjqr")
+        StoreWriteSettings model = new StoreWriteSettings().withMaxConcurrentConnections("datakoxqbozezx")
+            .withDisableMetricsCollection("datainrguk").withCopyBehavior("databov")
+            .withMetadata(
+                Arrays.asList(new MetadataItem().withName("dataqlqufkrnrbnjkco").withValue("datazqlyputawdmdikuf"),
+                    new MetadataItem().withName("datav").withValue("dataujzofyldxk"),
+                    new MetadataItem().withName("datavfojcvnhpebuiy").withValue("dataysgq"),
+                    new MetadataItem().withName("databeauvldb").withValue("datamguifqjtoxz")))
             .withAdditionalProperties(mapOf("type", "StoreWriteSettings"));
         model = BinaryData.fromObject(model).toObject(StoreWriteSettings.class);
     }

@@ -21,76 +21,42 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public RecoveryPointsImpl(
-        RecoveryPointsClient innerClient,
+    public RecoveryPointsImpl(RecoveryPointsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<RecoveryPointResource> list(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName) {
-        PagedIterable<RecoveryPointResourceInner> inner =
-            this.serviceClient().list(vaultName, resourceGroupName, fabricName, containerName, protectedItemName);
-        return Utils.mapPage(inner, inner1 -> new RecoveryPointResourceImpl(inner1, this.manager()));
+    public PagedIterable<RecoveryPointResource> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName) {
+        PagedIterable<RecoveryPointResourceInner> inner
+            = this.serviceClient().list(vaultName, resourceGroupName, fabricName, containerName, protectedItemName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPointResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RecoveryPointResource> list(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String filter,
-        Context context) {
-        PagedIterable<RecoveryPointResourceInner> inner =
-            this
-                .serviceClient()
-                .list(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new RecoveryPointResourceImpl(inner1, this.manager()));
+    public PagedIterable<RecoveryPointResource> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String filter, Context context) {
+        PagedIterable<RecoveryPointResourceInner> inner = this.serviceClient().list(vaultName, resourceGroupName,
+            fabricName, containerName, protectedItemName, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPointResourceImpl(inner1, this.manager()));
     }
 
-    public Response<RecoveryPointResource> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        Context context) {
-        Response<RecoveryPointResourceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    vaultName,
-                    resourceGroupName,
-                    fabricName,
-                    containerName,
-                    protectedItemName,
-                    recoveryPointId,
-                    context);
+    public Response<RecoveryPointResource> getWithResponse(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName, String recoveryPointId, Context context) {
+        Response<RecoveryPointResourceInner> inner = this.serviceClient().getWithResponse(vaultName, resourceGroupName,
+            fabricName, containerName, protectedItemName, recoveryPointId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RecoveryPointResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RecoveryPointResource get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId) {
-        RecoveryPointResourceInner inner =
-            this
-                .serviceClient()
-                .get(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, recoveryPointId);
+    public RecoveryPointResource get(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String recoveryPointId) {
+        RecoveryPointResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, fabricName,
+            containerName, protectedItemName, recoveryPointId);
         if (inner != null) {
             return new RecoveryPointResourceImpl(inner, this.manager());
         } else {

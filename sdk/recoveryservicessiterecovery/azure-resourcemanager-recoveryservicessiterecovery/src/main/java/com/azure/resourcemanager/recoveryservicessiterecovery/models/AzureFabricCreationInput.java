@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Fabric provider specific settings. */
+/**
+ * Fabric provider specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("Azure")
 @Fluent
@@ -20,13 +22,15 @@ public final class AzureFabricCreationInput extends FabricSpecificCreationInput 
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of AzureFabricCreationInput class. */
+    /**
+     * Creates an instance of AzureFabricCreationInput class.
+     */
     public AzureFabricCreationInput() {
     }
 
     /**
      * Get the location property: The Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -35,7 +39,7 @@ public final class AzureFabricCreationInput extends FabricSpecificCreationInput 
 
     /**
      * Set the location property: The Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the AzureFabricCreationInput object itself.
      */
@@ -46,7 +50,7 @@ public final class AzureFabricCreationInput extends FabricSpecificCreationInput 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

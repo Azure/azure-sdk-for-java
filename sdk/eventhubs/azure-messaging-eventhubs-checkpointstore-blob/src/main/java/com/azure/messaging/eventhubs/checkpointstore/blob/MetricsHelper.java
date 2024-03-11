@@ -102,7 +102,7 @@ final class MetricsHelper {
         if (checkpointDuration.isEnabled()) {
             TelemetryAttributes attributes;
             if (success) {
-                attributes = getOrCreate(checkpointSuccess, attributesId, checkpoint, "ok");
+                attributes = getOrCreate(checkpointSuccess, attributesId, checkpoint, null);
             } else {
                 attributes = getOrCreate(checkpointFailure, attributesId, checkpoint, "error");
             }

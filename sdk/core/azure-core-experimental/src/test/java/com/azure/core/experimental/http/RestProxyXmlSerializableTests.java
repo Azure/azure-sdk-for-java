@@ -33,37 +33,35 @@ public class RestProxyXmlSerializableTests {
     @ServiceInterface(name = "XmlSerializable")
     public interface SimpleXmlSerializableProxy {
         @Put("sendXmlSerializable")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void sendXmlSerializable(@BodyParam("application/xml") SimpleXmlSerializable simpleXmlSerializable);
 
         @Get("getXmlSerializable")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         SimpleXmlSerializable getXmlSerializable();
 
         @Get("getInvalidXmlSerializable")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         SimpleXmlSerializable getInvalidXmlSerializable();
     }
 
     @Test
     public void sendXmlSerializableRequest() {
         SimpleXmlSerializable xmlSerializable = new SimpleXmlSerializable(true, 10, 10.D, "10");
-        String singleQuoteXmlDeclaration = "<?xml version='1.0' encoding='utf-8'?>";
-        String doubleQuoteXmlDeclaration = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
+        String singleQuoteXmlDeclaration = "<?xml version='1.0' encoding='UTF-8'?>";
+        String doubleQuoteXmlDeclaration = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>";
         String expectedBody
             = "<SimpleXml boolean=\"true\" decimal=\"10.0\"><int>10</int><string>10</string></SimpleXml>";
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> {
-                String body = request.getBodyAsBinaryData().toString();
-                if (body.startsWith(singleQuoteXmlDeclaration)) {
-                    assertEquals(singleQuoteXmlDeclaration + expectedBody, body);
-                } else {
-                    assertEquals(doubleQuoteXmlDeclaration + expectedBody, body);
-                }
-                return Mono.just(new MockHttpResponse(request, 200, null, SerializerEncoding.XML));
-            })
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
+            String body = request.getBodyAsBinaryData().toString();
+            if (body.startsWith(singleQuoteXmlDeclaration)) {
+                assertEquals(singleQuoteXmlDeclaration + expectedBody, body);
+            } else {
+                assertEquals(doubleQuoteXmlDeclaration + expectedBody, body);
+            }
+            return Mono.just(new MockHttpResponse(request, 200, null, SerializerEncoding.XML));
+        }).build();
 
         SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline);
         proxy.sendXmlSerializable(xmlSerializable);
@@ -71,15 +69,12 @@ public class RestProxyXmlSerializableTests {
 
     @Test
     public void receiveXmlSerializableResponse() {
-        String response = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
-            + "<SimpleXml boolean=\"true\" decimal=\"10.0\">"
-            + "<int>10</int>"
-            + "<string>10</string>"
-            + "</SimpleXml>";
+        String response = "<?xml version=\"1.0\" encoding=\"utf-8\"?><SimpleXml boolean=\"true\" decimal=\"10.0\">"
+            + "<int>10</int><string>10</string></SimpleXml>";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200,
-                response.getBytes(StandardCharsets.UTF_8), SerializerEncoding.XML)))
+            .httpClient(request -> Mono.just(
+                new MockHttpResponse(request, 200, response.getBytes(StandardCharsets.UTF_8), SerializerEncoding.XML)))
             .build();
 
         SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline);
@@ -94,12 +89,12 @@ public class RestProxyXmlSerializableTests {
 
     @Test
     public void invalidXmlSerializableResponse() {
-        String response = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+        String response = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
             + "<SimpleXml boolean=\"true\" decimal=\"10.0\"></SimpleXml>";
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200,
-                response.getBytes(StandardCharsets.UTF_8), SerializerEncoding.XML)))
+            .httpClient(request -> Mono.just(
+                new MockHttpResponse(request, 200, response.getBytes(StandardCharsets.UTF_8), SerializerEncoding.XML)))
             .build();
 
         SimpleXmlSerializableProxy proxy = RestProxy.create(SimpleXmlSerializableProxy.class, pipeline);

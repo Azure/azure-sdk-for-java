@@ -168,15 +168,18 @@ public class StreamingDataParserUnitTests {
                     + "\"format\":\"display\","
                     + "\"confidence\":0.98,"
                     + "\"offset\":1,"
+                    + "\"duration\":2," 
                     + "\"words\":"
                     + "["
                         + "{"
                             + "\"text\":\"Hello\","
-                            + "\"offset\":1"
+                            + "\"offset\":1,"
+                            + "\"duration\":1"
                         + "},"
                         + "{"
                             + "\"text\":\"World\","
-                            + "\"offset\":6"
+                            + "\"offset\":6,"
+                            + "\"duration\":1"
                         + "}"
                     + "],"
                     + "\"participantRawID\":\"abc12345\","
@@ -240,18 +243,20 @@ public class StreamingDataParserUnitTests {
         assertEquals(TextFormat.DISPLAY, transcription.getFormat());
         assertEquals(0.98d, transcription.getConfidence());
         assertEquals(1, transcription.getOffset());
+        assertEquals(2, transcription.getDuration());
 
         // validate individual words
         List<Word> words = transcription.getWords();
         assertEquals(2, words.size());
         assertEquals("Hello", words.get(0).getText());
         assertEquals(1, words.get(0).getOffset());
+        assertEquals(1, words.get(0).getDuration());
         assertEquals("World", words.get(1).getText());
         assertEquals(6, words.get(1).getOffset());
+        assertEquals(1, words.get(0).getDuration());
 
         assertNotNull(transcription.getParticipant());
         assertEquals("abc12345", transcription.getParticipant().getRawId());
-        System.out.println(transcription.getResultStatus().toString());
         assertEquals(ResultStatus.FINAL, transcription.getResultStatus());
     }
 
@@ -292,6 +297,7 @@ public class StreamingDataParserUnitTests {
             transcriptionData.put("format", "Display");
             transcriptionData.put("confidence", 0.98d);
             transcriptionData.put("offset", 1);
+            transcriptionData.put("duration", 2);
 
             ArrayNode words = objectMapper.createArrayNode();
             transcriptionData.set("words", words);
@@ -299,11 +305,13 @@ public class StreamingDataParserUnitTests {
             ObjectNode word0 = objectMapper.createObjectNode();
             word0.put("text", "Hello");
             word0.put("offset", 1);
+            word0.put("duration", 1);
             words.add(word0);
 
             ObjectNode word1 = objectMapper.createObjectNode();
             word1.put("text", "World");
             word1.put("offset", 6);
+            word1.put("duration", 1);
             words.add(word1);
 
             transcriptionData.put("participantRawID", "abc12345");
