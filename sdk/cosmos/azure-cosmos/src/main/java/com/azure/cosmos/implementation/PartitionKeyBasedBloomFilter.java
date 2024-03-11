@@ -46,36 +46,40 @@ public class PartitionKeyBasedBloomFilter {
         PartitionKeyInternal partitionKeyInternal,
         PartitionKeyDefinition partitionKeyDefinition) {
 
-        if (partitionKeyInternal == null) {
-            return;
-        }
+        try {
+            if (partitionKeyInternal == null) {
+                return;
+            }
 
-        if (partitionKeyDefinition == null) {
-            return;
-        }
+            if (partitionKeyDefinition == null) {
+                return;
+            }
 
-        if (Strings.isNullOrEmpty(firstPreferredWritableRegion)) {
-            return;
-        }
+            if (Strings.isNullOrEmpty(firstPreferredWritableRegion)) {
+                return;
+            }
 
-        String effectivePartitionKeyString = PartitionKeyInternalHelper
-            .getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
+            String effectivePartitionKeyString = PartitionKeyInternalHelper
+                .getEffectivePartitionKeyString(partitionKeyInternal, partitionKeyDefinition);
 
-        String normalizedRegionRoutedTo = regionRoutedTo.toLowerCase(Locale.ROOT).replace(" ", "");;
+            String normalizedRegionRoutedTo = regionRoutedTo.toLowerCase(Locale.ROOT).replace(" ", "");;
 
-        // 1. record region information for EPK hash only if this EPK was resolved
-        // to a different preferred region than the first preferred region
-        // 2. session token originating from the first preferred region is always
-        // merged when resolving the session token for a request, so it is not
-        // needed to also record which EPK got resolved in the first preferred region
-        // 3. this avoids the bloom filter from getting filled up in steady state
-        if (!normalizedRegionRoutedTo.equals(firstPreferredWritableRegion)) {
-            this.pkBasedBloomFilter.put(
-                new PartitionKeyBasedBloomFilterType(
-                    effectivePartitionKeyString,
-                    normalizedRegionRoutedTo,
-                    collectionRid));
-            this.recordedRegions.add(normalizedRegionRoutedTo);
+            // 1. record region information for EPK hash only if this EPK was resolved
+            // to a different preferred region than the first preferred region
+            // 2. session token originating from the first preferred region is always
+            // merged when resolving the session token for a request, so it is not
+            // needed to also record which EPK got resolved in the first preferred region
+            // 3. this avoids the bloom filter from getting filled up in steady state
+            if (!normalizedRegionRoutedTo.equals(firstPreferredWritableRegion)) {
+                this.pkBasedBloomFilter.put(
+                    new PartitionKeyBasedBloomFilterType(
+                        effectivePartitionKeyString,
+                        normalizedRegionRoutedTo,
+                        collectionRid));
+                this.recordedRegions.add(normalizedRegionRoutedTo);
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
         }
     }
 
@@ -83,16 +87,20 @@ public class PartitionKeyBasedBloomFilter {
     public Set<String> tryGetPossibleRegionsLogicalPartitionResolvedTo(
         Long collectionRid, PartitionKeyInternal partitionKey, PartitionKeyDefinition partitionKeyDefinition) {
 
-        Set<String> regionsPartitionKeyHasProbablySeen = new HashSet<>();
-        String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
+        try {
+            Set<String> regionsPartitionKeyHasProbablySeen = new HashSet<>();
+            String effectivePartitionKeyString = PartitionKeyInternalHelper.getEffectivePartitionKeyString(partitionKey, partitionKeyDefinition);
 
-        for (String region : this.recordedRegions) {
-            if (this.pkBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString, region, collectionRid))) {
-                regionsPartitionKeyHasProbablySeen.add(region);
+            for (String region : this.recordedRegions) {
+                if (this.pkBasedBloomFilter.mightContain(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString, region, collectionRid))) {
+                    regionsPartitionKeyHasProbablySeen.add(region);
+                }
             }
-        }
 
-        return regionsPartitionKeyHasProbablySeen;
+            return regionsPartitionKeyHasProbablySeen;
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
     }
 
     // below type represents a bloom filter entry

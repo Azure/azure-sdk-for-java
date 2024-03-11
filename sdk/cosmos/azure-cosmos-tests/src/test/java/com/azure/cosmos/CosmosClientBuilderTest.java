@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RegionScopedSessionContainer;
 import com.azure.cosmos.implementation.RxDocumentClientImpl;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -219,6 +220,11 @@ public class CosmosClientBuilderTest {
         }
 
         ISessionContainer sessionContainer = documentClient.getSession();
+
+        if (System.getProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED").equals("true")) {
+            assertThat(sessionContainer instanceof RegionScopedSessionContainer).isTrue();
+        }
+
         assertThat(sessionContainer.getDisableSessionCapturing()).isEqualTo(false);
 
         System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
