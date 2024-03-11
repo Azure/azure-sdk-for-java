@@ -16,7 +16,6 @@ import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.implementation.http.ContentType;
-import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.models.BinaryData;

@@ -3,6 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
+import com.generic.core.http.RestProxy;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.FormParam;
 import com.generic.core.http.annotation.HeaderParam;
@@ -17,7 +18,6 @@ import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
-import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.implementation.util.Base64Url;

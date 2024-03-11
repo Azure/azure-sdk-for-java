@@ -4,6 +4,7 @@
 package com.generic.core.shared;
 
 import com.generic.core.annotation.ServiceInterface;
+import com.generic.core.http.RestProxy;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HostParam;
@@ -22,7 +23,6 @@ import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.policy.HttpLoggingPolicy;
 import com.generic.core.implementation.http.ContentType;
-import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.UrlBuilder;
