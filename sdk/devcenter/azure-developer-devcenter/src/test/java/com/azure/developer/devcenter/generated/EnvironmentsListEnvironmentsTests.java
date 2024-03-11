@@ -19,8 +19,6 @@ public final class EnvironmentsListEnvironmentsTests extends DevCenterClientTest
     @Test
     @Disabled
     public void testEnvironmentsListEnvironmentsTests() {
-        String environmentName = createEnvironment();
-
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response =
                 deploymentEnvironmentsClient.listAllEnvironments(projectName, requestOptions);
@@ -30,10 +28,9 @@ public final class EnvironmentsListEnvironmentsTests extends DevCenterClientTest
         for (BinaryData data : response) {
             numberOfEnvironments++;
             Map<String, Object> envType = data.toObject(new TypeReference<Map<String, Object>>() {});
-            Assertions.assertEquals(environmentName, envType.get("name"));
+            Assertions.assertEquals(devEnvironmentName, envType.get("name"));
         }
 
         Assertions.assertEquals(1, numberOfEnvironments);
-        deleteEnvironment(environmentName);
     }
 }

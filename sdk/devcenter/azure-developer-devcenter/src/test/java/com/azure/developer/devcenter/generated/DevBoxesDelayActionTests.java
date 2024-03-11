@@ -19,14 +19,11 @@ public final class DevBoxesDelayActionTests extends DevCenterClientTestBase {
     @Test
     @Disabled
     public void testDevBoxesDelayActionTests() {
-        createDevBox();
-
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
             devBoxesClient.delayActionWithResponse(
                 projectName, "me", devBoxName, "schedule-default", OffsetDateTime.parse("2023-05-06T05:00:00Z"), requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals("schedule-default", response.getValue().toObject(LinkedHashMap.class).get("name"));
-        deleteDevBox();
     }
 }

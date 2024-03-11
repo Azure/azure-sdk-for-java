@@ -19,14 +19,11 @@ public final class EnvironmentsGetEnvironmentByUserTests extends DevCenterClient
     @Test
     @Disabled
     public void testEnvironmentsGetEnvironmentByUserTests() {
-        String environmentName = createEnvironment();
-
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                deploymentEnvironmentsClient.getEnvironmentWithResponse(projectName, "me", environmentName, requestOptions);
+                deploymentEnvironmentsClient.getEnvironmentWithResponse(projectName, "me", devEnvironmentName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Map<String, Object> environmentData = response.getValue().toObject(new TypeReference<Map<String, Object>>() {});
-        Assertions.assertEquals(environmentName, environmentData.get("name"));
-        deleteEnvironment(environmentName);
+        Assertions.assertEquals(devEnvironmentName, environmentData.get("name"));
     }
 }

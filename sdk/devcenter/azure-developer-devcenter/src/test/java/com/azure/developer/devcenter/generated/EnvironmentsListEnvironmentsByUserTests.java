@@ -19,8 +19,6 @@ public final class EnvironmentsListEnvironmentsByUserTests extends DevCenterClie
     @Test
     @Disabled
     public void testEnvironmentsListEnvironmentsByUserTests() {
-        String environmentName = createEnvironment();
-
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response =
             deploymentEnvironmentsClient.listEnvironments(projectName, "me", requestOptions);
@@ -30,10 +28,9 @@ public final class EnvironmentsListEnvironmentsByUserTests extends DevCenterClie
         for (BinaryData data : response) {
             numberOfEnvironments++;
             Map<String, Object> envType = data.toObject(new TypeReference<Map<String, Object>>() {});
-            Assertions.assertEquals(envType.get("name"), environmentName);
+            Assertions.assertEquals(envType.get("name"), devEnvironmentName);
         }
 
         Assertions.assertEquals(1, numberOfEnvironments);
-        deleteEnvironment(environmentName);
     }
 }

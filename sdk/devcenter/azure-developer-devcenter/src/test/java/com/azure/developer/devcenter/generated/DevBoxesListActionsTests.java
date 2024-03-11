@@ -19,8 +19,6 @@ public final class DevBoxesListActionsTests extends DevCenterClientTestBase {
     @Test
     @Disabled
     public void testDevBoxesListActionsTests() {
-        createDevBox();
-
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response = devBoxesClient.listDevBoxActions(projectName, "me", devBoxName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
@@ -33,6 +31,5 @@ public final class DevBoxesListActionsTests extends DevCenterClientTestBase {
         }
 
         Assertions.assertEquals(1, numberOfActions);
-        deleteDevBox();
     }
 }

@@ -10,19 +10,11 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.polling.LongRunningOperationStatus;
-import com.azure.core.util.polling.SyncPoller;
-import com.azure.core.util.serializer.TypeReference;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
-import java.util.Map;
-import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 
 public class DevCenterClientTestBase extends TestProxyTestBase {
@@ -105,76 +97,5 @@ public class DevCenterClientTestBase extends TestProxyTestBase {
             deploymentEnvironmentsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         deploymentEnvironmentsClient = deploymentEnvironmentsClientbuilder.buildClient();
-    }
-    
-    protected String getFirstEnvironmentDefinition() {
-        RequestOptions requestOptions = new RequestOptions();
-
-        PagedIterable<BinaryData> response =
-            deploymentEnvironmentsClient.listEnvironmentDefinitionsByCatalog(projectName, catalogName, requestOptions);
-
-        Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-
-        String environmentDefinitionName = "";
-        for (BinaryData data : response) {
-            Map<String, Object> envDefinition = data.toObject(new TypeReference<Map<String, Object>>() {});
-            environmentDefinitionName = (String) envDefinition.get("name");
-            break;
-        }
-
-        if (environmentDefinitionName.isEmpty()) {
-            Assertions.fail("Couldn't find environment definitions in a project");
-        }
-
-        return environmentDefinitionName;
-    }
-
-    protected String createEnvironment() {
-        String environmentName = getFirstEnvironmentDefinition();
-
-        BinaryData environmentBody = BinaryData.fromString(
-            "{\"catalogItemName\":\"" + environmentName
-                + "\", \"catalogName\":\"" + catalogName
-                + "\", \"environmentType\":\"" + envTypeName + "\"}");
-
-        RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> createOperation =
-            deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(
-                projectName, "me", devEnvironmentName, environmentBody, requestOptions);
-
-        Assertions.assertEquals(
-            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createOperation.waitForCompletion().getStatus());
-
-        return devEnvironmentName;
-    }
-
-    protected void deleteEnvironment(String environmentName) {
-        RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, Void> deleteOperation =
-            deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, "me", environmentName, requestOptions);
-
-        Assertions.assertEquals(
-            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deleteOperation.waitForCompletion().getStatus());
-    }
-
-    protected void createDevBox() {
-        BinaryData body = BinaryData.fromString(String.format("{\"poolName\": \"%s\"}", poolName));
-        RequestOptions requestOptions = new RequestOptions();
-
-        SyncPoller<BinaryData, BinaryData> response =
-            devBoxesClient.beginCreateDevBox(projectName, "me", devBoxName, body, requestOptions);
-
-        Assertions.assertEquals(
-            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
-    }
-
-    protected void deleteDevBox() {
-        RequestOptions requestOptions = new RequestOptions();
-
-        SyncPoller<BinaryData, Void> response =
-            devBoxesClient.beginDeleteDevBox(projectName, "me", devBoxName, requestOptions);
-
-        Assertions.assertEquals(
-            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
     }
 }

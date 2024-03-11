@@ -17,8 +17,6 @@ public final class DevBoxesDeleteDevBoxTests extends DevCenterClientTestBase {
     @Test
     @Disabled
     public void testDevBoxesDeleteDevBoxTests() {
-        createDevBox();
-
         RequestOptions requestOptions = new RequestOptions();
 
         SyncPoller<BinaryData, Void> response =

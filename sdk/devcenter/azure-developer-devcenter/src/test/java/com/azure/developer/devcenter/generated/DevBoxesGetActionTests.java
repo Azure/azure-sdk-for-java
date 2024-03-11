@@ -18,14 +18,10 @@ public final class DevBoxesGetActionTests extends DevCenterClientTestBase {
     @Test
     @Disabled
     public void testDevBoxesGetActionTests() {
-        createDevBox();
-
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 devBoxesClient.getDevBoxActionWithResponse(projectName, "me", devBoxName, "schedule-default", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals("schedule-default", response.getValue().toObject(LinkedHashMap.class).get("name"));
-
-        deleteDevBox();
     }
 }

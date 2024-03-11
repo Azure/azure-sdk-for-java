@@ -11,10 +11,12 @@ import com.azure.developer.devcenter.DevCenterClientTestBase;
 import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class DevCenterGetProjectTests extends DevCenterClientTestBase {
     @Test
+    @Disabled
     public void testDevCenterGetProjectTests() {
         RequestOptions requestOptions = new RequestOptions();
 

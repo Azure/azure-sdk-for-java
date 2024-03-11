@@ -17,10 +17,8 @@ public final class EnvironmentsCreateByEnvironmentDefinitionTests extends DevCen
     @Test
     @Disabled
     public void testEnvironmentsCreateByEnvironmentDefinitionTests() {
-        String environmentName = getFirstEnvironmentDefinition();
-
         BinaryData environmentBody = BinaryData.fromString(
-            "{\"environmentDefinitionName\":\"" + environmentName
+            "{\"environmentDefinitionName\":\"" + envDefinitionName
                 + "\", \"catalogName\":\"" + catalogName
                 + "\", \"environmentType\":\"" + envTypeName + "\"}");
 
@@ -31,7 +29,5 @@ public final class EnvironmentsCreateByEnvironmentDefinitionTests extends DevCen
 
         Assertions.assertEquals(
             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createOperation.waitForCompletion().getStatus());
-
-        deleteEnvironment(devEnvironmentName);
     }
 }

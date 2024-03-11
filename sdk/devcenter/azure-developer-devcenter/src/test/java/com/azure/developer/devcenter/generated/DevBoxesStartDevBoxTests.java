@@ -17,15 +17,11 @@ public final class DevBoxesStartDevBoxTests extends DevCenterClientTestBase {
     @Test
     @Disabled
     public void testDevBoxesStartDevBoxTests() {
-        createDevBox();
-
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
                 devBoxesClient.beginStartDevBox(projectName, "me", devBoxName, requestOptions);
 
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
-
-        deleteDevBox();
     }
 }

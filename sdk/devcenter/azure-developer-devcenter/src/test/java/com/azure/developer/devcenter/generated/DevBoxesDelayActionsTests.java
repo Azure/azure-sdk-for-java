@@ -20,8 +20,6 @@ public final class DevBoxesDelayActionsTests extends DevCenterClientTestBase {
     @Test
     @Disabled
     public void testDevBoxesDelayActionsTests() {
-        createDevBox();
-
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response =
                 devBoxesClient.delayAllActions(
@@ -36,6 +34,5 @@ public final class DevBoxesDelayActionsTests extends DevCenterClientTestBase {
         }
 
         Assertions.assertEquals(1, numberOfActions);
-        deleteDevBox();
     }
 }

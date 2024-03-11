@@ -18,13 +18,10 @@ public final class DevBoxesGetDevBoxByUserTests extends DevCenterClientTestBase 
     @Test
     @Disabled
     public void testDevBoxesGetDevBoxByUserTests() {
-        createDevBox();
-
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
                 devBoxesClient.getDevBoxWithResponse(projectName, "me", devBoxName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(devBoxName, response.getValue().toObject(LinkedHashMap.class).get("name"));
-        deleteDevBox();
     }
 }
