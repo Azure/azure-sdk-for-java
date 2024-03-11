@@ -13,11 +13,11 @@ import com.generic.core.implementation.http.policy.HttpRequestLogger;
 import com.generic.core.implementation.http.policy.HttpResponseLogger;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.LoggingKeys;
-import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.net.URL;

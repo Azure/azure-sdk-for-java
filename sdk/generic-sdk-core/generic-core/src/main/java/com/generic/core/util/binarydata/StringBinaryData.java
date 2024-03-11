@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.models;
+package com.generic.core.util.binarydata;
 
+import com.generic.core.models.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
@@ -14,37 +15,33 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * A {@link BinaryData} implementation backed by a serializable object.
+ * A {@link BinaryData} implementation backed by a String.
  */
-public final class SerializableBinaryData extends BinaryData {
-    private final Object content;
-    private final ObjectSerializer serializer;
+public final class StringBinaryData extends BinaryData {
+    private final String content;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<SerializableBinaryData, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(SerializableBinaryData.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<StringBinaryData, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(StringBinaryData.class, byte[].class, "bytes");
 
     /**
-     * Creates a new instance of {@link SerializableBinaryData}.
+     * Creates a new instance of {@link StringBinaryData}.
      *
-     * @param content The serializable object that forms the content of this instance.
-     * @param serializer The serializer that serializes the {@code content}.
-     *
-     * @throws NullPointerException if {@code serializer} is null.
+     * @param content The string content.
+     * @throws NullPointerException if {@code content} is null.
      */
-    public SerializableBinaryData(Object content, ObjectSerializer serializer) {
-        this.content = content;
-        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+    public StringBinaryData(String content) {
+        this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
 
     @Override
     public Long getLength() {
-        return this.content == null ? null : (long) toBytes().length;
+        return (long) toBytes().length;
     }
 
     @Override
     public String toString() {
-        return new String(toBytes(), StandardCharsets.UTF_8);
+        return this.content;
     }
 
     @Override
@@ -59,7 +56,7 @@ public final class SerializableBinaryData extends BinaryData {
 
     @Override
     public InputStream toStream() {
-        return new ByteArrayInputStream(getBytes());
+        return new ByteArrayInputStream(toBytes());
     }
 
     @Override
@@ -78,7 +75,7 @@ public final class SerializableBinaryData extends BinaryData {
     }
 
     private byte[] getBytes() {
-        return serializer.serializeToBytes(content);
+        return this.content.getBytes(StandardCharsets.UTF_8);
     }
 
     @Override

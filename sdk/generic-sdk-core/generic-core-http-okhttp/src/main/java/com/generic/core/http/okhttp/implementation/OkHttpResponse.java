@@ -5,9 +5,9 @@ package com.generic.core.http.okhttp.implementation;
 
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.models.BinaryData;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
+import com.generic.core.util.binarydata.BinaryData;
 import okhttp3.ResponseBody;
 
 /**

@@ -13,11 +13,11 @@ import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.util.ServerSentEventHelper;
-import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.binarydata.BinaryData;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;

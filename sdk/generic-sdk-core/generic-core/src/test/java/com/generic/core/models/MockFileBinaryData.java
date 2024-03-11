@@ -3,6 +3,8 @@
 
 package com.generic.core.models;
 
+import com.generic.core.util.binarydata.FileBinaryData;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;

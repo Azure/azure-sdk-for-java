@@ -4,6 +4,7 @@
 package com.generic.core.models;
 
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.JsonSerializer;
 import com.generic.core.util.serializer.ObjectSerializer;
 

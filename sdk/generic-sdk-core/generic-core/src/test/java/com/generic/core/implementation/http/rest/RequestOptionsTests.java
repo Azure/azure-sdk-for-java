@@ -3,12 +3,12 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.Headers;
 import com.generic.core.http.models.RequestOptions;
+import com.generic.core.models.HeaderName;
+import com.generic.core.models.Headers;
+import com.generic.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;

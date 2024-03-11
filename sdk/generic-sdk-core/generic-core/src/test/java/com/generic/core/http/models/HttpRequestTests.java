@@ -3,10 +3,10 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
+import com.generic.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;

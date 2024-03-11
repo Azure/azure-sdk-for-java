@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.models;
+package com.generic.core.util.binarydata;
 
+import com.generic.core.models.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;

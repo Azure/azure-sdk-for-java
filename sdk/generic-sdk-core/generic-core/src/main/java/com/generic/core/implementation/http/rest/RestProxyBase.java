@@ -18,11 +18,11 @@ import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
 import com.generic.core.implementation.util.UrlBuilder;
-import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonSerializable;
 
