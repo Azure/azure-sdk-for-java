@@ -109,14 +109,14 @@ class EnvironmentTests extends DevCenterClientTestBase {
     }
 
     public DevCenterEnvironment createEnvironment() {
-        DevCenterEnvironment environment = new DevCenterEnvironment(envTypeName, catalogName, envDefinitionName);
+        DevCenterEnvironment createEnvironment = new DevCenterEnvironment(devEnvironmentName, envTypeName, catalogName, envDefinitionName);
 
         SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse =
-                deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, devEnvironmentName, environment);
+                deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, createEnvironment);
         Assertions.assertEquals(
             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
                 
-        environment = environmentCreateResponse.getFinalResult();
+        DevCenterEnvironment environment = environmentCreateResponse.getFinalResult();
         Assertions.assertEquals(devEnvironmentName, environment.getName());
 
         return environment;

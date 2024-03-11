@@ -607,8 +607,7 @@ public final class DeploymentEnvironmentsClient {
      * @param projectName The DevCenter Project upon which to execute operations.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
-     * @param environmentName The name of the environment.
-     * @param body Represents an environment.
+     * @param environment Represents an environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -617,14 +616,13 @@ public final class DeploymentEnvironmentsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of properties of an environment.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> beginCreateOrUpdateEnvironment(
-        String projectName, String userId, String environmentName, DevCenterEnvironment body) {
-        // Generated convenience method for beginCreateOrUpdateEnvironmentWithModel
+    public SyncPoller<DevCenterOperationDetails, DevCenterEnvironment>
+        beginCreateOrUpdateEnvironment(String projectName, String userId, DevCenterEnvironment environment) {
+        // Customized convenience method for beginCreateOrUpdateEnvironmentWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginCreateOrUpdateEnvironmentWithModel(projectName, userId, environmentName,
-            BinaryData.fromObject(body), requestOptions);
+        return serviceClient.beginCreateOrUpdateEnvironmentWithModel(projectName, userId, environment.getName(),
+            BinaryData.fromObject(environment), requestOptions);
     }
 
     /**

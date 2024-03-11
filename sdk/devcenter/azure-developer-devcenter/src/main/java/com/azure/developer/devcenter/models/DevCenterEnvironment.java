@@ -82,13 +82,14 @@ public final class DevCenterEnvironment {
     /**
      * Creates an instance of DevCenterEnvironment class.
      *
+     * @param environmentName the environmentName value to set.
      * @param environmentTypeName the environmentTypeName value to set.
      * @param catalogName the catalogName value to set.
      * @param environmentDefinitionName the environmentDefinitionName value to set.
      */
-    @Generated
     @JsonCreator
-    public DevCenterEnvironment(@JsonProperty(value = "environmentType") String environmentTypeName,
+    public DevCenterEnvironment(@JsonProperty(value = "name") String environmentName,
+        @JsonProperty(value = "environmentType") String environmentTypeName,
         @JsonProperty(value = "catalogName") String catalogName,
         @JsonProperty(value = "environmentDefinitionName") String environmentDefinitionName) {
         this.environmentTypeName = environmentTypeName;
