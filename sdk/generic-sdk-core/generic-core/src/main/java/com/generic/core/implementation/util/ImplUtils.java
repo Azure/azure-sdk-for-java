@@ -3,19 +3,12 @@
 
 package com.generic.core.implementation.util;
 
-import com.generic.core.http.models.RetryOptions;
-import com.generic.core.http.policy.RetryPolicy;
-import com.generic.core.implementation.http.policy.ExponentialBackoffDelay;
-import com.generic.core.implementation.http.policy.FixedDelay;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
-import com.generic.core.util.ClientLogger;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URI;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -30,7 +23,6 @@ import java.util.AbstractMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -42,13 +34,8 @@ import java.util.regex.Pattern;
 public final class ImplUtils {
     private static final HeaderName RETRY_AFTER_MS_HEADER = HeaderName.fromString("retry-after-ms");
     private static final HeaderName X_MS_RETRY_AFTER_MS_HEADER = HeaderName.fromString("x-ms-retry-after-ms");
-
-    // future improvement - make this configurable
-    public static final int MAX_CACHE_SIZE = 10000;
-
     private static final Charset UTF_32BE = Charset.forName("UTF-32BE");
     private static final Charset UTF_32LE = Charset.forName("UTF-32LE");
-    private static final ClientLogger LOGGER = new ClientLogger(ImplUtils.class);
     private static final byte ZERO = (byte) 0x00;
     private static final byte BB = (byte) 0xBB;
     private static final byte BF = (byte) 0xBF;
@@ -348,66 +335,6 @@ public final class ImplUtils {
             }
         }
     }
-
-    /**
-     * Creates a new {@link URL} from the given {@code urlString}.
-     * <p>
-     * This is a temporary method that will be removed once all usages of {@link URL#URL(String)} are migrated to
-     * {@link URI}-based methods given the deprecation of the URL methods in Java 20.
-     *
-     * @param urlString The string to convert to a {@link URL}.
-     * @return The {@link URL} representing the {@code urlString}.
-     * @throws MalformedURLException If the {@code urlString} isn't a valid {@link URL}.
-     */
-    @SuppressWarnings("deprecation")
-    public static URL createUrl(String urlString) throws MalformedURLException {
-        return new URL(urlString);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <T> Class<? extends T> getClassByName(String className) {
-        Objects.requireNonNull(className, "'className' cannot be null");
-        try {
-            return (Class<? extends T>) Class.forName(className, false, ImplUtils.class.getClassLoader());
-        } catch (ClassNotFoundException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(
-                "Class '" + className + "' is not found on the classpath.", e));
-        }
-    }
-
-    /**
-     * Converts the {@link RetryOptions} into a {@link RetryPolicy.RetryStrategy} so it can be more easily consumed.
-     *
-     * @param retryOptions The retry options.
-     * @return The retry strategy based on the retry options.
-     * @throws NullPointerException If {@code retryOptions} is null.
-     * @throws IllegalArgumentException If {@code retryOptions} doesn't define any retry strategy options.
-     */
-    public static RetryPolicy.RetryStrategy getRetryStrategyFromOptions(RetryOptions retryOptions) {
-        Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
-
-        if (retryOptions.getBaseDelay() != null && retryOptions.getMaxDelay() != null) {
-            if (retryOptions.getShouldRetryCondition() != null) {
-                return new ExponentialBackoffDelay(retryOptions.getBaseDelay(), retryOptions.getMaxDelay(),
-                    retryOptions.getShouldRetryCondition());
-            }
-            return new ExponentialBackoffDelay(retryOptions.getBaseDelay(), retryOptions.getMaxDelay());
-        } else if (retryOptions.getFixedDelay() != null) {
-            if (retryOptions.getShouldRetryCondition() != null) {
-                return new FixedDelay(retryOptions.getFixedDelay(), retryOptions.getShouldRetryCondition());
-            }
-            return new FixedDelay(retryOptions.getFixedDelay());
-        } else {
-            // This should never happen.
-            throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy");
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static <E extends Throwable> void sneakyThrows(Throwable e) throws E {
-        throw (E) e;
-    }
-
     private ImplUtils() {
     }
 }
