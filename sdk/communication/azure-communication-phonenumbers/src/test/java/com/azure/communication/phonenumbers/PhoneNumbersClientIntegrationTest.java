@@ -454,7 +454,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void searchOperatorInformationSucceeds(HttpClient httpClient) {
         List<String> phoneNumbers = new ArrayList<String>();
-        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        phoneNumbers.add(getTestPhoneNumber());
         OperatorInformationResult result = this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
                 .searchOperatorInformation(phoneNumbers);
         assertEquals(phoneNumbers.get(0), result.getValues().get(0).getPhoneNumber());
