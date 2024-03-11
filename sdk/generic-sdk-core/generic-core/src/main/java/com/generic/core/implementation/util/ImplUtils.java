@@ -3,8 +3,8 @@
 
 package com.generic.core.implementation.util;
 
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
+import com.generic.core.http.models.HeaderName;
+import com.generic.core.http.models.Headers;
 
 import java.io.FileOutputStream;
 import java.io.IOException;

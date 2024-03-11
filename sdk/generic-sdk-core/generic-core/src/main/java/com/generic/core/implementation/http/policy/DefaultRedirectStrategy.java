@@ -3,13 +3,13 @@
 
 package com.generic.core.implementation.http.policy;
 
+import com.generic.core.http.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
 import com.generic.core.http.policy.RedirectStrategy;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.LoggingKeys;
-import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
 
 import java.net.HttpURLConnection;

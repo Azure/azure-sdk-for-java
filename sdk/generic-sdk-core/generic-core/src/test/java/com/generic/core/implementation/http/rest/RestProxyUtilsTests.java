@@ -3,9 +3,9 @@
 
 package com.generic.core.implementation.http.rest;
 
+import com.generic.core.http.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.models.HeaderName;
 import com.generic.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;

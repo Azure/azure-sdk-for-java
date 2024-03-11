@@ -3,6 +3,7 @@
 
 package com.generic.core.http;
 
+import com.generic.core.http.models.Headers;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -10,7 +11,6 @@ import com.generic.core.http.models.Response;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.rest.ResponseConstructorsCache;
-import com.generic.core.models.Headers;
 import org.openjdk.jmh.annotations.Benchmark;
 import org.openjdk.jmh.annotations.BenchmarkMode;
 import org.openjdk.jmh.annotations.Fork;

@@ -3,6 +3,9 @@
 
 package com.generic.core.http.policy;
 
+import com.generic.core.http.models.Header;
+import com.generic.core.http.models.HeaderName;
+import com.generic.core.http.models.Headers;
 import com.generic.core.http.models.HttpLogOptions;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -13,9 +16,6 @@ import com.generic.core.implementation.http.policy.HttpRequestLogger;
 import com.generic.core.implementation.http.policy.HttpResponseLogger;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.LoggingKeys;
-import com.generic.core.models.Header;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.binarydata.BinaryData;
 
@@ -28,8 +28,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.generic.core.models.HeaderName.CLIENT_REQUEST_ID;
-import static com.generic.core.models.HeaderName.TRACEPARENT;
+import static com.generic.core.http.models.HeaderName.CLIENT_REQUEST_ID;
+import static com.generic.core.http.models.HeaderName.TRACEPARENT;
 
 /**
  * The pipeline policy that handles logging of HTTP requests and responses.

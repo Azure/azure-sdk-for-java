@@ -4,8 +4,8 @@
 package com.generic.core.http.policy;
 
 import com.generic.core.credential.KeyCredential;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
+import com.generic.core.http.models.HeaderName;
+import com.generic.core.http.models.Headers;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;

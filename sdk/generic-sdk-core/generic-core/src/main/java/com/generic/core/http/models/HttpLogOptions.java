@@ -5,7 +5,6 @@ package com.generic.core.http.models;
 
 import com.generic.core.implementation.http.policy.HttpRequestLogger;
 import com.generic.core.implementation.http.policy.HttpResponseLogger;
-import com.generic.core.models.HeaderName;
 import com.generic.core.util.configuration.Configuration;
 
 import java.util.ArrayList;

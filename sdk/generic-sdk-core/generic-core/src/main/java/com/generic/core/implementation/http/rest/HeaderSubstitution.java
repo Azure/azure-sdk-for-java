@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.models.HeaderName;
+import com.generic.core.http.models.HeaderName;
 
 public final class HeaderSubstitution extends Substitution {
     private final HeaderName headerName;

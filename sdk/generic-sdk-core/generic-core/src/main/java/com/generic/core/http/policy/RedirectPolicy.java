@@ -3,11 +3,11 @@
 
 package com.generic.core.http.policy;
 
+import com.generic.core.http.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
-import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
 
 import java.io.IOException;

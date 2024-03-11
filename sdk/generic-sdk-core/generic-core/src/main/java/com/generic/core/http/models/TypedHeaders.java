@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.generic.core.http.models;
 
-import com.generic.core.models.Headers;
-
 /**
  * Interface indicating that the implementing class is a typed representation of HTTP headers.
  *

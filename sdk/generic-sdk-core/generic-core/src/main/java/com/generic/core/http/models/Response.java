@@ -3,7 +3,6 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.models.Headers;
 import com.generic.core.util.binarydata.BinaryData;
 
 import java.io.Closeable;

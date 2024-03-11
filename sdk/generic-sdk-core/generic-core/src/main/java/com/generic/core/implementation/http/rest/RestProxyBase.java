@@ -5,6 +5,8 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.exception.HttpResponseException;
+import com.generic.core.http.models.HeaderName;
+import com.generic.core.http.models.Headers;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
@@ -18,8 +20,6 @@ import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
 import com.generic.core.implementation.util.UrlBuilder;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.Context;
 import com.generic.core.util.binarydata.BinaryData;

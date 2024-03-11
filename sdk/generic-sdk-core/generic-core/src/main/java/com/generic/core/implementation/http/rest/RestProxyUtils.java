@@ -3,10 +3,10 @@
 
 package com.generic.core.implementation.http.rest;
 
+import com.generic.core.http.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.Context;
 import com.generic.core.util.binarydata.BinaryData;

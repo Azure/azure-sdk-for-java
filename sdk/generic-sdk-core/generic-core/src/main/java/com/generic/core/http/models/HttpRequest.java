@@ -4,9 +4,6 @@
 package com.generic.core.http.models;
 
 import com.generic.core.annotation.Metadata;
-import com.generic.core.models.Header;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.binarydata.BinaryData;
 

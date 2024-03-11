@@ -3,8 +3,8 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.models.Header;
-import com.generic.core.models.HeaderName;
+import com.generic.core.http.models.Header;
+import com.generic.core.http.models.HeaderName;
 import okhttp3.Headers;
 
 import java.util.Iterator;
@@ -18,15 +18,15 @@ import java.util.stream.Stream;
  * (as these headers are the result of an OkHttp response), we do so in any case, given the additional implementation
  * cost is minimal.
  */
-public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.models.Headers {
+public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.http.models.Headers {
     private final Headers okhttpHeaders;
 
-    private com.generic.core.models.Headers coreHeaders;
+    private com.generic.core.http.models.Headers coreHeaders;
     private boolean converted = false;
 
     public OkHttpToAzureCoreHttpHeadersWrapper(Headers okhttpHeaders) {
         this.okhttpHeaders = okhttpHeaders;
-        this.coreHeaders = new com.generic.core.models.Headers(okhttpHeaders.size() * 2);
+        this.coreHeaders = new com.generic.core.http.models.Headers(okhttpHeaders.size() * 2);
     }
 
     @Override
@@ -35,7 +35,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.
     }
 
     @Override
-    public com.generic.core.models.Headers add(HeaderName name, String value) {
+    public com.generic.core.http.models.Headers add(HeaderName name, String value) {
         if (name == null || value == null) {
             return this;
         }
@@ -49,7 +49,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.
 
 
     @Override
-    public com.generic.core.models.Headers set(HeaderName name, String value) {
+    public com.generic.core.http.models.Headers set(HeaderName name, String value) {
         if (name == null) {
             return this;
         }
@@ -62,7 +62,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.
     }
 
     @Override
-    public com.generic.core.models.Headers set(HeaderName name, List<String> values) {
+    public com.generic.core.http.models.Headers set(HeaderName name, List<String> values) {
         if (name == null) {
             return this;
         }
@@ -75,7 +75,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.
     }
 
     @Override
-    public com.generic.core.models.Headers setAll(Map<String, List<String>> headers) {
+    public com.generic.core.http.models.Headers setAll(Map<String, List<String>> headers) {
         convertIfNeeded();
 
         coreHeaders.setAll(headers);
@@ -84,7 +84,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.
     }
 
     @Override
-    public com.generic.core.models.Headers setAllHeaders(com.generic.core.models.Headers headers) {
+    public com.generic.core.http.models.Headers setAllHeaders(com.generic.core.http.models.Headers headers) {
         convertIfNeeded();
 
         coreHeaders.setAllHeaders(headers);
