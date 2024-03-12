@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An AML file system update instance. */
+/**
+ * An AML file system update instance.
+ */
 @Fluent
 public final class AmlFilesystemUpdate {
     /*
@@ -26,13 +28,15 @@ public final class AmlFilesystemUpdate {
     @JsonProperty(value = "properties")
     private AmlFilesystemUpdateProperties innerProperties;
 
-    /** Creates an instance of AmlFilesystemUpdate class. */
+    /**
+     * Creates an instance of AmlFilesystemUpdate class.
+     */
     public AmlFilesystemUpdate() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AmlFilesystemUpdate object itself.
      */
@@ -52,7 +56,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Get the innerProperties property: Properties of the AML file system.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AmlFilesystemUpdateProperties innerProperties() {
@@ -61,7 +65,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Get the encryptionSettings property: Specifies encryption settings of the AML file system.
-     *
+     * 
      * @return the encryptionSettings value.
      */
     public AmlFilesystemEncryptionSettings encryptionSettings() {
@@ -70,7 +74,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Set the encryptionSettings property: Specifies encryption settings of the AML file system.
-     *
+     * 
      * @param encryptionSettings the encryptionSettings value to set.
      * @return the AmlFilesystemUpdate object itself.
      */
@@ -84,7 +88,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Get the maintenanceWindow property: Start time of a 30-minute weekly maintenance window.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public AmlFilesystemUpdatePropertiesMaintenanceWindow maintenanceWindow() {
@@ -93,7 +97,7 @@ public final class AmlFilesystemUpdate {
 
     /**
      * Set the maintenanceWindow property: Start time of a 30-minute weekly maintenance window.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the AmlFilesystemUpdate object itself.
      */
@@ -106,8 +110,31 @@ public final class AmlFilesystemUpdate {
     }
 
     /**
+     * Get the rootSquashSettings property: Specifies root squash settings of the AML file system.
+     * 
+     * @return the rootSquashSettings value.
+     */
+    public AmlFilesystemRootSquashSettings rootSquashSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().rootSquashSettings();
+    }
+
+    /**
+     * Set the rootSquashSettings property: Specifies root squash settings of the AML file system.
+     * 
+     * @param rootSquashSettings the rootSquashSettings value to set.
+     * @return the AmlFilesystemUpdate object itself.
+     */
+    public AmlFilesystemUpdate withRootSquashSettings(AmlFilesystemRootSquashSettings rootSquashSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AmlFilesystemUpdateProperties();
+        }
+        this.innerProperties().withRootSquashSettings(rootSquashSettings);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

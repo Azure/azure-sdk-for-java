@@ -151,17 +151,38 @@ public final class ChatChoice {
         return this.enhancements;
     }
 
+    /*
+     * The log probability information for this choice, as enabled via the 'logprobs' request option.
+     */
+    @Generated
+    @JsonProperty(value = "logprobs")
+    private ChatChoiceLogProbabilityInfo logprobs;
+
     /**
      * Creates an instance of ChatChoice class.
      *
+     * @param logprobs the logprobs value to set.
      * @param index the index value to set.
      * @param finishReason the finishReason value to set.
      */
     @Generated
     @JsonCreator
-    private ChatChoice(@JsonProperty(value = "index") int index,
+    private ChatChoice(@JsonProperty(value = "logprobs") ChatChoiceLogProbabilityInfo logprobs,
+        @JsonProperty(value = "index") int index,
         @JsonProperty(value = "finish_reason") CompletionsFinishReason finishReason) {
+        this.logprobs = logprobs;
         this.index = index;
         this.finishReason = finishReason;
+    }
+
+    /**
+     * Get the logprobs property: The log probability information for this choice, as enabled via the 'logprobs'
+     * request option.
+     *
+     * @return the logprobs value.
+     */
+    @Generated
+    public ChatChoiceLogProbabilityInfo getLogprobs() {
+        return this.logprobs;
     }
 }

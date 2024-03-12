@@ -51,7 +51,8 @@ public final class AzureJdkHttpRequest extends HttpRequest {
 
         this.method = method.toString();
         this.bodyPublisher = (method == HttpMethod.GET || method == HttpMethod.HEAD)
-            ? noBody() : BodyPublisherUtils.toBodyPublisher(azureCoreRequest, progressReporter);
+            ? noBody()
+            : BodyPublisherUtils.toBodyPublisher(azureCoreRequest, progressReporter);
 
         try {
             uri = azureCoreRequest.getUrl().toURI();
@@ -59,9 +60,9 @@ public final class AzureJdkHttpRequest extends HttpRequest {
             throw logger.logExceptionAsError(Exceptions.propagate(e));
         }
 
-        this.headers = HttpHeaders.of(new HeaderFilteringMap(
-            HttpHeadersAccessHelper.getRawHeaderMap(azureCoreRequest.getHeaders()), restrictedHeaders, logger),
-            (ignored1, ignored2) -> true);
+        this.headers = HttpHeaders
+            .of(new HeaderFilteringMap(HttpHeadersAccessHelper.getRawHeaderMap(azureCoreRequest.getHeaders()),
+                restrictedHeaders, logger), (ignored1, ignored2) -> true);
     }
 
     @Override

@@ -13,7 +13,7 @@ import com.azure.ai.openai.assistants.models.MessageContent;
 import com.azure.ai.openai.assistants.models.MessageImageFileContent;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCall;
 import com.azure.ai.openai.assistants.models.RequiredFunctionToolCallDetails;
 import com.azure.ai.openai.assistants.models.RequiredToolCall;
@@ -79,7 +79,7 @@ public class FunctionToolCallSample {
 
         } while (run.getStatus() == RunStatus.QUEUED || run.getStatus() == RunStatus.IN_PROGRESS);
 
-        OpenAIPageableListOfThreadMessage messagesPage = client.listMessages(thread.getId());
+        PageableList<ThreadMessage> messagesPage = client.listMessages(thread.getId());
         List<ThreadMessage> messages = messagesPage.getData();
 
         for (ThreadMessage message : messages) {

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmFa
 public final class InMageRcmFailbackEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmFailbackEventDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageRcmFailback\",\"protectedItemName\":\"hsxrznmgsdaluyc\",\"vmName\":\"efrbhseuerbg\",\"applianceName\":\"ebjludc\",\"serverType\":\"tujraxdtpryjm\",\"componentDisplayName\":\"nsewouxl\"}")
-                .toObject(InMageRcmFailbackEventDetails.class);
+        InMageRcmFailbackEventDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageRcmFailback\",\"protectedItemName\":\"hsxrznmgsdaluyc\",\"vmName\":\"efrbhseuerbg\",\"applianceName\":\"ebjludc\",\"serverType\":\"tujraxdtpryjm\",\"componentDisplayName\":\"nsewouxl\"}")
+            .toObject(InMageRcmFailbackEventDetails.class);
     }
 
     @org.junit.jupiter.api.Test

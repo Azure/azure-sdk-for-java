@@ -157,9 +157,8 @@ public class JdkHttpClientBuilder {
      * @return a {@link HttpClient}.
      */
     public HttpClient build() {
-        java.net.http.HttpClient.Builder httpClientBuilder = this.httpClientBuilder == null
-            ? java.net.http.HttpClient.newBuilder()
-            : this.httpClientBuilder;
+        java.net.http.HttpClient.Builder httpClientBuilder
+            = this.httpClientBuilder == null ? java.net.http.HttpClient.newBuilder() : this.httpClientBuilder;
 
         // Azure JDK http client supports HTTP 1.1 by default.
         httpClientBuilder.version(java.net.http.HttpClient.Version.HTTP_1_1);
@@ -168,28 +167,24 @@ public class JdkHttpClientBuilder {
             ? httpClientBuilder.connectTimeout(this.connectionTimeout)
             : httpClientBuilder.connectTimeout(DEFAULT_CONNECT_TIMEOUT);
 
-        Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
-        ProxyOptions buildProxyOptions = (proxyOptions == null)
-            ? ProxyOptions.fromConfiguration(buildConfiguration)
-            : proxyOptions;
+        ProxyOptions buildProxyOptions
+            = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration) : proxyOptions;
 
         if (executor != null) {
             httpClientBuilder.executor(executor);
         }
 
         if (buildProxyOptions != null) {
-            httpClientBuilder = httpClientBuilder.proxy(new JdkHttpClientProxySelector(
-                buildProxyOptions.getType().toProxyType(),
-                buildProxyOptions.getAddress(),
-                buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder
+                = httpClientBuilder.proxy(new JdkHttpClientProxySelector(buildProxyOptions.getType().toProxyType(),
+                    buildProxyOptions.getAddress(), buildProxyOptions.getNonProxyHosts()));
 
             if (buildProxyOptions.getUsername() != null) {
-                httpClientBuilder
-                    .authenticator(new ProxyAuthenticator(buildProxyOptions.getUsername(),
-                        buildProxyOptions.getPassword()));
+                httpClientBuilder.authenticator(
+                    new ProxyAuthenticator(buildProxyOptions.getUsername(), buildProxyOptions.getPassword()));
             }
         }
         return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()));
@@ -204,13 +199,13 @@ public class JdkHttpClientBuilder {
 
     private void removeAllowedHeaders(Set<String> restrictedHeaders) {
         Properties properties = getNetworkProperties();
-        String[] allowRestrictedHeadersNetProperties =
-            properties.getProperty(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
+        String[] allowRestrictedHeadersNetProperties
+            = properties.getProperty(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
 
         // Read all allowed restricted headers from configuration
         Configuration config = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-        String[] allowRestrictedHeadersSystemProperties = config.get(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "")
-            .split(",");
+        String[] allowRestrictedHeadersSystemProperties
+            = config.get(JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS, "").split(",");
 
         // Combine the set of all allowed restricted headers from both sources
         for (String header : allowRestrictedHeadersSystemProperties) {

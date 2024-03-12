@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This class contains the error details per object. */
+/**
+ * This class contains the error details per object.
+ */
 @Fluent
 public final class ProviderError {
     /*
@@ -40,13 +42,15 @@ public final class ProviderError {
     @JsonProperty(value = "recommendedAction")
     private String recommendedAction;
 
-    /** Creates an instance of ProviderError class. */
+    /**
+     * Creates an instance of ProviderError class.
+     */
     public ProviderError() {
     }
 
     /**
      * Get the errorCode property: The Error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -55,7 +59,7 @@ public final class ProviderError {
 
     /**
      * Set the errorCode property: The Error code.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the ProviderError object itself.
      */
@@ -66,7 +70,7 @@ public final class ProviderError {
 
     /**
      * Get the errorMessage property: The Error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -75,7 +79,7 @@ public final class ProviderError {
 
     /**
      * Set the errorMessage property: The Error message.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the ProviderError object itself.
      */
@@ -86,7 +90,7 @@ public final class ProviderError {
 
     /**
      * Get the errorId property: The Provider error Id.
-     *
+     * 
      * @return the errorId value.
      */
     public String errorId() {
@@ -95,7 +99,7 @@ public final class ProviderError {
 
     /**
      * Set the errorId property: The Provider error Id.
-     *
+     * 
      * @param errorId the errorId value to set.
      * @return the ProviderError object itself.
      */
@@ -106,7 +110,7 @@ public final class ProviderError {
 
     /**
      * Get the possibleCauses property: The possible causes for the error.
-     *
+     * 
      * @return the possibleCauses value.
      */
     public String possibleCauses() {
@@ -115,7 +119,7 @@ public final class ProviderError {
 
     /**
      * Set the possibleCauses property: The possible causes for the error.
-     *
+     * 
      * @param possibleCauses the possibleCauses value to set.
      * @return the ProviderError object itself.
      */
@@ -126,7 +130,7 @@ public final class ProviderError {
 
     /**
      * Get the recommendedAction property: The recommended action to resolve the error.
-     *
+     * 
      * @return the recommendedAction value.
      */
     public String recommendedAction() {
@@ -135,7 +139,7 @@ public final class ProviderError {
 
     /**
      * Set the recommendedAction property: The recommended action to resolve the error.
-     *
+     * 
      * @param recommendedAction the recommendedAction value to set.
      * @return the ProviderError object itself.
      */
@@ -146,7 +150,7 @@ public final class ProviderError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

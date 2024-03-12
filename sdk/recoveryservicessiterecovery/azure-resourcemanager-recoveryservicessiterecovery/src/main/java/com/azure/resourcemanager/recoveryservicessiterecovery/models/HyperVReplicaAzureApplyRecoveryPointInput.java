@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** ApplyRecoveryPoint input specific to HyperVReplicaAzure provider. */
+/**
+ * ApplyRecoveryPoint input specific to HyperVReplicaAzure provider.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplicaAzure")
 @Fluent
@@ -26,13 +28,15 @@ public final class HyperVReplicaAzureApplyRecoveryPointInput extends ApplyRecove
     @JsonProperty(value = "secondaryKekCertificatePfx")
     private String secondaryKekCertificatePfx;
 
-    /** Creates an instance of HyperVReplicaAzureApplyRecoveryPointInput class. */
+    /**
+     * Creates an instance of HyperVReplicaAzureApplyRecoveryPointInput class.
+     */
     public HyperVReplicaAzureApplyRecoveryPointInput() {
     }
 
     /**
      * Get the primaryKekCertificatePfx property: The primary kek certificate pfx.
-     *
+     * 
      * @return the primaryKekCertificatePfx value.
      */
     public String primaryKekCertificatePfx() {
@@ -41,7 +45,7 @@ public final class HyperVReplicaAzureApplyRecoveryPointInput extends ApplyRecove
 
     /**
      * Set the primaryKekCertificatePfx property: The primary kek certificate pfx.
-     *
+     * 
      * @param primaryKekCertificatePfx the primaryKekCertificatePfx value to set.
      * @return the HyperVReplicaAzureApplyRecoveryPointInput object itself.
      */
@@ -52,7 +56,7 @@ public final class HyperVReplicaAzureApplyRecoveryPointInput extends ApplyRecove
 
     /**
      * Get the secondaryKekCertificatePfx property: The secondary kek certificate pfx.
-     *
+     * 
      * @return the secondaryKekCertificatePfx value.
      */
     public String secondaryKekCertificatePfx() {
@@ -61,7 +65,7 @@ public final class HyperVReplicaAzureApplyRecoveryPointInput extends ApplyRecove
 
     /**
      * Set the secondaryKekCertificatePfx property: The secondary kek certificate pfx.
-     *
+     * 
      * @param secondaryKekCertificatePfx the secondaryKekCertificatePfx value to set.
      * @return the HyperVReplicaAzureApplyRecoveryPointInput object itself.
      */
@@ -72,7 +76,7 @@ public final class HyperVReplicaAzureApplyRecoveryPointInput extends ApplyRecove
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

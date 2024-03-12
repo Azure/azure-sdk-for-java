@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Agent details. */
+/**
+ * Agent details.
+ */
 @Immutable
 public final class AgentDetails {
     /*
@@ -41,13 +43,15 @@ public final class AgentDetails {
     @JsonProperty(value = "disks", access = JsonProperty.Access.WRITE_ONLY)
     private List<AgentDiskDetails> disks;
 
-    /** Creates an instance of AgentDetails class. */
+    /**
+     * Creates an instance of AgentDetails class.
+     */
     public AgentDetails() {
     }
 
     /**
      * Get the agentId property: The Id of the agent running on the server.
-     *
+     * 
      * @return the agentId value.
      */
     public String agentId() {
@@ -56,7 +60,7 @@ public final class AgentDetails {
 
     /**
      * Get the machineId property: The Id of the machine to which the agent is registered.
-     *
+     * 
      * @return the machineId value.
      */
     public String machineId() {
@@ -65,7 +69,7 @@ public final class AgentDetails {
 
     /**
      * Get the biosId property: The machine BIOS Id.
-     *
+     * 
      * @return the biosId value.
      */
     public String biosId() {
@@ -74,7 +78,7 @@ public final class AgentDetails {
 
     /**
      * Get the fqdn property: The machine FQDN.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -83,7 +87,7 @@ public final class AgentDetails {
 
     /**
      * Get the disks property: The disks.
-     *
+     * 
      * @return the disks value.
      */
     public List<AgentDiskDetails> disks() {
@@ -92,7 +96,7 @@ public final class AgentDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

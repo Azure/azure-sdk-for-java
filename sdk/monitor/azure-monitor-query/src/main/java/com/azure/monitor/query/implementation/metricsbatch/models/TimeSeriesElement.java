@@ -14,7 +14,7 @@ import java.util.List;
 @Fluent
 public final class TimeSeriesElement {
     /*
-     * the metadata values returned if $filter was specified in the call.
+     * The metadata values returned if $filter was specified in the call.
      */
     @JsonProperty(value = "metadatavalues")
     private List<MetadataValue> metadatavalues;
@@ -33,7 +33,7 @@ public final class TimeSeriesElement {
     }
 
     /**
-     * Get the metadatavalues property: the metadata values returned if $filter was specified in the call.
+     * Get the metadatavalues property: The metadata values returned if $filter was specified in the call.
      * 
      * @return the metadatavalues value.
      */
@@ -42,7 +42,7 @@ public final class TimeSeriesElement {
     }
 
     /**
-     * Set the metadatavalues property: the metadata values returned if $filter was specified in the call.
+     * Set the metadatavalues property: The metadata values returned if $filter was specified in the call.
      * 
      * @param metadatavalues the metadatavalues value to set.
      * @return the TimeSeriesElement object itself.

@@ -126,7 +126,6 @@ public final class ObjectMapperShim {
     private final ObjectMapper mapper;
     private MemberNameConverterImpl memberNameConverter;
 
-
     /**
      * Creates instance of {@link ObjectMapperShim}.
      *

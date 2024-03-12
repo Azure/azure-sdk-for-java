@@ -145,7 +145,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         /**
          * Indicate that the disposition cannot be attempted as there is no backing receiver link to perform the operation.
          */
-        DispositionFunction NO_DISPOSITION = (t, s) -> Mono.error(new IllegalStateException("Cannot update disposition as no receive-link is established."));
+        DispositionFunction NO_DISPOSITION = (t, s) -> Mono
+            .error(new IllegalStateException("Cannot update disposition as no receive-link is established."));
 
         /**
          * Updates the disposition state of a message uniquely identified by the given delivery tag.
@@ -180,20 +181,18 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         private Subscription upstream;
         private volatile long requested;
         @SuppressWarnings("rawtypes")
-        private static final AtomicLongFieldUpdater<RecoverableReactorReceiver> REQUESTED =
-            AtomicLongFieldUpdater.newUpdater(RecoverableReactorReceiver.class, "requested");
+        private static final AtomicLongFieldUpdater<RecoverableReactorReceiver> REQUESTED
+            = AtomicLongFieldUpdater.newUpdater(RecoverableReactorReceiver.class, "requested");
         private volatile int wip;
         @SuppressWarnings("rawtypes")
-        private static final AtomicIntegerFieldUpdater<RecoverableReactorReceiver> WIP =
-            AtomicIntegerFieldUpdater.newUpdater(RecoverableReactorReceiver.class, "wip");
+        private static final AtomicIntegerFieldUpdater<RecoverableReactorReceiver> WIP
+            = AtomicIntegerFieldUpdater.newUpdater(RecoverableReactorReceiver.class, "wip");
         private volatile boolean done;
         private volatile boolean cancelled;
         private volatile Throwable error;
         @SuppressWarnings("rawtypes")
-        private static final AtomicReferenceFieldUpdater<RecoverableReactorReceiver, Throwable> ERROR =
-            AtomicReferenceFieldUpdater.newUpdater(RecoverableReactorReceiver.class,
-                Throwable.class,
-                "error");
+        private static final AtomicReferenceFieldUpdater<RecoverableReactorReceiver, Throwable> ERROR
+            = AtomicReferenceFieldUpdater.newUpdater(RecoverableReactorReceiver.class, Throwable.class, "error");
 
         /**
          * Create a recoverable-receiver that supports the message-flux to stream messages from the receiver attached
@@ -248,7 +247,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             }
 
             // Create a new mediator to channel communication between the new receiver and the recoverable-receiver.
-            final ReactorReceiverMediator mediator = new ReactorReceiverMediator(this, receiver, prefetch, creditFlowMode, logger);
+            final ReactorReceiverMediator mediator
+                = new ReactorReceiverMediator(this, receiver, prefetch, creditFlowMode, logger);
 
             // Request MediatorHolder to set the new mediator as the current (for the drain-loop to pick)
             if (mediatorHolder.trySet(mediator)) {
@@ -290,7 +290,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             // It is possible that -
             // 1. the error from upstream and 'non-retriable or retry exhaust' error from RetryLoop
             // 2. Or, the error from upstream and error from receiver when NULL_RETRY_POLICY is set
-            // signals concurrently,  if so, the ERROR will be a CompositeException storing both errors.
+            // signals concurrently, if so, the ERROR will be a CompositeException storing both errors.
             if (Exceptions.addThrowable(ERROR, this, e)) {
                 done = true;
                 final String logMessage;
@@ -413,18 +413,18 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             int missed = 1;
             CoreSubscriber<? super Message> downstream = messageSubscriber;
             // Begin: serialized drain-loop.
-            for (; ;) {
+            for (;;) {
                 boolean d = done;
                 // Obtain the current mediator (backed by a receiver)
                 ReactorReceiverMediator mediator = mediatorHolder.mediator;
                 // the 'mediator' can be null only in two cases -
                 // [1]. In RecoverableReactorReceiver::onSubscribe, it passes the 'Subscription' to downstream via
-                //      messageSubscriber.onSubscribe(..). Once this method returns RecoverableReactorReceiver request
-                //      a receiver to back the very first Mediator. But from inside messageSubscriber.onSubscribe(),
-                //      Subscription.request(n) could be called resulting execution of drain-loop. In this case,
-                //      the Mediator will be null since the request for the first receiver is yet to be made.
+                // messageSubscriber.onSubscribe(..). Once this method returns RecoverableReactorReceiver request
+                // a receiver to back the very first Mediator. But from inside messageSubscriber.onSubscribe(),
+                // Subscription.request(n) could be called resulting execution of drain-loop. In this case,
+                // the Mediator will be null since the request for the first receiver is yet to be made.
                 // [2]. If the upstream signals operator termination without emitting the very first receiver, hence
-                //      no associated Mediator.
+                // no associated Mediator.
                 boolean hasMediator = mediator != null;
 
                 if (terminateIfCancelled(downstream, null)) {
@@ -514,7 +514,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                     }
                 }
 
-                // No need to check 'hasMediator' before accessing 'mediator.isRetryInitiated' since 'mediatorTerminatedAndDrained'
+                // No need to check 'hasMediator' before accessing 'mediator.isRetryInitiated' since
+                // 'mediatorTerminatedAndDrained'
                 // being 'true' means 'mediator' is set.
                 if (mediatorTerminatedAndDrained && !mediator.isRetryInitiated) {
                     mediator.isRetryInitiated = true;
@@ -564,7 +565,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * @param messageDropped the message that gets dropped if termination happened.
          * @return true if terminated, false otherwise.
          */
-        private boolean terminateIfErrorOrCompletionSignaled(boolean d, CoreSubscriber<? super Message> downstream, Message messageDropped) {
+        private boolean terminateIfErrorOrCompletionSignaled(boolean d, CoreSubscriber<? super Message> downstream,
+            Message messageDropped) {
             if (d) {
                 // true for 'd' means the operator termination was signaled.
                 final LoggingEventBuilder logBuilder = mediatorHolder.withReceiverInfo(logger.atWarning());
@@ -573,7 +575,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                     // A non-null 'e' indicates either
                     // 1. upstream signaled termination with an error
                     // 2. Or, there is 'non-retriable or retry exhausted' error
-                    // 3. Or, retry is disabled (i.e., NULL_RETRY_POLICY is set) and the receiver signaled terminal error.
+                    // 3. Or, retry is disabled (i.e., NULL_RETRY_POLICY is set) and the receiver signaled terminal
+                    // error.
                     //
                     // let's terminate the local resources and propagate the error to terminate the downstream.
 
@@ -589,7 +592,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
 
                 // The absence of error (e) indicates either
                 // 1. upstream signaled termination with completion,
-                // 2. Or, retry is disabled (i.e., NULL_RETRY_POLICY is set) and the first receiver signaled terminal completion.
+                // 2. Or, retry is disabled (i.e., NULL_RETRY_POLICY is set) and the first receiver signaled terminal
+                // completion.
                 Operators.onDiscard(messageDropped, downstream.currentContext());
                 upstream.cancel();
                 mediatorHolder.freeze();
@@ -661,9 +665,12 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                         .log("Current mediator reached terminal error-state (retriable:true).", error);
                 } else {
                     logBuilder.addKeyValue("attempt", attempt)
-                        .log("Current mediator reached terminal error-state (retriable:false) Or MessageFlux retries exhausted.", error);
+                        .log(
+                            "Current mediator reached terminal error-state (retriable:false) Or MessageFlux retries exhausted.",
+                            error);
                     // Note: this method is (will be by contract) called from the drain-loop's current iteration.
-                    // Invoke 'onError' to set an error signal for the next drain-loop iteration to terminate the operator.
+                    // Invoke 'onError' to set an error signal for the next drain-loop iteration to terminate the
+                    // operator.
                     onError(error);
                     // Once the control from this method 'return' to the caller i.e. to drain-loop, the next immediate
                     // drain-loop iteration (iteration guaranteed by the above error signaling) picks the error signal,
@@ -696,23 +703,24 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             final Runnable task = () -> {
                 final LoggingEventBuilder logBuilder = mediatorHolder.withReceiverInfo(logger.atWarning());
                 if (cancelled || done) {
-                    logBuilder.log("During the backoff, MessageFlux reached terminal-state [done:{}, cancelled:{}].", done, cancelled);
+                    logBuilder.log("During the backoff, MessageFlux reached terminal-state [done:{}, cancelled:{}].",
+                        done, cancelled);
                     return;
                 }
                 logBuilder.log("Requesting a new mediator.");
                 upstream.request(1);
             };
 
-            mediatorHolder.nextMediatorRequestDisposable = Schedulers.parallel().schedule(task,
-                delay.toMillis(),
-                TimeUnit.MILLISECONDS);
+            mediatorHolder.nextMediatorRequestDisposable
+                = Schedulers.parallel().schedule(task, delay.toMillis(), TimeUnit.MILLISECONDS);
         }
     }
 
     /**
      * The mediator that coordinates between {@link RecoverableReactorReceiver} and a receiver {@link AmqpReceiveLink}.
      */
-    private static final class ReactorReceiverMediator implements AsyncCloseable, CoreSubscriber<Message>, Subscription {
+    private static final class ReactorReceiverMediator
+        implements AsyncCloseable, CoreSubscriber<Message>, Subscription {
         private static final Subscription CANCELLED_SUBSCRIPTION = Operators.cancelledSubscription();
         private final RecoverableReactorReceiver parent;
         private final AmqpReceiveLink receiver;
@@ -724,16 +732,12 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         private volatile boolean ready;
         private volatile Subscription s;
         @SuppressWarnings("rawtypes")
-        private static final AtomicReferenceFieldUpdater<ReactorReceiverMediator, Subscription> S =
-            AtomicReferenceFieldUpdater.newUpdater(ReactorReceiverMediator.class,
-                Subscription.class,
-                "s");
+        private static final AtomicReferenceFieldUpdater<ReactorReceiverMediator, Subscription> S
+            = AtomicReferenceFieldUpdater.newUpdater(ReactorReceiverMediator.class, Subscription.class, "s");
         volatile Throwable error;
         @SuppressWarnings("rawtypes")
-        static final AtomicReferenceFieldUpdater<ReactorReceiverMediator, Throwable> ERROR =
-            AtomicReferenceFieldUpdater.newUpdater(ReactorReceiverMediator.class,
-                Throwable.class,
-                "error");
+        static final AtomicReferenceFieldUpdater<ReactorReceiverMediator, Throwable> ERROR
+            = AtomicReferenceFieldUpdater.newUpdater(ReactorReceiverMediator.class, Throwable.class, "error");
         /**
          * The flag indicating if the mediator is terminated by completion or error.
          */
@@ -787,14 +791,17 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                 .filter(s -> s == AmqpEndpointState.ACTIVE)
                 // ^ Pass down only readiness (active) event and terminal events.
                 .publishOn(ReceiversPumpingScheduler.instance())
-                // ^ Offload any initial drain (upon readiness) and final drain (upon termination) to ReceiversPumpingScheduler.
+                // ^ Offload any initial drain (upon readiness) and final drain (upon termination) to
+                // ReceiversPumpingScheduler.
                 .subscribe(state -> {
                     assert state == AmqpEndpointState.ACTIVE;
                     if (!ready) {
                         updateLogWithReceiverId(logger.atWarning()).log("The mediator is active.");
-                        // Set the 'ready' flag to indicate AmqpReceiveLink's successful transition to the active state.
+                        // Set the 'ready' flag to indicate AmqpReceiveLink's successful transition to the active
+                        // state.
                         // Once this flag is set, further drain-loop can use 'CreditAccountingStrategy' contract to
-                        // place credits (i.e., the flag ensures credit is placed on the Link only after it is active).
+                        // place credits (i.e., the flag ensures credit is placed on the Link only after it is
+                        // active).
                         ready = true;
                         // Notify readiness to trigger drain.
                         parent.onMediatorReady(this::updateDisposition);
@@ -824,9 +831,11 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
                     case RequestDriven:
                         creditAccounting = new RequestDrivenCreditAccountingStrategy(receiver, s, prefetch, logger);
                         break;
+
                     case EmissionDriven:
                         creditAccounting = new EmissionDrivenCreditAccountingStrategy(receiver, s, prefetch, logger);
                         break;
+
                     default:
                         throw new IllegalArgumentException("Unknown CreditFlowMode " + creditFlowMode);
                 }
@@ -868,8 +877,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             if (queue.offer(message)) {
                 parent.drain(message);
             } else {
-                Operators.onOperatorError(this,
-                    Exceptions.failWithOverflow(Exceptions.BACKPRESSURE_ERROR_QUEUE_FULL),
+                Operators.onOperatorError(this, Exceptions.failWithOverflow(Exceptions.BACKPRESSURE_ERROR_QUEUE_FULL),
                     parent.messageSubscriber.currentContext());
                 Operators.onDiscard(message, parent.messageSubscriber.currentContext());
                 done = true;
@@ -972,13 +980,15 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             if (done || s == CANCELLED_SUBSCRIPTION) {
                 // [1]. 'done' is set to 'true' when the backing receiver signals completion or error.
                 // [2]. 's' is set to 'canceled' when the upstream signals completion or error to the parent
-                //      RecoverableReactorReceiver, Or downstream cancels parent RecoverableReactorReceiver.
+                // RecoverableReactorReceiver, Or downstream cancels parent RecoverableReactorReceiver.
                 // 1 & 2 means we don't have to read the 'volatile' variables 'parent.done', 'parent.cancelled'
                 //
-                final String state = String.format("[link.done:%b link.cancelled:%b parent.done:%b parent.cancelled:%b]",
-                    done, s == CANCELLED_SUBSCRIPTION, parent.done, parent.cancelled);
+                final String state
+                    = String.format("[link.done:%b link.cancelled:%b parent.done:%b parent.cancelled:%b]", done,
+                        s == CANCELLED_SUBSCRIPTION, parent.done, parent.cancelled);
 
-                final DeliveryNotOnLinkException dispositionError = DeliveryNotOnLinkException.linkClosed(deliveryTag, deliveryState);
+                final DeliveryNotOnLinkException dispositionError
+                    = DeliveryNotOnLinkException.linkClosed(deliveryTag, deliveryState);
                 final Throwable receiverError = error;
                 if (receiverError != null) {
                     dispositionError.addSuppressed(receiverError);
@@ -996,8 +1006,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         }
 
         private LoggingEventBuilder updateLogWithReceiverId(LoggingEventBuilder builder) {
-            return builder
-                .addKeyValue(CONNECTION_ID_KEY, receiver.getConnectionId())
+            return builder.addKeyValue(CONNECTION_ID_KEY, receiver.getConnectionId())
                 .addKeyValue(LINK_NAME_KEY, receiver.getLinkName())
                 .addKeyValue(ENTITY_PATH_KEY, receiver.getEntityPath());
         }

@@ -13,8 +13,7 @@ public final class EventImpl implements Event {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    EventImpl(
-        EventInner innerObject,
+    EventImpl(EventInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

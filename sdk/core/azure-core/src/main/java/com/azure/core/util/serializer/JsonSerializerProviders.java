@@ -70,8 +70,8 @@ public final class JsonSerializerProviders {
         // But this choice here provides additional flexibility in managed environments that control
         // classloading differently (OSGi, Spring and others) and don't depend on the
         // System classloader to load JsonSerializerProviders classes.
-        Iterator<JsonSerializerProvider> iterator =
-            ServiceLoader.load(JsonSerializerProvider.class, JsonSerializerProviders.class.getClassLoader())
+        Iterator<JsonSerializerProvider> iterator
+            = ServiceLoader.load(JsonSerializerProvider.class, JsonSerializerProviders.class.getClassLoader())
                 .iterator();
         if (iterator.hasNext()) {
             jsonSerializerProvider = iterator.next();

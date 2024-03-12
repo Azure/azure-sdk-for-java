@@ -44,6 +44,8 @@ service
 <details>
 <summary> apicenter </summary>
 
+* [package-2024-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apicenter/resource-manager#tag-package-2024-03)
+    * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-apicenter/1.0.0)
 * [package-2023-07-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/apicenter/resource-manager#tag-package-2023-07-01-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-apicenter/1.0.0-beta.1)
 </details>
@@ -120,6 +122,14 @@ service
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-applicationinsights/1.0.0-beta.2)
 * [package-2020-10-20](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/applicationinsights/resource-manager#tag-package-2020-10-20)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-applicationinsights/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
+<summary> astro </summary>
+
+* [package-2023-08-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/liftrastronomer/resource-manager#tag-package-2023-08-01)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-astro/1.0.0-beta.1)
 </details>
 
 <br/>
@@ -490,6 +500,7 @@ service
 <summary> datafactory </summary>
 
 * [package-2018-06](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/datafactory/resource-manager#tag-package-2018-06)
+    * [1.0.0-beta.26](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.26)
     * [1.0.0-beta.25](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.25)
     * [1.0.0-beta.24](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.24)
     * [1.0.0-beta.23](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-datafactory/1.0.0-beta.23)
@@ -1058,6 +1069,14 @@ service
 
 <br/>
 <details>
+<summary> largeinstance </summary>
+
+* [package-2023-07-20-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/azurelargeinstance/resource-manager#tag-package-2023-07-20-preview)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-largeinstance/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
 <summary> loadtesting </summary>
 
 * [package-2022-12-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/loadtestservice/resource-manager#tag-package-2022-12-01)
@@ -1409,6 +1428,7 @@ service
 <summary> playwrighttesting </summary>
 
 * [package-2023-10-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/playwrighttesting/resource-manager#tag-package-2023-10-01-preview)
+    * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-playwrighttesting/1.0.0-beta.2)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-playwrighttesting/1.0.0-beta.1)
 </details>
 
@@ -1572,6 +1592,8 @@ service
 <details>
 <summary> recoveryservicessiterecovery </summary>
 
+* [package-2023-08](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager#tag-package-2023-08)
+    * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-recoveryservicessiterecovery/1.1.0)
 * [package-2023-06](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager#tag-package-2023-06)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-recoveryservicessiterecovery/1.0.0)
 * [package-2022-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/recoveryservicessiterecovery/resource-manager#tag-package-2022-10)
@@ -1805,6 +1827,8 @@ service
 <details>
 <summary> storagecache </summary>
 
+* [package-preview-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager#tag-package-preview-2023-11)
+    * [1.0.0-beta.10](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-storagecache/1.0.0-beta.10)
 * [package-2023-05](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager#tag-package-2023-05)
     * [1.0.0-beta.9](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-storagecache/1.0.0-beta.9)
 * [package-preview-2023-03](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/storagecache/resource-manager#tag-package-preview-2023-03)

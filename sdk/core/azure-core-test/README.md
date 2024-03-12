@@ -35,7 +35,7 @@ To use this package, add the following to your _pom.xml_.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-core-test</artifactId>
-  <version>1.23.0</version>
+  <version>1.24.0</version>
 </dependency>
 ```
 
@@ -59,7 +59,7 @@ To use this package, add the following to your _pom.xml_.
   test session.
 * [InterceptorManager][InterceptorManager.java]: A class that keeps track of network calls by either reading the data
   from an existing test session record or recording the network calls in memory. Test session records are saved or read
-  from "<i>.assets/{library-level}/src/test/resources/session-records/TestFileName.testName}.json</i>".
+  from "<i>.assets/{library-level}/src/test/resources/session-records/{TestFileName.testName}.json</i>".
 * [TestProxyRecordPolicy][TestProxyRecordPolicy.java]: Pipeline policy that records network calls using
   the [`test-proxy`][test-proxy-readme].
 * [TestProxyPlaybackClient][TestProxyPlaybackClient.java]: HTTP client that plays back responses from the recorded data
@@ -266,11 +266,10 @@ There are two primary ways to keep secrets from being written into recordings:
 
 1. [Default sanitizers][default_sanitizers], similar to the use of the RecordingRedactor are already registered in the
    TestProxyUtils for default redactions.
-2. Custom sanitizers can be added
-   using `[TestProxySanitizer]`[test_proxy_sanitizer] & `interceptorManager.addSanitizers()` method for addressing
-   specific service sanitization needs.
+2. Custom sanitizers can be added using [`TestProxySanitizer`][test_proxy_sanitizer] and 
+   `interceptorManager.addSanitizers()` method for addressing specific service sanitization needs.
    For example, registering a custom sanitizer for redacting the value of json key modelId from the response body looks
-   like the following:.
+   like the following:
    ```java readme-sample-add-sanitizer-matcher
 
    List<TestProxySanitizer> customSanitizer = new ArrayList<>();
@@ -322,7 +321,7 @@ Other useful packages are:
 
 ## Contributing
 
-For details on contributing to this repository, see the [contributing guide][cg].
+For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit <https://cla.microsoft.com>.
 
@@ -351,5 +350,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [tables-test-resources-outputs]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/test-resources.json#L115
 [test-resources]: https://github.com/Azure/azure-sdk-for-java/tree/main/eng/common/TestResources#readme
 [test_proxy_sanitizer]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/models/TestProxySanitizer.java
+[coc]: https://opensource.microsoft.com/codeofconduct/
+[coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcore%2Fazure-core-test%2FREADME.png)

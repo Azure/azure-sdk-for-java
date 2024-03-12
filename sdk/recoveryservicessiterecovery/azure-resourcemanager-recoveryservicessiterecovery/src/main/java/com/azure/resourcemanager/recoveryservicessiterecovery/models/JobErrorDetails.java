@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** This class contains the error details per object. */
+/**
+ * This class contains the error details per object.
+ */
 @Fluent
 public final class JobErrorDetails {
     /*
@@ -41,13 +43,15 @@ public final class JobErrorDetails {
     @JsonProperty(value = "taskId")
     private String taskId;
 
-    /** Creates an instance of JobErrorDetails class. */
+    /**
+     * Creates an instance of JobErrorDetails class.
+     */
     public JobErrorDetails() {
     }
 
     /**
      * Get the serviceErrorDetails property: The Service error details.
-     *
+     * 
      * @return the serviceErrorDetails value.
      */
     public ServiceError serviceErrorDetails() {
@@ -56,7 +60,7 @@ public final class JobErrorDetails {
 
     /**
      * Set the serviceErrorDetails property: The Service error details.
-     *
+     * 
      * @param serviceErrorDetails the serviceErrorDetails value to set.
      * @return the JobErrorDetails object itself.
      */
@@ -67,7 +71,7 @@ public final class JobErrorDetails {
 
     /**
      * Get the providerErrorDetails property: The Provider error details.
-     *
+     * 
      * @return the providerErrorDetails value.
      */
     public ProviderError providerErrorDetails() {
@@ -76,7 +80,7 @@ public final class JobErrorDetails {
 
     /**
      * Set the providerErrorDetails property: The Provider error details.
-     *
+     * 
      * @param providerErrorDetails the providerErrorDetails value to set.
      * @return the JobErrorDetails object itself.
      */
@@ -87,7 +91,7 @@ public final class JobErrorDetails {
 
     /**
      * Get the errorLevel property: Error level of error.
-     *
+     * 
      * @return the errorLevel value.
      */
     public String errorLevel() {
@@ -96,7 +100,7 @@ public final class JobErrorDetails {
 
     /**
      * Set the errorLevel property: Error level of error.
-     *
+     * 
      * @param errorLevel the errorLevel value to set.
      * @return the JobErrorDetails object itself.
      */
@@ -107,7 +111,7 @@ public final class JobErrorDetails {
 
     /**
      * Get the creationTime property: The creation time of job error.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -116,7 +120,7 @@ public final class JobErrorDetails {
 
     /**
      * Set the creationTime property: The creation time of job error.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the JobErrorDetails object itself.
      */
@@ -127,7 +131,7 @@ public final class JobErrorDetails {
 
     /**
      * Get the taskId property: The Id of the task.
-     *
+     * 
      * @return the taskId value.
      */
     public String taskId() {
@@ -136,7 +140,7 @@ public final class JobErrorDetails {
 
     /**
      * Set the taskId property: The Id of the task.
-     *
+     * 
      * @param taskId the taskId value to set.
      * @return the JobErrorDetails object itself.
      */
@@ -147,7 +151,7 @@ public final class JobErrorDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -14,22 +14,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DisableProtectionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DisableProtectionInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"disableProtectionReason\":\"NotSpecified\",\"replicationProviderInput\":{\"instanceType\":\"DisableProtectionProviderSpecificInput\"}}}")
-                .toObject(DisableProtectionInput.class);
+        DisableProtectionInput model = BinaryData.fromString(
+            "{\"properties\":{\"disableProtectionReason\":\"NotSpecified\",\"replicationProviderInput\":{\"instanceType\":\"DisableProtectionProviderSpecificInput\"}}}")
+            .toObject(DisableProtectionInput.class);
         Assertions.assertEquals(DisableProtectionReason.NOT_SPECIFIED, model.properties().disableProtectionReason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DisableProtectionInput model =
-            new DisableProtectionInput()
-                .withProperties(
-                    new DisableProtectionInputProperties()
-                        .withDisableProtectionReason(DisableProtectionReason.NOT_SPECIFIED)
-                        .withReplicationProviderInput(new DisableProtectionProviderSpecificInput()));
+        DisableProtectionInput model = new DisableProtectionInput().withProperties(
+            new DisableProtectionInputProperties().withDisableProtectionReason(DisableProtectionReason.NOT_SPECIFIED)
+                .withReplicationProviderInput(new DisableProtectionProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(DisableProtectionInput.class);
         Assertions.assertEquals(DisableProtectionReason.NOT_SPECIFIED, model.properties().disableProtectionReason());
     }

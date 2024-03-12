@@ -105,6 +105,19 @@ class StorageAccountMsiHandler extends RoleAssignmentHelper {
     }
 
     /**
+     * Specifies that given identity should be set as one of the External Managed Service Identity of the storage
+     * account.
+     *
+     * @param identityId an identity to associate
+     * @return StorageAccountMsiHandler
+     */
+    StorageAccountMsiHandler withExistingExternalManagedServiceIdentity(String identityId) {
+        this.initStorageAccountIdentity(IdentityType.USER_ASSIGNED, false);
+        this.userAssignedIdentities.put(identityId, new UserAssignedIdentity());
+        return this;
+    }
+
+    /**
      * Specifies that given identity should be removed from the list of External Managed Service Identity associated
      * with the storage account.
      *

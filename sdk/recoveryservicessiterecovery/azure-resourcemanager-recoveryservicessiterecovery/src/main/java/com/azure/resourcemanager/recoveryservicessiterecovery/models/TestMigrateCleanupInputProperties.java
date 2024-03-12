@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Test migrate cleanup input properties. */
+/**
+ * Test migrate cleanup input properties.
+ */
 @Fluent
 public final class TestMigrateCleanupInputProperties {
     /*
@@ -16,13 +18,15 @@ public final class TestMigrateCleanupInputProperties {
     @JsonProperty(value = "comments")
     private String comments;
 
-    /** Creates an instance of TestMigrateCleanupInputProperties class. */
+    /**
+     * Creates an instance of TestMigrateCleanupInputProperties class.
+     */
     public TestMigrateCleanupInputProperties() {
     }
 
     /**
      * Get the comments property: Test migrate cleanup comments.
-     *
+     * 
      * @return the comments value.
      */
     public String comments() {
@@ -31,7 +35,7 @@ public final class TestMigrateCleanupInputProperties {
 
     /**
      * Set the comments property: Test migrate cleanup comments.
-     *
+     * 
      * @param comments the comments value to set.
      * @return the TestMigrateCleanupInputProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class TestMigrateCleanupInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

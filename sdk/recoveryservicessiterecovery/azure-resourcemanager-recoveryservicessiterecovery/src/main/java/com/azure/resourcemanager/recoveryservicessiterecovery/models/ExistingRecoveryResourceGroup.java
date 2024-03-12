@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Existing recovery resource group input. */
+/**
+ * Existing recovery resource group input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
 @JsonTypeName("Existing")
 @Fluent
@@ -20,13 +22,15 @@ public final class ExistingRecoveryResourceGroup extends RecoveryResourceGroupCu
     @JsonProperty(value = "recoveryResourceGroupId")
     private String recoveryResourceGroupId;
 
-    /** Creates an instance of ExistingRecoveryResourceGroup class. */
+    /**
+     * Creates an instance of ExistingRecoveryResourceGroup class.
+     */
     public ExistingRecoveryResourceGroup() {
     }
 
     /**
      * Get the recoveryResourceGroupId property: The recovery resource group Id. Valid for V2 scenarios.
-     *
+     * 
      * @return the recoveryResourceGroupId value.
      */
     public String recoveryResourceGroupId() {
@@ -35,7 +39,7 @@ public final class ExistingRecoveryResourceGroup extends RecoveryResourceGroupCu
 
     /**
      * Set the recoveryResourceGroupId property: The recovery resource group Id. Valid for V2 scenarios.
-     *
+     * 
      * @param recoveryResourceGroupId the recoveryResourceGroupId value to set.
      * @return the ExistingRecoveryResourceGroup object itself.
      */
@@ -46,7 +50,7 @@ public final class ExistingRecoveryResourceGroup extends RecoveryResourceGroupCu
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

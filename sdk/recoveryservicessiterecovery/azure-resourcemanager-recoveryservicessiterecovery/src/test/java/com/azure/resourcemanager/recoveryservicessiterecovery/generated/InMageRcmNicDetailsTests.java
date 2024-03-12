@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageRcmNicDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmNicDetails model =
-            BinaryData
-                .fromString(
-                    "{\"nicId\":\"tadopgfzdg\",\"isPrimaryNic\":\"c\",\"isSelectedForFailover\":\"rsvloy\",\"sourceIPAddress\":\"igqkzjuqwqa\",\"sourceIPAddressType\":\"Dynamic\",\"sourceNetworkId\":\"x\",\"sourceSubnetName\":\"xhyoip\",\"targetIPAddress\":\"dbgsosc\",\"targetIPAddressType\":\"Static\",\"targetSubnetName\":\"zfvbennmfkbpj\",\"testSubnetName\":\"tekwwnthropm\",\"testIPAddress\":\"d\",\"testIPAddressType\":\"Dynamic\"}")
-                .toObject(InMageRcmNicDetails.class);
+        InMageRcmNicDetails model = BinaryData.fromString(
+            "{\"nicId\":\"tadopgfzdg\",\"isPrimaryNic\":\"c\",\"isSelectedForFailover\":\"rsvloy\",\"sourceIPAddress\":\"igqkzjuqwqa\",\"sourceIPAddressType\":\"Dynamic\",\"sourceNetworkId\":\"x\",\"sourceSubnetName\":\"xhyoip\",\"targetIPAddress\":\"dbgsosc\",\"targetIPAddressType\":\"Static\",\"targetSubnetName\":\"zfvbennmfkbpj\",\"testSubnetName\":\"tekwwnthropm\",\"testIPAddress\":\"d\",\"testIPAddressType\":\"Dynamic\"}")
+            .toObject(InMageRcmNicDetails.class);
         Assertions.assertEquals("c", model.isPrimaryNic());
         Assertions.assertEquals("rsvloy", model.isSelectedForFailover());
         Assertions.assertEquals("dbgsosc", model.targetIpAddress());
@@ -29,16 +27,10 @@ public final class InMageRcmNicDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmNicDetails model =
-            new InMageRcmNicDetails()
-                .withIsPrimaryNic("c")
-                .withIsSelectedForFailover("rsvloy")
-                .withTargetIpAddress("dbgsosc")
-                .withTargetIpAddressType(EthernetAddressType.STATIC)
-                .withTargetSubnetName("zfvbennmfkbpj")
-                .withTestSubnetName("tekwwnthropm")
-                .withTestIpAddress("d")
-                .withTestIpAddressType(EthernetAddressType.DYNAMIC);
+        InMageRcmNicDetails model = new InMageRcmNicDetails().withIsPrimaryNic("c").withIsSelectedForFailover("rsvloy")
+            .withTargetIpAddress("dbgsosc").withTargetIpAddressType(EthernetAddressType.STATIC)
+            .withTargetSubnetName("zfvbennmfkbpj").withTestSubnetName("tekwwnthropm").withTestIpAddress("d")
+            .withTestIpAddressType(EthernetAddressType.DYNAMIC);
         model = BinaryData.fromObject(model).toObject(InMageRcmNicDetails.class);
         Assertions.assertEquals("c", model.isPrimaryNic());
         Assertions.assertEquals("rsvloy", model.isSelectedForFailover());

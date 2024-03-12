@@ -19,12 +19,18 @@ import java.util.List;
  * This class provides a fluent builder API to help aid the configuration and instantiation of the {@link HttpPipeline},
  * calling {@link HttpPipelineBuilder#build() build} constructs an instance of the pipeline.
  *
- * <p>A pipeline is configured with a HttpClient that sends the request, if no client is set a default is used.
- * A pipeline may be configured with a list of policies that are applied to each request.</p>
+ * <p>
+ * A pipeline is configured with a HttpClient that sends the request, if no client is set a default is used.
+ * A pipeline may be configured with a list of policies that are applied to each request.
+ * </p>
  *
- * <p><strong>Code Samples</strong></p>
+ * <p>
+ * <strong>Code Samples</strong>
+ * </p>
  *
- * <p>Create a pipeline without configuration</p>
+ * <p>
+ * Create a pipeline without configuration
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.HttpPipelineBuilder.noConfiguration -->
  * <pre>
@@ -32,7 +38,9 @@ import java.util.List;
  * </pre>
  * <!-- end com.azure.core.http.HttpPipelineBuilder.noConfiguration -->
  *
- * <p>Create a pipeline using the default HTTP client and a retry policy</p>
+ * <p>
+ * Create a pipeline using the default HTTP client and a retry policy
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.HttpPipelineBuilder.defaultHttpClientWithRetryPolicy -->
  * <pre>

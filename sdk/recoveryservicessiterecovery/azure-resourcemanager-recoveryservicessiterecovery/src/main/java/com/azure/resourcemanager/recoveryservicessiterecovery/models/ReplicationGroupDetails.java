@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Replication group details. This will be used in case of San. */
+/**
+ * Replication group details. This will be used in case of San.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("ReplicationGroupDetails")
 @Immutable
 public final class ReplicationGroupDetails extends ConfigurationSettings {
-    /** Creates an instance of ReplicationGroupDetails class. */
+    /**
+     * Creates an instance of ReplicationGroupDetails class.
+     */
     public ReplicationGroupDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

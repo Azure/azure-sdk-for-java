@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** ApplyRecoveryPoint input specific to A2A provider. */
+/**
+ * ApplyRecoveryPoint input specific to A2A provider.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Immutable
 public final class A2AApplyRecoveryPointInput extends ApplyRecoveryPointProviderSpecificInput {
-    /** Creates an instance of A2AApplyRecoveryPointInput class. */
+    /**
+     * Creates an instance of A2AApplyRecoveryPointInput class.
+     */
     public A2AApplyRecoveryPointInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

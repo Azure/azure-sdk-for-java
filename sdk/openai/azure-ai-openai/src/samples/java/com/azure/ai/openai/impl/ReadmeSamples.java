@@ -39,6 +39,8 @@ import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
+import com.azure.ai.openai.models.SpeechGenerationOptions;
+import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -48,7 +50,9 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -334,5 +338,18 @@ public final class ReadmeSamples {
             }
         }
         // END: readme-sample-toolCalls
+    }
+
+    public void textToSpeech() throws IOException {
+        // BEGIN: readme-sample-textToSpeech
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        SpeechGenerationOptions options = new SpeechGenerationOptions(
+                "Today is a wonderful day to build something people love!",
+                SpeechVoice.ALLOY);
+        BinaryData speech = client.generateSpeechFromText(deploymentOrModelId, options);
+        // Checkout your generated speech in the file system.
+        Path path = Paths.get("{your-local-file-path}/speech.wav");
+        Files.write(path, speech.toBytes());
+        // END: readme-sample-textToSpeech
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** CS Accounts Details. */
+/**
+ * CS Accounts Details.
+ */
 @Fluent
 public final class RunAsAccount {
     /*
@@ -22,13 +24,15 @@ public final class RunAsAccount {
     @JsonProperty(value = "accountName")
     private String accountName;
 
-    /** Creates an instance of RunAsAccount class. */
+    /**
+     * Creates an instance of RunAsAccount class.
+     */
     public RunAsAccount() {
     }
 
     /**
      * Get the accountId property: The CS RunAs account Id.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -37,7 +41,7 @@ public final class RunAsAccount {
 
     /**
      * Set the accountId property: The CS RunAs account Id.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the RunAsAccount object itself.
      */
@@ -48,7 +52,7 @@ public final class RunAsAccount {
 
     /**
      * Get the accountName property: The CS RunAs account name.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -57,7 +61,7 @@ public final class RunAsAccount {
 
     /**
      * Set the accountName property: The CS RunAs account name.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the RunAsAccount object itself.
      */
@@ -68,7 +72,7 @@ public final class RunAsAccount {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
