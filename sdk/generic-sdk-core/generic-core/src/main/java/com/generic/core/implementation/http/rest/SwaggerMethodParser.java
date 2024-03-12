@@ -3,7 +3,6 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.annotation.Metadata;
 import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.FormParam;
@@ -30,6 +29,7 @@ import com.generic.core.models.Context;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.ExpandableEnum;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayOutputStream;
@@ -55,7 +55,6 @@ import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static com.generic.core.annotation.TypeConditions.EXPANDABLE_ENUM;
 import static com.generic.core.implementation.TypeUtil.typeImplementsInterface;
 
 /**
@@ -573,26 +572,19 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             || value instanceof Number
             || value instanceof Boolean
             || value instanceof Character
-            || value instanceof DateTimeRfc1123) {
+            || value instanceof DateTimeRfc1123
+            || value instanceof ExpandableEnum) {
 
             return String.valueOf(value);
         } else if (value instanceof OffsetDateTime) {
             return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
         } else {
-            Metadata metadata = value.getClass().getAnnotation(Metadata.class);
+            try (OutputStream outputStream = new ByteArrayOutputStream()) {
+                serializer.serializeToStream(outputStream, value);
 
-            if (metadata != null
-                && Arrays.stream(metadata.conditions()).anyMatch(condition -> condition == EXPANDABLE_ENUM)) {
-
-                return String.valueOf(value);
-            } else {
-                try (OutputStream outputStream = new ByteArrayOutputStream()) {
-                    serializer.serializeToStream(outputStream, value);
-
-                    return outputStream.toString();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                return outputStream.toString();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }
     }

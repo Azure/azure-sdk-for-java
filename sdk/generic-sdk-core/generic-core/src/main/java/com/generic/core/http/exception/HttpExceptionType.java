@@ -3,20 +3,17 @@
 
 package com.generic.core.http.exception;
 
-import com.generic.core.annotation.Metadata;
+import com.generic.core.util.ExpandableEnum;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.generic.core.annotation.TypeConditions.EXPANDABLE_ENUM;
-
 /**
  * Represents exception types for HTTP requests and responses.
  */
-@Metadata(conditions = EXPANDABLE_ENUM)
-public final class HttpExceptionType {
+public final class HttpExceptionType implements ExpandableEnum<String> {
     private static final Map<String, HttpExceptionType> VALUES = new ConcurrentHashMap<>();
 
     private final String caseSensitive;
@@ -25,6 +22,10 @@ public final class HttpExceptionType {
     private HttpExceptionType(String name) {
         this.caseSensitive = name;
         this.caseInsensitive = name.toLowerCase();
+    }
+
+    public String getValue() {
+        return caseSensitive;
     }
 
     /**
