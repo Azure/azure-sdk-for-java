@@ -88,8 +88,9 @@ jobs:
         - output: pipelineArtifact
           artifactName: 'repository-$(System.JobName)'
           targetPath: '$(System.DefaultWorkingDirectory)'
-          DisplayName: 'Capture repo state for analysis'
-          CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+          displayName: 'Capture repo state for analysis'
+          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+          sbomEnabled: false
 
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
