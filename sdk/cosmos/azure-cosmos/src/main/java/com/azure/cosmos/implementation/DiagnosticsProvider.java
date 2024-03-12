@@ -269,8 +269,10 @@ public final class DiagnosticsProvider {
         switch (signal.getType()) {
             case ON_COMPLETE:
                 end(statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, true);
+                break;
             case ON_NEXT:
-                end(statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, false);                break;
+                end(statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, false);
+                break;
             case ON_ERROR:
                 Throwable throwable = null;
                 int subStatusCode = 0;
@@ -292,7 +294,8 @@ public final class DiagnosticsProvider {
                         effectiveDiagnostics = exception.getDiagnostics();
                     }
                 }
-                end(statusCode, subStatusCode, actualItemCount, effectiveRequestCharge, effectiveDiagnostics, throwable, context, true);                break;
+                end(statusCode, subStatusCode, actualItemCount, effectiveRequestCharge, effectiveDiagnostics, throwable, context, true);
+                break;
             default:
                 // ON_SUBSCRIBE isn't the right state to end span
                 break;

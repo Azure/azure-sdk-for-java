@@ -211,15 +211,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                             break;
                         case ON_NEXT:
                             this.recordFeedResponse(pagedFluxOptions, traceCtx, tracerProvider, response, feedResponseConsumerLatencyInNanos);
-                            tracerProvider.endSpan(traceCtx);
-
-                            DiagnosticsProvider.setContextInReactor(
-                                tracerProvider.startSpan(pagedFluxOptions.getSpanName(),
-                                cosmosCtx,
-                                context));
-
                             break;
-
                         case ON_ERROR:
                             tracerProvider.recordFeedResponseConsumerLatency(
                                 signal,
