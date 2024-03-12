@@ -62,38 +62,6 @@ parameters:
     displayName: 'azure-core-http-okhttp'
     type: boolean
     default: true
-  - name: release_azurecorehttpvertx
-    displayName: 'azure-core-http-vertx'
-    type: boolean
-    default: true
-  - name: release_azurecoremanagement
-    displayName: 'azure-core-management'
-    type: boolean
-    default: true
-  - name: release_azurecoremetricsopentelemetry
-    displayName: 'azure-core-metrics-opentelemetry'
-    type: boolean
-    default: true
-  - name: release_azurecoreserializeravroapache
-    displayName: 'azure-core-serializer-avro-apache'
-    type: boolean
-    default: true
-  - name: release_azurecoreserializerjsongson
-    displayName: 'azure-core-serializer-json-gson'
-    type: boolean
-    default: true
-  - name: release_azurecoreserializerjsonjackson
-    displayName: 'azure-core-serializer-json-jackson'
-    type: boolean
-    default: true
-  - name: release_azurecoretest
-    displayName: 'azure-core-test'
-    type: boolean
-    default: true
-  - name: release_azurecoretracingopentelemetry
-    displayName: 'azure-core-tracing-opentelemetry'
-    type: boolean
-    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -111,6 +79,26 @@ extends:
         groupId: com.azure
         safeName: azurecoreamqp
         releaseInBatch: ${{ parameters.release_azurecoreamqp }}
+      - name: azure-core-amqp-experimental
+        groupId: com.azure
+        safeName: azurecoreamqpexperimental
+        releaseInBatch: ${{ parameters.release_azurecoreamqpexperimental }}
+      - name: azure-core-experimental
+        groupId: com.azure
+        safeName: azurecoreexperimental
+        releaseInBatch: ${{ parameters.release_azurecoreexperimental }}
+      - name: azure-core-http-jdk-httpclient
+        groupId: com.azure
+        safeName: azurecorehttpjdkhttpclient
+        releaseInBatch: ${{ parameters.release_azurecorehttpjdkhttpclient }}
+      - name: azure-core-http-netty
+        groupId: com.azure
+        safeName: azurecorehttpnetty
+        releaseInBatch: ${{ parameters.release_azurecorehttpnetty }}
+      - name: azure-core-http-okhttp
+        groupId: com.azure
+        safeName: azurecorehttpokhttp
+        releaseInBatch: ${{ parameters.release_azurecorehttpokhttp }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
     AdditionalStagesAfterBuild:
@@ -127,10 +115,13 @@ extends:
                   safeName: azurecoreversiontests
               VersionOverrides:
                 - jackson_2.10
+                - jackson_2.11
+                - jackson_2.12
+                - jackson_2.14
               TestGoals: surefire:test
 
     LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
           ServiceDirectory: core
           Artifacts:
@@ -140,6 +131,22 @@ extends:
             - name: azure-core-amqp
               groupId: com.azure
               safeName: azurecoreamqp
+            - name: azure-core-amqp-experimental
+              groupId: com.azure
+              safeName: azurecoreamqpexperimental
+            - name: azure-core-experimental
+              groupId: com.azure
+              safeName: azurecoreexperimental
+              skipPublishDocMs: true
+            - name: azure-core-http-jdk-httpclient
+              groupId: com.azure
+              safeName: azurecorehttpjdkhttpclient
+            - name: azure-core-http-netty
+              groupId: com.azure
+              safeName: azurecorehttpnetty
+            - name: azure-core-http-okhttp
+              groupId: com.azure
+              safeName: azurecorehttpokhttp
           MatrixReplace:
             - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
       - template: /sdk/storage/tests-template.yml
