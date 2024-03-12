@@ -566,10 +566,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return null;
         }
 
-        Metadata metadata = value.getClass().getAnnotation(Metadata.class);
-        boolean isExpandableEnum = metadata != null && Arrays.stream(metadata.conditions())
-            .anyMatch(condition -> condition == EXPANDABLE_ENUM);
-
         if (value instanceof String) {
             return (String) value;
         } else if (value.getClass().isPrimitive()
@@ -577,19 +573,26 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             || value instanceof Number
             || value instanceof Boolean
             || value instanceof Character
-            || value instanceof DateTimeRfc1123
-            || isExpandableEnum) {
+            || value instanceof DateTimeRfc1123) {
 
             return String.valueOf(value);
         } else if (value instanceof OffsetDateTime) {
             return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
         } else {
-            try (OutputStream outputStream = new ByteArrayOutputStream()) {
-                serializer.serializeToStream(outputStream, value);
+            Metadata metadata = value.getClass().getAnnotation(Metadata.class);
 
-                return outputStream.toString();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            if (metadata != null
+                && Arrays.stream(metadata.conditions()).anyMatch(condition -> condition == EXPANDABLE_ENUM)) {
+
+                return String.valueOf(value);
+            } else {
+                try (OutputStream outputStream = new ByteArrayOutputStream()) {
+                    serializer.serializeToStream(outputStream, value);
+
+                    return outputStream.toString();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }
