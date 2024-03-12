@@ -5,15 +5,12 @@ parameters:
   - name: ServiceDirectory
     type: string
     default: 'not-specified' # Set a default that breaks in obvious ways.
-  - name: TestPipeline
-    type: boolean
-    default: false
   - name: Artifacts
     type: object
     default: []
-  - name: AdditionalModules
-    type: object
-    default: []
+  - name: TestPipeline
+    type: boolean
+    default: false
   - name: PreTestSteps
     type: object
     default: []
@@ -43,13 +40,19 @@ jobs:
   - job:
     condition: ne(variables['Skip.Test'], 'true')
 
-    pool:
-      name: $(LINUXPOOL)
-      image: $(LINUXVMIMAGE)
-
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
       - template: /eng/pipelines/templates/variables/image.yml
+      # Convert artifact parameter objects to json and set them as variables to be used in
+      # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
+      # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
+      - name: ArtifactsJson
+        value: '${{ convertToJson(parameters.Artifacts) }}'
+
+    pool:
+      name: $(LINUXPOOL)
+      image: $(LINUXVMIMAGE)
+      os: linux
 
     templateContext:
       outputs:
@@ -75,8 +78,6 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
           SDKType: ${{ parameters.SDKType }}
