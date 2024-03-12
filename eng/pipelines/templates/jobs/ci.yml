@@ -14,9 +14,6 @@ parameters:
   - name: ReleaseArtifacts
     type: object
     default: []
-  - name: AdditionalModules
-    type: object
-    default: []
   - name: PreTestSteps
     type: object
     default: []
@@ -87,8 +84,6 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
-          Artifacts: ${{parameters.Artifacts}}
-          AdditionalModules: ${{parameters.AdditionalModules}}
           JobType: 'Build'
 
       - task: UsePythonVersion@0
@@ -133,7 +128,7 @@ jobs:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
 
       - pwsh: |
-          $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
+          $artifacts = '$(ArtifactsJson)' | ConvertFrom-Json
           python3 --version
 
           # Append dev package version suffix for each artifact
@@ -186,7 +181,7 @@ jobs:
           filePath: eng/scripts/Verify-Required-Maven-Artifacts.ps1
           arguments: >
             -BuildOutputDirectory $(System.DefaultWorkingDirectory)/build
-            -ArtifactsList ('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
+            -ArtifactsList ('$(ArtifactsJson)' | ConvertFrom-Json | Select-Object name, groupId)
             -InformationAction Continue
 
       - task: PowerShell@2
@@ -252,8 +247,6 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
           JobType: 'Analyze'
 
       - task: PowerShell@2
@@ -367,8 +360,6 @@ jobs:
         SDKType: ${{ parameters.SDKType }}
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         TestPipeline: ${{ parameters.TestPipeline }}
-        Artifacts: ${{ parameters.Artifacts }}
-        AdditionalModules: ${{ parameters.AdditionalModules }}
         PreTestSteps: ${{ parameters.PreTestSteps }}
         PreBuildSteps: ${{ parameters.PreBuildSteps }}
         TestGoals: ${{ parameters.TestGoals }}

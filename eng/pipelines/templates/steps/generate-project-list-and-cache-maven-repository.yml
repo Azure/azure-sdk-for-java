@@ -9,12 +9,6 @@
 
 # The project list is also being used as a cache key.
 parameters:
-  - name: Artifacts
-    type: object
-    default: []
-  - name: AdditionalModules
-    type: object
-    default: []
   - name: JobType
     type: string
     default: test
@@ -28,8 +22,14 @@ steps:
   # The ProjectListSha256 is used by the cache key, previously the cache key was using ProjectList but it was found
   # that long cache keys cause caching to fail.
 - pwsh: |
-    $artifacts = '${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json
-    $additionalModules = '${{ convertToJson(parameters.AdditionalModules) }}' | ConvertFrom-Json
+    if ('$(ArtifactsJson)' -contains 'ArtifactsJson') {
+      throw "ArtifactsJson devops variable was not set"
+    }
+    if ('$(AdditionalModulesJson)' -contains 'AdditionalModulesJson') {
+      throw "AdditionalModulesJson devops variable was not set"
+    }
+    $artifacts = '$(ArtifactsJson)' | ConvertFrom-Json
+    $additionalModules = '$(AdditionalModulesJson)' | ConvertFrom-Json
 
     $projectList = @()
     foreach ($artifact in $artifacts) {

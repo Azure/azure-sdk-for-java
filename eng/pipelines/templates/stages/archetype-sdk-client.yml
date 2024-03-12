@@ -73,6 +73,13 @@ extends:
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml@self
           - template: /eng/pipelines/templates/variables/image.yml@self
+          # Convert artifact parameter objects to json and set them as variables to be used in
+          # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
+          # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
+          - name: ArtifactsJson
+            value: '${{ convertToJson(parameters.Artifacts) }}'
+          - name: AdditionalModulesJson
+            value: '${{ convertToJson(parameters.AdditionalModules) }}'
         jobs:
           - template: /eng/pipelines/templates/jobs/ci.yml@self
             parameters:

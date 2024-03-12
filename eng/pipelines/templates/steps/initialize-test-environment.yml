@@ -1,12 +1,6 @@
 parameters:
   - name: ServiceDirectory
     type: string
-  - name: Artifacts
-    type: object
-    default: []
-  - name: AdditionalModules
-    type: object
-    default: []
   - name: CheckoutRecordings
     type: boolean
     default: false
@@ -54,8 +48,6 @@ steps:
 
   - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
     parameters:
-      Artifacts: ${{ parameters.Artifacts }}
-      AdditionalModules: ${{ parameters.AdditionalModules }}
       JobType: 'test'
 
   # This call is used generate the sparse checkout variables for non-FromSource runs.

@@ -1,8 +1,6 @@
 parameters:
   ServiceDirectory: ''
   TestResourceDirectories:
-  Artifacts: []
-  AdditionalModules: []
   EnvVars: {}
   MaxParallel: 0
   PreSteps: []
@@ -71,8 +69,6 @@ jobs:
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
           OS: ${{ parameters.OSName }}

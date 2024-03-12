@@ -120,6 +120,13 @@ stages:
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
+          # Convert artifact parameter objects to json and set them as variables to be used in
+          # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
+          # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
+          - name: ArtifactsJson
+            value: '${{ convertToJson(parameters.Artifacts) }}'
+          - name: AdditionalModulesJson
+            value: '${{ convertToJson(parameters.AdditionalModules) }}'
         jobs:
         - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
           parameters:
@@ -145,8 +152,6 @@ stages:
               TestSetupSteps: ${{ parameters.TestSetupSteps }}
               TestMode: ${{ parameters.TestMode }}
               TestVersionSupport: ${{ parameters.TestVersionSupport }}
-              Artifacts: ${{ parameters.Artifacts }}
-              AdditionalModules: ${{ parameters.AdditionalModules }}
               TestResultsFiles: ${{ parameters.TestResultsFiles }}
               DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
               TestGoals: ${{ parameters.TestGoals }}
