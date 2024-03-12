@@ -11,6 +11,7 @@ import com.azure.cosmos.models._
 import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo, readManyBoundedElastic}
 import com.azure.cosmos.spark.CosmosConstants.StatusCodes
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
+import reactor.core.Scannable
 import reactor.core.publisher.Mono
 import reactor.core.scheduler.Scheduler
 
@@ -991,10 +992,11 @@ private class BulkWriter(container: CosmosAsyncContainer,
                   numberOfIntervalsWithIdenticalActiveOperationSnapshots
                 )
 
-                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get <= 10L &&
-                  // pending retries only tracks the time to enqueue
-                  // the retry - so this should never take longer than 1 minute
-                  pendingRetriesSnapshot == 0L) {
+                if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get == 1L &&
+                    // pending retries only tracks the time to enqueue
+                    // the retry - so this should never take longer than 1 minute
+                    pendingRetriesSnapshot == 0L &&
+                    Scannable.from(bulkInputEmitter).scan(Scannable.Attr.BUFFERED) >0) {
 
                   if (verboseLoggingAfterReEnqueueingRetriesEnabled.compareAndSet(false, true)) {
                     log.logWarning(s"Starting to re-enqueue retries. Enabling verbose logs. "
@@ -1011,7 +1013,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
                       bulkInputEmitter.emitNext(operation, emitFailureHandler)
                       log.logWarning(s"Re-enqueued a retry for pending active write task '${operation.getOperationType} "
                         + s"(${operation.getPartitionKeyValue}/${operation.getId})' "
-                        +s"- Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
+                        + s"- Attempt: ${numberOfIntervalsWithIdenticalActiveOperationSnapshots.get} - "
                         + s"Context: ${operationContext.toString} $getThreadInfo")
                     }
                   })
@@ -1054,11 +1056,11 @@ private class BulkWriter(container: CosmosAsyncContainer,
 
           logInfoOrWarning(s"invoking bulkInputEmitter.onComplete(), Context: ${operationContext.toString} $getThreadInfo")
           semaphore.release(Math.max(0, activeTasks.get()))
-          val completeBulkWriteEmitResult = bulkInputEmitter.emitComplete(BulkWriter.emitFailureHandlerForComplete)
+          bulkInputEmitter.emitComplete(BulkWriter.emitFailureHandlerForComplete)
 
           // complete readManyInputEmitter
           if (readManyInputEmitterOpt.isDefined) {
-              val completeReadManyEmitResult = readManyInputEmitterOpt.get.emitComplete(BulkWriter.emitFailureHandlerForComplete)
+              readManyInputEmitterOpt.get.emitComplete(BulkWriter.emitFailureHandlerForComplete)
           }
 
           throwIfCapturedExceptionExists()
@@ -1189,7 +1191,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
               case ItemWriteStrategy.ItemOverwrite =>
                 Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
                   statusCode == 0 || // Gateway mode reports inability to connect due to PoolAcquirePendingLimitException as status code 0
-                  (statusCode == StatusCodes.NotFound && subStatusCode == 0)
+                  Exceptions.isNotFoundExceptionCore(statusCode, subStatusCode)
               case _ =>
                 Exceptions.canBeTransientFailure(statusCode, subStatusCode) ||
                   statusCode == 0 // Gateway mode reports inability to connect due to PoolAcquirePendingLimitException as status code 0
@@ -1290,7 +1292,7 @@ private object BulkWriter {
       }
     }
 
-  val emitFailureHandlerForComplete: EmitFailureHandler =
+  private val emitFailureHandlerForComplete: EmitFailureHandler =
     (signalType, emitResult) => {
       if (emitResult.equals(EmitResult.FAIL_NON_SERIALIZED)) {
         log.logDebug(s"emitFailureHandlerForComplete - Signal: ${signalType.toString}, Result: ${emitResult.toString}")

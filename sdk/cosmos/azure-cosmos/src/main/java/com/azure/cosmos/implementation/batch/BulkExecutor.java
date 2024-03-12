@@ -317,7 +317,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                     .publishOn(CosmosSchedulers.BULK_EXECUTOR_BOUNDED_ELASTIC)
                     .onErrorMap(throwable -> {
                         logger.error("{}: Skipping an error operation while processing. Cause: {}, Context: {}",
-                            Thread.currentThread ().getName(),
+                            getThreadInfo(),
                             throwable.getMessage(),
                             this.operationContextText,
                             throwable);
