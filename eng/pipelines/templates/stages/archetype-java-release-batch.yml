@@ -50,9 +50,8 @@ stages:
           runOnce:
             deploy:
               steps:
-                # - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
-                # Download eng/CredscanSuppressions.json for 1es sdl/credscan to work properly
-                - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                - checkout: none
+                - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
                 - download: current
                   displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
@@ -215,6 +214,7 @@ stages:
                         - Name: Azure/azure-sdk-for-java
                           Commitish: $(Build.SourceVersion)
                           WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
+                  - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
                   - download: current
                     displayName: 'Download Artifacts'
                     artifact: ${{parameters.ArtifactName}}-signed
