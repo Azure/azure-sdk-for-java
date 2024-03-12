@@ -7,7 +7,6 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.CoreUtils;
@@ -63,6 +62,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -70,6 +70,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -263,7 +265,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void createAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
 
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, match))
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -301,8 +303,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void createACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
-
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, noneMatch))
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if(newNoneMatch.equals("null")) {
@@ -748,7 +749,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
 
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, match))
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -775,7 +776,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
 
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, noneMatch))
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if(newNoneMatch.equals("null")) {
@@ -833,7 +834,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteIfExistsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
 
-        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, match))
+        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -864,7 +865,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void deleteIfExistsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
 
-        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, noneMatch))
+        Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if(newNoneMatch.equals("null")) {
@@ -906,7 +907,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setPermissionsAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, match))
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -933,7 +934,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void setPermissionsACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
 
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, noneMatch))
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if(newNoneMatch.equals("null")) {
@@ -982,7 +983,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void setAclAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                          String leaseID) {
 
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, match))
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -1009,7 +1010,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void setAclACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                              String leaseID) {
 
-        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, noneMatch))
+        Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if(newNoneMatch.equals("null")) {
@@ -1069,24 +1070,26 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveBatchesResume() {
-        //todo isbr
-        setupStandardRecursiveAclTest().block();
         PathSetAccessControlRecursiveOptions options =
             new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(1);
 
-        AccessControlChangeResult r = dc.setAccessControlRecursiveWithResponse(options).block().getValue();
-        options.setMaxBatches(null).setContinuationToken(r.getContinuationToken());
+        Mono<Tuple2<Response<AccessControlChangeResult>, Response<AccessControlChangeResult>>> response = setupStandardRecursiveAclTest()
+            .then(dc.setAccessControlRecursiveWithResponse(options))
+                .flatMap(r -> {
+                    options.setMaxBatches(null).setContinuationToken(r.getValue().getContinuationToken());
+                    return Mono.zip(Mono.just(r), dc.setAccessControlRecursiveWithResponse(options));
+                });
 
-        StepVerifier.create(dc.setAccessControlRecursiveWithResponse(options))
+        StepVerifier.create(response)
             .assertNext(r2 -> {
-                assertEquals(3L, r.getCounters().getChangedDirectoriesCount()
-                    + r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
-                assertEquals(4L, r.getCounters().getChangedFilesCount()
-                    + r2.getValue().getCounters().getChangedFilesCount());
-                assertEquals(0L, r.getCounters().getFailedChangesCount()
-                    + r2.getValue().getCounters().getFailedChangesCount());
-                assertNull(r2.getValue().getContinuationToken());
-                assertNull(r.getBatchFailures());
+                assertEquals(3L, r2.getT1().getValue().getCounters().getChangedDirectoriesCount()
+                    + r2.getT2().getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
+                assertEquals(4L, r2.getT1().getValue().getCounters().getChangedFilesCount()
+                    + r2.getT2().getValue().getCounters().getChangedFilesCount());
+                assertEquals(0L, r2.getT1().getValue().getCounters().getFailedChangesCount()
+                    + r2.getT2().getValue().getCounters().getFailedChangesCount());
+                assertNull(r2.getT2().getValue().getContinuationToken());
+                assertNull(r2.getT1().getValue().getBatchFailures());
             })
             .verifyComplete();
     }
@@ -1132,33 +1135,35 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void setACLRecursiveBatchesFollowToken() {
-        //todo isbr
-        setupStandardRecursiveAclTest().block();
+        AtomicLong failedChanges = new AtomicLong();
+        AtomicLong directoriesChanged = new AtomicLong();
+        AtomicLong filesChanged = new AtomicLong();
+        AtomicInteger iterations = new AtomicInteger();
+
         PathSetAccessControlRecursiveOptions options = new PathSetAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
             .setBatchSize(2).setMaxBatches(2);
 
-        String continuation = "null";
-        int failedChanges = 0;
-        int directoriesChanged = 0;
-        int filesChanged = 0;
-        int iterations = 0;
-        while (!CoreUtils.isNullOrEmpty(continuation) && iterations < 10) {
-            if (iterations == 0) {
-                continuation = null; // do while not supported in Groovy
-            }
-            options.setContinuationToken(continuation);
-            AccessControlChangeResult result = dc.setAccessControlRecursiveWithResponse(options).block().getValue();
-            failedChanges += result.getCounters().getFailedChangesCount();
-            directoriesChanged += result.getCounters().getChangedDirectoriesCount();
-            filesChanged += result.getCounters().getChangedFilesCount();
-            iterations++;
-            continuation = result.getContinuationToken();
-        }
+        Mono<Void> step = dc.setAccessControlRecursiveWithResponse(options)
+            .expand(response -> {
+                AccessControlChangeResult result = response.getValue();
+                failedChanges.addAndGet(result.getCounters().getFailedChangesCount());
+                directoriesChanged.addAndGet(result.getCounters().getChangedDirectoriesCount());
+                filesChanged.addAndGet(result.getCounters().getChangedFilesCount());
+                iterations.incrementAndGet();
 
-        assertEquals(0, failedChanges);
-        assertEquals(3, directoriesChanged); // Including the top level
-        assertEquals(4, filesChanged);
-        assertEquals(2, iterations);
+                return CoreUtils.isNullOrEmpty(result.getContinuationToken()) || iterations.get() >= 10
+                    ? Mono.empty()
+                    : dc.setAccessControlRecursiveWithResponse(options.setContinuationToken(result.getContinuationToken()));
+            })
+            .then();
+
+        StepVerifier.create(setupStandardRecursiveAclTest().then(step))
+            .verifyComplete();
+
+        assertEquals(0, failedChanges.get());
+        assertEquals(3, directoriesChanged.get()); // Including the top level
+        assertEquals(4, filesChanged.get());
+        assertEquals(2, iterations.get());
     }
 
     private DataLakeDirectoryAsyncClient getSasDirectoryClient(DataLakeDirectoryAsyncClient directoryClient, String owner) {
@@ -1510,24 +1515,26 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursiveBatchesResume() {
-        //todo isbr
-        setupStandardRecursiveAclTest().block();
         PathUpdateAccessControlRecursiveOptions options =
             new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(1);
 
-        AccessControlChangeResult r = dc.updateAccessControlRecursiveWithResponse(options).block().getValue();
+        Mono<Tuple2<Response<AccessControlChangeResult>, Response<AccessControlChangeResult>>> response = setupStandardRecursiveAclTest()
+            .then(dc.updateAccessControlRecursiveWithResponse(options))
+                .flatMap(r -> {
+                    options.setMaxBatches(null).setContinuationToken(r.getValue().getContinuationToken());
+                    return Mono.zip(Mono.just(r), dc.updateAccessControlRecursiveWithResponse(options));
+                });
 
-        options.setMaxBatches(null).setContinuationToken(r.getContinuationToken());
-        StepVerifier.create(dc.updateAccessControlRecursiveWithResponse(options))
+        StepVerifier.create(response)
             .assertNext(r2 -> {
-                assertEquals(3L, r.getCounters().getChangedDirectoriesCount()
-                    + r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
-                assertEquals(4L, r.getCounters().getChangedFilesCount()
-                    + r2.getValue().getCounters().getChangedFilesCount());
-                assertEquals(0L, r.getCounters().getFailedChangesCount()
-                    + r2.getValue().getCounters().getFailedChangesCount());
-                assertNull(r2.getValue().getContinuationToken());
-                assertNull(r.getBatchFailures());
+                assertEquals(3L, r2.getT1().getValue().getCounters().getChangedDirectoriesCount()
+                    + r2.getT2().getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
+                assertEquals(4L, r2.getT1().getValue().getCounters().getChangedFilesCount()
+                    + r2.getT2().getValue().getCounters().getChangedFilesCount());
+                assertEquals(0L, r2.getT1().getValue().getCounters().getFailedChangesCount()
+                    + r2.getT2().getValue().getCounters().getFailedChangesCount());
+                assertNull(r2.getT2().getValue().getContinuationToken());
+                assertNull(r2.getT1().getValue().getBatchFailures());
             })
             .verifyComplete();
     }
@@ -1572,33 +1579,30 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void updateACLRecursiveBatchesFollowToken() {
-        //todo isbr
-        setupStandardRecursiveAclTest().block();
+        AtomicLong failedChanges = new AtomicLong();
+        AtomicLong directoriesChanged = new AtomicLong();
+        AtomicLong filesChanged = new AtomicLong();
+        AtomicInteger iterations = new AtomicInteger();
+
         PathUpdateAccessControlRecursiveOptions options = new PathUpdateAccessControlRecursiveOptions(PATH_ACCESS_CONTROL_ENTRIES)
             .setBatchSize(2).setMaxBatches(2);
 
-        String continuation = "null";
-        int failedChanges = 0;
-        int directoriesChanged = 0;
-        int filesChanged = 0;
-        int iterations = 0;
-        while (!CoreUtils.isNullOrEmpty(continuation) && iterations < 10) {
-            if (iterations == 0) {
-                continuation = null; // do while not supported in Groovy
-            }
-            options.setContinuationToken(continuation);
-            AccessControlChangeResult result = dc.updateAccessControlRecursiveWithResponse(options).block().getValue();
-            failedChanges += result.getCounters().getFailedChangesCount();
-            directoriesChanged += result.getCounters().getChangedDirectoriesCount();
-            filesChanged += result.getCounters().getChangedFilesCount();
-            iterations++;
-            continuation = result.getContinuationToken();
-        }
+        Mono<Void> step = dc.updateAccessControlRecursiveWithResponse(options)
+            .expand(response -> {
+                AccessControlChangeResult result = response.getValue();
+                failedChanges.addAndGet(result.getCounters().getFailedChangesCount());
+                directoriesChanged.addAndGet(result.getCounters().getChangedDirectoriesCount());
+                filesChanged.addAndGet(result.getCounters().getChangedFilesCount());
+                iterations.incrementAndGet();
 
-        assertEquals(0, failedChanges);
-        assertEquals(3, directoriesChanged); // Including the top level
-        assertEquals(4, filesChanged);
-        assertEquals(2, iterations);
+                return CoreUtils.isNullOrEmpty(result.getContinuationToken()) || iterations.get() >= 10
+                    ? Mono.empty()
+                    : dc.updateAccessControlRecursiveWithResponse(options.setContinuationToken(result.getContinuationToken()));
+            })
+            .then();
+
+        StepVerifier.create(setupStandardRecursiveAclTest().then(step))
+            .verifyComplete();
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
@@ -1925,24 +1929,26 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursiveBatchesResume() {
-        //todo isbr
-        setupStandardRecursiveAclTest().block();
         PathRemoveAccessControlRecursiveOptions options = new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES)
             .setBatchSize(2).setMaxBatches(1);
 
-        AccessControlChangeResult r = dc.removeAccessControlRecursiveWithResponse(options).block().getValue();
+        Mono<Tuple2<Response<AccessControlChangeResult>, Response<AccessControlChangeResult>>> response = setupStandardRecursiveAclTest()
+            .then(dc.removeAccessControlRecursiveWithResponse(options))
+                .flatMap(r -> {
+                    options.setMaxBatches(null).setContinuationToken(r.getValue().getContinuationToken());
+                    return Mono.zip(Mono.just(r), dc.removeAccessControlRecursiveWithResponse(options));
+                });
 
-        options.setMaxBatches(null).setContinuationToken(r.getContinuationToken());
-        StepVerifier.create(dc.removeAccessControlRecursiveWithResponse(options))
+        StepVerifier.create(response)
             .assertNext(r2 -> {
-                assertEquals(3L, r.getCounters().getChangedDirectoriesCount()
-                    + r2.getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
-                assertEquals(4L, r.getCounters().getChangedFilesCount()
-                    + r2.getValue().getCounters().getChangedFilesCount());
-                assertEquals(0L, r.getCounters().getFailedChangesCount()
-                    + r2.getValue().getCounters().getFailedChangesCount());
-                assertNull(r2.getValue().getContinuationToken());
-                assertNull(r.getBatchFailures());
+                assertEquals(3L, r2.getT1().getValue().getCounters().getChangedDirectoriesCount()
+                    + r2.getT2().getValue().getCounters().getChangedDirectoriesCount()); // Including the top level
+                assertEquals(4L, r2.getT1().getValue().getCounters().getChangedFilesCount()
+                    + r2.getT2().getValue().getCounters().getChangedFilesCount());
+                assertEquals(0L, r2.getT1().getValue().getCounters().getFailedChangesCount()
+                    + r2.getT2().getValue().getCounters().getFailedChangesCount());
+                assertNull(r2.getT2().getValue().getContinuationToken());
+                assertNull(r2.getT1().getValue().getBatchFailures());
             })
             .verifyComplete();
     }
@@ -1987,33 +1993,36 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
     @Test
     public void removeACLRecursiveBatchesFollowToken() {
-        //todo isbr
-        setupStandardRecursiveAclTest().block();
+
+        AtomicLong failedChanges = new AtomicLong();
+        AtomicLong directoriesChanged = new AtomicLong();
+        AtomicLong filesChanged = new AtomicLong();
+        AtomicInteger iterations = new AtomicInteger();
+
         PathRemoveAccessControlRecursiveOptions options =
             new PathRemoveAccessControlRecursiveOptions(REMOVE_ACCESS_CONTROL_ENTRIES).setBatchSize(2).setMaxBatches(2);
 
-        String continuation = "null";
-        int failedChanges = 0;
-        int directoriesChanged = 0;
-        int filesChanged = 0;
-        int iterations = 0;
-        while (!CoreUtils.isNullOrEmpty(continuation) && iterations < 10) {
-            if (iterations == 0) {
-                continuation = null; // do while not supported in Groovy
-            }
-            options.setContinuationToken(continuation);
-            AccessControlChangeResult result = dc.removeAccessControlRecursiveWithResponse(options).block().getValue();
-            failedChanges += result.getCounters().getFailedChangesCount();
-            directoriesChanged += result.getCounters().getChangedDirectoriesCount();
-            filesChanged += result.getCounters().getChangedFilesCount();
-            iterations++;
-            continuation = result.getContinuationToken();
-        }
+        Mono<Void> step = dc.removeAccessControlRecursiveWithResponse(options)
+            .expand(response -> {
+                AccessControlChangeResult result = response.getValue();
+                failedChanges.addAndGet(result.getCounters().getFailedChangesCount());
+                directoriesChanged.addAndGet(result.getCounters().getChangedDirectoriesCount());
+                filesChanged.addAndGet(result.getCounters().getChangedFilesCount());
+                iterations.incrementAndGet();
 
-        assertEquals(0, failedChanges);
-        assertEquals(3, directoriesChanged); // Including the top level
-        assertEquals(4, filesChanged);
-        assertEquals(2, iterations);
+                return CoreUtils.isNullOrEmpty(result.getContinuationToken()) || iterations.get() >= 10
+                    ? Mono.empty()
+                    : dc.removeAccessControlRecursiveWithResponse(options.setContinuationToken(result.getContinuationToken()));
+            })
+            .then();
+
+        StepVerifier.create(setupStandardRecursiveAclTest().then(step))
+            .verifyComplete();
+
+        assertEquals(0, failedChanges.get());
+        assertEquals(3, directoriesChanged.get()); // Including the top level
+        assertEquals(4, filesChanged.get());
+        assertEquals(2, iterations.get());
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
@@ -2312,11 +2321,13 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             });
     }
 
-    private Mono<DataLakeFileAsyncClient> setupStandardRecursiveAclTest() {
-        return dc.createSubdirectory(generatePathName())
-            .flatMap(subdir1 -> subdir1.createFile(generatePathName()).then(subdir1.createFile(generatePathName())))
-            .then(dc.createSubdirectory(generatePathName()))
-                .flatMap(subdir2 -> subdir2.createFile(generatePathName()).then(dc.createFile(generatePathName())));
+    private Mono<Void> setupStandardRecursiveAclTest() {
+            Mono<?> createSubDir1AndFiles = dc.createSubdirectory(generatePathName())
+                .flatMap(dirClient -> Mono.when(dirClient.createFile(generatePathName()), dirClient.createFile(generatePathName())));
+            Mono<?> createSubDir2AndFiles = dc.createSubdirectory(generatePathName())
+                .flatMap(dirClient -> dirClient.createFile(generatePathName()));
+            Mono<?> createRootFile = dc.createFile(generatePathName());
+            return Mono.when(createSubDir1AndFiles, createSubDir2AndFiles, createRootFile);
     }
 
     // set recursive acl error, with response
@@ -2350,7 +2361,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void getAccessControlAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                    String leaseID) {
 
-        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, match))
+        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -2380,7 +2391,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             return; // known issue - remove when resolved.
         }
 
-        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, noneMatch))
+        Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if(newNoneMatch.equals("null")) {
@@ -2448,7 +2459,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void renameSourceAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                String leaseID) {
 
-        Mono<Response<DataLakeDirectoryAsyncClient>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, match))
+        Mono<Response<DataLakeDirectoryAsyncClient>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -2475,7 +2486,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void renameSourceACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                    String leaseID) {
 
-        Mono<Response<DataLakeDirectoryAsyncClient>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, noneMatch))
+        Mono<Response<DataLakeDirectoryAsyncClient>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if(newNoneMatch.equals("null")) {
@@ -2500,7 +2511,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                              String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeDirectoryAsyncClient>> response = dataLakeFileSystemAsyncClient.createDirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, match)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
@@ -2528,7 +2539,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                  String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeDirectoryAsyncClient>> response = dataLakeFileSystemAsyncClient.createDirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, noneMatch)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if (newNoneMatch.equals("null")) {
@@ -2629,7 +2640,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void getPropertiesAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                 String leaseID) {
 
-        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, match))
+        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -2656,7 +2667,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void getPropertiesACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                     String leaseID) {
 
-        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, noneMatch))
+        Mono<Response<PathProperties>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newLeaseID = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
@@ -2744,7 +2755,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setHttpHeadersAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                  String leaseID) {
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, match))
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -2771,7 +2782,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     public void setHttpHeadersACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String leaseID) {
 
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, noneMatch))
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if(newNoneMatch.equals("null")) {
@@ -2856,8 +2867,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("modifiedMatchAndLeaseIdSupplier")
     public void setMetadataAC(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                               String leaseID) {
-
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, match))
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, match))
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
@@ -2883,8 +2893,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     @MethodSource("invalidModifiedMatchAndLeaseIdSupplier")
     public void setMetadataACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                   String leaseID) {
-
-        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionNonBlocking(dc, leaseID), setupPathMatchConditionNonBlocking(dc, noneMatch))
+        Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if(newNoneMatch.equals("null")) {
@@ -2989,7 +2998,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                              String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeFileAsyncClient>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, match)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
@@ -3017,7 +3026,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                  String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeFileAsyncClient>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, noneMatch)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if (newNoneMatch.equals("null")) {
@@ -3160,7 +3169,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                              String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Void>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, match)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
@@ -3188,7 +3197,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                  String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Void>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, noneMatch)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if (newNoneMatch.equals("null")) {
@@ -3273,7 +3282,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         String pathName = generatePathName();
 
         Mono<Response<Boolean>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, match)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
@@ -3302,7 +3311,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                          String noneMatch, String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Boolean>> response = dc.createFile(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, noneMatch)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if (newNoneMatch.equals("null")) {
@@ -3418,7 +3427,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeDirectoryAsyncClient>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, match)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
@@ -3447,7 +3456,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                    String leaseID) {
         String pathName = generatePathName();
         Mono<Response<DataLakeDirectoryAsyncClient>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, noneMatch)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if (newNoneMatch.equals("null")) {
@@ -3619,7 +3628,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Void>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, match)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
@@ -3648,7 +3657,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                    String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Void>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, noneMatch)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if (newNoneMatch.equals("null")) {
@@ -3728,7 +3737,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                        String noneMatch, String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Boolean>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, match)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, match)))
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
@@ -3759,7 +3768,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                                            String noneMatch, String leaseID) {
         String pathName = generatePathName();
         Mono<Response<Boolean>> response = dc.createSubdirectory(pathName)
-            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionNonBlocking(clientReturn, leaseID), setupPathMatchConditionNonBlocking(clientReturn, noneMatch)))
+            .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
                 if (newNoneMatch.equals("null")) {
