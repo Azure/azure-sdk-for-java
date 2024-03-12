@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.directconnectivity.ConnectionOpeningStrategy;
 import io.netty.channel.ChannelOption;
 
 import java.time.Duration;
@@ -42,6 +43,7 @@ public final class DirectConnectionConfig {
     private int ioThreadPriority;
     private boolean healthCheckTimeoutDetectionEnabled;
     private int minConnectionPoolSizePerEndpoint;
+    private ConnectionOpeningStrategy connectionOpeningStrategy;
 
     /**
      * Constructor
@@ -58,6 +60,7 @@ public final class DirectConnectionConfig {
         this.ioThreadPriority = DEFAULT_IO_THREAD_PRIORITY;
         this.healthCheckTimeoutDetectionEnabled = Configs.isTcpHealthCheckTimeoutDetectionEnabled();
         this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
+        this.connectionOpeningStrategy = ConnectionOpeningStrategy.CONCURRENCY;
     }
 
     /**
@@ -321,6 +324,15 @@ public final class DirectConnectionConfig {
         return this.minConnectionPoolSizePerEndpoint;
     }
 
+    ConnectionOpeningStrategy getConnectionOpeningStrategy() {
+        return connectionOpeningStrategy;
+    }
+
+    DirectConnectionConfig setConnectionOpeningStrategy(ConnectionOpeningStrategy connectionOpeningStrategy) {
+        this.connectionOpeningStrategy = connectionOpeningStrategy;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "DirectConnectionConfig{" +
@@ -333,6 +345,7 @@ public final class DirectConnectionConfig {
             ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
             ", ioThreadPriority=" + ioThreadPriority +
             ", tcpHealthCheckTimeoutDetectionEnabled=" + healthCheckTimeoutDetectionEnabled +
+            ", connectionOpeningStrategy=" + connectionOpeningStrategy +
             '}';
     }
 
@@ -386,6 +399,18 @@ public final class DirectConnectionConfig {
                 @Override
                 public int getMinConnectionPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig) {
                     return directConnectionConfig.getMinConnectionPoolSizePerEndpoint();
+                }
+
+                @Override
+                public DirectConnectionConfig setConnectionOpeningStrategy(
+                    DirectConnectionConfig directConnectionConfig,
+                    ConnectionOpeningStrategy connectionOpeningStrategy) {
+                    return directConnectionConfig.setConnectionOpeningStrategy(connectionOpeningStrategy);
+                }
+
+                @Override
+                public ConnectionOpeningStrategy getConnectionOpeningStrategy(DirectConnectionConfig directConnectionConfig) {
+                    return directConnectionConfig.getConnectionOpeningStrategy();
                 }
             });
     }

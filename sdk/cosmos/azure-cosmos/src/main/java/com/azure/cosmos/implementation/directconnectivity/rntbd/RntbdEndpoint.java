@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.AddressSelector;
+import com.azure.cosmos.implementation.directconnectivity.ConnectionOpeningStrategy;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -219,6 +220,11 @@ public interface RntbdEndpoint extends AutoCloseable {
         @JsonProperty
         public int maxConcurrentRequestsPerEndpoint() {
             return this.options.maxConcurrentRequestsPerEndpoint();
+        }
+
+        @JsonProperty
+        public ConnectionOpeningStrategy connectionOpeningStrategy() {
+            return this.options.getConnectionOpeningStrategy();
         }
 
         @JsonProperty

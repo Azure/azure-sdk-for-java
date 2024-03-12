@@ -525,6 +525,9 @@ public class RntbdTransportClient extends TransportClient {
         private final int maxRequestsPerChannel;
 
         @JsonProperty()
+        private final ConnectionOpeningStrategy connectionOpeningStrategy;
+
+        @JsonProperty()
         private final int maxConcurrentRequestsPerEndpointOverride;
 
         @JsonProperty()
@@ -663,6 +666,7 @@ public class RntbdTransportClient extends TransportClient {
             this.maxBufferCapacity = builder.maxBufferCapacity;
             this.maxChannelsPerEndpoint = builder.maxChannelsPerEndpoint;
             this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
+            this.connectionOpeningStrategy = builder.connectionOpeningStrategy;
             this.maxConcurrentRequestsPerEndpointOverride = builder.maxConcurrentRequestsPerEndpointOverride;
             this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
             this.tcpNetworkRequestTimeout = builder.tcpNetworkRequestTimeout;
@@ -703,6 +707,7 @@ public class RntbdTransportClient extends TransportClient {
             this.maxBufferCapacity = 8192 << 10;
             this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
             this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
+            this.connectionOpeningStrategy = connectionPolicy.getConnectionOpeningStrategy();
 
             this.maxConcurrentRequestsPerEndpointOverride = -1;
 
@@ -768,6 +773,10 @@ public class RntbdTransportClient extends TransportClient {
 
         public int maxRequestsPerChannel() {
             return this.maxRequestsPerChannel;
+        }
+
+        public ConnectionOpeningStrategy getConnectionOpeningStrategy() {
+            return connectionOpeningStrategy;
         }
 
         public int maxConcurrentRequestsPerEndpoint() {
@@ -1022,6 +1031,7 @@ public class RntbdTransportClient extends TransportClient {
             private int maxBufferCapacity;
             private int maxChannelsPerEndpoint;
             private int maxRequestsPerChannel;
+            private ConnectionOpeningStrategy connectionOpeningStrategy;
             private int maxConcurrentRequestsPerEndpointOverride;
             private Duration receiveHangDetectionTime;
             private Duration tcpNetworkRequestTimeout;
@@ -1062,6 +1072,7 @@ public class RntbdTransportClient extends TransportClient {
                 this.maxBufferCapacity = DEFAULT_OPTIONS.maxBufferCapacity;
                 this.maxChannelsPerEndpoint = connectionPolicy.getMaxConnectionsPerEndpoint();
                 this.maxRequestsPerChannel = connectionPolicy.getMaxRequestsPerConnection();
+                this.connectionOpeningStrategy = connectionPolicy.getConnectionOpeningStrategy();
 
                 this.maxConcurrentRequestsPerEndpointOverride =
                     DEFAULT_OPTIONS.maxConcurrentRequestsPerEndpointOverride;

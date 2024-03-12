@@ -33,6 +33,7 @@ import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.clienttelemetry.TagName;
+import com.azure.cosmos.implementation.directconnectivity.ConnectionOpeningStrategy;
 import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
@@ -225,8 +226,9 @@ public class ImplementationBridgeHelpers {
                 DirectConnectionConfig directConnectionConfig, boolean timeoutDetectionEnabled);
             boolean isHealthCheckTimeoutDetectionEnabled(DirectConnectionConfig directConnectionConfig);
             DirectConnectionConfig setMinConnectionPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig, int minConnectionPoolSizePerEndpoint);
-
             int getMinConnectionPoolSizePerEndpoint(DirectConnectionConfig directConnectionConfig);
+            DirectConnectionConfig setConnectionOpeningStrategy(DirectConnectionConfig directConnectionConfig, ConnectionOpeningStrategy connectionOpeningStrategy);
+            ConnectionOpeningStrategy getConnectionOpeningStrategy(DirectConnectionConfig directConnectionConfig);
         }
     }
 

@@ -884,6 +884,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             } else if (this.logger.isDebugEnabled()) {
                 logger.debug("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
             }
+
+            logger.info("RntbdEndpoint Identifier {}, Stat {}", getPoolId(endpoint), getPoolStat(endpoint));
+
         }
 
         private String getPoolStat(RntbdEndpoint endpoint) {

@@ -10,6 +10,7 @@ import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
+import com.azure.cosmos.implementation.directconnectivity.ConnectionOpeningStrategy;
 
 import java.time.Duration;
 import java.util.Collections;
@@ -45,6 +46,7 @@ public final class ConnectionPolicy {
     private Duration idleTcpEndpointTimeout;
     private int maxConnectionsPerEndpoint;
     private int maxRequestsPerConnection;
+    private ConnectionOpeningStrategy connectionOpeningStrategy;
     private Duration tcpNetworkRequestTimeout;
     private boolean tcpConnectionEndpointRediscoveryEnabled;
     private int ioThreadCountPerCoreFactor;
@@ -80,6 +82,11 @@ public final class ConnectionPolicy {
         this.idleTcpEndpointTimeout = directConnectionConfig.getIdleEndpointTimeout();
         this.maxConnectionsPerEndpoint = directConnectionConfig.getMaxConnectionsPerEndpoint();
         this.maxRequestsPerConnection = directConnectionConfig.getMaxRequestsPerConnection();
+        this.connectionOpeningStrategy =
+            ImplementationBridgeHelpers
+                .DirectConnectionConfigHelper
+                .getDirectConnectionConfigAccessor()
+                .getConnectionOpeningStrategy(directConnectionConfig);
         this.tcpNetworkRequestTimeout = directConnectionConfig.getNetworkRequestTimeout();
         this.tcpConnectionEndpointRediscoveryEnabled = directConnectionConfig.isConnectionEndpointRediscoveryEnabled();
         this.ioThreadCountPerCoreFactor = ImplementationBridgeHelpers
@@ -121,6 +128,7 @@ public final class ConnectionPolicy {
         this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
         this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
         this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
+        this.connectionOpeningStrategy = ConnectionOpeningStrategy.CONCURRENCY;
     }
 
     /**
@@ -612,6 +620,10 @@ public final class ConnectionPolicy {
         return "[]";
     }
 
+    public ConnectionOpeningStrategy getConnectionOpeningStrategy() {
+        return connectionOpeningStrategy;
+    }
+
     @Override
     public String toString() {
         return "ConnectionPolicy{" +
@@ -640,6 +652,7 @@ public final class ConnectionPolicy {
             ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
+            ", connectionOpeningStrategy=" + this.connectionOpeningStrategy +
             '}';
     }
 }

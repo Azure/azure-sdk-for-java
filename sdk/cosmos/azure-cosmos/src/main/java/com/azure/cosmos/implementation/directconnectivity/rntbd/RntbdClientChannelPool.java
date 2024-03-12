@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.directconnectivity.ConnectionOpeningStrategy;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
 import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
 import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
@@ -171,6 +172,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final int maxChannels;
     private final int maxPendingAcquisitions;
     private final int maxRequestsPerChannel;
+    private final ConnectionOpeningStrategy connectionOpeningStrategy;
     private final ChannelPoolHandler poolHandler;
     private final boolean releaseHealthCheck;
     private final RntbdDurableEndpointMetrics durableEndpointMetrics;
@@ -264,7 +266,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
         this.allocatorMetric = config.allocator().metric();
         this.maxChannels = config.maxChannelsPerEndpoint();
         this.maxRequestsPerChannel = config.maxRequestsPerChannel();
-
+        this.connectionOpeningStrategy = config.connectionOpeningStrategy();
         this.maxPendingAcquisitions = Integer.MAX_VALUE;
         this.releaseHealthCheck = true;
 
@@ -680,7 +682,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             // in the open channel flow, force a new channel
             // to be opened if min channels required for the endpoint
             // has not been attained
-            if ((!(promise instanceof OpenChannelPromise)) || this.endpoint.getMinChannelsRequired() <= this.channels(false)) {
+            if (!shouldOpenNewConnection(promise)) {
                 candidate = this.pollChannel(channelAcquisitionTimeline);
 
                 if (candidate != null) {
@@ -786,6 +788,21 @@ public final class RntbdClientChannelPool implements ChannelPool {
         } catch (Throwable cause) {
             promise.tryFailure(cause);
         }
+    }
+
+    private boolean shouldOpenNewConnection(final ChannelPromiseWithExpiryTime promise) {
+        if (promise instanceof OpenChannelPromise) {
+            // we have not opened min required channels, so force to open a new one
+            return this.endpoint.getMinChannelsRequired() > this.channels(false);
+        }
+
+        if (this.connectionOpeningStrategy == ConnectionOpeningStrategy.AGGRESSIVE &&
+            this.channels(false) < this.maxChannels) {
+            // if we are on aggressive connection opening mode, always force to open a new one unitl we have reached to max channels
+            return true;
+        }
+
+        return false;
     }
 
     private boolean allowedToOpenNewChannel(int channelLimit) {
