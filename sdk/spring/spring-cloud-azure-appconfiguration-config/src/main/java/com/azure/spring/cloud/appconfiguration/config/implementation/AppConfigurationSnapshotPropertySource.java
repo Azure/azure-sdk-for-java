@@ -35,7 +35,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
      * <p>
      * Gets settings from Azure/Cache to set as configurations. Updates the cache.
      * </p>
-     * 
+     *
      * @param trim prefix to trim
      * @throws JsonProcessingException thrown if fails to parse Json content type
      */
@@ -49,7 +49,7 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
         // Feature Flags are only part of this if they come from a snapshot
         processFeatureFlag(key, setting, trimStrings);
     }
-    
+
     protected void processFeatureFlag(String key, FeatureFlagConfigurationSetting setting, List<String> trimStrings) {
         TracingInfo tracing = replicaClient.getTracingInfo();
         featureConfigurationSettings.add(setting);
@@ -59,6 +59,6 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
 
         AppConfigurationFeatureManagementPropertySource.updateTelemetry(featureFlag, tracing);
 
-        properties.put(configName, AppConfigurationFeatureManagementPropertySource.createFeature(featureFlag));
+        properties.put(configName, AppConfigurationFeatureManagementPropertySource.createFeature(featureFlag, this.replicaClient.getEndpoint()));
     }
 }

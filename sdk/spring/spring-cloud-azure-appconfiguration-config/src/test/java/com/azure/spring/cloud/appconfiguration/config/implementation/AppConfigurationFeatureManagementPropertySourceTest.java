@@ -4,7 +4,10 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USERS;
@@ -13,7 +16,10 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE_PARAMETERS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE_TARGETING;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE_TELEMETRY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_STORE_NAME;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -70,6 +76,10 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         ".appconfig.featureflag/", "Gamma",
         FEATURE_VALUE_PARAMETERS, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_4 = createItemFeatureFlag(
+        ".appconfig.featureflag/", "Delta",
+        FEATURE_VALUE_TELEMETRY, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM_NULL = createItemFeatureFlag(
         ".appconfig.featureflag/", "Alpha",
         FEATURE_VALUE,
@@ -99,6 +109,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         FEATURE_ITEMS.add(FEATURE_ITEM);
         FEATURE_ITEMS.add(FEATURE_ITEM_2);
         FEATURE_ITEMS.add(FEATURE_ITEM_3);
+        FEATURE_ITEMS.add(FEATURE_ITEM_4);
 
         FEATURE_ITEMS_TARGETING.add(FEATURE_ITEM_TARGETING);
     }
@@ -151,7 +162,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         assertEquals(gamma.getKey(),
             ((Feature) propertySourceOverride.getProperty(FEATURE_MANAGEMENT_KEY + "Gamma")).getKey());
     }
-    
+
     @Test
     public void testFeatureFlagCanBeInitedAndQueried() {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
@@ -259,5 +270,25 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         assertNotNull(filter);
         assertEquals("targetingFilter", filter.getName());
         assertEquals(parameters.size(), filter.getParameters().size());
+    }
+
+    @Test
+    public void testFeatureFlagTelemetry() {
+        when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
+        when(clientMock.listSettings(Mockito.any()))
+            .thenReturn(featureListMock).thenReturn(featureListMock);
+        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        when(clientMock.getEndpoint()).thenReturn(TEST_ENDPOINT);
+        featureFlagStore.setEnabled(true);
+
+        propertySource.initProperties(null);
+
+        String featureFlagId = "yON6V7DTGfVgOKfnPtue_2hS-CFVV5ecv-dcjqCFQt4";
+        String featureFlagReference = String.format("%s/kv/%s", TEST_ENDPOINT, ".appconfig.featureflag/Delta");
+
+        Feature featureTest = ((Feature) propertySource.getProperty(FEATURE_MANAGEMENT_KEY + "Delta"));
+        assertEquals(featureFlagId, featureTest.getTelemetry().getMetadata().get(FEATURE_FLAG_ID));
+        assertEquals(featureFlagReference, featureTest.getTelemetry().getMetadata().get(FEATURE_FLAG_REFERENCE));
+        assertEquals(TEST_E_TAG, featureTest.getTelemetry().getMetadata().get(E_TAG));
     }
 }

@@ -45,12 +45,19 @@ public final class TestUtils {
     }
 
     static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
-        String contentType) {
+         String contentType) {
+        return createItemFeatureFlag(prefix, key, value, label, contentType, null);
+    }
+
+    static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
+        String contentType, String eTag) {
         FeatureFlagConfigurationSetting item = new FeatureFlagConfigurationSetting(key, true);
+        item.setValue(value);
         item.setClientFilters(new ArrayList<>());
         item.setKey(prefix + key);
         item.setLabel(label);
         item.setContentType(contentType);
+        item.setETag(eTag);
 
         try {
             JsonNode node = MAPPER.readTree(value).get("conditions").get("client_filters");
