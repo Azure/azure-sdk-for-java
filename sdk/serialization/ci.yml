@@ -78,6 +78,7 @@ extends:
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
+          TopLevel: false
           ServiceDirectory: serialization
           Artifacts:
             - name: azure-json

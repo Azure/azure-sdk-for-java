@@ -6,6 +6,9 @@ resources:
       ref: refs/tags/release
 
 parameters:
+  - name: TopLevel
+    type: boolean
+    default: true
   - name: TestName
     type: string
     default: 'LiveTest'
@@ -114,9 +117,15 @@ parameters:
   - name: UseHttpFaultInjector
     type: boolean
     default: false
+  - name: CalledFromClient
+    type: boolean
+    default: false
 
 extends:
-  ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+  # Don't extend 1es pipelines twice if this template is called via LiveTestStages from ci templates
+  ${{ if not(parameters.TopLevel) }}:
+    template: /eng/pipelines/templates/stages/stage-redirect.yml
+  ${{ elseif eq(variables['System.TeamProject'], 'internal') }}:
     template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   ${{ else }}:
     template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
@@ -145,54 +154,60 @@ extends:
           baselineFiles: $(Build.SourcesDirectory)/eng/<language>.gdnbaselines
 
     stages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml@self
-        parameters:
-          TestName: ${{ parameters.TestName }}
-          AdditionalPlatforms: ${{ parameters.AdditionalPlatforms }}
-          Clouds: ${{ parameters.Clouds }}
-          SupportedClouds: ${{ parameters.SupportedClouds }}
-          UnsupportedClouds: ${{ parameters.UnsupportedClouds }}
-          Artifacts:
-            - ${{ each artifact in parameters.Artifacts }}:
-                - ${{ artifact }}
-          AdditionalModules:
-            - ${{ each module in parameters.AdditionalModules }}:
-                - ${{ module }}
-          TestResultsFiles: ${{ parameters.TestResultsFiles }}
-          DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
-          PreSteps:
-            - ${{ parameters.PreSteps }}
-          PostSteps:
-            - ${{ parameters.PostSteps }}
-          EnvVars: ${{ parameters.EnvVars }}
-          MaxParallel: ${{ parameters.MaxParallel }}
-          BuildInParallel: ${{ parameters.BuildInParallel }}
-          TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
-          Location: ${{ parameters.Location }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
-          TestSetupSteps:
-            - ${{ parameters.TestSetupSteps}}
-          TestMode: ${{ parameters.TestMode }}
-          TestVersionSupport: ${{ parameters.TestVersionSupport }}
-          CloudConfig: ${{ parameters.CloudConfig }}
-          MatrixConfigs:
-            - ${{ each config in parameters.MatrixConfigs }}:
-                - ${{ config }}
-          AdditionalMatrixConfigs:
-            - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                - ${{ config }}
-          MatrixFilters:
-            - ${{ each config in parameters.MatrixFilters }}:
-                - ${{ config }}
-          MatrixReplace:
-            - ${{ each config in parameters.MatrixReplace }}:
-                - ${{ config }}
-          PlatformPreSteps:
-            - ${{ parameters.PlatformPreSteps }}
-          PlatformPostSteps:
-            - ${{ parameters.PlatformPostSteps }}
-          TestGoals: ${{ parameters.TestGoals }}
-          TestOptions: ${{ parameters.TestOptions }}
-          UseHttpFaultInjector: ${{ parameters.UseHttpFaultInjector }}
+      - ${{ each cloud in parameters.CloudConfig }}:
+        - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
+          - ${{ if not(contains(parameters.UnsupportedClouds, cloud.key)) }}:
+            - stage: ${{ cloud.key }}_${{ parameters.TestName }}
+              dependsOn: []
+              jobs:
+              - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
+                parameters:
+                  SparseCheckoutPaths:
+                    - "sdk/${{ parameters.ServiceDirectory }}/**/*.json"
+                    - '!sdk/**/test-recordings/*'
+                    - '!sdk/**/session-records/*'
+                  JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
+                  AdditionalParameters:
+                    PreSteps:
+                      - ${{ parameters.PlatformPreSteps }}
+                      - ${{ parameters.PreSteps }}
+                    PostSteps:
+                      - ${{ parameters.PlatformPostSteps }}
+                      - ${{ parameters.PostSteps }}
+                    EnvVars: ${{ parameters.EnvVars }}
+                    MaxParallel: ${{ parameters.MaxParallel }}
+                    BuildInParallel: ${{ parameters.BuildInParallel }}
+                    TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+                    Location: ${{ parameters.Location }}
+                    ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                    TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
+                    TestSetupSteps: ${{ parameters.TestSetupSteps }}
+                    TestMode: ${{ parameters.TestMode }}
+                    TestVersionSupport: ${{ parameters.TestVersionSupport }}
+                    Artifacts: ${{ parameters.Artifacts }}
+                    AdditionalModules: ${{ parameters.AdditionalModules }}
+                    TestResultsFiles: ${{ parameters.TestResultsFiles }}
+                    DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
+                    TestGoals: ${{ parameters.TestGoals }}
+                    TestOptions: ${{ parameters.TestOptions }}
+                    UseHttpFaultInjector: ${{ parameters.UseHttpFaultInjector }}
 
+                  MatrixConfigs:
+                    # Enumerate platforms and additional platforms based on supported clouds (sparse platform<-->cloud matrix).
+                    - ${{ each config in parameters.MatrixConfigs }}:
+                      -  ${{ config }}
+                    - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                      -  ${{ config }}
+                  MatrixFilters:
+                    - ${{ each cloudFilter in cloud.value.MatrixFilters }}:
+                      - ${{ cloudFilter }}
+                    - ${{ parameters.MatrixFilters }}
+                  MatrixReplace:
+                    - ${{ each cloudReplace in cloud.value.MatrixReplace }}:
+                      - ${{ cloudReplace }}
+                    - ${{ parameters.MatrixReplace }}
+                  CloudConfig:
+                    SubscriptionConfiguration: ${{ cloud.value.SubscriptionConfiguration }}
+                    SubscriptionConfigurations: ${{ cloud.value.SubscriptionConfigurations }}
+                    Location: ${{ coalesce(parameters.Location, cloud.value.Location) }}
+                    Cloud: ${{ cloud.key }}
