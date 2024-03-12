@@ -92,6 +92,7 @@ public final class DevCenterEnvironment {
         @JsonProperty(value = "environmentType") String environmentTypeName,
         @JsonProperty(value = "catalogName") String catalogName,
         @JsonProperty(value = "environmentDefinitionName") String environmentDefinitionName) {
+        this.name = environmentName;
         this.environmentTypeName = environmentTypeName;
         this.catalogName = catalogName;
         this.environmentDefinitionName = environmentDefinitionName;
