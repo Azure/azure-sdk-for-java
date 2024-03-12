@@ -88,7 +88,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         credential = new AzureKeyCredential(KafkaCosmosTestConfigurations.MASTER_KEY);
     }
 
-    @BeforeSuite(groups = { "kafka" }, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = { "kafka", "kafka-integration" }, timeOut = SUITE_SETUP_TIMEOUT)
     public static void beforeSuite() {
 
         logger.info("beforeSuite Started");
@@ -124,12 +124,15 @@ public class KafkaCosmosTestSuiteBase implements ITest {
     public static void beforeSuiteUnit() {
         logger.info("beforeSuite for unit tests started");
 
-        databaseName = "KafkaCosmosTest-" + UUID.randomUUID();
-        multiPartitionContainerName = UUID.randomUUID().toString();
-        singlePartitionContainerName = UUID.randomUUID().toString();
+        databaseName =
+            StringUtils.isEmpty(databaseName) ? "KafkaCosmosTest-" + UUID.randomUUID() : databaseName;
+        multiPartitionContainerName =
+            StringUtils.isEmpty(multiPartitionContainerName) ? UUID.randomUUID().toString() : multiPartitionContainerName;
+        singlePartitionContainerName =
+            StringUtils.isEmpty(singlePartitionContainerName) ? UUID.randomUUID().toString() : singlePartitionContainerName;
     }
 
-    @AfterSuite(groups = { "kafka" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = { "kafka", "kafka-integration" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 
         logger.info("afterSuite Started");
