@@ -15,7 +15,7 @@ import java.util.List;
 @Immutable
 public final class MetricDefinitionCollection {
     /*
-     * the values for the metric definitions.
+     * The values for the metric definitions.
      */
     @JsonProperty(value = "value", required = true)
     private List<MetricDefinition> value;
@@ -31,7 +31,7 @@ public final class MetricDefinitionCollection {
     }
 
     /**
-     * Get the value property: the values for the metric definitions.
+     * Get the value property: The values for the metric definitions.
      * 
      * @return the value value.
      */

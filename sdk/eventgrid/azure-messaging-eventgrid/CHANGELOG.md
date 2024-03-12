@@ -1,14 +1,16 @@
 # Release History
 
-## 4.22.0-beta.1 (Unreleased)
+## 4.22.0 (2024-03-11)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+- New System Events for API Center
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 
 ## 4.21.0 (2024-02-13)
 

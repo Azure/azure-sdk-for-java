@@ -253,7 +253,8 @@ chatCompletionsStream
         }
     });
 ```
-For a complete sample example, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
+
+To compute tokens in streaming chat completions, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
 
 ### Text embeddings
 
@@ -459,6 +460,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_subscription]: https://azure.microsoft.com/free/
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jtokkit]: https://github.com/knuddelsgmbh/jtokkit
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
 [microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings

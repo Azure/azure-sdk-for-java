@@ -530,6 +530,10 @@ public class FunctionAppsTests extends AppServiceTest {
 //        Assertions.assertEquals("connectionValue", functionApp.getConnectionStrings().get("connectionName").value());
 
         functionApp.update()
+            .withPublicDockerHubImage("mcr.microsoft.com/azure-functions/dotnet7-quickstart-demo:1.0")
+            .apply();
+
+        functionApp.update()
             .withMaxReplicas(15)
             .apply();
 
@@ -560,6 +564,8 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertThrows(ManagementException.class, () -> appServiceManager
             .serviceClient().getWebApps().getByResourceGroup(rgName1, webappName1));
 
+        String password = "PASSWORD";
+
         String managedEnvironmentId = createAcaEnvironment(region, resourceGroup);
         appServiceManager
             .functionApps()
@@ -569,8 +575,8 @@ public class FunctionAppsTests extends AppServiceTest {
             .withManagedEnvironmentId(managedEnvironmentId)
             .withMaxReplicas(10)
             .withMinReplicas(3)
-            .withPrivateRegistryImage("xiaofeiacr.azurecr.io/samples/nginx:latest", "xiaofeiacr.azurecr.io")
-            .withCredentials("xiaofeiacr", "PASSWORD")
+            .withPrivateRegistryImage("samples/nginx:latest", "https://xiaofeiacr.azurecr.io")
+            .withCredentials("xiaofeiacr", password)
             .withRuntimeVersion("4")
             .create();
 
@@ -584,6 +590,8 @@ public class FunctionAppsTests extends AppServiceTest {
 
         functionApp.update()
             .withMaxReplicas(15)
+            .withPrivateRegistryImage("xiaofeiacr.azurecr.io/samples/nginx:latest", "https://xiaofeiacr.azurecr.io")
+            .withCredentials("xiaofeiacr", password)
             .withNewStorageAccount(generateRandomResourceName("as", 15), StorageAccountSkuType.STANDARD_LRS)
             .apply();
 
@@ -592,6 +600,13 @@ public class FunctionAppsTests extends AppServiceTest {
         Assertions.assertEquals(3, functionApp.minReplicas());
 
         Assertions.assertNotEquals(connectionString, functionApp.getAppSettings().get(KEY_AZURE_WEB_JOBS_STORAGE).value());
+
+        // when serverUrl has no protocol(https), use imageAndTag directly
+        functionApp.update()
+            .withMaxReplicas(15)
+            .withPrivateRegistryImage("xiaofeiacr.azurecr.io/samples/nginx:latest", "xiaofeiacr.azurecr.io")
+            .withCredentials("xiaofeiacr", password)
+            .apply();
     }
 
     private String createAcaEnvironment(Region region, ResourceGroup resourceGroup) {
