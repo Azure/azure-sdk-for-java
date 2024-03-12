@@ -107,6 +107,10 @@ extends:
         groupId: com.azure
         safeName: azurecore
         releaseInBatch: ${{ parameters.release_azurecore }}
+      - name: azure-core-amqp
+        groupId: com.azure
+        safeName: azurecoreamqp
+        releaseInBatch: ${{ parameters.release_azurecoreamqp }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
     AdditionalStagesAfterBuild:
@@ -133,6 +137,9 @@ extends:
             - name: azure-core
               groupId: com.azure
               safeName: azurecore
+            - name: azure-core-amqp
+              groupId: com.azure
+              safeName: azurecoreamqp
           MatrixReplace:
             - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
       - template: /sdk/storage/tests-template.yml
