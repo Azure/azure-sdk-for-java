@@ -87,26 +87,26 @@ extends:
                         - ${{ if ne(artifact.releaseInBatch, 'false') }}:
                             - ${{ artifact }}
                 - ${{ else }}:
-                    - ${{ parameters.Artifacts }}
+                  - ${{ parameters.Artifacts }}
               AdditionalModules: ${{ parameters.AdditionalModules }}
               MatrixConfigs:
                 - ${{ each config in parameters.MatrixConfigs }}:
-                    - ${{ config }}
+                  - ${{ config }}
                 - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-                    - ${{ config }}
+                  - ${{ config }}
               MatrixFilters:
                 - ${{ each filter in parameters.MatrixFilters }}:
-                    - ${{ filter }}
+                  - ${{ filter }}
                 # Skip TestFromSource jobs for SDKType data
                 - ${{ if eq(parameters.SDKType, 'data') }}:
-                    - TestFromSource=^(?!true).*
+                  - TestFromSource=^(?!true).*
               MatrixReplace:
                 - ${{ each replacement in parameters.MatrixReplace }}:
-                    - ${{ replacement }}
+                  - ${{ replacement }}
 
                 - AZURE_TEST.*=.*/
                 - ${{ if eq(parameters.SDKType, 'data') }}:
-                    - JavaTestVersion=(.*1)\.\d{2}(.*)/$1.11$2
+                  - JavaTestVersion=(.*1)\.\d{2}(.*)/$1.11$2
               PreBuildSteps: ${{ parameters.PreBuildSteps }}
               AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
               ${{ if eq(parameters.SDKType, 'data') }}:
@@ -154,15 +154,15 @@ extends:
                   ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
                     Environment: 'MavenBreakGlassApprovers'
           - ${{ else }}:
-              - template: archetype-java-release.yml@self
-                parameters:
-                  DependsOn:
-                    - Build
-                  ServiceDirectory: ${{ parameters.ServiceDirectory }}
-                  SDKType: ${{ parameters.SDKType }}
-                  Artifacts: ${{ parameters.Artifacts }}
-                  TestPipeline: ${{ parameters.TestPipeline }}
-                  ArtifactName: packages
-                  TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
-                  UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
+            - template: archetype-java-release.yml@self
+              parameters:
+                DependsOn:
+                  - Build
+                ServiceDirectory: ${{ parameters.ServiceDirectory }}
+                SDKType: ${{ parameters.SDKType }}
+                Artifacts: ${{ parameters.Artifacts }}
+                TestPipeline: ${{ parameters.TestPipeline }}
+                ArtifactName: packages
+                TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+                UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
 

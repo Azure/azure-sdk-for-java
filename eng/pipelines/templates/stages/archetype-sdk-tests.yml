@@ -114,13 +114,15 @@ parameters:
     type: boolean
     default: false
 
-extends:
+${{ if not(parameters.TopLevel) }}:
   # Don't extend 1es pipelines twice if this template is called via LiveTestStages from ci templates
   # otherwise duplicate resources and extends blocks cause compile errors
-  ${{ if not(parameters.TopLevel) }}:
-    template: /eng/pipelines/templates/stages/stage-redirect.yml
-  ${{ else }}:
+  stages:
+  - template: /eng/pipelines/templates/stages/stage-redirect.yml
+${{ else }}:
+  extends:
     template: /eng/pipelines/templates/stages/1es-redirect.yml
+
   parameters:
     stages:
       - ${{ each cloud in parameters.CloudConfig }}:
