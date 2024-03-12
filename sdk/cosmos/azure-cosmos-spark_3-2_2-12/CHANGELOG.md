@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.29.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.28.3 (2024-03-12)
 
 #### Other Changes
+* Reduced noise level in logs with WARN level but added more verbose logs when retries have been re-enqueued. - See [PR 39169](https://github.com/Azure/azure-sdk-for-java/pull/39169)
 
 ### 4.28.2 (2024-03-05)
 
