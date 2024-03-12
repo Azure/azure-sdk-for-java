@@ -357,6 +357,7 @@ public class VectorSearchTests extends SearchTestBase {
                 SearchField vectorField = new SearchField("DescriptionVector",
                     SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
                     .setSearchable(true)
+                    .setHidden(false)
                     .setVectorSearchDimensions(1536)
                     .setVectorSearchProfileName("my-vector-profile");
 
@@ -449,6 +450,7 @@ public class VectorSearchTests extends SearchTestBase {
         SearchField vectorField = new SearchField("DescriptionVector",
             SearchFieldDataType.collection(SearchFieldDataType.SINGLE))
             .setSearchable(true)
+            .setHidden(false)
             .setVectorSearchDimensions(1536)
             .setVectorSearchProfileName("my-vector-profile");
 
