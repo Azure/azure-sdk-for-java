@@ -43,6 +43,10 @@ jobs:
   - job:
     condition: ne(variables['Skip.Test'], 'true')
 
+    variables:
+      - template: /eng/pipelines/templates/variables/globals.yml
+      - template: /eng/pipelines/templates/variables/image.yml
+
     pool:
       name: $(LINUXPOOL)
       image: $(LINUXVMIMAGE)

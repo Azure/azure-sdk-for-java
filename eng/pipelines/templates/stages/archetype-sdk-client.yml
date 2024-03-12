@@ -152,7 +152,7 @@ extends:
                   UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
                   # This where the MavenBreakGlassApprovers is set for the release tasks.
                   ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
-                    Environment: 'MavenBreakGlassApprovers'
+                    Environment: 'package-publish'
           - ${{ else }}:
             - template: archetype-java-release.yml@self
               parameters:
