@@ -642,19 +642,43 @@ public final class SpanDataMapper {
         if (scheme == null) {
             return null;
         }
-        String path = attributes.get(SemanticAttributes.URL_PATH);
-        if (path == null) {
-            return null;
-        }
         String host = attributes.get(SemanticAttributes.SERVER_ADDRESS);
         if (host == null) {
             return null;
         }
         Long port = attributes.get(SemanticAttributes.SERVER_PORT);
-        if (port != null && port > 0) {
-            return scheme + "://" + host + ":" + port + path;
+        String path = attributes.get(SemanticAttributes.URL_PATH);
+        if (path == null) {
+            return null;
         }
-        return scheme + "://" + host + path;
+        String query = attributes.get(SemanticAttributes.URL_QUERY);
+
+        int len = scheme.length() + host.length() + path.length();
+        if (port != null) {
+            len += 6; // max 5 digits for port plus the port separator ":"
+        }
+        if (query != null) {
+            len += query.length() + 1; // including the query separator "?"
+        }
+
+        StringBuilder sb = new StringBuilder(len);
+        sb.append(scheme);
+        sb.append("://");
+        sb.append(host);
+        if (port != null && port > 0 && !isDefaultPortForScheme(port, scheme)) {
+            sb.append(':');
+            sb.append(port);
+        }
+        sb.append(path);
+        if (query != null) {
+            sb.append('?');
+            sb.append(query);
+        }
+        return sb.toString();
+    }
+
+    private static boolean isDefaultPortForScheme(Long port, String scheme) {
+        return (port == 80 && scheme.equals("http")) || (port == 443 && scheme.equals("https"));
     }
 
     @Nullable

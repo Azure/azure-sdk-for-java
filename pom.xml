@@ -191,6 +191,7 @@
     <module>sdk/springappdiscovery</module>
     <module>sdk/sqlvirtualmachine</module>
     <module>sdk/storage</module>
+    <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
     <module>sdk/storageimportexport</module>
     <module>sdk/storagemover</module>

@@ -217,7 +217,7 @@ public final class MetricsHelper {
             .collect(Collectors.toList());
 
         MetricsQueryResult metricsQueryResult = new MetricsQueryResult(/* TODO (srnagar): fix this item.getCost() */ null,
-            new QueryTimeInterval(item.getInterval()), item.getInterval(), item.getNamespace(), item.getResourceregion(), metrics);
+            QueryTimeInterval.parse(item.getStarttime() + "/" + item.getEndtime()), Duration.parse(item.getInterval()), item.getNamespace(), item.getResourceregion(), metrics);
         return metricsQueryResult;
     }
 
