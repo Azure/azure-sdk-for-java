@@ -95,7 +95,6 @@ extends:
                             - ${{ artifact }}
                 - ${{ else }}:
                   - ${{ parameters.Artifacts }}
-              AdditionalModules: ${{ parameters.AdditionalModules }}
               MatrixConfigs:
                 - ${{ each config in parameters.MatrixConfigs }}:
                   - ${{ config }}
