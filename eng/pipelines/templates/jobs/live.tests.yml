@@ -51,34 +51,34 @@ jobs:
       # Add a default so the job doesn't fail when the matrix is empty
       container: $[ variables['Container'] ]
 
-    templateContext:
-      outputs:
-        # Artifacts created in /eng/pipelines/templates/steps/retain-test-logs.yml via build-and-test.yml
-        - output: pipelineArtifact
-          artifactName: test-logs-$(System.StageName)-$(System.JobName)
-          targetPath: $(Build.ArtifactStagingDirectory)/test-logs.zip
-          condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
-          sbomEnabled: false
-        # Artifacts created in /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml via build-and-test.yml
-        - output: pipelineArtifact
-          artifactName: 'oom-hprofs-$(System.StageName)-$(System.JobName)'
-          targetPath: '$(Build.ArtifactStagingDirectory)/oom-hprofs-zipped'
-          condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
-          sbomEnabled: false
-        # Artifacts created in /eng/pipelines/templates/steps/publish-http-fault-injector-logs.yml
-        - output: pipelineArtifact
-          artifactName: "$(System.JobName)-http-fault-injector-logs"
-          targetPath: "$(Build.SourcesDirectory)/fault-$(System.JobName).log"
-          displayName: 'Publish http fault injector logs'
-          condition: and(failed(), eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true'))
-          sbomEnabled: false
-
-        - output: pipelineArtifact
-          artifactName: 'repository-$(System.JobName)'
-          targetPath: '$(System.DefaultWorkingDirectory)'
-          displayName: 'Capture repo state for analysis'
-          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
-          sbomEnabled: false
+        #    templateContext:
+        #      outputs:
+        #        # Artifacts created in /eng/pipelines/templates/steps/retain-test-logs.yml via build-and-test.yml
+        #        - output: pipelineArtifact
+        #          artifactName: test-logs-$(System.StageName)-$(System.JobName)
+        #          targetPath: $(Build.ArtifactStagingDirectory)/test-logs.zip
+        #          condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
+        #          sbomEnabled: false
+        #        # Artifacts created in /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml via build-and-test.yml
+        #        - output: pipelineArtifact
+        #          artifactName: 'oom-hprofs-$(System.StageName)-$(System.JobName)'
+        #          targetPath: '$(Build.ArtifactStagingDirectory)/oom-hprofs-zipped'
+        #          condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
+        #          sbomEnabled: false
+        #        # Artifacts created in /eng/pipelines/templates/steps/publish-http-fault-injector-logs.yml
+        #        - output: pipelineArtifact
+        #          artifactName: "$(System.JobName)-http-fault-injector-logs"
+        #          targetPath: "$(Build.SourcesDirectory)/fault-$(System.JobName).log"
+        #          displayName: 'Publish http fault injector logs'
+        #          condition: and(failed(), eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true'))
+        #          sbomEnabled: false
+        #
+        #        - output: pipelineArtifact
+        #          artifactName: 'repository-$(System.JobName)'
+        #          targetPath: '$(System.DefaultWorkingDirectory)'
+        #          displayName: 'Capture repo state for analysis'
+        #          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+        #          sbomEnabled: false
 
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml

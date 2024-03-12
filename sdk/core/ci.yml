@@ -189,14 +189,14 @@ extends:
                 - reactor_2023
               TestGoals: surefire:test
 
-                #    LiveTestStages:
-                #      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
-                #        parameters:
-                #          ServiceDirectory: core
-                #          Artifacts:
-                #            - name: azure-core
-                #              groupId: com.azure
-                #              safeName: azurecore
+    LiveTestStages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          ServiceDirectory: core
+          Artifacts:
+            - name: azure-core
+              groupId: com.azure
+              safeName: azurecore
                 # - name: azure-core-amqp
                 #   groupId: com.azure
                 #   safeName: azurecoreamqp
@@ -241,10 +241,10 @@ extends:
                 # - name: azure-core-tracing-opentelemetry-samples
                 #   groupId: com.azure
                 #   safeName: azurecoretracingopentelemetrysamples
-                #          MatrixReplace:
-                #            - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-                #      - template: /sdk/storage/tests-template.yml
-                #        parameters:
-                #          AdditionalMatrixReplace:
-                #            - TestFromSource=(.*)/true
+          MatrixReplace:
+            - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
+      - template: /sdk/storage/tests-template.yml
+        parameters:
+          AdditionalMatrixReplace:
+            - TestFromSource=(.*)/true
 
