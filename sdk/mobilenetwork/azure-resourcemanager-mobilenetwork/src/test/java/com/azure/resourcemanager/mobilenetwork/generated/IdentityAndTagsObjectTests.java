@@ -16,36 +16,24 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityAndTagsObjectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityAndTagsObject model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"ugxywpmueef\":{\"principalId\":\"50a92351-5a87-4b17-b650-81a112491712\",\"clientId\":\"b523b088-53bb-4a07-a297-9b7ed86bfafa\"},\"fqkquj\":{\"principalId\":\"5f016837-7506-4398-9752-3a2516c8bba9\",\"clientId\":\"6495bd3d-8c39-429f-bd86-20a832fe5c83\"},\"uyonobglaoc\":{\"principalId\":\"523838f9-3940-4490-87b7-0b2129aaf35e\",\"clientId\":\"b27875f6-bce4-4392-91ed-6e2eb997aa6c\"},\"ccm\":{\"principalId\":\"5e3686b1-f064-4c00-9295-ea6c013e5dcf\",\"clientId\":\"11f43685-4ca6-468c-9769-2ede339c8a4e\"}}},\"tags\":{\"moyrxvwfudwpz\":\"dxyt\",\"rqjbhckfrl\":\"txhdzh\",\"ca\":\"rxsbkyvp\"}}")
-                .toObject(IdentityAndTagsObject.class);
+        IdentityAndTagsObject model = BinaryData.fromString(
+            "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"ej\":{\"principalId\":\"f7edf531-b45e-43e9-a23a-9b1d26320344\",\"clientId\":\"0a1d3872-fc36-4817-867b-74e21aea2502\"},\"orxzdmohctbqvud\":{\"principalId\":\"ea7eaebb-383e-466b-a12c-d21be283a83a\",\"clientId\":\"837149ae-579e-42c5-8ef8-aa00dabef93f\"},\"ndnvo\":{\"principalId\":\"6b4d70fa-4b0b-4e44-895d-1c86a6b60cbe\",\"clientId\":\"81a2622e-3074-4d4b-b75f-6958ef6d7750\"}}},\"tags\":{\"dyggdtjixhbku\":\"jjugwdkcglhslaz\",\"fyexfwhy\":\"fqweykhmene\",\"amdecte\":\"cibvyvdcsitynn\"}}")
+            .toObject(IdentityAndTagsObject.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("dxyt", model.tags().get("moyrxvwfudwpz"));
+        Assertions.assertEquals("jjugwdkcglhslaz", model.tags().get("dyggdtjixhbku"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityAndTagsObject model =
-            new IdentityAndTagsObject()
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.NONE)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "ugxywpmueef",
-                                new UserAssignedIdentity(),
-                                "fqkquj",
-                                new UserAssignedIdentity(),
-                                "uyonobglaoc",
-                                new UserAssignedIdentity(),
-                                "ccm",
-                                new UserAssignedIdentity())))
-                .withTags(mapOf("moyrxvwfudwpz", "dxyt", "rqjbhckfrl", "txhdzh", "ca", "rxsbkyvp"));
+        IdentityAndTagsObject model = new IdentityAndTagsObject()
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("ej", new UserAssignedIdentity(), "orxzdmohctbqvud",
+                    new UserAssignedIdentity(), "ndnvo", new UserAssignedIdentity())))
+            .withTags(
+                mapOf("dyggdtjixhbku", "jjugwdkcglhslaz", "fyexfwhy", "fqweykhmene", "amdecte", "cibvyvdcsitynn"));
         model = BinaryData.fromObject(model).toObject(IdentityAndTagsObject.class);
         Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
-        Assertions.assertEquals("dxyt", model.tags().get("moyrxvwfudwpz"));
+        Assertions.assertEquals("jjugwdkcglhslaz", model.tags().get("dyggdtjixhbku"));
     }
 
     // Use "Map.of" if available

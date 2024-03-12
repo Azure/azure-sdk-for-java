@@ -18,7 +18,7 @@
   <packaging>jar</packaging>
 
   <name>Microsoft Azure SDK for MobileNetwork Management</name>
-  <description>This package contains Microsoft Azure SDK for MobileNetwork Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2023-09.</description>
+  <description>This package contains Microsoft Azure SDK for MobileNetwork Management SDK. For documentation on how to use this package, please see https://aka.ms/azsdk/java/mgmt. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2024-02.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <licenses>
@@ -45,6 +45,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
+    <revapi.skip>true</revapi.skip>
   </properties>
   <dependencies>
     <dependency>
@@ -87,8 +88,6 @@
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
-    <!-- of Mockito supporting Java 8 as a baseline. -->
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>

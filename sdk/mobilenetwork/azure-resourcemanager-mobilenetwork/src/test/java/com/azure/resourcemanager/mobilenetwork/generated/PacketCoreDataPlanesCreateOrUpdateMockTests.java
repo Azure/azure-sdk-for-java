@@ -34,58 +34,39 @@ public final class PacketCoreDataPlanesCreateOrUpdateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"userPlaneAccessInterface\":{\"name\":\"azlp\",\"ipv4Address\":\"wex\",\"ipv4Subnet\":\"zvlazipbhpwvqsgn\",\"ipv4Gateway\":\"uuzivensrpmeyyvp\"},\"userPlaneAccessVirtualIpv4Addresses\":[\"tlbijpzg\"]},\"location\":\"srfhf\",\"tags\":{\"qa\":\"mknbnxwcdommpv\",\"hajlfn\":\"zfgbrttuiaclkie\",\"b\":\"hiqfyuttdiy\"},\"id\":\"vnwsw\",\"name\":\"txkyctwwgzwxjlm\",\"type\":\"cvogygzyvne\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"userPlaneAccessInterface\":{\"name\":\"zbj\",\"ipv4Address\":\"fxsfuztlvtmv\",\"ipv4Subnet\":\"bwidql\",\"ipv4Gateway\":\"ukoveofi\"},\"userPlaneAccessVirtualIpv4Addresses\":[\"jfnmjmvlwyz\"]},\"location\":\"blkujrllfojuidjp\",\"tags\":{\"je\":\"jucejikzoeovvtz\",\"zkdbqzolx\":\"jklntikyj\",\"pcrrk\":\"zvhqjwtrhtgvg\"},\"id\":\"lawjmjsmwrok\",\"name\":\"dxfzzzwyjaf\",\"type\":\"tlhguynuchl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PacketCoreDataPlane response =
-            manager
-                .packetCoreDataPlanes()
-                .define("v")
-                .withRegion("whc")
-                .withExistingPacketCoreControlPlane("yvk", "kmrocxne")
-                .withUserPlaneAccessInterface(
-                    new InterfaceProperties()
-                        .withName("dlfp")
-                        .withIpv4Address("pucygvoavyunss")
-                        .withIpv4Subnet("ghiee")
-                        .withIpv4Gateway("lgvvpaseksgbu"))
-                .withTags(mapOf("uuerctatoyi", "ibkeph", "duczkgof", "tqpbrlcy", "srucvcrrpcjtt", "y"))
-                .withUserPlaneAccessVirtualIpv4Addresses(Arrays.asList("tu", "gdhg", "qipir", "iwrqofulopmjnl"))
-                .create();
+        PacketCoreDataPlane response = manager.packetCoreDataPlanes().define("mykyujxsglhs").withRegion("nfpubntnbatz")
+            .withExistingPacketCoreControlPlane("emc", "jk")
+            .withUserPlaneAccessInterface(new InterfaceProperties().withName("ejylmbkzu")
+                .withIpv4Address("igrfihotjewl").withIpv4Subnet("uzzjgnrefq").withIpv4Gateway("qotoihiqakydiwfb"))
+            .withTags(mapOf("attcju", "sowsaael"))
+            .withUserPlaneAccessVirtualIpv4Addresses(Arrays.asList("pzdqtvhcspod", "qaxsipietgbebjf", "lbmoichd"))
+            .create();
 
-        Assertions.assertEquals("srfhf", response.location());
-        Assertions.assertEquals("mknbnxwcdommpv", response.tags().get("qa"));
-        Assertions.assertEquals("azlp", response.userPlaneAccessInterface().name());
-        Assertions.assertEquals("wex", response.userPlaneAccessInterface().ipv4Address());
-        Assertions.assertEquals("zvlazipbhpwvqsgn", response.userPlaneAccessInterface().ipv4Subnet());
-        Assertions.assertEquals("uuzivensrpmeyyvp", response.userPlaneAccessInterface().ipv4Gateway());
-        Assertions.assertEquals("tlbijpzg", response.userPlaneAccessVirtualIpv4Addresses().get(0));
+        Assertions.assertEquals("blkujrllfojuidjp", response.location());
+        Assertions.assertEquals("jucejikzoeovvtz", response.tags().get("je"));
+        Assertions.assertEquals("zbj", response.userPlaneAccessInterface().name());
+        Assertions.assertEquals("fxsfuztlvtmv", response.userPlaneAccessInterface().ipv4Address());
+        Assertions.assertEquals("bwidql", response.userPlaneAccessInterface().ipv4Subnet());
+        Assertions.assertEquals("ukoveofi", response.userPlaneAccessInterface().ipv4Gateway());
+        Assertions.assertEquals("jfnmjmvlwyz", response.userPlaneAccessVirtualIpv4Addresses().get(0));
     }
 
     // Use "Map.of" if available
