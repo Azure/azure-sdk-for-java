@@ -692,7 +692,7 @@
 # ServiceOwners:                                     @amirkeren
 
 # ServiceLabel: %Service Bus
-# AzureSdkOwners:                                    @anuchandy
+# AzureSdkOwners:                                    @anuchandy @conniey @lmolkova
 # ServiceOwners:                                     @EldertGrootenboer
 
 # PRLabel: %Service Bus
@@ -703,10 +703,6 @@
 
 # ServiceLabel: %Service Bus %Track 1
 # AzureSdkOwners:                                    @shankarsama @yvgopal
-
-# ServiceLabel: %Service Bus
-# AzureSdkOwners:                                    @anuchandy
-# ServiceOwners:                                     @EldertGrootenboer
 
 # ServiceLabel:  %Service Fabric
 # ServiceOwners:                                     @QingChenmsft @vaishnavk @juhacket
