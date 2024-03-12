@@ -10,6 +10,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -51,8 +52,8 @@ public final class ByteBufferBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        return serializer.deserializeFromBytes(toBytes(), typeReference);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        return serializer.deserializeFromBytes(toBytes(), type);
     }
 
     @Override

@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
@@ -180,27 +182,7 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     /**
-     * Codesnippets for {@link BinaryData#toObject(Class)}.
-     */
-    public void toObjectClassDefaultJsonSerializer() {
-        // BEGIN: com.generic.core.util.BinaryData.toObject#Class
-        final Person data = new Person().setName("John");
-
-        // Ensure your classpath have the Serializer to serialize the object which implement implement
-        // com.generic.core.util.serializer.JsonSerializer interface.
-        // Or use Azure provided libraries for this.
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-jackson or
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-gson
-
-        BinaryData binaryData = BinaryData.fromObject(data);
-
-        Person person = binaryData.toObject(Person.class);
-        System.out.println(person.getName());
-        // END: com.generic.core.util.BinaryData.toObject#Class
-    }
-
-    /**
-     * Codesnippets for {@link BinaryData#toObject(TypeReference)}.
+     * Codesnippets for {@link BinaryData#toObject(Type)}.
      */
     public void toObjectTypeReferenceDefaultJsonSerializer() {
         // BEGIN: com.generic.core.util.BinaryData.toObject#TypeReference
@@ -214,13 +196,13 @@ public class BinaryDataJavaDocCodeSnippet {
 
         BinaryData binaryData = BinaryData.fromObject(data);
 
-        Person person = binaryData.toObject(TypeReference.createInstance(Person.class));
+        Person person = binaryData.toObject(Person.class);
         System.out.println(person.getName());
         // END: com.generic.core.util.BinaryData.toObject#TypeReference
     }
 
     /**
-     * Codesnippets for {@link BinaryData#toObject(TypeReference)}.
+     * Codesnippets for {@link BinaryData#toObject(Type)}.
      */
     public void toObjectTypeReferenceDefaultJsonSerializerWithGenerics() {
         // BEGIN: com.generic.core.util.BinaryData.toObject#TypeReference-generic
@@ -240,32 +222,30 @@ public class BinaryDataJavaDocCodeSnippet {
 
         BinaryData binaryData = BinaryData.fromObject(personList);
 
-        List<Person> persons = binaryData.toObject(new TypeReference<List<Person>>() { });
+        // Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
+        // type arguments and raw type passed.
+        List<Person> persons = binaryData.toObject(new ParameterizedType() {
+            @Override
+            public Type[] getActualTypeArguments() {
+                return new Type[] { Person.class };
+            }
+
+            @Override
+            public Type getRawType() {
+                return List.class;
+            }
+
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        });
         persons.forEach(person -> System.out.println(person.getName()));
         // END: com.generic.core.util.BinaryData.toObject#TypeReference-generic
     }
 
     /**
-     * Codesnippets for {@link BinaryData#toObject(Class, ObjectSerializer)}.
-     */
-    public void toObjectClassObjectSerializer() {
-        // BEGIN: com.generic.core.util.BinaryData.toObject#Class-ObjectSerializer
-        final Person data = new Person().setName("John");
-
-        // Provide your custom serializer or use Azure provided serializers.
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-jackson or
-        // https://central.sonatype.com/artifact/com.generic/azure-core-serializer-json-gson
-
-        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
-        BinaryData binaryData = BinaryData.fromObject(data, serializer);
-
-        Person person = binaryData.toObject(Person.class, serializer);
-        System.out.println("Name : " + person.getName());
-        // END: com.generic.core.util.BinaryData.toObject#Class-ObjectSerializer
-    }
-
-    /**
-     * Codesnippets for {@link BinaryData#toObject(TypeReference, ObjectSerializer)}.
+     * Codesnippets for {@link BinaryData#toObject(Type, ObjectSerializer)}.
      */
     public void toObjectTypeReferenceObjectSerializer() {
         // BEGIN: com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer
@@ -278,13 +258,13 @@ public class BinaryDataJavaDocCodeSnippet {
         final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
-        Person person = binaryData.toObject(TypeReference.createInstance(Person.class), serializer);
+        Person person = binaryData.toObject(Person.class, serializer);
         System.out.println("Name : " + person.getName());
         // END: com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer
     }
 
     /**
-     * Codesnippets for {@link BinaryData#toObject(TypeReference, ObjectSerializer)} that uses generics.
+     * Codesnippets for {@link BinaryData#toObject(Type, ObjectSerializer)} that uses generics.
      */
     public void toObjectTypeReferenceObjectSerializerWithGenerics() {
         // BEGIN: com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic
@@ -298,8 +278,24 @@ public class BinaryDataJavaDocCodeSnippet {
         final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(personList, serializer);
 
-        // Retains the type of the list when deserializing
-        List<Person> persons = binaryData.toObject(new TypeReference<List<Person>>() { }, serializer);
+        // Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
+        // type arguments and raw type passed.
+        List<Person> persons = binaryData.toObject(new ParameterizedType() {
+            @Override
+            public Type[] getActualTypeArguments() {
+                return new Type[] { Person.class };
+            }
+
+            @Override
+            public Type getRawType() {
+                return List.class;
+            }
+
+            @Override
+            public Type getOwnerType() {
+                return null;
+            }
+        }, serializer);
         persons.forEach(person -> System.out.println("Name : " + person.getName()));
         // END: com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic
     }
@@ -363,12 +359,12 @@ public class BinaryDataJavaDocCodeSnippet {
         private static final ClientLogger LOGGER = new ClientLogger(MyJsonSerializer.class);
 
         @Override
-        public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
+        public <T> T deserializeFromBytes(byte[] data, Type type) {
             return null;
         }
 
         @Override
-        public <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference) {
+        public <T> T deserializeFromStream(InputStream stream, Type type) {
             return null;
         }
 

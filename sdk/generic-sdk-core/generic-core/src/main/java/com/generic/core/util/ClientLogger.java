@@ -103,6 +103,11 @@ public class ClientLogger {
         globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
     }
 
+    ClientLogger(Logger logger, Map<String, Object> context) {
+        this.logger = logger;
+        this.globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
+    }
+
     /**
      * Logs the {@link Throwable} at the warning level and returns it to be thrown.
      * <p>

@@ -7,7 +7,6 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.models.SimpleClass;
-import com.generic.core.models.TypeReference;
 import com.generic.json.JsonReader;
 import com.generic.json.JsonSerializable;
 import com.generic.json.JsonToken;
@@ -103,7 +102,7 @@ public class DefaultJsonSerializerTests {
     @MethodSource("deserializeJsonSupplier")
     public void deserializeJson(String json, DateTimeWrapper expected) {
         DateTimeWrapper actual = new DefaultJsonSerializer()
-            .deserializeFromBytes(json.getBytes(), TypeReference.createInstance(DateTimeWrapper.class));
+            .deserializeFromBytes(json.getBytes(), DateTimeWrapper.class);
 
         assertEquals(expected.getOffsetDateTime(), actual.getOffsetDateTime());
     }
@@ -215,7 +214,7 @@ public class DefaultJsonSerializerTests {
     @ParameterizedTest
     @MethodSource("bytesDeserializationSupplier")
     public void stringToTextDeserialization(byte[] stringBytes, Class<?> type, Object expected) {
-        Object actual = SERIALIZER.deserializeFromBytes(stringBytes, TypeReference.createInstance(type));
+        Object actual = SERIALIZER.deserializeFromBytes(stringBytes, type);
 
         if (type == byte[].class) {
             assertArraysEqual((byte[]) expected, (byte[]) actual);
@@ -227,7 +226,7 @@ public class DefaultJsonSerializerTests {
     @ParameterizedTest
     @MethodSource("bytesDeserializationSupplier")
     public void bytesToTextDeserialization(byte[] bytes, Class<?> type, Object expected) {
-        Object actual = SERIALIZER.deserializeFromBytes(bytes, TypeReference.createInstance(type));
+        Object actual = SERIALIZER.deserializeFromBytes(bytes, type);
 
         if (type == byte[].class) {
             assertArraysEqual((byte[]) expected, (byte[]) actual);
@@ -240,7 +239,7 @@ public class DefaultJsonSerializerTests {
     @MethodSource("bytesDeserializationSupplier")
     public void inputStreamToTextDeserialization(byte[] inputStreamBytes, Class<?> type, Object expected) {
         Object actual =
-            SERIALIZER.deserializeFromStream(new ByteArrayInputStream(inputStreamBytes), TypeReference.createInstance(type));
+            SERIALIZER.deserializeFromStream(new ByteArrayInputStream(inputStreamBytes), type);
 
         if (type == byte[].class) {
             assertArraysEqual((byte[]) expected, (byte[]) actual);
@@ -265,7 +264,7 @@ public class DefaultJsonSerializerTests {
                                                     Class<? extends Throwable> exceptionType) {
         assertThrows(exceptionType, () -> {
             try {
-                SERIALIZER.deserializeFromBytes(":////".getBytes(), TypeReference.createInstance(unsupportedType));
+                SERIALIZER.deserializeFromBytes(":////".getBytes(), unsupportedType);
             } catch (RuntimeException e) {
                 throw e.getCause();
             }

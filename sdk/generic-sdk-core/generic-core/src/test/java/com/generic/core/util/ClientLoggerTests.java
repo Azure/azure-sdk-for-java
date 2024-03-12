@@ -1,32 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.util.logging;
+package com.generic.core.util;
 
-import com.generic.core.implementation.util.EnvironmentConfiguration;
-import com.generic.core.util.ClientLogger;
+import com.generic.core.implementation.AccessibleByteArrayOutputStream;
+import com.generic.core.implementation.util.DefaultLogger;
 import com.generic.core.util.ClientLogger.LogLevel;
 import com.generic.json.implementation.jackson.core.io.JsonStringEncoder;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.api.parallel.Isolated;
-import org.junit.jupiter.api.parallel.ResourceLock;
-import org.junit.jupiter.api.parallel.Resources;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.slf4j.Logger;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -34,7 +25,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static com.generic.core.util.configuration.Configuration.PROPERTY_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -43,34 +33,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests for {@link ClientLogger}.
  */
-@Execution(ExecutionMode.SAME_THREAD)
-@Isolated
-@ResourceLock(Resources.SYSTEM_OUT)
 public class ClientLoggerTests {
-    private PrintStream originalSystemOut;
-    private ByteArrayOutputStream logCaptureStream;
-    private Map<String, Object> globalContext;
-    @BeforeEach
-    public void setupLoggingConfiguration() {
-        /*
-         * DefaultLogger uses System.out to log. Inject a custom PrintStream to log into for the duration of the test to
-         * capture the log messages.
-         */
-        originalSystemOut = System.out;
-        logCaptureStream = new ByteArrayOutputStream();
-        System.setOut(new PrintStream(logCaptureStream));
+    private final AccessibleByteArrayOutputStream logCaptureStream;
+    private final Map<String, Object> globalContext;
 
-        // preserve order
-        globalContext = new LinkedHashMap<>();
-        globalContext.put("connectionId", "foo");
-        globalContext.put("linkName", 1);
-        globalContext.put("anotherKey", new LoggableObject("hello world"));
-    }
-
-    @AfterEach
-    public void revertLoggingConfiguration() {
-        clearTestLogLevel();
-        System.setOut(originalSystemOut);
+    public ClientLoggerTests() {
+        this.logCaptureStream = new AccessibleByteArrayOutputStream();
+        this.globalContext = new LinkedHashMap<>();
+        this.globalContext.put("connectionId", "foo");
+        this.globalContext.put("linkName", 1);
+        this.globalContext.put("anotherKey", new LoggableObject("hello world"));
     }
 
     /**
@@ -79,8 +51,8 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("singleLevelCheckSupplier")
     public void canLogAtLevel(LogLevel logLevelToConfigure, LogLevel logLevelToValidate, boolean expected) {
-        setupLogLevel(logLevelToConfigure.toString());
-        assertEquals(expected, new ClientLogger(ClientLoggerTests.class).canLogAtLevel(logLevelToValidate));
+        ClientLogger clientLogger = setupLogLevelAndGetLogger(logLevelToConfigure);
+        assertEquals(expected, clientLogger.canLogAtLevel(logLevelToValidate));
     }
 
     /**
@@ -91,8 +63,7 @@ public class ClientLoggerTests {
     public void logSimpleMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage) {
         String logMessage = "This is a test";
 
-        setupLogLevel(logLevelToConfigure.toString());
-        logMessage(new ClientLogger(ClientLoggerTests.class), logLevelToUse, logMessage);
+        logMessage(setupLogLevelAndGetLogger(logLevelToConfigure), logLevelToUse, logMessage);
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(logMessage));
@@ -110,8 +81,7 @@ public class ClientLoggerTests {
         String expectedMessage = "You have successfully authenticated, [INFO] User dummy was not"
             + " successfully authenticated.";
 
-        setupLogLevel(logLevelToConfigure.toString());
-        logMessage(new ClientLogger(ClientLoggerTests.class), logLevelToUse, logMessage);
+        logMessage(setupLogLevelAndGetLogger(logLevelToConfigure), logLevelToUse, logMessage);
 
         String logValues = byteArraySteamToString(logCaptureStream);
         System.out.println(logValues);
@@ -131,8 +101,7 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
 
-        setupLogLevel(logLevelToConfigure.toString());
-        logMessage(new ClientLogger(ClientLoggerTests.class), logLevelToUse, logMessage, runtimeException);
+        logMessage(setupLogLevelAndGetLogger(logLevelToConfigure), logLevelToUse, logMessage, runtimeException);
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(logMessage));
@@ -150,13 +119,9 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
-        setupLogLevel(logLevelToConfigure.toString());
-        try {
-            throw new ClientLogger(ClientLoggerTests.class).logThrowableAsWarning(ioException);
-        } catch (Throwable throwable) {
-            assertTrue(throwable instanceof IOException, () -> "Expected IOException but got "
-                + throwable.getClass().getSimpleName() + ".");
-        }
+        assertThrows(IOException.class, () -> {
+            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsWarning(ioException);
+        });
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
@@ -174,13 +139,9 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
-        setupLogLevel(logLevelToConfigure.toString());
-        try {
-            throw new ClientLogger(ClientLoggerTests.class).logThrowableAsWarning(ioException);
-        } catch (Throwable throwable) {
-            assertTrue(throwable instanceof IOException, () -> "Expected IOException but got "
-                + throwable.getClass().getSimpleName() + ".");
-        }
+        assertThrows(IOException.class, () -> {
+            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsWarning(ioException);
+        });
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
@@ -198,13 +159,9 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IllegalStateException illegalStateException = createIllegalStateException(exceptionMessage);
 
-        setupLogLevel(logLevelToConfigure.toString());
-        try {
-            throw new ClientLogger(ClientLoggerTests.class).logThrowableAsError(illegalStateException);
-        } catch (RuntimeException exception) {
-            assertTrue(exception instanceof IllegalStateException, () -> "Expected IllegalStateException but got "
-                + exception.getClass().getSimpleName() + ".");
-        }
+        assertThrows(IllegalStateException.class, () -> {
+            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsError(illegalStateException);
+        });
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
@@ -222,13 +179,9 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
-        setupLogLevel(logLevelToConfigure.toString());
-        try {
-            throw new ClientLogger(ClientLoggerTests.class).logThrowableAsError(ioException);
-        } catch (Throwable throwable) {
-            assertTrue(throwable instanceof IOException, () -> "Expected IOException but got "
-                + throwable.getClass().getSimpleName() + ".");
-        }
+        assertThrows(IOException.class, () -> {
+            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsError(ioException);
+        });
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
@@ -257,9 +210,8 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithSupplier(LogLevel logLevel) {
-        setupLogLevel(logLevel.toString());
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
         if (logLevel.equals(LogLevel.ERROR)) {
             logger.atError().log(supplier);
         } else if (logLevel.equals(LogLevel.WARNING)) {
@@ -278,9 +230,8 @@ public class ClientLoggerTests {
 
     @Test
     public void logWithNewLine() {
-        setupLogLevel(LogLevel.INFORMATIONAL.toString());
         String message = String.format("Param 1: %s%s, Param 2: %s%s, Param 3: %s", "test1", System.lineSeparator(), "test2", System.lineSeparator(), "test3");
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
         logger.atInfo().log(() -> message);
 
         String logValues = byteArraySteamToString(logCaptureStream);
@@ -290,8 +241,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithNullSupplier(LogLevel logLevel) {
-        setupLogLevel(logLevel.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
         if (logLevel.equals(LogLevel.ERROR)) {
             logger.atError().log((Supplier<String>) null);
         } else if (logLevel.equals(LogLevel.WARNING)) {
@@ -312,9 +262,8 @@ public class ClientLoggerTests {
     @MethodSource("provideLogLevels")
     public void logSupplierWithException(LogLevel logLevel) {
         NullPointerException exception = new NullPointerException();
-        setupLogLevel(logLevel.toString());
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
         if (logLevel.equals(LogLevel.ERROR)) {
             logger.atError().log(supplier, exception);
         } else if (logLevel.equals(LogLevel.WARNING)) {
@@ -334,9 +283,8 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logShouldEvaluateSupplierWithNullException(LogLevel logLevel) {
-        setupLogLevel(logLevel.toString());
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
         if (logLevel.equals(LogLevel.ERROR)) {
             logger.atError().log(supplier, null);
         } else if (logLevel.equals(LogLevel.WARNING)) {
@@ -360,8 +308,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithContext(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure);
 
         String message = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
 
@@ -384,9 +331,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithGlobalContext(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure, globalContext);
         logger.atWarning().log(() ->
             String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
@@ -403,9 +348,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logInfoWithGlobalContext() {
-        setupLogLevel(LogLevel.VERBOSE.toString());
-
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalContext);
         logger.atInfo().log(() -> "message");
 
         assertMessage(
@@ -421,9 +364,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logVerboseWithGlobalContext() {
-        setupLogLevel(LogLevel.VERBOSE.toString());
-
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalContext);
         logger.atVerbose().log(() -> "message");
 
         assertMessage(
@@ -439,9 +380,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logWarningWithGlobalContext() {
-        setupLogLevel(LogLevel.VERBOSE.toString());
-
-        new ClientLogger(ClientLoggerTests.class, globalContext)
+        setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalContext)
             .atWarning().log(() -> "message");
 
         assertMessage(
@@ -457,9 +396,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logErrorWithGlobalContext() {
-        setupLogLevel(LogLevel.VERBOSE.toString());
-
-        new ClientLogger(ClientLoggerTests.class, globalContext)
+        setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalContext)
             .atError().log(() -> "message");
 
         assertMessage(
@@ -474,9 +411,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logWithEmptyGlobalContext() {
-        setupLogLevel(LogLevel.INFORMATIONAL.toString());
-
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, Collections.emptyMap());
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL, Collections.emptyMap());
         logger.atWarning().log(() -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
@@ -491,9 +426,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logWithNullGlobalContext() {
-        setupLogLevel(LogLevel.INFORMATIONAL.toString());
-
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, null);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL, null);
         logger.atInfo().log(
             () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
@@ -511,9 +444,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithGlobalAndLocalContext(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure, globalContext);
         logger.atInfo()
             .addKeyValue("local", true)
             .addKeyValue("connectionId", "conflict")
@@ -534,11 +465,10 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void contextualLogWithoutContext(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure);
 
         logger.atWarning().log(
-                () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\"}",
@@ -554,8 +484,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithGlobalContextMessageSupplier(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure, globalContext);
 
         logger.atInfo().log(() -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
@@ -572,8 +501,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithContextMessageSupplier(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure);
 
         String message = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
 
@@ -594,8 +522,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logWithContextNullMessage() {
-        setupLogLevel(LogLevel.VERBOSE.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE);
 
         logger.atVerbose()
             .addKeyValue("connectionId", "foo")
@@ -614,8 +541,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logWithContextNewLineIsEscaped() {
-        setupLogLevel(LogLevel.VERBOSE.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE);
 
         logger.atVerbose()
             .addKeyValue("connection\nId" + System.lineSeparator(), "foo")
@@ -636,14 +562,12 @@ public class ClientLoggerTests {
      */
     @Test
     public void logWithGlobalContextIsEscaped() {
-        setupLogLevel(LogLevel.VERBOSE.toString());
-
         // preserve order
         Map<String, Object> globalCtx = new LinkedHashMap<>();
         globalCtx.put("link\tName", 1);
         globalCtx.put("another\rKey\n", new LoggableObject("hello \"world\"\r\n"));
 
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalCtx);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalCtx);
 
         logger.atVerbose().log(() -> "\"message\"");
 
@@ -659,8 +583,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logWithContextNullSupplier() {
-        setupLogLevel(LogLevel.INFORMATIONAL.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
         Supplier<String> message = null;
 
@@ -681,8 +604,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logWithContextValueSupplier() {
-        setupLogLevel(LogLevel.INFORMATIONAL.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
         logger.atWarning()
             // this is technically invalid, but we should not throw because of logging in runtime
@@ -702,8 +624,7 @@ public class ClientLoggerTests {
      */
     @Test
     public void logWithContextObject() {
-        setupLogLevel(LogLevel.INFORMATIONAL.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
         logger.atWarning()
             .addKeyValue("linkName", new LoggableObject("some complex object"))
@@ -722,8 +643,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logMessageAndArgsWithContext(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure);
 
         logger.atWarning()
             .addKeyValue("connectionId", () -> null)
@@ -744,8 +664,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithContextWithThrowableInArgs(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure);
 
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
@@ -774,8 +693,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithContextMessageSupplierAndThrowableInArgs(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure);
 
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
@@ -804,8 +722,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithContextWithThrowableInArgsAndEscaping(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure);
 
         String exceptionMessage = "An exception \tmessage with \"special characters\"\r\n";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
@@ -837,8 +754,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithContextRuntimeException(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure);
 
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
@@ -867,8 +783,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithContextThrowable(LogLevel logLevelToConfigure) {
-        setupLogLevel(logLevelToConfigure.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure);
 
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
@@ -893,11 +808,9 @@ public class ClientLoggerTests {
 
     @Test
     public void logSupplierShouldLogExceptionOnVerboseLevel() {
-        LogLevel logLevel = LogLevel.VERBOSE;
         NullPointerException exception = new NullPointerException();
-        setupLogLevel(logLevel.toString());
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE);
         String expectedStackTrace = stackTraceToString(exception);
         logger.atVerbose().log(supplier, exception);
 
@@ -910,8 +823,7 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logAtLevel(LogLevel level) {
-        setupLogLevel(LogLevel.INFORMATIONAL.toString());
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
         logger.atLevel(level)
             .addKeyValue("connectionId", "foo")
@@ -931,12 +843,15 @@ public class ClientLoggerTests {
         return stringWriter.toString().trim();
     }
 
-    private void setupLogLevel(String logLevelToSet) {
-        EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_LOG_LEVEL, String.valueOf(logLevelToSet));
+    private ClientLogger setupLogLevelAndGetLogger(LogLevel logLevelToSet) {
+        return setupLogLevelAndGetLogger(logLevelToSet, null);
     }
 
-    private void clearTestLogLevel() {
-        EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_LOG_LEVEL);
+    private ClientLogger setupLogLevelAndGetLogger(LogLevel logLevelToSet, Map<String, Object> globalContext) {
+        Logger logger = new DefaultLogger(ClientLogger.class.getName(), new PrintStream(logCaptureStream),
+            logLevelToSet);
+
+        return new ClientLogger(logger, globalContext);
     }
 
     private void logMessage(ClientLogger logger, LogLevel logLevel, String logFormat, RuntimeException runtimeException) {
@@ -961,6 +876,7 @@ public class ClientLoggerTests {
                 break;
         }
     }
+
     private void logMessage(ClientLogger logger, LogLevel logLevel, String logFormat) {
         if (logLevel == null) {
             return;
@@ -993,19 +909,15 @@ public class ClientLoggerTests {
     }
 
     private static <T extends Throwable> T fillInStackTrace(T throwable) {
-        StackTraceElement[] stackTraceElements = {new StackTraceElement("ClientLoggerTests", "onlyLogExceptionMessage",
-            "ClientLoggerTests", 117)};
+        StackTraceElement[] stackTraceElements
+            = { new StackTraceElement("ClientLoggerTests", "onlyLogExceptionMessage", "ClientLoggerTests", 117) };
         throwable.setStackTrace(stackTraceElements);
 
         return throwable;
     }
 
-    private static String byteArraySteamToString(ByteArrayOutputStream stream) {
-        try {
-            return stream.toString(StandardCharsets.UTF_8.name());
-        } catch (UnsupportedEncodingException ex) {
-            throw new UncheckedIOException(ex);
-        }
+    private static String byteArraySteamToString(AccessibleByteArrayOutputStream stream) {
+        return stream.toString(StandardCharsets.UTF_8);
     }
 
     private void assertMessage(String expectedMessage, String fullLog, LogLevel configuredLevel, LogLevel loggedLevel) {
@@ -1093,8 +1005,7 @@ public class ClientLoggerTests {
             Arguments.of(LogLevel.VERBOSE, LogLevel.NOTSET, false),
 
             // Checking null.
-            Arguments.of(LogLevel.VERBOSE, null, false)
-        );
+            Arguments.of(LogLevel.VERBOSE, null, false));
     }
 
     private static Stream<Arguments> multiLevelCheckSupplier() {
@@ -1173,8 +1084,7 @@ public class ClientLoggerTests {
             Arguments.of(LogLevel.VERBOSE, LogLevel.NOTSET, false, false),
 
             // Checking null.
-            Arguments.of(LogLevel.VERBOSE, null, false, false)
-        );
+            Arguments.of(LogLevel.VERBOSE, null, false, false));
     }
 
     private static Stream<Arguments> logMaliciousErrorSupplier() {
@@ -1208,8 +1118,7 @@ public class ClientLoggerTests {
             Arguments.of(LogLevel.WARNING, LogLevel.ERROR, true),
 
             // Checking ERROR.
-            Arguments.of(LogLevel.ERROR, LogLevel.ERROR, true)
-        );
+            Arguments.of(LogLevel.ERROR, LogLevel.ERROR, true));
     }
 
     private static Stream<Arguments> provideLogLevels() {
@@ -1225,8 +1134,7 @@ public class ClientLoggerTests {
             Arguments.of(LogLevel.INFORMATIONAL),
 
             // Checking ERROR.
-            Arguments.of(LogLevel.ERROR)
-        );
+            Arguments.of(LogLevel.ERROR));
     }
 
     private static Stream<Arguments> logExceptionAsWarningSupplier() {
@@ -1282,8 +1190,9 @@ public class ClientLoggerTests {
         );
     }
 
-    class LoggableObject {
+    static class LoggableObject {
         private final String str;
+
         LoggableObject(String str) {
             this.str = str;
         }

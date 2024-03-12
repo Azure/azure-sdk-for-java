@@ -4,7 +4,6 @@
 package com.generic.core.implementation.serializer;
 
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.models.TypeReference;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -41,8 +40,7 @@ public class AdditionalPropertiesSerializerTests {
     @Test
     public void canDeserializeAdditionalProperties() {
         String wireValue = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
-        Foo deserialized = new DefaultJsonSerializer()
-            .deserializeFromBytes(wireValue.getBytes(), TypeReference.createInstance(Foo.class));
+        Foo deserialized = new DefaultJsonSerializer().deserializeFromBytes(wireValue.getBytes(), Foo.class);
 
         assertNotNull(deserialized.additionalProperties());
         assertEquals("baz", deserialized.additionalProperties().get("bar"));
@@ -76,15 +74,13 @@ public class AdditionalPropertiesSerializerTests {
     @Test
     public void canDeserializeAdditionalPropertiesThroughInheritance() {
         String wireValue = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
-        FooChild deserialized = new DefaultJsonSerializer()
-            .deserializeFromBytes(wireValue.getBytes(), TypeReference.createInstance(FooChild.class));
+        FooChild deserialized = new DefaultJsonSerializer().deserializeFromBytes(wireValue.getBytes(), FooChild.class);
 
         // Check additional properties are populated
         assertNotNull(deserialized.additionalProperties());
         assertEquals("baz", deserialized.additionalProperties().get("bar"));
         assertEquals("c.d", deserialized.additionalProperties().get("a.b"));
         assertEquals("barbar", deserialized.additionalProperties().get("properties.bar"));
-        assertTrue(deserialized instanceof FooChild);
         // Check typed properties are populated
         assertEquals("hello.world", deserialized.bar());
         assertNotNull(deserialized.baz());

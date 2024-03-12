@@ -217,7 +217,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     private boolean shouldRetryResponse(Response<?> response, int tryCount,
                                         List<Exception> retriedExceptions) {
-        if(shouldRetryCondition != null) {
+        if (shouldRetryCondition != null) {
             return tryCount < maxRetries && shouldRetryCondition.test(new RequestRetryCondition(response, null, tryCount,
                 retriedExceptions));
         } else {

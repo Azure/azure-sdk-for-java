@@ -17,7 +17,6 @@ import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.DateTimeRfc1123;
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -110,7 +109,7 @@ public class HttpResponseBodyDecoderTests {
     public void exceptionInErrorDeserializationReturnsException() {
         ObjectSerializer ioExceptionThrower = new DefaultJsonSerializer() {
             @Override
-            public <T> T deserializeFromBytes(byte[] bytes, TypeReference<T> typeReference) {
+            public <T> T deserializeFromBytes(byte[] bytes, Type type) {
                 throw new UncheckedIOException(new IOException());
             }
         };

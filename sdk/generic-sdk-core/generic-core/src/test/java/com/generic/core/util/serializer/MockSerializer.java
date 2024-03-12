@@ -3,19 +3,18 @@
 
 package com.generic.core.util.serializer;
 
-import com.generic.core.models.TypeReference;
-
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 
 public class MockSerializer implements JsonSerializer {
     @Override
-    public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
+    public <T> T deserializeFromBytes(byte[] data, Type type) {
         return null;
     }
 
     @Override
-    public <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference) {
+    public <T> T deserializeFromStream(InputStream stream, Type typeReference) {
         return null;
     }
 
