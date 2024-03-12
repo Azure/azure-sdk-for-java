@@ -52,8 +52,6 @@ jobs:
         parameters:
           Artifacts: ${{ parameters.Artifacts }}
           AdditionalModules: ${{ parameters.AdditionalModules }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          SDKType: ${{ parameters.SDKType }}
 
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
@@ -100,8 +98,6 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
-          SDKType: ${{ parameters.SDKType }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           IsLiveTest: true

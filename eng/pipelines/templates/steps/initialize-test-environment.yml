@@ -1,6 +1,4 @@
 parameters:
-  - name: ServiceDirectory
-    type: string
   - name: Artifacts
     type: object
     default: []
@@ -10,9 +8,6 @@ parameters:
   - name: CheckoutRecordings
     type: boolean
     default: false
-  - name: SDKType
-    type: string
-    default: client
   - name: OSVmImage
     type: string
     default: $(OSVmImage)
