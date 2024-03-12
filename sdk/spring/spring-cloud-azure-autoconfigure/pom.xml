@@ -95,7 +95,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-stream-kafka</artifactId>
-      <version>3.2.9</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
+      <version>3.2.10</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- Spring Data -->
@@ -119,7 +119,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jms</artifactId>
-      <version>5.3.31</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
+      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -230,7 +230,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context-support</artifactId>
-      <version>5.3.31</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
+      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-context-support;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -359,7 +359,7 @@
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-sleuth</artifactId>
-      <version>3.1.9</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-sleuth;external_dependency} -->
+      <version>3.1.10</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-sleuth;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -389,7 +389,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-jdbc</artifactId>
-      <version>5.3.31</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
+      <version>5.3.32</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -432,14 +432,14 @@
                 <include>org.springframework.data:spring-data-mongodb:[3.4.18]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
                 <include>org.springframework.data:spring-data-redis:[2.7.18]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
                 <include>org.springframework.kafka:spring-kafka:[2.9.11]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[3.2.9]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
-                <include>org.springframework:spring-context-support:[5.3.31]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[3.2.10]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
+                <include>org.springframework:spring-context-support:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-context-support;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-client:[5.7.11]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-client;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-resource-server:[5.7.11]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-resource-server;external_dependency} -->
                 <include>org.springframework.security:spring-security-oauth2-jose:[5.7.11]</include> <!-- {x-include-update;org.springframework.security:spring-security-oauth2-jose;external_dependency} -->
                 <include>org.springframework.security:spring-security-config:[5.7.11]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
-                <include>org.springframework:spring-jms:[5.3.31]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
-                <include>org.springframework:spring-jdbc:[5.3.31]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
+                <include>org.springframework:spring-jms:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
+                <include>org.springframework:spring-jdbc:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
                 <include>redis.clients:jedis:[3.8.0]</include> <!-- {x-include-update;spring_redis.clients:jedis;external_dependency} -->
               </includes>
             </bannedDependencies>

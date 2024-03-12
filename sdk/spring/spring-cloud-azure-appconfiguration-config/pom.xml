@@ -26,12 +26,12 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-bootstrap</artifactId>
-			<version>3.1.7</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
+			<version>3.1.8</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-context</artifactId>
-			<version>3.1.7</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
+			<version>3.1.8</version> <!-- {x-version-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -129,8 +129,8 @@
 								<include>org.hibernate.validator:hibernate-validator:[6.2.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
 								<include>org.springframework.boot:spring-boot-actuator:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
 								<include>org.springframework.boot:spring-boot-autoconfigure:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
-								<include>org.springframework.cloud:spring-cloud-context:[3.1.7]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
-								<include>org.springframework.cloud:spring-cloud-starter-bootstrap:[3.1.7]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
+								<include>org.springframework.cloud:spring-cloud-context:[3.1.8]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
+								<include>org.springframework.cloud:spring-cloud-starter-bootstrap:[3.1.8]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-bootstrap;external_dependency} -->
 							</includes>
 						</bannedDependencies>
 					</rules>
