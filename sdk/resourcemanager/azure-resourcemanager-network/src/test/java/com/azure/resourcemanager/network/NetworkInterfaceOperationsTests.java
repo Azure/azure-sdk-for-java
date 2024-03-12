@@ -537,7 +537,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withPrivateIpAddressDynamic()
             .withNewPublicIpAddress()
             .attach()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DELETE)
             .create();
 
         nic.refresh();
@@ -574,7 +574,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withPrivateIpAddressDynamic()
             .withNewPublicIpAddress()
             .attach()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE, "secondary")
+            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "secondary")
             .create();
 
         nic.refresh();
@@ -612,10 +612,10 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withPrivateIpAddressDynamic()
             .withNewPublicIpAddress()
             .attach()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DETACH)
+            .withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DETACH)
             .create();
 
-        nic.update().withPublicIPAddressDeleteOptions(DeleteOptions.DELETE).apply();
+        nic.update().withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DELETE).apply();
         nic.refresh();
         List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList = nic.innerModel().ipConfigurations()
             .stream().filter(ipConfigurationInner -> DeleteOptions.DELETE.equals(ipConfigurationInner.publicIpAddress().deleteOption()))
@@ -649,10 +649,10 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withPrivateIpAddressDynamic()
             .withNewPublicIpAddress()
             .attach()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DETACH)
+            .withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DETACH)
             .create();
 
-        nic.update().withPublicIPAddressDeleteOptions(DeleteOptions.DELETE, "primary").apply();
+        nic.update().withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "primary").apply();
         nic.refresh();
         List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList = nic.innerModel().ipConfigurations()
             .stream().filter(ipConfigurationInner -> DeleteOptions.DELETE.equals(ipConfigurationInner.publicIpAddress().deleteOption()))
@@ -690,7 +690,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withPrivateIpAddressDynamic()
             .withNewPublicIpAddress()
             .attach()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DELETE)
             .apply();
 
         nic.refresh();
@@ -730,7 +730,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withPrivateIpAddressDynamic()
             .withNewPublicIpAddress()
             .attach()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE, "secondary")
+            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "secondary")
             .apply();
 
         nic.refresh();
@@ -772,7 +772,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         nic.update().updateIPConfiguration("secondary")
             .withNewPublicIpAddress().parent()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DELETE)
             .apply();
         nic.refresh();
 
@@ -812,7 +812,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         nic.update().updateIPConfiguration("secondary")
             .withNewPublicIpAddress().parent()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE, "secondary")
+            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "secondary")
             .apply();
         nic.refresh();
 
@@ -846,14 +846,14 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .create();
 
         nic.update()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE, "primary")
+            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "primary")
             .defineSecondaryIPConfiguration("secondary")
             .withExistingNetwork(vnet)
             .withSubnet(subnetName)
             .withPrivateIpAddressDynamic()
             .withNewPublicIpAddress()
             .attach()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DETACH, "secondary")
+            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DETACH, "secondary")
             .apply();
 
         nic.refresh();
@@ -894,11 +894,11 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .create();
 
         nic.update()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE, "primary")
+            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "primary")
             .updateIPConfiguration("secondary")
             .withNewPublicIpAddress()
             .parent()
-            .withPublicIPAddressDeleteOptions(DeleteOptions.DETACH, "secondary")
+            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DETACH, "secondary")
             .apply();
 
         nic.refresh();

@@ -262,10 +262,18 @@ public interface NetworkInterface
              * Sets delete options for public ip address.
              *
              * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the update
+             */
+            WithCreate withDeleteOptionsForAllPublicIPAddress(DeleteOptions deleteOptions);
+
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
              * @param ipConfigNames the names of specified ip configurations
              * @return the next stage of the update
              */
-            WithCreate withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions, String... ipConfigNames);
+            WithCreate withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions deleteOptions, String... ipConfigNames);
         }
 
         /**
@@ -592,6 +600,15 @@ public interface NetworkInterface
 
         /** Th stage of the network interface update allowing to specify delete options for the public ip address. */
         interface WithPublicIPAddressDeleteOptions {
+
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the update
+             */
+            Update withDeleteOptionsForAllPublicIPAddress(DeleteOptions deleteOptions);
+
             /**
              * Sets delete options for public ip address.
              *
@@ -599,7 +616,7 @@ public interface NetworkInterface
              * @param ipConfigNames the names of specified ip configurations
              * @return the next stage of the update
              */
-            Update withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions, String... ipConfigNames);
+            Update withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions deleteOptions, String... ipConfigNames);
         }
     }
 

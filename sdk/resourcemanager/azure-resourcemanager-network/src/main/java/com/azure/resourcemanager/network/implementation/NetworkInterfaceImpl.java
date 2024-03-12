@@ -591,19 +591,25 @@ class NetworkInterfaceImpl
     }
 
     @Override
-    public NetworkInterfaceImpl withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions, String... ipConfigNames) {
-        Set<String> ipConfigNameSet = Arrays.stream(ipConfigNames).map(ipConfigName -> ipConfigName.toLowerCase(Locale.ROOT)).collect(Collectors.toSet());
-        if (!isInCreateMode() && !isInUpdateIpConfigMode) {
-            this.nicIPConfigurations.values()
-                .stream().filter(nicIpConfiguration ->
-                    (ipConfigNameSet.isEmpty() || ipConfigNameSet.contains(nicIpConfiguration.name().toLowerCase(Locale.ROOT)))
-                        && Objects.nonNull(nicIpConfiguration.innerModel().publicIpAddress()))
-                .forEach(nicIpConfiguration -> {
-                    nicIpConfiguration.innerModel().publicIpAddress().withDeleteOption(deleteOptions);
-                });
+    public NetworkInterfaceImpl withDeleteOptionsForAllPublicIPAddress(DeleteOptions deleteOptions) {
+        if (this.specifiedIpConfigNames.containsKey(deleteOptions)) {
+            if (!this.specifiedIpConfigNames.get(deleteOptions).isEmpty()) {
+                this.specifiedIpConfigNames.replace(deleteOptions, Collections.emptySet());
+            }
         } else {
+            this.specifiedIpConfigNames.put(deleteOptions, Collections.emptySet());
+        }
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions deleteOptions, String... ipConfigNames) {
+        Set<String> ipConfigNameSet = Arrays.stream(ipConfigNames).map(ipConfigName -> ipConfigName.toLowerCase(Locale.ROOT)).collect(Collectors.toSet());
+        if (!ipConfigNameSet.isEmpty()) {
             if (this.specifiedIpConfigNames.containsKey(deleteOptions)) {
-                this.specifiedIpConfigNames.get(deleteOptions).addAll(ipConfigNameSet);
+                if (!this.specifiedIpConfigNames.get(deleteOptions).isEmpty()) {
+                    this.specifiedIpConfigNames.get(deleteOptions).addAll(ipConfigNameSet);
+                }
             } else {
                 this.specifiedIpConfigNames.put(deleteOptions, ipConfigNameSet);
             }
@@ -616,5 +622,18 @@ class NetworkInterfaceImpl
         this.specifiedIpConfigNames = new LinkedHashMap<>();
         this.isInUpdateIpConfigMode = false;
         return super.update();
+    }
+
+    @Override
+    public NetworkInterface apply() {
+        if (!isInCreateMode() && !isInUpdateIpConfigMode && !this.specifiedIpConfigNames.isEmpty()) {
+            this.specifiedIpConfigNames.entrySet().forEach(entry ->
+                this.nicIPConfigurations.values()
+                    .stream().filter(ipConfig -> (entry.getValue().isEmpty()
+                        || entry.getValue().contains(ipConfig.name().toLowerCase(Locale.ROOT)))
+                        && Objects.nonNull(ipConfig.innerModel().publicIpAddress()))
+                    .forEach(ipConfig -> ipConfig.innerModel().publicIpAddress().withDeleteOption(entry.getKey())));
+        }
+        return super.apply();
     }
 }
