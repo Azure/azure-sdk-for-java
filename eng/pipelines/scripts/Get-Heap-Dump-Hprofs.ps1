@@ -27,12 +27,5 @@ if ($hrpofs.Count -eq 0) {
     Write-Host "##vso[task.setvariable variable=HAS_OOM_PROFS]false"
 } else {
     Compress-Archive -Path $hrpofs -DestinationPath "$StagingDirectory/$OomArtifactName.zip"
-    # New-Item "$StagingDirectory/$OomArtifactName" -ItemType directory
-    # foreach($hprof in $hrpofs) {
-    #     $fileFullName = $hprof.FullName
-    #     $fileName = $hprof.Name
-    #     Move-Item -Path $fileFullName -Destination "$StagingDirectory/$OomArtifactName/$fileName" -ErrorAction SilentlyContinue
-    # }
-    # [System.IO.Compression.ZipFile]::CreateFromDirectory("$StagingDirectory/$OomArtifactName","$StagingDirectory/$OomArtifactName.zip")
     Write-Host "##vso[task.setvariable variable=HAS_OOM_PROFS]true"
 }
