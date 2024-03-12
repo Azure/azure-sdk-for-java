@@ -191,9 +191,8 @@ extends:
               TestGoals: surefire:test
 
     LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
-          TopLevel: false
           CalledFromClient: true
           ServiceDirectory: core
           Artifacts:

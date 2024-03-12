@@ -66,7 +66,7 @@ parameters:
     default: false
 
 extends:
-  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  template: /eng/pipelines/templates/stages/1es-redirect.yml@self
   parameters:
     stages:
       - stage: Build
