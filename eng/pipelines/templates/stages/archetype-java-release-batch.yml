@@ -50,8 +50,9 @@ stages:
           runOnce:
             deploy:
               steps:
-                - checkout: none
-                - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+                # - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+                # Download eng/CredscanSuppressions.json for 1es sdl/credscan to work properly
+                - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
 
                 - download: current
                   displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
