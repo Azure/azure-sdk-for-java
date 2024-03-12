@@ -4,24 +4,12 @@ parameters:
     default: 'oom-hprofs'
 
 steps:
-  - pwsh: |
-      if ((Get-ChildItem -Path . -Recurse -Filter *.hprof -File).Count -eq 0) {
-        Write-Host "##vso[task.setvariable variable=HAS_OOM_PROFS]false"
-      } else {
-        Write-Host "##vso[task.setvariable variable=HAS_OOM_PROFS]true"
-      }
-    displayName: 'Check for OOM hprofs'
+  - task: PowerShell@2
+    displayName: 'Check for and copy OOM hprofs'
+    inputs:
+      pwsh: true
+      filePath: eng/pipelines/scripts/Get-Heap-Dump-Hprofs.ps1
+      arguments: >
+        -StagingDirectory $(Build.ArtifactStagingDirectory)
+        -OomArtifactName ${{ parameters.OomArtifactName }}
     condition: always()
-
-  - pwsh: |
-      New-Item $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }} -ItemType directory
-      foreach($hprofFile in (Get-ChildItem -Path . -Recurse -Filter *.hprof -File)) {
-        $fileFullName = $hprofFile.FullName
-        $fileName = $hprofFile.Name
-        Move-Item -Path $fileFullName -Destination $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}/$fileName -ErrorAction SilentlyContinue
-      }
-      [System.IO.Compression.ZipFile]::CreateFromDirectory("$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}","$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip")
-      New-Item -ItemType Directory -Path $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}-zipped
-      Move-Item -Path "$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip" -Destination "$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}-zipped/${{ parameters.OomArtifactName }}.zip"
-    displayName: 'Copy OOM hprofs'
-    condition: eq(variables['HAS_OOM_PROFS'], 'true')

@@ -85,13 +85,17 @@ jobs:
           condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
           sbomEnabled: false
 
+        - output: pipelineArtifact
+          artifactName: 'repository-$(System.JobName)'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+          displayName: 'Capture repo state for analysis'
+          condition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+          sbomEnabled: false
+
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
-          SDKType: ${{ parameters.SDKType }}
-          OS: ${{ parameters.OSName }}
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
@@ -135,14 +139,12 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
-          SDKType: ${{ parameters.SDKType }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'true'
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
 
-      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+      - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
 
       - template: /eng/common/testproxy/publish-proxy-logs.yml
