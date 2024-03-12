@@ -12,22 +12,27 @@ import com.azure.developer.devcenter.models.DevCenterOperationDetails;
 import com.azure.developer.devcenter.models.EnvironmentDefinition;
 import com.azure.developer.devcenter.models.DevCenterCatalog;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Assertions;
-
 class EnvironmentTests extends DevCenterClientTestBase {
     @Test
     public void testCreateEnvironment() {
-        createEnvironment();
+        DevCenterEnvironment environment = new DevCenterEnvironment(devEnvironmentName, envTypeName, catalogName, envDefinitionName);
+
+        SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse =
+                deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, environment);
+        Assertions.assertEquals(
+            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
+        Assertions.assertEquals(devEnvironmentName, environmentCreateResponse.getFinalResult().getName());
     }
 
     @Test
     public void testGetEnvironment() {
-        createEnvironment();
+        setupEnvironment();
         
         DevCenterEnvironment environment = deploymentEnvironmentsClient.getEnvironment(projectName, meUserId, devEnvironmentName);
         Assertions.assertEquals(devEnvironmentName, environment.getName());
@@ -35,7 +40,7 @@ class EnvironmentTests extends DevCenterClientTestBase {
 
     @Test
     public void testListEnvironments() {
-        createEnvironment();
+        setupEnvironment();
         
         List<DevCenterEnvironment> environments = deploymentEnvironmentsClient.listEnvironments(projectName, meUserId).stream().collect(Collectors.toList());        
         Assertions.assertEquals(1, environments.size());
@@ -44,7 +49,7 @@ class EnvironmentTests extends DevCenterClientTestBase {
 
     @Test
     public void testListAllEnvironments() {
-        createEnvironment();
+        setupEnvironment();
         
         List<DevCenterEnvironment> environments = deploymentEnvironmentsClient.listAllEnvironments(projectName).stream().collect(Collectors.toList());        
         Assertions.assertEquals(1, environments.size());
@@ -53,7 +58,7 @@ class EnvironmentTests extends DevCenterClientTestBase {
 
     @Test
     public void testDeleteEnvironment() {
-        createEnvironment();
+        setupEnvironment();
 
         SyncPoller<DevCenterOperationDetails, Void> environmentDeleteResponse =
                 deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, meUserId, devEnvironmentName);
@@ -108,15 +113,23 @@ class EnvironmentTests extends DevCenterClientTestBase {
         Assertions.assertEquals(envTypeName, envTypes.get(0).getName());
     }
 
-    public DevCenterEnvironment createEnvironment() {
-        DevCenterEnvironment createEnvironment = new DevCenterEnvironment(devEnvironmentName, envTypeName, catalogName, envDefinitionName);
+    public DevCenterEnvironment setupEnvironment() {
+        //get environment if exists. If not, NotFound error will be thrown, and then we create environment
 
-        SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse =
-                deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, createEnvironment);
-        Assertions.assertEquals(
-            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
-                
-        DevCenterEnvironment environment = environmentCreateResponse.getFinalResult();
+        DevCenterEnvironment environment; 
+        try {
+            environment = deploymentEnvironmentsClient.getEnvironment(projectName, meUserId, devEnvironmentName);
+        } catch (Exception e) {
+            DevCenterEnvironment createEnvironment = new DevCenterEnvironment(devEnvironmentName, envTypeName, catalogName, envDefinitionName);
+
+            SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse =
+                    deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(projectName, meUserId, createEnvironment);
+            Assertions.assertEquals(
+                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, environmentCreateResponse.waitForCompletion().getStatus());
+            
+            environment = environmentCreateResponse.getFinalResult();
+        }
+        Assertions.assertNotNull(environment);
         Assertions.assertEquals(devEnvironmentName, environment.getName());
 
         return environment;

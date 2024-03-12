@@ -16,23 +16,26 @@ import com.azure.developer.devcenter.models.DevBoxSchedule;
 import com.azure.developer.devcenter.models.DevCenterOperationDetails;
 import com.azure.developer.devcenter.models.RemoteConnection;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.Assertions;
-
 class DevBoxTests extends DevCenterClientTestBase {
     @Test
     public void testCreateDevBox() {
-        createDevBox();
+        SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
+            devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName));
+        Assertions.assertEquals(
+                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
+        Assertions.assertEquals(devBoxName, devBoxCreateResponse.getFinalResult().getName());
     }
 
     @Test
     public void testGetDevBox() {
-        createDevBox();
+        setupDevBox();
 
         DevBox devBox = devBoxesClient.getDevBox(projectName, meUserId, devBoxName);
         Assertions.assertEquals(devBoxName, devBox.getName());
@@ -40,7 +43,7 @@ class DevBoxTests extends DevCenterClientTestBase {
 
     @Test
     public void testListDevBoxes() {
-        createDevBox();
+        setupDevBox();
         
         List<DevBox> devBoxes = devBoxesClient.listDevBoxes(projectName, meUserId).stream().collect(Collectors.toList());  
         Assertions.assertEquals(1, devBoxes.size());
@@ -49,7 +52,7 @@ class DevBoxTests extends DevCenterClientTestBase {
 
     @Test
     public void testListAllDevBoxesByUser() {
-        createDevBox();
+        setupDevBox();
         
         List<DevBox> devBoxes = devBoxesClient.listAllDevBoxesByUser(meUserId).stream().collect(Collectors.toList());  
         Assertions.assertEquals(1, devBoxes.size());
@@ -58,7 +61,7 @@ class DevBoxTests extends DevCenterClientTestBase {
 
     @Test
     public void testListAllDevBoxes() {
-        createDevBox();
+        setupDevBox();
         
         List<DevBox> devBoxes = devBoxesClient.listAllDevBoxes().stream().collect(Collectors.toList());  
         Assertions.assertEquals(1, devBoxes.size());
@@ -67,7 +70,7 @@ class DevBoxTests extends DevCenterClientTestBase {
 
     @Test
     public void testGetRemoteConnection() {
-        createDevBox();
+        setupDevBox();
         
         RemoteConnection remoteConnection = devBoxesClient.getRemoteConnection(projectName, meUserId, devBoxName);
         Assertions.assertNotNull(remoteConnection.getWebUrl());
@@ -76,7 +79,7 @@ class DevBoxTests extends DevCenterClientTestBase {
 
     @Test
     public void testStartAndStopDevBox() {
-        createDevBox();
+        setupDevBox();
         
         SyncPoller<DevCenterOperationDetails, Void> devBoxStopResponse =
                 devBoxesClient.beginStopDevBox(projectName, meUserId, devBoxName);
@@ -91,7 +94,7 @@ class DevBoxTests extends DevCenterClientTestBase {
 
     @Test
     public void testRestartDevBox() {
-        createDevBox();
+        setupDevBox();
 
         SyncPoller<DevCenterOperationDetails, Void> devBoxRestartResponse =
                 devBoxesClient.beginRestartDevBox(projectName, meUserId, devBoxName);
@@ -127,7 +130,7 @@ class DevBoxTests extends DevCenterClientTestBase {
 
     @Test
     public void testGetAndDelayDevBoxAction() {
-        createDevBox();
+        setupDevBox();
         
         DevBoxAction action = devBoxesClient.getDevBoxAction(projectName, meUserId, devBoxName, "schedule-default");
         Assertions.assertEquals("schedule-default", action.getName());
@@ -143,7 +146,7 @@ class DevBoxTests extends DevCenterClientTestBase {
 
     @Test
     public void testGetAndDelayAllDevBoxActions() {
-        createDevBox();
+        setupDevBox();
         
         List<DevBoxAction> devBoxActions = devBoxesClient.listDevBoxActions(projectName, meUserId, devBoxName).stream().collect(Collectors.toList()); 
         DevBoxAction action = devBoxActions.get(0); 
@@ -164,7 +167,7 @@ class DevBoxTests extends DevCenterClientTestBase {
 
     @Test
     public void testSkipActionAndDeleteDevBox() {
-        createDevBox();
+        setupDevBox();
         
         devBoxesClient.skipAction(projectName, meUserId, devBoxName, "schedule-default");
 
@@ -174,13 +177,21 @@ class DevBoxTests extends DevCenterClientTestBase {
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxDeleteResponse.waitForCompletion().getStatus());
     }
 
-    public DevBox createDevBox() {
-        SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
-                devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName));
-        Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
+    public DevBox setupDevBox() {
+        //get dev box if exists. If not, NotFound error will be thrown, and then we create dev box
 
-        DevBox devBox = devBoxCreateResponse.getFinalResult();
+        DevBox devBox; 
+        try {
+            devBox = devBoxesClient.getDevBox(projectName, meUserId, devBoxName);
+        } catch (Exception e) {
+            SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
+                    devBoxesClient.beginCreateDevBox(projectName, meUserId, new DevBox(devBoxName, poolName));
+            Assertions.assertEquals(
+                    LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, devBoxCreateResponse.waitForCompletion().getStatus());
+    
+            devBox = devBoxCreateResponse.getFinalResult();
+        } 
+        Assertions.assertNotNull(devBox);
         Assertions.assertEquals(devBoxName, devBox.getName());
 
         return devBox;
