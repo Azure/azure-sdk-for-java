@@ -5,7 +5,6 @@ package com.generic.core.implementation.serializer;
 
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonReader;
 import com.generic.json.JsonSerializable;
@@ -148,7 +147,7 @@ public class BinaryDataSerializationTests {
     @MethodSource("binaryDataDeserializationSupplier")
     @Execution(ExecutionMode.SAME_THREAD)
     public void binaryDataDeserialization(Object expected, String json, Class<?> type) {
-        Object actual = SERIALIZER.deserializeFromBytes(json.getBytes(), TypeReference.createInstance(type));
+        Object actual = SERIALIZER.deserializeFromBytes(json.getBytes(), type);
 
         assertEquals(expected, actual);
     }

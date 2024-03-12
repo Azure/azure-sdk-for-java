@@ -484,7 +484,7 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress checks for defender Easm -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.analytics.defender.easm.models.CountPagedResponse"/>
-  
+
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.generic.json.*" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" files="com.generic.core.http.policy.HttpLoggingPolicy" />
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.generic.core.http.client.DefaultHttpClientBuilder" />

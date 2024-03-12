@@ -10,7 +10,6 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.DateTimeRfc1123;
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
@@ -150,8 +149,7 @@ public final class HttpResponseBodyDecoder {
     }
 
     private static Object deserialize(byte[] value, Type type, ObjectSerializer serializer) {
-        return serializer.deserializeFromBytes(value == null ? new byte[0] : value,
-            TypeReference.createInstance(TypeUtil.getRawClass(type)));
+        return serializer.deserializeFromBytes(value == null ? new byte[0] : value, type);
     }
 
     /**

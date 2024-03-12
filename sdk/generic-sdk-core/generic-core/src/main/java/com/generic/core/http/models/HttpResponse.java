@@ -48,7 +48,7 @@ public class HttpResponse<T> implements Response<T> {
      * @return The response {@link Headers}.
      */
     public final Headers getHeaders() {
-         return headers;
+        return headers;
     }
 
     /**

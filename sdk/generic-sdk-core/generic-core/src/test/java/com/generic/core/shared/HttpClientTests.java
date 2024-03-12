@@ -30,7 +30,6 @@ import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Named;
@@ -46,6 +45,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -438,12 +438,12 @@ public abstract class HttpClientTests {
 
     private static class ByteArraySerializer implements ObjectSerializer {
         @Override
-        public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
+        public <T> T deserializeFromBytes(byte[] data, Type type) {
             return null;
         }
 
         @Override
-        public <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference) {
+        public <T> T deserializeFromStream(InputStream stream, Type type) {
             return null;
         }
 
