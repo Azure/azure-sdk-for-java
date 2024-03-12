@@ -485,7 +485,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void searchOperatorInformationSucceeds(HttpClient httpClient) {
         List<String> phoneNumbers = new ArrayList<String>();
-        phoneNumbers.add(getTestPhoneNumber());
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
                         .searchOperatorInformation(phoneNumbers))
@@ -499,8 +499,8 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void searchOperatorInformationOnlyAcceptsOnePhoneNumber(HttpClient httpClient) {
         List<String> phoneNumbers = new ArrayList<String>();
-        phoneNumbers.add(getTestPhoneNumber());
-        phoneNumbers.add(getTestPhoneNumber());
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "searchOperatorInformationOnlyAcceptsOnePhoneNumber")
                         .searchOperatorInformation(phoneNumbers))
@@ -511,7 +511,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void searchOperatorInformationRespectsSearchOptions(HttpClient httpClient) {
         List<String> phoneNumbers = new ArrayList<String>();
-        phoneNumbers.add(getTestPhoneNumber());
+        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
                         .searchOperatorInformationWithResponse(phoneNumbers, false))
