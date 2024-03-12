@@ -146,18 +146,19 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
     public void listDeletedPathsOptionsMaxResultsByPage() {
         DataLakeDirectoryAsyncClient dir = fileSystemClient.getDirectoryAsyncClient(generatePathName());
 
-        Mono<Void> step = dir.create().flatMap(r -> {
-            DataLakeFileAsyncClient fc1 = dir.getFileAsyncClient(generatePathName());
-            return fc1.create(true).then(fc1.delete());
-        })
-        .flatMap(r -> {
-            DataLakeFileAsyncClient fc2 = dir.getFileAsyncClient(generatePathName());
-            return fc2.create(true).then(fc2.delete());
-        })
-        .flatMap(r -> {
-            DataLakeFileAsyncClient fc3 = fileSystemClient.getFileAsyncClient(generatePathName());
-            return fc3.create().then(fc3.delete());
-        });
+        Mono<Void> step = dir.create()
+            .flatMap(r -> {
+                DataLakeFileAsyncClient fc1 = dir.getFileAsyncClient(generatePathName());
+                return fc1.create(true).then(fc1.delete());
+            })
+            .flatMap(r -> {
+                DataLakeFileAsyncClient fc2 = dir.getFileAsyncClient(generatePathName());
+                return fc2.create(true).then(fc2.delete());
+            })
+            .flatMap(r -> {
+                DataLakeFileAsyncClient fc3 = fileSystemClient.getFileAsyncClient(generatePathName());
+                return fc3.create().then(fc3.delete());
+            });
 
         StepVerifier.create(step.thenMany(fileSystemClient.listDeletedPaths().byPage(1)))
             .thenConsumeWhile(r -> {

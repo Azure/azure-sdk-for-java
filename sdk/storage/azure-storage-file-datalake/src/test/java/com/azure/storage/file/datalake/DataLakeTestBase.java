@@ -560,7 +560,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected Mono<String> setupFileSystemLeaseAsyncConditionAsync(DataLakeFileSystemAsyncClient fsc, String leaseID) {
-        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseAsyncClient(fsc).acquireLease(-1) : Mono.just(leaseID == null ? "null": leaseID);
+        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseAsyncClient(fsc).acquireLease(-1) : Mono.just(leaseID == null ? "null" : leaseID);
     }
 
     /**
@@ -577,7 +577,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
     }
 
     protected Mono<String> setupPathMatchConditionAsync(DataLakePathAsyncClient pac, String match) {
-        return Objects.equals(RECEIVED_ETAG, match) ? pac.getProperties().map(PathProperties::getETag) : Mono.just(match == null ? "null": match);
+        return Objects.equals(RECEIVED_ETAG, match) ? pac.getProperties().map(PathProperties::getETag) : Mono.just(match == null ? "null" : match);
     }
 
     /**
@@ -603,7 +603,7 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : leaseID;
     }
 
-    protected Mono<String> setupPathLeaseConditionAsync(DataLakePathAsyncClient pac, String leaseID){
+    protected Mono<String> setupPathLeaseConditionAsync(DataLakePathAsyncClient pac, String leaseID) {
         Mono<String> responseLeaseId = null;
 
         if (Objects.equals(RECEIVED_LEASE_ID, leaseID) || Objects.equals(GARBAGE_LEASE_ID, leaseID)) {
@@ -612,11 +612,11 @@ public class DataLakeTestBase extends TestProxyTestBase {
                     : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pac).acquireLease(-1);
         }
         if (responseLeaseId == null) {
-            return Mono.just(leaseID == null ? "null": leaseID);
+            return Mono.just(leaseID == null ? "null" : leaseID);
         }
 
         return responseLeaseId.map(returnedLeaseId -> Objects.equals(RECEIVED_LEASE_ID, leaseID)
-                ? returnedLeaseId : (leaseID == null ? "null": leaseID));
+                ? returnedLeaseId : (leaseID == null ? "null" : leaseID));
     }
 
     protected static void compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {

@@ -269,10 +269,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -306,7 +306,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if(newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -753,10 +753,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -779,7 +779,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if(newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -838,10 +838,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -868,7 +868,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         Mono<Response<Boolean>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if(newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -911,10 +911,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -937,7 +937,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if(newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -987,10 +987,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -1013,7 +1013,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         Mono<Response<PathInfo>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if(newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2322,12 +2322,12 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
     }
 
     private Mono<Void> setupStandardRecursiveAclTest() {
-            Mono<?> createSubDir1AndFiles = dc.createSubdirectory(generatePathName())
-                .flatMap(dirClient -> Mono.when(dirClient.createFile(generatePathName()), dirClient.createFile(generatePathName())));
-            Mono<?> createSubDir2AndFiles = dc.createSubdirectory(generatePathName())
-                .flatMap(dirClient -> dirClient.createFile(generatePathName()));
-            Mono<?> createRootFile = dc.createFile(generatePathName());
-            return Mono.when(createSubDir1AndFiles, createSubDir2AndFiles, createRootFile);
+        Mono<?> createSubDir1AndFiles = dc.createSubdirectory(generatePathName())
+            .flatMap(dirClient -> Mono.when(dirClient.createFile(generatePathName()), dirClient.createFile(generatePathName())));
+        Mono<?> createSubDir2AndFiles = dc.createSubdirectory(generatePathName())
+            .flatMap(dirClient -> dirClient.createFile(generatePathName()));
+        Mono<?> createRootFile = dc.createFile(generatePathName());
+        return Mono.when(createSubDir1AndFiles, createSubDir2AndFiles, createRootFile);
     }
 
     // set recursive acl error, with response
@@ -2365,10 +2365,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2394,7 +2394,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         Mono<Response<PathAccessControl>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if(newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2463,10 +2463,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2489,7 +2489,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         Mono<Response<DataLakeDirectoryAsyncClient>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if(newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2515,10 +2515,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2542,7 +2542,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if (newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2644,10 +2644,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2671,10 +2671,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLeaseID = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
-                if(newLeaseID.equals("null")) {
+                if ("null".equals(newLeaseID)) {
                     newLeaseID = null;
                 }
-                if(newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2759,10 +2759,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2785,7 +2785,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if(newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2871,10 +2871,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -2896,7 +2896,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
         Mono<Response<Void>> response = Mono.zip(setupPathLeaseConditionAsync(dc, leaseID), setupPathMatchConditionAsync(dc, noneMatch))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if(newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3002,10 +3002,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3029,7 +3029,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if (newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3173,10 +3173,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3200,7 +3200,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if (newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3286,10 +3286,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3314,7 +3314,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if (newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3431,10 +3431,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3459,7 +3459,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if (newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3632,10 +3632,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3660,7 +3660,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if (newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3741,10 +3741,10 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(setupTuple -> {
                 String newLease = setupTuple.getT1();
                 String newMatch = setupTuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()
@@ -3771,7 +3771,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             .flatMap(clientReturn -> Mono.zip(setupPathLeaseConditionAsync(clientReturn, leaseID), setupPathMatchConditionAsync(clientReturn, noneMatch)))
             .flatMap(tuple -> {
                 String newNoneMatch = tuple.getT2();
-                if (newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 DataLakeRequestConditions drc = new DataLakeRequestConditions()

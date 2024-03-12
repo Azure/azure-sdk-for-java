@@ -84,7 +84,7 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
         Mono<Response<String>> response = setupPathMatchConditionAsync(fc, match)
             .flatMap(r -> {
                 String newMatch = r;
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 RequestConditions mac = new RequestConditions()
@@ -118,7 +118,7 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
         Mono<Response<String>> response = setupPathMatchConditionAsync(fc, noneMatch)
             .flatMap(r -> {
                 String newNoneMatch = r;
-                if (newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 RequestConditions mac = new RequestConditions()
@@ -154,7 +154,7 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
     public void renewFileLease() {
         DataLakeFileAsyncClient fc = createPathClient();
 
-        Mono<Tuple2<DataLakeLeaseAsyncClient, Response<String>>> response = setupPathLeaseConditionAsync(fc,RECEIVED_LEASE_ID)
+        Mono<Tuple2<DataLakeLeaseAsyncClient, Response<String>>> response = setupPathLeaseConditionAsync(fc, RECEIVED_LEASE_ID)
             .flatMap(r -> {
                 DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(fc, r);
                 return Mono.zip(Mono.just(leaseClient), leaseClient.renewLeaseWithResponse(null));
@@ -192,10 +192,10 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newMatch = tuple.getT1();
                 String newLease = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 RequestConditions mac = new RequestConditions()
@@ -220,10 +220,10 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 RequestConditions mac = new RequestConditions()
@@ -283,10 +283,10 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newMatch = tuple.getT1();
                 String newLease = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 RequestConditions mac = new RequestConditions()
@@ -311,10 +311,10 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newNoneMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 RequestConditions mac = new RequestConditions()
@@ -379,7 +379,7 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .then(setupPathMatchConditionAsync(fc, match))
             .flatMap(r -> {
                 String newMatch = r;
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 RequestConditions mac = new RequestConditions()
@@ -403,7 +403,7 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .then(setupPathMatchConditionAsync(fc, noneMatch))
             .flatMap(r -> {
                 String newNoneMatch = r;
-                if (newNoneMatch.equals("null")) {
+                if ("null".equals(newNoneMatch)) {
                     newNoneMatch = null;
                 }
                 RequestConditions mac = new RequestConditions()
@@ -465,10 +465,10 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .flatMap(tuple -> {
                 String newLease = tuple.getT1();
                 String newMatch = tuple.getT2();
-                if (newLease.equals("null")) {
+                if ("null".equals(newLease)) {
                     newLease = null;
                 }
-                if (newMatch.equals("null")) {
+                if ("null".equals(newMatch)) {
                     newMatch = null;
                 }
                 RequestConditions mac = new RequestConditions()
@@ -493,7 +493,7 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
             .then(setupPathMatchConditionAsync(fc, noneMatch))
                 .flatMap(r -> {
                     String newNoneMatch = r;
-                    if (newNoneMatch.equals("null")) {
+                    if ("null".equals(newNoneMatch)) {
                         newNoneMatch = null;
                     }
                     RequestConditions mac = new RequestConditions()
