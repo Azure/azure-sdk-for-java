@@ -1,10 +1,3 @@
-resources:
-  repositories:
-    - repository: 1ESPipelineTemplates
-      type: git
-      name: 1ESPipelineTemplates/1ESPipelineTemplates
-      ref: refs/tags/release
-
 parameters:
   - name: TopLevel
     type: boolean
@@ -123,36 +116,12 @@ parameters:
 
 extends:
   # Don't extend 1es pipelines twice if this template is called via LiveTestStages from ci templates
+  # otherwise duplicate resources and extends blocks cause compile errors
   ${{ if not(parameters.TopLevel) }}:
     template: /eng/pipelines/templates/stages/stage-redirect.yml
-  ${{ elseif eq(variables['System.TeamProject'], 'internal') }}:
-    template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   ${{ else }}:
-    template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
+    template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
-    ${{ if eq(variables['System.TeamProject'], 'internal') }}:
-      sdl:
-        sourceAnalysisPool:
-          name: $(WINDOWSPOOL)
-          image: $(WINDOWSVMIMAGE)
-          os: windows
-        eslint:
-          enabled: false
-          justificationForDisabling: 'ESLint injected task has failures because it uses an old version of mkdirp. We should not fail for tools not controlled by the repo. See: https://dev.azure.com/azure-sdk/internal/_build/results?buildId=3499746'
-        codeql:
-          compiled:
-            enabled: false
-            justificationForDisabling: CodeQL times our pipelines out by running for 2+ hours before being force canceled.
-        psscriptanalyzer:
-          compiled: true
-          break: true
-        policy: M365
-        credscan:
-          suppressionsFile: $(Build.SourcesDirectory)/eng/CredScanSuppression.json
-          scanFolder: $(Build.SourcesDirectory)/credscan.tsv
-          toolVersion: 2.3.12.23
-          baselineFiles: $(Build.SourcesDirectory)/eng/<language>.gdnbaselines
-
     stages:
       - ${{ each cloud in parameters.CloudConfig }}:
         - ${{ if or(contains(parameters.Clouds, cloud.key), and(contains(variables['Build.DefinitionName'], 'tests-weekly'), contains(parameters.SupportedClouds, cloud.key))) }}:
