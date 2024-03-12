@@ -38,13 +38,14 @@ stages:
           - template: /eng/pipelines/templates/variables/globals.yml
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
-          vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+          image: azsdk-pool-mms-ubuntu-2004-1espt
           os: linux
         strategy:
           runOnce:
             deploy:
               steps:
                 - checkout: none
+                - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
                 - download: current
                   displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
@@ -79,7 +80,7 @@ stages:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
             name: azsdk-pool-mms-win-2022-general
-            vmImage: azsdk-pool-mms-win-2022-1espt
+            image: azsdk-pool-mms-win-2022-1espt
             os: windows
           strategy:
             runOnce:
@@ -111,7 +112,7 @@ stages:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
             name: azsdk-pool-mms-win-2022-general
-            vmImage: azsdk-pool-mms-win-2022-1espt
+            image: azsdk-pool-mms-win-2022-1espt
             os: windows
           strategy:
             runOnce:
@@ -177,7 +178,7 @@ stages:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
             name: azsdk-pool-mms-win-2022-general
-            vmImage: azsdk-pool-mms-win-2022-1espt
+            image: azsdk-pool-mms-win-2022-1espt
             os: windows
           strategy:
             runOnce:
@@ -230,7 +231,7 @@ stages:
 
           pool:
             name: azsdk-pool-mms-ubuntu-2004-general
-            vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+            image: azsdk-pool-mms-ubuntu-2004-1espt
             os: linux
 
           variables:
@@ -290,7 +291,7 @@ stages:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
             name: azsdk-pool-mms-win-2022-general
-            vmImage: azsdk-pool-mms-win-2022-1espt
+            image: azsdk-pool-mms-win-2022-1espt
             os: windows
           strategy:
             runOnce:

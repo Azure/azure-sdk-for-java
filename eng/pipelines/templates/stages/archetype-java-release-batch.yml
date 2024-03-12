@@ -44,13 +44,14 @@ stages:
           - template: /eng/pipelines/templates/variables/image.yml
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
-          vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+          image: azsdk-pool-mms-ubuntu-2004-1espt
           os: linux
         strategy:
           runOnce:
             deploy:
               steps:
                 - checkout: none
+                - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
                 - download: current
                   displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
@@ -84,7 +85,7 @@ stages:
             - template: /eng/pipelines/templates/variables/globals.yml
           pool:
             name: azsdk-pool-mms-ubuntu-2004-general
-            vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+            image: azsdk-pool-mms-ubuntu-2004-1espt
             os: linux
 
           steps:
@@ -167,7 +168,7 @@ stages:
             - template: /eng/pipelines/templates/variables/image.yml
           pool:
             name: azsdk-pool-mms-win-2022-general
-            vmImage: azsdk-pool-mms-win-2022-1espt
+            image: azsdk-pool-mms-win-2022-1espt
             os: windows
           strategy:
             runOnce:
@@ -199,7 +200,7 @@ stages:
             - template: /eng/pipelines/templates/variables/image.yml
           pool:
             name: azsdk-pool-mms-win-2022-general
-            vmImage: azsdk-pool-mms-win-2022-1espt
+            image: azsdk-pool-mms-win-2022-1espt
             os: windows
           strategy:
             runOnce:
@@ -266,7 +267,7 @@ stages:
             - template: /eng/pipelines/templates/variables/image.yml
           pool:
             name: azsdk-pool-mms-win-2022-general
-            vmImage: azsdk-pool-mms-win-2022-1espt
+            image: azsdk-pool-mms-win-2022-1espt
             os: windows
           strategy:
             runOnce:
@@ -318,7 +319,7 @@ stages:
 
           pool:
             name: azsdk-pool-mms-ubuntu-2004-general
-            vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+            image: azsdk-pool-mms-ubuntu-2004-1espt
             os: linux
 
           variables:
@@ -378,7 +379,7 @@ stages:
             - template: /eng/pipelines/templates/variables/image.yml
           pool:
             name: azsdk-pool-mms-win-2022-general
-            vmImage: azsdk-pool-mms-win-2022-1espt
+            image: azsdk-pool-mms-win-2022-1espt
             os: windows
           strategy:
             runOnce:
@@ -419,7 +420,7 @@ stages:
 
         pool:
           name: azsdk-pool-mms-win-2022-general
-          vmImage: azsdk-pool-mms-win-2022-1espt
+          image: azsdk-pool-mms-win-2022-1espt
           os: windows
         steps:
         - checkout: azure-sdk-build-tools
@@ -470,7 +471,7 @@ stages:
         condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
-          vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+          image: azsdk-pool-mms-ubuntu-2004-1espt
           os: linux
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
