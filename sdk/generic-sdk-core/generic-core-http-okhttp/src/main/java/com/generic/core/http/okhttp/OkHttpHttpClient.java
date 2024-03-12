@@ -74,7 +74,7 @@ class OkHttpHttpClient implements HttpClient {
             for (Header hdr : request.getHeaders()) {
                 // OkHttp allows for headers with multiple values, but it treats them as separate headers,
                 // therefore, we must call rb.addHeader for each value, using the same key for all of them
-                hdr.getValuesList().forEach(value -> requestBuilder.addHeader(hdr.getName(), value));
+                hdr.getValues().forEach(value -> requestBuilder.addHeader(hdr.getName(), value));
             }
         }
 

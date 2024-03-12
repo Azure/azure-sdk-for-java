@@ -204,8 +204,8 @@ public class DefaultHttpClientTest {
             Header multiValueHeader = responseHeaders.get(multiValueHeaderName);
 
             assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
-            assertEquals(multiValueHeaderValue.size(), multiValueHeader.getValuesList().size());
-            assertTrue(multiValueHeaderValue.containsAll(multiValueHeader.getValuesList()));
+            assertEquals(multiValueHeaderValue.size(), multiValueHeader.getValues().size());
+            assertTrue(multiValueHeaderValue.containsAll(multiValueHeader.getValues()));
         }
     }
 
