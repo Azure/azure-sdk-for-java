@@ -18,6 +18,8 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE_TARGETING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE_TELEMETRY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_ENDPOINT;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_STORE_NAME;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -61,10 +63,6 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
     private static final AppConfigurationProperties TEST_PROPS = new AppConfigurationProperties();
 
     private static final String KEY_FILTER = "/foo/";
-
-    private static final String TEST_E_TAG = "4f6dd610dd5e4deebc7fbaef685fb903";
-
-    private static final String TEST_ENDPOINT = "https://test.azconfig.io";
 
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
         "Alpha",

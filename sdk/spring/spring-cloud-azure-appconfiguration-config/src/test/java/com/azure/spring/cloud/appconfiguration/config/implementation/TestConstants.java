@@ -57,6 +57,7 @@ public final class TestConstants {
     public static final String TEST_SLASH_VALUE = "prop value for slashed key name";
     public static final String TEST_STORE_NAME_1 = "fake-config-store-1";
     public static final String TEST_STORE_NAME_2 = "fake-config-store-2";
+    public static final String TEST_E_TAG = "4f6dd610dd5e4deebc7fbaef685fb903";
 
     private TestConstants() {
     }
