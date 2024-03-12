@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.LongTermScheduleP
 public final class LongTermSchedulePolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LongTermSchedulePolicy model =
-            BinaryData
-                .fromString("{\"schedulePolicyType\":\"LongTermSchedulePolicy\"}")
-                .toObject(LongTermSchedulePolicy.class);
+        LongTermSchedulePolicy model = BinaryData.fromString("{\"schedulePolicyType\":\"LongTermSchedulePolicy\"}")
+            .toObject(LongTermSchedulePolicy.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -32,7 +32,7 @@ public final class CredentialOperationsListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"yqgfimllradqwpu\"},\"description\":\"uphizztkl\",\"annotations\":[\"datadeehtjmdefkph\",\"datakkivy\"],\"\":{\"curkf\":\"datapcnnpjulpwwmxwl\",\"vruxmpnugujiwi\":\"datazjazepbjukikd\",\"anxs\":\"dataunsvsjo\"}},\"name\":\"tfgh\",\"type\":\"qxruqrobk\",\"etag\":\"npyb\",\"id\":\"kvjbf\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"xamsgfvuffd\"},\"description\":\"k\",\"annotations\":[\"datamd\"],\"\":{\"efwxcuzu\":\"datagmjpc\",\"ypr\":\"datalby\",\"nos\":\"datakjiiivbvkvo\"}},\"name\":\"krhrnv\",\"type\":\"judgwdsflitmm\",\"etag\":\"uzofuebabrs\",\"id\":\"vaj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,11 +49,11 @@ public final class CredentialOperationsListByFactoryMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ManagedIdentityCredentialResource> response = manager.credentialOperations()
-            .listByFactory("plhfwqdvd", "cohjwzynbhltrmb", com.azure.core.util.Context.NONE);
+        PagedIterable<ManagedIdentityCredentialResource> response
+            = manager.credentialOperations().listByFactory("wv", "p", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kvjbf", response.iterator().next().id());
-        Assertions.assertEquals("uphizztkl", response.iterator().next().properties().description());
-        Assertions.assertEquals("yqgfimllradqwpu", response.iterator().next().properties().resourceId());
+        Assertions.assertEquals("vaj", response.iterator().next().id());
+        Assertions.assertEquals("k", response.iterator().next().properties().description());
+        Assertions.assertEquals("xamsgfvuffd", response.iterator().next().properties().resourceId());
     }
 }

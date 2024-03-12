@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sku information related properties of a server. */
+/**
+ * Sku information related properties of a server.
+ */
 @Fluent
 public final class Sku {
     /*
@@ -23,13 +25,15 @@ public final class Sku {
     @JsonProperty(value = "tier", required = true)
     private SkuTier tier;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
     /**
      * Get the name property: The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class Sku {
 
     /**
      * Set the name property: The name of the sku, typically, tier + family + cores, e.g. Standard_D4s_v3.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -49,7 +53,7 @@ public final class Sku {
 
     /**
      * Get the tier property: The tier of the particular SKU, e.g. Burstable.
-     *
+     * 
      * @return the tier value.
      */
     public SkuTier tier() {
@@ -58,7 +62,7 @@ public final class Sku {
 
     /**
      * Set the tier property: The tier of the particular SKU, e.g. Burstable.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -69,7 +73,7 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

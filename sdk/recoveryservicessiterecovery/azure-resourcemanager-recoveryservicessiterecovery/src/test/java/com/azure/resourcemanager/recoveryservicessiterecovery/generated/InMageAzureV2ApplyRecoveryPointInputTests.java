@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageAzure
 public final class InMageAzureV2ApplyRecoveryPointInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageAzureV2ApplyRecoveryPointInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"InMageAzureV2\"}")
-                .toObject(InMageAzureV2ApplyRecoveryPointInput.class);
+        InMageAzureV2ApplyRecoveryPointInput model = BinaryData.fromString("{\"instanceType\":\"InMageAzureV2\"}")
+            .toObject(InMageAzureV2ApplyRecoveryPointInput.class);
     }
 
     @org.junit.jupiter.api.Test

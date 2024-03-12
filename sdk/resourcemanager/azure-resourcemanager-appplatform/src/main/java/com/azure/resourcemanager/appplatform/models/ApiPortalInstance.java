@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Collection of instances belong to the API portal. */
+/**
+ * Collection of instances belong to the API portal.
+ */
 @Immutable
 public final class ApiPortalInstance {
     /*
@@ -23,8 +25,14 @@ public final class ApiPortalInstance {
     private String status;
 
     /**
+     * Creates an instance of ApiPortalInstance class.
+     */
+    public ApiPortalInstance() {
+    }
+
+    /**
      * Get the name property: Name of the API portal instance.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +41,7 @@ public final class ApiPortalInstance {
 
     /**
      * Get the status property: Status of the API portal instance.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -42,7 +50,7 @@ public final class ApiPortalInstance {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

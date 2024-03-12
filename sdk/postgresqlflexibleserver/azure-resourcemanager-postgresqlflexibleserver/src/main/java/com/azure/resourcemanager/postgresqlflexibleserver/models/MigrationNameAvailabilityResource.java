@@ -6,39 +6,41 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityResourceInner;
 
-/** An immutable client-side representation of MigrationNameAvailabilityResource. */
+/**
+ * An immutable client-side representation of MigrationNameAvailabilityResource.
+ */
 public interface MigrationNameAvailabilityResource {
     /**
      * Gets the name property: The resource name to verify.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the nameAvailable property: Indicates whether the resource name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     Boolean nameAvailable();
 
     /**
      * Gets the reason property: Migration name availability reason.
-     *
+     * 
      * @return the reason value.
      */
     MigrationNameAvailabilityReason reason();
 
     /**
      * Gets the message property: Migration name availability message.
-     *
+     * 
      * @return the message value.
      */
     String message();
@@ -46,7 +48,7 @@ public interface MigrationNameAvailabilityResource {
     /**
      * Gets the inner
      * com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.MigrationNameAvailabilityResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     MigrationNameAvailabilityResourceInner innerModel();

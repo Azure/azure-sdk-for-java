@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureToAzureVmSyncedConfigDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureToAzureVmSyncedConfigDetails model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"jceatlijjjrtva\":\"flwfgziiuci\",\"xk\":\"caszk\",\"ignohi\":\"ccxetyvkun\",\"indedvabbx\":\"kgqogjw\"},\"inputEndpoints\":[{\"endpointName\":\"dei\",\"privatePort\":1416675602,\"publicPort\":277548984,\"protocol\":\"cfxzirzzih\"},{\"endpointName\":\"ypusuvjslczwci\",\"privatePort\":73772123,\"publicPort\":1150687421,\"protocol\":\"fryvdmvxadqac\"}]}")
-                .toObject(AzureToAzureVmSyncedConfigDetails.class);
+        AzureToAzureVmSyncedConfigDetails model = BinaryData.fromString(
+            "{\"tags\":{\"jceatlijjjrtva\":\"flwfgziiuci\",\"xk\":\"caszk\",\"ignohi\":\"ccxetyvkun\",\"indedvabbx\":\"kgqogjw\"},\"inputEndpoints\":[{\"endpointName\":\"dei\",\"privatePort\":1416675602,\"publicPort\":277548984,\"protocol\":\"cfxzirzzih\"},{\"endpointName\":\"ypusuvjslczwci\",\"privatePort\":73772123,\"publicPort\":1150687421,\"protocol\":\"fryvdmvxadqac\"}]}")
+            .toObject(AzureToAzureVmSyncedConfigDetails.class);
         Assertions.assertEquals("flwfgziiuci", model.tags().get("jceatlijjjrtva"));
         Assertions.assertEquals("dei", model.inputEndpoints().get(0).endpointName());
         Assertions.assertEquals(1416675602, model.inputEndpoints().get(0).privatePort());
@@ -29,31 +27,14 @@ public final class AzureToAzureVmSyncedConfigDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureToAzureVmSyncedConfigDetails model =
-            new AzureToAzureVmSyncedConfigDetails()
-                .withTags(
-                    mapOf(
-                        "jceatlijjjrtva",
-                        "flwfgziiuci",
-                        "xk",
-                        "caszk",
-                        "ignohi",
-                        "ccxetyvkun",
-                        "indedvabbx",
-                        "kgqogjw"))
-                .withInputEndpoints(
-                    Arrays
-                        .asList(
-                            new InputEndpoint()
-                                .withEndpointName("dei")
-                                .withPrivatePort(1416675602)
-                                .withPublicPort(277548984)
-                                .withProtocol("cfxzirzzih"),
-                            new InputEndpoint()
-                                .withEndpointName("ypusuvjslczwci")
-                                .withPrivatePort(73772123)
-                                .withPublicPort(1150687421)
-                                .withProtocol("fryvdmvxadqac")));
+        AzureToAzureVmSyncedConfigDetails model = new AzureToAzureVmSyncedConfigDetails()
+            .withTags(
+                mapOf("jceatlijjjrtva", "flwfgziiuci", "xk", "caszk", "ignohi", "ccxetyvkun", "indedvabbx", "kgqogjw"))
+            .withInputEndpoints(Arrays.asList(
+                new InputEndpoint().withEndpointName("dei").withPrivatePort(1416675602).withPublicPort(277548984)
+                    .withProtocol("cfxzirzzih"),
+                new InputEndpoint().withEndpointName("ypusuvjslczwci").withPrivatePort(73772123)
+                    .withPublicPort(1150687421).withProtocol("fryvdmvxadqac")));
         model = BinaryData.fromObject(model).toObject(AzureToAzureVmSyncedConfigDetails.class);
         Assertions.assertEquals("flwfgziiuci", model.tags().get("jceatlijjjrtva"));
         Assertions.assertEquals("dei", model.inputEndpoints().get(0).endpointName());

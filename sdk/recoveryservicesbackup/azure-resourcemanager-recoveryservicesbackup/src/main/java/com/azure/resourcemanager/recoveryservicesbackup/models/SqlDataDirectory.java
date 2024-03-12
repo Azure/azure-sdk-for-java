@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SQLDataDirectory info. */
+/**
+ * SQLDataDirectory info.
+ */
 @Fluent
 public final class SqlDataDirectory {
     /*
@@ -28,13 +30,15 @@ public final class SqlDataDirectory {
     @JsonProperty(value = "logicalName")
     private String logicalName;
 
-    /** Creates an instance of SqlDataDirectory class. */
+    /**
+     * Creates an instance of SqlDataDirectory class.
+     */
     public SqlDataDirectory() {
     }
 
     /**
      * Get the type property: Type of data directory mapping.
-     *
+     * 
      * @return the type value.
      */
     public SqlDataDirectoryType type() {
@@ -43,7 +47,7 @@ public final class SqlDataDirectory {
 
     /**
      * Set the type property: Type of data directory mapping.
-     *
+     * 
      * @param type the type value to set.
      * @return the SqlDataDirectory object itself.
      */
@@ -54,7 +58,7 @@ public final class SqlDataDirectory {
 
     /**
      * Get the path property: File path.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -63,7 +67,7 @@ public final class SqlDataDirectory {
 
     /**
      * Set the path property: File path.
-     *
+     * 
      * @param path the path value to set.
      * @return the SqlDataDirectory object itself.
      */
@@ -74,7 +78,7 @@ public final class SqlDataDirectory {
 
     /**
      * Get the logicalName property: Logical name of the file.
-     *
+     * 
      * @return the logicalName value.
      */
     public String logicalName() {
@@ -83,7 +87,7 @@ public final class SqlDataDirectory {
 
     /**
      * Set the logicalName property: Logical name of the file.
-     *
+     * 
      * @param logicalName the logicalName value to set.
      * @return the SqlDataDirectory object itself.
      */
@@ -94,7 +98,7 @@ public final class SqlDataDirectory {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

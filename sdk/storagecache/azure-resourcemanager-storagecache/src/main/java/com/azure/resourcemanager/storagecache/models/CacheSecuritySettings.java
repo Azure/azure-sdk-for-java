@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cache security settings. */
+/**
+ * Cache security settings.
+ */
 @Fluent
 public final class CacheSecuritySettings {
     /*
@@ -17,13 +19,15 @@ public final class CacheSecuritySettings {
     @JsonProperty(value = "accessPolicies")
     private List<NfsAccessPolicy> accessPolicies;
 
-    /** Creates an instance of CacheSecuritySettings class. */
+    /**
+     * Creates an instance of CacheSecuritySettings class.
+     */
     public CacheSecuritySettings() {
     }
 
     /**
      * Get the accessPolicies property: NFS access policies defined for this cache.
-     *
+     * 
      * @return the accessPolicies value.
      */
     public List<NfsAccessPolicy> accessPolicies() {
@@ -32,7 +36,7 @@ public final class CacheSecuritySettings {
 
     /**
      * Set the accessPolicies property: NFS access policies defined for this cache.
-     *
+     * 
      * @param accessPolicies the accessPolicies value to set.
      * @return the CacheSecuritySettings object itself.
      */
@@ -43,7 +47,7 @@ public final class CacheSecuritySettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

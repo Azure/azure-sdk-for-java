@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A2A Network Mapping fabric specific settings. */
+/**
+ * A2A Network Mapping fabric specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("AzureToAzure")
 @Fluent
@@ -26,13 +28,15 @@ public final class AzureToAzureNetworkMappingSettings extends NetworkMappingFabr
     @JsonProperty(value = "recoveryFabricLocation")
     private String recoveryFabricLocation;
 
-    /** Creates an instance of AzureToAzureNetworkMappingSettings class. */
+    /**
+     * Creates an instance of AzureToAzureNetworkMappingSettings class.
+     */
     public AzureToAzureNetworkMappingSettings() {
     }
 
     /**
      * Get the primaryFabricLocation property: The primary fabric location.
-     *
+     * 
      * @return the primaryFabricLocation value.
      */
     public String primaryFabricLocation() {
@@ -41,7 +45,7 @@ public final class AzureToAzureNetworkMappingSettings extends NetworkMappingFabr
 
     /**
      * Set the primaryFabricLocation property: The primary fabric location.
-     *
+     * 
      * @param primaryFabricLocation the primaryFabricLocation value to set.
      * @return the AzureToAzureNetworkMappingSettings object itself.
      */
@@ -52,7 +56,7 @@ public final class AzureToAzureNetworkMappingSettings extends NetworkMappingFabr
 
     /**
      * Get the recoveryFabricLocation property: The recovery fabric location.
-     *
+     * 
      * @return the recoveryFabricLocation value.
      */
     public String recoveryFabricLocation() {
@@ -61,7 +65,7 @@ public final class AzureToAzureNetworkMappingSettings extends NetworkMappingFabr
 
     /**
      * Set the recoveryFabricLocation property: The recovery fabric location.
-     *
+     * 
      * @param recoveryFabricLocation the recoveryFabricLocation value to set.
      * @return the AzureToAzureNetworkMappingSettings object itself.
      */
@@ -72,7 +76,7 @@ public final class AzureToAzureNetworkMappingSettings extends NetworkMappingFabr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

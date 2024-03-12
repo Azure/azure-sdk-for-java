@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.StorageProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Storage resource payload. */
+/**
+ * Storage resource payload.
+ */
 @Fluent
 public final class StorageResourceInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class StorageResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of StorageResourceInner class.
+     */
+    public StorageResourceInner() {
+    }
+
+    /**
      * Get the properties property: Properties of the storage resource payload.
-     *
+     * 
      * @return the properties value.
      */
     public StorageProperties properties() {
@@ -36,7 +44,7 @@ public final class StorageResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: Properties of the storage resource payload.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the StorageResourceInner object itself.
      */
@@ -47,7 +55,7 @@ public final class StorageResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class StorageResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

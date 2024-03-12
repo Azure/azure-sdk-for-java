@@ -7,11 +7,13 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AscUsages. */
+/**
+ * Resource collection API of AscUsages.
+ */
 public interface AscUsages {
     /**
      * Gets the quantity used and quota limit for resources.
-     *
+     * 
      * @param location The name of the region to query for usage information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -22,7 +24,7 @@ public interface AscUsages {
 
     /**
      * Gets the quantity used and quota limit for resources.
-     *
+     * 
      * @param location The name of the region to query for usage information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

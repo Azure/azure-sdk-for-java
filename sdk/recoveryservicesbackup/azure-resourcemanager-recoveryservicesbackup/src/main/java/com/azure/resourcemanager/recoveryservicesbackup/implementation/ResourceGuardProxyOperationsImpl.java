@@ -23,32 +23,28 @@ public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProx
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public ResourceGuardProxyOperationsImpl(
-        ResourceGuardProxyOperationsClient innerClient,
+    public ResourceGuardProxyOperationsImpl(ResourceGuardProxyOperationsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ResourceGuardProxyBaseResource> getWithResponse(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context) {
-        Response<ResourceGuardProxyBaseResourceInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, context);
+    public Response<ResourceGuardProxyBaseResource> getWithResponse(String vaultName, String resourceGroupName,
+        String resourceGuardProxyName, Context context) {
+        Response<ResourceGuardProxyBaseResourceInner> inner
+            = this.serviceClient().getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ResourceGuardProxyBaseResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ResourceGuardProxyBaseResource get(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName) {
-        ResourceGuardProxyBaseResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, resourceGuardProxyName);
+    public ResourceGuardProxyBaseResource get(String vaultName, String resourceGroupName,
+        String resourceGuardProxyName) {
+        ResourceGuardProxyBaseResourceInner inner
+            = this.serviceClient().get(vaultName, resourceGroupName, resourceGuardProxyName);
         if (inner != null) {
             return new ResourceGuardProxyBaseResourceImpl(inner, this.manager());
         } else {
@@ -56,8 +52,8 @@ public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProx
         }
     }
 
-    public Response<Void> deleteWithResponse(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context) {
+    public Response<Void> deleteWithResponse(String vaultName, String resourceGroupName, String resourceGuardProxyName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, context);
     }
 
@@ -65,31 +61,22 @@ public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProx
         this.serviceClient().delete(vaultName, resourceGroupName, resourceGuardProxyName);
     }
 
-    public Response<UnlockDeleteResponse> unlockDeleteWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String resourceGuardProxyName,
-        UnlockDeleteRequest parameters,
-        Context context) {
-        Response<UnlockDeleteResponseInner> inner =
-            this
-                .serviceClient()
-                .unlockDeleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, parameters, context);
+    public Response<UnlockDeleteResponse> unlockDeleteWithResponse(String vaultName, String resourceGroupName,
+        String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context) {
+        Response<UnlockDeleteResponseInner> inner = this.serviceClient().unlockDeleteWithResponse(vaultName,
+            resourceGroupName, resourceGuardProxyName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UnlockDeleteResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public UnlockDeleteResponse unlockDelete(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, UnlockDeleteRequest parameters) {
-        UnlockDeleteResponseInner inner =
-            this.serviceClient().unlockDelete(vaultName, resourceGroupName, resourceGuardProxyName, parameters);
+    public UnlockDeleteResponse unlockDelete(String vaultName, String resourceGroupName, String resourceGuardProxyName,
+        UnlockDeleteRequest parameters) {
+        UnlockDeleteResponseInner inner
+            = this.serviceClient().unlockDelete(vaultName, resourceGroupName, resourceGuardProxyName, parameters);
         if (inner != null) {
             return new UnlockDeleteResponseImpl(inner, this.manager());
         } else {
@@ -98,117 +85,77 @@ public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProx
     }
 
     public ResourceGuardProxyBaseResource getById(String id) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceGuardProxyName = Utils.getValueFromIdByName(id, "backupResourceGuardProxies");
+        String resourceGuardProxyName = ResourceManagerUtils.getValueFromIdByName(id, "backupResourceGuardProxies");
         if (resourceGuardProxyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'backupResourceGuardProxies'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'backupResourceGuardProxies'.", id)));
         }
         return this.getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, Context.NONE).getValue();
     }
 
     public Response<ResourceGuardProxyBaseResource> getByIdWithResponse(String id, Context context) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceGuardProxyName = Utils.getValueFromIdByName(id, "backupResourceGuardProxies");
+        String resourceGuardProxyName = ResourceManagerUtils.getValueFromIdByName(id, "backupResourceGuardProxies");
         if (resourceGuardProxyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'backupResourceGuardProxies'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'backupResourceGuardProxies'.", id)));
         }
         return this.getWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, context);
     }
 
     public void deleteById(String id) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceGuardProxyName = Utils.getValueFromIdByName(id, "backupResourceGuardProxies");
+        String resourceGuardProxyName = ResourceManagerUtils.getValueFromIdByName(id, "backupResourceGuardProxies");
         if (resourceGuardProxyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'backupResourceGuardProxies'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'backupResourceGuardProxies'.", id)));
         }
         this.deleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String vaultName = Utils.getValueFromIdByName(id, "vaults");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String resourceGuardProxyName = Utils.getValueFromIdByName(id, "backupResourceGuardProxies");
+        String resourceGuardProxyName = ResourceManagerUtils.getValueFromIdByName(id, "backupResourceGuardProxies");
         if (resourceGuardProxyName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'backupResourceGuardProxies'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'backupResourceGuardProxies'.", id)));
         }
         return this.deleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, context);
     }

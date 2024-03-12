@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container identity information. */
+/**
+ * Container identity information.
+ */
 @Fluent
 public final class ContainerIdentityInfo {
     /*
@@ -34,13 +36,15 @@ public final class ContainerIdentityInfo {
     @JsonProperty(value = "audience")
     private String audience;
 
-    /** Creates an instance of ContainerIdentityInfo class. */
+    /**
+     * Creates an instance of ContainerIdentityInfo class.
+     */
     public ContainerIdentityInfo() {
     }
 
     /**
      * Get the uniqueName property: Unique name of the container.
-     *
+     * 
      * @return the uniqueName value.
      */
     public String uniqueName() {
@@ -49,7 +53,7 @@ public final class ContainerIdentityInfo {
 
     /**
      * Set the uniqueName property: Unique name of the container.
-     *
+     * 
      * @param uniqueName the uniqueName value to set.
      * @return the ContainerIdentityInfo object itself.
      */
@@ -60,7 +64,7 @@ public final class ContainerIdentityInfo {
 
     /**
      * Get the aadTenantId property: Protection container identity - AAD Tenant.
-     *
+     * 
      * @return the aadTenantId value.
      */
     public String aadTenantId() {
@@ -69,7 +73,7 @@ public final class ContainerIdentityInfo {
 
     /**
      * Set the aadTenantId property: Protection container identity - AAD Tenant.
-     *
+     * 
      * @param aadTenantId the aadTenantId value to set.
      * @return the ContainerIdentityInfo object itself.
      */
@@ -80,7 +84,7 @@ public final class ContainerIdentityInfo {
 
     /**
      * Get the servicePrincipalClientId property: Protection container identity - AAD Service Principal.
-     *
+     * 
      * @return the servicePrincipalClientId value.
      */
     public String servicePrincipalClientId() {
@@ -89,7 +93,7 @@ public final class ContainerIdentityInfo {
 
     /**
      * Set the servicePrincipalClientId property: Protection container identity - AAD Service Principal.
-     *
+     * 
      * @param servicePrincipalClientId the servicePrincipalClientId value to set.
      * @return the ContainerIdentityInfo object itself.
      */
@@ -100,7 +104,7 @@ public final class ContainerIdentityInfo {
 
     /**
      * Get the audience property: Protection container identity - Audience.
-     *
+     * 
      * @return the audience value.
      */
     public String audience() {
@@ -109,7 +113,7 @@ public final class ContainerIdentityInfo {
 
     /**
      * Set the audience property: Protection container identity - Audience.
-     *
+     * 
      * @param audience the audience value to set.
      * @return the ContainerIdentityInfo object itself.
      */
@@ -120,7 +124,7 @@ public final class ContainerIdentityInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

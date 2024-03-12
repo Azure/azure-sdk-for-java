@@ -5,22 +5,18 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /**
- * AgentPool configuration.
+ * Profile for agent pool properties specified during creation.
  */
 @Fluent
 public class AgentPoolProfile {
     /*
-     * AvailabilityZones - The list of Availability zones to use for nodes. Datacenter racks modelled as zones
-     */
-    @JsonProperty(value = "availabilityZones")
-    private List<String> availabilityZones;
-
-    /*
-     * The particular KubernetesVersion's Image's OS Type (Linux, Windows)
+     * The particular KubernetesVersion Image OS Type (Linux, Windows)
      */
     @JsonProperty(value = "osType")
     private OsType osType;
@@ -33,10 +29,41 @@ public class AgentPoolProfile {
     private Ossku osSku;
 
     /*
-     * The version of node image
+     * The node labels to be persisted across all nodes in agent pool.
      */
-    @JsonProperty(value = "nodeImageVersion")
-    private String nodeImageVersion;
+    @JsonProperty(value = "nodeLabels")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> nodeLabels;
+
+    /*
+     * Taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.
+     */
+    @JsonProperty(value = "nodeTaints")
+    private List<String> nodeTaints;
+
+    /*
+     * The maximum number of nodes for auto-scaling
+     */
+    @JsonProperty(value = "maxCount")
+    private Integer maxCount;
+
+    /*
+     * The minimum number of nodes for auto-scaling
+     */
+    @JsonProperty(value = "minCount")
+    private Integer minCount;
+
+    /*
+     * Whether to enable auto-scaler. Default value is false
+     */
+    @JsonProperty(value = "enableAutoScaling")
+    private Boolean enableAutoScaling;
+
+    /*
+     * The maximum number of pods that can run on a node.
+     */
+    @JsonProperty(value = "maxPods")
+    private Integer maxPods;
 
     /**
      * Creates an instance of AgentPoolProfile class.
@@ -45,29 +72,7 @@ public class AgentPoolProfile {
     }
 
     /**
-     * Get the availabilityZones property: AvailabilityZones - The list of Availability zones to use for nodes.
-     * Datacenter racks modelled as zones.
-     * 
-     * @return the availabilityZones value.
-     */
-    public List<String> availabilityZones() {
-        return this.availabilityZones;
-    }
-
-    /**
-     * Set the availabilityZones property: AvailabilityZones - The list of Availability zones to use for nodes.
-     * Datacenter racks modelled as zones.
-     * 
-     * @param availabilityZones the availabilityZones value to set.
-     * @return the AgentPoolProfile object itself.
-     */
-    public AgentPoolProfile withAvailabilityZones(List<String> availabilityZones) {
-        this.availabilityZones = availabilityZones;
-        return this;
-    }
-
-    /**
-     * Get the osType property: The particular KubernetesVersion's Image's OS Type (Linux, Windows).
+     * Get the osType property: The particular KubernetesVersion Image OS Type (Linux, Windows).
      * 
      * @return the osType value.
      */
@@ -76,7 +81,7 @@ public class AgentPoolProfile {
     }
 
     /**
-     * Set the osType property: The particular KubernetesVersion's Image's OS Type (Linux, Windows).
+     * Set the osType property: The particular KubernetesVersion Image OS Type (Linux, Windows).
      * 
      * @param osType the osType value to set.
      * @return the AgentPoolProfile object itself.
@@ -109,22 +114,124 @@ public class AgentPoolProfile {
     }
 
     /**
-     * Get the nodeImageVersion property: The version of node image.
+     * Get the nodeLabels property: The node labels to be persisted across all nodes in agent pool.
      * 
-     * @return the nodeImageVersion value.
+     * @return the nodeLabels value.
      */
-    public String nodeImageVersion() {
-        return this.nodeImageVersion;
+    public Map<String, String> nodeLabels() {
+        return this.nodeLabels;
     }
 
     /**
-     * Set the nodeImageVersion property: The version of node image.
+     * Set the nodeLabels property: The node labels to be persisted across all nodes in agent pool.
      * 
-     * @param nodeImageVersion the nodeImageVersion value to set.
+     * @param nodeLabels the nodeLabels value to set.
      * @return the AgentPoolProfile object itself.
      */
-    public AgentPoolProfile withNodeImageVersion(String nodeImageVersion) {
-        this.nodeImageVersion = nodeImageVersion;
+    public AgentPoolProfile withNodeLabels(Map<String, String> nodeLabels) {
+        this.nodeLabels = nodeLabels;
+        return this;
+    }
+
+    /**
+     * Get the nodeTaints property: Taints added to new nodes during node pool create and scale. For example,
+     * key=value:NoSchedule.
+     * 
+     * @return the nodeTaints value.
+     */
+    public List<String> nodeTaints() {
+        return this.nodeTaints;
+    }
+
+    /**
+     * Set the nodeTaints property: Taints added to new nodes during node pool create and scale. For example,
+     * key=value:NoSchedule.
+     * 
+     * @param nodeTaints the nodeTaints value to set.
+     * @return the AgentPoolProfile object itself.
+     */
+    public AgentPoolProfile withNodeTaints(List<String> nodeTaints) {
+        this.nodeTaints = nodeTaints;
+        return this;
+    }
+
+    /**
+     * Get the maxCount property: The maximum number of nodes for auto-scaling.
+     * 
+     * @return the maxCount value.
+     */
+    public Integer maxCount() {
+        return this.maxCount;
+    }
+
+    /**
+     * Set the maxCount property: The maximum number of nodes for auto-scaling.
+     * 
+     * @param maxCount the maxCount value to set.
+     * @return the AgentPoolProfile object itself.
+     */
+    public AgentPoolProfile withMaxCount(Integer maxCount) {
+        this.maxCount = maxCount;
+        return this;
+    }
+
+    /**
+     * Get the minCount property: The minimum number of nodes for auto-scaling.
+     * 
+     * @return the minCount value.
+     */
+    public Integer minCount() {
+        return this.minCount;
+    }
+
+    /**
+     * Set the minCount property: The minimum number of nodes for auto-scaling.
+     * 
+     * @param minCount the minCount value to set.
+     * @return the AgentPoolProfile object itself.
+     */
+    public AgentPoolProfile withMinCount(Integer minCount) {
+        this.minCount = minCount;
+        return this;
+    }
+
+    /**
+     * Get the enableAutoScaling property: Whether to enable auto-scaler. Default value is false.
+     * 
+     * @return the enableAutoScaling value.
+     */
+    public Boolean enableAutoScaling() {
+        return this.enableAutoScaling;
+    }
+
+    /**
+     * Set the enableAutoScaling property: Whether to enable auto-scaler. Default value is false.
+     * 
+     * @param enableAutoScaling the enableAutoScaling value to set.
+     * @return the AgentPoolProfile object itself.
+     */
+    public AgentPoolProfile withEnableAutoScaling(Boolean enableAutoScaling) {
+        this.enableAutoScaling = enableAutoScaling;
+        return this;
+    }
+
+    /**
+     * Get the maxPods property: The maximum number of pods that can run on a node.
+     * 
+     * @return the maxPods value.
+     */
+    public Integer maxPods() {
+        return this.maxPods;
+    }
+
+    /**
+     * Set the maxPods property: The maximum number of pods that can run on a node.
+     * 
+     * @param maxPods the maxPods value to set.
+     * @return the AgentPoolProfile object itself.
+     */
+    public AgentPoolProfile withMaxPods(Integer maxPods) {
+        this.maxPods = maxPods;
         return this;
     }
 

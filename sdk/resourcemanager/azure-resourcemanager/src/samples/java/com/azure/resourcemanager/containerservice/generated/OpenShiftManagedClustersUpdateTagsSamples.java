@@ -19,7 +19,7 @@ public final class OpenShiftManagedClustersUpdateTagsSamples {
      */
     /**
      * Sample code: Update OpenShift Managed Cluster Tags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateOpenShiftManagedClusterTags(com.azure.resourcemanager.AzureResourceManager azure) {

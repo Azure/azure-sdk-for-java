@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Represents a logFile. */
+/**
+ * Represents a logFile.
+ */
 @Fluent
 public final class LogFileInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class LogFileInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of LogFileInner class. */
+    /**
+     * Creates an instance of LogFileInner class.
+     */
     public LogFileInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a logFile.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LogFileProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -49,7 +53,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Get the createdTime property: Creation timestamp of the log file.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -58,7 +62,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Set the createdTime property: Creation timestamp of the log file.
-     *
+     * 
      * @param createdTime the createdTime value to set.
      * @return the LogFileInner object itself.
      */
@@ -72,7 +76,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Get the lastModifiedTime property: Last modified timestamp of the log file.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -81,7 +85,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Set the lastModifiedTime property: Last modified timestamp of the log file.
-     *
+     * 
      * @param lastModifiedTime the lastModifiedTime value to set.
      * @return the LogFileInner object itself.
      */
@@ -95,7 +99,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Get the sizeInKb property: The size in kb of the logFile.
-     *
+     * 
      * @return the sizeInKb value.
      */
     public Long sizeInKb() {
@@ -104,7 +108,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Set the sizeInKb property: The size in kb of the logFile.
-     *
+     * 
      * @param sizeInKb the sizeInKb value to set.
      * @return the LogFileInner object itself.
      */
@@ -118,7 +122,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Get the type property: Type of the log file.
-     *
+     * 
      * @return the type value.
      */
     public String typePropertiesType() {
@@ -127,7 +131,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Set the type property: Type of the log file.
-     *
+     * 
      * @param type the type value to set.
      * @return the LogFileInner object itself.
      */
@@ -141,7 +145,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Get the url property: The url to download the log file from.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -150,7 +154,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Set the url property: The url to download the log file from.
-     *
+     * 
      * @param url the url value to set.
      * @return the LogFileInner object itself.
      */
@@ -164,7 +168,7 @@ public final class LogFileInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

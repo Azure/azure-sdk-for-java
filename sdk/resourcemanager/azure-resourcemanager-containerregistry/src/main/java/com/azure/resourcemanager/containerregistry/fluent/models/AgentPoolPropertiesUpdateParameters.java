@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AgentPoolPropertiesUpdateParameters model. */
+/**
+ * The AgentPoolPropertiesUpdateParameters model.
+ */
 @Fluent
 public final class AgentPoolPropertiesUpdateParameters {
     /*
@@ -16,13 +18,15 @@ public final class AgentPoolPropertiesUpdateParameters {
     @JsonProperty(value = "count")
     private Integer count;
 
-    /** Creates an instance of AgentPoolPropertiesUpdateParameters class. */
+    /**
+     * Creates an instance of AgentPoolPropertiesUpdateParameters class.
+     */
     public AgentPoolPropertiesUpdateParameters() {
     }
 
     /**
      * Get the count property: The count of agent machine.
-     *
+     * 
      * @return the count value.
      */
     public Integer count() {
@@ -31,7 +35,7 @@ public final class AgentPoolPropertiesUpdateParameters {
 
     /**
      * Set the count property: The count of agent machine.
-     *
+     * 
      * @param count the count value to set.
      * @return the AgentPoolPropertiesUpdateParameters object itself.
      */
@@ -42,7 +46,7 @@ public final class AgentPoolPropertiesUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

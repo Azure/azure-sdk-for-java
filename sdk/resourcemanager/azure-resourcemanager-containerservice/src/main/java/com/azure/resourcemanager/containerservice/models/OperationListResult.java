@@ -28,7 +28,7 @@ public final class OperationListResult {
 
     /**
      * Get the value property: The list of operations.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationValueInner> value() {
@@ -37,7 +37,7 @@ public final class OperationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

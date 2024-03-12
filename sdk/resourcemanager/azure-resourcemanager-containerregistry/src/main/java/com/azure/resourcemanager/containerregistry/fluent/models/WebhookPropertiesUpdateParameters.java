@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The parameters for updating the properties of a webhook. */
+/**
+ * The parameters for updating the properties of a webhook.
+ */
 @Fluent
 public final class WebhookPropertiesUpdateParameters {
     /*
@@ -48,13 +50,15 @@ public final class WebhookPropertiesUpdateParameters {
     @JsonProperty(value = "actions")
     private List<WebhookAction> actions;
 
-    /** Creates an instance of WebhookPropertiesUpdateParameters class. */
+    /**
+     * Creates an instance of WebhookPropertiesUpdateParameters class.
+     */
     public WebhookPropertiesUpdateParameters() {
     }
 
     /**
      * Get the serviceUri property: The service URI for the webhook to post notifications.
-     *
+     * 
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -63,7 +67,7 @@ public final class WebhookPropertiesUpdateParameters {
 
     /**
      * Set the serviceUri property: The service URI for the webhook to post notifications.
-     *
+     * 
      * @param serviceUri the serviceUri value to set.
      * @return the WebhookPropertiesUpdateParameters object itself.
      */
@@ -74,7 +78,7 @@ public final class WebhookPropertiesUpdateParameters {
 
     /**
      * Get the customHeaders property: Custom headers that will be added to the webhook notifications.
-     *
+     * 
      * @return the customHeaders value.
      */
     public Map<String, String> customHeaders() {
@@ -83,7 +87,7 @@ public final class WebhookPropertiesUpdateParameters {
 
     /**
      * Set the customHeaders property: Custom headers that will be added to the webhook notifications.
-     *
+     * 
      * @param customHeaders the customHeaders value to set.
      * @return the WebhookPropertiesUpdateParameters object itself.
      */
@@ -94,7 +98,7 @@ public final class WebhookPropertiesUpdateParameters {
 
     /**
      * Get the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public WebhookStatus status() {
@@ -103,7 +107,7 @@ public final class WebhookPropertiesUpdateParameters {
 
     /**
      * Set the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @param status the status value to set.
      * @return the WebhookPropertiesUpdateParameters object itself.
      */
@@ -116,7 +120,7 @@ public final class WebhookPropertiesUpdateParameters {
      * Get the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -127,7 +131,7 @@ public final class WebhookPropertiesUpdateParameters {
      * Set the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the WebhookPropertiesUpdateParameters object itself.
      */
@@ -138,7 +142,7 @@ public final class WebhookPropertiesUpdateParameters {
 
     /**
      * Get the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @return the actions value.
      */
     public List<WebhookAction> actions() {
@@ -147,7 +151,7 @@ public final class WebhookPropertiesUpdateParameters {
 
     /**
      * Set the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the WebhookPropertiesUpdateParameters object itself.
      */
@@ -158,7 +162,7 @@ public final class WebhookPropertiesUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -29,7 +29,7 @@ public class DictionaryLookup {
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
 
-		// BEGIN: getTextTranslationDictionaryLookup
+        // BEGIN: getTextTranslationDictionaryLookup
         String sourceLanguage = "en";
         String targetLanguage = "es";
         List<InputTextItem> content = new ArrayList<>();
@@ -41,6 +41,6 @@ public class DictionaryLookup {
             System.out.println("For the given input " + dictionaryEntry.getTranslations().size() + " entries were found in the dictionary.");
             System.out.println("First entry: '" + dictionaryEntry.getTranslations().get(0).getDisplayTarget() + "', confidence: " + dictionaryEntry.getTranslations().get(0).getConfidence());
         }
-		// END: getTextTranslationDictionaryLookup
+        // END: getTextTranslationDictionaryLookup
     }
 }

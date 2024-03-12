@@ -59,6 +59,9 @@ parameters:
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
+- name: JavadocSafeJavaBuildVersion
+  type: string
+  default: $(JavadocSafeJavaBuildVersion)
 - name: LiveTestStages
   type: stageList
   default: []

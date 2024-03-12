@@ -1,14 +1,43 @@
 # Release History
 
-## 1.0.0-beta.16 (Unreleased)
+## 1.0.0-beta.21 (2024-03-11)
+
+### Bugs Fixed
+- [Support stable HTTP semconv url.query](https://github.com/Azure/azure-sdk-for-java/pull/39133)
+
+## 1.0.0-beta.20 (2024-03-07)
+
+### Features Added
+- [Support ingestion sampling](https://github.com/Azure/azure-sdk-for-java/pull/39103)
+
+### Bugs Fixed
+- [Avoid warning on sporadic connection failures](https://github.com/Azure/azure-sdk-for-java/pull/39021)
+
+## 1.0.0-beta.19 (2024-02-23)
+
+### Bugs Fixed
+- [Always send item count for logs](https://github.com/Azure/azure-sdk-for-java/pull/38930)
+
+## 1.0.0-beta.18 (2024-02-23)
+
+### Bugs Fixed
+- [Fix min and max values for pre-aggregated metrics](https://github.com/Azure/azure-sdk-for-java/pull/38516)
+- [Fix duplicate exceptions](https://github.com/Azure/azure-sdk-for-java/pull/38687)
+- [Always send item count](https://github.com/Azure/azure-sdk-for-java/pull/38737)
+
+### Other Changes
+- [Update OpenTelemetry to 2.1.0](https://github.com/Azure/azure-sdk-for-java/pull/38808)
+
+## 1.0.0-beta.17 (2024-01-25)
+- [Fix pre-aggregated metrics with stable http semantic convention](https://github.com/Azure/azure-sdk-for-java/pull/38497)
+
+## 1.0.0-beta.16 (2024-01-23)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- [Update OpenTelemetry to 2.0.0](https://github.com/Azure/azure-sdk-for-java/pull/38360)
+- [Support for stable HTTP semconv](https://github.com/Azure/azure-sdk-for-java/pull/37899)
+- [Update otel schema to 1.22.0](https://github.com/Azure/azure-sdk-for-java/pull/38246)
 
 ## 1.0.0-beta.15 (2023-12-18)
 

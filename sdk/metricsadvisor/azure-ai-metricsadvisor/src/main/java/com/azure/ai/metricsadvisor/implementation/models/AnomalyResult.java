@@ -11,8 +11,8 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -194,7 +194,8 @@ public final class AnomalyResult implements JsonSerializable<AnomalyResult> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("timestamp", Objects.toString(this.timestamp, null));
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
         jsonWriter.writeMapField("dimension", this.dimension, (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("property", this.property);
         return jsonWriter.writeEndObject();

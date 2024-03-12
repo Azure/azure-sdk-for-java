@@ -12,20 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyProperties model =
-            BinaryData
-                .fromString(
-                    "{\"friendlyName\":\"jrwdkqz\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}}")
-                .toObject(PolicyProperties.class);
+        PolicyProperties model = BinaryData.fromString(
+            "{\"friendlyName\":\"jrwdkqz\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}}")
+            .toObject(PolicyProperties.class);
         Assertions.assertEquals("jrwdkqz", model.friendlyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyProperties model =
-            new PolicyProperties()
-                .withFriendlyName("jrwdkqz")
-                .withProviderSpecificDetails(new PolicyProviderSpecificDetails());
+        PolicyProperties model = new PolicyProperties().withFriendlyName("jrwdkqz")
+            .withProviderSpecificDetails(new PolicyProviderSpecificDetails());
         model = BinaryData.fromObject(model).toObject(PolicyProperties.class);
         Assertions.assertEquals("jrwdkqz", model.friendlyName());
     }

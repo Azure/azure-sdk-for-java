@@ -68,6 +68,16 @@ public class CallMediaUnitTests {
     }
 
     @Test
+    public void playFileToAllWithBargeInWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playFileSource)
+            .setLoop(false)
+            .setInterruptCallMediaOperation(true)
+            .setOperationContext("operationContext");
+        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+
+    @Test
     public void playTextWithResponseTest() {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
@@ -85,6 +95,16 @@ public class CallMediaUnitTests {
         assertEquals(response.getStatusCode(), 202);
     }
 
+    @Test
+    public void playTextToAllWithBargeInWithResponseTest() {
+        playToAllOptions = new PlayToAllOptions(playTextSource)
+            .setLoop(false)
+            .setInterruptCallMediaOperation(true)
+            .setOperationContext("operationContext");
+        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
+        assertEquals(response.getStatusCode(), 202);
+    }
+    
     @Test
     public void cancelAllOperationsWithResponse() {
         Response<Void> response = callMedia.cancelAllMediaOperationsWithResponse(Context.NONE);

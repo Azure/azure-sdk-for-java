@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Replication provider specific settings. */
+/**
+ * Replication provider specific settings.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = ReplicationProtectionIntentProviderSpecificSettings.class)
 @JsonTypeName("ReplicationProtectionIntentProviderSpecificSettings")
-@JsonSubTypes({@JsonSubTypes.Type(name = "A2A", value = A2AReplicationIntentDetails.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "A2A", value = A2AReplicationIntentDetails.class) })
 @Immutable
 public class ReplicationProtectionIntentProviderSpecificSettings {
-    /** Creates an instance of ReplicationProtectionIntentProviderSpecificSettings class. */
+    /**
+     * Creates an instance of ReplicationProtectionIntentProviderSpecificSettings class.
+     */
     public ReplicationProtectionIntentProviderSpecificSettings() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

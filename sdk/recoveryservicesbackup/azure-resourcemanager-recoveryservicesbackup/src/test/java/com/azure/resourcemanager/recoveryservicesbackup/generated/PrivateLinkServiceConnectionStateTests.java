@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateLinkServiceConnectionStateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Disconnected\",\"description\":\"bjnpg\",\"actionsRequired\":\"ftadehxnltyfs\"}")
-                .toObject(PrivateLinkServiceConnectionState.class);
+        PrivateLinkServiceConnectionState model = BinaryData
+            .fromString("{\"status\":\"Disconnected\",\"description\":\"bjnpg\",\"actionsRequired\":\"ftadehxnltyfs\"}")
+            .toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateEndpointConnectionStatus.DISCONNECTED, model.status());
         Assertions.assertEquals("bjnpg", model.description());
         Assertions.assertEquals("ftadehxnltyfs", model.actionRequired());
@@ -24,11 +22,9 @@ public final class PrivateLinkServiceConnectionStateTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrivateLinkServiceConnectionState model =
-            new PrivateLinkServiceConnectionState()
-                .withStatus(PrivateEndpointConnectionStatus.DISCONNECTED)
-                .withDescription("bjnpg")
-                .withActionRequired("ftadehxnltyfs");
+        PrivateLinkServiceConnectionState model
+            = new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.DISCONNECTED)
+                .withDescription("bjnpg").withActionRequired("ftadehxnltyfs");
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceConnectionState.class);
         Assertions.assertEquals(PrivateEndpointConnectionStatus.DISCONNECTED, model.status());
         Assertions.assertEquals("bjnpg", model.description());

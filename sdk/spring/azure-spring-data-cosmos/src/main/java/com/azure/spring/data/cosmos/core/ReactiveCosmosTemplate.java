@@ -790,8 +790,11 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                 String idString = id != null ? id.toString() : "";
                 final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
                 applyBulkVersioning(domainType, item, options);
-                return CosmosBulkOperations.getDeleteItemOperation(idString,
-                    getPartitionKeyFromValue(entityInfo, object), options);
+                return CosmosBulkOperations.getDeleteItemOperation(
+                    idString,
+                    new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)),
+                    options,
+                    object); // setup the original object in the context
             });
 
             // Default micro batch size is 100 which will be too high for most Spring cases, this configuration
@@ -799,7 +802,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
             cosmosBulkExecutionOptions.setInitialMicroBatchSize(1);
 
-            this.getCosmosAsyncClient()
+            return this.getCosmosAsyncClient()
                 .getDatabase(this.getDatabaseName())
                 .getContainer(containerName)
                 .executeBulkOperations(cosmosItemOperationFlux, cosmosBulkExecutionOptions)
@@ -807,8 +810,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                 .onErrorResume(throwable ->
                     CosmosExceptionUtils.exceptionHandler("Failed to delete item(s)", throwable,
                         this.responseDiagnosticsProcessor))
-                .collectList().block();
-            return results.flatMap(jsonNode -> Mono.just(toDomainObject(domainType, jsonNode)));
+                .map(itemResponse -> itemResponse.getOperation().getContext());
         } else {
             return results.flatMap(d -> deleteItem(d, finalContainerName, domainType));
         }

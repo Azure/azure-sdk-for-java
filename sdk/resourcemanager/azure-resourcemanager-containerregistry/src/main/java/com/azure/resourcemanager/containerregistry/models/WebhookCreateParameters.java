@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The parameters for creating a webhook. */
+/**
+ * The parameters for creating a webhook.
+ */
 @Fluent
 public final class WebhookCreateParameters {
     /*
@@ -34,13 +36,15 @@ public final class WebhookCreateParameters {
     @JsonProperty(value = "properties")
     private WebhookPropertiesCreateParameters innerProperties;
 
-    /** Creates an instance of WebhookCreateParameters class. */
+    /**
+     * Creates an instance of WebhookCreateParameters class.
+     */
     public WebhookCreateParameters() {
     }
 
     /**
      * Get the tags property: The tags for the webhook.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -49,7 +53,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the tags property: The tags for the webhook.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -60,7 +64,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the location property: The location of the webhook. This cannot be changed after the resource is created.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -69,7 +73,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the location property: The location of the webhook. This cannot be changed after the resource is created.
-     *
+     * 
      * @param location the location value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -80,7 +84,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the innerProperties property: The properties that the webhook will be created with.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebhookPropertiesCreateParameters innerProperties() {
@@ -89,7 +93,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the serviceUri property: The service URI for the webhook to post notifications.
-     *
+     * 
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -98,7 +102,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the serviceUri property: The service URI for the webhook to post notifications.
-     *
+     * 
      * @param serviceUri the serviceUri value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -112,7 +116,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the customHeaders property: Custom headers that will be added to the webhook notifications.
-     *
+     * 
      * @return the customHeaders value.
      */
     public Map<String, String> customHeaders() {
@@ -121,7 +125,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the customHeaders property: Custom headers that will be added to the webhook notifications.
-     *
+     * 
      * @param customHeaders the customHeaders value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -135,7 +139,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @return the status value.
      */
     public WebhookStatus status() {
@@ -144,7 +148,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the status property: The status of the webhook at the time the operation was called.
-     *
+     * 
      * @param status the status value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -160,7 +164,7 @@ public final class WebhookCreateParameters {
      * Get the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -171,7 +175,7 @@ public final class WebhookCreateParameters {
      * Set the scope property: The scope of repositories where the event can be triggered. For example, 'foo:*' means
      * events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to
      * 'foo:latest'. Empty means all events.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -185,7 +189,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Get the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @return the actions value.
      */
     public List<WebhookAction> actions() {
@@ -194,7 +198,7 @@ public final class WebhookCreateParameters {
 
     /**
      * Set the actions property: The list of actions that trigger the webhook to post notifications.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the WebhookCreateParameters object itself.
      */
@@ -208,15 +212,13 @@ public final class WebhookCreateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model WebhookCreateParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property location in model WebhookCreateParameters"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();

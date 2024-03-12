@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 /**
  * A date range.
- *
+ * 
  * For example, between '2022-12-23' and '2023-01-05'.
  */
 @Fluent
@@ -36,7 +36,7 @@ public final class DateSpan {
 
     /**
      * Get the start property: The start date of the date span.
-     *
+     * 
      * @return the start value.
      */
     public LocalDate start() {
@@ -45,7 +45,7 @@ public final class DateSpan {
 
     /**
      * Set the start property: The start date of the date span.
-     *
+     * 
      * @param start the start value to set.
      * @return the DateSpan object itself.
      */
@@ -56,7 +56,7 @@ public final class DateSpan {
 
     /**
      * Get the end property: The end date of the date span.
-     *
+     * 
      * @return the end value.
      */
     public LocalDate end() {
@@ -65,7 +65,7 @@ public final class DateSpan {
 
     /**
      * Set the end property: The end date of the date span.
-     *
+     * 
      * @param end the end value to set.
      * @return the DateSpan object itself.
      */
@@ -76,7 +76,7 @@ public final class DateSpan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

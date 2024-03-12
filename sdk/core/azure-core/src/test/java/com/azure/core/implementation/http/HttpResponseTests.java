@@ -28,13 +28,10 @@ public class HttpResponseTests {
         Flux<Tuple2<ByteBuffer, ByteBuffer>> zipped
             = bufferedContentFlux.zipWith(sourceHttpResponse.getInnerContentFlux());
         // Validate that buffered Response is not replaying source Response body.
-        StepVerifier.create(zipped)
-            .thenConsumeWhile(o -> {
-                assertFalse(o.getT1() == o.getT2(),
-                    "Buffered response should not cache shallow copy of source.");
-                return true;
-            })
-            .verifyComplete();
+        StepVerifier.create(zipped).thenConsumeWhile(o -> {
+            assertFalse(o.getT1() == o.getT2(), "Buffered response should not cache shallow copy of source.");
+            return true;
+        }).verifyComplete();
     }
 
     // A Type to mimic Response with body content released/disposed as it consumed
@@ -70,20 +67,16 @@ public class HttpResponseTests {
 
         @Override
         public Flux<ByteBuffer> getBody() {
-            return this.contentMono
-                .doOnNext(bb -> {
-                    // This ensure BufferedHttpResponse subscribes only once.
-                    assertFalse(consumed, "content is already consumed");
-                    consumed = true;
-                })
-                .flux();
+            return this.contentMono.doOnNext(bb -> {
+                // This ensure BufferedHttpResponse subscribes only once.
+                assertFalse(consumed, "content is already consumed");
+                consumed = true;
+            }).flux();
         }
 
         @Override
         public Mono<byte[]> getBodyAsByteArray() {
-            return this.getBody()
-                .map(bb -> new byte[bb.remaining()])
-                .next();
+            return this.getBody().map(bb -> new byte[bb.remaining()]).next();
         }
 
         @Override

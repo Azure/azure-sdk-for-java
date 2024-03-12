@@ -13,8 +13,9 @@ import java.util.Objects;
 /**
  * A transaction delivery outcome.
  *
- * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#type-transactional-state">Transactional
- *     state</a>
+ * @see <a href=
+ * "http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-transactions-v1.0-os.html#type-transactional-state">Transactional
+ * state</a>
  */
 @Fluent
 public final class TransactionalDeliveryOutcome extends DeliveryOutcome {

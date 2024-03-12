@@ -5,6 +5,7 @@ package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -17,7 +18,19 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a collection of {@link GeoLineString GeoLines}.
+ * <p>Represents a collection of {@link GeoLineString GeoLineStrings}.</p>
+ *
+ * <p>This class encapsulates a list of {@link GeoLineString} instances that form a collection of lines. Each line
+ * string is a curve with linear interpolation between points.</p>
+ *
+ * <p>This class is useful when you want to work with a collection of line strings in a geographic context.
+ * For example, you can use it to represent a complex route on a map that is composed of multiple line strings.</p>
+ *
+ * <p>Note: A line string collection requires at least 2 coordinates for each line string.</p>
+ *
+ * @see GeoLineString
+ * @see GeoObject
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoLineStringCollection extends GeoObject {
@@ -130,8 +143,8 @@ public final class GeoLineStringCollection extends GeoObject {
                             + "'MultiLineString'. The found 'type' was '" + type + "'.");
                     }
                 } else if ("coordinates".equals(fieldName)) {
-                    List<List<GeoPosition>> positionList = reader.readArray(reader2 ->
-                        reader2.readArray(GeoPosition::fromJson));
+                    List<List<GeoPosition>> positionList
+                        = reader.readArray(reader2 -> reader2.readArray(GeoPosition::fromJson));
                     lines = new ArrayList<>(positionList.size());
                     for (List<GeoPosition> positions : positionList) {
                         lines.add(new GeoLineString(positions));

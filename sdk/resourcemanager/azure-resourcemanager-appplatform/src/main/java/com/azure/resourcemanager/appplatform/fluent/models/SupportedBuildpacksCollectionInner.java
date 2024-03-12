@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Object that includes an array of supported buildpacks resources and a possible link for next set. */
+/**
+ * Object that includes an array of supported buildpacks resources and a possible link for next set.
+ */
 @Fluent
 public final class SupportedBuildpacksCollectionInner {
     /*
@@ -25,8 +27,14 @@ public final class SupportedBuildpacksCollectionInner {
     private String nextLink;
 
     /**
+     * Creates an instance of SupportedBuildpacksCollectionInner class.
+     */
+    public SupportedBuildpacksCollectionInner() {
+    }
+
+    /**
      * Get the value property: Collection of supported buildpacks resources.
-     *
+     * 
      * @return the value value.
      */
     public List<SupportedBuildpackResourceInner> value() {
@@ -35,7 +43,7 @@ public final class SupportedBuildpacksCollectionInner {
 
     /**
      * Set the value property: Collection of supported buildpacks resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the SupportedBuildpacksCollectionInner object itself.
      */
@@ -45,9 +53,9 @@ public final class SupportedBuildpacksCollectionInner {
     }
 
     /**
-     * Get the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Get the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,9 +63,9 @@ public final class SupportedBuildpacksCollectionInner {
     }
 
     /**
-     * Set the nextLink property: URL client should use to fetch the next page (per server side paging). It's null for
-     * now, added for future use.
-     *
+     * Set the nextLink property: URL client should use to fetch the next page (per server side paging).
+     * It's null for now, added for future use.
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SupportedBuildpacksCollectionInner object itself.
      */
@@ -68,7 +76,7 @@ public final class SupportedBuildpacksCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

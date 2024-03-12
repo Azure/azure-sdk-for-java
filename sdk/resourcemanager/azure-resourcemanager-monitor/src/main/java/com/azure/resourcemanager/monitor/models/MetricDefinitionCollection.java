@@ -10,7 +10,9 @@ import com.azure.resourcemanager.monitor.fluent.models.MetricDefinitionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents collection of metric definitions. */
+/**
+ * Represents collection of metric definitions.
+ */
 @Fluent
 public final class MetricDefinitionCollection {
     /*
@@ -19,13 +21,15 @@ public final class MetricDefinitionCollection {
     @JsonProperty(value = "value", required = true)
     private List<MetricDefinitionInner> value;
 
-    /** Creates an instance of MetricDefinitionCollection class. */
+    /**
+     * Creates an instance of MetricDefinitionCollection class.
+     */
     public MetricDefinitionCollection() {
     }
 
     /**
      * Get the value property: the values for the metric definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<MetricDefinitionInner> value() {
@@ -34,7 +38,7 @@ public final class MetricDefinitionCollection {
 
     /**
      * Set the value property: the values for the metric definitions.
-     *
+     * 
      * @param value the value value to set.
      * @return the MetricDefinitionCollection object itself.
      */
@@ -45,15 +49,13 @@ public final class MetricDefinitionCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model MetricDefinitionCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model MetricDefinitionCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

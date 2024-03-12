@@ -37,7 +37,7 @@ public final class ManagedClusterAccessProfileInner extends Resource {
 
     /**
      * Get the innerProperties property: AccessProfile of a managed cluster.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AccessProfile innerProperties() {
@@ -46,7 +46,7 @@ public final class ManagedClusterAccessProfileInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -73,7 +73,7 @@ public final class ManagedClusterAccessProfileInner extends Resource {
 
     /**
      * Get the kubeConfig property: Base64-encoded Kubernetes configuration file.
-     *
+     * 
      * @return the kubeConfig value.
      */
     public byte[] kubeConfig() {
@@ -82,7 +82,7 @@ public final class ManagedClusterAccessProfileInner extends Resource {
 
     /**
      * Set the kubeConfig property: Base64-encoded Kubernetes configuration file.
-     *
+     * 
      * @param kubeConfig the kubeConfig value to set.
      * @return the ManagedClusterAccessProfileInner object itself.
      */
@@ -96,7 +96,7 @@ public final class ManagedClusterAccessProfileInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

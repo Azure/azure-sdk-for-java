@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Custom domain resource payload. */
+/**
+ * Custom domain resource payload.
+ */
 @Fluent
 public final class CustomDomainResourceInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class CustomDomainResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of CustomDomainResourceInner class.
+     */
+    public CustomDomainResourceInner() {
+    }
+
+    /**
      * Get the properties property: Properties of the custom domain resource.
-     *
+     * 
      * @return the properties value.
      */
     public CustomDomainProperties properties() {
@@ -36,7 +44,7 @@ public final class CustomDomainResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: Properties of the custom domain resource.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CustomDomainResourceInner object itself.
      */
@@ -47,7 +55,7 @@ public final class CustomDomainResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class CustomDomainResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

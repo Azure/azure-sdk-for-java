@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Operation status job extended info. */
+/**
+ * Operation status job extended info.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("OperationStatusJobExtendedInfo")
 @Fluent
@@ -20,13 +22,15 @@ public final class OperationStatusJobExtendedInfo extends OperationStatusExtende
     @JsonProperty(value = "jobId")
     private String jobId;
 
-    /** Creates an instance of OperationStatusJobExtendedInfo class. */
+    /**
+     * Creates an instance of OperationStatusJobExtendedInfo class.
+     */
     public OperationStatusJobExtendedInfo() {
     }
 
     /**
      * Get the jobId property: ID of the job created for this protected item.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -35,7 +39,7 @@ public final class OperationStatusJobExtendedInfo extends OperationStatusExtende
 
     /**
      * Set the jobId property: ID of the job created for this protected item.
-     *
+     * 
      * @param jobId the jobId value to set.
      * @return the OperationStatusJobExtendedInfo object itself.
      */
@@ -46,7 +50,7 @@ public final class OperationStatusJobExtendedInfo extends OperationStatusExtende
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

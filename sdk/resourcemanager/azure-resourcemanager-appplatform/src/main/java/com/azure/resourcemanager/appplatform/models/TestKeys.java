@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Test keys payload. */
+/**
+ * Test keys payload.
+ */
 @Fluent
 public final class TestKeys {
     /*
@@ -41,8 +43,14 @@ public final class TestKeys {
     private Boolean enabled;
 
     /**
+     * Creates an instance of TestKeys class.
+     */
+    public TestKeys() {
+    }
+
+    /**
      * Get the primaryKey property: Primary key.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -51,7 +59,7 @@ public final class TestKeys {
 
     /**
      * Set the primaryKey property: Primary key.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the TestKeys object itself.
      */
@@ -62,7 +70,7 @@ public final class TestKeys {
 
     /**
      * Get the secondaryKey property: Secondary key.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -71,7 +79,7 @@ public final class TestKeys {
 
     /**
      * Set the secondaryKey property: Secondary key.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the TestKeys object itself.
      */
@@ -82,7 +90,7 @@ public final class TestKeys {
 
     /**
      * Get the primaryTestEndpoint property: Primary test endpoint.
-     *
+     * 
      * @return the primaryTestEndpoint value.
      */
     public String primaryTestEndpoint() {
@@ -91,7 +99,7 @@ public final class TestKeys {
 
     /**
      * Set the primaryTestEndpoint property: Primary test endpoint.
-     *
+     * 
      * @param primaryTestEndpoint the primaryTestEndpoint value to set.
      * @return the TestKeys object itself.
      */
@@ -102,7 +110,7 @@ public final class TestKeys {
 
     /**
      * Get the secondaryTestEndpoint property: Secondary test endpoint.
-     *
+     * 
      * @return the secondaryTestEndpoint value.
      */
     public String secondaryTestEndpoint() {
@@ -111,7 +119,7 @@ public final class TestKeys {
 
     /**
      * Set the secondaryTestEndpoint property: Secondary test endpoint.
-     *
+     * 
      * @param secondaryTestEndpoint the secondaryTestEndpoint value to set.
      * @return the TestKeys object itself.
      */
@@ -122,7 +130,7 @@ public final class TestKeys {
 
     /**
      * Get the enabled property: Indicates whether the test endpoint feature enabled or not.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -131,7 +139,7 @@ public final class TestKeys {
 
     /**
      * Set the enabled property: Indicates whether the test endpoint feature enabled or not.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the TestKeys object itself.
      */
@@ -142,7 +150,7 @@ public final class TestKeys {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

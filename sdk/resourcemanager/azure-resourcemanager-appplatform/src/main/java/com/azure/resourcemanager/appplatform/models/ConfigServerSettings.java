@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The settings of config server. */
+/**
+ * The settings of config server.
+ */
 @Fluent
 public final class ConfigServerSettings {
     /*
@@ -17,8 +19,14 @@ public final class ConfigServerSettings {
     private ConfigServerGitProperty gitProperty;
 
     /**
+     * Creates an instance of ConfigServerSettings class.
+     */
+    public ConfigServerSettings() {
+    }
+
+    /**
      * Get the gitProperty property: Property of git environment.
-     *
+     * 
      * @return the gitProperty value.
      */
     public ConfigServerGitProperty gitProperty() {
@@ -27,7 +35,7 @@ public final class ConfigServerSettings {
 
     /**
      * Set the gitProperty property: Property of git environment.
-     *
+     * 
      * @param gitProperty the gitProperty value to set.
      * @return the ConfigServerSettings object itself.
      */
@@ -38,7 +46,7 @@ public final class ConfigServerSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

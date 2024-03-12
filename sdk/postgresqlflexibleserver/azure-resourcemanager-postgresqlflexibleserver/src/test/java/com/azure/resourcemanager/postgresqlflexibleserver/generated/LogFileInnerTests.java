@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LogFileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogFileInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"createdTime\":\"2021-01-22T05:40:33Z\",\"lastModifiedTime\":\"2021-08-04T00:45:18Z\",\"sizeInKb\":5000863727386895372,\"type\":\"fmwncotmrfh\",\"url\":\"ctymoxoftp\"},\"id\":\"iwyczuh\",\"name\":\"a\",\"type\":\"pqjlihhyusps\"}")
-                .toObject(LogFileInner.class);
+        LogFileInner model = BinaryData.fromString(
+            "{\"properties\":{\"createdTime\":\"2021-01-22T05:40:33Z\",\"lastModifiedTime\":\"2021-08-04T00:45:18Z\",\"sizeInKb\":5000863727386895372,\"type\":\"fmwncotmrfh\",\"url\":\"ctymoxoftp\"},\"id\":\"iwyczuh\",\"name\":\"a\",\"type\":\"pqjlihhyusps\"}")
+            .toObject(LogFileInner.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T05:40:33Z"), model.createdTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T00:45:18Z"), model.lastModifiedTime());
         Assertions.assertEquals(5000863727386895372L, model.sizeInKb());
@@ -26,13 +24,9 @@ public final class LogFileInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogFileInner model =
-            new LogFileInner()
-                .withCreatedTime(OffsetDateTime.parse("2021-01-22T05:40:33Z"))
-                .withLastModifiedTime(OffsetDateTime.parse("2021-08-04T00:45:18Z"))
-                .withSizeInKb(5000863727386895372L)
-                .withTypePropertiesType("fmwncotmrfh")
-                .withUrl("ctymoxoftp");
+        LogFileInner model = new LogFileInner().withCreatedTime(OffsetDateTime.parse("2021-01-22T05:40:33Z"))
+            .withLastModifiedTime(OffsetDateTime.parse("2021-08-04T00:45:18Z")).withSizeInKb(5000863727386895372L)
+            .withTypePropertiesType("fmwncotmrfh").withUrl("ctymoxoftp");
         model = BinaryData.fromObject(model).toObject(LogFileInner.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T05:40:33Z"), model.createdTime());
         Assertions.assertEquals(OffsetDateTime.parse("2021-08-04T00:45:18Z"), model.lastModifiedTime());

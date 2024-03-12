@@ -9,65 +9,85 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** VMM fabric provider specific VM settings. */
+/**
+ * VMM fabric provider specific VM settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VmmVirtualMachine")
 @Fluent
 public final class VmmVirtualMachineDetails extends HyperVVirtualMachineDetails {
-    /** Creates an instance of VmmVirtualMachineDetails class. */
+    /**
+     * Creates an instance of VmmVirtualMachineDetails class.
+     */
     public VmmVirtualMachineDetails() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmmVirtualMachineDetails withSourceItemId(String sourceItemId) {
         super.withSourceItemId(sourceItemId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmmVirtualMachineDetails withGeneration(String generation) {
         super.withGeneration(generation);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmmVirtualMachineDetails withOsDetails(OSDetails osDetails) {
         super.withOsDetails(osDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmmVirtualMachineDetails withDiskDetails(List<DiskDetails> diskDetails) {
         super.withDiskDetails(diskDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmmVirtualMachineDetails withHasPhysicalDisk(PresenceStatus hasPhysicalDisk) {
         super.withHasPhysicalDisk(hasPhysicalDisk);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmmVirtualMachineDetails withHasFibreChannelAdapter(PresenceStatus hasFibreChannelAdapter) {
         super.withHasFibreChannelAdapter(hasFibreChannelAdapter);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmmVirtualMachineDetails withHasSharedVhd(PresenceStatus hasSharedVhd) {
         super.withHasSharedVhd(hasSharedVhd);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VmmVirtualMachineDetails withHyperVHostId(String hyperVHostId) {
         super.withHyperVHostId(hyperVHostId);
@@ -76,7 +96,7 @@ public final class VmmVirtualMachineDetails extends HyperVVirtualMachineDetails 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

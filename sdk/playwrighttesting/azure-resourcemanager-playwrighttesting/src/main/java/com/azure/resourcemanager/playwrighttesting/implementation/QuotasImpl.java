@@ -22,29 +22,26 @@ public final class QuotasImpl implements Quotas {
 
     private final com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager serviceManager;
 
-    public QuotasImpl(
-        QuotasClient innerClient, com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager serviceManager) {
+    public QuotasImpl(QuotasClient innerClient,
+        com.azure.resourcemanager.playwrighttesting.PlaywrightTestingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Quota> listBySubscription(String location) {
         PagedIterable<QuotaInner> inner = this.serviceClient().listBySubscription(location);
-        return Utils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Quota> listBySubscription(String location, Context context) {
         PagedIterable<QuotaInner> inner = this.serviceClient().listBySubscription(location, context);
-        return Utils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new QuotaImpl(inner1, this.manager()));
     }
 
     public Response<Quota> getWithResponse(String location, QuotaNames name, Context context) {
         Response<QuotaInner> inner = this.serviceClient().getWithResponse(location, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QuotaImpl(inner.getValue(), this.manager()));
         } else {
             return null;

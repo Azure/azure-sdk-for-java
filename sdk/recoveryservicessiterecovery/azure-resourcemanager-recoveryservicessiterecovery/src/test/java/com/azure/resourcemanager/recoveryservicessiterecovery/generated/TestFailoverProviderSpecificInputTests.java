@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.TestFailove
 public final class TestFailoverProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestFailoverProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"TestFailoverProviderSpecificInput\"}")
+        TestFailoverProviderSpecificInput model
+            = BinaryData.fromString("{\"instanceType\":\"TestFailoverProviderSpecificInput\"}")
                 .toObject(TestFailoverProviderSpecificInput.class);
     }
 

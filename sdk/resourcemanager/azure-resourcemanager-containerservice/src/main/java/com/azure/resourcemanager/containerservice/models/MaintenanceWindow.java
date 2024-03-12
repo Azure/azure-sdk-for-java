@@ -64,7 +64,7 @@ public final class MaintenanceWindow {
 
     /**
      * Get the schedule property: Recurrence schedule for the maintenance window.
-     *
+     * 
      * @return the schedule value.
      */
     public Schedule schedule() {
@@ -73,7 +73,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the schedule property: Recurrence schedule for the maintenance window.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -84,7 +84,7 @@ public final class MaintenanceWindow {
 
     /**
      * Get the durationHours property: Length of maintenance window range from 4 to 24 hours.
-     *
+     * 
      * @return the durationHours value.
      */
     public int durationHours() {
@@ -93,7 +93,7 @@ public final class MaintenanceWindow {
 
     /**
      * Set the durationHours property: Length of maintenance window range from 4 to 24 hours.
-     *
+     * 
      * @param durationHours the durationHours value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -105,7 +105,7 @@ public final class MaintenanceWindow {
     /**
      * Get the utcOffset property: The UTC offset in format +/-HH:mm. For example, '+05:30' for IST and '-07:00' for
      * PST. If not specified, the default is '+00:00'.
-     *
+     * 
      * @return the utcOffset value.
      */
     public String utcOffset() {
@@ -115,7 +115,7 @@ public final class MaintenanceWindow {
     /**
      * Set the utcOffset property: The UTC offset in format +/-HH:mm. For example, '+05:30' for IST and '-07:00' for
      * PST. If not specified, the default is '+00:00'.
-     *
+     * 
      * @param utcOffset the utcOffset value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -128,7 +128,7 @@ public final class MaintenanceWindow {
      * Get the startDate property: The date the maintenance window activates. If the current date is before this date,
      * the maintenance window is inactive and will not be used for upgrades. If not specified, the maintenance window
      * will be active right away.
-     *
+     * 
      * @return the startDate value.
      */
     public LocalDate startDate() {
@@ -139,7 +139,7 @@ public final class MaintenanceWindow {
      * Set the startDate property: The date the maintenance window activates. If the current date is before this date,
      * the maintenance window is inactive and will not be used for upgrades. If not specified, the maintenance window
      * will be active right away.
-     *
+     * 
      * @param startDate the startDate value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -152,7 +152,7 @@ public final class MaintenanceWindow {
      * Get the startTime property: The start time of the maintenance window. Accepted values are from '00:00' to
      * '23:59'. 'utcOffset' applies to this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time
      * '00:00'.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -163,7 +163,7 @@ public final class MaintenanceWindow {
      * Set the startTime property: The start time of the maintenance window. Accepted values are from '00:00' to
      * '23:59'. 'utcOffset' applies to this field. For example: '02:00' with 'utcOffset: +02:00' means UTC time
      * '00:00'.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -176,7 +176,7 @@ public final class MaintenanceWindow {
      * Get the notAllowedDates property: Date ranges on which upgrade is not allowed. 'utcOffset' applies to this
      * field. For example, with 'utcOffset: +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will
      * be blocked from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time.
-     *
+     * 
      * @return the notAllowedDates value.
      */
     public List<DateSpan> notAllowedDates() {
@@ -187,7 +187,7 @@ public final class MaintenanceWindow {
      * Set the notAllowedDates property: Date ranges on which upgrade is not allowed. 'utcOffset' applies to this
      * field. For example, with 'utcOffset: +02:00' and 'dateSpan' being '2022-12-23' to '2023-01-03', maintenance will
      * be blocked from '2022-12-22 22:00' to '2023-01-03 22:00' in UTC time.
-     *
+     * 
      * @param notAllowedDates the notAllowedDates value to set.
      * @return the MaintenanceWindow object itself.
      */
@@ -198,7 +198,7 @@ public final class MaintenanceWindow {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -15,7 +15,7 @@ public final class ContainerServicesListOrchestratorsSamples {
      */
     /**
      * Sample code: List Container Service Orchestrators.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listContainerServiceOrchestrators(com.azure.resourcemanager.AzureResourceManager azure) {

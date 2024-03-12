@@ -19,7 +19,7 @@ public final class ManagedClusterSkuName extends ExpandableStringEnum<ManagedClu
 
     /**
      * Creates a new instance of ManagedClusterSkuName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,7 +28,7 @@ public final class ManagedClusterSkuName extends ExpandableStringEnum<ManagedClu
 
     /**
      * Creates or finds a ManagedClusterSkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedClusterSkuName.
      */
@@ -39,7 +39,7 @@ public final class ManagedClusterSkuName extends ExpandableStringEnum<ManagedClu
 
     /**
      * Gets known ManagedClusterSkuName values.
-     *
+     * 
      * @return known ManagedClusterSkuName values.
      */
     public static Collection<ManagedClusterSkuName> values() {

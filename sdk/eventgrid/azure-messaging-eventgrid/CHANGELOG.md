@@ -1,16 +1,31 @@
 # Release History
 
-## 4.21.0-beta.1 (Unreleased)
+## 4.22.0 (2024-03-11)
 
 ### Features Added
+- New System Events for API Center
 
-### Breaking Changes
+### Other Changes
 
-### Bugs Fixed
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+
+## 4.21.0 (2024-02-13)
+
+### Features Added
+- new System Events for Azure VMWare Solution, Storage.
+- Add `metadata` property to `AcsChatThreadCreatedEventData`.
 
 ### Other Changes
 - Enabled stream-style serialization.
 - Updated to latest autorest.java
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
 
 ## 4.20.1 (2023-12-04)
 

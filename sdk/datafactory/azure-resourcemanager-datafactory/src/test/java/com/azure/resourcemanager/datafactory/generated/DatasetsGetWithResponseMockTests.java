@@ -32,7 +32,7 @@ public final class DatasetsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"om\",\"structure\":\"dataioatzmr\",\"schema\":\"datasrjjajlr\",\"linkedServiceName\":{\"referenceName\":\"lmj\",\"parameters\":{\"pytfdzkbkyt\":\"datawqpnmcwes\",\"dkrmpljzrzvl\":\"dataztwwkvwpbdo\"}},\"parameters\":{\"rlug\":{\"type\":\"Bool\",\"defaultValue\":\"datalygy\"}},\"annotations\":[\"datawh\",\"dataeqzlvjlsyzzk\"],\"folder\":{\"name\":\"eydjagyks\"},\"\":{\"jbxh\":\"datagiwaaz\",\"lx\":\"dataahgbloeaewidum\",\"majirnqcbhviqwfc\":\"datacgbyx\"}},\"name\":\"y\",\"type\":\"afoor\",\"etag\":\"ktdgbombn\",\"id\":\"nxkcp\"}";
+            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"izdfulv\",\"structure\":\"dataalvcahy\",\"schema\":\"datahdhtcopzfce\",\"linkedServiceName\":{\"referenceName\":\"btwicghxme\",\"parameters\":{\"motgkyfh\":\"datavmmkwazku\",\"fsvzczisiqns\":\"dataxmwq\",\"fvzxosrstevdts\":\"datavwjfuhqbatdn\"}},\"parameters\":{\"pjslrfpxlutfbhs\":{\"type\":\"Object\",\"defaultValue\":\"datadojimfaa\"}},\"annotations\":[\"datafcbxtabxd\",\"databoyqescvcv\"],\"folder\":{\"name\":\"r\"},\"\":{\"ikqz\":\"datajppmil\",\"lhnkvipjinjik\":\"dataqkxjcqdnzhjlb\"}},\"name\":\"c\",\"type\":\"kcnjzxezo\",\"etag\":\"ltewthslztxix\",\"id\":\"weuxycbvefldfw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,13 +50,12 @@ public final class DatasetsGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DatasetResource response = manager.datasets()
-            .getWithResponse("ccnubynr", "encgfz", "btzuddqt", "hxtbcqjvyzotxkhy", com.azure.core.util.Context.NONE)
-            .getValue();
+            .getWithResponse("ql", "zpckxlc", "l", "yrsojqpjbarfn", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("nxkcp", response.id());
-        Assertions.assertEquals("om", response.properties().description());
-        Assertions.assertEquals("lmj", response.properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.BOOL, response.properties().parameters().get("rlug").type());
-        Assertions.assertEquals("eydjagyks", response.properties().folder().name());
+        Assertions.assertEquals("weuxycbvefldfw", response.id());
+        Assertions.assertEquals("izdfulv", response.properties().description());
+        Assertions.assertEquals("btwicghxme", response.properties().linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT, response.properties().parameters().get("pjslrfpxlutfbhs").type());
+        Assertions.assertEquals("r", response.properties().folder().name());
     }
 }

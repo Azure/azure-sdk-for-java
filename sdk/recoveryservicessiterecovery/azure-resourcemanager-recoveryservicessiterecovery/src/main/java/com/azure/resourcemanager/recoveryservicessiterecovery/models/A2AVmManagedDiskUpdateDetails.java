@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A2A Vm managed disk update details. */
+/**
+ * A2A Vm managed disk update details.
+ */
 @Fluent
 public final class A2AVmManagedDiskUpdateDetails {
     /*
@@ -46,13 +48,15 @@ public final class A2AVmManagedDiskUpdateDetails {
     @JsonProperty(value = "tfoDiskName")
     private String tfoDiskName;
 
-    /** Creates an instance of A2AVmManagedDiskUpdateDetails class. */
+    /**
+     * Creates an instance of A2AVmManagedDiskUpdateDetails class.
+     */
     public A2AVmManagedDiskUpdateDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -61,7 +65,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -72,7 +76,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Get the recoveryTargetDiskAccountType property: The target disk type before failover.
-     *
+     * 
      * @return the recoveryTargetDiskAccountType value.
      */
     public String recoveryTargetDiskAccountType() {
@@ -81,7 +85,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the recoveryTargetDiskAccountType property: The target disk type before failover.
-     *
+     * 
      * @param recoveryTargetDiskAccountType the recoveryTargetDiskAccountType value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -92,7 +96,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Get the recoveryReplicaDiskAccountType property: The replica disk type before failover.
-     *
+     * 
      * @return the recoveryReplicaDiskAccountType value.
      */
     public String recoveryReplicaDiskAccountType() {
@@ -101,7 +105,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the recoveryReplicaDiskAccountType property: The replica disk type before failover.
-     *
+     * 
      * @param recoveryReplicaDiskAccountType the recoveryReplicaDiskAccountType value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -112,7 +116,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Get the diskEncryptionInfo property: The recovery os disk encryption information.
-     *
+     * 
      * @return the diskEncryptionInfo value.
      */
     public DiskEncryptionInfo diskEncryptionInfo() {
@@ -121,7 +125,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the diskEncryptionInfo property: The recovery os disk encryption information.
-     *
+     * 
      * @param diskEncryptionInfo the diskEncryptionInfo value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -132,7 +136,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Get the failoverDiskName property: The target disk name for unplanned failover operation.
-     *
+     * 
      * @return the failoverDiskName value.
      */
     public String failoverDiskName() {
@@ -141,7 +145,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the failoverDiskName property: The target disk name for unplanned failover operation.
-     *
+     * 
      * @param failoverDiskName the failoverDiskName value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -152,7 +156,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Get the tfoDiskName property: The target disk name for test failover operation.
-     *
+     * 
      * @return the tfoDiskName value.
      */
     public String tfoDiskName() {
@@ -161,7 +165,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Set the tfoDiskName property: The target disk name for test failover operation.
-     *
+     * 
      * @param tfoDiskName the tfoDiskName value to set.
      * @return the A2AVmManagedDiskUpdateDetails object itself.
      */
@@ -172,7 +176,7 @@ public final class A2AVmManagedDiskUpdateDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

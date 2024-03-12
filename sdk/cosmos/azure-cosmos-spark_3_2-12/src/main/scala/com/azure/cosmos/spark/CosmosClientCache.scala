@@ -9,7 +9,7 @@ import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategor
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, GatewayConnectionConfig, SparkBridgeInternal, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, DirectConnectionConfig, GatewayConnectionConfig, ThrottlingRetryOptions}
 import com.azure.identity.ClientSecretCredentialBuilder
 import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
@@ -142,7 +142,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                         cosmosClientConfiguration.databaseAccountName,
                         createCosmosManagementClient(
                             cosmosClientConfiguration.subscriptionId.get,
-                            cosmosClientConfiguration.azureEnvironment,
+                            new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints),
                             aadAuthConfig),
                         cosmosAsyncClient)
             case _ =>
@@ -187,7 +187,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           case masterKeyAuthConfig: CosmosMasterKeyAuthConfig => builder.key(masterKeyAuthConfig.accountKey)
           case aadAuthConfig: CosmosAadAuthConfig =>
               val tokenCredential = new ClientSecretCredentialBuilder()
-                  .authorityHost(cosmosClientConfiguration.azureEnvironment.getActiveDirectoryEndpoint())
+                  .authorityHost(new AzureEnvironment(cosmosClientConfiguration.azureEnvironmentEndpoints).getActiveDirectoryEndpoint())
                   .tenantId(aadAuthConfig.tenantId)
                   .clientId(aadAuthConfig.clientId)
                   .clientSecret(aadAuthConfig.clientSecret)
@@ -265,7 +265,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           // indicators that the default number of I/O threads can be too low
           // for workloads with large payloads
               SparkBridgeImplementationInternal
-                  .setIoThreadCountPerCoreFactor(directConfig, CosmosConstants.defaultIoThreadCountFactorPerCore)
+                  .setIoThreadCountPerCoreFactor(directConfig, SparkBridgeImplementationInternal.getIoThreadCountPerCoreOverride)
 
           directConfig =
           // Spark workloads often result in very high CPU load
@@ -275,6 +275,19 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   .setIoThreadPriority(directConfig, Thread.MAX_PRIORITY)
 
           builder = builder.directMode(directConfig)
+
+          if (cosmosClientConfiguration.proactiveConnectionInitialization.isDefined &&
+            !cosmosClientConfiguration.proactiveConnectionInitialization.get.isEmpty) {
+            val containerIdentities = CosmosAccountConfig.parseProactiveConnectionInitConfigs(
+              cosmosClientConfiguration.proactiveConnectionInitialization.get)
+
+            val initConfig = new CosmosContainerProactiveInitConfigBuilder(containerIdentities)
+              .setAggressiveWarmupDuration(
+                Duration.ofSeconds(cosmosClientConfiguration.proactiveConnectionInitializationDurationInSeconds))
+              .setProactiveConnectionRegionsCount(1)
+              .build
+            builder.openConnectionsAndInitCaches(initConfig)
+          }
       }
 
       if (cosmosClientConfiguration.preferredRegionsList.isDefined) {
@@ -441,6 +454,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                         authConfig: CosmosAuthConfig,
                                                         applicationName: String,
                                                         useGatewayMode: Boolean,
+                                                        // Intentionally not looking at proactive connection
+                                                        // initialization to distinguish cache key
+                                                        // You would never want to clients just for the diffs
                                                         httpConnectionPoolSize: Int,
                                                         useEventualConsistency: Boolean,
                                                         preferredRegionsList: String)
@@ -493,6 +509,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       logDebug("Returned client to the pool = remaining active clients - Count: " +
         s"$remainingActiveClients, Spark contexts: ${ref.owners.keys.mkString(", ")}")
     }
+
+    override def getRefCount: Long = ref.refCount.get()
   }
 
   private[this] class ApplicationEndListener(val ctx: SparkContext)

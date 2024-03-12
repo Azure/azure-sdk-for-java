@@ -10,8 +10,8 @@ import java.util.ServiceLoader;
  * This class is a proxy for using a {@link MemberNameConverterProvider} loaded from the classpath.
  */
 public final class MemberNameConverterProviders {
-    private static final String CANNOT_FIND_MEMBER_NAME_CONVERTER_PROVIDER =
-        "Cannot find any member name converter provider on the classpath.";
+    private static final String CANNOT_FIND_MEMBER_NAME_CONVERTER_PROVIDER
+        = "Cannot find any member name converter provider on the classpath.";
 
     private static MemberNameConverterProvider defaultProvider;
     private static boolean attemptedLoad;
@@ -43,8 +43,8 @@ public final class MemberNameConverterProviders {
         // But this choice here provides additional flexibility in managed environments that control
         // classloading differently (OSGi, Spring and others) and don't depend on the
         // System classloader to load MemberNameConverterProviders classes.
-        Iterator<MemberNameConverterProvider> iterator =
-            ServiceLoader.load(MemberNameConverterProvider.class, MemberNameConverterProviders.class.getClassLoader())
+        Iterator<MemberNameConverterProvider> iterator
+            = ServiceLoader.load(MemberNameConverterProvider.class, MemberNameConverterProviders.class.getClassLoader())
                 .iterator();
         if (iterator.hasNext()) {
             defaultProvider = iterator.next();

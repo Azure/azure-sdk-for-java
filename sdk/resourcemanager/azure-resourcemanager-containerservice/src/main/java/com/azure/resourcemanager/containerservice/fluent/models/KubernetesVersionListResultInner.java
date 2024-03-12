@@ -28,7 +28,7 @@ public final class KubernetesVersionListResultInner {
 
     /**
      * Get the values property: Array of AKS supported Kubernetes versions.
-     *
+     * 
      * @return the values value.
      */
     public List<KubernetesVersion> values() {
@@ -37,7 +37,7 @@ public final class KubernetesVersionListResultInner {
 
     /**
      * Set the values property: Array of AKS supported Kubernetes versions.
-     *
+     * 
      * @param values the values value to set.
      * @return the KubernetesVersionListResultInner object itself.
      */
@@ -48,7 +48,7 @@ public final class KubernetesVersionListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -21,22 +21,18 @@ public final class BackupStatusImpl implements BackupStatus {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BackupStatusImpl(
-        BackupStatusClient innerClient,
+    public BackupStatusImpl(BackupStatusClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<BackupStatusResponse> getWithResponse(
-        String azureRegion, BackupStatusRequest parameters, Context context) {
-        Response<BackupStatusResponseInner> inner =
-            this.serviceClient().getWithResponse(azureRegion, parameters, context);
+    public Response<BackupStatusResponse> getWithResponse(String azureRegion, BackupStatusRequest parameters,
+        Context context) {
+        Response<BackupStatusResponseInner> inner
+            = this.serviceClient().getWithResponse(azureRegion, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BackupStatusResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

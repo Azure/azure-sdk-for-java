@@ -20,6 +20,8 @@ public final class MetricsBatchQueryOptions {
     private String orderBy;
     private String filter;
 
+    private String rollupBy;
+
 
     /**
      * Returns the time span for which the metrics data is queried.
@@ -131,6 +133,34 @@ public final class MetricsBatchQueryOptions {
      */
     public MetricsBatchQueryOptions setFilter(String filter) {
         this.filter = filter;
+        return this;
+    }
+
+    /**
+     * Gets the dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     *
+     * @return the dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     */
+    public String getRollupBy() {
+        return rollupBy;
+    }
+
+    /**
+     * Sets the dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     *
+     * @param rollupBy the dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @return The updated options instance
+     */
+    public MetricsBatchQueryOptions setRollupBy(String rollupBy) {
+        this.rollupBy = rollupBy;
         return this;
     }
 }

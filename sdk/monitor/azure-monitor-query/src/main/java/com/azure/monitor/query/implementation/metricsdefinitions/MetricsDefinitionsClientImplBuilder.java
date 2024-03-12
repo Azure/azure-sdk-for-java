@@ -40,7 +40,7 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * A builder for creating a new instance of the MonitorManagementClient type.
+ * A builder for creating a new instance of the AzureMonitorMetricsDefinitionsAPI type.
  */
 @ServiceClientBuilder(serviceClients = { MetricsDefinitionsClientImpl.class })
 public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<MetricsDefinitionsClientImplBuilder>,
@@ -58,7 +58,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /**
-     * Create an instance of the MonitorManagementClientBuilder.
+     * Create an instance of the AzureMonitorMetricsDefinitionsAPIBuilder.
      */
     @Generated
     public MetricsDefinitionsClientImplBuilder() {
@@ -189,6 +189,24 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
     }
 
     /*
+     * The ID of the target subscription.
+     */
+    @Generated
+    private String subscriptionId;
+
+    /**
+     * Sets The ID of the target subscription.
+     * 
+     * @param subscriptionId the subscriptionId value.
+     * @return the AzureMonitorMetricsDefinitionsAPIBuilder.
+     */
+    @Generated
+    public MetricsDefinitionsClientImplBuilder subscriptionId(String subscriptionId) {
+        this.subscriptionId = subscriptionId;
+        return this;
+    }
+
+    /*
      * server parameter
      */
     @Generated
@@ -198,7 +216,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
      * Sets server parameter.
      * 
      * @param host the host value.
-     * @return the MonitorManagementClientBuilder.
+     * @return the AzureMonitorMetricsDefinitionsAPIBuilder.
      */
     @Generated
     public MetricsDefinitionsClientImplBuilder host(String host) {
@@ -216,7 +234,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
      * Sets Api Version.
      * 
      * @param apiVersion the apiVersion value.
-     * @return the MonitorManagementClientBuilder.
+     * @return the AzureMonitorMetricsDefinitionsAPIBuilder.
      */
     @Generated
     public MetricsDefinitionsClientImplBuilder apiVersion(String apiVersion) {
@@ -234,7 +252,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the MonitorManagementClientBuilder.
+     * @return the AzureMonitorMetricsDefinitionsAPIBuilder.
      */
     @Generated
     public MetricsDefinitionsClientImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
@@ -252,7 +270,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      * 
      * @param retryPolicy the retryPolicy value.
-     * @return the MonitorManagementClientBuilder.
+     * @return the AzureMonitorMetricsDefinitionsAPIBuilder.
      */
     @Generated
     public MetricsDefinitionsClientImplBuilder retryPolicy(RetryPolicy retryPolicy) {
@@ -261,19 +279,19 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
     }
 
     /**
-     * Builds an instance of MonitorManagementClient with the provided parameters.
+     * Builds an instance of AzureMonitorMetricsDefinitionsAPI with the provided parameters.
      * 
-     * @return an instance of MonitorManagementClient.
+     * @return an instance of AzureMonitorMetricsDefinitionsAPI.
      */
     @Generated
     public MetricsDefinitionsClientImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://management.azure.com";
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2018-01-01";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-02-01";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
-        MetricsDefinitionsClientImpl client
-            = new MetricsDefinitionsClientImpl(localPipeline, localSerializerAdapter, localHost, localApiVersion);
+        MetricsDefinitionsClientImpl client = new MetricsDefinitionsClientImpl(localPipeline, localSerializerAdapter,
+            this.subscriptionId, localHost, localApiVersion);
         return client;
     }
 
@@ -308,7 +326,7 @@ public final class MetricsDefinitionsClientImplBuilder implements HttpTrait<Metr
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient).clientOptions(localClientOptions).build();
         return httpPipeline;

@@ -8,30 +8,27 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2ASwitchPr
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProtectionInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SwitchProtectionInputProperties;
 
-/** Samples for ReplicationProtectionContainers SwitchProtection. */
+/**
+ * Samples for ReplicationProtectionContainers SwitchProtection.
+ */
 public final class ReplicationProtectionContainersSwitchProtection {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectionContainers_SwitchProtection.json
+     * x-ms-original-file:
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * /ReplicationProtectionContainers_SwitchProtection.json
      */
     /**
      * Sample code: Switches protection from one container to another or one replication provider to another.
-     *
+     * 
      * @param manager Entry point to SiteRecoveryManager.
      */
     public static void switchesProtectionFromOneContainerToAnotherOrOneReplicationProviderToAnother(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager
-            .replicationProtectionContainers()
-            .switchProtection(
-                "priyanponeboxvault",
-                "priyanprg",
-                "CentralUSCanSite",
-                "CentralUSCancloud",
-                new SwitchProtectionInput()
-                    .withProperties(
-                        new SwitchProtectionInputProperties()
-                            .withReplicationProtectedItemName("a2aSwapOsVm")
-                            .withProviderSpecificDetails(new A2ASwitchProtectionInput())),
-                com.azure.core.util.Context.NONE);
+        manager.replicationProtectionContainers().switchProtection("priyanponeboxvault", "priyanprg",
+            "CentralUSCanSite", "CentralUSCancloud",
+            new SwitchProtectionInput()
+                .withProperties(new SwitchProtectionInputProperties().withReplicationProtectedItemName("a2aSwapOsVm")
+                    .withProviderSpecificDetails(new A2ASwitchProtectionInput())),
+            com.azure.core.util.Context.NONE);
     }
 }

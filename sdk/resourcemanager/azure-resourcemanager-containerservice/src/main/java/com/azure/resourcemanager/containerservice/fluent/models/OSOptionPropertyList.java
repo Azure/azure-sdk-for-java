@@ -29,7 +29,7 @@ public final class OSOptionPropertyList {
 
     /**
      * Get the osOptionPropertyList property: The list of OS options.
-     *
+     * 
      * @return the osOptionPropertyList value.
      */
     public List<OSOptionProperty> osOptionPropertyList() {
@@ -38,7 +38,7 @@ public final class OSOptionPropertyList {
 
     /**
      * Set the osOptionPropertyList property: The list of OS options.
-     *
+     * 
      * @param osOptionPropertyList the osOptionPropertyList value to set.
      * @return the OSOptionPropertyList object itself.
      */
@@ -49,7 +49,7 @@ public final class OSOptionPropertyList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

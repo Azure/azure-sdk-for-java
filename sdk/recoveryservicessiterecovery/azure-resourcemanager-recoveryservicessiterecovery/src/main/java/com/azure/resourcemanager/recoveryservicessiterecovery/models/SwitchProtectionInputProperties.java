@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Switch protection input properties. */
+/**
+ * Switch protection input properties.
+ */
 @Fluent
 public final class SwitchProtectionInputProperties {
     /*
@@ -22,13 +24,15 @@ public final class SwitchProtectionInputProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private SwitchProtectionProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of SwitchProtectionInputProperties class. */
+    /**
+     * Creates an instance of SwitchProtectionInputProperties class.
+     */
     public SwitchProtectionInputProperties() {
     }
 
     /**
      * Get the replicationProtectedItemName property: The unique replication protected item name.
-     *
+     * 
      * @return the replicationProtectedItemName value.
      */
     public String replicationProtectedItemName() {
@@ -37,7 +41,7 @@ public final class SwitchProtectionInputProperties {
 
     /**
      * Set the replicationProtectedItemName property: The unique replication protected item name.
-     *
+     * 
      * @param replicationProtectedItemName the replicationProtectedItemName value to set.
      * @return the SwitchProtectionInputProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class SwitchProtectionInputProperties {
 
     /**
      * Get the providerSpecificDetails property: Provider specific switch protection input.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public SwitchProtectionProviderSpecificInput providerSpecificDetails() {
@@ -57,19 +61,19 @@ public final class SwitchProtectionInputProperties {
 
     /**
      * Set the providerSpecificDetails property: Provider specific switch protection input.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the SwitchProtectionInputProperties object itself.
      */
-    public SwitchProtectionInputProperties withProviderSpecificDetails(
-        SwitchProtectionProviderSpecificInput providerSpecificDetails) {
+    public SwitchProtectionInputProperties
+        withProviderSpecificDetails(SwitchProtectionProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -38,7 +38,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Get the name property: Name of the router profile.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -47,7 +47,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Set the name property: Name of the router profile.
-     *
+     * 
      * @param name the name value to set.
      * @return the OpenShiftRouterProfile object itself.
      */
@@ -58,7 +58,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Get the publicSubdomain property: DNS subdomain for OpenShift router.
-     *
+     * 
      * @return the publicSubdomain value.
      */
     public String publicSubdomain() {
@@ -67,7 +67,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Get the fqdn property: Auto-allocated FQDN for the OpenShift router.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -76,7 +76,7 @@ public final class OpenShiftRouterProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

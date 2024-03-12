@@ -31,7 +31,7 @@ public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeWithResponse
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"name\":\"ngrdu\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"zd\",\"state\":\"Starting\",\"\":{\"huimgdfohaeeuotf\":\"datamgpioxzhpbj\",\"cvwewognpu\":\"datavmdpepl\",\"rqvjwlritsxuxre\":\"datapaqj\"}}}";
+            = "{\"name\":\"c\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"j\",\"state\":\"Stopped\",\"\":{\"tfsciayclvaivsa\":\"databliegzj\",\"cqj\":\"datarfjhcrqnwoahfaq\",\"tvfs\":\"datawvqif\"}}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,10 +49,9 @@ public final class IntegrationRuntimesCreateLinkedIntegrationRuntimeWithResponse
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeStatusResponse response = manager.integrationRuntimes()
-            .createLinkedIntegrationRuntimeWithResponse("ip", "szrr", "q",
-                new CreateLinkedIntegrationRuntimeRequest().withName("xyawtdsnvxhx")
-                    .withSubscriptionId("decryoffglwmkmb").withDataFactoryName("snxlqnzxs")
-                    .withDataFactoryLocation("fbkqicehxmzt"),
+            .createLinkedIntegrationRuntimeWithResponse("pnyu", "fh", "ighnunptjmz",
+                new CreateLinkedIntegrationRuntimeRequest().withName("rjnddaov").withSubscriptionId("o")
+                    .withDataFactoryName("ztrln").withDataFactoryLocation("vjdv"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class IscsiTargetInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IscsiTargetInfo model =
-            BinaryData
-                .fromString(
-                    "{\"targetIqn\":\"unmpxttd\",\"targetPortalHostname\":\"rbnlankxmyskp\",\"targetPortalPort\":743667383,\"provisioningState\":\"Deleting\",\"status\":\"Unhealthy\"}")
-                .toObject(IscsiTargetInfo.class);
+        IscsiTargetInfo model = BinaryData.fromString(
+            "{\"targetIqn\":\"unmpxttd\",\"targetPortalHostname\":\"rbnlankxmyskp\",\"targetPortalPort\":743667383,\"provisioningState\":\"Deleting\",\"status\":\"Unhealthy\"}")
+            .toObject(IscsiTargetInfo.class);
         Assertions.assertEquals(OperationalStatus.UNHEALTHY, model.status());
     }
 

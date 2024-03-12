@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStora
 public final class VaultStorageConfigOperationResultResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VaultStorageConfigOperationResultResponseInner model =
-            BinaryData
-                .fromString("{\"objectType\":\"VaultStorageConfigOperationResultResponse\"}")
+        VaultStorageConfigOperationResultResponseInner model
+            = BinaryData.fromString("{\"objectType\":\"VaultStorageConfigOperationResultResponse\"}")
                 .toObject(VaultStorageConfigOperationResultResponseInner.class);
     }
 

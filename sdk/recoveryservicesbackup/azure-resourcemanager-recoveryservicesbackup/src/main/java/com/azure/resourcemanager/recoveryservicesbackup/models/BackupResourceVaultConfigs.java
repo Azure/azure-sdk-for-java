@@ -8,11 +8,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 
-/** Resource collection API of BackupResourceVaultConfigs. */
+/**
+ * Resource collection API of BackupResourceVaultConfigs.
+ */
 public interface BackupResourceVaultConfigs {
     /**
      * Fetches resource vault config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -21,12 +23,12 @@ public interface BackupResourceVaultConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup resource vault config details along with {@link Response}.
      */
-    Response<BackupResourceVaultConfigResource> getWithResponse(
-        String vaultName, String resourceGroupName, Context context);
+    Response<BackupResourceVaultConfigResource> getWithResponse(String vaultName, String resourceGroupName,
+        Context context);
 
     /**
      * Fetches resource vault config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,7 +40,7 @@ public interface BackupResourceVaultConfigs {
 
     /**
      * Updates vault security config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
@@ -48,12 +50,12 @@ public interface BackupResourceVaultConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup resource vault config details along with {@link Response}.
      */
-    Response<BackupResourceVaultConfigResource> updateWithResponse(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, Context context);
+    Response<BackupResourceVaultConfigResource> updateWithResponse(String vaultName, String resourceGroupName,
+        BackupResourceVaultConfigResourceInner parameters, Context context);
 
     /**
      * Updates vault security config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
@@ -62,12 +64,12 @@ public interface BackupResourceVaultConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup resource vault config details.
      */
-    BackupResourceVaultConfigResource update(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters);
+    BackupResourceVaultConfigResource update(String vaultName, String resourceGroupName,
+        BackupResourceVaultConfigResourceInner parameters);
 
     /**
      * Updates vault security config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
@@ -77,12 +79,12 @@ public interface BackupResourceVaultConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup resource vault config details along with {@link Response}.
      */
-    Response<BackupResourceVaultConfigResource> putWithResponse(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters, Context context);
+    Response<BackupResourceVaultConfigResource> putWithResponse(String vaultName, String resourceGroupName,
+        BackupResourceVaultConfigResourceInner parameters, Context context);
 
     /**
      * Updates vault security config.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters resource config request.
@@ -91,6 +93,6 @@ public interface BackupResourceVaultConfigs {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return backup resource vault config details.
      */
-    BackupResourceVaultConfigResource put(
-        String vaultName, String resourceGroupName, BackupResourceVaultConfigResourceInner parameters);
+    BackupResourceVaultConfigResource put(String vaultName, String resourceGroupName,
+        BackupResourceVaultConfigResourceInner parameters);
 }

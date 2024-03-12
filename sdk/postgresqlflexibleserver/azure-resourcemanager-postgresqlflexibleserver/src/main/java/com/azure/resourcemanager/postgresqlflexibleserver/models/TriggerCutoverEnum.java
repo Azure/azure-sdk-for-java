@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** To trigger cutover for entire migration we need to send this flag as True. */
+/**
+ * To trigger cutover for entire migration we need to send this flag as True.
+ */
 public final class TriggerCutoverEnum extends ExpandableStringEnum<TriggerCutoverEnum> {
-    /** Static value True for TriggerCutoverEnum. */
+    /**
+     * Static value True for TriggerCutoverEnum.
+     */
     public static final TriggerCutoverEnum TRUE = fromString("True");
 
-    /** Static value False for TriggerCutoverEnum. */
+    /**
+     * Static value False for TriggerCutoverEnum.
+     */
     public static final TriggerCutoverEnum FALSE = fromString("False");
 
     /**
      * Creates a new instance of TriggerCutoverEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class TriggerCutoverEnum extends ExpandableStringEnum<TriggerCutove
 
     /**
      * Creates or finds a TriggerCutoverEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TriggerCutoverEnum.
      */
@@ -38,7 +44,7 @@ public final class TriggerCutoverEnum extends ExpandableStringEnum<TriggerCutove
 
     /**
      * Gets known TriggerCutoverEnum values.
-     *
+     * 
      * @return known TriggerCutoverEnum values.
      */
     public static Collection<TriggerCutoverEnum> values() {

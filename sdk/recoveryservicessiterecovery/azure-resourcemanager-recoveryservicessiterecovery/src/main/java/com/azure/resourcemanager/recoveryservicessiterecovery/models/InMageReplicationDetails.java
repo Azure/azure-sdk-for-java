@@ -13,7 +13,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** InMage provider specific settings. */
+/**
+ * InMage provider specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMage")
 @Fluent
@@ -261,7 +263,9 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     @JsonProperty(value = "totalProgressHealth")
     private String totalProgressHealth;
 
-    /** Creates an instance of InMageReplicationDetails class. */
+    /**
+     * Creates an instance of InMageReplicationDetails class.
+     */
     public InMageReplicationDetails() {
     }
 
@@ -269,7 +273,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
      * Get the activeSiteType property: The active location of the VM. If the VM is being protected from Azure, this
      * field will take values from { Azure, OnPrem }. If the VM is being protected between two data-centers, this field
      * will be OnPrem always.
-     *
+     * 
      * @return the activeSiteType value.
      */
     public String activeSiteType() {
@@ -280,7 +284,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
      * Set the activeSiteType property: The active location of the VM. If the VM is being protected from Azure, this
      * field will take values from { Azure, OnPrem }. If the VM is being protected between two data-centers, this field
      * will be OnPrem always.
-     *
+     * 
      * @param activeSiteType the activeSiteType value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -291,7 +295,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the sourceVmCpuCount property: The CPU count of the VM on the primary side.
-     *
+     * 
      * @return the sourceVmCpuCount value.
      */
     public Integer sourceVmCpuCount() {
@@ -300,7 +304,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the sourceVmCpuCount property: The CPU count of the VM on the primary side.
-     *
+     * 
      * @param sourceVmCpuCount the sourceVmCpuCount value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -311,7 +315,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the sourceVmRamSizeInMB property: The RAM size of the VM on the primary side.
-     *
+     * 
      * @return the sourceVmRamSizeInMB value.
      */
     public Integer sourceVmRamSizeInMB() {
@@ -320,7 +324,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the sourceVmRamSizeInMB property: The RAM size of the VM on the primary side.
-     *
+     * 
      * @param sourceVmRamSizeInMB the sourceVmRamSizeInMB value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -331,7 +335,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the osDetails property: The OS details.
-     *
+     * 
      * @return the osDetails value.
      */
     public OSDiskDetails osDetails() {
@@ -340,7 +344,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the osDetails property: The OS details.
-     *
+     * 
      * @param osDetails the osDetails value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -351,7 +355,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the protectionStage property: The protection stage.
-     *
+     * 
      * @return the protectionStage value.
      */
     public String protectionStage() {
@@ -360,7 +364,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the protectionStage property: The protection stage.
-     *
+     * 
      * @param protectionStage the protectionStage value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -371,7 +375,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the vmId property: The virtual machine Id.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -380,7 +384,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the vmId property: The virtual machine Id.
-     *
+     * 
      * @param vmId the vmId value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -391,7 +395,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @return the vmProtectionState value.
      */
     public String vmProtectionState() {
@@ -400,7 +404,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @param vmProtectionState the vmProtectionState value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -411,7 +415,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @return the vmProtectionStateDescription value.
      */
     public String vmProtectionStateDescription() {
@@ -420,7 +424,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @param vmProtectionStateDescription the vmProtectionStateDescription value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -431,7 +435,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the resyncDetails property: The resync details of the machine.
-     *
+     * 
      * @return the resyncDetails value.
      */
     public InitialReplicationDetails resyncDetails() {
@@ -440,7 +444,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the resyncDetails property: The resync details of the machine.
-     *
+     * 
      * @param resyncDetails the resyncDetails value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -451,7 +455,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the retentionWindowStart property: The retention window start time.
-     *
+     * 
      * @return the retentionWindowStart value.
      */
     public OffsetDateTime retentionWindowStart() {
@@ -460,7 +464,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the retentionWindowStart property: The retention window start time.
-     *
+     * 
      * @param retentionWindowStart the retentionWindowStart value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -471,7 +475,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the retentionWindowEnd property: The retention window end time.
-     *
+     * 
      * @return the retentionWindowEnd value.
      */
     public OffsetDateTime retentionWindowEnd() {
@@ -480,7 +484,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the retentionWindowEnd property: The retention window end time.
-     *
+     * 
      * @param retentionWindowEnd the retentionWindowEnd value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -491,7 +495,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the compressedDataRateInMB property: The compressed data change rate in MB.
-     *
+     * 
      * @return the compressedDataRateInMB value.
      */
     public Double compressedDataRateInMB() {
@@ -500,7 +504,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the compressedDataRateInMB property: The compressed data change rate in MB.
-     *
+     * 
      * @param compressedDataRateInMB the compressedDataRateInMB value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -511,7 +515,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the uncompressedDataRateInMB property: The uncompressed data change rate in MB.
-     *
+     * 
      * @return the uncompressedDataRateInMB value.
      */
     public Double uncompressedDataRateInMB() {
@@ -520,7 +524,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the uncompressedDataRateInMB property: The uncompressed data change rate in MB.
-     *
+     * 
      * @param uncompressedDataRateInMB the uncompressedDataRateInMB value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -531,7 +535,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the rpoInSeconds property: The RPO in seconds.
-     *
+     * 
      * @return the rpoInSeconds value.
      */
     public Long rpoInSeconds() {
@@ -540,7 +544,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the rpoInSeconds property: The RPO in seconds.
-     *
+     * 
      * @param rpoInSeconds the rpoInSeconds value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -551,7 +555,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @return the protectedDisks value.
      */
     public List<InMageProtectedDiskDetails> protectedDisks() {
@@ -560,7 +564,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @param protectedDisks the protectedDisks value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -571,7 +575,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the ipAddress property: The source IP address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -580,7 +584,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the ipAddress property: The source IP address.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -591,7 +595,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the lastHeartbeat property: The last heartbeat received from the source server.
-     *
+     * 
      * @return the lastHeartbeat value.
      */
     public OffsetDateTime lastHeartbeat() {
@@ -600,7 +604,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the lastHeartbeat property: The last heartbeat received from the source server.
-     *
+     * 
      * @param lastHeartbeat the lastHeartbeat value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -611,7 +615,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the processServerId property: The process server Id.
-     *
+     * 
      * @return the processServerId value.
      */
     public String processServerId() {
@@ -620,7 +624,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the processServerId property: The process server Id.
-     *
+     * 
      * @param processServerId the processServerId value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -631,7 +635,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the masterTargetId property: The master target Id.
-     *
+     * 
      * @return the masterTargetId value.
      */
     public String masterTargetId() {
@@ -640,7 +644,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the masterTargetId property: The master target Id.
-     *
+     * 
      * @param masterTargetId the masterTargetId value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -651,7 +655,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the consistencyPoints property: The collection of Consistency points.
-     *
+     * 
      * @return the consistencyPoints value.
      */
     public Map<String, OffsetDateTime> consistencyPoints() {
@@ -660,7 +664,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the consistencyPoints property: The collection of Consistency points.
-     *
+     * 
      * @param consistencyPoints the consistencyPoints value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -671,7 +675,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the diskResized property: A value indicating whether any disk is resized for this VM.
-     *
+     * 
      * @return the diskResized value.
      */
     public String diskResized() {
@@ -680,7 +684,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the diskResized property: A value indicating whether any disk is resized for this VM.
-     *
+     * 
      * @param diskResized the diskResized value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -692,7 +696,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     /**
      * Get the rebootAfterUpdateStatus property: A value indicating whether the source server requires a restart after
      * update.
-     *
+     * 
      * @return the rebootAfterUpdateStatus value.
      */
     public String rebootAfterUpdateStatus() {
@@ -702,7 +706,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     /**
      * Set the rebootAfterUpdateStatus property: A value indicating whether the source server requires a restart after
      * update.
-     *
+     * 
      * @param rebootAfterUpdateStatus the rebootAfterUpdateStatus value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -713,7 +717,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the multiVmGroupId property: The multi vm group Id, if any.
-     *
+     * 
      * @return the multiVmGroupId value.
      */
     public String multiVmGroupId() {
@@ -722,7 +726,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the multiVmGroupId property: The multi vm group Id, if any.
-     *
+     * 
      * @param multiVmGroupId the multiVmGroupId value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -733,7 +737,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the multiVmGroupName property: The multi vm group name, if any.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -742,7 +746,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the multiVmGroupName property: The multi vm group name, if any.
-     *
+     * 
      * @param multiVmGroupName the multiVmGroupName value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -753,7 +757,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the multiVmSyncStatus property: A value indicating whether the multi vm sync is enabled or disabled.
-     *
+     * 
      * @return the multiVmSyncStatus value.
      */
     public String multiVmSyncStatus() {
@@ -762,7 +766,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the multiVmSyncStatus property: A value indicating whether the multi vm sync is enabled or disabled.
-     *
+     * 
      * @param multiVmSyncStatus the multiVmSyncStatus value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -773,7 +777,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the agentDetails property: The agent details.
-     *
+     * 
      * @return the agentDetails value.
      */
     public InMageAgentDetails agentDetails() {
@@ -782,7 +786,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the agentDetails property: The agent details.
-     *
+     * 
      * @param agentDetails the agentDetails value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -793,7 +797,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the vCenterInfrastructureId property: The vCenter infrastructure Id.
-     *
+     * 
      * @return the vCenterInfrastructureId value.
      */
     public String vCenterInfrastructureId() {
@@ -802,7 +806,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the vCenterInfrastructureId property: The vCenter infrastructure Id.
-     *
+     * 
      * @param vCenterInfrastructureId the vCenterInfrastructureId value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -813,7 +817,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the infrastructureVmId property: The infrastructure VM Id.
-     *
+     * 
      * @return the infrastructureVmId value.
      */
     public String infrastructureVmId() {
@@ -822,7 +826,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the infrastructureVmId property: The infrastructure VM Id.
-     *
+     * 
      * @param infrastructureVmId the infrastructureVmId value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -833,7 +837,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the vmNics property: The PE Network details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<VMNicDetails> vmNics() {
@@ -842,7 +846,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the vmNics property: The PE Network details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -853,7 +857,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the discoveryType property: A value indicating the discovery type of the machine.
-     *
+     * 
      * @return the discoveryType value.
      */
     public String discoveryType() {
@@ -862,7 +866,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the discoveryType property: A value indicating the discovery type of the machine.
-     *
+     * 
      * @param discoveryType the discoveryType value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -872,9 +876,9 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     }
 
     /**
-     * Get the azureStorageAccountId property: A value indicating the underlying Azure storage account. If the VM is not
-     * running in Azure, this value shall be set to null.
-     *
+     * Get the azureStorageAccountId property: A value indicating the underlying Azure storage account. If the VM is
+     * not running in Azure, this value shall be set to null.
+     * 
      * @return the azureStorageAccountId value.
      */
     public String azureStorageAccountId() {
@@ -882,9 +886,9 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     }
 
     /**
-     * Set the azureStorageAccountId property: A value indicating the underlying Azure storage account. If the VM is not
-     * running in Azure, this value shall be set to null.
-     *
+     * Set the azureStorageAccountId property: A value indicating the underlying Azure storage account. If the VM is
+     * not running in Azure, this value shall be set to null.
+     * 
      * @param azureStorageAccountId the azureStorageAccountId value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -896,7 +900,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     /**
      * Get the datastores property: The datastores of the on-premise machine Value can be list of strings that contain
      * datastore names.
-     *
+     * 
      * @return the datastores value.
      */
     public List<String> datastores() {
@@ -906,7 +910,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     /**
      * Set the datastores property: The datastores of the on-premise machine Value can be list of strings that contain
      * datastore names.
-     *
+     * 
      * @param datastores the datastores value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -918,7 +922,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     /**
      * Get the validationErrors property: The validation errors of the on-premise machine Value can be list of
      * validation errors.
-     *
+     * 
      * @return the validationErrors value.
      */
     public List<HealthError> validationErrors() {
@@ -928,7 +932,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     /**
      * Set the validationErrors property: The validation errors of the on-premise machine Value can be list of
      * validation errors.
-     *
+     * 
      * @param validationErrors the validationErrors value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -939,7 +943,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the lastRpoCalculatedTime property: The last RPO calculated time.
-     *
+     * 
      * @return the lastRpoCalculatedTime value.
      */
     public OffsetDateTime lastRpoCalculatedTime() {
@@ -948,7 +952,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the lastRpoCalculatedTime property: The last RPO calculated time.
-     *
+     * 
      * @param lastRpoCalculatedTime the lastRpoCalculatedTime value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -959,7 +963,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the lastUpdateReceivedTime property: The last update time received from on-prem components.
-     *
+     * 
      * @return the lastUpdateReceivedTime value.
      */
     public OffsetDateTime lastUpdateReceivedTime() {
@@ -968,7 +972,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the lastUpdateReceivedTime property: The last update time received from on-prem components.
-     *
+     * 
      * @param lastUpdateReceivedTime the lastUpdateReceivedTime value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -979,7 +983,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the replicaId property: The replica id of the protected item.
-     *
+     * 
      * @return the replicaId value.
      */
     public String replicaId() {
@@ -988,7 +992,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the replicaId property: The replica id of the protected item.
-     *
+     * 
      * @param replicaId the replicaId value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -999,7 +1003,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the osVersion property: The OS Version of the protected item.
-     *
+     * 
      * @return the osVersion value.
      */
     public String osVersion() {
@@ -1008,7 +1012,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the osVersion property: The OS Version of the protected item.
-     *
+     * 
      * @param osVersion the osVersion value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -1018,8 +1022,9 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     }
 
     /**
-     * Get the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or not.
-     *
+     * Get the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or
+     * not.
+     * 
      * @return the isAdditionalStatsAvailable value.
      */
     public Boolean isAdditionalStatsAvailable() {
@@ -1027,8 +1032,9 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
     }
 
     /**
-     * Set the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or not.
-     *
+     * Set the isAdditionalStatsAvailable property: A value indicating whether additional IR stats are available or
+     * not.
+     * 
      * @param isAdditionalStatsAvailable the isAdditionalStatsAvailable value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -1039,7 +1045,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the totalDataTransferred property: The total transferred data in bytes.
-     *
+     * 
      * @return the totalDataTransferred value.
      */
     public Long totalDataTransferred() {
@@ -1048,7 +1054,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the totalDataTransferred property: The total transferred data in bytes.
-     *
+     * 
      * @param totalDataTransferred the totalDataTransferred value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -1059,7 +1065,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Get the totalProgressHealth property: The progress health.
-     *
+     * 
      * @return the totalProgressHealth value.
      */
     public String totalProgressHealth() {
@@ -1068,7 +1074,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Set the totalProgressHealth property: The progress health.
-     *
+     * 
      * @param totalProgressHealth the totalProgressHealth value to set.
      * @return the InMageReplicationDetails object itself.
      */
@@ -1079,7 +1085,7 @@ public final class InMageReplicationDetails extends ReplicationProviderSpecificS
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

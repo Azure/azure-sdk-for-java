@@ -78,32 +78,11 @@ stages:
             targetType: 'filePath'
             filePath: sdk/storage/azure-storage-perf/memory-stress-scenarios.ps1
           env:
-            ${{ if eq(variables['JavaTestVersion'], '1.11') }}:
-              JAVA_HOME: $(JAVA_HOME_11_X64)
+            ${{ if eq(variables['JavaTestVersion'], '1.21') }}:
+              JAVA_HOME: $(JAVA_HOME_21_X64)
             ${{ if eq(variables['JavaTestVersion'], '1.8') }}:
               JAVA_HOME: $(JAVA_HOME_8_X64)
           condition: and(succeeded(), eq(variables['StorageRunStressScenarios'], 'true'))
-        - pwsh: |
-            New-Item $(Build.ArtifactStagingDirectory)/test-logs -ItemType directory
-            Copy-Item sdk/storage/azure-storage-blob/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-test.log -ErrorAction SilentlyContinue
-            Copy-Item sdk/storage/azure-storage-blob-batch/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-batch-test.log -ErrorAction SilentlyContinue
-            Copy-Item sdk/storage/azure-storage-blob-changefeed/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-changefeed-test.log -ErrorAction SilentlyContinue
-            Copy-Item sdk/storage/azure-storage-blob-cryptography/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-cryptography-test.log -ErrorAction SilentlyContinue
-            Copy-Item sdk/storage/azure-storage-blob-nio/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-blob-nio-test.log -ErrorAction SilentlyContinue
-            Copy-Item sdk/storage/azure-storage-common/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-common-test.log -ErrorAction SilentlyContinue
-            Copy-Item sdk/storage/azure-storage-file-datalake/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-file-datalake-test.log -ErrorAction SilentlyContinue
-            Copy-Item sdk/storage/azure-storage-file-share/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-file-share-test.log -ErrorAction SilentlyContinue
-            Copy-Item sdk/storage/azure-storage-internal-avro/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-internal-avro-test.log -ErrorAction SilentlyContinue
-            Copy-Item sdk/storage/azure-storage-queue/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-queue-test.log -ErrorAction SilentlyContinue
-          displayName: 'Copy test logs to artifact staging'
-          condition: always()
-        - template: ../steps/retain-heap-dump-hprofs.yml
-          parameters:
-            OomArtifactName: 'perf-hprofs'
-        - publish: $(Build.ArtifactStagingDirectory)/test-logs
-          displayName: 'Publish test logs'
-          artifact: test-log-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-          condition: always()
       EnvVars:
         AZURE_TENANT_ID: $(STORAGE_TENANT_ID)
         AZURE_CLIENT_ID: $(STORAGE_CLIENT_ID)

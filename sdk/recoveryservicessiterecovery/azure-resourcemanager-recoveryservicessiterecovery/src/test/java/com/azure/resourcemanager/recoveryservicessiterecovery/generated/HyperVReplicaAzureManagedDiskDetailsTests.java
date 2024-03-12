@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HyperVReplicaAzureManagedDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVReplicaAzureManagedDiskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"diskId\":\"edrympmlqo\",\"seedManagedDiskId\":\"hzdue\",\"replicaDiskType\":\"hapfjiik\",\"diskEncryptionSetId\":\"diqfliejhpclbi\"}")
-                .toObject(HyperVReplicaAzureManagedDiskDetails.class);
+        HyperVReplicaAzureManagedDiskDetails model = BinaryData.fromString(
+            "{\"diskId\":\"edrympmlqo\",\"seedManagedDiskId\":\"hzdue\",\"replicaDiskType\":\"hapfjiik\",\"diskEncryptionSetId\":\"diqfliejhpclbi\"}")
+            .toObject(HyperVReplicaAzureManagedDiskDetails.class);
         Assertions.assertEquals("edrympmlqo", model.diskId());
         Assertions.assertEquals("hzdue", model.seedManagedDiskId());
         Assertions.assertEquals("hapfjiik", model.replicaDiskType());
@@ -24,12 +22,8 @@ public final class HyperVReplicaAzureManagedDiskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzureManagedDiskDetails model =
-            new HyperVReplicaAzureManagedDiskDetails()
-                .withDiskId("edrympmlqo")
-                .withSeedManagedDiskId("hzdue")
-                .withReplicaDiskType("hapfjiik")
-                .withDiskEncryptionSetId("diqfliejhpclbi");
+        HyperVReplicaAzureManagedDiskDetails model = new HyperVReplicaAzureManagedDiskDetails().withDiskId("edrympmlqo")
+            .withSeedManagedDiskId("hzdue").withReplicaDiskType("hapfjiik").withDiskEncryptionSetId("diqfliejhpclbi");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureManagedDiskDetails.class);
         Assertions.assertEquals("edrympmlqo", model.diskId());
         Assertions.assertEquals("hzdue", model.seedManagedDiskId());

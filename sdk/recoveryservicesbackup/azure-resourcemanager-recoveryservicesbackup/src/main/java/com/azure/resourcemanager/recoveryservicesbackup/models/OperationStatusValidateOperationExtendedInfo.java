@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Operation status extended info for ValidateOperation action. */
+/**
+ * Operation status extended info for ValidateOperation action.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("OperationStatusValidateOperationExtendedInfo")
 @Fluent
@@ -20,13 +22,15 @@ public final class OperationStatusValidateOperationExtendedInfo extends Operatio
     @JsonProperty(value = "validateOperationResponse")
     private ValidateOperationResponse validateOperationResponse;
 
-    /** Creates an instance of OperationStatusValidateOperationExtendedInfo class. */
+    /**
+     * Creates an instance of OperationStatusValidateOperationExtendedInfo class.
+     */
     public OperationStatusValidateOperationExtendedInfo() {
     }
 
     /**
      * Get the validateOperationResponse property: Gets the validation operation response.
-     *
+     * 
      * @return the validateOperationResponse value.
      */
     public ValidateOperationResponse validateOperationResponse() {
@@ -35,19 +39,19 @@ public final class OperationStatusValidateOperationExtendedInfo extends Operatio
 
     /**
      * Set the validateOperationResponse property: Gets the validation operation response.
-     *
+     * 
      * @param validateOperationResponse the validateOperationResponse value to set.
      * @return the OperationStatusValidateOperationExtendedInfo object itself.
      */
-    public OperationStatusValidateOperationExtendedInfo withValidateOperationResponse(
-        ValidateOperationResponse validateOperationResponse) {
+    public OperationStatusValidateOperationExtendedInfo
+        withValidateOperationResponse(ValidateOperationResponse validateOperationResponse) {
         this.validateOperationResponse = validateOperationResponse;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
