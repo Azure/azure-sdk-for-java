@@ -112,8 +112,8 @@ parameters:
     default: false
 
 extends:
-  template: /eng/pipelines/templates/stages/1es-redirect.yml@self
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
     stages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml@self
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters: ${{ parameters }}

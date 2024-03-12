@@ -66,13 +66,13 @@ parameters:
     default: false
 
 extends:
-  template: /eng/pipelines/templates/stages/1es-redirect.yml@self
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
   parameters:
     stages:
       - stage: Build
         variables:
-          - template: /eng/pipelines/templates/variables/globals.yml@self
-          - template: /eng/pipelines/templates/variables/image.yml@self
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
           # Convert artifact parameter objects to json and set them as variables to be used in
           # pipeline jobs/stages. By setting these as a variable once we save thousands of lines
           # of yaml in extreme cases. This helps us stay under the devops max yaml size limits.
@@ -81,7 +81,7 @@ extends:
           - name: AdditionalModulesJson
             value: '${{ convertToJson(parameters.AdditionalModules) }}'
         jobs:
-          - template: /eng/pipelines/templates/jobs/ci.yml@self
+          - template: /eng/pipelines/templates/jobs/ci.yml
             parameters:
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
               TestPipeline: ${{ parameters.TestPipeline }}
@@ -133,7 +133,7 @@ extends:
       # The tests-weekly check needs to be done so we don't create signing/release tasks for manual weekly-test runs
       - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), not(contains(variables['Build.DefinitionName'], 'tests-weekly'))) }}:
           - ${{ if eq(parameters.EnableBatchRelease, 'true') }}:
-              - template: archetype-java-release-batch.yml@self
+              - template: archetype-java-release-batch.yml
                 parameters:
                   DependsOn:
                     - Build
@@ -161,7 +161,7 @@ extends:
                   ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
                     Environment: 'package-publish'
           - ${{ else }}:
-            - template: archetype-java-release.yml@self
+            - template: archetype-java-release.yml
               parameters:
                 DependsOn:
                   - Build
