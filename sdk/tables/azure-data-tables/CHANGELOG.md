@@ -8,9 +8,19 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 12.3.20 (2024-03-07)
+
+### Bugs Fixed
 - Removed the 409 status-code error-level log message "TableAlreadyExists" that was printed when calling `TableServiceClient.createTableIfNotExists()` on a table that already exists.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
 
 ## 12.3.19 (2024-02-20)
 
@@ -31,6 +41,7 @@
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
 
+
 ## 12.3.17 (2023-11-20)
 
 ### Other Changes
@@ -49,6 +60,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
 - Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
 
 ## 12.3.15 (2023-09-18)
 
