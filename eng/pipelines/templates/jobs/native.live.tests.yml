@@ -8,9 +8,6 @@ parameters:
   - name: Artifacts
     type: object
     default: []
-  - name: AdditionalModules
-    type: object
-    default: []
   - name: EnvVars
     type: object
     default: {}
@@ -118,10 +115,6 @@ jobs:
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
-          Artifacts: ${{ parameters.Artifacts }}
-          AdditionalModules: ${{ parameters.AdditionalModules }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
-          SDKType: ${{ parameters.SDKType }}
           OS: ${{ parameters.OSName }}
 
       - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
@@ -161,8 +154,6 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/build-and-test-native.yml
         parameters:
-          SDKType: ${{ parameters.SDKType }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'false'
           BuildParallelization: ${{ parameters.BuildParallelization }}
           IsLiveTest: true

@@ -95,10 +95,7 @@ jobs:
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
           CheckoutRecordings: true
-          SDKType: ${{ parameters.SDKType }}
-          OS: ${{ parameters.OSName }}
 
       - template: /eng/common/testproxy/test-proxy-tool.yml
         parameters:
@@ -142,8 +139,6 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/build-and-test.yml
         parameters:
-          SDKType: ${{ parameters.SDKType }}
-          ServiceDirectory: ${{ parameters.ServiceDirectory }}
           ParallelTestPlayback: 'true'
           TestGoals: ${{ parameters.TestGoals }}
           TestOptions: ${{ parameters.TestOptions }}
