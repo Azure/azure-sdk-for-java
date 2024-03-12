@@ -53,18 +53,19 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
 
     private void addTestProxyMatchers() {
         interceptorManager.addMatchers(Arrays.asList(
-            new CustomMatcher().setExcludedHeaders(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+            new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
     }
 
     private void addTestProxySanitizer() {
         // sanitize phone numbers
         interceptorManager.addSanitizers(Arrays.asList(
             new TestProxySanitizer("(?<=/phoneNumbers/)([^/?]+)", "REDACTED", TestProxySanitizerType.URL),
-            new TestProxySanitizer("id", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("..phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("..nationalFormat", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("..internationalFormat", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+            new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..phoneNumbers", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..nationalFormat", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..internationalFormat", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
     }
 
     protected PhoneNumbersClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
