@@ -3,6 +3,7 @@
 
 package com.generic.core.util.serializer;
 
+import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
@@ -207,6 +208,8 @@ public class DefaultJsonSerializerTests {
             Arguments.of(1.0D, "1.0"),
             Arguments.of("1", "\"1\""),
             Arguments.of(HttpMethod.GET, "\"GET\""),
+            Arguments.of(HttpExceptionType.RESOURCE_MODIFIED, "\"RESOURCE_MODIFIED\""),
+            Arguments.of(HttpExceptionType.fromString(null), null),
             Arguments.of(map, "{\"key\":\"value\"}"),
             Arguments.of(null, null)
         );

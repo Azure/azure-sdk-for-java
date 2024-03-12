@@ -3,16 +3,21 @@
 
 package com.generic.core.models;
 
+import com.generic.core.annotation.Metadata;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.generic.core.annotation.TypeConditions.EXPANDABLE_ENUM;
+
 /**
  * Represents common header names.
  */
 @SuppressWarnings("unused")
-public final class HeaderName implements ExpandableStringEnum<HeaderName> {
+@Metadata(conditions = EXPANDABLE_ENUM)
+public final class HeaderName {
     private static final Map<String, HeaderName> VALUES = new ConcurrentHashMap<>();
     private final String caseSensitive;
     private final String caseInsensitive;

@@ -3,7 +3,7 @@
 
 package com.generic.core.util;
 
-import com.generic.core.models.ExpandableStringEnum;
+import com.generic.core.annotation.Metadata;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.configuration.ConfigurationBuilder;
 import com.generic.core.util.configuration.ConfigurationProperty;
@@ -17,6 +17,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+
+import static com.generic.core.annotation.TypeConditions.EXPANDABLE_ENUM;
 
 /**
  * Codesnippets for {@link Configuration}
@@ -158,7 +160,8 @@ public class ConfigurationJavaDocCodeSnippet {
         // END: com.generic.core.util.ConfigurationPropertyBuilder.ofInteger
     }
 
-    public static final class SampleEnumProperty implements ExpandableStringEnum<SampleEnumProperty> {
+    @Metadata(conditions = EXPANDABLE_ENUM)
+    public static final class SampleEnumProperty {
         private static final Map<String, SampleEnumProperty> VALUES = new ConcurrentHashMap<>();
 
         private final String value;

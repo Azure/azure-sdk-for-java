@@ -18,5 +18,11 @@ public enum TypeConditions {
      * Indicates that a class is immutable. If a class is marked as this, checks can be made to ensure all fields in
      * the class are final.
      */
-    IMMUTABLE
+    IMMUTABLE,
+
+    /**
+     * Indicates that a class is an expandable enum. If a class is marked as this, checks can be made to ensure it
+     * overrides {@link Object#toString()} and all public fields in it class are final, static and share the same type.
+     */
+    EXPANDABLE_ENUM
 }

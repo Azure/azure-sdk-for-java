@@ -3,6 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
+import com.generic.core.annotation.Metadata;
 import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.FormParam;
@@ -26,7 +27,6 @@ import com.generic.core.implementation.util.DateTimeRfc1123;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
-import com.generic.core.models.ExpandableStringEnum;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
@@ -55,6 +55,7 @@ import java.util.TreeMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import static com.generic.core.annotation.TypeConditions.EXPANDABLE_ENUM;
 import static com.generic.core.implementation.TypeUtil.typeImplementsInterface;
 
 /**
@@ -565,23 +566,23 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return null;
         }
 
+        Metadata metadata = value.getClass().getAnnotation(Metadata.class);
+        boolean isExpandableEnum = metadata != null && Arrays.stream(metadata.conditions())
+            .anyMatch(condition -> condition == EXPANDABLE_ENUM);
+
         if (value instanceof String) {
             return (String) value;
         } else if (value.getClass().isPrimitive()
+            || value.getClass().isEnum()
             || value instanceof Number
             || value instanceof Boolean
             || value instanceof Character
-            || value instanceof DateTimeRfc1123) {
+            || value instanceof DateTimeRfc1123
+            || isExpandableEnum) {
 
             return String.valueOf(value);
         } else if (value instanceof OffsetDateTime) {
             return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
-        } else if (value instanceof ExpandableStringEnum<?> || value.getClass().isEnum()) {
-            // Enum and ExpandableStringEnum need special handling as these could be wrapping a null String which would
-            // be "null" is serialized with JacksonAdapter.
-            String stringValue = String.valueOf(value);
-
-            return (stringValue == null) ? "null" : stringValue;
         } else {
             try (OutputStream outputStream = new ByteArrayOutputStream()) {
                 serializer.serializeToStream(outputStream, value);
