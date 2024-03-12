@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.49.0-beta.1 
+### 4.49.0-beta.1 (Unreleased)
 
 #### Bugs Fixed
 * Fixed an issue where `sampleDiagnostics` is not being honored for `query. See [PR 37015](https://github.com/Azure/azure-sdk-for-java/pull/37015)
