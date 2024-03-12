@@ -221,13 +221,11 @@ public final class CallMedia {
     /**
      * Holds participant in call.
      * @param targetParticipant the target.
-     * @param playSourceInfo audio to play.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void hold(CommunicationIdentifier targetParticipant,
-                               PlaySource playSourceInfo) {
-        return callMediaAsync.hold(targetParticipant, playSourceInfo).block();
+    public Void hold(CommunicationIdentifier targetParticipant) {
+        return callMediaAsync.hold(targetParticipant).block();
     }
 
     /**

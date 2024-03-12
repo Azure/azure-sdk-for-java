@@ -18,7 +18,7 @@ public class HoldOptions {
     /**
      * Audio to play while on hold.
      */
-    private final PlaySource playSourceInfo;
+    private PlaySource playSourceInfo;
 
     /**
      * Operation context.
@@ -26,13 +26,16 @@ public class HoldOptions {
     private String operationContext;
 
     /**
+     * operationCallbackUri.
+     */
+    private String operationCallbackUri;
+
+    /**
      * Create a new HoldOptions object.
      * @param targetParticipant Participant to be put on hold.
-     * @param playSourceInfo Audio to be played while on hold.
      */
-    public HoldOptions(CommunicationIdentifier targetParticipant, PlaySource playSourceInfo) {
+    public HoldOptions(CommunicationIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
-        this.playSourceInfo = playSourceInfo;
     }
 
     /**
@@ -52,6 +55,16 @@ public class HoldOptions {
     }
 
     /**
+     * Sets the playSourceInfo.
+     * @param playSourceInfo playSourceInfo
+     * @return The HoldOptions object.
+     */
+    public HoldOptions setPlaySourceInfo(PlaySource playSourceInfo) {
+        this.playSourceInfo = playSourceInfo;
+        return this;
+    }
+
+    /**
      * Get the operation context.
      * @return operation context.
      */
@@ -66,6 +79,24 @@ public class HoldOptions {
      */
     public HoldOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the operationCallbackUri.
+     * @return operationCallbackUri.
+     */
+    public String getOperationCallbackUri() {
+        return operationCallbackUri;
+    }
+
+    /**
+     * Sets the operationCallbackUri.
+     * @param operationCallbackUri operationCallbackUri
+     * @return The HoldOptions object.
+     */
+    public HoldOptions setOperationCallbackUri(String operationCallbackUri) {
+        this.operationCallbackUri = operationCallbackUri;
         return this;
     }
 }
