@@ -14,7 +14,7 @@ public class MockSerializer implements JsonSerializer {
     }
 
     @Override
-    public <T> T deserializeFromStream(InputStream stream, Type typeReference) {
+    public <T> T deserializeFromStream(InputStream stream, Type type) {
         return null;
     }
 

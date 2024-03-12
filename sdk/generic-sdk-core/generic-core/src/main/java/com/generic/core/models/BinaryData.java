@@ -529,7 +529,7 @@ public abstract class BinaryData implements Closeable {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference -->
+     * <!-- src_embed com.generic.core.util.BinaryData.toObject#Type -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -544,11 +544,11 @@ public abstract class BinaryData implements Closeable {
      * Person person = binaryData.toObject&#40;Person.class&#41;;
      * System.out.println&#40;person.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference -->
+     * <!-- end com.generic.core.util.BinaryData.toObject#Type -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference-generic -->
+     * <!-- src_embed com.generic.core.util.BinaryData.toObject#Type-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
@@ -586,7 +586,7 @@ public abstract class BinaryData implements Closeable {
      * &#125;&#41;;
      * persons.forEach&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference-generic -->
+     * <!-- end com.generic.core.util.BinaryData.toObject#Type-generic -->
      *
      * @param type The {@link Type} representing the Object's type.
      * @param <T> Type of the deserialized Object.
@@ -614,7 +614,7 @@ public abstract class BinaryData implements Closeable {
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
+     * <!-- src_embed com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -628,11 +628,11 @@ public abstract class BinaryData implements Closeable {
      * Person person = binaryData.toObject&#40;Person.class, serializer&#41;;
      * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
+     * <!-- end com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
+     * <!-- src_embed com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
@@ -664,7 +664,7 @@ public abstract class BinaryData implements Closeable {
      * &#125;, serializer&#41;;
      * persons.forEach&#40;person -&gt; System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
+     * <!-- end com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer-generic -->
      *
      * @param type The {@link Type} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize the object.

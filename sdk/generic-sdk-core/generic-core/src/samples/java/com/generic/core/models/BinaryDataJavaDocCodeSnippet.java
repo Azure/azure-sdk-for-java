@@ -184,8 +184,8 @@ public class BinaryDataJavaDocCodeSnippet {
     /**
      * Codesnippets for {@link BinaryData#toObject(Type)}.
      */
-    public void toObjectTypeReferenceDefaultJsonSerializer() {
-        // BEGIN: com.generic.core.util.BinaryData.toObject#TypeReference
+    public void toObjectTypeDefaultJsonSerializer() {
+        // BEGIN: com.generic.core.util.BinaryData.toObject#Type
         final Person data = new Person().setName("John");
 
         // Ensure your classpath have the Serializer to serialize the object which implement implement
@@ -198,14 +198,14 @@ public class BinaryDataJavaDocCodeSnippet {
 
         Person person = binaryData.toObject(Person.class);
         System.out.println(person.getName());
-        // END: com.generic.core.util.BinaryData.toObject#TypeReference
+        // END: com.generic.core.util.BinaryData.toObject#Type
     }
 
     /**
      * Codesnippets for {@link BinaryData#toObject(Type)}.
      */
-    public void toObjectTypeReferenceDefaultJsonSerializerWithGenerics() {
-        // BEGIN: com.generic.core.util.BinaryData.toObject#TypeReference-generic
+    public void toObjectTypeDefaultJsonSerializerWithGenerics() {
+        // BEGIN: com.generic.core.util.BinaryData.toObject#Type-generic
         final Person person1 = new Person().setName("John");
         final Person person2 = new Person().setName("Jack");
 
@@ -241,14 +241,14 @@ public class BinaryDataJavaDocCodeSnippet {
             }
         });
         persons.forEach(person -> System.out.println(person.getName()));
-        // END: com.generic.core.util.BinaryData.toObject#TypeReference-generic
+        // END: com.generic.core.util.BinaryData.toObject#Type-generic
     }
 
     /**
      * Codesnippets for {@link BinaryData#toObject(Type, ObjectSerializer)}.
      */
-    public void toObjectTypeReferenceObjectSerializer() {
-        // BEGIN: com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer
+    public void toObjectTypeObjectSerializer() {
+        // BEGIN: com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
@@ -260,14 +260,14 @@ public class BinaryDataJavaDocCodeSnippet {
 
         Person person = binaryData.toObject(Person.class, serializer);
         System.out.println("Name : " + person.getName());
-        // END: com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer
+        // END: com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer
     }
 
     /**
      * Codesnippets for {@link BinaryData#toObject(Type, ObjectSerializer)} that uses generics.
      */
-    public void toObjectTypeReferenceObjectSerializerWithGenerics() {
-        // BEGIN: com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic
+    public void toObjectTypeObjectSerializerWithGenerics() {
+        // BEGIN: com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer-generic
         final Person person1 = new Person().setName("John");
         final Person person2 = new Person().setName("Jack");
 
@@ -297,7 +297,7 @@ public class BinaryDataJavaDocCodeSnippet {
             }
         }, serializer);
         persons.forEach(person -> System.out.println("Name : " + person.getName()));
-        // END: com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic
+        // END: com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer-generic
     }
 
     /**
