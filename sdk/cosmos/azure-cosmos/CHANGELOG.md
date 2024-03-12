@@ -1,5 +1,14 @@
 ## Release History
 
+### 4.49.0-beta.1 
+
+#### Bugs Fixed
+* Fixed an issue where `sampleDiagnostics` is not being honored for `query. See [PR 37015](https://github.com/Azure/azure-sdk-for-java/pull/37015)
+* Suppress exceptions when calling diagnostics handlers. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+
+### Other Changes
+* Only call System.exit in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+
 ### 4.48.2 (2023-08-25)
 
 #### Bugs Fixed
