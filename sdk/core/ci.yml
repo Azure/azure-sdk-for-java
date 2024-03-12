@@ -108,7 +108,6 @@ extends:
         jobs:
           - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
             parameters:
-              ServiceDirectory: core
               Artifacts:
                 - name: azure-core-version-tests
                   groupId: com.azure
