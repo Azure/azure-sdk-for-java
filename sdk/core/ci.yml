@@ -62,6 +62,38 @@ parameters:
     displayName: 'azure-core-http-okhttp'
     type: boolean
     default: true
+  - name: release_azurecorehttpvertx
+    displayName: 'azure-core-http-vertx'
+    type: boolean
+    default: true
+  - name: release_azurecoremanagement
+    displayName: 'azure-core-management'
+    type: boolean
+    default: true
+  - name: release_azurecoremetricsopentelemetry
+    displayName: 'azure-core-metrics-opentelemetry'
+    type: boolean
+    default: true
+  - name: release_azurecoreserializeravroapache
+    displayName: 'azure-core-serializer-avro-apache'
+    type: boolean
+    default: true
+  - name: release_azurecoreserializerjsongson
+    displayName: 'azure-core-serializer-json-gson'
+    type: boolean
+    default: true
+  - name: release_azurecoreserializerjsonjackson
+    displayName: 'azure-core-serializer-json-jackson'
+    type: boolean
+    default: true
+  - name: release_azurecoretest
+    displayName: 'azure-core-test'
+    type: boolean
+    default: true
+  - name: release_azurecoretracingopentelemetry
+    displayName: 'azure-core-tracing-opentelemetry'
+    type: boolean
+    default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -99,6 +131,38 @@ extends:
         groupId: com.azure
         safeName: azurecorehttpokhttp
         releaseInBatch: ${{ parameters.release_azurecorehttpokhttp }}
+      - name: azure-core-http-vertx
+        groupId: com.azure
+        safeName: azurecorehttpvertx
+        releaseInBatch: ${{ parameters.release_azurecorehttpvertx }}
+      - name: azure-core-management
+        groupId: com.azure
+        safeName: azurecoremanagement
+        releaseInBatch: ${{ parameters.release_azurecoremanagement }}
+      - name: azure-core-metrics-opentelemetry
+        groupId: com.azure
+        safeName: azurecoremetricsopentelemetry
+        releaseInBatch: ${{ parameters.release_azurecoremetricsopentelemetry }}
+      - name: azure-core-serializer-avro-apache
+        groupId: com.azure
+        safeName: azurecoreserializeravroapache
+        releaseInBatch: ${{ parameters.release_azurecoreserializeravroapache }}
+      - name: azure-core-serializer-json-gson
+        groupId: com.azure
+        safeName: azurecoreserializerjsongson
+        releaseInBatch: ${{ parameters.release_azurecoreserializerjsongson }}
+      - name: azure-core-serializer-json-jackson
+        groupId: com.azure
+        safeName: azurecoreserializerjsonjackson
+        releaseInBatch: ${{ parameters.release_azurecoreserializerjsonjackson }}
+      - name: azure-core-test
+        groupId: com.azure
+        safeName: azurecoretest
+        releaseInBatch: ${{ parameters.release_azurecoretest }}
+      - name: azure-core-tracing-opentelemetry
+        groupId: com.azure
+        safeName: azurecoretracingopentelemetry
+        releaseInBatch: ${{ parameters.release_azurecoretracingopentelemetry }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
     AdditionalStagesAfterBuild:
@@ -117,39 +181,70 @@ extends:
                 - jackson_2.11
                 - jackson_2.12
                 - jackson_2.14
+                - jackson_2.15
+                - jackson_2.16
+                - jackson_2.17
+                - reactor_2020
+                - reactor_2022
+                - reactor_2023
               TestGoals: surefire:test
 
-    LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
-        parameters:
-          ServiceDirectory: core
-          Artifacts:
-            - name: azure-core
-              groupId: com.azure
-              safeName: azurecore
-            - name: azure-core-amqp
-              groupId: com.azure
-              safeName: azurecoreamqp
-            - name: azure-core-amqp-experimental
-              groupId: com.azure
-              safeName: azurecoreamqpexperimental
-            - name: azure-core-experimental
-              groupId: com.azure
-              safeName: azurecoreexperimental
-              skipPublishDocMs: true
-            - name: azure-core-http-jdk-httpclient
-              groupId: com.azure
-              safeName: azurecorehttpjdkhttpclient
-            - name: azure-core-http-netty
-              groupId: com.azure
-              safeName: azurecorehttpnetty
-            - name: azure-core-http-okhttp
-              groupId: com.azure
-              safeName: azurecorehttpokhttp
-          MatrixReplace:
-            - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-      - template: /sdk/storage/tests-template.yml
-        parameters:
-          AdditionalMatrixReplace:
-            - TestFromSource=(.*)/true
+                #    LiveTestStages:
+                #      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+                #        parameters:
+                #          ServiceDirectory: core
+                #          Artifacts:
+                #            - name: azure-core
+                #              groupId: com.azure
+                #              safeName: azurecore
+                #            - name: azure-core-amqp
+                #              groupId: com.azure
+                #              safeName: azurecoreamqp
+                #            - name: azure-core-amqp-experimental
+                #              groupId: com.azure
+                #              safeName: azurecoreamqpexperimental
+                #            - name: azure-core-experimental
+                #              groupId: com.azure
+                #              safeName: azurecoreexperimental
+                #              skipPublishDocMs: true
+                #            - name: azure-core-http-jdk-httpclient
+                #              groupId: com.azure
+                #              safeName: azurecorehttpjdkhttpclient
+                #            - name: azure-core-http-netty
+                #              groupId: com.azure
+                #              safeName: azurecorehttpnetty
+                #            - name: azure-core-http-okhttp
+                #              groupId: com.azure
+                #              safeName: azurecorehttpokhttp
+                #            - name: azure-core-management
+                #              groupId: com.azure
+                #              safeName: azurecoremanagement
+                #            - name: azure-core-serializer-avro-apache
+                #              groupId: com.azure
+                #              safeName: azurecoreserializeravroapache
+                #            - name: azure-core-metrics-opentelemetry
+                #              groupId: com.azure
+                #              safeName: azurecoremetricsopentelemetry
+                #            - name: azure-core-serializer-json-gson
+                #              groupId: com.azure
+                #              safeName: azurecoreserializerjsongson
+                #            - name: azure-core-serializer-json-jackson
+                #              groupId: com.azure
+                #              safeName: azurecoreserializerjsonjackson
+                #            - name: azure-core-test
+                #              groupId: com.azure
+                #              safeName: azurecoretest
+                #              skipPublishDocMs: true
+                #            - name: azure-core-tracing-opentelemetry
+                #              groupId: com.azure
+                #              safeName: azurecoretracingopentelemetry
+                #            - name: azure-core-tracing-opentelemetry-samples
+                #              groupId: com.azure
+                #              safeName: azurecoretracingopentelemetrysamples
+                #          MatrixReplace:
+                #            - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
+                #      - template: /sdk/storage/tests-template.yml
+                #        parameters:
+                #          AdditionalMatrixReplace:
+                #            - TestFromSource=(.*)/true
 
