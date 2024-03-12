@@ -2321,13 +2321,14 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             });
     }
 
-    private Mono<Void> setupStandardRecursiveAclTest() {
-        Mono<?> createSubDir1AndFiles = dc.createSubdirectory(generatePathName())
-            .flatMap(dirClient -> Mono.when(dirClient.createFile(generatePathName()), dirClient.createFile(generatePathName())));
-        Mono<?> createSubDir2AndFiles = dc.createSubdirectory(generatePathName())
-            .flatMap(dirClient -> dirClient.createFile(generatePathName()));
-        Mono<?> createRootFile = dc.createFile(generatePathName());
-        return Mono.when(createSubDir1AndFiles, createSubDir2AndFiles, createRootFile);
+    private Mono<DataLakeFileAsyncClient> setupStandardRecursiveAclTest() {
+        Mono<DataLakeFileAsyncClient> setup = dc.createSubdirectory(generatePathName())
+            .flatMap(r -> r.createFile(generatePathName()).then(r.createFile(generatePathName())))
+            .then(dc.createSubdirectory(generatePathName()))
+            .flatMap(r -> r.createFile(generatePathName()))
+            .then(dc.createFile(generatePathName()));
+
+        return setup;
     }
 
     // set recursive acl error, with response
