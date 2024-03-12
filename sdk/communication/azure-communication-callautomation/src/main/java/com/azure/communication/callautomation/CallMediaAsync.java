@@ -774,18 +774,27 @@ public final class CallMediaAsync {
         }
     }
 
-    /**
+   /**
      * Holds participant in call.
      * @param targetParticipant the target.
-     * @param playSourceInfo audio to play.
      * @return Response for successful operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> hold(CommunicationIdentifier targetParticipant,
-                                     PlaySource playSourceInfo) {
-        return holdWithResponseInternal(
-            new HoldOptions(targetParticipant, playSourceInfo),
-            Context.NONE).then();
+    public Mono<Void> hold(CommunicationIdentifier targetParticipant) {
+        return holdInternal(targetParticipant, Context.NONE).then();
+    }
+
+    Mono<Response<Void>> holdInternal(CommunicationIdentifier targetParticipant, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            HoldRequest request = new HoldRequest()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant));
+
+            return contentsInternal
+                .holdWithResponseAsync(callConnectionId, request, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
     }
 
     /**
