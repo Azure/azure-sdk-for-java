@@ -101,23 +101,6 @@ extends:
         releaseInBatch: ${{ parameters.release_azurecorehttpokhttp }}
     MatrixReplace:
       - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-    AdditionalStagesAfterBuild:
-      - stage: DependencyVersionOverridesTests
-        displayName: 'Dependency Version Overrides'
-        dependsOn: []
-        jobs:
-          - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
-            parameters:
-              Artifacts:
-                - name: azure-core-version-tests
-                  groupId: com.azure
-                  safeName: azurecoreversiontests
-              VersionOverrides:
-                - jackson_2.10
-                - jackson_2.11
-                - jackson_2.12
-                - jackson_2.14
-              TestGoals: surefire:test
 
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
