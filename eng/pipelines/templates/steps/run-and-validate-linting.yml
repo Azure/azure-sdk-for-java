@@ -78,13 +78,6 @@ steps:
     displayName: Move linting report zip to individual directory for artifact upload
     condition: succeededOrFailed()
 
-  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-    parameters:
-      ArtifactPath: '$(Build.ArtifactStagingDirectory)/zipped-linting-reports/'
-      ArtifactName: 'linting-reports-$(System.StageName)-$(System.JobName)'
-      DisplayName: 'Publish Linting Reports'
-      CustomCondition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
-
   - pwsh: |
       if ((Get-ChildItem -Path $(Build.ArtifactStagingDirectory)/linting-reports -Directory | Measure-Object).Count -gt 0) {
         Write-Host "Linting errors have been found, download the 'linting-reports.zip' artifact to see what was found."

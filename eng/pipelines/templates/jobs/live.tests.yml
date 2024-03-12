@@ -66,6 +66,12 @@ jobs:
           condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
           sbomEnabled: false
 
+        - output: pipelineArtifact
+          artifactName: 'repository-$(System.JobName)'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+          DisplayName: 'Capture repo state for analysis'
+          CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
+
     steps:
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
@@ -133,7 +139,7 @@ jobs:
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
 
-      - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+      - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
 
       # macOS has known issues running HTTP fault injector, change this once
       # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
