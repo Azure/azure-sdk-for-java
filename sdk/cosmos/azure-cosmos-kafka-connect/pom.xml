@@ -336,6 +336,10 @@ Licensed under the MIT License.
                   <pattern>reactor</pattern>
                   <shadedPattern>${shadingPrefix}.reactor</shadedPattern>
                 </relocation>
+                <relocation>
+                  <pattern>com.jayway.jsonpath</pattern>
+                  <shadedPattern>${shadingPrefix}.com.jayway.jsonpath</shadedPattern>
+                </relocation>
               </relocations>
               <artifactSet>
                 <excludes>

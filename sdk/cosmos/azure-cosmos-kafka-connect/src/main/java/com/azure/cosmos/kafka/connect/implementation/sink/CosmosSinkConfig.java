@@ -37,10 +37,10 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
     private static final String BULK_MAX_CONCURRENT_PARTITIONS_DOC =
         "Cosmos DB Item Write Max Concurrent Cosmos Partitions."
             + " If not specified it will be determined based on the number of the container's physical partitions -"
-            + " which would indicate every Spark partition is expected to have data from all Cosmos physical partitions."
-            + " If specified it indicates from at most how many Cosmos Physical Partitions each Spark partition contains"
-            + " data. So this config can be used to make bulk processing more efficient when input data in Spark has been"
-            + " repartitioned to balance to how many Cosmos partitions each Spark partition needs to write. This is mainly"
+            + " which would indicate every batch is expected to have data from all Cosmos physical partitions."
+            + " If specified it indicates from at most how many Cosmos Physical Partitions each batch contains data."
+            + " So this config can be used to make bulk processing more efficient when input data in each batch has been"
+            + " repartitioned to balance to how many Cosmos partitions each batch needs to write. This is mainly"
             + " useful for very large containers (with hundreds of physical partitions).";
     private static final String BULK_MAX_CONCURRENT_PARTITIONS_DISPLAY = "Cosmos DB Item Write Max Concurrent Cosmos Partitions.";
     private static final int DEFAULT_BULK_MAX_CONCURRENT_PARTITIONS = -1;

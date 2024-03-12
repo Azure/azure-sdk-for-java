@@ -29,7 +29,6 @@ public class TemplateStrategyConfig extends AbstractIdStrategyConfig {
         this.template = getString(TEMPLATE_CONFIG);
     }
 
-
     public static ConfigDef getConfig() {
         ConfigDef result = new ConfigDef();
 
