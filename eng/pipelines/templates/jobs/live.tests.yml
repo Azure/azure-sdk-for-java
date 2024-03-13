@@ -61,13 +61,6 @@ jobs:
           targetPath: $(Build.ArtifactStagingDirectory)/troubleshooting
           condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
           sbomEnabled: false
-        # Artifacts created in /eng/pipelines/templates/steps/publish-http-fault-injector-logs.yml
-        - output: pipelineArtifact
-          artifactName: "$(System.JobName)-http-fault-injector-logs"
-          targetPath: "$(Build.SourcesDirectory)/fault-$(System.JobName).log"
-          displayName: 'Publish http fault injector logs'
-          condition: and(failed(), eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true'))
-          sbomEnabled: false
 
         - output: pipelineArtifact
           artifactName: 'repository-$(System.JobName)'
