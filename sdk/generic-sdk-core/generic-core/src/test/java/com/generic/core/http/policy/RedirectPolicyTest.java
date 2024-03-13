@@ -20,11 +20,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
@@ -203,7 +199,7 @@ public class RedirectPolicyTest {
 
     @Test
     public void redirectForProvidedMethods() throws Exception {
-        Set<HttpMethod> allowedMethods = new HashSet<>(Arrays.asList(HttpMethod.GET, HttpMethod.PUT, HttpMethod.POST));
+        EnumSet<HttpMethod> allowedMethods = EnumSet.of(HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT);
         final int[] requestCount = {1};
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUrl().toString().equals("http://localhost/")) {
@@ -337,7 +333,7 @@ public class RedirectPolicyTest {
     public void redirectOptionsCanConfigureStatusCodeRedirectLogic() throws IOException {
         // Only redirects on 429 responses
         HttpRedirectOptions httpRedirectOptions
-            = new HttpRedirectOptions(1, HeaderName.LOCATION, Collections.singleton(HttpMethod.GET))
+            = new HttpRedirectOptions(1, HeaderName.LOCATION, EnumSet.of(HttpMethod.GET))
             .setShouldRedirectCondition(
                 redirectCondition -> redirectCondition.getResponse() != null
                     && redirectCondition.getResponse().getStatusCode() == 429);

@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.util.EnumSet;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -32,10 +32,10 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     private final Predicate<RequestRedirectCondition> shouldRedirectCondition;
     private static final int DEFAULT_MAX_REDIRECT_ATTEMPTS = 3;
     private static final String REDIRECT_URLS_KEY = "redirectUrls";
-    private static final Set<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
+    private static final EnumSet<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
     private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
     private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
-    private final Set<HttpMethod> allowedRedirectHttpMethods;
+    private final EnumSet<HttpMethod> allowedRedirectHttpMethods;
     private final HeaderName locationHeader;
 
     /**
@@ -60,9 +60,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      */
     public RedirectPolicy(HttpRedirectOptions redirectOptions) {
         Objects.requireNonNull(redirectOptions, "'redirectOptions' cannot be null.");
-        this.maxAttempts = redirectOptions.getMaxAttempts() == 0
-            ? DEFAULT_MAX_REDIRECT_ATTEMPTS
-            : redirectOptions.getMaxAttempts();
+        this.maxAttempts = redirectOptions.getMaxAttempts();
         this.shouldRedirectCondition = redirectOptions.getShouldRedirectCondition();
         this.allowedRedirectHttpMethods = redirectOptions.getAllowedRedirectHttpMethods().isEmpty()
             ? DEFAULT_REDIRECT_ALLOWED_METHODS
@@ -75,7 +73,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUrls for each individual request.
-        return attemptRedirect(next, 1, new HashSet<>());
+        return attemptRedirect(next, 1, new LinkedHashSet<>());
     }
 
     /**
@@ -83,7 +81,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * new redirect URL.
      */
     private Response<?> attemptRedirect(final HttpPipelineNextPolicy next,
-                                        final int redirectAttempt, Set<String> attemptedRedirectUrls) {
+                                        final int redirectAttempt, LinkedHashSet<String> attemptedRedirectUrls) {
         // Make sure the context is not modified during redirect, except for the URL
         Response<?> response = next.clone().process();
 

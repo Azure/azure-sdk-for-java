@@ -8,8 +8,7 @@ import com.generic.core.http.policy.RequestRedirectCondition;
 import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.EnumSet;
 import java.util.function.Predicate;
 
 /**
@@ -18,7 +17,7 @@ import java.util.function.Predicate;
 public final class HttpRedirectOptions {
     private static final ClientLogger LOGGER = new ClientLogger(HttpRedirectOptions.class);
     private final int maxAttempts;
-    private final Set<HttpMethod> allowedRedirectHttpMethods;
+    private final EnumSet<HttpMethod> allowedRedirectHttpMethods;
     private final HeaderName locationHeader;
     private Predicate<RequestRedirectCondition> shouldRedirectCondition;
 
@@ -33,16 +32,15 @@ public final class HttpRedirectOptions {
      * @param locationHeader The header name containing the redirect URL.
      * @throws IllegalArgumentException if {@code maxAttempts} is less than 0.
      */
-    public HttpRedirectOptions(int maxAttempts, HeaderName locationHeader, Set<HttpMethod> allowedRedirectHttpMethods) {
+    public HttpRedirectOptions(int maxAttempts, HeaderName locationHeader, EnumSet<HttpMethod> allowedRedirectHttpMethods) {
         if (maxAttempts < 0) {
-            LOGGER.atVerbose()
-                .log(() -> "Max attempts cannot be less than 0. Using 3 redirect attempts as the maximum.");
-            maxAttempts = 3;
+            throw LOGGER.atError().log(null,
+                new IllegalArgumentException("Max attempts cannot be less than 0."));
         }
         this.maxAttempts = maxAttempts;
         this.allowedRedirectHttpMethods = allowedRedirectHttpMethods == null
-            ? Collections.emptySet()
-            : Collections.unmodifiableSet(allowedRedirectHttpMethods);
+            ? EnumSet.noneOf(HttpMethod.class)
+            : EnumSet.copyOf(allowedRedirectHttpMethods);
         this.locationHeader = locationHeader;
     }
 
@@ -86,7 +84,7 @@ public final class HttpRedirectOptions {
      *
      * @return The set of HTTP methods that are allowed to be redirected.
      */
-    public Set<HttpMethod> getAllowedRedirectHttpMethods() {
+    public EnumSet<HttpMethod> getAllowedRedirectHttpMethods() {
         return allowedRedirectHttpMethods;
     }
 
