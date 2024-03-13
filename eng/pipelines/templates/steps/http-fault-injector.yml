@@ -1,4 +1,25 @@
 steps:
+  - pwsh: |
+      Write-Host "##vso[task.setvariable variable=ASPNETCORE_Kestrel__Certificates__Default__Path]$(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.pfx"
+      Write-Host "##vso[task.setvariable variable=ASPNETCORE_Kestrel__Certificates__Default__Password]password"
+      Write-Host "##vso[task.setvariable variable=PROXY_MANUAL_START]true"
+    displayName: 'Configure Kestrel and PROXY_MANUAL_START Variables'
+
+  - powershell: |
+      if (Test-Path $env:JAVA_HOME\jre\lib\security) {
+        cd $env:JAVA_HOME\jre\lib\security
+      } elseif (Test-Path $env:JAVA_HOME\lib\security) {
+        cd $env:JAVA_HOME\lib\security
+      } else {
+        Write-Error "JDK directory structure is unknown and unsupported. JAVA_HOME is '$env:JAVA_HOME'"
+        exit 1
+      }
+
+      dotnet dev-certs https --export-path http-fault-injector.pfx
+      keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias HttpFaultInject -file http-fault-injector.pfx -storepass changeit
+    displayName: 'Trust http-fault-injector self-signed certificate - windows'
+    condition: and(succeeded(), eq(variables['Agent.OS'],'Windows_NT'))
+
   - bash: |
       if [ -d ${JAVA_HOME}/jre/lib/security ]; then
         cd ${JAVA_HOME}/jre/lib/security
