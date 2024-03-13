@@ -190,6 +190,59 @@ extends:
               TestGoals: surefire:test
 
     LiveTestStages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
+        parameters:
+          ServiceDirectory: core
+          Artifacts:
+            - name: azure-core
+              groupId: com.azure
+              safeName: azurecore
+            - name: azure-core-amqp
+              groupId: com.azure
+              safeName: azurecoreamqp
+            - name: azure-core-amqp-experimental
+              groupId: com.azure
+              safeName: azurecoreamqpexperimental
+            - name: azure-core-experimental
+              groupId: com.azure
+              safeName: azurecoreexperimental
+              skipPublishDocMs: true
+            - name: azure-core-http-jdk-httpclient
+              groupId: com.azure
+              safeName: azurecorehttpjdkhttpclient
+            - name: azure-core-http-netty
+              groupId: com.azure
+              safeName: azurecorehttpnetty
+            - name: azure-core-http-okhttp
+              groupId: com.azure
+              safeName: azurecorehttpokhttp
+            - name: azure-core-management
+              groupId: com.azure
+              safeName: azurecoremanagement
+            - name: azure-core-serializer-avro-apache
+              groupId: com.azure
+              safeName: azurecoreserializeravroapache
+            - name: azure-core-metrics-opentelemetry
+              groupId: com.azure
+              safeName: azurecoremetricsopentelemetry
+            - name: azure-core-serializer-json-gson
+              groupId: com.azure
+              safeName: azurecoreserializerjsongson
+            - name: azure-core-serializer-json-jackson
+              groupId: com.azure
+              safeName: azurecoreserializerjsonjackson
+            - name: azure-core-test
+              groupId: com.azure
+              safeName: azurecoretest
+              skipPublishDocMs: true
+            - name: azure-core-tracing-opentelemetry
+              groupId: com.azure
+              safeName: azurecoretracingopentelemetry
+            - name: azure-core-tracing-opentelemetry-samples
+              groupId: com.azure
+              safeName: azurecoretracingopentelemetrysamples
+          MatrixReplace:
+            - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
       - template: /sdk/storage/tests-template.yml
         parameters:
           AdditionalMatrixReplace:
