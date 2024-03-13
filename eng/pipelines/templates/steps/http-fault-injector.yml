@@ -1,10 +1,4 @@
 steps:
-  - pwsh: |
-      Write-Host "##vso[task.setvariable variable=ASPNETCORE_Kestrel__Certificates__Default__Path]$(Build.SourcesDirectory)/eng/common/testproxy/dotnet-devcert.pfx"
-      Write-Host "##vso[task.setvariable variable=ASPNETCORE_Kestrel__Certificates__Default__Password]password"
-      Write-Host "##vso[task.setvariable variable=PROXY_MANUAL_START]true"
-    displayName: 'Configure Kestrel and PROXY_MANUAL_START Variables'
-
   - powershell: |
       if (Test-Path $env:JAVA_HOME\jre\lib\security) {
         cd $env:JAVA_HOME\jre\lib\security
