@@ -80,6 +80,8 @@ directive:
       $["properties"]["phoneNumberType"].readOnly = true;
       $["properties"]["assignmentType"].readOnly = true;
       $["properties"]["capabilities"].readOnly = true;
+      $["properties"]["error"].readOnly = true;
+      $["properties"]["errorCode"].readOnly = true;
 ```
 
 ### Rename PhoneNumberOperation to PhoneNumberRawOperation
@@ -231,6 +233,7 @@ directive:
   where: $.definitions.PhoneNumberSearchResult.properties.error.x-ms-enum
   transform: >
     $["name"] = "PhoneNumberSearchResultError";
+    $[""].readOnly = true;
 ```
 
 ``` yaml

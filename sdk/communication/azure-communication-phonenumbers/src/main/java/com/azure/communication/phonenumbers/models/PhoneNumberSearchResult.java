@@ -4,13 +4,14 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.communication.phonenumbers.implementation.models.Error;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** The result of a phone number search operation. */
-@Fluent
+@Immutable
 public final class PhoneNumberSearchResult {
     /*
      * The search id.
@@ -60,14 +61,14 @@ public final class PhoneNumberSearchResult {
     /*
      * The error code of the search.
      */
-    @JsonProperty(value = "errorCode")
+    @JsonProperty(value = "errorCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer errorCode;
 
     /*
      * Mapping Error Messages to Codes
      */
-    @JsonProperty(value = "error")
-    private PhoneNumberSearchResultError error;
+    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
+    private Error error;
 
     /**
      * Get the searchId property: The search id.
@@ -144,33 +145,11 @@ public final class PhoneNumberSearchResult {
     }
 
     /**
-     * Set the errorCode property: The error code of the search.
-     *
-     * @param errorCode the errorCode value to set.
-     * @return the PhoneNumberSearchResult object itself.
-     */
-    public PhoneNumberSearchResult setErrorCode(Integer errorCode) {
-        this.errorCode = errorCode;
-        return this;
-    }
-
-    /**
      * Get the error property: Mapping Error Messages to Codes.
      *
      * @return the error value.
      */
-    public PhoneNumberSearchResultError getError() {
+    public Error getError() {
         return this.error;
-    }
-
-    /**
-     * Set the error property: Mapping Error Messages to Codes.
-     *
-     * @param error the error value to set.
-     * @return the PhoneNumberSearchResult object itself.
-     */
-    public PhoneNumberSearchResult setError(PhoneNumberSearchResultError error) {
-        this.error = error;
-        return this;
     }
 }
