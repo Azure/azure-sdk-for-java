@@ -52,7 +52,7 @@ jobs:
       os: linux
 
     templateContext:
-      outputParentDirectory: '$(Build.ArtifactStagingDirectory)'
+      outputParentDirectory: '$(System.DefaultWorkingDirectory)'
       outputs:
         - output: pipelineArtifact
           artifactName: 'repository-$(System.JobName)'
@@ -67,7 +67,7 @@ jobs:
           # during testing if tests failed, and linting reports.
           - output: pipelineArtifact
             artifactName: 'test-logs-vo-${{ versionOverride }}-troubleshooting-$(System.StageName)-$(System.JobName)'
-            targetPath: $(Build.ArtifactStagingDirectory)/troubleshooting
+            targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
             displayName: 'Capture troubleshooting artifacts for version override ${{ versionOverride }}'
             condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
             sbomEnabled: false

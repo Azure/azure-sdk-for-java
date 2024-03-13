@@ -1,10 +1,10 @@
 steps:
   - pwsh: |
       if (Test-Path -Path "$(Build.SourcesDirectory)/http-fault-injector.log") {
-        if (-not (Test-Path "$(Build.ArtifactStagingDirectory)/troubleshooting")) {
-          New-Item -ItemType Directory -Path "$(Build.ArtifactStagingDirectory)/troubleshooting" | Out-Null
+        if (-not (Test-Path "$(System.DefaultWorkingDirectory)/troubleshooting")) {
+          New-Item -ItemType Directory -Path "$(System.DefaultWorkingDirectory)/troubleshooting" | Out-Null
         }
-        Compress-Archive -Path "$(Build.SourcesDirectory)/http-fault-injector.log" -DestinationPath "$(Build.ArtifactStagingDirectory)/troubleshooting/fault-$(System.JobName).zip"
+        Compress-Archive -Path "$(Build.SourcesDirectory)/http-fault-injector.log" -DestinationPath "$(System.DefaultWorkingDirectory)/troubleshooting/fault-$(System.JobName).zip"
         Write-Host "##vso[task.setvariable variable=HAS_TROUBLESHOOTING]true"
       }
     displayName: 'Check for and copy http-fault-injector log file'

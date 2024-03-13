@@ -144,5 +144,9 @@ foreach ($targetFolder in (Get-ChildItem -Path $path -Filter "target" -Directory
   }
 }
 
+if (-not (Test-Path "$StagingDirectory/troubleshooting")) {
+  New-Item -ItemType Directory -Path "$StagingDirectory/troubleshooting" | Out-Null
+}
+
 Compress-Archive -Path $OutputDirectory -DestinationPath "$StagingDirectory/troubleshooting/linting-report.zip"
 Write-Host "##vso[task.setvariable variable=HAS_TROUBLESHOOTING]true"

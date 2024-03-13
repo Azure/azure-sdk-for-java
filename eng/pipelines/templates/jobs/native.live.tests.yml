@@ -98,14 +98,14 @@ jobs:
       container: $[ variables['Container'] ]
 
     templateContext:
-      outputParentDirectory: '$(Build.ArtifactStagingDirectory)'
+      outputParentDirectory: '$(System.DefaultWorkingDirectory)'
       outputs:
         # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
         # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
         # during testing if tests failed, and linting reports.
         - output: pipelineArtifact
           artifactName: troubleshooting-$(System.StageName)-$(System.JobName)
-          targetPath: $(Build.ArtifactStagingDirectory)/troubleshooting
+          targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
           displayName: 'Capture troubleshooting artifacts'
           condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
           sbomEnabled: false

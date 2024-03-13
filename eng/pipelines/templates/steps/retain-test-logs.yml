@@ -10,6 +10,6 @@ steps:
       pwsh: true
       filePath: eng/pipelines/scripts/Get-Test-Logs.ps1
       arguments: >
-        -StagingDirectory $(Build.ArtifactStagingDirectory)
+        -StagingDirectory $(System.DefaultWorkingDirectory)
         -TestLogsArtifactName ${{ parameters.TestLogsArtifactName }}
     condition: always()
