@@ -109,7 +109,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     public void getParticipant() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false), 200)
+                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false, false), 200)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
@@ -123,7 +123,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     public void getParticipantWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false), 200)
+                new SimpleEntry<>(generateGetParticipantResponse(CALL_CALLER_ID, false, false), 200)
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
