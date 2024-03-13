@@ -1,6 +1,6 @@
 steps:
-  # nohup does NOT continue beyond the current session if you use it within powershell
-  - bash: |
-      nohup http-fault-injector > "$(Build.SourcesDirectory)/http-fault-injector.log" &
-    displayName: "Start http-fault-injector - linux/mac"
-    condition: and(succeeded(), ne(variables['Agent.OS'],'Windows_NT'))
+  - powershell: |
+      dotnet tool install azure.sdk.tools.httpfaultinjector --global --prerelease --add-source https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-net/nuget/v3/index.json
+      dotnet tool update azure.sdk.tools.httpfaultinjector --global --prerelease --add-source https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-net/nuget/v3/index.json
+      http-fault-injector --version
+    displayName: 'Install http-fault-injector'
