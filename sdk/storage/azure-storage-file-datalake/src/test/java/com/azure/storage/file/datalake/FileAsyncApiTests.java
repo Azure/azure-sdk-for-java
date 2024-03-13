@@ -3212,9 +3212,11 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                 // file, it will return 201 since only createWithResponse gets called
                 assertEquals(201, r.getStatusCode());
                 assertNotNull(r.getValue().getETag());
-            }).then(() -> StepVerifier.create(fc.getProperties())
-                .assertNext(r -> assertEquals(0, r.getFileSize()))
-                .verifyComplete())
+            })
+            .verifyComplete();
+
+        StepVerifier.create(fc.getProperties())
+            .assertNext(r -> assertEquals(0, r.getFileSize()))
             .verifyComplete();
     }
 
