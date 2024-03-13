@@ -374,6 +374,9 @@ class DefaultHttpClient implements HttpClient {
         }
     }
 
+    /*
+     * Inner class maintaining a cache of connections
+     */
     private static class HttpConnectionCache {
         private static HttpConnectionCache INSTANCE;
         private final int maxConnections;
@@ -483,6 +486,9 @@ class DefaultHttpClient implements HttpClient {
             return new HttpConnection(connection, httpConnectionProperties);
         }
 
+        /*
+         * Inner class to hold the HttpConnection and its properties
+         */
         private static class HttpConnection {
             private final HttpURLConnection urlConnection;
             private final OutputStream socketOutputStream;
@@ -521,6 +527,9 @@ class DefaultHttpClient implements HttpClient {
         }
     }
 
+    /*
+     * Inner class to hold the properties of the HttpConnection
+     */
     private static class HttpConnectionProperties {
         private final HttpRequest httpRequest;
         private final URL url;
