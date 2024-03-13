@@ -17,7 +17,7 @@ import java.util.Objects;
 
 /** The CancelAddParticipantResult model. */
 @Immutable
-public final class CancelAddParticipantOperationResult extends ResultWithEventHandling<CancelAddParticipantEventResult> {
+public final class CancelAddParticipantOperationResult {
 
     /**
      * The invitation ID used to cancel the add participant request.
@@ -77,30 +77,5 @@ public final class CancelAddParticipantOperationResult extends ResultWithEventHa
      */
     public String getOperationContext() {
         return operationContext;
-    }
-
-    @Override
-    public Mono<CancelAddParticipantEventResult> waitForEventProcessorAsync(Duration timeout) {
-        if (eventProcessor == null) {
-            return Mono.empty();
-        }
-
-        return (timeout == null ? eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CancelAddParticipantSucceeded.class || event.getClass() == CancelAddParticipantFailed.class))
-            : eventProcessor.waitForEventProcessorAsync(event -> Objects.equals(event.getCallConnectionId(), callConnectionId)
-            && (Objects.equals(event.getOperationContext(), operationContextFromRequest) || operationContextFromRequest == null)
-            && (event.getClass() == CancelAddParticipantSucceeded.class || event.getClass() == CancelAddParticipantFailed.class), timeout)).flatMap(event -> Mono.just(getReturnedEvent(event)));
-    }
-
-    @Override
-    protected CancelAddParticipantEventResult getReturnedEvent(CallAutomationEventBase event) {
-        CancelAddParticipantEventResult result = null;
-        if (event.getClass() == CancelAddParticipantSucceeded.class) {
-            result = new CancelAddParticipantEventResult(true, (CancelAddParticipantSucceeded) event, null, ((CancelAddParticipantSucceeded) event).getInvitationId());
-        } else if (event.getClass() == CancelAddParticipantFailed.class) {
-            result = new CancelAddParticipantEventResult(false, null, (CancelAddParticipantFailed) event, ((CancelAddParticipantFailed) event).getInvitationId());
-        }
-        return result;
     }
 }

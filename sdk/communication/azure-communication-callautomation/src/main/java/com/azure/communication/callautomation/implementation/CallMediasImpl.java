@@ -120,10 +120,10 @@ public final class CallMediasImpl {
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
-                @HeaderParam("Repeatability-First-Sent") DateTimeRfc1123 repeatabilityFirstSent,
                 @BodyParam("application/json") SendDtmfTonesRequestInternal sendDtmfTonesRequest,
                 @HeaderParam("Accept") String accept,
+                @HeaderParam("repeatability-request-id") String repeatabilityRequestId,
+                @HeaderParam("repeatability-first-sent") String repeatabilityFirstSent,
                 Context context);
     }
 
@@ -692,14 +692,6 @@ public final class CallMediasImpl {
      *
      * @param callConnectionId The call connection id.
      * @param sendDtmfTonesRequest The send dtmf tones request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -707,23 +699,20 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SendDtmfTonesResultInternal>> sendDtmfTonesWithResponseAsync(
-            String callConnectionId,
-            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent) {
+            String callConnectionId, SendDtmfTonesRequestInternal sendDtmfTonesRequest) {
         final String accept = "application/json";
-        DateTimeRfc1123 repeatabilityFirstSentConverted =
-                repeatabilityFirstSent == null ? null : new DateTimeRfc1123(repeatabilityFirstSent);
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return FluxUtil.withContext(
                 context ->
                         service.sendDtmfTones(
                                 this.client.getEndpoint(),
                                 callConnectionId,
                                 this.client.getApiVersion(),
-                                repeatabilityRequestID,
-                                repeatabilityFirstSentConverted,
                                 sendDtmfTonesRequest,
                                 accept,
+                                repeatabilityRequestId,
+                                repeatabilityFirstSent,
                                 context));
     }
 
@@ -732,14 +721,6 @@ public final class CallMediasImpl {
      *
      * @param callConnectionId The call connection id.
      * @param sendDtmfTonesRequest The send dtmf tones request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -748,22 +729,18 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SendDtmfTonesResultInternal>> sendDtmfTonesWithResponseAsync(
-            String callConnectionId,
-            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent,
-            Context context) {
+            String callConnectionId, SendDtmfTonesRequestInternal sendDtmfTonesRequest, Context context) {
         final String accept = "application/json";
-        DateTimeRfc1123 repeatabilityFirstSentConverted =
-                repeatabilityFirstSent == null ? null : new DateTimeRfc1123(repeatabilityFirstSent);
+        String repeatabilityRequestId = UUID.randomUUID().toString();
+        String repeatabilityFirstSent = DateTimeRfc1123.toRfc1123String(OffsetDateTime.now());
         return service.sendDtmfTones(
                 this.client.getEndpoint(),
                 callConnectionId,
                 this.client.getApiVersion(),
-                repeatabilityRequestID,
-                repeatabilityFirstSentConverted,
                 sendDtmfTonesRequest,
                 accept,
+                repeatabilityRequestId,
+                repeatabilityFirstSent,
                 context);
     }
 
@@ -772,14 +749,6 @@ public final class CallMediasImpl {
      *
      * @param callConnectionId The call connection id.
      * @param sendDtmfTonesRequest The send dtmf tones request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -787,12 +756,8 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SendDtmfTonesResultInternal> sendDtmfTonesAsync(
-            String callConnectionId,
-            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent) {
-        return sendDtmfTonesWithResponseAsync(
-                        callConnectionId, sendDtmfTonesRequest, repeatabilityRequestID, repeatabilityFirstSent)
+            String callConnectionId, SendDtmfTonesRequestInternal sendDtmfTonesRequest) {
+        return sendDtmfTonesWithResponseAsync(callConnectionId, sendDtmfTonesRequest)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -801,14 +766,6 @@ public final class CallMediasImpl {
      *
      * @param callConnectionId The call connection id.
      * @param sendDtmfTonesRequest The send dtmf tones request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -817,13 +774,8 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SendDtmfTonesResultInternal> sendDtmfTonesAsync(
-            String callConnectionId,
-            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent,
-            Context context) {
-        return sendDtmfTonesWithResponseAsync(
-                        callConnectionId, sendDtmfTonesRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
+            String callConnectionId, SendDtmfTonesRequestInternal sendDtmfTonesRequest, Context context) {
+        return sendDtmfTonesWithResponseAsync(callConnectionId, sendDtmfTonesRequest, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -832,14 +784,6 @@ public final class CallMediasImpl {
      *
      * @param callConnectionId The call connection id.
      * @param sendDtmfTonesRequest The send dtmf tones request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -848,14 +792,8 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SendDtmfTonesResultInternal> sendDtmfTonesWithResponse(
-            String callConnectionId,
-            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent,
-            Context context) {
-        return sendDtmfTonesWithResponseAsync(
-                        callConnectionId, sendDtmfTonesRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
-                .block();
+            String callConnectionId, SendDtmfTonesRequestInternal sendDtmfTonesRequest, Context context) {
+        return sendDtmfTonesWithResponseAsync(callConnectionId, sendDtmfTonesRequest, context).block();
     }
 
     /**
@@ -863,14 +801,6 @@ public final class CallMediasImpl {
      *
      * @param callConnectionId The call connection id.
      * @param sendDtmfTonesRequest The send dtmf tones request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -878,16 +808,7 @@ public final class CallMediasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SendDtmfTonesResultInternal sendDtmfTones(
-            String callConnectionId,
-            SendDtmfTonesRequestInternal sendDtmfTonesRequest,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent) {
-        return sendDtmfTonesWithResponse(
-                        callConnectionId,
-                        sendDtmfTonesRequest,
-                        repeatabilityRequestID,
-                        repeatabilityFirstSent,
-                        Context.NONE)
-                .getValue();
+            String callConnectionId, SendDtmfTonesRequestInternal sendDtmfTonesRequest) {
+        return sendDtmfTonesWithResponse(callConnectionId, sendDtmfTonesRequest, Context.NONE).getValue();
     }
 }

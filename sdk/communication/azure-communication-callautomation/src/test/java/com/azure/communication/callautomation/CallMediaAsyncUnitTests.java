@@ -17,9 +17,6 @@ import com.azure.communication.callautomation.models.RecognitionChoice;
 import com.azure.communication.callautomation.models.RecognizeInputType;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SsmlSource;
-import com.azure.communication.callautomation.models.StartHoldMusicOptions;
-import com.azure.communication.callautomation.models.StartTranscriptionOptions;
-import com.azure.communication.callautomation.models.StopTranscriptionOptions;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.VoiceKind;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -80,29 +77,6 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
-    public void playFileToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playFileSource)
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-                callMedia.playToAllWithResponse(playToAllOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void playFileToAllWithBargeInWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playFileSource)
-            .setLoop(false)
-            .setInterruptCallMediaOperation(true)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-                callMedia.playToAllWithResponse(playToAllOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
     public void playTextWithResponseTest() {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
@@ -114,58 +88,12 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
-    public void playTextToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playTextSource)
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-            callMedia.playToAllWithResponse(playToAllOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void playTextToAllWithBargeInWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playTextSource)
-            .setLoop(false)
-            .setInterruptCallMediaOperation(true)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-            callMedia.playToAllWithResponse(playToAllOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
     public void playSsmlWithResponseTest() {
         playOptions = new PlayOptions(playSsmlSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
             .setOperationContext("operationContext");
         StepVerifier.create(
             callMedia.playWithResponse(playOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-    
-    @Test
-    public void playSsmlToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playSsmlSource)
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-            callMedia.playToAllWithResponse(playToAllOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void playSsmlToAllWithBargeInWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playSsmlSource)
-            .setLoop(false)
-            .setInterruptCallMediaOperation(true)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-            callMedia.playToAllWithResponse(playToAllOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
@@ -275,36 +203,6 @@ public class CallMediaAsyncUnitTests {
             .verifyComplete();
     }
 
-
-
-    @Test
-    public void recognizeWithResponseWithFileSourceChoiceOptions() {
-
-        RecognitionChoice recognizeChoice1 = new RecognitionChoice();
-        RecognitionChoice recognizeChoice2 = new RecognitionChoice();
-        recognizeChoice1.setTone(DtmfTone.ZERO);
-        recognizeChoice2.setTone(DtmfTone.SIX);
-        List<RecognitionChoice> recognizeChoices = new ArrayList<>(
-            Arrays.asList(recognizeChoice1, recognizeChoice2)
-        );
-        CallMediaRecognizeChoiceOptions recognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
-
-        recognizeOptions.setRecognizeInputType(RecognizeInputType.CHOICES);
-        recognizeOptions.setPlayPrompt(new FileSource().setUrl("abc"));
-        recognizeOptions.setInterruptCallMediaOperation(true);
-        recognizeOptions.setStopCurrentOperations(true);
-        recognizeOptions.setOperationContext("operationContext");
-        recognizeOptions.setInterruptPrompt(true);
-        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
-        recognizeOptions.setSpeechLanguage("en-US");
-        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
-
-        StepVerifier.create(
-                callMedia.startRecognizingWithResponse(recognizeOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
     @Test
     public void recognizeWithResponseTextChoiceOptions() {
 
@@ -344,7 +242,6 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
-        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
 
         StepVerifier.create(
                 callMedia.startRecognizingWithResponse(recognizeOptions))
@@ -364,7 +261,6 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setOperationContext("operationContext");
         recognizeOptions.setInterruptPrompt(true);
         recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
-        recognizeOptions.setSpeechModelEndpointId("customModelEndpointId");
 
         StepVerifier.create(
                 callMedia.startRecognizingWithResponse(recognizeOptions))

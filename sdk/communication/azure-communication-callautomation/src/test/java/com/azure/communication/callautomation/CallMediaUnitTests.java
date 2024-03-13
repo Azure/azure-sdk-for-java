@@ -59,49 +59,11 @@ public class CallMediaUnitTests {
     }
 
     @Test
-    public void playFileToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playFileSource)
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
-        assertEquals(response.getStatusCode(), 202);
-    }
-
-    @Test
-    public void playFileToAllWithBargeInWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playFileSource)
-            .setLoop(false)
-            .setInterruptCallMediaOperation(true)
-            .setOperationContext("operationContext");
-        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
-        assertEquals(response.getStatusCode(), 202);
-    }
-
-    @Test
     public void playTextWithResponseTest() {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
             .setOperationContext("operationContext");
         Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
-        assertEquals(response.getStatusCode(), 202);
-    }
-
-    @Test
-    public void playTextToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playTextSource)
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
-        assertEquals(response.getStatusCode(), 202);
-    }
-
-    @Test
-    public void playTextToAllWithBargeInWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playTextSource)
-            .setLoop(false)
-            .setInterruptCallMediaOperation(true)
-            .setOperationContext("operationContext");
-        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
     

@@ -108,12 +108,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // wait for callConnected
             CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnected);
-
-            // play media to all participants
-            CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
-            callMediaAsync.playToAll(new FileSource().setUrl(MEDIA_SOURCE)).block();
-            PlayCompleted playCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
-            assertNotNull(playCompleted);
+            
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         } finally {

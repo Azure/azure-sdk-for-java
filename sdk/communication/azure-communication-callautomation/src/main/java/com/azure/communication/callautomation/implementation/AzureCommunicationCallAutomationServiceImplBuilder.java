@@ -6,10 +6,13 @@ package com.azure.communication.callautomation.implementation;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -17,7 +20,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.CookiePolicy;
+import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -43,6 +46,7 @@ import java.util.Objects;
 public final class AzureCommunicationCallAutomationServiceImplBuilder
         implements HttpTrait<AzureCommunicationCallAutomationServiceImplBuilder>,
                 ConfigurationTrait<AzureCommunicationCallAutomationServiceImplBuilder>,
+                AzureKeyCredentialTrait<AzureCommunicationCallAutomationServiceImplBuilder>,
                 EndpointTrait<AzureCommunicationCallAutomationServiceImplBuilder> {
     @Generated private static final String SDK_NAME = "name";
 
@@ -146,6 +150,19 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
     }
 
     /*
+     * The AzureKeyCredential used for authentication.
+     */
+    @Generated private AzureKeyCredential azureKeyCredential;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AzureCommunicationCallAutomationServiceImplBuilder credential(AzureKeyCredential azureKeyCredential) {
+        this.azureKeyCredential = azureKeyCredential;
+        return this;
+    }
+
+    /*
      * The service endpoint
      */
     @Generated private String endpoint;
@@ -217,12 +234,12 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
     @Generated
     public AzureCommunicationCallAutomationServiceImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-04-15";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-10-15";
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureCommunicationCallAutomationServiceImpl client =
                 new AzureCommunicationCallAutomationServiceImpl(
-                        localPipeline, localSerializerAdapter, endpoint, localApiVersion);
+                        localPipeline, localSerializerAdapter, this.endpoint, localApiVersion);
         return client;
     }
 
@@ -240,7 +257,9 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        localClientOptions
+                .getHeaders()
+                .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -250,7 +269,9 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
-        policies.add(new CookiePolicy());
+        if (azureKeyCredential != null) {
+            policies.add(new AzureKeyCredentialPolicy("Authorization", azureKeyCredential));
+        }
         this.pipelinePolicies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
                 .forEach(p -> policies.add(p));

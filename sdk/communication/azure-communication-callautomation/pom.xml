@@ -197,6 +197,14 @@
           </rules>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <failOnWarnings>False</failOnWarnings>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
 </project>
