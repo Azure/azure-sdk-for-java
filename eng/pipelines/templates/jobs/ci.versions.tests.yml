@@ -98,6 +98,7 @@ jobs:
             TestParallelization: ${{ parameters.TestParallelization }}
             BuildParallelization: ${{ parameters.BuildParallelization }}
             VersionOverride: ${{ versionOverride }}
+            RunAggregateReports: ${{ coalesce(variables['RunAggregateReports'], false) }}
 
         - pwsh: |
             git checkout -- .

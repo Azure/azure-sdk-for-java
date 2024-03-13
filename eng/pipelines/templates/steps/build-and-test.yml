@@ -38,6 +38,9 @@ parameters:
   - name: VersionOverride
     type: string
     default: ''
+  - name: RunAggregateReports
+    type: boolean
+    default: false
 
 steps:
   - task: Maven@3
@@ -98,7 +101,7 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
-  - ${{ if eq(variables['RunAggregateReports'], 'true') }}:
+  - ${{ if eq(parameters['RunAggregateReports'], 'true') }}:
     # Generate the pom file with all the modules required for creating an aggregate code coverage report
     - task: PythonScript@0
       displayName: 'Generate pom for aggregate code coverage report'
@@ -106,7 +109,7 @@ steps:
         scriptPath: 'eng/scripts/generate_aggregate_pom.py'
         arguments: '--project-list $(ProjectList) --exclude-project-list ${{ parameters.ExcludeProjectList }} --type coverage'
         workingDirectory: '$(System.DefaultWorkingDirectory)'
-      condition: eq(variables['RunAggregateReports'], 'true')
+      condition: always()
 
     - task: Maven@3
       displayName: 'Generate aggregate code coverage report'
@@ -118,7 +121,7 @@ steps:
         jdkVersionOption: $(JavaTestVersion)
         jdkArchitectureOption: 'x64'
         goals: jacoco:report-aggregate
-      condition: eq(variables['RunAggregateReports'], 'true')
+      condition: always()
 
   - task: Maven@3
     displayName: 'Build for From Source run'
@@ -187,7 +190,7 @@ steps:
       ${{ if ne(parameters.TestResultsFiles, '') }}:
         testResultsFiles: ${{ parameters.TestResultsFiles }}
 
-  - ${{ if eq(variables['RunAggregateReports'], 'true') }}:
+  - ${{ if eq(parameters['RunAggregateReports'], 'true') }}:
     # Azure DevOps only seems to respect the last code coverage result published, so only do this for Windows + Java LTS.
     # Code coverage reporting is set up only for Track 2 modules.
     - task: PublishCodeCoverageResults@1
@@ -196,4 +199,4 @@ steps:
         summaryFileLocation: target/site/test-coverage/jacoco.xml
         reportDirectory: target/site/test-coverage/
         failIfCoverageEmpty: false
-      condition: eq(variables['RunAggregateReports'], 'true')
+      condition: always()

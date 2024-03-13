@@ -125,6 +125,7 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
+          RunAggregateReports: ${{ coalesce(variables['RunAggregateReports'], false) }}
 
       - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
