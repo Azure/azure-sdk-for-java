@@ -2,6 +2,10 @@
 
 ## 12.4.0-beta.1 (2024-03-13)
 
+### Breaking Changes
+
+- Removed `jackson-dataformat-xml` as a dependency.
+
 ### Other Changes
 
 - Migrating from Jackson to stream-style serialization.
