@@ -1,14 +1,14 @@
 # Release History
 
-## 12.4.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 12.4.0-beta.1 (2024-03-13)
 
 ### Other Changes
+
+- Migrating from Jackson to stream-style serialization.
+
+#### Dependency Updates
+
+- Introducing `azure-xml` version `1.0.0-beta.3` as a beta dependency.
 
 ## 12.3.20 (2024-03-07)
 
