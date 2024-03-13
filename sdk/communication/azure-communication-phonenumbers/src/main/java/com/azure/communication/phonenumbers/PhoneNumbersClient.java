@@ -719,20 +719,20 @@ public final class PhoneNumbersClient {
      * Searches for operator information for a given list of phone numbers.
      *
      * @param phoneNumbers The phone number(s) whose operator information should be searched.
-     * @param includeAdditionalOperatorDetails Modifies the search to include additional fields in the response.
-     *                  Please note: use of this option will affect the cost of the search.
+     * @param requestOptions Modifies the search to include additional fields in the response.
+     *                  Please note: use of options will affect the cost of the search.
      * @param context A {@link Context} representing the request context.
      *
      * @return A {@link OperatorInformationResult} which contains the results of the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<OperatorInformationResult> searchOperatorInformationWithResponse(List<String> phoneNumbers,
-            boolean includeAdditionalOperatorDetails,
+            OperatorInformationOptions requestOptions,
             Context context) {
         context = context == null ? Context.NONE : context;
         OperatorInformationRequest request = new OperatorInformationRequest();
         request.setPhoneNumbers(phoneNumbers);
-        request.setOptions(new OperatorInformationOptions().setIncludeAdditionalOperatorDetails(includeAdditionalOperatorDetails));
+        request.setOptions(requestOptions);
         return client.operatorInformationSearchWithResponse(request, context);
     }
 }

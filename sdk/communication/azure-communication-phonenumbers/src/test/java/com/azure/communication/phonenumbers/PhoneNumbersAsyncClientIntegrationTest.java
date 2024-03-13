@@ -4,6 +4,7 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.BillingFrequency;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
@@ -512,9 +513,11 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     public void searchOperatorInformationRespectsSearchOptions(HttpClient httpClient) {
         List<String> phoneNumbers = new ArrayList<String>();
         phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
+        OperatorInformationOptions requestOptions = new OperatorInformationOptions();
+        requestOptions.setIncludeAdditionalOperatorDetails(false);
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
-                        .searchOperatorInformationWithResponse(phoneNumbers, false))
+                        .searchOperatorInformationWithResponse(phoneNumbers, requestOptions))
                 .assertNext((Response<OperatorInformationResult> result) -> {
                     assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
                     assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
@@ -525,9 +528,10 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 })
                 .verifyComplete();
 
+        requestOptions.setIncludeAdditionalOperatorDetails(true);
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
-                        .searchOperatorInformationWithResponse(phoneNumbers, true))
+                        .searchOperatorInformationWithResponse(phoneNumbers, requestOptions))
                 .assertNext((Response<OperatorInformationResult> result) -> {
                     assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
                     assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
