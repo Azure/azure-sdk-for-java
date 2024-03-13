@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.communication.phonenumbers.implementation.models.Error;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -68,7 +67,7 @@ public final class PhoneNumberSearchResult {
      * Mapping Error Messages to Codes
      */
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
-    private Error error;
+    private PhoneNumberSearchResultError error;
 
     /**
      * Get the searchId property: The search id.
@@ -149,7 +148,7 @@ public final class PhoneNumberSearchResult {
      *
      * @return the error value.
      */
-    public Error getError() {
+    public PhoneNumberSearchResultError getError() {
         return this.error;
     }
 }
