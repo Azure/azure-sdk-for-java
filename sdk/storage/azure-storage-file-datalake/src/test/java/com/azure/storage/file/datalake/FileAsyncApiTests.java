@@ -4164,7 +4164,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                 .thenMany(fc.queryWithResponse(new FileQueryOptions(expression, new ByteArrayOutputStream())
                 .setInputSerialization(base.setColumnSeparator(','))
                 .setOutputSerialization(base.setColumnSeparator(','))
-                .setErrorConsumer(receiver2)).flatMapMany(ResponseBase::getValue)))
+                .setErrorConsumer(receiver2)).flatMapMany(r -> r.getValue())))
                 .assertNext(Assertions::assertNotNull)
                 .verifyComplete();
 
@@ -4214,7 +4214,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             // doesn't need to.
             StepVerifier.create(uploadCsv(base.setColumnSeparator('.'), 32)
                 .then(fc.queryWithResponse(options))
-                .flatMapMany(ResponseBase::getValue)
+                .flatMapMany(r -> r.getValue())
                 .then(fc.getProperties()))
                 .assertNext(r -> {
                     // At least the size of blob to read will be in the progress list
@@ -4244,7 +4244,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
             StepVerifier.create(uploadCsv(ser, 512000)
                 .then(fc.queryWithResponse(options))
-                .flatMapMany(ResponseBase::getValue))
+                .flatMapMany(r -> r.getValue()))
                 .thenConsumeWhile(r -> true)
                 .verifyComplete();
 
