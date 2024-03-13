@@ -25,10 +25,13 @@ import com.azure.data.appconfiguration.implementation.CreateSnapshotUtilClient;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
+import com.azure.data.appconfiguration.implementation.models.Label;
+import com.azure.data.appconfiguration.implementation.models.LabelFields;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.LabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -1454,6 +1457,43 @@ public final class ConfigurationAsyncClient {
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(LOGGER, ex));
         }
+    }
+
+    /**
+     * Gets a list of labels by given {@link LabelSelector}
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listLabels -->
+     * <pre>
+     * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
+     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setNameFilter&#40;snapshotNameFilter&#41;&#41;
+     *     .subscribe&#40;recoveredSnapshot -&gt; &#123;
+     *         System.out.printf&#40;&quot;Recovered snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
+     *             recoveredSnapshot.getName&#40;&#41;, recoveredSnapshot.getCreatedAt&#40;&#41;, recoveredSnapshot.getStatus&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listLabels -->
+     *
+     * @param selector Optional. Selector to filter labels from the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<Label> listLabels(LabelSelector selector) {
+        // TODO: Do we need to explore Label as enum or just keep it String?
+        //    Seems a Label Object maybe better
+        //    However, we already introduce String label. Which also need to take into the consideration
+        final String labelFilter = selector == null ? null : selector.getLabelFilter();
+        final String acceptDatetime = selector == null ? null : selector.getAcceptDateTime();
+        // TODO: need to explore this LabelField as an public class or just use String representation.
+        final List<LabelFields> labelFields = selector == null ? null : selector.getFields();
+//        return new PagedIterable<>(
+//                () -> serviceClient.getLabelsSinglePage(labelFilter, null, acceptDatetime, labelFields, context),
+//                nextLink -> serviceClient.getLabelsNextSinglePage(nextLink, acceptDatetime, context));
+        return serviceClient.getLabelsAsync(labelFilter, null, acceptDatetime, labelFields);
     }
 
     /**

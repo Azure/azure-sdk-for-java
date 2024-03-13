@@ -240,6 +240,7 @@ For "Feature Flag" and "Secret Reference" configuration settings, see [samples][
 * [Recover a snapshot](#recover-a-snapshot)
 * [Retrieve all Snapshots](#retrieve-all-snapshots)
 * [Retrieve Configuration Settings in a Snapshot](#retrieve-configuration-settings-in-a-snapshot)
+* [Retrieve Labels](#retrieve-labels)
 
 ### Create a Configuration Client
 
@@ -533,6 +534,15 @@ for (ConfigurationSetting setting : configurationSettings) {
         setting.getKey(), setting.getValue());
 }
 ```
+
+### Retrieve Labels
+List multiple labels in the App Configuration store by calling `listLabels`.
+
+```java readme-sample-listLabels
+
+
+```
+
 
 ## Troubleshooting
 

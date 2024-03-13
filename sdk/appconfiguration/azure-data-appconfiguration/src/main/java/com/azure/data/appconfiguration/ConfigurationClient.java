@@ -28,11 +28,14 @@ import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeade
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetSnapshotHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
+import com.azure.data.appconfiguration.implementation.models.Label;
+import com.azure.data.appconfiguration.implementation.models.LabelFields;
 import com.azure.data.appconfiguration.implementation.models.PutKeyValueHeaders;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshot;
 import com.azure.data.appconfiguration.models.ConfigurationSnapshotStatus;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.LabelSelector;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
@@ -1534,6 +1537,72 @@ public final class ConfigurationClient {
                 enableSyncRestProxy(addTracingNamespace(context))),
             nextLink -> serviceClient.getSnapshotsNextSinglePage(nextLink,
                 enableSyncRestProxy(addTracingNamespace(context))));
+    }
+
+    /**
+     * Gets a list of labels by given {@link LabelSelector}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listLabels -->
+     * <pre>
+     * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
+     * Context ctx = new Context&#40;key2, value2&#41;;
+     *
+     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setNameFilter&#40;snapshotNameFilter&#41;, ctx&#41;
+     *     .forEach&#40;snapshotResult -&gt; &#123;
+     *         System.out.printf&#40;&quot;Listed Snapshot name = %s is created at %s, snapshot status is %s.%n&quot;,
+     *             snapshotResult.getName&#40;&#41;, snapshotResult.getCreatedAt&#40;&#41;, snapshotResult.getStatus&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.listLabels -->
+     *
+     * @param selector Optional. Selector to filter labels from the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Label> listLabels(LabelSelector selector) {
+       return listLabels(selector, Context.NONE);
+    }
+
+    /**
+     * Gets a list of labels by given {@link LabelSelector}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload -->
+     * <pre>
+     * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
+     * Context ctx = new Context&#40;key2, value2&#41;;
+     *
+     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setNameFilter&#40;snapshotNameFilter&#41;, ctx&#41;
+     *     .forEach&#40;snapshotResult -&gt; &#123;
+     *         System.out.printf&#40;&quot;Listed Snapshot name = %s is created at %s, snapshot status is %s.%n&quot;,
+     *             snapshotResult.getName&#40;&#41;, snapshotResult.getCreatedAt&#40;&#41;, snapshotResult.getStatus&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.listLabelsMaxOverload -->
+     *
+     * @param selector Optional. Selector to filter labels from the service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of labels as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<Label> listLabels(LabelSelector selector, Context context) {
+        // TODO: Do we need to explore Label as enum or just keep it String?
+        //    Seems a Label Object maybe better
+        //    However, we already introduce String label. Which also need to take into the consideration
+        final String labelFilter = selector == null ? null : selector.getLabelFilter();
+        final String acceptDatetime = selector == null ? null : selector.getAcceptDateTime();
+        // TODO: need to explore this LabelField as an public class or just use String representation.
+        final List<LabelFields> labelFields = selector == null ? null : selector.getFields();
+        return serviceClient.getLabels(labelFilter, null, acceptDatetime, labelFields, context);
     }
 
     /**

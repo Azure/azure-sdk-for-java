@@ -24,6 +24,7 @@ The following sections provide several code snippets covering some of the most c
 - [Retrieve a configuration setting][sample_hello_world]
 - [Update an existing configuration setting][sample_hello_world]
 - [Delete a configuration setting][sample_hello_world]
+- [List labels][sample_list_labels]
 - [List configuration settings with multiple keys][sample_list_configuration_settings]
 - [List revisions of multiple configuration settings][sample_read_revision_history]
 - [Set a configuration setting to read only][sample_read_only]
@@ -54,6 +55,7 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [azconfig_docs]: https://docs.microsoft.com/azure/azure-app-configuration
 [proxy_option]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/ProxyOptionsSample.java
 [sample_hello_world]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/HelloWorld.java
+[sample_list_labels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/ListLabels.java
 [sample_list_configuration_settings]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/ConfigurationSets.java
 [sample_conditional_request]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/ConditionalRequest.java
 [sample_read_only]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/appconfiguration/azure-data-appconfiguration/src/samples/java/com/azure/data/appconfiguration/ReadOnlySample.java

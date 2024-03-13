@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added a new method `listLabels` to support listing labels capabilities.
+
 ### Breaking Changes
 
 ### Bugs Fixed
