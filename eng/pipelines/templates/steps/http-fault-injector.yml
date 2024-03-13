@@ -2,3 +2,4 @@ steps:
   - pwsh: |
       echo foo
       echo foo
+      echo foo
