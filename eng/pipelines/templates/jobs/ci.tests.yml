@@ -79,6 +79,7 @@ jobs:
         - output: pipelineArtifact
           artifactName: troubleshooting-$(System.StageName)-$(System.JobName)
           targetPath: $(Build.ArtifactStagingDirectory)/troubleshooting
+          displayName: 'Capture troubleshooting artifacts'
           condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
           sbomEnabled: false
 

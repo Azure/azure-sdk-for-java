@@ -68,6 +68,7 @@ jobs:
           - output: pipelineArtifact
             artifactName: 'test-logs-vo-${{ versionOverride }}-troubleshooting-$(System.StageName)-$(System.JobName)'
             targetPath: $(Build.ArtifactStagingDirectory)/troubleshooting
+            displayName: 'Capture troubleshooting artifacts for version override ${{ versionOverride }}'
             condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
             sbomEnabled: false
 
