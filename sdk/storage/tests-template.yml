@@ -38,11 +38,11 @@ stages:
         - name: azure-storage-queue
           groupId: com.azure
           safeName: azurestoragequeue
-#      AdditionalModules:
-#        - name: azure-storage-perf
-#          groupId: com.azure
-#        - name: perf-test-core
-#          groupId: com.azure
+      AdditionalModules:
+        - name: azure-storage-perf
+          groupId: com.azure
+        - name: perf-test-core
+          groupId: com.azure
 #      TestMode: 'LIVE'
 #      TimeoutInMinutes: 90
 #      Location: canadacentral
