@@ -10,6 +10,6 @@ steps:
       pwsh: true
       filePath: eng/pipelines/scripts/Get-Heap-Dump-Hprofs.ps1
       arguments: >
-        -StagingDirectory $(Build.ArtifactStagingDirectory)
+        -StagingDirectory $(System.DefaultWorkingDirectory)
         -OomArtifactName ${{ parameters.OomArtifactName }}
     condition: always()
