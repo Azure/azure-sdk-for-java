@@ -1904,7 +1904,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(fc.uploadFromFile(file.toPath().toString(), true)
             .then(fc.readToFileWithResponse(outFile.toPath().toString(), null,
-            new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024),
+                new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024),
             null, null, false, null)))
             .assertNext(r -> assertEquals(fileSize, r.getValue().getFileSize()))
             .verifyComplete();
@@ -1950,7 +1950,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                     DataLakeFileAsyncClient fileAsyncClient = r.getFileAsyncClient(generatePathName());
                     return fileAsyncClient.uploadFromFile(file.toPath().toString(), true)
                         .then(fileAsyncClient.readToFileWithResponse(outFile.toPath().toString(), null,
-                        new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024),
+                            new ParallelTransferOptions().setBlockSizeLong(4L * 1024 * 1024),
                         null, null, false, null));
                 });
 
@@ -3927,7 +3927,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                         throw new UncheckedIOException(ex);
                     }
                     return outputStream;
-            });
+                });
 
             StepVerifier.create(uploadCsv(ser, numCopies).then(Mono.zip(readArray, queryResponse)))
                 .assertNext(r -> TestUtils.assertArraysEqual(r.getT1(), r.getT2().toByteArray()))
@@ -4015,17 +4015,17 @@ public class FileAsyncApiTests extends DataLakeTestBase {
         String expression = "SELECT * from BlobStorage";
 
         liveTestScenarioWithRetry(() -> {
-        ByteArrayOutputStream queryData = new ByteArrayOutputStream();
+            ByteArrayOutputStream queryData = new ByteArrayOutputStream();
 
-        Mono<byte[]> readArray = FluxUtil.collectBytesInByteBufferStream(fc.read());
+            Mono<byte[]> readArray = FluxUtil.collectBytesInByteBufferStream(fc.read());
 
-        Mono<byte[]> queryArray = fc.queryWithResponse(new FileQueryOptions(expression, queryData)
-            .setInputSerialization(ser).setOutputSerialization(ser))
-            .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()));
+            Mono<byte[]> queryArray = fc.queryWithResponse(new FileQueryOptions(expression, queryData)
+                .setInputSerialization(ser).setOutputSerialization(ser))
+                .flatMap(piece -> FluxUtil.collectBytesInByteBufferStream(piece.getValue()));
 
-        StepVerifier.create(uploadCsv(ser, 32).then(Mono.zip(readArray, queryArray)))
-            .assertNext(r -> TestUtils.assertArraysEqual(r.getT1(), r.getT2()))
-            .verifyComplete();
+            StepVerifier.create(uploadCsv(ser, 32).then(Mono.zip(readArray, queryArray)))
+                .assertNext(r -> TestUtils.assertArraysEqual(r.getT1(), r.getT2()))
+                .verifyComplete();
         });
     }
 
