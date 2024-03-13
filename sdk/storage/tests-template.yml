@@ -89,4 +89,4 @@ stages:
         AZURE_CLIENT_SECRET: $(STORAGE_CLIENT_SECRET)
         VERSIONED_STORAGE_ACCOUNT_NAME: $(java-storage-versioned-account-name)
         VERSIONED_STORAGE_ACCOUNT_KEY: $(java-storage-versioned-account-key)
-#      UseHttpFaultInjector: true
+      UseHttpFaultInjector: true
