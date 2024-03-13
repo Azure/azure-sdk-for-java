@@ -66,6 +66,7 @@ stages:
           - template: /eng/pipelines/templates/steps/install-latest-jdk.yml
             parameters:
               LatestJdkFeatureVersion: $(LatestNonLtsJdkFeatureVersion)
+              IsLatestNonLtsJdk: $(IsLatestNonLtsJdk)
 
           - task: Maven@3
             displayName: 'Run All Libraries Latest JDK'
