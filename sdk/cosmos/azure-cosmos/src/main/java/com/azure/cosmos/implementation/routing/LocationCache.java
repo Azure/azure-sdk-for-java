@@ -132,6 +132,14 @@ public class LocationCache {
         return this.locationInfo.availableWriteEndpointByLocation.values().stream().collect(Collectors.toList());
     }
 
+    public List<URI> getAvailableWriteEndpointsForPartitionKeyRange(RxDocumentServiceRequest request) {
+        return new ArrayList<>();
+    }
+
+    public List<URI> getAvailableReadEndpointsForPartitionKeyRange(RxDocumentServiceRequest request) {
+        return new ArrayList<>();
+    }
+
     /**
      * Marks the current location unavailable for read
      */
@@ -145,6 +153,10 @@ public class LocationCache {
     public void markEndpointUnavailableForWrite(URI endpoint) {
         this.markEndpointUnavailable(endpoint, OperationType.Write);
     }
+
+    public void markEndpointUnavailableForWriteAtPartitionKeyRangeScope(RxDocumentServiceRequest request) {}
+
+    public void markEndpointUnavailableForReadAtPartitionKeyRangeScope(RxDocumentServiceRequest request) {}
 
     /**
      * Invoked when {@link DatabaseAccount} is read

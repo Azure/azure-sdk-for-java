@@ -41,6 +41,7 @@ public class GlobalEndpointManager implements AutoCloseable {
     private final AtomicBoolean isRefreshing;
     private final AtomicBoolean refreshInBackground;
     private final Scheduler scheduler = Schedulers.newSingle(theadFactory);
+    private final IGlobalPartitionEndpointManager globalPartitionEndpointManager;
     private volatile boolean isClosed;
     private AtomicBoolean firstTimeDatabaseAccountInitialization = new AtomicBoolean(true);
     private volatile DatabaseAccount latestDatabaseAccount;
@@ -57,6 +58,8 @@ public class GlobalEndpointManager implements AutoCloseable {
     public GlobalEndpointManager(DatabaseAccountManagerInternal owner, ConnectionPolicy connectionPolicy, Configs configs)  {
         this.backgroundRefreshLocationTimeIntervalInMS = configs.getUnavailableLocationsExpirationTimeInSeconds() * 1000;
         this.maxInitializationTime = Duration.ofSeconds(configs.getGlobalEndpointManagerMaxInitializationTimeInSeconds());
+        this.globalPartitionEndpointManager = new GlobalPartitionEndpointManagerForCircuitBreaker();
+
         try {
             this.locationCache = new LocationCache(
                     connectionPolicy,
