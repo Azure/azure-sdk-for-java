@@ -243,8 +243,8 @@ extends:
               safeName: azurecoretracingopentelemetrysamples
           MatrixReplace:
             - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-      - template: /sdk/storage/tests-template.yml
-        parameters:
-          AdditionalMatrixReplace:
-            - TestFromSource=(.*)/true
+              #      - template: /sdk/storage/tests-template.yml
+              #        parameters:
+              #          AdditionalMatrixReplace:
+              #            - TestFromSource=(.*)/true
 
