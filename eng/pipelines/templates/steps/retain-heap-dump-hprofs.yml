@@ -13,9 +13,3 @@ steps:
         -StagingDirectory $(Build.ArtifactStagingDirectory)
         -OomArtifactName ${{ parameters.OomArtifactName }}
     condition: always()
-
-  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-    parameters:
-      ArtifactName: ${{ parameters.OomArtifactName }}-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-      ArtifactPath: $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip
-      CustomCondition: eq(variables['HAS_OOM_PROFS'], 'true')

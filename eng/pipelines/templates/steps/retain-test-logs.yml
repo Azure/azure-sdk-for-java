@@ -13,9 +13,3 @@ steps:
         -StagingDirectory $(Build.ArtifactStagingDirectory)
         -TestLogsArtifactName ${{ parameters.TestLogsArtifactName }}
     condition: always()
-
-  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
-    parameters:
-      ArtifactName: ${{ parameters.TestLogsArtifactName }}-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-      ArtifactPath: $(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}.zip
-      CustomCondition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))

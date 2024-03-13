@@ -72,17 +72,13 @@ jobs:
 
     templateContext:
       outputs:
-        # Artifacts created in /eng/pipelines/templates/steps/retain-test-logs.yml via build-and-test.yml
+        # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
+        # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
+        # during testing if tests failed, and linting reports.
         - output: pipelineArtifact
-          artifactName: test-logs-$(System.StageName)-$(System.JobName)
-          targetPath: $(Build.ArtifactStagingDirectory)/test-logs.zip
-          condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
-          sbomEnabled: false
-        # Artifacts created in /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml via build-and-test.yml
-        - output: pipelineArtifact
-          artifactName: 'oom-hprofs-$(System.StageName)-$(System.JobName)'
-          targetPath: '$(Build.ArtifactStagingDirectory)/oom-hprofs-zipped'
-          condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
+          artifactName: troubleshooting-$(System.StageName)-$(System.JobName)
+          targetPath: $(Build.ArtifactStagingDirectory)/troubleshooting
+          condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
           sbomEnabled: false
 
         - output: pipelineArtifact

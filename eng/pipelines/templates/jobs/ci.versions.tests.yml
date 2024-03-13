@@ -61,17 +61,13 @@ jobs:
           sbomEnabled: false
 
         - ${{ each versionOverride in parameters.VersionOverrides }}:
-          # Artifacts created in /eng/pipelines/templates/steps/retain-test-logs.yml via build-and-test.yml
+          # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
+          # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
+          # during testing if tests failed, and linting reports.
           - output: pipelineArtifact
-            artifactName: 'test-logs-vo-${{ versionOverride }}-$(System.StageName)-$(System.JobName)'
-            targetPath: '$(Build.ArtifactStagingDirectory)/test-logs-vo-${{ versionOverride }}.zip'
-            condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
-            sbomEnabled: false
-          # Artifacts created in /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml via build-and-test.yml
-          - output: pipelineArtifact
-            artifactName: 'oom-vo-${{ versionOverride }}-$(System.StageName)-$(System.JobName)'
-            targetPath: '$(Build.ArtifactStagingDirectory)/oom-vo-{{ versionOverride }}-zipped'
-            condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
+            artifactName: 'test-logs-vo-${{ versionOverride }}-troubleshooting-$(System.StageName)-$(System.JobName)'
+            targetPath: $(Build.ArtifactStagingDirectory)/troubleshooting
+            condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
             sbomEnabled: false
 
     steps:

@@ -3,7 +3,7 @@
 Captures any .hprof files in the build directory and moves them to a staging directory for artifact publishing.
 
 .DESCRIPTION
-This script is used to capture any .hprof files in the build directory and move them to a staging directory for 
+This script is used to capture any .hprof files in the build directory and move them to a staging directory for
 artifact publishing. It also sets a pipeline variable to indicate whether any .hprof files were found.
 
 .PARAMETER StagingDirectory
@@ -23,9 +23,10 @@ param(
 
 $hrpofs = Get-ChildItem -Path . -Recurse -Filter *.hprof -File
 
-if ($hrpofs.Count -eq 0) {
-    Write-Host "##vso[task.setvariable variable=HAS_OOM_PROFS]false"
-} else {
-    Compress-Archive -Path $hrpofs -DestinationPath "$StagingDirectory/$OomArtifactName.zip"
-    Write-Host "##vso[task.setvariable variable=HAS_OOM_PROFS]true"
+if ($hrpofs.Count -gt 0) {
+    if (-not (Test-Path "$StagingDirectory/troubleshooting")) {
+        New-Item -ItemType Directory -Path "$StagingDirectory/troubleshooting" | Out-Null
+    }
+    Compress-Archive -Path $hrpofs -DestinationPath "$StagingDirectory/troubleshooting/$OomArtifactName.zip"
+    Write-Host "##vso[task.setvariable variable=HAS_TROUBLESHOOTING]true"
 }
