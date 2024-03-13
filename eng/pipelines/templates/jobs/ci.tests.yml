@@ -71,6 +71,7 @@ jobs:
       - template: /eng/pipelines/templates/variables/globals.yml
 
     templateContext:
+      outputParentDirectory: '$(Build.ArtifactStagingDirectory)'
       outputs:
         # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.
         # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
@@ -142,5 +143,3 @@ jobs:
           BuildParallelization: ${{ parameters.BuildParallelization }}
 
       - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
-
-      - template: /eng/common/testproxy/publish-proxy-logs.yml

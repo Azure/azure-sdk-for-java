@@ -52,6 +52,7 @@ jobs:
       os: linux
 
     templateContext:
+      outputParentDirectory: '$(Build.ArtifactStagingDirectory)'
       outputs:
         - output: pipelineArtifact
           artifactName: 'repository-$(System.JobName)'
@@ -119,5 +120,3 @@ jobs:
           displayName: "Reset version override changes"
 
       - template: /eng/pipelines/templates/steps/clean-maven-local-cache.yml
-
-      - template: /eng/common/testproxy/publish-proxy-logs.yml

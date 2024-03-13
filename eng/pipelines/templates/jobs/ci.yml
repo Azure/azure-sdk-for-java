@@ -71,6 +71,7 @@ jobs:
       os: linux
 
     templateContext:
+      outputParentDirectory: '$(Build.ArtifactStagingDirectory)'
       outputs:
         - output: pipelineArtifact
           artifactName: '$(ArtifactName)'
@@ -236,6 +237,7 @@ jobs:
       os: linux
 
     templateContext:
+      outputParentDirectory: '$(Build.ArtifactStagingDirectory)'
       outputs:
         - output: pipelineArtifact
           artifactName: 'repository-$(System.JobName)'
