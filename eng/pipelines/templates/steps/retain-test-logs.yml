@@ -4,19 +4,17 @@ parameters:
     default: 'test-logs'
 
 steps:
-  - pwsh: |
-      $testLogs = Get-ChildItem -Path . -Recurse -Filter test.log -File -Depth 4
-      if ($testLogs.Count -gt 0) {
-        Write-Host "##vso[task.setvariable variable=HAS_TEST_LOGS]true"
-        New-Item $(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }} -ItemType directory
-        foreach($testLog in $testLogs) {
-          $fileFullName = $testLog.FullName
-          $fileName = "$($testLog.Directory.Parent.Parent.Name)-$($testLog.Directory.Parent.Name)-$($testLog.Name)"
-          Move-Item -Path $fileFullName -Destination $(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}/$fileName -ErrorAction SilentlyContinue
-        }
-        [System.IO.Compression.ZipFile]::CreateFromDirectory("$(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}","$(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}.zip")
-      } else {
-        Write-Host "##vso[task.setvariable variable=HAS_TEST_LOGS]false"
-      }
+  - task: PowerShell@2
     displayName: 'Check for and copy test logs'
+    inputs:
+      pwsh: true
+      filePath: eng/pipelines/scripts/Get-Test-Logs.ps1
+      arguments: >
+        -StagingDirectory $(Build.ArtifactStagingDirectory)
+        -TestLogsArtifactName ${{ parameters.TestLogsArtifactName }}
     condition: always()
+
+  - publish: $(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}.zip
+    displayName: 'Publish test logs'
+    artifact: ${{ parameters.TestLogsArtifactName }}-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
+    condition: and(not(succeeded()), eq(variables['HAS_TEST_LOGS'], 'true'))
