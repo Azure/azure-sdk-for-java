@@ -52,8 +52,8 @@ public final class MetricsAsyncClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricsQueryResourcesResult> queryBatch(List<String> resourceIds, List<String> metricsNames, String metricsNamespace) {
-        return this.queryBatchWithResponse(resourceIds, metricsNames, metricsNamespace, new MetricsQueryResourcesOptions())
+    public Mono<MetricsQueryResourcesResult> queryResources(List<String> resourceIds, List<String> metricsNames, String metricsNamespace) {
+        return this.queryResourcesWithResponse(resourceIds, metricsNames, metricsNamespace, new MetricsQueryResourcesOptions())
             .map(Response::getValue);
     }
 
@@ -69,8 +69,8 @@ public final class MetricsAsyncClient {
      * @throws NullPointerException thrown if {@code resourceIds}, {@code metricsNames} or {@code metricsNamespace} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<MetricsQueryResourcesResult>> queryBatchWithResponse(List<String> resourceIds, List<String> metricsNames,
-                                                                              String metricsNamespace, MetricsQueryResourcesOptions options) {
+    public Mono<Response<MetricsQueryResourcesResult>> queryResourcesWithResponse(List<String> resourceIds, List<String> metricsNames,
+                                                                                  String metricsNamespace, MetricsQueryResourcesOptions options) {
 
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceIds, "'resourceIds cannot be null."))) {
             return monoError(LOGGER, new IllegalArgumentException("resourceIds cannot be empty"));

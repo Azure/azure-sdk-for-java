@@ -82,7 +82,7 @@ public class MetricsBatchQueryClientJavaDocCodeSnippets {
             .buildAsyncClient();
 
         // BEGIN: com.azure.monitor.query.MetricsBatchQueryAsyncClient.queryBatch#List-List-String
-        metricsAsyncClient.queryBatch(
+        metricsAsyncClient.queryResources(
                 Arrays.asList("{resourceId1}", "{resourceId2}"),
                 Arrays.asList("{metricId}"), "{metricNamespace}")
             .subscribe(metricsBatchResult -> {
