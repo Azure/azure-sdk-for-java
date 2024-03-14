@@ -1,6 +1,6 @@
 # Release History
 
-## 7.16.0-beta.1 (Unreleased)
+## 7.16.0-beta.1 (2024-03-14)
 
 ### Features Added
 
@@ -10,10 +10,6 @@
 
 - Remove Jackson Dataformat XML dependency. If you were depending on this, you will need to add 
   `com.fasterxml.jackson.dataformat:jackson-dataformat-xml` to your project.
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 7.15.2 (2024-03-11)
 
