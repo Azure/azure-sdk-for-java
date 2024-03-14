@@ -9,7 +9,7 @@
 ### Bugs Fixed
 
 - Fixed a bug where `text/event-stream` content type wasn't being handled correctly.
-  Replaced content type exact match `equal` by `startwith`. ([#39128](https://github.com/Azure/azure-sdk-for-java/issues/39128))
+  Replaced content type exact match `equals` by `startsWith`. ([#39128](https://github.com/Azure/azure-sdk-for-java/issues/39128))
 
 ### Other Changes
 
