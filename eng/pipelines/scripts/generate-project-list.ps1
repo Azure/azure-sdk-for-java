@@ -1,13 +1,10 @@
-# Check if empty or still a literal devops variable reference $(<var name>)
-if (!$env:ARTIFACTSJSON -or $env:ARTIFACTSJSON -like '*ArtifactsJson*') {
-  throw "ArtifactsJson devops variable was not set"
-}
-
-$artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
-
 $projectList = @()
-foreach ($artifact in $artifacts) {
-  $projectList += "$($artifact.groupId):$($artifact.name)"
+
+if ($env:ARTIFACTSJSON -and $env:ARTIFACTSJSON -notlike '*ArtifactsJson*') {
+  $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
+  foreach ($artifact in $artifacts) {
+    $projectList += "$($artifact.groupId):$($artifact.name)"
+  }
 }
 
 # Check if empty or still a literal devops variable reference $(<var name>)
