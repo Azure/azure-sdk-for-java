@@ -4,6 +4,7 @@ steps:
     inputs:
       pwsh: true
       filePath: $(Build.SourcesDirectory)/eng/scripts/setup-http-fault-injector.ps1
+      arguments: -SourcesDirectory $(Build.SourcesDirectory)
 
   - pwsh: |
       Start-Process http-fault-injector -NoNewWindow -PassThru -RedirectStandardOutput "$(Build.SourcesDirectory)/http-fault-injector.log"

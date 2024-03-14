@@ -53,7 +53,7 @@ stages:
               arguments: '--match-any-version --set-skip-linting-projects SkipLintingProjects --project-list com.azure:azure-core'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
-          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+          - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
             parameters:
               SkipCheckoutNone: true
               Paths: $(SparseCheckoutDirectories)

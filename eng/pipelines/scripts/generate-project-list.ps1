@@ -2,7 +2,15 @@
 if (!$env:ARTIFACTSJSON -or $env:ARTIFACTSJSON -like '*ArtifactsJson*') {
   throw "ArtifactsJson devops variable was not set"
 }
+
 $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
+
+Write-Host $env:ADDITIONALMODULESJSON
+if (-not [string]::IsNullOrEmpty($env:ADDITIONALMODULESJSON)) {
+  $additionalModules = $env:ADDITIONALMODULESJSON | ConvertFrom-Json
+} else {
+  $additionalModules = @()
+}
 
 $projectList = @()
 foreach ($artifact in $artifacts) {

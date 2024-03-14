@@ -71,7 +71,7 @@ steps:
   # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
   # as we require the GitHub service connection to be loaded.
   - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+    - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
       parameters:
         SkipCheckoutNone: true
         Paths: $(SparseCheckoutDirectories)
