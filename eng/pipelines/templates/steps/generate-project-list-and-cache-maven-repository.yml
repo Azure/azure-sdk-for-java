@@ -32,16 +32,28 @@ steps:
     $additionalModules = '${{ convertToJson(parameters.AdditionalModules) }}' | ConvertFrom-Json
 
     $projectList = @()
+    $artifactsList = @()
+    $additionalModulesList = @()
     foreach ($artifact in $artifacts) {
       $projectList += "$($artifact.groupId):$($artifact.name)"
+      $artifactsList += "$($artifact.groupId):$($artifact.name)"
     }
     foreach ($artifact in $additionalModules) {
       $projectList += "$($artifact.groupId):$($artifact.name)"
+      $additionalModulesList += "$($artifact.groupId):$($artifact.name)"
     }
-    $projects = $projectList -join ','
 
+    $projects = $projectList -join ','
     Write-Host "ProjectList = $projects"
     Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
+
+    $artifactsString = $artifactsList -join ','
+    Write-Host "ArtifactsList = $artifactsString"
+    Write-Host "##vso[task.setvariable variable=ArtifactsList;]$artifactsString"
+
+    $additionalModulesString = $additionalModulesList -join ','
+    Write-Host "AdditionalModulesList = $additionalModulesString"
+    Write-Host "##vso[task.setvariable variable=AdditionalModulesList;]$additionalModulesString"
 
     $sha256 = new-object -TypeName System.Security.Cryptography.SHA256Managed
     $utf8 = new-object -TypeName System.Text.UTF8Encoding
