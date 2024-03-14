@@ -309,7 +309,7 @@ def project_uses_client_parent(project: Project, projects: Dict[str, Project]) -
 def main():
     parser = argparse.ArgumentParser(description='Generated an aggregate POM for a From Source run.')
     parser.add_argument('--artifacts-list', '--al', type=str)
-    parser.add_argument('--additional-modules-list', '--aml', type=str)
+    parser.add_argument('--additional-modules-list', '--aml', type=str, required=False, default=None, nargs='?')
     parser.add_argument('--set-skip-linting-projects', type=str)
     parser.add_argument('--match-any-version', action='store_true')
     args = parser.parse_args()
