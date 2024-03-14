@@ -28,7 +28,7 @@ steps:
     filePath: eng/pipelines/scripts/generate-project-list.ps1
   env:
     ARTIFACTSJSON: $(ArtifactsJson)
-    ADDITIONALMODULESJSON: ${{ coalesce(variables['AdditionalModulesJson'], '[]') }}
+    ADDITIONALMODULESJSON: $(AdditionalModulesJson)
 
 # The Cache task, when restoring, can have a miss and still pass but, if nothing is built, the
 # Post-Job Cache will fail because there's no .m2/repository
