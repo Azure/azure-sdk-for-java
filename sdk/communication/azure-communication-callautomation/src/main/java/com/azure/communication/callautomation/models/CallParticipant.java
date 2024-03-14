@@ -24,7 +24,7 @@ public final class CallParticipant {
      */
     private final Boolean isOnHold;
 
-    /**
+     /**
      * Constructor of the class
      *
      * @param identifier The communication identifier
@@ -35,6 +35,19 @@ public final class CallParticipant {
         this.identifier = identifier;
         this.isMuted = isMuted;
         this.isOnHold = isOnHold;
+    }
+
+    /**
+     * Constructor of the class
+     *
+     * @param identifier The communication identifier
+     * @param isMuted The value of isMuted
+     */
+    public CallParticipant(CommunicationIdentifier identifier, Boolean isMuted) {
+        this.identifier = identifier;
+        this.isMuted = isMuted;
+        this.isOnHold = null;
+
     }
 
     /**
