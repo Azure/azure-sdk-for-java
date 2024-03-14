@@ -16,8 +16,8 @@ public final class SecuritySubAssessmentImpl implements SecuritySubAssessment {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    SecuritySubAssessmentImpl(
-        SecuritySubAssessmentInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    SecuritySubAssessmentImpl(SecuritySubAssessmentInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

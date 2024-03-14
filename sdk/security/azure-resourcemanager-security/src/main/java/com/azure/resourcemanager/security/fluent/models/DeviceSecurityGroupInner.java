@@ -13,7 +13,9 @@ import com.azure.resourcemanager.security.models.TimeWindowCustomAlertRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The device security group resource. */
+/**
+ * The device security group resource.
+ */
 @Fluent
 public final class DeviceSecurityGroupInner extends ProxyResource {
     /*
@@ -22,13 +24,15 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DeviceSecurityGroupProperties innerProperties;
 
-    /** Creates an instance of DeviceSecurityGroupInner class. */
+    /**
+     * Creates an instance of DeviceSecurityGroupInner class.
+     */
     public DeviceSecurityGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Device Security group data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DeviceSecurityGroupProperties innerProperties() {
@@ -37,7 +41,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Get the thresholdRules property: The list of custom alert threshold rules.
-     *
+     * 
      * @return the thresholdRules value.
      */
     public List<ThresholdCustomAlertRule> thresholdRules() {
@@ -46,7 +50,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Set the thresholdRules property: The list of custom alert threshold rules.
-     *
+     * 
      * @param thresholdRules the thresholdRules value to set.
      * @return the DeviceSecurityGroupInner object itself.
      */
@@ -60,7 +64,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Get the timeWindowRules property: The list of custom alert time-window rules.
-     *
+     * 
      * @return the timeWindowRules value.
      */
     public List<TimeWindowCustomAlertRule> timeWindowRules() {
@@ -69,7 +73,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Set the timeWindowRules property: The list of custom alert time-window rules.
-     *
+     * 
      * @param timeWindowRules the timeWindowRules value to set.
      * @return the DeviceSecurityGroupInner object itself.
      */
@@ -83,7 +87,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Get the allowlistRules property: The allow-list custom alert rules.
-     *
+     * 
      * @return the allowlistRules value.
      */
     public List<AllowlistCustomAlertRule> allowlistRules() {
@@ -92,7 +96,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Set the allowlistRules property: The allow-list custom alert rules.
-     *
+     * 
      * @param allowlistRules the allowlistRules value to set.
      * @return the DeviceSecurityGroupInner object itself.
      */
@@ -106,7 +110,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Get the denylistRules property: The deny-list custom alert rules.
-     *
+     * 
      * @return the denylistRules value.
      */
     public List<DenylistCustomAlertRule> denylistRules() {
@@ -115,7 +119,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Set the denylistRules property: The deny-list custom alert rules.
-     *
+     * 
      * @param denylistRules the denylistRules value to set.
      * @return the DeviceSecurityGroupInner object itself.
      */
@@ -129,7 +133,7 @@ public final class DeviceSecurityGroupInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

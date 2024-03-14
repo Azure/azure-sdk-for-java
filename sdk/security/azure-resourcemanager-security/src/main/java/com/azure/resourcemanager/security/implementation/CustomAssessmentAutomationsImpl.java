@@ -21,34 +21,28 @@ public final class CustomAssessmentAutomationsImpl implements CustomAssessmentAu
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public CustomAssessmentAutomationsImpl(
-        CustomAssessmentAutomationsClient innerClient,
+    public CustomAssessmentAutomationsImpl(CustomAssessmentAutomationsClient innerClient,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CustomAssessmentAutomation> getByResourceGroupWithResponse(
-        String resourceGroupName, String customAssessmentAutomationName, Context context) {
-        Response<CustomAssessmentAutomationInner> inner =
-            this
-                .serviceClient()
-                .getByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, context);
+    public Response<CustomAssessmentAutomation> getByResourceGroupWithResponse(String resourceGroupName,
+        String customAssessmentAutomationName, Context context) {
+        Response<CustomAssessmentAutomationInner> inner = this.serviceClient()
+            .getByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CustomAssessmentAutomationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CustomAssessmentAutomation getByResourceGroup(
-        String resourceGroupName, String customAssessmentAutomationName) {
-        CustomAssessmentAutomationInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, customAssessmentAutomationName);
+    public CustomAssessmentAutomation getByResourceGroup(String resourceGroupName,
+        String customAssessmentAutomationName) {
+        CustomAssessmentAutomationInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, customAssessmentAutomationName);
         if (inner != null) {
             return new CustomAssessmentAutomationImpl(inner, this.manager());
         } else {
@@ -56,8 +50,8 @@ public final class CustomAssessmentAutomationsImpl implements CustomAssessmentAu
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String customAssessmentAutomationName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName,
+        String customAssessmentAutomationName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, customAssessmentAutomationName, context);
     }
 
@@ -66,117 +60,88 @@ public final class CustomAssessmentAutomationsImpl implements CustomAssessmentAu
     }
 
     public PagedIterable<CustomAssessmentAutomation> listByResourceGroup(String resourceGroupName) {
-        PagedIterable<CustomAssessmentAutomationInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new CustomAssessmentAutomationImpl(inner1, this.manager()));
+        PagedIterable<CustomAssessmentAutomationInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CustomAssessmentAutomationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CustomAssessmentAutomation> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<CustomAssessmentAutomationInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new CustomAssessmentAutomationImpl(inner1, this.manager()));
+        PagedIterable<CustomAssessmentAutomationInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CustomAssessmentAutomationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CustomAssessmentAutomation> list() {
         PagedIterable<CustomAssessmentAutomationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new CustomAssessmentAutomationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CustomAssessmentAutomationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CustomAssessmentAutomation> list(Context context) {
         PagedIterable<CustomAssessmentAutomationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new CustomAssessmentAutomationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new CustomAssessmentAutomationImpl(inner1, this.manager()));
     }
 
     public CustomAssessmentAutomation getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String customAssessmentAutomationName = Utils.getValueFromIdByName(id, "customAssessmentAutomations");
+        String customAssessmentAutomationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "customAssessmentAutomations");
         if (customAssessmentAutomationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'customAssessmentAutomations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'customAssessmentAutomations'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, Context.NONE)
             .getValue();
     }
 
     public Response<CustomAssessmentAutomation> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String customAssessmentAutomationName = Utils.getValueFromIdByName(id, "customAssessmentAutomations");
+        String customAssessmentAutomationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "customAssessmentAutomations");
         if (customAssessmentAutomationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'customAssessmentAutomations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'customAssessmentAutomations'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String customAssessmentAutomationName = Utils.getValueFromIdByName(id, "customAssessmentAutomations");
+        String customAssessmentAutomationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "customAssessmentAutomations");
         if (customAssessmentAutomationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'customAssessmentAutomations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'customAssessmentAutomations'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String customAssessmentAutomationName = Utils.getValueFromIdByName(id, "customAssessmentAutomations");
+        String customAssessmentAutomationName
+            = ResourceManagerUtils.getValueFromIdByName(id, "customAssessmentAutomations");
         if (customAssessmentAutomationName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'customAssessmentAutomations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'customAssessmentAutomations'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, customAssessmentAutomationName, context);
     }

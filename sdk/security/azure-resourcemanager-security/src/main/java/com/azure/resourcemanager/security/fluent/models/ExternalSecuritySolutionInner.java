@@ -27,8 +27,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CEF", value = CefExternalSecuritySolution.class),
     @JsonSubTypes.Type(name = "ATA", value = AtaExternalSecuritySolution.class),
-    @JsonSubTypes.Type(name = "AAD", value = AadExternalSecuritySolution.class)
-})
+    @JsonSubTypes.Type(name = "AAD", value = AadExternalSecuritySolution.class) })
 @Immutable
 public class ExternalSecuritySolutionInner extends ProxyResource {
     /*
@@ -37,13 +36,15 @@ public class ExternalSecuritySolutionInner extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of ExternalSecuritySolutionInner class. */
+    /**
+     * Creates an instance of ExternalSecuritySolutionInner class.
+     */
     public ExternalSecuritySolutionInner() {
     }
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -52,7 +53,7 @@ public class ExternalSecuritySolutionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

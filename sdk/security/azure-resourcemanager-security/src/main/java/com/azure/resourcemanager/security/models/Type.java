@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The Vulnerability Assessment solution to be provisioned. Can be either 'TVM' or 'Qualys'. */
+/**
+ * The Vulnerability Assessment solution to be provisioned. Can be either 'TVM' or 'Qualys'.
+ */
 public final class Type extends ExpandableStringEnum<Type> {
-    /** Static value Qualys for Type. */
+    /**
+     * Static value Qualys for Type.
+     */
     public static final Type QUALYS = fromString("Qualys");
 
-    /** Static value TVM for Type. */
+    /**
+     * Static value TVM for Type.
+     */
     public static final Type TVM = fromString("TVM");
 
     /**
      * Creates a new instance of Type value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Creates or finds a Type from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Type.
      */
@@ -38,7 +44,7 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Gets known Type values.
-     *
+     * 
      * @return known Type values.
      */
     public static Collection<Type> values() {

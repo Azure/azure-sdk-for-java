@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The kind of the security setting. */
+/**
+ * The kind of the security setting.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,17 +23,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Setting")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "DataExportSettings", value = DataExportSettings.class),
-    @JsonSubTypes.Type(name = "AlertSyncSettings", value = AlertSyncSettings.class)
-})
+    @JsonSubTypes.Type(name = "AlertSyncSettings", value = AlertSyncSettings.class) })
 @Immutable
 public class SettingInner extends ProxyResource {
-    /** Creates an instance of SettingInner class. */
+    /**
+     * Creates an instance of SettingInner class.
+     */
     public SettingInner() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

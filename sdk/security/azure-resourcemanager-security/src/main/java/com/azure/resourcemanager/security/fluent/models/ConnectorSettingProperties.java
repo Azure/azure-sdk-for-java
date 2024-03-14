@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.models.AuthenticationDetailsProperties
 import com.azure.resourcemanager.security.models.HybridComputeSettingsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes properties of a connector setting. */
+/**
+ * Describes properties of a connector setting.
+ */
 @Fluent
 public final class ConnectorSettingProperties {
     /*
@@ -24,14 +26,16 @@ public final class ConnectorSettingProperties {
     @JsonProperty(value = "authenticationDetails")
     private AuthenticationDetailsProperties authenticationDetails;
 
-    /** Creates an instance of ConnectorSettingProperties class. */
+    /**
+     * Creates an instance of ConnectorSettingProperties class.
+     */
     public ConnectorSettingProperties() {
     }
 
     /**
      * Get the hybridComputeSettings property: Settings for hybrid compute management. These settings are relevant only
      * for Arc autoProvision (Hybrid Compute).
-     *
+     * 
      * @return the hybridComputeSettings value.
      */
     public HybridComputeSettingsProperties hybridComputeSettings() {
@@ -41,7 +45,7 @@ public final class ConnectorSettingProperties {
     /**
      * Set the hybridComputeSettings property: Settings for hybrid compute management. These settings are relevant only
      * for Arc autoProvision (Hybrid Compute).
-     *
+     * 
      * @param hybridComputeSettings the hybridComputeSettings value to set.
      * @return the ConnectorSettingProperties object itself.
      */
@@ -53,7 +57,7 @@ public final class ConnectorSettingProperties {
     /**
      * Get the authenticationDetails property: Settings for authentication management, these settings are relevant only
      * for the cloud connector.
-     *
+     * 
      * @return the authenticationDetails value.
      */
     public AuthenticationDetailsProperties authenticationDetails() {
@@ -63,7 +67,7 @@ public final class ConnectorSettingProperties {
     /**
      * Set the authenticationDetails property: Settings for authentication management, these settings are relevant only
      * for the cloud connector.
-     *
+     * 
      * @param authenticationDetails the authenticationDetails value to set.
      * @return the ConnectorSettingProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class ConnectorSettingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

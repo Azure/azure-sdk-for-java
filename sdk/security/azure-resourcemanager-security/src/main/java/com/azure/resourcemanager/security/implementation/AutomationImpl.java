@@ -12,6 +12,7 @@ import com.azure.resourcemanager.security.models.Automation;
 import com.azure.resourcemanager.security.models.AutomationAction;
 import com.azure.resourcemanager.security.models.AutomationScope;
 import com.azure.resourcemanager.security.models.AutomationSource;
+import com.azure.resourcemanager.security.models.AutomationUpdateModel;
 import com.azure.resourcemanager.security.models.AutomationValidationStatus;
 import java.util.Collections;
 import java.util.List;
@@ -106,28 +107,22 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
 
     private String automationName;
 
+    private AutomationUpdateModel updateAutomation;
+
     public AutomationImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
     public Automation create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomations()
-                .createOrUpdateWithResponse(resourceGroupName, automationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAutomations()
+            .createOrUpdateWithResponse(resourceGroupName, automationName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public Automation create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomations()
-                .createOrUpdateWithResponse(resourceGroupName, automationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAutomations()
+            .createOrUpdateWithResponse(resourceGroupName, automationName, this.innerModel(), context).getValue();
         return this;
     }
 
@@ -138,60 +133,44 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
     }
 
     public AutomationImpl update() {
+        this.updateAutomation = new AutomationUpdateModel();
         return this;
     }
 
     public Automation apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomations()
-                .createOrUpdateWithResponse(resourceGroupName, automationName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAutomations()
+            .updateWithResponse(resourceGroupName, automationName, updateAutomation, Context.NONE).getValue();
         return this;
     }
 
     public Automation apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomations()
-                .createOrUpdateWithResponse(resourceGroupName, automationName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAutomations()
+            .updateWithResponse(resourceGroupName, automationName, updateAutomation, context).getValue();
         return this;
     }
 
     AutomationImpl(AutomationInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.automationName = Utils.getValueFromIdByName(innerObject.id(), "automations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.automationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "automations");
     }
 
     public Automation refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomations()
-                .getByResourceGroupWithResponse(resourceGroupName, automationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAutomations()
+            .getByResourceGroupWithResponse(resourceGroupName, automationName, Context.NONE).getValue();
         return this;
     }
 
     public Automation refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutomations()
-                .getByResourceGroupWithResponse(resourceGroupName, automationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getAutomations()
+            .getByResourceGroupWithResponse(resourceGroupName, automationName, context).getValue();
         return this;
     }
 
     public Response<AutomationValidationStatus> validateWithResponse(AutomationInner automation, Context context) {
-        return serviceManager
-            .automations()
-            .validateWithResponse(resourceGroupName, automationName, automation, context);
+        return serviceManager.automations().validateWithResponse(resourceGroupName, automationName, automation,
+            context);
     }
 
     public AutomationValidationStatus validate(AutomationInner automation) {
@@ -209,32 +188,66 @@ public final class AutomationImpl implements Automation, Automation.Definition, 
     }
 
     public AutomationImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateAutomation.withTags(tags);
+            return this;
+        }
     }
 
     public AutomationImpl withDescription(String description) {
-        this.innerModel().withDescription(description);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withDescription(description);
+            return this;
+        } else {
+            this.updateAutomation.withDescription(description);
+            return this;
+        }
     }
 
     public AutomationImpl withIsEnabled(Boolean isEnabled) {
-        this.innerModel().withIsEnabled(isEnabled);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIsEnabled(isEnabled);
+            return this;
+        } else {
+            this.updateAutomation.withIsEnabled(isEnabled);
+            return this;
+        }
     }
 
     public AutomationImpl withScopes(List<AutomationScope> scopes) {
-        this.innerModel().withScopes(scopes);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withScopes(scopes);
+            return this;
+        } else {
+            this.updateAutomation.withScopes(scopes);
+            return this;
+        }
     }
 
     public AutomationImpl withSources(List<AutomationSource> sources) {
-        this.innerModel().withSources(sources);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withSources(sources);
+            return this;
+        } else {
+            this.updateAutomation.withSources(sources);
+            return this;
+        }
     }
 
     public AutomationImpl withActions(List<AutomationAction> actions) {
-        this.innerModel().withActions(actions);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withActions(actions);
+            return this;
+        } else {
+            this.updateAutomation.withActions(actions);
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

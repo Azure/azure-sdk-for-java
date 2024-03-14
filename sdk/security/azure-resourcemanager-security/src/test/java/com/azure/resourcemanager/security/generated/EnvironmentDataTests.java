@@ -10,8 +10,8 @@ import com.azure.resourcemanager.security.models.EnvironmentData;
 public final class EnvironmentDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentData model =
-            BinaryData.fromString("{\"environmentType\":\"EnvironmentData\"}").toObject(EnvironmentData.class);
+        EnvironmentData model
+            = BinaryData.fromString("{\"environmentType\":\"EnvironmentData\"}").toObject(EnvironmentData.class);
     }
 
     @org.junit.jupiter.api.Test

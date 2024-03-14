@@ -17,34 +17,31 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityConnectorInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityConnectorInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"hierarchyIdentifier\":\"vbrzcdb\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-14T13:57:27Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"xmxeatkdb\"},{\"offeringType\":\"CloudOffering\",\"description\":\"nrd\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"ibqbnaomhjrm\",\"tags\":{\"obcancdexxqcw\":\"maxljalfihcj\",\"fgvaknokzwj\":\"a\",\"tpq\":\"zrltixldzyyf\"},\"id\":\"ixymmpujivyql\",\"name\":\"juvsmbmslzoyovw\",\"type\":\"dbpqvybefgvm\"}")
-                .toObject(SecurityConnectorInner.class);
-        Assertions.assertEquals("ibqbnaomhjrm", model.location());
-        Assertions.assertEquals("maxljalfihcj", model.tags().get("obcancdexxqcw"));
-        Assertions.assertEquals("vbrzcdb", model.hierarchyIdentifier());
+        SecurityConnectorInner model = BinaryData.fromString(
+            "{\"properties\":{\"hierarchyIdentifier\":\"rctat\",\"hierarchyIdentifierTrialEndDate\":\"2021-04-07T20:43:54Z\",\"environmentName\":\"Github\",\"offerings\":[{\"offeringType\":\"CloudOffering\",\"description\":\"rlcyrduc\"},{\"offeringType\":\"CloudOffering\",\"description\":\"go\"},{\"offeringType\":\"CloudOffering\",\"description\":\"y\"},{\"offeringType\":\"CloudOffering\",\"description\":\"rucvcrrpcjttbs\"}],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"jeaq\",\"tags\":{\"oxmlghktuidv\":\"vvf\",\"lpdwwexymzvlazi\":\"ma\"},\"id\":\"bhpwvqsgnyy\",\"name\":\"uzivensrpmeyyvp\",\"type\":\"patlbijp\"}")
+            .toObject(SecurityConnectorInner.class);
+        Assertions.assertEquals("jeaq", model.location());
+        Assertions.assertEquals("vvf", model.tags().get("oxmlghktuidv"));
+        Assertions.assertEquals("rctat", model.hierarchyIdentifier());
         Assertions.assertEquals(CloudName.GITHUB, model.environmentName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityConnectorInner model =
-            new SecurityConnectorInner()
-                .withLocation("ibqbnaomhjrm")
-                .withTags(mapOf("obcancdexxqcw", "maxljalfihcj", "fgvaknokzwj", "a", "tpq", "zrltixldzyyf"))
-                .withHierarchyIdentifier("vbrzcdb")
-                .withEnvironmentName(CloudName.GITHUB)
-                .withOfferings(Arrays.asList(new CloudOffering(), new CloudOffering()))
-                .withEnvironmentData(new EnvironmentData());
+        SecurityConnectorInner model = new SecurityConnectorInner().withLocation("jeaq")
+            .withTags(mapOf("oxmlghktuidv", "vvf", "lpdwwexymzvlazi", "ma")).withHierarchyIdentifier("rctat")
+            .withEnvironmentName(CloudName.GITHUB)
+            .withOfferings(
+                Arrays.asList(new CloudOffering(), new CloudOffering(), new CloudOffering(), new CloudOffering()))
+            .withEnvironmentData(new EnvironmentData());
         model = BinaryData.fromObject(model).toObject(SecurityConnectorInner.class);
-        Assertions.assertEquals("ibqbnaomhjrm", model.location());
-        Assertions.assertEquals("maxljalfihcj", model.tags().get("obcancdexxqcw"));
-        Assertions.assertEquals("vbrzcdb", model.hierarchyIdentifier());
+        Assertions.assertEquals("jeaq", model.location());
+        Assertions.assertEquals("vvf", model.tags().get("oxmlghktuidv"));
+        Assertions.assertEquals("rctat", model.hierarchyIdentifier());
         Assertions.assertEquals(CloudName.GITHUB, model.environmentName());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
