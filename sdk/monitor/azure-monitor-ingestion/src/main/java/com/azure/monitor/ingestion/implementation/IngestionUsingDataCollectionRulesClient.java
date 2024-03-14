@@ -24,11 +24,11 @@ public final class IngestionUsingDataCollectionRulesClient {
     /**
      * Initializes an instance of IngestionUsingDataCollectionRulesClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    IngestionUsingDataCollectionRulesClient(IngestionUsingDataCollectionRulesClientImpl client) {
-        this.serviceClient = client;
+    IngestionUsingDataCollectionRulesClient(IngestionUsingDataCollectionRulesClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**

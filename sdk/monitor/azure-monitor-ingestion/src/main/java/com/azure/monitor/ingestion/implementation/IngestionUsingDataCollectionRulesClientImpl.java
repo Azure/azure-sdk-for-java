@@ -100,15 +100,15 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      *     https://dce-name.eastus-2.ingest.monitor.azure.com.
      * @param serviceVersion Service version.
      */
-    public IngestionUsingDataCollectionRulesClientImpl(
-        String endpoint, IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
+    IngestionUsingDataCollectionRulesClientImpl(
+            String endpoint, IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
         this(
-            new HttpPipelineBuilder()
-                .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
-                .build(),
-            JacksonAdapter.createDefaultSerializerAdapter(),
-            endpoint,
-            serviceVersion);
+                new HttpPipelineBuilder()
+                        .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
+                        .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                endpoint,
+                serviceVersion);
     }
 
     /**
@@ -119,10 +119,10 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      *     https://dce-name.eastus-2.ingest.monitor.azure.com.
      * @param serviceVersion Service version.
      */
-    public IngestionUsingDataCollectionRulesClientImpl(
-        HttpPipeline httpPipeline,
-        String endpoint,
-        IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
+    IngestionUsingDataCollectionRulesClientImpl(
+            HttpPipeline httpPipeline,
+            String endpoint,
+            IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -135,20 +135,20 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      *     https://dce-name.eastus-2.ingest.monitor.azure.com.
      * @param serviceVersion Service version.
      */
-    public IngestionUsingDataCollectionRulesClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        String endpoint,
-        IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
+    IngestionUsingDataCollectionRulesClientImpl(
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String endpoint,
+            IngestionUsingDataCollectionRulesServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
         this.service =
-            RestProxy.create(
-                IngestionUsingDataCollectionRulesClientService.class,
-                this.httpPipeline,
-                this.getSerializerAdapter());
+                RestProxy.create(
+                        IngestionUsingDataCollectionRulesClientService.class,
+                        this.httpPipeline,
+                        this.getSerializerAdapter());
     }
 
     /**
@@ -161,46 +161,46 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
         @Post("/dataCollectionRules/{ruleId}/streams/{stream}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
+                value = ClientAuthenticationException.class,
+                code = {401})
         @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
+                value = ResourceNotFoundException.class,
+                code = {404})
         @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> upload(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("ruleId") String ruleId,
-            @PathParam("stream") String stream,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BinaryData body,
-            @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("ruleId") String ruleId,
+                @PathParam("stream") String stream,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData body,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/dataCollectionRules/{ruleId}/streams/{stream}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(
-            value = ClientAuthenticationException.class,
-            code = {401})
+                value = ClientAuthenticationException.class,
+                code = {401})
         @UnexpectedResponseExceptionType(
-            value = ResourceNotFoundException.class,
-            code = {404})
+                value = ResourceNotFoundException.class,
+                code = {404})
         @UnexpectedResponseExceptionType(
-            value = ResourceModifiedException.class,
-            code = {409})
+                value = ResourceModifiedException.class,
+                code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<Void> uploadSync(
-            @HostParam("endpoint") String endpoint,
-            @PathParam("ruleId") String ruleId,
-            @PathParam("stream") String stream,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BinaryData body,
-            @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions,
-            Context context);
+                @HostParam("endpoint") String endpoint,
+                @PathParam("ruleId") String ruleId,
+                @PathParam("stream") String stream,
+                @QueryParam("api-version") String apiVersion,
+                @BodyParam("application/json") BinaryData body,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
     }
 
     /**
@@ -239,31 +239,31 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> uploadWithResponseAsync(
-        String ruleId, String stream, BinaryData body, RequestOptions requestOptions) {
+            String ruleId, String stream, BinaryData body, RequestOptions requestOptions) {
         if (ruleId == null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
+                    new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
         }
         if (stream == null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter stream is required and cannot be null."));
+                    new IllegalArgumentException("Parameter stream is required and cannot be null."));
         }
         if (body == null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter body is required and cannot be null."));
+                    new IllegalArgumentException("Parameter body is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
-            context ->
-                service.upload(
-                    this.getEndpoint(),
-                    ruleId,
-                    stream,
-                    this.getServiceVersion().getVersion(),
-                    body,
-                    accept,
-                    requestOptions,
-                    context));
+                context ->
+                        service.upload(
+                                this.getEndpoint(),
+                                ruleId,
+                                stream,
+                                this.getServiceVersion().getVersion(),
+                                body,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -302,29 +302,29 @@ public final class IngestionUsingDataCollectionRulesClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> uploadWithResponse(
-        String ruleId, String stream, BinaryData body, RequestOptions requestOptions) {
+            String ruleId, String stream, BinaryData body, RequestOptions requestOptions) {
         if (ruleId == null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
+                    new IllegalArgumentException("Parameter ruleId is required and cannot be null."));
         }
         if (stream == null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter stream is required and cannot be null."));
+                    new IllegalArgumentException("Parameter stream is required and cannot be null."));
         }
         if (body == null) {
             throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("Parameter body is required and cannot be null."));
+                    new IllegalArgumentException("Parameter body is required and cannot be null."));
         }
         final String accept = "application/json";
         return service.uploadSync(
-            this.getEndpoint(),
-            ruleId,
-            stream,
-            this.getServiceVersion().getVersion(),
-            body,
-            accept,
-            requestOptions,
-            requestOptions.getContext());
+                this.getEndpoint(),
+                ruleId,
+                stream,
+                this.getServiceVersion().getVersion(),
+                body,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(IngestionUsingDataCollectionRulesClientImpl.class);

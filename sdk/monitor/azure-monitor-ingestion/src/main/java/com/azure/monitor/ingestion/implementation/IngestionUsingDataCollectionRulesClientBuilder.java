@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the IngestionUsingDataCollectionRulesClient type. */
 @ServiceClientBuilder(
@@ -55,7 +54,13 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
 
     @Generated private static final String SDK_VERSION = "version";
 
-    @Generated private static final String[] DEFAULT_SCOPES = new String[] {"https://monitor.azure.com//.default"};
+    @Generated
+    private static final String[] DEFAULT_SCOPES =
+            new String[] {
+                "https://monitor.azure.us//.default",
+                "https://monitor.azure.com//.default",
+                "https://monitor.azure.cn//.default"
+            };
 
     @Generated
     private static final Map<String, String> PROPERTIES = CoreUtils.getProperties("azure-monitor-ingestion.properties");
@@ -250,10 +255,9 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
@@ -261,10 +265,9 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline httpPipeline =
@@ -293,7 +296,6 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
      */
     @Generated
     public IngestionUsingDataCollectionRulesClient buildClient() {
-        return new IngestionUsingDataCollectionRulesClient(
-                buildInnerClient());
+        return new IngestionUsingDataCollectionRulesClient(buildInnerClient());
     }
 }
