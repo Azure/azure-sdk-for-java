@@ -9,7 +9,6 @@ import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategies;
 import com.azure.cosmos.kafka.connect.implementation.sink.ItemWriteStrategy;
-import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;

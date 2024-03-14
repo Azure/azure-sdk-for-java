@@ -12,29 +12,24 @@ import org.junit.jupiter.api.Assertions;
 public final class AtaSolutionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AtaSolutionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"lastEventReceived\":\"fohyk\",\"deviceVendor\":\"xbbcbrw\",\"deviceType\":\"u\",\"workspace\":{\"id\":\"jizbeew\"},\"\":{\"juyrsrziuctixg\":\"datamrvz\",\"uifr\":\"datad\"}}")
-                .toObject(AtaSolutionProperties.class);
-        Assertions.assertEquals("xbbcbrw", model.deviceVendor());
-        Assertions.assertEquals("u", model.deviceType());
-        Assertions.assertEquals("jizbeew", model.workspace().id());
-        Assertions.assertEquals("fohyk", model.lastEventReceived());
+        AtaSolutionProperties model = BinaryData.fromString(
+            "{\"lastEventReceived\":\"aupwhlzyckrem\",\"deviceVendor\":\"lmsvdo\",\"deviceType\":\"irxxhyrkqako\",\"workspace\":{\"id\":\"freprfvm\"},\"\":{\"ylblfsprr\":\"datawteyrqshixbcejo\"}}")
+            .toObject(AtaSolutionProperties.class);
+        Assertions.assertEquals("lmsvdo", model.deviceVendor());
+        Assertions.assertEquals("irxxhyrkqako", model.deviceType());
+        Assertions.assertEquals("freprfvm", model.workspace().id());
+        Assertions.assertEquals("aupwhlzyckrem", model.lastEventReceived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AtaSolutionProperties model =
-            new AtaSolutionProperties()
-                .withDeviceVendor("xbbcbrw")
-                .withDeviceType("u")
-                .withWorkspace(new ConnectedWorkspace().withId("jizbeew"))
-                .withLastEventReceived("fohyk");
+        AtaSolutionProperties model
+            = new AtaSolutionProperties().withDeviceVendor("lmsvdo").withDeviceType("irxxhyrkqako")
+                .withWorkspace(new ConnectedWorkspace().withId("freprfvm")).withLastEventReceived("aupwhlzyckrem");
         model = BinaryData.fromObject(model).toObject(AtaSolutionProperties.class);
-        Assertions.assertEquals("xbbcbrw", model.deviceVendor());
-        Assertions.assertEquals("u", model.deviceType());
-        Assertions.assertEquals("jizbeew", model.workspace().id());
-        Assertions.assertEquals("fohyk", model.lastEventReceived());
+        Assertions.assertEquals("lmsvdo", model.deviceVendor());
+        Assertions.assertEquals("irxxhyrkqako", model.deviceType());
+        Assertions.assertEquals("freprfvm", model.workspace().id());
+        Assertions.assertEquals("aupwhlzyckrem", model.lastEventReceived());
     }
 }

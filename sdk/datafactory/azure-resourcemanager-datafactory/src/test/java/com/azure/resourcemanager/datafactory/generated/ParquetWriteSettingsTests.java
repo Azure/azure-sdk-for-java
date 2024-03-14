@@ -11,14 +11,14 @@ public final class ParquetWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ParquetWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"ParquetWriteSettings\",\"maxRowsPerFile\":\"dataryoiaob\",\"fileNamePrefix\":\"datacdlccqumvb\",\"\":{\"inxxj\":\"dataiibxol\",\"kwxcaagzlq\":\"dataixr\",\"hacfiyrywfry\":\"datasgzgsgzlbunm\"}}")
+            "{\"type\":\"ParquetWriteSettings\",\"maxRowsPerFile\":\"datapbxspvkcng\",\"fileNamePrefix\":\"datacnwn\",\"\":{\"bklkhhjx\":\"dataitlam\",\"hqzvwznwcqoapdtj\":\"datawqzsyetbff\"}}")
             .toObject(ParquetWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ParquetWriteSettings model
-            = new ParquetWriteSettings().withMaxRowsPerFile("dataryoiaob").withFileNamePrefix("datacdlccqumvb");
+            = new ParquetWriteSettings().withMaxRowsPerFile("datapbxspvkcng").withFileNamePrefix("datacnwn");
         model = BinaryData.fromObject(model).toObject(ParquetWriteSettings.class);
     }
 }

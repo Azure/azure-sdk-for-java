@@ -31,40 +31,27 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"alertType\":\"xqabckmzeoxi\",\"alertDisplayName\":\"greohtwhlpuzjp\",\"vendorName\":\"znzangprbfaxy\",\"reportedSeverity\":\"Medium\",\"remediationSteps\":\"ciphmsexr\",\"description\":\"rndktx\",\"count\":8107112782048178404,\"effectedResourceType\":\"eeqgpkri\",\"systemSource\":\"bgnixxoww\",\"actionTaken\":\"yfwnw\",\"logAnalyticsQuery\":\"wxeiicrmpepk\",\"topDevicesList\":[]},\"tags\":{\"rasek\":\"xijvskwsdgkjgyac\"},\"id\":\"efcvo\",\"name\":\"nwoqartwy\",\"type\":\"qicladv\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"alertType\":\"oqavstyzavkyjjl\",\"alertDisplayName\":\"nmbj\",\"vendorName\":\"gzldvvdkop\",\"reportedSeverity\":\"Informational\",\"remediationSteps\":\"ctoxoipmqne\",\"description\":\"hemvi\",\"count\":3234250632706120392,\"effectedResourceType\":\"zsgzguspejom\",\"systemSource\":\"gxhwispso\",\"actionTaken\":\"blw\",\"logAnalyticsQuery\":\"baqxaxtuxirppb\",\"topDevicesList\":[{\"deviceId\":\"lygkvuixwo\",\"alertsCount\":8275616412470636531,\"lastOccurrence\":\"zdxywabkitnipapt\"}]},\"tags\":{\"ltonop\":\"aqyjukkajnne\",\"fcdi\":\"femiwfhhawbabhz\",\"zfoi\":\"qnxyd\"},\"id\":\"zsuspaywvslq\",\"name\":\"ronzeafkxfmuwdb\",\"type\":\"ytqavouymkdeu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<IoTSecurityAggregatedAlert> response =
-            manager
-                .iotSecuritySolutionsAnalyticsAggregatedAlerts()
-                .list("fyvrtpqpemhzcgk", "epdqhqyhwq", 252630032, com.azure.core.util.Context.NONE);
+        PagedIterable<IoTSecurityAggregatedAlert> response = manager.iotSecuritySolutionsAnalyticsAggregatedAlerts()
+            .list("ipwtg", "wmzh", 293687557, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xijvskwsdgkjgyac", response.iterator().next().tags().get("rasek"));
+        Assertions.assertEquals("aqyjukkajnne", response.iterator().next().tags().get("ltonop"));
     }
 }

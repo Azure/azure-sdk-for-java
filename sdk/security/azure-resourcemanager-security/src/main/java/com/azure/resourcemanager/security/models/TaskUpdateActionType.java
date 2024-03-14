@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TaskUpdateActionType. */
+/**
+ * Defines values for TaskUpdateActionType.
+ */
 public final class TaskUpdateActionType extends ExpandableStringEnum<TaskUpdateActionType> {
-    /** Static value Activate for TaskUpdateActionType. */
+    /**
+     * Static value Activate for TaskUpdateActionType.
+     */
     public static final TaskUpdateActionType ACTIVATE = fromString("Activate");
 
-    /** Static value Dismiss for TaskUpdateActionType. */
+    /**
+     * Static value Dismiss for TaskUpdateActionType.
+     */
     public static final TaskUpdateActionType DISMISS = fromString("Dismiss");
 
-    /** Static value Start for TaskUpdateActionType. */
+    /**
+     * Static value Start for TaskUpdateActionType.
+     */
     public static final TaskUpdateActionType START = fromString("Start");
 
-    /** Static value Resolve for TaskUpdateActionType. */
+    /**
+     * Static value Resolve for TaskUpdateActionType.
+     */
     public static final TaskUpdateActionType RESOLVE = fromString("Resolve");
 
-    /** Static value Close for TaskUpdateActionType. */
+    /**
+     * Static value Close for TaskUpdateActionType.
+     */
     public static final TaskUpdateActionType CLOSE = fromString("Close");
 
     /**
      * Creates a new instance of TaskUpdateActionType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class TaskUpdateActionType extends ExpandableStringEnum<TaskUpdateA
 
     /**
      * Creates or finds a TaskUpdateActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TaskUpdateActionType.
      */
@@ -47,7 +59,7 @@ public final class TaskUpdateActionType extends ExpandableStringEnum<TaskUpdateA
 
     /**
      * Gets known TaskUpdateActionType values.
-     *
+     * 
      * @return known TaskUpdateActionType values.
      */
     public static Collection<TaskUpdateActionType> values() {

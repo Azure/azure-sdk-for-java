@@ -6,39 +6,41 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceAssessmentInner;
 
-/** An immutable client-side representation of RegulatoryComplianceAssessment. */
+/**
+ * An immutable client-side representation of RegulatoryComplianceAssessment.
+ */
 public interface RegulatoryComplianceAssessment {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the description property: The description of the regulatory compliance assessment.
-     *
+     * 
      * @return the description value.
      */
     String description();
 
     /**
      * Gets the assessmentType property: The expected type of assessment contained in the AssessmentDetailsLink.
-     *
+     * 
      * @return the assessmentType value.
      */
     String assessmentType();
@@ -46,49 +48,49 @@ public interface RegulatoryComplianceAssessment {
     /**
      * Gets the assessmentDetailsLink property: Link to more detailed assessment results data. The response type will be
      * according to the assessmentType field.
-     *
+     * 
      * @return the assessmentDetailsLink value.
      */
     String assessmentDetailsLink();
 
     /**
      * Gets the state property: Aggregative state based on the assessment's scanned resources states.
-     *
+     * 
      * @return the state value.
      */
     State state();
 
     /**
      * Gets the passedResources property: The given assessment's related resources count with passed state.
-     *
+     * 
      * @return the passedResources value.
      */
     Integer passedResources();
 
     /**
      * Gets the failedResources property: The given assessment's related resources count with failed state.
-     *
+     * 
      * @return the failedResources value.
      */
     Integer failedResources();
 
     /**
      * Gets the skippedResources property: The given assessment's related resources count with skipped state.
-     *
+     * 
      * @return the skippedResources value.
      */
     Integer skippedResources();
 
     /**
      * Gets the unsupportedResources property: The given assessment's related resources count with unsupported state.
-     *
+     * 
      * @return the unsupportedResources value.
      */
     Integer unsupportedResources();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.RegulatoryComplianceAssessmentInner object.
-     *
+     * 
      * @return the inner object.
      */
     RegulatoryComplianceAssessmentInner innerModel();

@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration model =
-            BinaryData
-                .fromString("{\"proxy\":\"qbmfuvqarwz\",\"privateLinkScope\":\"qreblui\"}")
+        DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration model
+            = BinaryData.fromString("{\"proxy\":\"gsoriobij\",\"privateLinkScope\":\"ydyeuy\"}")
                 .toObject(DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration.class);
-        Assertions.assertEquals("qbmfuvqarwz", model.proxy());
-        Assertions.assertEquals("qreblui", model.privateLinkScope());
+        Assertions.assertEquals("gsoriobij", model.proxy());
+        Assertions.assertEquals("ydyeuy", model.privateLinkScope());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration model =
-            new DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration()
-                .withProxy("qbmfuvqarwz")
-                .withPrivateLinkScope("qreblui");
-        model =
-            BinaryData.fromObject(model).toObject(DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration.class);
-        Assertions.assertEquals("qbmfuvqarwz", model.proxy());
-        Assertions.assertEquals("qreblui", model.privateLinkScope());
+        DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration model
+            = new DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration().withProxy("gsoriobij")
+                .withPrivateLinkScope("ydyeuy");
+        model = BinaryData.fromObject(model)
+            .toObject(DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration.class);
+        Assertions.assertEquals("gsoriobij", model.proxy());
+        Assertions.assertEquals("ydyeuy", model.privateLinkScope());
     }
 }

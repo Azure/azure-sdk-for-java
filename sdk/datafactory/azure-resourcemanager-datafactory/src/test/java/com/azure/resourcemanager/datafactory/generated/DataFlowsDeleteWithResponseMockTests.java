@@ -45,8 +45,7 @@ public final class DataFlowsDeleteWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.dataFlows().deleteWithResponse("uuldztvumvxk", "xgaidd", "dgkhiqwuwx",
-            com.azure.core.util.Context.NONE);
+        manager.dataFlows().deleteWithResponse("r", "gbbiuk", "kmthioae", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** configuration for Vulnerability Assessment autoprovisioning. */
+/**
+ * configuration for Vulnerability Assessment autoprovisioning.
+ */
 @Fluent
 public final class DefenderForServersAwsOfferingVaAutoProvisioningConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class DefenderForServersAwsOfferingVaAutoProvisioningConfiguration 
     @JsonProperty(value = "type")
     private Type type;
 
-    /** Creates an instance of DefenderForServersAwsOfferingVaAutoProvisioningConfiguration class. */
+    /**
+     * Creates an instance of DefenderForServersAwsOfferingVaAutoProvisioningConfiguration class.
+     */
     public DefenderForServersAwsOfferingVaAutoProvisioningConfiguration() {
     }
 
     /**
      * Get the type property: The Vulnerability Assessment solution to be provisioned. Can be either 'TVM' or 'Qualys'.
-     *
+     * 
      * @return the type value.
      */
     public Type type() {
@@ -31,7 +35,7 @@ public final class DefenderForServersAwsOfferingVaAutoProvisioningConfiguration 
 
     /**
      * Set the type property: The Vulnerability Assessment solution to be provisioned. Can be either 'TVM' or 'Qualys'.
-     *
+     * 
      * @param type the type value to set.
      * @return the DefenderForServersAwsOfferingVaAutoProvisioningConfiguration object itself.
      */
@@ -42,7 +46,7 @@ public final class DefenderForServersAwsOfferingVaAutoProvisioningConfiguration 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SecurityContacts. */
+/**
+ * Resource collection API of SecurityContacts.
+ */
 public interface SecurityContacts {
     /**
      * List all security contact configurations for the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of security contacts response as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface SecurityContacts {
 
     /**
      * List all security contact configurations for the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -32,7 +34,7 @@ public interface SecurityContacts {
 
     /**
      * Get Default Security contact configurations for the subscription.
-     *
+     * 
      * @param securityContactName Name of the security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -40,22 +42,22 @@ public interface SecurityContacts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return default Security contact configurations for the subscription along with {@link Response}.
      */
-    Response<SecurityContact> getWithResponse(String securityContactName, Context context);
+    Response<SecurityContact> getWithResponse(SecurityContactName securityContactName, Context context);
 
     /**
      * Get Default Security contact configurations for the subscription.
-     *
+     * 
      * @param securityContactName Name of the security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return default Security contact configurations for the subscription.
      */
-    SecurityContact get(String securityContactName);
+    SecurityContact get(SecurityContactName securityContactName);
 
     /**
      * Delete security contact configurations for the subscription.
-     *
+     * 
      * @param securityContactName Name of the security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,21 +65,21 @@ public interface SecurityContacts {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String securityContactName, Context context);
+    Response<Void> deleteWithResponse(SecurityContactName securityContactName, Context context);
 
     /**
      * Delete security contact configurations for the subscription.
-     *
+     * 
      * @param securityContactName Name of the security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String securityContactName);
+    void delete(SecurityContactName securityContactName);
 
     /**
      * Get Default Security contact configurations for the subscription.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -88,7 +90,7 @@ public interface SecurityContacts {
 
     /**
      * Get Default Security contact configurations for the subscription.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,7 +102,7 @@ public interface SecurityContacts {
 
     /**
      * Delete security contact configurations for the subscription.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -110,7 +112,7 @@ public interface SecurityContacts {
 
     /**
      * Delete security contact configurations for the subscription.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,9 +124,9 @@ public interface SecurityContacts {
 
     /**
      * Begins definition for a new SecurityContact resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SecurityContact definition.
      */
-    SecurityContact.DefinitionStages.Blank define(String name);
+    SecurityContact.DefinitionStages.Blank define(SecurityContactName name);
 }

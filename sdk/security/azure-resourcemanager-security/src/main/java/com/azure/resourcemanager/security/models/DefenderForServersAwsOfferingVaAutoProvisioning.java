@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Vulnerability Assessment autoprovisioning configuration. */
+/**
+ * The Vulnerability Assessment autoprovisioning configuration.
+ */
 @Fluent
 public final class DefenderForServersAwsOfferingVaAutoProvisioning {
     /*
@@ -22,13 +24,15 @@ public final class DefenderForServersAwsOfferingVaAutoProvisioning {
     @JsonProperty(value = "configuration")
     private DefenderForServersAwsOfferingVaAutoProvisioningConfiguration configuration;
 
-    /** Creates an instance of DefenderForServersAwsOfferingVaAutoProvisioning class. */
+    /**
+     * Creates an instance of DefenderForServersAwsOfferingVaAutoProvisioning class.
+     */
     public DefenderForServersAwsOfferingVaAutoProvisioning() {
     }
 
     /**
      * Get the enabled property: Is Vulnerability Assessment auto provisioning enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -37,7 +41,7 @@ public final class DefenderForServersAwsOfferingVaAutoProvisioning {
 
     /**
      * Set the enabled property: Is Vulnerability Assessment auto provisioning enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the DefenderForServersAwsOfferingVaAutoProvisioning object itself.
      */
@@ -48,7 +52,7 @@ public final class DefenderForServersAwsOfferingVaAutoProvisioning {
 
     /**
      * Get the configuration property: configuration for Vulnerability Assessment autoprovisioning.
-     *
+     * 
      * @return the configuration value.
      */
     public DefenderForServersAwsOfferingVaAutoProvisioningConfiguration configuration() {
@@ -57,19 +61,19 @@ public final class DefenderForServersAwsOfferingVaAutoProvisioning {
 
     /**
      * Set the configuration property: configuration for Vulnerability Assessment autoprovisioning.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the DefenderForServersAwsOfferingVaAutoProvisioning object itself.
      */
-    public DefenderForServersAwsOfferingVaAutoProvisioning withConfiguration(
-        DefenderForServersAwsOfferingVaAutoProvisioningConfiguration configuration) {
+    public DefenderForServersAwsOfferingVaAutoProvisioning
+        withConfiguration(DefenderForServersAwsOfferingVaAutoProvisioningConfiguration configuration) {
         this.configuration = configuration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The issue that caused the resource to by unhealthy. */
+/**
+ * The issue that caused the resource to by unhealthy.
+ */
 @Fluent
 public final class Issue {
     /*
@@ -58,13 +60,15 @@ public final class Issue {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> issueAdditionalData;
 
-    /** Creates an instance of Issue class. */
+    /**
+     * Creates an instance of Issue class.
+     */
     public Issue() {
     }
 
     /**
      * Get the issueKey property: The unique issue key.
-     *
+     * 
      * @return the issueKey value.
      */
     public String issueKey() {
@@ -73,7 +77,7 @@ public final class Issue {
 
     /**
      * Set the issueKey property: The unique issue key.
-     *
+     * 
      * @param issueKey the issueKey value to set.
      * @return the Issue object itself.
      */
@@ -84,7 +88,7 @@ public final class Issue {
 
     /**
      * Get the issueName property: The issue name.
-     *
+     * 
      * @return the issueName value.
      */
     public String issueName() {
@@ -93,7 +97,7 @@ public final class Issue {
 
     /**
      * Set the issueName property: The issue name.
-     *
+     * 
      * @param issueName the issueName value to set.
      * @return the Issue object itself.
      */
@@ -103,9 +107,9 @@ public final class Issue {
     }
 
     /**
-     * Get the securityValues property: The affected security values that MDC offers that will be affected by the issue,
-     * for example: recommendations, alerts, etc.
-     *
+     * Get the securityValues property: The affected security values that MDC offers that will be affected by the
+     * issue, for example: recommendations, alerts, etc.
+     * 
      * @return the securityValues value.
      */
     public List<String> securityValues() {
@@ -113,9 +117,9 @@ public final class Issue {
     }
 
     /**
-     * Set the securityValues property: The affected security values that MDC offers that will be affected by the issue,
-     * for example: recommendations, alerts, etc.
-     *
+     * Set the securityValues property: The affected security values that MDC offers that will be affected by the
+     * issue, for example: recommendations, alerts, etc.
+     * 
      * @param securityValues the securityValues value to set.
      * @return the Issue object itself.
      */
@@ -126,7 +130,7 @@ public final class Issue {
 
     /**
      * Get the issueDescription property: The issue description.
-     *
+     * 
      * @return the issueDescription value.
      */
     public String issueDescription() {
@@ -135,7 +139,7 @@ public final class Issue {
 
     /**
      * Set the issueDescription property: The issue description.
-     *
+     * 
      * @param issueDescription the issueDescription value to set.
      * @return the Issue object itself.
      */
@@ -147,7 +151,7 @@ public final class Issue {
     /**
      * Get the remediationSteps property: Human readable description of what you should do to mitigate this health
      * issue.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public String remediationSteps() {
@@ -157,7 +161,7 @@ public final class Issue {
     /**
      * Set the remediationSteps property: Human readable description of what you should do to mitigate this health
      * issue.
-     *
+     * 
      * @param remediationSteps the remediationSteps value to set.
      * @return the Issue object itself.
      */
@@ -168,7 +172,7 @@ public final class Issue {
 
     /**
      * Get the remediationScript property: The remediation script to solve this issue.
-     *
+     * 
      * @return the remediationScript value.
      */
     public String remediationScript() {
@@ -177,7 +181,7 @@ public final class Issue {
 
     /**
      * Set the remediationScript property: The remediation script to solve this issue.
-     *
+     * 
      * @param remediationScript the remediationScript value to set.
      * @return the Issue object itself.
      */
@@ -189,7 +193,7 @@ public final class Issue {
     /**
      * Get the issueAdditionalData property: Additional data for the given issue. The additional data depends on the
      * issue type.
-     *
+     * 
      * @return the issueAdditionalData value.
      */
     public Map<String, String> issueAdditionalData() {
@@ -199,7 +203,7 @@ public final class Issue {
     /**
      * Set the issueAdditionalData property: Additional data for the given issue. The additional data depends on the
      * issue type.
-     *
+     * 
      * @param issueAdditionalData the issueAdditionalData value to set.
      * @return the Issue object itself.
      */
@@ -210,7 +214,7 @@ public final class Issue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

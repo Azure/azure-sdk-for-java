@@ -7,6 +7,7 @@ public class KafkaCosmosConfigEntry<T> {
     private final String name;
     private final T defaultValue;
     private final boolean isOptional;
+
     private final boolean isPassword;
 
     public KafkaCosmosConfigEntry(String name, T defaultValue, boolean isOptional) {

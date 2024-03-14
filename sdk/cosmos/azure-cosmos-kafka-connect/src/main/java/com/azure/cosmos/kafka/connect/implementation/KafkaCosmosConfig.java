@@ -199,7 +199,6 @@ public class KafkaCosmosConfig extends AbstractConfig {
         return CosmosPriorityLevel.fromName(priorityLevel);
     }
 
-
     public static ConfigDef getConfigDef() {
         ConfigDef configDef = new ConfigDef();
 
