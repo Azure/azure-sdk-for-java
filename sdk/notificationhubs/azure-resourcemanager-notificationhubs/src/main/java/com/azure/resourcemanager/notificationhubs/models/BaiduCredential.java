@@ -6,107 +6,58 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.notificationhubs.fluent.models.BaiduCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a NotificationHub BaiduCredential. */
+/**
+ * Description of a NotificationHub BaiduCredential.
+ */
 @Fluent
 public final class BaiduCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BaiduCredential.class);
-
     /*
-     * Properties of NotificationHub BaiduCredential.
+     * Description of a NotificationHub BaiduCredential.
      */
-    @JsonProperty(value = "properties")
-    private BaiduCredentialProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private BaiduCredentialProperties properties;
 
     /**
-     * Get the innerProperties property: Properties of NotificationHub BaiduCredential.
-     *
-     * @return the innerProperties value.
+     * Creates an instance of BaiduCredential class.
      */
-    private BaiduCredentialProperties innerProperties() {
-        return this.innerProperties;
+    public BaiduCredential() {
     }
 
     /**
-     * Get the baiduApiKey property: Baidu Api Key.
-     *
-     * @return the baiduApiKey value.
+     * Get the properties property: Description of a NotificationHub BaiduCredential.
+     * 
+     * @return the properties value.
      */
-    public String baiduApiKey() {
-        return this.innerProperties() == null ? null : this.innerProperties().baiduApiKey();
+    public BaiduCredentialProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Set the baiduApiKey property: Baidu Api Key.
-     *
-     * @param baiduApiKey the baiduApiKey value to set.
+     * Set the properties property: Description of a NotificationHub BaiduCredential.
+     * 
+     * @param properties the properties value to set.
      * @return the BaiduCredential object itself.
      */
-    public BaiduCredential withBaiduApiKey(String baiduApiKey) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BaiduCredentialProperties();
-        }
-        this.innerProperties().withBaiduApiKey(baiduApiKey);
-        return this;
-    }
-
-    /**
-     * Get the baiduEndPoint property: Baidu Endpoint.
-     *
-     * @return the baiduEndPoint value.
-     */
-    public String baiduEndPoint() {
-        return this.innerProperties() == null ? null : this.innerProperties().baiduEndPoint();
-    }
-
-    /**
-     * Set the baiduEndPoint property: Baidu Endpoint.
-     *
-     * @param baiduEndPoint the baiduEndPoint value to set.
-     * @return the BaiduCredential object itself.
-     */
-    public BaiduCredential withBaiduEndPoint(String baiduEndPoint) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BaiduCredentialProperties();
-        }
-        this.innerProperties().withBaiduEndPoint(baiduEndPoint);
-        return this;
-    }
-
-    /**
-     * Get the baiduSecretKey property: Baidu Secret Key.
-     *
-     * @return the baiduSecretKey value.
-     */
-    public String baiduSecretKey() {
-        return this.innerProperties() == null ? null : this.innerProperties().baiduSecretKey();
-    }
-
-    /**
-     * Set the baiduSecretKey property: Baidu Secret Key.
-     *
-     * @param baiduSecretKey the baiduSecretKey value to set.
-     * @return the BaiduCredential object itself.
-     */
-    public BaiduCredential withBaiduSecretKey(String baiduSecretKey) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BaiduCredentialProperties();
-        }
-        this.innerProperties().withBaiduSecretKey(baiduSecretKey);
+    public BaiduCredential withProperties(BaiduCredentialProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model BaiduCredential"));
+        } else {
+            properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BaiduCredential.class);
 }

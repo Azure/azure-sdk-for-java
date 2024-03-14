@@ -6,287 +6,310 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
 import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner;
-import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of SharedAccessAuthorizationRuleResource. */
+/**
+ * An immutable client-side representation of SharedAccessAuthorizationRuleResource.
+ */
 public interface SharedAccessAuthorizationRuleResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
-     * Gets the location property: The geo-location where the resource lives.
-     *
+     * Gets the properties property: SharedAccessAuthorizationRule properties.
+     * 
+     * @return the properties value.
+     */
+    SharedAccessAuthorizationRuleProperties properties();
+
+    /**
+     * Gets the location property: Deprecated - only for compatibility.
+     * 
      * @return the location value.
      */
     String location();
 
     /**
-     * Gets the tags property: Resource tags.
-     *
+     * Gets the tags property: Deprecated - only for compatibility.
+     * 
      * @return the tags value.
      */
     Map<String, String> tags();
 
     /**
-     * Gets the sku property: The sku of the created namespace.
-     *
-     * @return the sku value.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    Sku sku();
-
-    /**
-     * Gets the rights property: The rights associated with the rule.
-     *
-     * @return the rights value.
-     */
-    List<AccessRights> rights();
-
-    /**
-     * Gets the primaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
-     *
-     * @return the primaryKey value.
-     */
-    String primaryKey();
-
-    /**
-     * Gets the secondaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
-     *
-     * @return the secondaryKey value.
-     */
-    String secondaryKey();
-
-    /**
-     * Gets the keyName property: A string that describes the authorization rule.
-     *
-     * @return the keyName value.
-     */
-    String keyName();
-
-    /**
-     * Gets the claimType property: A string that describes the claim type.
-     *
-     * @return the claimType value.
-     */
-    String claimType();
-
-    /**
-     * Gets the claimValue property: A string that describes the claim value.
-     *
-     * @return the claimValue value.
-     */
-    String claimValue();
-
-    /**
-     * Gets the modifiedTime property: The last modified time for this rule.
-     *
-     * @return the modifiedTime value.
-     */
-    String modifiedTime();
-
-    /**
-     * Gets the createdTime property: The created time for this rule.
-     *
-     * @return the createdTime value.
-     */
-    String createdTime();
-
-    /**
-     * Gets the revision property: The revision number for the rule.
-     *
-     * @return the revision value.
-     */
-    Integer revision();
+    SystemData systemData();
 
     /**
      * Gets the region of the resource.
-     *
+     * 
      * @return the region of the resource.
      */
     Region region();
 
     /**
      * Gets the name of the resource region.
-     *
+     * 
      * @return the name of the resource region.
      */
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner
      * com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     SharedAccessAuthorizationRuleResourceInner innerModel();
 
-    /** The entirety of the SharedAccessAuthorizationRuleResource definition. */
+    /**
+     * The entirety of the SharedAccessAuthorizationRuleResource definition.
+     */
     interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithParentResource,
-            DefinitionStages.WithProperties,
-            DefinitionStages.WithCreate {
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
-    /** The SharedAccessAuthorizationRuleResource definition stages. */
+
+    /**
+     * The SharedAccessAuthorizationRuleResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the SharedAccessAuthorizationRuleResource definition. */
+        /**
+         * The first stage of the SharedAccessAuthorizationRuleResource definition.
+         */
         interface Blank extends WithParentResource {
         }
-        /** The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
-             * Specifies resourceGroupName, namespaceName.
-             *
-             * @param resourceGroupName The name of the resource group.
-             * @param namespaceName The namespace name.
+             * Specifies resourceGroupName, namespaceName, notificationHubName.
+             * 
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param namespaceName Namespace name.
+             * @param notificationHubName Notification Hub name.
              * @return the next definition stage.
              */
-            WithProperties withExistingNamespace(String resourceGroupName, String namespaceName);
+            WithCreate withExistingNotificationHub(String resourceGroupName, String namespaceName,
+                String notificationHubName);
         }
-        /** The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify properties. */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: Properties of the Namespace AuthorizationRules..
-             *
-             * @param properties Properties of the Namespace AuthorizationRules.
-             * @return the next definition stage.
-             */
-            WithCreate withProperties(SharedAccessAuthorizationRuleProperties properties);
-        }
+
         /**
          * The stage of the SharedAccessAuthorizationRuleResource definition which contains all the minimum required
          * properties for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate {
+        interface WithCreate
+            extends DefinitionStages.WithLocation, DefinitionStages.WithTags, DefinitionStages.WithProperties {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             SharedAccessAuthorizationRuleResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             SharedAccessAuthorizationRuleResource create(Context context);
         }
+
+        /**
+         * The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify location.
+         */
+        interface WithLocation {
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location Deprecated - only for compatibility.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(Region location);
+
+            /**
+             * Specifies the region for the resource.
+             * 
+             * @param location Deprecated - only for compatibility.
+             * @return the next definition stage.
+             */
+            WithCreate withRegion(String location);
+        }
+
+        /**
+         * The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Deprecated - only for compatibility..
+             * 
+             * @param tags Deprecated - only for compatibility.
+             * @return the next definition stage.
+             */
+            WithCreate withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the SharedAccessAuthorizationRuleResource definition allowing to specify properties.
+         */
+        interface WithProperties {
+            /**
+             * Specifies the properties property: SharedAccessAuthorizationRule properties..
+             * 
+             * @param properties SharedAccessAuthorizationRule properties.
+             * @return the next definition stage.
+             */
+            WithCreate withProperties(SharedAccessAuthorizationRuleProperties properties);
+        }
     }
+
     /**
      * Begins update for the SharedAccessAuthorizationRuleResource resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     SharedAccessAuthorizationRuleResource.Update update();
 
-    /** The template for SharedAccessAuthorizationRuleResource update. */
-    interface Update extends UpdateStages.WithProperties {
+    /**
+     * The template for SharedAccessAuthorizationRuleResource update.
+     */
+    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         SharedAccessAuthorizationRuleResource apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         SharedAccessAuthorizationRuleResource apply(Context context);
     }
-    /** The SharedAccessAuthorizationRuleResource update stages. */
+
+    /**
+     * The SharedAccessAuthorizationRuleResource update stages.
+     */
     interface UpdateStages {
-        /** The stage of the SharedAccessAuthorizationRuleResource update allowing to specify properties. */
+        /**
+         * The stage of the SharedAccessAuthorizationRuleResource update allowing to specify tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies the tags property: Deprecated - only for compatibility..
+             * 
+             * @param tags Deprecated - only for compatibility.
+             * @return the next definition stage.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
+        /**
+         * The stage of the SharedAccessAuthorizationRuleResource update allowing to specify properties.
+         */
         interface WithProperties {
             /**
-             * Specifies the properties property: Properties of the Namespace AuthorizationRules..
-             *
-             * @param properties Properties of the Namespace AuthorizationRules.
+             * Specifies the properties property: SharedAccessAuthorizationRule properties..
+             * 
+             * @param properties SharedAccessAuthorizationRule properties.
              * @return the next definition stage.
              */
             Update withProperties(SharedAccessAuthorizationRuleProperties properties);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     SharedAccessAuthorizationRuleResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
     SharedAccessAuthorizationRuleResource refresh(Context context);
 
     /**
-     * Gets the Primary and Secondary ConnectionStrings to the namespace.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Primary and Secondary ConnectionStrings to the namespace.
-     */
-    ResourceListKeys listKeys();
-
-    /**
-     * Gets the Primary and Secondary ConnectionStrings to the namespace.
-     *
+     * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Primary and Secondary ConnectionStrings to the namespace.
+     * @return the Primary and Secondary ConnectionStrings to the NotificationHub along with {@link Response}.
      */
     Response<ResourceListKeys> listKeysWithResponse(Context context);
 
     /**
-     * Regenerates the Primary/Secondary Keys to the Namespace Authorization Rule.
-     *
-     * @param parameters Parameters supplied to regenerate the Namespace Authorization Rule Key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * Gets the Primary and Secondary ConnectionStrings to the NotificationHub.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/NotificationHub Connection String.
+     * @return the Primary and Secondary ConnectionStrings to the NotificationHub.
      */
-    ResourceListKeys regenerateKeys(PolicykeyResource parameters);
+    ResourceListKeys listKeys();
 
     /**
-     * Regenerates the Primary/Secondary Keys to the Namespace Authorization Rule.
-     *
-     * @param parameters Parameters supplied to regenerate the Namespace Authorization Rule Key.
+     * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
+     * 
+     * @param parameters Request content.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return namespace/NotificationHub Connection String.
+     * @return response for the POST request that returns Namespace or NotificationHub access keys (connection strings)
+     * along with {@link Response}.
      */
-    Response<ResourceListKeys> regenerateKeysWithResponse(PolicykeyResource parameters, Context context);
+    Response<ResourceListKeys> regenerateKeysWithResponse(PolicyKeyResource parameters, Context context);
+
+    /**
+     * Regenerates the Primary/Secondary Keys to the NotificationHub Authorization Rule.
+     * 
+     * @param parameters Request content.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for the POST request that returns Namespace or NotificationHub access keys (connection strings).
+     */
+    ResourceListKeys regenerateKeys(PolicyKeyResource parameters);
 }

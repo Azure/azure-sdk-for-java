@@ -5,153 +5,126 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.notificationhubs.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.notificationhubs.models.DebugSendResult;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Description of a NotificationHub Resource. */
+/**
+ * Description of a NotificationHub Resource.
+ */
 @Fluent
-public final class DebugSendResponseInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DebugSendResponseInner.class);
-
+public final class DebugSendResponseInner extends ProxyResource {
     /*
-     * Properties of the NotificationHub.
+     * Result of DebugSend operations.
      */
     @JsonProperty(value = "properties")
-    private DebugSendResult innerProperties;
+    private DebugSendResult properties;
 
     /*
-     * The sku of the created namespace
+     * Deprecated - only for compatibility.
      */
-    @JsonProperty(value = "sku")
-    private Sku sku;
+    @JsonProperty(value = "location")
+    private String location;
+
+    /*
+     * Deprecated - only for compatibility.
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
-     * Get the innerProperties property: Properties of the NotificationHub.
-     *
-     * @return the innerProperties value.
+     * Creates an instance of DebugSendResponseInner class.
      */
-    private DebugSendResult innerProperties() {
-        return this.innerProperties;
+    public DebugSendResponseInner() {
     }
 
     /**
-     * Get the sku property: The sku of the created namespace.
-     *
-     * @return the sku value.
+     * Get the properties property: Result of DebugSend operations.
+     * 
+     * @return the properties value.
      */
-    public Sku sku() {
-        return this.sku;
+    public DebugSendResult properties() {
+        return this.properties;
     }
 
     /**
-     * Set the sku property: The sku of the created namespace.
-     *
-     * @param sku the sku value to set.
+     * Set the properties property: Result of DebugSend operations.
+     * 
+     * @param properties the properties value to set.
      * @return the DebugSendResponseInner object itself.
      */
-    public DebugSendResponseInner withSku(Sku sku) {
-        this.sku = sku;
+    public DebugSendResponseInner withProperties(DebugSendResult properties) {
+        this.properties = properties;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the location property: Deprecated - only for compatibility.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: Deprecated - only for compatibility.
+     * 
+     * @param location the location value to set.
+     * @return the DebugSendResponseInner object itself.
+     */
     public DebugSendResponseInner withLocation(String location) {
-        super.withLocation(location);
+        this.location = location;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the tags property: Deprecated - only for compatibility.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Deprecated - only for compatibility.
+     * 
+     * @param tags the tags value to set.
+     * @return the DebugSendResponseInner object itself.
+     */
     public DebugSendResponseInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        this.tags = tags;
         return this;
     }
 
     /**
-     * Get the success property: successful send.
-     *
-     * @return the success value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public Float success() {
-        return this.innerProperties() == null ? null : this.innerProperties().success();
-    }
-
-    /**
-     * Set the success property: successful send.
-     *
-     * @param success the success value to set.
-     * @return the DebugSendResponseInner object itself.
-     */
-    public DebugSendResponseInner withSuccess(Float success) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DebugSendResult();
-        }
-        this.innerProperties().withSuccess(success);
-        return this;
-    }
-
-    /**
-     * Get the failure property: send failure.
-     *
-     * @return the failure value.
-     */
-    public Float failure() {
-        return this.innerProperties() == null ? null : this.innerProperties().failure();
-    }
-
-    /**
-     * Set the failure property: send failure.
-     *
-     * @param failure the failure value to set.
-     * @return the DebugSendResponseInner object itself.
-     */
-    public DebugSendResponseInner withFailure(Float failure) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DebugSendResult();
-        }
-        this.innerProperties().withFailure(failure);
-        return this;
-    }
-
-    /**
-     * Get the results property: actual failure description.
-     *
-     * @return the results value.
-     */
-    public Object results() {
-        return this.innerProperties() == null ? null : this.innerProperties().results();
-    }
-
-    /**
-     * Set the results property: actual failure description.
-     *
-     * @param results the results value to set.
-     * @return the DebugSendResponseInner object itself.
-     */
-    public DebugSendResponseInner withResults(Object results) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new DebugSendResult();
-        }
-        this.innerProperties().withResults(results);
-        return this;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
-        if (sku() != null) {
-            sku().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

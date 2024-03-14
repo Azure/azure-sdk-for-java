@@ -6,23 +6,16 @@ package com.azure.resourcemanager.notificationhubs.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.notificationhubs.fluent.models.NotificationHubResourceInner;
-import com.azure.resourcemanager.notificationhubs.fluent.models.SharedAccessAuthorizationRuleProperties;
-import com.azure.resourcemanager.notificationhubs.models.AdmCredential;
-import com.azure.resourcemanager.notificationhubs.models.ApnsCredential;
-import com.azure.resourcemanager.notificationhubs.models.BaiduCredential;
 import com.azure.resourcemanager.notificationhubs.models.DebugSendResponse;
-import com.azure.resourcemanager.notificationhubs.models.GcmCredential;
-import com.azure.resourcemanager.notificationhubs.models.MpnsCredential;
-import com.azure.resourcemanager.notificationhubs.models.NotificationHubCreateOrUpdateParameters;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubPatchParameters;
+import com.azure.resourcemanager.notificationhubs.models.NotificationHubProperties;
 import com.azure.resourcemanager.notificationhubs.models.NotificationHubResource;
 import com.azure.resourcemanager.notificationhubs.models.PnsCredentialsResource;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
-import com.azure.resourcemanager.notificationhubs.models.WnsCredential;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class NotificationHubResourceImpl
@@ -56,49 +49,16 @@ public final class NotificationHubResourceImpl
         }
     }
 
+    public NotificationHubProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public Sku sku() {
         return this.innerModel().sku();
     }
 
-    public String namePropertiesName() {
-        return this.innerModel().namePropertiesName();
-    }
-
-    public String registrationTtl() {
-        return this.innerModel().registrationTtl();
-    }
-
-    public List<SharedAccessAuthorizationRuleProperties> authorizationRules() {
-        List<SharedAccessAuthorizationRuleProperties> inner = this.innerModel().authorizationRules();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public ApnsCredential apnsCredential() {
-        return this.innerModel().apnsCredential();
-    }
-
-    public WnsCredential wnsCredential() {
-        return this.innerModel().wnsCredential();
-    }
-
-    public GcmCredential gcmCredential() {
-        return this.innerModel().gcmCredential();
-    }
-
-    public MpnsCredential mpnsCredential() {
-        return this.innerModel().mpnsCredential();
-    }
-
-    public AdmCredential admCredential() {
-        return this.innerModel().admCredential();
-    }
-
-    public BaiduCredential baiduCredential() {
-        return this.innerModel().baiduCredential();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public Region region() {
@@ -107,6 +67,10 @@ public final class NotificationHubResourceImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public NotificationHubResourceInner innerModel() {
@@ -123,8 +87,6 @@ public final class NotificationHubResourceImpl
 
     private String notificationHubName;
 
-    private NotificationHubCreateOrUpdateParameters createParameters;
-
     private NotificationHubPatchParameters updateParameters;
 
     public NotificationHubResourceImpl withExistingNamespace(String resourceGroupName, String namespaceName) {
@@ -134,33 +96,24 @@ public final class NotificationHubResourceImpl
     }
 
     public NotificationHubResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, namespaceName, notificationHubName, createParameters, Context.NONE)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getNotificationHubs().createOrUpdateWithResponse(resourceGroupName,
+                namespaceName, notificationHubName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public NotificationHubResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, namespaceName, notificationHubName, createParameters, context)
-                .getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getNotificationHubs().createOrUpdateWithResponse(resourceGroupName,
+                namespaceName, notificationHubName, this.innerModel(), context).getValue();
         return this;
     }
 
-    NotificationHubResourceImpl(
-        String name, com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
+    NotificationHubResourceImpl(String name,
+        com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = new NotificationHubResourceInner();
         this.serviceManager = serviceManager;
         this.notificationHubName = name;
-        this.createParameters = new NotificationHubCreateOrUpdateParameters();
     }
 
     public NotificationHubResourceImpl update() {
@@ -169,91 +122,72 @@ public final class NotificationHubResourceImpl
     }
 
     public NotificationHubResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .patchWithResponse(
-                    resourceGroupName, namespaceName, notificationHubName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
+            .updateWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public NotificationHubResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .patchWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
+            .updateWithResponse(resourceGroupName, namespaceName, notificationHubName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    NotificationHubResourceImpl(
-        NotificationHubResourceInner innerObject,
+    NotificationHubResourceImpl(NotificationHubResourceInner innerObject,
         com.azure.resourcemanager.notificationhubs.NotificationHubsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.namespaceName = Utils.getValueFromIdByName(innerObject.id(), "namespaces");
-        this.notificationHubName = Utils.getValueFromIdByName(innerObject.id(), "notificationHubs");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.namespaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "namespaces");
+        this.notificationHubName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "notificationHubs");
     }
 
     public NotificationHubResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .getWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
+            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, Context.NONE).getValue();
         return this;
     }
 
     public NotificationHubResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getNotificationHubs()
-                .getWithResponse(resourceGroupName, namespaceName, notificationHubName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getNotificationHubs()
+            .getWithResponse(resourceGroupName, namespaceName, notificationHubName, context).getValue();
         return this;
+    }
+
+    public Response<DebugSendResponse> debugSendWithResponse(Context context) {
+        return serviceManager.notificationHubs().debugSendWithResponse(resourceGroupName, namespaceName,
+            notificationHubName, context);
     }
 
     public DebugSendResponse debugSend() {
         return serviceManager.notificationHubs().debugSend(resourceGroupName, namespaceName, notificationHubName);
     }
 
-    public Response<DebugSendResponse> debugSendWithResponse(Object parameters, Context context) {
-        return serviceManager
-            .notificationHubs()
-            .debugSendWithResponse(resourceGroupName, namespaceName, notificationHubName, parameters, context);
+    public Response<PnsCredentialsResource> getPnsCredentialsWithResponse(Context context) {
+        return serviceManager.notificationHubs().getPnsCredentialsWithResponse(resourceGroupName, namespaceName,
+            notificationHubName, context);
     }
 
     public PnsCredentialsResource getPnsCredentials() {
-        return serviceManager
-            .notificationHubs()
-            .getPnsCredentials(resourceGroupName, namespaceName, notificationHubName);
-    }
-
-    public Response<PnsCredentialsResource> getPnsCredentialsWithResponse(Context context) {
-        return serviceManager
-            .notificationHubs()
-            .getPnsCredentialsWithResponse(resourceGroupName, namespaceName, notificationHubName, context);
+        return serviceManager.notificationHubs().getPnsCredentials(resourceGroupName, namespaceName,
+            notificationHubName);
     }
 
     public NotificationHubResourceImpl withRegion(Region location) {
-        this.createParameters.withLocation(location.toString());
+        this.innerModel().withLocation(location.toString());
         return this;
     }
 
     public NotificationHubResourceImpl withRegion(String location) {
-        this.createParameters.withLocation(location);
+        this.innerModel().withLocation(location);
         return this;
     }
 
     public NotificationHubResourceImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
-            this.createParameters.withTags(tags);
+            this.innerModel().withTags(tags);
             return this;
         } else {
             this.updateParameters.withTags(tags);
@@ -261,103 +195,22 @@ public final class NotificationHubResourceImpl
         }
     }
 
+    public NotificationHubResourceImpl withProperties(NotificationHubProperties properties) {
+        if (isInCreateMode()) {
+            this.innerModel().withProperties(properties);
+            return this;
+        } else {
+            this.updateParameters.withProperties(properties);
+            return this;
+        }
+    }
+
     public NotificationHubResourceImpl withSku(Sku sku) {
         if (isInCreateMode()) {
-            this.createParameters.withSku(sku);
+            this.innerModel().withSku(sku);
             return this;
         } else {
             this.updateParameters.withSku(sku);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withNamePropertiesName(String namePropertiesName) {
-        if (isInCreateMode()) {
-            this.createParameters.withNamePropertiesName(namePropertiesName);
-            return this;
-        } else {
-            this.updateParameters.withNamePropertiesName(namePropertiesName);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withRegistrationTtl(String registrationTtl) {
-        if (isInCreateMode()) {
-            this.createParameters.withRegistrationTtl(registrationTtl);
-            return this;
-        } else {
-            this.updateParameters.withRegistrationTtl(registrationTtl);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withAuthorizationRules(
-        List<SharedAccessAuthorizationRuleProperties> authorizationRules) {
-        if (isInCreateMode()) {
-            this.createParameters.withAuthorizationRules(authorizationRules);
-            return this;
-        } else {
-            this.updateParameters.withAuthorizationRules(authorizationRules);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withApnsCredential(ApnsCredential apnsCredential) {
-        if (isInCreateMode()) {
-            this.createParameters.withApnsCredential(apnsCredential);
-            return this;
-        } else {
-            this.updateParameters.withApnsCredential(apnsCredential);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withWnsCredential(WnsCredential wnsCredential) {
-        if (isInCreateMode()) {
-            this.createParameters.withWnsCredential(wnsCredential);
-            return this;
-        } else {
-            this.updateParameters.withWnsCredential(wnsCredential);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withGcmCredential(GcmCredential gcmCredential) {
-        if (isInCreateMode()) {
-            this.createParameters.withGcmCredential(gcmCredential);
-            return this;
-        } else {
-            this.updateParameters.withGcmCredential(gcmCredential);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withMpnsCredential(MpnsCredential mpnsCredential) {
-        if (isInCreateMode()) {
-            this.createParameters.withMpnsCredential(mpnsCredential);
-            return this;
-        } else {
-            this.updateParameters.withMpnsCredential(mpnsCredential);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withAdmCredential(AdmCredential admCredential) {
-        if (isInCreateMode()) {
-            this.createParameters.withAdmCredential(admCredential);
-            return this;
-        } else {
-            this.updateParameters.withAdmCredential(admCredential);
-            return this;
-        }
-    }
-
-    public NotificationHubResourceImpl withBaiduCredential(BaiduCredential baiduCredential) {
-        if (isInCreateMode()) {
-            this.createParameters.withBaiduCredential(baiduCredential);
-            return this;
-        } else {
-            this.updateParameters.withBaiduCredential(baiduCredential);
             return this;
         }
     }

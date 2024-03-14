@@ -6,107 +6,58 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.notificationhubs.fluent.models.AdmCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a NotificationHub AdmCredential. */
+/**
+ * Description of a NotificationHub AdmCredential.
+ */
 @Fluent
 public final class AdmCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdmCredential.class);
-
     /*
-     * Properties of NotificationHub AdmCredential.
+     * Description of a NotificationHub AdmCredential.
      */
-    @JsonProperty(value = "properties")
-    private AdmCredentialProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private AdmCredentialProperties properties;
 
     /**
-     * Get the innerProperties property: Properties of NotificationHub AdmCredential.
-     *
-     * @return the innerProperties value.
+     * Creates an instance of AdmCredential class.
      */
-    private AdmCredentialProperties innerProperties() {
-        return this.innerProperties;
+    public AdmCredential() {
     }
 
     /**
-     * Get the clientId property: The client identifier.
-     *
-     * @return the clientId value.
+     * Get the properties property: Description of a NotificationHub AdmCredential.
+     * 
+     * @return the properties value.
      */
-    public String clientId() {
-        return this.innerProperties() == null ? null : this.innerProperties().clientId();
+    public AdmCredentialProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Set the clientId property: The client identifier.
-     *
-     * @param clientId the clientId value to set.
+     * Set the properties property: Description of a NotificationHub AdmCredential.
+     * 
+     * @param properties the properties value to set.
      * @return the AdmCredential object itself.
      */
-    public AdmCredential withClientId(String clientId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AdmCredentialProperties();
-        }
-        this.innerProperties().withClientId(clientId);
-        return this;
-    }
-
-    /**
-     * Get the clientSecret property: The credential secret access key.
-     *
-     * @return the clientSecret value.
-     */
-    public String clientSecret() {
-        return this.innerProperties() == null ? null : this.innerProperties().clientSecret();
-    }
-
-    /**
-     * Set the clientSecret property: The credential secret access key.
-     *
-     * @param clientSecret the clientSecret value to set.
-     * @return the AdmCredential object itself.
-     */
-    public AdmCredential withClientSecret(String clientSecret) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AdmCredentialProperties();
-        }
-        this.innerProperties().withClientSecret(clientSecret);
-        return this;
-    }
-
-    /**
-     * Get the authTokenUrl property: The URL of the authorization token.
-     *
-     * @return the authTokenUrl value.
-     */
-    public String authTokenUrl() {
-        return this.innerProperties() == null ? null : this.innerProperties().authTokenUrl();
-    }
-
-    /**
-     * Set the authTokenUrl property: The URL of the authorization token.
-     *
-     * @param authTokenUrl the authTokenUrl value to set.
-     * @return the AdmCredential object itself.
-     */
-    public AdmCredential withAuthTokenUrl(String authTokenUrl) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AdmCredentialProperties();
-        }
-        this.innerProperties().withAuthTokenUrl(authTokenUrl);
+    public AdmCredential withProperties(AdmCredentialProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model AdmCredential"));
+        } else {
+            properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AdmCredential.class);
 }

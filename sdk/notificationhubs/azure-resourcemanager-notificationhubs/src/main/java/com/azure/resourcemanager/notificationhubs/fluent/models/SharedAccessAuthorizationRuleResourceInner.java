@@ -5,181 +5,127 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.notificationhubs.models.AccessRights;
-import com.azure.resourcemanager.notificationhubs.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.notificationhubs.models.SharedAccessAuthorizationRuleProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 import java.util.Map;
 
-/** Description of a Namespace AuthorizationRules. */
+/**
+ * Response for POST requests that return single SharedAccessAuthorizationRule.
+ */
 @Fluent
-public final class SharedAccessAuthorizationRuleResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharedAccessAuthorizationRuleResourceInner.class);
-
+public final class SharedAccessAuthorizationRuleResourceInner extends ProxyResource {
     /*
-     * Properties of the Namespace AuthorizationRule.
+     * SharedAccessAuthorizationRule properties.
      */
     @JsonProperty(value = "properties")
-    private SharedAccessAuthorizationRuleProperties innerProperties;
+    private SharedAccessAuthorizationRuleProperties properties;
 
     /*
-     * The sku of the created namespace
+     * Deprecated - only for compatibility.
      */
-    @JsonProperty(value = "sku")
-    private Sku sku;
+    @JsonProperty(value = "location")
+    private String location;
+
+    /*
+     * Deprecated - only for compatibility.
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
-     * Get the innerProperties property: Properties of the Namespace AuthorizationRule.
-     *
-     * @return the innerProperties value.
+     * Creates an instance of SharedAccessAuthorizationRuleResourceInner class.
      */
-    private SharedAccessAuthorizationRuleProperties innerProperties() {
-        return this.innerProperties;
+    public SharedAccessAuthorizationRuleResourceInner() {
     }
 
     /**
-     * Get the sku property: The sku of the created namespace.
-     *
-     * @return the sku value.
+     * Get the properties property: SharedAccessAuthorizationRule properties.
+     * 
+     * @return the properties value.
      */
-    public Sku sku() {
-        return this.sku;
+    public SharedAccessAuthorizationRuleProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Set the sku property: The sku of the created namespace.
-     *
-     * @param sku the sku value to set.
+     * Set the properties property: SharedAccessAuthorizationRule properties.
+     * 
+     * @param properties the properties value to set.
      * @return the SharedAccessAuthorizationRuleResourceInner object itself.
      */
-    public SharedAccessAuthorizationRuleResourceInner withSku(Sku sku) {
-        this.sku = sku;
+    public SharedAccessAuthorizationRuleResourceInner
+        withProperties(SharedAccessAuthorizationRuleProperties properties) {
+        this.properties = properties;
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
+    /**
+     * Get the location property: Deprecated - only for compatibility.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: Deprecated - only for compatibility.
+     * 
+     * @param location the location value to set.
+     * @return the SharedAccessAuthorizationRuleResourceInner object itself.
+     */
     public SharedAccessAuthorizationRuleResourceInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SharedAccessAuthorizationRuleResourceInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        this.location = location;
         return this;
     }
 
     /**
-     * Get the rights property: The rights associated with the rule.
-     *
-     * @return the rights value.
+     * Get the tags property: Deprecated - only for compatibility.
+     * 
+     * @return the tags value.
      */
-    public List<AccessRights> rights() {
-        return this.innerProperties() == null ? null : this.innerProperties().rights();
+    public Map<String, String> tags() {
+        return this.tags;
     }
 
     /**
-     * Set the rights property: The rights associated with the rule.
-     *
-     * @param rights the rights value to set.
+     * Set the tags property: Deprecated - only for compatibility.
+     * 
+     * @param tags the tags value to set.
      * @return the SharedAccessAuthorizationRuleResourceInner object itself.
      */
-    public SharedAccessAuthorizationRuleResourceInner withRights(List<AccessRights> rights) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new SharedAccessAuthorizationRuleProperties();
-        }
-        this.innerProperties().withRights(rights);
+    public SharedAccessAuthorizationRuleResourceInner withTags(Map<String, String> tags) {
+        this.tags = tags;
         return this;
     }
 
     /**
-     * Get the primaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
-     *
-     * @return the primaryKey value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String primaryKey() {
-        return this.innerProperties() == null ? null : this.innerProperties().primaryKey();
-    }
-
-    /**
-     * Get the secondaryKey property: A base64-encoded 256-bit primary key for signing and validating the SAS token.
-     *
-     * @return the secondaryKey value.
-     */
-    public String secondaryKey() {
-        return this.innerProperties() == null ? null : this.innerProperties().secondaryKey();
-    }
-
-    /**
-     * Get the keyName property: A string that describes the authorization rule.
-     *
-     * @return the keyName value.
-     */
-    public String keyName() {
-        return this.innerProperties() == null ? null : this.innerProperties().keyName();
-    }
-
-    /**
-     * Get the claimType property: A string that describes the claim type.
-     *
-     * @return the claimType value.
-     */
-    public String claimType() {
-        return this.innerProperties() == null ? null : this.innerProperties().claimType();
-    }
-
-    /**
-     * Get the claimValue property: A string that describes the claim value.
-     *
-     * @return the claimValue value.
-     */
-    public String claimValue() {
-        return this.innerProperties() == null ? null : this.innerProperties().claimValue();
-    }
-
-    /**
-     * Get the modifiedTime property: The last modified time for this rule.
-     *
-     * @return the modifiedTime value.
-     */
-    public String modifiedTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().modifiedTime();
-    }
-
-    /**
-     * Get the createdTime property: The created time for this rule.
-     *
-     * @return the createdTime value.
-     */
-    public String createdTime() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
-    }
-
-    /**
-     * Get the revision property: The revision number for the rule.
-     *
-     * @return the revision value.
-     */
-    public Integer revision() {
-        return this.innerProperties() == null ? null : this.innerProperties().revision();
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
-        }
-        if (sku() != null) {
-            sku().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

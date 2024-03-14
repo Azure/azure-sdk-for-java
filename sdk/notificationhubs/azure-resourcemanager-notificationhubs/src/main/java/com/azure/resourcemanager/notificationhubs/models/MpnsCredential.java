@@ -6,107 +6,58 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.notificationhubs.fluent.models.MpnsCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a NotificationHub MpnsCredential. */
+/**
+ * Description of a NotificationHub MpnsCredential.
+ */
 @Fluent
 public final class MpnsCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MpnsCredential.class);
-
     /*
-     * Properties of NotificationHub MpnsCredential.
+     * Description of a NotificationHub MpnsCredential.
      */
-    @JsonProperty(value = "properties")
-    private MpnsCredentialProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private MpnsCredentialProperties properties;
 
     /**
-     * Get the innerProperties property: Properties of NotificationHub MpnsCredential.
-     *
-     * @return the innerProperties value.
+     * Creates an instance of MpnsCredential class.
      */
-    private MpnsCredentialProperties innerProperties() {
-        return this.innerProperties;
+    public MpnsCredential() {
     }
 
     /**
-     * Get the mpnsCertificate property: The MPNS certificate.
-     *
-     * @return the mpnsCertificate value.
+     * Get the properties property: Description of a NotificationHub MpnsCredential.
+     * 
+     * @return the properties value.
      */
-    public String mpnsCertificate() {
-        return this.innerProperties() == null ? null : this.innerProperties().mpnsCertificate();
+    public MpnsCredentialProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Set the mpnsCertificate property: The MPNS certificate.
-     *
-     * @param mpnsCertificate the mpnsCertificate value to set.
+     * Set the properties property: Description of a NotificationHub MpnsCredential.
+     * 
+     * @param properties the properties value to set.
      * @return the MpnsCredential object itself.
      */
-    public MpnsCredential withMpnsCertificate(String mpnsCertificate) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MpnsCredentialProperties();
-        }
-        this.innerProperties().withMpnsCertificate(mpnsCertificate);
-        return this;
-    }
-
-    /**
-     * Get the certificateKey property: The certificate key for this credential.
-     *
-     * @return the certificateKey value.
-     */
-    public String certificateKey() {
-        return this.innerProperties() == null ? null : this.innerProperties().certificateKey();
-    }
-
-    /**
-     * Set the certificateKey property: The certificate key for this credential.
-     *
-     * @param certificateKey the certificateKey value to set.
-     * @return the MpnsCredential object itself.
-     */
-    public MpnsCredential withCertificateKey(String certificateKey) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MpnsCredentialProperties();
-        }
-        this.innerProperties().withCertificateKey(certificateKey);
-        return this;
-    }
-
-    /**
-     * Get the thumbprint property: The MPNS certificate Thumbprint.
-     *
-     * @return the thumbprint value.
-     */
-    public String thumbprint() {
-        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
-    }
-
-    /**
-     * Set the thumbprint property: The MPNS certificate Thumbprint.
-     *
-     * @param thumbprint the thumbprint value to set.
-     * @return the MpnsCredential object itself.
-     */
-    public MpnsCredential withThumbprint(String thumbprint) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new MpnsCredentialProperties();
-        }
-        this.innerProperties().withThumbprint(thumbprint);
+    public MpnsCredential withProperties(MpnsCredentialProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model MpnsCredential"));
+        } else {
+            properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MpnsCredential.class);
 }

@@ -6,107 +6,58 @@ package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.notificationhubs.fluent.models.WnsCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a NotificationHub WnsCredential. */
+/**
+ * Description of a NotificationHub WnsCredential.
+ */
 @Fluent
 public final class WnsCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WnsCredential.class);
-
     /*
-     * Properties of NotificationHub WnsCredential.
+     * Description of a NotificationHub WnsCredential.
      */
-    @JsonProperty(value = "properties")
-    private WnsCredentialProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private WnsCredentialProperties properties;
 
     /**
-     * Get the innerProperties property: Properties of NotificationHub WnsCredential.
-     *
-     * @return the innerProperties value.
+     * Creates an instance of WnsCredential class.
      */
-    private WnsCredentialProperties innerProperties() {
-        return this.innerProperties;
+    public WnsCredential() {
     }
 
     /**
-     * Get the packageSid property: The package ID for this credential.
-     *
-     * @return the packageSid value.
+     * Get the properties property: Description of a NotificationHub WnsCredential.
+     * 
+     * @return the properties value.
      */
-    public String packageSid() {
-        return this.innerProperties() == null ? null : this.innerProperties().packageSid();
+    public WnsCredentialProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Set the packageSid property: The package ID for this credential.
-     *
-     * @param packageSid the packageSid value to set.
+     * Set the properties property: Description of a NotificationHub WnsCredential.
+     * 
+     * @param properties the properties value to set.
      * @return the WnsCredential object itself.
      */
-    public WnsCredential withPackageSid(String packageSid) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WnsCredentialProperties();
-        }
-        this.innerProperties().withPackageSid(packageSid);
-        return this;
-    }
-
-    /**
-     * Get the secretKey property: The secret key.
-     *
-     * @return the secretKey value.
-     */
-    public String secretKey() {
-        return this.innerProperties() == null ? null : this.innerProperties().secretKey();
-    }
-
-    /**
-     * Set the secretKey property: The secret key.
-     *
-     * @param secretKey the secretKey value to set.
-     * @return the WnsCredential object itself.
-     */
-    public WnsCredential withSecretKey(String secretKey) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WnsCredentialProperties();
-        }
-        this.innerProperties().withSecretKey(secretKey);
-        return this;
-    }
-
-    /**
-     * Get the windowsLiveEndpoint property: The Windows Live endpoint.
-     *
-     * @return the windowsLiveEndpoint value.
-     */
-    public String windowsLiveEndpoint() {
-        return this.innerProperties() == null ? null : this.innerProperties().windowsLiveEndpoint();
-    }
-
-    /**
-     * Set the windowsLiveEndpoint property: The Windows Live endpoint.
-     *
-     * @param windowsLiveEndpoint the windowsLiveEndpoint value to set.
-     * @return the WnsCredential object itself.
-     */
-    public WnsCredential withWindowsLiveEndpoint(String windowsLiveEndpoint) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WnsCredentialProperties();
-        }
-        this.innerProperties().withWindowsLiveEndpoint(windowsLiveEndpoint);
+    public WnsCredential withProperties(WnsCredentialProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model WnsCredential"));
+        } else {
+            properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WnsCredential.class);
 }
