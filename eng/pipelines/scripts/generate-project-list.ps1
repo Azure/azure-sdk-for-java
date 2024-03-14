@@ -1,11 +1,14 @@
 if (!$env:ARTIFACTSJSON) {
   throw "ArtifactsJson devops variable was not set"
 }
-if (!$env:ADDITIONALMODULESJSON) {
-  throw "AdditionalModulesJson devops variable was not set"
-}
+
 $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
-$additionalModules = $env:ADDITIONALMODULESJSON | ConvertFrom-Json
+
+if (-not $env:ADDITIONALMODULESJSON -or $env:ADDITIONALMODULESJSON -eq "") {
+  $env:ADDITIONALMODULESJSON = "[]"
+} else {
+  $additionalModules = $env:ADDITIONALMODULESJSON | ConvertFrom-Json
+}
 
 $projectList = @()
 foreach ($artifact in $artifacts) {

@@ -154,7 +154,7 @@ jobs:
         displayName: Setup Dev versioning
         inputs:
           pwsh: true
-          filePath: eng/pipelines/scripts/Set-Dev-Version.ps1
+          filePath: eng/pipelines/scripts/Set-Dev-Versioning.ps1
           arguments: >
             -BuildNumber $(Build.BuildNumber)
             -SdkType ${{parameters.SDKType}}
