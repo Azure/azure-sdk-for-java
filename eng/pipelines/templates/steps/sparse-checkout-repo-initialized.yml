@@ -25,6 +25,6 @@ steps:
       pwsh: true
       filePath: eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
       arguments: >
-        -PathsJson ${{ convertToJson(parameters.Paths) }}
-        -RepositoriesJson ${{ convertToJson(parameters.Repositories) }}
+        -PathsJson '${{ convertToJson(parameters.Paths) }}'
+        -RepositoriesJson '${{ convertToJson(parameters.Repositories) }}'
       workingDirectory: $(System.DefaultWorkingDirectory)

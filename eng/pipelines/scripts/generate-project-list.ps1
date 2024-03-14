@@ -4,7 +4,7 @@ if (!$env:ARTIFACTSJSON) {
 
 $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
 
-if ($env:ADDITIONALMODULESJSON) {
+if (-not [string]::IsNullOrEmpty($env:ADDITIONALMODULESJSON)) {
   $additionalModules = $env:ADDITIONALMODULESJSON | ConvertFrom-Json
 } else {
   $additionalModules = @()
