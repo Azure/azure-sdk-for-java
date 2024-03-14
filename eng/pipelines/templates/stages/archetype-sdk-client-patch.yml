@@ -42,7 +42,7 @@ extends:
             - name: ArtifactsJson
               value: '${{ convertToJson(parameters.Artifacts) }}'
             - name: ArtifactsJsonEscaped
-              value: '${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}'
+              value: "${{ replace(convertToJson(parameters.Artifacts), '''', '`''') }}"
             - name: AdditionalModulesJson
               value: '${{ convertToJson(parameters.AdditionalModules) }}'
 
