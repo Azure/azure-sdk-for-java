@@ -9,6 +9,7 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
+import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.http.policy.HttpRequestLogger;
 import com.generic.core.implementation.http.policy.HttpResponseLogger;
 import com.generic.core.implementation.util.CoreUtils;
@@ -370,6 +371,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         private LoggingHttpResponse(Response<T> actualResponse, ClientLogger.LoggingEventBuilder logBuilder) {
             super(actualResponse.getRequest(), actualResponse.getStatusCode(), actualResponse.getHeaders(),
                 actualResponse.getValue());
+
+            HttpResponseAccessHelper.setBody(this, actualResponse.getBody());
 
             this.logBuilder = logBuilder;
         }

@@ -9,6 +9,8 @@ import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
 import java.io.IOException;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * The response of an {@link HttpRequest}.
@@ -16,8 +18,31 @@ import java.io.IOException;
 public class HttpResponse<T> implements Response<T> {
     private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
 
+    private boolean isValueDeserialized = false;
+
     static {
-        HttpResponseAccessHelper.setAccessor(HttpResponse::setValue);
+        HttpResponseAccessHelper.setAccessor(new HttpResponseAccessHelper.HttpResponseAccessor() {
+            @Override
+            public HttpResponse<?> setValue(HttpResponse<?> httpResponse, Object value) {
+                return httpResponse.setValue(value);
+            }
+
+            @Override
+            public HttpResponse<?> setBody(HttpResponse<?> httpResponse, BinaryData body) {
+                return httpResponse.setBody(body);
+            }
+
+            @Override
+            public HttpResponse<?> setBodySupplier(HttpResponse<?> httpResponse, Supplier<BinaryData> bodySupplier) {
+                return httpResponse.setBodySupplier(bodySupplier);
+            }
+
+            @Override
+            public HttpResponse<?> setBodyDeserializer(HttpResponse<?> httpResponse,
+                                                       Function<BinaryData, Object> bodyDeserializer) {
+                return httpResponse.setBodyDeserializer(bodyDeserializer);
+            }
+        });
     }
 
     private final Headers headers;
@@ -26,6 +51,9 @@ public class HttpResponse<T> implements Response<T> {
 
     private BinaryData body;
     private T value;
+
+    private Supplier<BinaryData> bodySupplier;
+    private Function<BinaryData, Object> bodyDeserializer;
 
     /**
      * Creates an instance of {@link HttpResponse}.
@@ -74,7 +102,15 @@ public class HttpResponse<T> implements Response<T> {
      *
      * @return The value of this response.
      */
+    @SuppressWarnings("unchecked")
     public T getValue() {
+        if (!isValueDeserialized && bodyDeserializer != null) {
+            // Deserialize the value
+            value = (T) bodyDeserializer.apply(getBody());
+
+            this.isValueDeserialized = true;
+        }
+
         return value;
     }
 
@@ -86,7 +122,7 @@ public class HttpResponse<T> implements Response<T> {
     public BinaryData getBody() {
         if (body == null) {
             if (value == null) {
-                body = EMPTY_BODY;
+                body = bodySupplier == null ? EMPTY_BODY : bodySupplier.get();
             } else if (value instanceof BinaryData) {
                 body = (BinaryData) value;
             } else {
@@ -105,6 +141,39 @@ public class HttpResponse<T> implements Response<T> {
     @SuppressWarnings("unchecked")
     private HttpResponse<T> setValue(Object value) {
         this.value = (T) value;
+
+        return this;
+    }
+
+    /**
+     * Sets the body of this response.
+     *
+     * @param body The body.
+     */
+    private HttpResponse<T> setBody(BinaryData body) {
+        this.body = body;
+
+        return this;
+    }
+
+    /**
+     * Sets the body supplier for this response.
+     *
+     * @param bodySupplier The body supplier.
+     */
+    private HttpResponse<T> setBodySupplier(Supplier<BinaryData> bodySupplier) {
+        this.bodySupplier = bodySupplier;
+
+        return this;
+    }
+
+    /**
+     * Sets the body deserializer for this response.
+     *
+     * @param bodyDeserializer The body deserializer.
+     */
+    private HttpResponse<T> setBodyDeserializer(Function<BinaryData, Object> bodyDeserializer) {
+        this.bodyDeserializer = bodyDeserializer;
 
         return this;
     }
