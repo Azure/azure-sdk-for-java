@@ -12,7 +12,7 @@ import java.util.List;
  * The model class to configure the metrics batch query options.
  */
 @Fluent
-public final class MetricsBatchQueryOptions {
+public final class MetricsQueryResourcesOptions {
     private QueryTimeInterval timeInterval;
     private Duration granularity;
     private List<AggregationType> aggregations;
@@ -37,7 +37,7 @@ public final class MetricsBatchQueryOptions {
      *
      * @return The updated options instance
      */
-    public MetricsBatchQueryOptions setTimeInterval(QueryTimeInterval timeInterval) {
+    public MetricsQueryResourcesOptions setTimeInterval(QueryTimeInterval timeInterval) {
         this.timeInterval = timeInterval;
         return this;
     }
@@ -56,7 +56,7 @@ public final class MetricsBatchQueryOptions {
      *
      * @return The updated options instance
      */
-    public MetricsBatchQueryOptions setGranularity(Duration granularity) {
+    public MetricsQueryResourcesOptions setGranularity(Duration granularity) {
         this.granularity = granularity;
         return this;
     }
@@ -74,7 +74,7 @@ public final class MetricsBatchQueryOptions {
      * @param aggregations the list of aggregations that should be applied to the metrics data.
      * @return The updated options instance
      */
-    public MetricsBatchQueryOptions setAggregations(List<AggregationType> aggregations) {
+    public MetricsQueryResourcesOptions setAggregations(List<AggregationType> aggregations) {
         this.aggregations = aggregations;
         return this;
     }
@@ -93,7 +93,7 @@ public final class MetricsBatchQueryOptions {
      *
      * @return The updated options instance
      */
-    public MetricsBatchQueryOptions setTop(Integer top) {
+    public MetricsQueryResourcesOptions setTop(Integer top) {
         this.top = top;
         return this;
     }
@@ -112,7 +112,7 @@ public final class MetricsBatchQueryOptions {
      *
      * @return The updated options instance
      */
-    public MetricsBatchQueryOptions setOrderBy(String orderBy) {
+    public MetricsQueryResourcesOptions setOrderBy(String orderBy) {
         this.orderBy = orderBy;
         return this;
     }
@@ -131,7 +131,7 @@ public final class MetricsBatchQueryOptions {
      *
      * @return The updated options instance
      */
-    public MetricsBatchQueryOptions setFilter(String filter) {
+    public MetricsQueryResourcesOptions setFilter(String filter) {
         this.filter = filter;
         return this;
     }
@@ -159,7 +159,7 @@ public final class MetricsBatchQueryOptions {
      * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @return The updated options instance
      */
-    public MetricsBatchQueryOptions setRollupBy(String rollupBy) {
+    public MetricsQueryResourcesOptions setRollupBy(String rollupBy) {
         this.rollupBy = rollupBy;
         return this;
     }
