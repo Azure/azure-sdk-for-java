@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Regenerate access keys request
- *
- * <p>Specifies which access keys to reset to a new random value.
+ * 
+ * Specifies which access keys to reset to a new random value.
  */
 @Fluent
 public final class RegenerateKeyParameters {
@@ -21,13 +21,15 @@ public final class RegenerateKeyParameters {
     @JsonProperty(value = "keyType", required = true)
     private AccessKeyType keyType;
 
-    /** Creates an instance of RegenerateKeyParameters class. */
+    /**
+     * Creates an instance of RegenerateKeyParameters class.
+     */
     public RegenerateKeyParameters() {
     }
 
     /**
      * Get the keyType property: Which access key to regenerate.
-     *
+     * 
      * @return the keyType value.
      */
     public AccessKeyType keyType() {
@@ -36,7 +38,7 @@ public final class RegenerateKeyParameters {
 
     /**
      * Set the keyType property: Which access key to regenerate.
-     *
+     * 
      * @param keyType the keyType value to set.
      * @return the RegenerateKeyParameters object itself.
      */
@@ -47,14 +49,13 @@ public final class RegenerateKeyParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyType in model RegenerateKeyParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyType in model RegenerateKeyParameters"));
         }
     }
 

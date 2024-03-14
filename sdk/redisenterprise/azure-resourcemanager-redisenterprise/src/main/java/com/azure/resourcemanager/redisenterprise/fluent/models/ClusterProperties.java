@@ -14,8 +14,8 @@ import java.util.List;
 
 /**
  * RedisEnterprise cluster properties
- *
- * <p>Properties of RedisEnterprise clusters, as opposed to general resource properties like location, tags.
+ * 
+ * Properties of RedisEnterprise clusters, as opposed to general resource properties like location, tags.
  */
 @Fluent
 public final class ClusterProperties {
@@ -61,13 +61,15 @@ public final class ClusterProperties {
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
 
-    /** Creates an instance of ClusterProperties class. */
+    /**
+     * Creates an instance of ClusterProperties class.
+     */
     public ClusterProperties() {
     }
 
     /**
      * Get the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
-     *
+     * 
      * @return the minimumTlsVersion value.
      */
     public TlsVersion minimumTlsVersion() {
@@ -76,7 +78,7 @@ public final class ClusterProperties {
 
     /**
      * Set the minimumTlsVersion property: The minimum TLS version for the cluster to support, e.g. '1.2'.
-     *
+     * 
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the ClusterProperties object itself.
      */
@@ -87,7 +89,7 @@ public final class ClusterProperties {
 
     /**
      * Get the encryption property: Encryption-at-rest configuration for the cluster.
-     *
+     * 
      * @return the encryption value.
      */
     public ClusterPropertiesEncryption encryption() {
@@ -96,7 +98,7 @@ public final class ClusterProperties {
 
     /**
      * Set the encryption property: Encryption-at-rest configuration for the cluster.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the ClusterProperties object itself.
      */
@@ -107,7 +109,7 @@ public final class ClusterProperties {
 
     /**
      * Get the hostname property: DNS name of the cluster endpoint.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -116,7 +118,7 @@ public final class ClusterProperties {
 
     /**
      * Get the provisioningState property: Current provisioning status of the cluster.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -125,7 +127,7 @@ public final class ClusterProperties {
 
     /**
      * Get the resourceState property: Current resource status of the cluster.
-     *
+     * 
      * @return the resourceState value.
      */
     public ResourceState resourceState() {
@@ -134,7 +136,7 @@ public final class ClusterProperties {
 
     /**
      * Get the redisVersion property: Version of redis the cluster supports, e.g. '6'.
-     *
+     * 
      * @return the redisVersion value.
      */
     public String redisVersion() {
@@ -144,7 +146,7 @@ public final class ClusterProperties {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the specified
      * RedisEnterprise cluster.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -153,7 +155,7 @@ public final class ClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
