@@ -7,7 +7,8 @@
 * Suppress exceptions when calling diagnostics handlers. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
 
 ### Other Changes
-* Only call System.exit in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Only call `System.exit()` in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Removed `System.exit()` calls from `ImplementationBridgeHelpers`. - See [PR 39182](https://github.com/Azure/azure-sdk-for-java/pull/39182)
 
 ### 4.48.2 (2023-08-25)
 
