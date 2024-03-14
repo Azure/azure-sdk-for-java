@@ -128,7 +128,7 @@ jobs:
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
           parameters:
             Paths: $(SparseCheckoutDirectories)
             SkipCheckoutNone: true
@@ -149,6 +149,17 @@ jobs:
       - template: /eng/common/pipelines/templates/steps/daily-dev-build-variable.yml
         parameters:
           ServiceDirectory: ${{parameters.ServiceDirectory}}
+
+      - task: PowerShell@2
+        displayName: Setup Dev versioning
+        inputs:
+          pwsh: true
+          filePath: eng/pipelines/scripts/Set-Dev-Version.ps1
+          arguments: >
+            -BuildNumber $(Build.BuildNumber)
+            -SdkType ${{parameters.SDKType}}
+        env:
+          ARTIFACTSJSON: $(ArtifactsJson)
 
       - pwsh: |
           $artifacts = '$(ArtifactsJson)' | ConvertFrom-Json
@@ -299,7 +310,7 @@ jobs:
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
       # as we require the GitHub service connection to be loaded.
       - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
-        - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+        - template: /eng/pipelines/templates/steps/sparse-checkout-repo-initialized.yml
           parameters:
             Paths: $(SparseCheckoutDirectories)
             SkipCheckoutNone: true
