@@ -11,16 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeCustomerVirtualNetworkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeCustomerVirtualNetwork model
-            = BinaryData.fromString("{\"subnetId\":\"ndyv\"}").toObject(IntegrationRuntimeCustomerVirtualNetwork.class);
-        Assertions.assertEquals("ndyv", model.subnetId());
+        IntegrationRuntimeCustomerVirtualNetwork model = BinaryData.fromString("{\"subnetId\":\"hoodttq\"}")
+            .toObject(IntegrationRuntimeCustomerVirtualNetwork.class);
+        Assertions.assertEquals("hoodttq", model.subnetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IntegrationRuntimeCustomerVirtualNetwork model
-            = new IntegrationRuntimeCustomerVirtualNetwork().withSubnetId("ndyv");
+            = new IntegrationRuntimeCustomerVirtualNetwork().withSubnetId("hoodttq");
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeCustomerVirtualNetwork.class);
-        Assertions.assertEquals("ndyv", model.subnetId());
+        Assertions.assertEquals("hoodttq", model.subnetId());
     }
 }

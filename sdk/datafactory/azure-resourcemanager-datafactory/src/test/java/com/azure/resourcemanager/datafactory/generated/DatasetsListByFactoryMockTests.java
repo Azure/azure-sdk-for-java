@@ -33,7 +33,7 @@ public final class DatasetsListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"Dataset\",\"description\":\"xvsyl\",\"structure\":\"datameendocqa\",\"schema\":\"datawk\",\"linkedServiceName\":{\"referenceName\":\"ismonwhazalftta\",\"parameters\":{\"srduqhrlltfec\":\"datasve\",\"pjdbz\":\"dataxzhbfibzvxqh\",\"sydjr\":\"datalchv\",\"roohppupucybtra\":\"dataxjawfujvgvrpe\"}},\"parameters\":{\"rho\":{\"type\":\"Array\",\"defaultValue\":\"datam\"}},\"annotations\":[\"dataxeaexwee\",\"datafogv\",\"datamqdnfonncnfjygg\"],\"folder\":{\"name\":\"gv\"},\"\":{\"jw\":\"dataxlrtmjygnixkpadj\",\"xnkmaezxldmzhwuz\":\"datahqeibucmfvuizjr\"}},\"name\":\"dsvgonkomuapys\",\"type\":\"iytgfqvules\",\"etag\":\"dbcypvsvxfyqsf\",\"id\":\"afhbfpzf\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"Dataset\",\"description\":\"cxlg\",\"structure\":\"dataxoymjx\",\"schema\":\"datantjhvcorobmqudz\",\"linkedServiceName\":{\"referenceName\":\"pzk\",\"parameters\":{\"q\":\"dataazkcyg\"}},\"parameters\":{\"ss\":{\"type\":\"Object\",\"defaultValue\":\"datapgujibkwwyfsqg\"},\"ohpwnrmhlotknb\":{\"type\":\"Object\",\"defaultValue\":\"dataazvrmulsje\"}},\"annotations\":[\"datazqmudmefsxmdmlow\"],\"folder\":{\"name\":\"xpwfvtwgnm\"},\"\":{\"cj\":\"datarxwkomjsfkdvb\"}},\"name\":\"njnwpivfplb\",\"type\":\"qec\",\"etag\":\"wkzuaxsrmadakj\",\"id\":\"puvyvobkk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,14 +51,13 @@ public final class DatasetsListByFactoryMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DatasetResource> response
-            = manager.datasets().listByFactory("yqqoswkshtgfewfl", "byyvau", com.azure.core.util.Context.NONE);
+            = manager.datasets().listByFactory("srxjfapiodsnz", "ezwjq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("afhbfpzf", response.iterator().next().id());
-        Assertions.assertEquals("xvsyl", response.iterator().next().properties().description());
-        Assertions.assertEquals("ismonwhazalftta",
-            response.iterator().next().properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY,
-            response.iterator().next().properties().parameters().get("rho").type());
-        Assertions.assertEquals("gv", response.iterator().next().properties().folder().name());
+        Assertions.assertEquals("puvyvobkk", response.iterator().next().id());
+        Assertions.assertEquals("cxlg", response.iterator().next().properties().description());
+        Assertions.assertEquals("pzk", response.iterator().next().properties().linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.OBJECT,
+            response.iterator().next().properties().parameters().get("ss").type());
+        Assertions.assertEquals("xpwfvtwgnm", response.iterator().next().properties().folder().name());
     }
 }

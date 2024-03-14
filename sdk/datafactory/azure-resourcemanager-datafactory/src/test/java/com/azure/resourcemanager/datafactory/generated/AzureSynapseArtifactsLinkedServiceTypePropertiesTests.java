@@ -11,14 +11,14 @@ public final class AzureSynapseArtifactsLinkedServiceTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureSynapseArtifactsLinkedServiceTypeProperties model = BinaryData.fromString(
-            "{\"endpoint\":\"dataodkq\",\"authentication\":\"datahuxox\",\"workspaceResourceId\":\"datagzvzcfmwfogjrhmt\"}")
+            "{\"endpoint\":\"dataousqmer\",\"authentication\":\"datajpl\",\"workspaceResourceId\":\"dataemkyouwmjxhm\"}")
             .toObject(AzureSynapseArtifactsLinkedServiceTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureSynapseArtifactsLinkedServiceTypeProperties model = new AzureSynapseArtifactsLinkedServiceTypeProperties()
-            .withEndpoint("dataodkq").withAuthentication("datahuxox").withWorkspaceResourceId("datagzvzcfmwfogjrhmt");
+            .withEndpoint("dataousqmer").withAuthentication("datajpl").withWorkspaceResourceId("dataemkyouwmjxhm");
         model = BinaryData.fromObject(model).toObject(AzureSynapseArtifactsLinkedServiceTypeProperties.class);
     }
 }
