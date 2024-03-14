@@ -140,7 +140,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
         if (hasSingleConnectionString + hasMultiEndpoints + hasMultiConnectionString > 1) {
             throw new IllegalArgumentException(
-                "More than 1 Connection method was set for connecting to App Configuration.");
+                "More than 1 connection method was set for connecting to App Configuration.");
         }
 
         boolean connectionStringIsPresent = configStore.getConnectionString() != null
