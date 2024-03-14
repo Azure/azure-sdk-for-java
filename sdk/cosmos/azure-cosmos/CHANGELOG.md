@@ -1,5 +1,10 @@
 ## Release History
 
+### 4.54.0-beta.1 (Undefined)
+
+#### Other Changes
+* Removed `System.exit()` calls from `ImplementationBridgeHelpers`.
+
 ### 4.53.3-hotfix (2024-03-07)
 
 #### Bugs Fixed
