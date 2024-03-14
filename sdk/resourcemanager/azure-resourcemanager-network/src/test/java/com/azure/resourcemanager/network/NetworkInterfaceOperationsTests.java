@@ -512,7 +512,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
     }
 
     @Test
-    public void canCreateMultipleIpConfigurationsWithAllDeleteOption() {
+    public void canCreateIpConfigurationsWithDeleteOption() {
         String subnetName = generateRandomResourceName("subnet-", 15);
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         Network vnet = networkManager.networks()
@@ -536,8 +536,9 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withSubnet(subnetName)
             .withPrivateIpAddressDynamic()
             .withNewPublicIpAddress()
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
             .attach()
-            .withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DELETE)
+            .withPrimaryPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
             .create();
 
         nic.refresh();
@@ -549,7 +550,38 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
     }
 
     @Test
-    public void canCreateMultipleIpConfigurationsWithSingleDeleteOption() {
+    public void canCreateIpConfigurationWithPrimaryDeleteOption() {
+        String subnetName = generateRandomResourceName("subnet-", 15);
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        Network vnet = networkManager.networks()
+            .define(generateRandomResourceName("vnet-", 15))
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet(subnetName, "10.0.0.0/28")
+            .create();
+
+        NetworkInterface nic = networkManager.networkInterfaces()
+            .define(generateRandomResourceName("nic-", 15))
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withExistingPrimaryNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress()
+            .withPrimaryPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        nic.refresh();
+        List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList =  nic.innerModel().ipConfigurations()
+            .stream().filter(ipConfig -> DeleteOptions.DELETE.equals(ipConfig.publicIpAddress().deleteOption()))
+            .collect(Collectors.toList());
+        Assertions.assertEquals(1, ipConfigurationInnerList.size());
+        ipConfigurationInnerList.forEach(ipConfigurationInner -> Assertions.assertEquals("primary", ipConfigurationInner.name()));
+    }
+
+    @Test
+    public void canCreateIpConfigurationWithSecondaryDeleteOption() {
         String subnetName = generateRandomResourceName("subnet-", 15);
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         Network vnet = networkManager.networks()
@@ -573,8 +605,8 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withSubnet(subnetName)
             .withPrivateIpAddressDynamic()
             .withNewPublicIpAddress()
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
             .attach()
-            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "secondary")
             .create();
 
         nic.refresh();
@@ -587,7 +619,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
     }
 
     @Test
-    public void canUpdateAllDeleteOption() {
+    public void canUpdatePrimaryDeleteOption() {
         String subnetName = generateRandomResourceName("subnet-", 15);
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         Network vnet = networkManager.networks()
@@ -606,16 +638,88 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withSubnet(subnetName)
             .withPrimaryPrivateIPAddressDynamic()
             .withNewPrimaryPublicIPAddress()
+            .withPrimaryPublicIPAddressDeleteOptions(DeleteOptions.DETACH)
+            .create();
+
+        nic.update().withPrimaryPublicIPAddressDeleteOptions(DeleteOptions.DELETE).apply();
+        nic.refresh();
+        List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList =  nic.innerModel().ipConfigurations()
+            .stream().filter(ipConfig -> "primary".equalsIgnoreCase(ipConfig.name()))
+            .collect(Collectors.toList());
+
+        Assertions.assertEquals(1, ipConfigurationInnerList.size());
+        ipConfigurationInnerList.forEach(ipConfigurationInner -> Assertions.assertEquals(DeleteOptions.DELETE, ipConfigurationInner.publicIpAddress().deleteOption()));
+    }
+
+    @Test
+    public void canUpdateNewPrimaryIpAddressWithPrimaryDeleteOption() {
+        String subnetName = generateRandomResourceName("subnet-", 15);
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        Network vnet = networkManager.networks()
+            .define(generateRandomResourceName("vnet-", 15))
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet(subnetName, "10.0.0.0/28")
+            .create();
+
+        NetworkInterface nic = networkManager.networkInterfaces()
+            .define(generateRandomResourceName("nic-", 15))
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withExistingPrimaryNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress()
+            .withPrimaryPublicIPAddressDeleteOptions(DeleteOptions.DETACH)
+            .create();
+
+        nic.update()
+            .withNewPrimaryPublicIPAddress()
+            .withPrimaryPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .apply();
+        nic.refresh();
+        List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList =  nic.innerModel().ipConfigurations()
+            .stream().filter(ipConfig -> "primary".equalsIgnoreCase(ipConfig.name()))
+            .collect(Collectors.toList());
+
+        Assertions.assertEquals(1, ipConfigurationInnerList.size());
+        ipConfigurationInnerList.forEach(ipConfigurationInner -> Assertions.assertEquals(DeleteOptions.DELETE, ipConfigurationInner.publicIpAddress().deleteOption()));
+    }
+
+    @Test
+    public void canUpdateDefineSecondaryIpConfigurationWithDeleteOption() {
+        String subnetName = generateRandomResourceName("subnet-", 15);
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        Network vnet = networkManager.networks()
+            .define(generateRandomResourceName("vnet-", 15))
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet(subnetName, "10.0.0.0/28")
+            .create();
+
+        NetworkInterface nic = networkManager.networkInterfaces()
+            .define(generateRandomResourceName("nic-", 15))
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withExistingPrimaryNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withNewPrimaryPublicIPAddress()
+            .withPrimaryPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        nic.refresh();
+        nic.update()
             .defineSecondaryIPConfiguration("secondary")
             .withExistingNetwork(vnet)
             .withSubnet(subnetName)
             .withPrivateIpAddressDynamic()
             .withNewPublicIpAddress()
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
             .attach()
-            .withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DETACH)
-            .create();
-
-        nic.update().withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DELETE).apply();
+            .apply();
         nic.refresh();
         List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList = nic.innerModel().ipConfigurations()
             .stream().filter(ipConfigurationInner -> DeleteOptions.DELETE.equals(ipConfigurationInner.publicIpAddress().deleteOption()))
@@ -624,7 +728,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
     }
 
     @Test
-    public void canUpdateSingleDeleteOption() {
+    public void canUpdateSpecifiedIpConfigurationWithDeleteOption() {
         String subnetName = generateRandomResourceName("subnet-", 15);
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         Network vnet = networkManager.networks()
@@ -643,271 +747,28 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
             .withSubnet(subnetName)
             .withPrimaryPrivateIPAddressDynamic()
             .withNewPrimaryPublicIPAddress()
+            .withPrimaryPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
             .defineSecondaryIPConfiguration("secondary")
             .withExistingNetwork(vnet)
             .withSubnet(subnetName)
             .withPrivateIpAddressDynamic()
             .withNewPublicIpAddress()
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DETACH)
             .attach()
-            .withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DETACH)
             .create();
 
-        nic.update().withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "primary").apply();
         nic.refresh();
-        List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList = nic.innerModel().ipConfigurations()
-            .stream().filter(ipConfigurationInner -> DeleteOptions.DELETE.equals(ipConfigurationInner.publicIpAddress().deleteOption()))
-            .collect(Collectors.toList());
-        Assertions.assertEquals(1, ipConfigurationInnerList.size());
-        ipConfigurationInnerList.forEach(ipConfigurationInner -> Assertions.assertEquals("primary", ipConfigurationInner.name()));
-    }
-
-    @Test
-    public void canUpdateAllDeleteOptionAndDefineSecondaryIpConfiguration() {
-        String subnetName = generateRandomResourceName("subnet-", 15);
-        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
-        Network vnet = networkManager.networks()
-            .define(generateRandomResourceName("vnet-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/28")
-            .withSubnet(subnetName, "10.0.0.0/28")
-            .create();
-
-        NetworkInterface nic = networkManager.networkInterfaces()
-            .define(generateRandomResourceName("nic-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withExistingPrimaryNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrimaryPrivateIPAddressDynamic()
-            .withNewPrimaryPublicIPAddress()
-            .create();
-
         nic.update()
-            .defineSecondaryIPConfiguration("secondary")
-            .withExistingNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrivateIpAddressDynamic()
-            .withNewPublicIpAddress()
-            .attach()
-            .withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DELETE)
-            .apply();
-
-        nic.refresh();
-        List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList =  nic.innerModel().ipConfigurations()
-            .stream().filter(ipConfig -> DeleteOptions.DELETE.equals(ipConfig.publicIpAddress().deleteOption()))
-            .collect(Collectors.toList());
-
-        Assertions.assertEquals(2, ipConfigurationInnerList.size());
-    }
-
-    @Test
-    public void canUpdateSingleDeleteOptionAndDefineSecondaryIpConfiguration() {
-        String subnetName = generateRandomResourceName("subnet-", 15);
-        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
-        Network vnet = networkManager.networks()
-            .define(generateRandomResourceName("vnet-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/28")
-            .withSubnet(subnetName, "10.0.0.0/28")
-            .create();
-
-        NetworkInterface nic = networkManager.networkInterfaces()
-            .define(generateRandomResourceName("nic-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withExistingPrimaryNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrimaryPrivateIPAddressDynamic()
-            .withNewPrimaryPublicIPAddress()
-            .create();
-
-        nic.update()
-            .defineSecondaryIPConfiguration("secondary")
-            .withExistingNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrivateIpAddressDynamic()
-            .withNewPublicIpAddress()
-            .attach()
-            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "secondary")
-            .apply();
-
-        nic.refresh();
-        List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList =  nic.innerModel().ipConfigurations()
-            .stream().filter(ipConfig -> DeleteOptions.DELETE.equals(ipConfig.publicIpAddress().deleteOption()))
-            .collect(Collectors.toList());
-
-        Assertions.assertEquals(1, ipConfigurationInnerList.size());
-        ipConfigurationInnerList.forEach(ipConfig -> Assertions.assertEquals("secondary", ipConfig.name()));
-    }
-
-    @Test
-    public void canUpdateAllDeleteOptionAndUpdateIPConfiguration() {
-        String subnetName = generateRandomResourceName("subnet-", 15);
-        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
-        Network vnet = networkManager.networks()
-            .define(generateRandomResourceName("vnet-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/28")
-            .withSubnet(subnetName, "10.0.0.0/28")
-            .create();
-
-        NetworkInterface nic = networkManager.networkInterfaces()
-            .define(generateRandomResourceName("nic-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withExistingPrimaryNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrimaryPrivateIPAddressDynamic()
-            .withNewPrimaryPublicIPAddress()
-            .defineSecondaryIPConfiguration("secondary")
-            .withExistingNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrivateIpAddressDynamic()
-            .withNewPublicIpAddress()
-            .attach()
-            .create();
-
-        nic.update().updateIPConfiguration("secondary")
-            .withNewPublicIpAddress().parent()
-            .withDeleteOptionsForAllPublicIPAddress(DeleteOptions.DELETE)
-            .apply();
-        nic.refresh();
-
-        List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList =  nic.innerModel().ipConfigurations()
-            .stream().filter(ipConfig -> DeleteOptions.DELETE.equals(ipConfig.publicIpAddress().deleteOption()))
-            .collect(Collectors.toList());
-        Assertions.assertEquals(2, ipConfigurationInnerList.size());
-    }
-
-    @Test
-    public void canUpdateSingleDeleteOptionAndUpdateIPConfiguration() {
-        String subnetName = generateRandomResourceName("subnet-", 15);
-        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
-        Network vnet = networkManager.networks()
-            .define(generateRandomResourceName("vnet-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/28")
-            .withSubnet(subnetName, "10.0.0.0/28")
-            .create();
-
-        NetworkInterface nic = networkManager.networkInterfaces()
-            .define(generateRandomResourceName("nic-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withExistingPrimaryNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrimaryPrivateIPAddressDynamic()
-            .withNewPrimaryPublicIPAddress()
-            .defineSecondaryIPConfiguration("secondary")
-            .withExistingNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrivateIpAddressDynamic()
-            .withNewPublicIpAddress()
-            .attach()
-            .create();
-
-        nic.update().updateIPConfiguration("secondary")
-            .withNewPublicIpAddress().parent()
-            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "secondary")
-            .apply();
-        nic.refresh();
-
-        List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList =  nic.innerModel().ipConfigurations()
-            .stream().filter(ipConfig -> DeleteOptions.DELETE.equals(ipConfig.publicIpAddress().deleteOption()))
-            .collect(Collectors.toList());
-        Assertions.assertEquals(1, ipConfigurationInnerList.size());
-        ipConfigurationInnerList.forEach(ipConfig -> Assertions.assertEquals("secondary", ipConfig.name()));
-    }
-
-    @Test
-    public void canUpdateMultipleDeleteOptionWithDefineSecondaryIPConfiguration() {
-        String subnetName = generateRandomResourceName("subnet-", 15);
-        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
-        Network vnet = networkManager.networks()
-            .define(generateRandomResourceName("vnet-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/28")
-            .withSubnet(subnetName, "10.0.0.0/28")
-            .create();
-
-        NetworkInterface nic = networkManager.networkInterfaces()
-            .define(generateRandomResourceName("nic-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withExistingPrimaryNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrimaryPrivateIPAddressDynamic()
-            .withNewPrimaryPublicIPAddress()
-            .create();
-
-        nic.update()
-            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "primary")
-            .defineSecondaryIPConfiguration("secondary")
-            .withExistingNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrivateIpAddressDynamic()
-            .withNewPublicIpAddress()
-            .attach()
-            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DETACH, "secondary")
-            .apply();
-
-        nic.refresh();
-        Assertions.assertEquals(DeleteOptions.DELETE, nic.primaryIPConfiguration().innerModel().publicIpAddress().deleteOption());
-        List<NicIpConfiguration> ipConfigurationInnerList = nic.ipConfigurations().values()
-            .stream().filter(ipConfig -> DeleteOptions.DETACH.equals(ipConfig.innerModel().publicIpAddress().deleteOption()))
-            .collect(Collectors.toList());
-        Assertions.assertEquals(1, ipConfigurationInnerList.size());
-        ipConfigurationInnerList.forEach(ipConfig -> Assertions.assertEquals("secondary", ipConfig.name()));
-    }
-
-    @Test
-    public void canUpdateMultipleDeleteOptionWithUpdateIPConfiguration() {
-        String subnetName = generateRandomResourceName("subnet-", 15);
-        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
-        Network vnet = networkManager.networks()
-            .define(generateRandomResourceName("vnet-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/28")
-            .withSubnet(subnetName, "10.0.0.0/28")
-            .create();
-
-        NetworkInterface nic = networkManager.networkInterfaces()
-            .define(generateRandomResourceName("nic-", 15))
-            .withRegion(Region.US_EAST)
-            .withExistingResourceGroup(rgName)
-            .withExistingPrimaryNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrimaryPrivateIPAddressDynamic()
-            .withNewPrimaryPublicIPAddress()
-            .defineSecondaryIPConfiguration("secondary")
-            .withExistingNetwork(vnet)
-            .withSubnet(subnetName)
-            .withPrivateIpAddressDynamic()
-            .withNewPublicIpAddress()
-            .attach()
-            .create();
-
-        nic.update()
-            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DELETE, "primary")
             .updateIPConfiguration("secondary")
             .withNewPublicIpAddress()
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
             .parent()
-            .withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions.DETACH, "secondary")
             .apply();
-
         nic.refresh();
-        Assertions.assertEquals(DeleteOptions.DELETE, nic.primaryIPConfiguration().innerModel().publicIpAddress().deleteOption());
-        List<NicIpConfiguration> ipConfigurationInnerList = nic.ipConfigurations().values()
-            .stream().filter(ipConfig -> DeleteOptions.DETACH.equals(ipConfig.innerModel().publicIpAddress().deleteOption()))
+        List<NetworkInterfaceIpConfigurationInner> ipConfigurationInnerList = nic.innerModel().ipConfigurations()
+            .stream().filter(ipConfigurationInner -> DeleteOptions.DELETE.equals(ipConfigurationInner.publicIpAddress().deleteOption()))
             .collect(Collectors.toList());
-        Assertions.assertEquals(1, ipConfigurationInnerList.size());
-        ipConfigurationInnerList.forEach(ipConfig -> Assertions.assertEquals("secondary", ipConfig.name()));
+        Assertions.assertEquals(2, ipConfigurationInnerList.size());
     }
 
     private NatGatewayInner createNatGateway() {

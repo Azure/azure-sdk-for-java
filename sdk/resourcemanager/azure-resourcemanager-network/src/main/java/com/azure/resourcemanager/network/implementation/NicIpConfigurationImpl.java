@@ -28,11 +28,10 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Locale;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
+import java.util.HashSet;
 
 /** Implementation for NicIPConfiguration and its create and update interfaces. */
 class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterfaceImpl, NetworkInterface>
@@ -261,28 +260,18 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         return natRefs;
     }
 
-    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations) {
+    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations, Map<DeleteOptions, HashSet<String>> specifiedIpConfigNames) {
         for (NicIpConfiguration nicIPConfiguration : nicIPConfigurations) {
             NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIPConfiguration;
             config.innerModel().withSubnet(config.subnetToAssociate());
-            config.innerModel().withPublicIpAddress(config.publicIPToAssociate());
-        }
-    }
-
-    protected static void deleteOptionConfigurations(Collection<NicIpConfiguration> nicIPConfigurations, Map<DeleteOptions, Set<String>> specifiedIpConfigNames) {
-        if (!specifiedIpConfigNames.isEmpty()) {
-            specifiedIpConfigNames.keySet().forEach(deleteOptions -> {
-                Set<String> ipConfigNameSet = specifiedIpConfigNames.get(deleteOptions);
-                if (!ipConfigNameSet.isEmpty()) {
-                    nicIPConfigurations
-                        .stream().filter(nicIpConfig -> ipConfigNameSet.contains(nicIpConfig.name().toLowerCase(Locale.ROOT))
-                            && Objects.nonNull(nicIpConfig.innerModel().publicIpAddress()))
-                        .forEach(nicIpConfig -> nicIpConfig.innerModel().publicIpAddress().withDeleteOption(deleteOptions));
-                } else {
-                    nicIPConfigurations.stream().filter(nicIpConfig -> Objects.nonNull(nicIpConfig.innerModel().publicIpAddress()))
-                        .forEach(nicIpConfig -> nicIpConfig.innerModel().publicIpAddress().withDeleteOption(deleteOptions));
+            PublicIpAddressInner publicIpAddressInner = config.publicIPToAssociate();
+            for (Map.Entry<DeleteOptions, HashSet<String>> entry : specifiedIpConfigNames.entrySet()) {
+                if (entry.getValue().contains(nicIPConfiguration.name())) {
+                    publicIpAddressInner = config.publicIPToAssociate(entry.getKey());
+                    break;
                 }
-            });
+            }
+            config.innerModel().withPublicIpAddress(publicIpAddressInner);
         }
     }
 
@@ -373,6 +362,37 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         }
     }
 
+    /**
+     * Get the SubResource instance representing a public IP that needs to be associated with the IP configuration.
+     *
+     * <p>null will be returned if withoutPublicIP() is specified in the update fluent chain or user did't opt for
+     * public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is not specified then existing
+     * associated (if any) public IP will be returned.
+     * @param deleteOptions what happens to the public IP address when the VM using it is deleted
+     * @return public IP SubResource
+     */
+    private PublicIpAddressInner publicIPToAssociate(DeleteOptions deleteOptions) {
+        String pipId = null;
+        if (this.removePrimaryPublicIPAssociation) {
+            return null;
+        } else if (this.creatablePublicIPKey != null) {
+            pipId = ((PublicIpAddress) this.parent().createdDependencyResource(this.creatablePublicIPKey)).id();
+        } else if (this.existingPublicIPAddressIdToAssociate != null) {
+            pipId = this.existingPublicIPAddressIdToAssociate;
+        }
+
+        if (pipId != null) {
+            return new PublicIpAddressInner().withId(pipId).withDeleteOption(deleteOptions);
+        } else if (!this.isInCreateMode) {
+            if (Objects.nonNull(this.innerModel().publicIpAddress())) {
+                return this.innerModel().publicIpAddress().withDeleteOption(deleteOptions);
+            }
+            return this.innerModel().publicIpAddress();
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public NicIpConfigurationImpl withPrivateIpVersion(IpVersion ipVersion) {
         this.innerModel().withPrivateIpAddressVersion(ipVersion);
@@ -419,6 +439,12 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
                 return Objects.equals(name, asgName);
             });
         }
+        return this;
+    }
+
+    @Override
+    public NicIpConfigurationImpl withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions) {
+        this.parent().ensureDeleteOptions(deleteOptions, this.innerModel().name());
         return this;
     }
 }

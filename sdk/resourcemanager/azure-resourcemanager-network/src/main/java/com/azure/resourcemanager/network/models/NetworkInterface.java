@@ -264,16 +264,7 @@ public interface NetworkInterface
              * @param deleteOptions the delete options for primary network interfaces
              * @return the next stage of the update
              */
-            WithCreate withDeleteOptionsForAllPublicIPAddress(DeleteOptions deleteOptions);
-
-            /**
-             * Sets delete options for public ip address.
-             *
-             * @param deleteOptions the delete options for primary network interfaces
-             * @param ipConfigNames the names of specified ip configurations
-             * @return the next stage of the update
-             */
-            WithCreate withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions deleteOptions, String... ipConfigNames);
+            WithCreate withPrimaryPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
         }
 
         /**
@@ -598,7 +589,7 @@ public interface NetworkInterface
             Update withoutLoadBalancerInboundNatRules();
         }
 
-        /** Th stage of the network interface update allowing to specify delete options for the public ip address. */
+        /** The stage of the network interface update allowing to specify delete options for the public ip address. */
         interface WithPublicIPAddressDeleteOptions {
 
             /**
@@ -607,16 +598,7 @@ public interface NetworkInterface
              * @param deleteOptions the delete options for primary network interfaces
              * @return the next stage of the update
              */
-            Update withDeleteOptionsForAllPublicIPAddress(DeleteOptions deleteOptions);
-
-            /**
-             * Sets delete options for public ip address.
-             *
-             * @param deleteOptions the delete options for primary network interfaces
-             * @param ipConfigNames the names of specified ip configurations
-             * @return the next stage of the update
-             */
-            Update withDeleteOptionsForSpecifiedPublicIPAddress(DeleteOptions deleteOptions, String... ipConfigNames);
+            Update withPrimaryPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
         }
     }
 
