@@ -151,7 +151,8 @@ function Get-ArtifactsList-Per-Service-Directory {
     # Get all of the yml files under sdk/
     $ymlFiles = Get-ChildItem -Path $SdkRoot -Recurse -Depth 3 -File -Filter "ci*yml"
     foreach ($ymlFile in $ymlFiles) {
-        # I love exclusions, they're super awesome
+        # The ci.cosmos.yml lives in spring and is used to test the cosmos spring library. Its exception
+        # will be moved once things are corrected.
         if ($ymlFile.FullName.Split([IO.Path]::DirectorySeparatorChar) -contains "resourcemanagerhybrid" -or
             $ymlFile.Name -eq "ci.cosmos.yml") {
             continue
@@ -320,7 +321,6 @@ function Test-Dependency-Tag-And-Version {
         {
             if ($depType -eq $DependencyTypeDependency)
             {
-                # JRS - REMOVE
                 # Any libraries built as part of the same pipeline need to use the current
                 # version of other libraries within the same pipeline. Verify that this
                 # dependency, of type dependency, shouldn't be current
@@ -661,7 +661,6 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         }
     }
 
-    # JRS - HERE
     $artifactsPerSDHashSet = Get-Artifacts-Built-In-Service-Directory $ArtifactsPerSD $SdkRoot $pomFile
 
     # Verify every dependency as a group, artifact and version
