@@ -1,5 +1,5 @@
 param(
-  [Parameter(Mandatory=$true)][string]$SourcesDirectory = $env:BUILD_SOURCESDIRECTORY
+  [Parameter(Mandatory=$false)][string]$SourcesDirectory = $env:BUILD_SOURCESDIRECTORY
 )
 
 dotnet tool install azure.sdk.tools.httpfaultinjector --global --prerelease --add-source https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-net/nuget/v3/index.json
