@@ -6,7 +6,6 @@ package com.azure.resourcemanager.redisenterprise.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.redisenterprise.models.ClusteringPolicy;
 import com.azure.resourcemanager.redisenterprise.models.DatabasePropertiesGeoReplication;
 import com.azure.resourcemanager.redisenterprise.models.EvictionPolicy;
@@ -18,32 +17,30 @@ import com.azure.resourcemanager.redisenterprise.models.ResourceState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a database on the RedisEnterprise cluster. */
+/**
+ * Describes a database on the RedisEnterprise cluster.
+ */
 @Fluent
 public final class DatabaseInner extends ProxyResource {
     /*
      * RedisEnterprise database properties
-     *
+     * 
      * Other properties of the database.
      */
     @JsonProperty(value = "properties")
     private DatabaseProperties innerProperties;
 
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+    /**
+     * Creates an instance of DatabaseInner class.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /** Creates an instance of DatabaseInner class. */
     public DatabaseInner() {
     }
 
     /**
      * Get the innerProperties property: RedisEnterprise database properties
-     *
-     * <p>Other properties of the database.
-     *
+     * 
+     * Other properties of the database.
+     * 
      * @return the innerProperties value.
      */
     private DatabaseProperties innerProperties() {
@@ -51,18 +48,9 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
-     * @return the systemData value.
-     */
-    public SystemData systemData() {
-        return this.systemData;
-    }
-
-    /**
      * Get the clientProtocol property: Specifies whether redis clients can connect using TLS-encrypted or plaintext
      * redis protocols. Default is TLS-encrypted.
-     *
+     * 
      * @return the clientProtocol value.
      */
     public Protocol clientProtocol() {
@@ -72,7 +60,7 @@ public final class DatabaseInner extends ProxyResource {
     /**
      * Set the clientProtocol property: Specifies whether redis clients can connect using TLS-encrypted or plaintext
      * redis protocols. Default is TLS-encrypted.
-     *
+     * 
      * @param clientProtocol the clientProtocol value to set.
      * @return the DatabaseInner object itself.
      */
@@ -87,7 +75,7 @@ public final class DatabaseInner extends ProxyResource {
     /**
      * Get the port property: TCP port of the database endpoint. Specified at create time. Defaults to an available
      * port.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -97,7 +85,7 @@ public final class DatabaseInner extends ProxyResource {
     /**
      * Set the port property: TCP port of the database endpoint. Specified at create time. Defaults to an available
      * port.
-     *
+     * 
      * @param port the port value to set.
      * @return the DatabaseInner object itself.
      */
@@ -111,7 +99,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Current provisioning status of the database.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -120,7 +108,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the resourceState property: Current resource status of the database.
-     *
+     * 
      * @return the resourceState value.
      */
     public ResourceState resourceState() {
@@ -129,7 +117,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the clusteringPolicy property: Clustering policy - default is OSSCluster. Specified at create time.
-     *
+     * 
      * @return the clusteringPolicy value.
      */
     public ClusteringPolicy clusteringPolicy() {
@@ -138,7 +126,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Set the clusteringPolicy property: Clustering policy - default is OSSCluster. Specified at create time.
-     *
+     * 
      * @param clusteringPolicy the clusteringPolicy value to set.
      * @return the DatabaseInner object itself.
      */
@@ -152,7 +140,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the evictionPolicy property: Redis eviction policy - default is VolatileLRU.
-     *
+     * 
      * @return the evictionPolicy value.
      */
     public EvictionPolicy evictionPolicy() {
@@ -161,7 +149,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Set the evictionPolicy property: Redis eviction policy - default is VolatileLRU.
-     *
+     * 
      * @param evictionPolicy the evictionPolicy value to set.
      * @return the DatabaseInner object itself.
      */
@@ -175,7 +163,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the persistence property: Persistence settings.
-     *
+     * 
      * @return the persistence value.
      */
     public Persistence persistence() {
@@ -184,7 +172,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Set the persistence property: Persistence settings.
-     *
+     * 
      * @param persistence the persistence value to set.
      * @return the DatabaseInner object itself.
      */
@@ -197,9 +185,9 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Get the modules property: Optional set of redis modules to enable in this database - modules can only be added at
-     * creation time.
-     *
+     * Get the modules property: Optional set of redis modules to enable in this database - modules can only be added
+     * at creation time.
+     * 
      * @return the modules value.
      */
     public List<Module> modules() {
@@ -207,9 +195,9 @@ public final class DatabaseInner extends ProxyResource {
     }
 
     /**
-     * Set the modules property: Optional set of redis modules to enable in this database - modules can only be added at
-     * creation time.
-     *
+     * Set the modules property: Optional set of redis modules to enable in this database - modules can only be added
+     * at creation time.
+     * 
      * @param modules the modules value to set.
      * @return the DatabaseInner object itself.
      */
@@ -223,7 +211,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Get the geoReplication property: Optional set of properties to configure geo replication for this database.
-     *
+     * 
      * @return the geoReplication value.
      */
     public DatabasePropertiesGeoReplication geoReplication() {
@@ -232,7 +220,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Set the geoReplication property: Optional set of properties to configure geo replication for this database.
-     *
+     * 
      * @param geoReplication the geoReplication value to set.
      * @return the DatabaseInner object itself.
      */
@@ -246,7 +234,7 @@ public final class DatabaseInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
