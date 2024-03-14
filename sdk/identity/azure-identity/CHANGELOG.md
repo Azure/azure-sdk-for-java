@@ -1,5 +1,12 @@
 # Release History
 
+## 1.11.4 (2024-03-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+
 ## 1.11.3 (2024-03-01)
 
 ### Bugs fixed
