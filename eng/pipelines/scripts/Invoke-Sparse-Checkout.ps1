@@ -98,7 +98,7 @@ function SparseCheckout([Array]$paths, [Hashtable]$repository)
 # If the latter, convertToJson will wrap the 'string' in quotes, so remove them.
 $paths = $PathsJson.Trim('"') | ConvertFrom-Json
 # Replace windows backslash paths, as Azure Pipelines default directories are sometimes formatted like 'D:\a\1\s'
-$repositories = $RepositoriesJson.Replace('\\', '/') | ConvertFrom-Json -AsHashtable
+$repositories = $RepositoriesJson -replace '\\', '/' | ConvertFrom-Json -AsHashtable
 foreach ($repo in $repositories) {
     SparseCheckout $paths $repo
 }
