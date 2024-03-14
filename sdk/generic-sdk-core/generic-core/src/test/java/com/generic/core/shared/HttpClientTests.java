@@ -824,6 +824,7 @@ public abstract class HttpClientTests {
         void voidHead(@HostParam("url") String url);
     }
 
+    // TODO: Fix
     @Test
     public void headRequest() {
         final Void body = createService(Service10.class).head(getRequestUri()).getValue();

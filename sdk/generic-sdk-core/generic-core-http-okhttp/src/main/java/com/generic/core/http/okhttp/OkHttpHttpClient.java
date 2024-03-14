@@ -7,6 +7,7 @@ import com.generic.core.http.Response;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.ResponseBodyHandling;
 import com.generic.core.http.okhttp.implementation.OkHttpFileRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpResponse;
@@ -25,6 +26,10 @@ import okhttp3.ResponseBody;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+
+import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
+import static com.generic.core.http.models.ResponseBodyHandling.DESERIALIZE;
+import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
 
 /**
  * HttpClient implementation for OkHttp.
@@ -46,14 +51,12 @@ class OkHttpHttpClient implements HttpClient {
     @Override
     public Response<?> send(HttpRequest request) {
         boolean eagerlyConvertHeaders = request.getMetadata().isEagerlyConvertHeaders();
-        boolean eagerlyReadResponse = request.getMetadata().isEagerlyReadResponse();
-        boolean ignoreResponseBody = request.getMetadata().isIgnoreResponseBody();
+        ResponseBodyHandling responseBodyHandling = request.getMetadata().getResponseBodyHandling();
 
         Request okHttpRequest = toOkHttpRequest(request);
         try {
             okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
-            return toResponse(request, okHttpResponse, eagerlyReadResponse, ignoreResponseBody,
-                eagerlyConvertHeaders);
+            return toResponse(request, okHttpResponse, responseBodyHandling, eagerlyConvertHeaders);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
@@ -138,8 +141,8 @@ class OkHttpHttpClient implements HttpClient {
         return contentLength;
     }
 
-    private static Response<?> toResponse(HttpRequest request, okhttp3.Response response, boolean eagerlyReadResponse,
-                                          boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
+    private static Response<?> toResponse(HttpRequest request, okhttp3.Response response,
+                                          ResponseBodyHandling responseBodyHandling, boolean eagerlyConvertHeaders) throws IOException {
         /*// For now, eagerlyReadResponse and ignoreResponseBody works the same.
         if (ignoreResponseBody) {
             ResponseBody body = response.body();
@@ -157,7 +160,7 @@ class OkHttpHttpClient implements HttpClient {
         }*/
 
         // Use a buffered response when we are eagerly reading the response from the network and the body isn't empty.
-        if (eagerlyReadResponse || ignoreResponseBody) {
+        if (responseBodyHandling == IGNORE || responseBodyHandling == DESERIALIZE) {
             try (ResponseBody body = response.body()) {
                 byte[] bytes = (body != null) ? body.bytes() : EMPTY_BODY;
 
