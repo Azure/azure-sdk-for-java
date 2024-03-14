@@ -40,10 +40,6 @@ parameters:
   displayName: 'azure-identity'
   type: boolean
   default: true
-- name: release_azureidentityextensions
-  displayName: 'azure-identity-extensions'
-  type: boolean
-  default: true
 - name: release_azureidentitybroker
   displayName: 'azure-identity-broker'
   type: boolean
@@ -60,10 +56,6 @@ extends:
         groupId: com.azure
         safeName: azureidentity
         releaseInBatch: ${{ parameters.release_azureidentity }}
-      - name: azure-identity-extensions
-        groupId: com.azure
-        safeName: azureidentityextensions
-        releaseInBatch: ${{ parameters.release_azureidentityextensions }}
       - name: azure-identity-broker
         groupId: com.azure
         safeName: azureidentitybroker

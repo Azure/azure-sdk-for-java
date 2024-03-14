@@ -430,7 +430,7 @@ media_com.microsoft.azure:adal4j;1.2.0
 resourcemanager_com.jcraft:jsch;0.1.55
 
 # sdk\storage\azure-storage-blob-cryptography\pom.xml
-storage_com.microsoft.azure:azure-storage;8.4.0
+storage_com.microsoft.azure:azure-storage;8.6.6
 
 # sdk\appconfiguration\azure-spring-cloud-test-appconfiguration-config\pom.xml
 spring_com.microsoft.azure:azure;1.34.0

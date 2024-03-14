@@ -42,8 +42,10 @@ $ValidParents = ("azure-sdk-parent", "azure-client-sdk-parent", "azure-data-sdk-
 # which means these files have to be "sort of" scanned.
 $SpringSampleParents = ("spring-boot-starter-parent", "azure-spring-boot-test-parent")
 
+. "${PSScriptRoot}/../common/scripts/Helpers/PSModule-Helpers.ps1"
 $Path = Resolve-Path ($PSScriptRoot + "/../../")
 $SamplesPath = Resolve-Path ($PSScriptRoot + "/../../samples")
+$SdkRoot = Resolve-Path ($PSScriptRoot + "/../../sdk")
 
 # Not all POM files have a parent entry
 $PomFilesIgnoreParent = ("$($Path)\parent\pom.xml")
@@ -54,6 +56,9 @@ $DependencyTypeExternal = "external_dependency"
 $DependencyTypeForError = "$($DependencyTypeCurrent)|$($DependencyTypeDependency)|$($DependencyTypeExternal)"
 $UpdateTagFormat = "{x-version-update;<groupId>:<artifactId>;$($DependencyTypeForError)}"
 $UseVerboseLogging = $PSBoundParameters['Debug'] -or $PSBoundParameters['Verbose']
+
+Install-ModuleIfNotInstalled "powershell-yaml" "0.4.1" | Import-Module
+
 $StartTime = $(get-date)
 
 # This is the for the bannedDependencies include exceptions. All <include> entries need to be of the
@@ -126,6 +131,94 @@ class ExternalDependency {
     }
 }
 
+# Create a dictionary of libraries per sdk/<ServiceDirectory>. The Key will be the directory
+# and the Value will be a HashSet of the libraries produced. Note: This looks at ci*.yml meaning
+# that it picks it'll pick up both track 1 and track 2 libraries. This is okay to join
+# since the libraries produced by both tracks have different GroupIds and even then, have different
+# ArtifactIds between tracks. Further, there are no interdependencies between track 1 and track 2
+# libraries.
+# The purpose of collecting this data is to verify that all interdependencies within an ServiceDirectory
+# are using current versions of other libraries built and released from the same ServiceDirectory.
+# Similarly, this can also be used to ensure that any dependencies not part of a given ServiceDirectory
+# only use the dependency versions.
+# It's also worth noting that the artifacts list is pulled from the ci.yml files. The search goes
+# depth 3 due to the fact that there are some libraries whose pipelines yml files are one level deeper
+# than the sdk/<SerciceDirectory>. They're in the sdk/<ServiceDirectory>/<LibraryDirectory>/ci.yml and
+# sdk/communication is an example of this as each library has its own pipeline.
+function Get-ArtifactsList-Per-Service-Directory {
+    param([System.Collections.Specialized.OrderedDictionary]$ArtifactsPerSD)
+
+    # Get all of the yml files under sdk/
+    $ymlFiles = Get-ChildItem -Path $SdkRoot -Recurse -Depth 3 -File -Filter "ci*yml"
+    foreach ($ymlFile in $ymlFiles) {
+        # I love exclusions, they're super awesome
+        if ($ymlFile.FullName.Split([IO.Path]::DirectorySeparatorChar) -contains "resourcemanagerhybrid" -or
+            $ymlFile.Name -eq "ci.cosmos.yml") {
+            continue
+        }
+        # The path is going to be the key. Since there can be multiple yml files for a single path,
+        # (ci.yml and ci.mgmt.yml),
+        $ymlPath = Split-Path $ymlFile
+        if (-not $ArtifactsPerSD.Contains($ymlPath)) {
+            $artifactHashSet = New-Object 'System.Collections.Generic.HashSet[String]'
+            $ArtifactsPerSD.Add($ymlPath, $artifactHashSet)
+        }
+
+        $ymlContent = Get-Content $ymlFile.FullName -Raw
+        $ymlObject = ConvertFrom-Yaml $ymlContent -Ordered
+        # Get each artifact that is built/released as part of this yml file
+        foreach ($artifact in $ymlObject["extends"]["parameters"]["artifacts"]) {
+            $libFullName = $artifact["groupId"] + ":" + $artifact["name"]
+            # The same artifact in different yml files or twice in the same file is bad.
+            if (-not $ArtifactsPerSD[$ymlPath].Add($libFullName)) {
+                Write-Error "Processing yml file $($ymlFile.FullName)"
+                Write-Error "$ymlPath already contains an Artifact entry for $libFullName"
+            }
+        }
+        # These list of modules per sdk/<ServiceDirectory> has to be verified to be using the
+        # latest version of other modules in the same ServiceDirectory which includes AdditionModules.
+        # The groupIds will ensure that track1 and track2 libraries won't collide in here. In the
+        # case of AdditionalModules, com.azure:perf-test-core is ubiquitous and can appear in the
+        # AdditionalModules of ci.yml and ci.mgmt.yml. As such, it's the only library we'll ignore
+        # a dupe of.
+        foreach ($artifact in $ymlObject["extends"]["parameters"]["AdditionalModules"]) {
+            $libFullName = $artifact["groupId"] + ":" + $artifact["name"]
+            if (-not $ArtifactsPerSD[$ymlPath].Add($libFullName)) {
+                if ($libFullName -ne "com.azure:perf-test-core") {
+                    Write-Error "Processing yml file $($ymlFile.FullName)"
+                    Write-Error "$ymlPath already contains an AdditionalModule entry for $libFullName"
+                }
+            }
+        }
+    }
+}
+
+# Given the full path to a POM file, return the HashSet containing the list
+# of libraries built and released from that service directory, if there is
+# one, null otherwise.
+function Get-Artifacts-Built-In-Service-Directory {
+    param(
+        [System.Collections.Specialized.OrderedDictionary]$ArtifactsPerSD,
+        [string]$SdkRoot,
+        [string]$PomFileFullPath
+        )
+
+        # There are POM files that aren't in under under /sdk. Those
+        # aren't verified for current/dependency since they don't release
+        # and won't have entries in the ArtifactsPerSD
+        if ($PomFileFullPath.StartsWith($SdkRoot)) {
+            $tmpFile = $PomFileFullPath
+            while ($tmpFile -ne $SdkRoot) {
+                if ($ArtifactsPerSD.Contains($tmpFile)) {
+                    return $ArtifactsPerSD[$tmpFile]
+                } else {
+                    $tmpFile = Split-Path $tmpFile -Parent
+                }
+            }
+        }
+        return $null
+}
+
 function Build-Dependency-Hash-From-File {
     param(
         [hashtable]$depHash,
@@ -177,7 +270,8 @@ function Test-Dependency-Tag-And-Version {
         [hashtable]$libHash,
         [hashtable]$extDepHash,
         [string]$versionString,
-        [string]$versionUpdateString)
+        [string]$versionUpdateString,
+        [System.Collections.Generic.HashSet[string]]$libPerSDHash = $null)
 
     # This is the format of the versionUpdateString and there should be 3 parts:
     # 1. The update tag, itself eg. x-version-update
@@ -226,6 +320,15 @@ function Test-Dependency-Tag-And-Version {
         {
             if ($depType -eq $DependencyTypeDependency)
             {
+                # JRS - REMOVE
+                # Any libraries built as part of the same pipeline need to use the current
+                # version of other libraries within the same pipeline. Verify that this
+                # dependency, of type dependency, shouldn't be current
+                if ($libPerSDHash) {
+                    if ($libPerSDHash.Contains($depKey)) {
+                        return "Error: $($versionUpdateString.Trim()) is incorrectly set to $DependencyTypeDependency. Libraries building and releasing as part of the same pipeline need to be using the $DependencyTypeCurrent versions of each other."
+                    }
+                }
                 if ($versionString -ne $libHash[$depKey].depVer)
                 {
                     return "Error: $($depKey)'s <version> is '$($versionString)' but the dependency version is listed as $($libHash[$depKey].depVer)"
@@ -236,7 +339,12 @@ function Test-Dependency-Tag-And-Version {
                 # Verify that none of the 'current' dependencies are using a groupId that starts with 'unreleased_' or 'beta_'
                 if ($depKey.StartsWith('unreleased_') -or $depKey.StartsWith('beta_'))
                 {
-                    return "Error: $($versionUpdateString) is using an unreleased_ or beta_ dependency and trying to set current value. Only dependency versions can be set with an unreleased or beta dependency."
+                    return "Error: $($versionUpdateString.Trim()) is using an unreleased_ or beta_ dependency and trying to set current value. Only dependency versions can be set with an unreleased or beta dependency."
+                }
+                if ($libPerSDHash) {
+                    if (-not $libPerSDHash.Contains($depKey)) {
+                        return "Error: $($versionUpdateString.Trim()) is incorrectly set to $DependencyTypeCurrent. Only libraries building and releasing as part of the same pipeline should be using the $DependencyTypeCurrent versions of each other."
+                    }
                 }
                 if ($versionString -ne $libHash[$depKey].curVer)
                 {
@@ -380,6 +488,9 @@ function Assert-Spring-Sample-Version-Tags {
 
     Write-Log-Message $potentialLogMessage $hasError
 }
+
+$ArtifactsPerSD = [ordered]@{};
+Get-ArtifactsList-Per-Service-Directory $ArtifactsPerSD
 
 # Create one dependency hashtable for libraries we build (the groupIds will make the entries unique) and
 # one hash for external dependencies
@@ -550,6 +661,9 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
         }
     }
 
+    # JRS - HERE
+    $artifactsPerSDHashSet = Get-Artifacts-Built-In-Service-Directory $ArtifactsPerSD $SdkRoot $pomFile
+
     # Verify every dependency as a group, artifact and version
     # GetElementsByTagName should get all dependencies including dependencies under plugins
     foreach($dependencyNode in $xmlPomFile.GetElementsByTagName("dependency"))
@@ -589,7 +703,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             else
             {
                 # verify the version tag and version are correct
-                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value
+                $retVal = Test-Dependency-Tag-And-Version $libHash $extDepHash $versionNode.InnerText.Trim() $versionNode.NextSibling.Value $artifactsPerSDHashSet
                 if ($retVal)
                 {
                     $hasError = $true
@@ -782,12 +896,12 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     Write-Log-Message $potentialLogMessage $hasError
 }
 
-if ($UseVerboseLogging)
-{
-    $ElapsedTime = $(get-date) - $StartTime
-    $TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
-    Write-Host "Total run time=$($TotalRunTime)"
-}
+# if ($UseVerboseLogging)
+# {
+$ElapsedTime = $(get-date) - $StartTime
+$TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
+Write-Host "Total run time=$($TotalRunTime)"
+# }
 
 if ($script:FoundError)
 {
