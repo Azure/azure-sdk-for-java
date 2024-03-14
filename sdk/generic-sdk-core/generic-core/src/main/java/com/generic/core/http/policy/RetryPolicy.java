@@ -41,7 +41,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private final Duration baseDelay;
     private final Duration maxDelay;
     private final Duration fixedDelay;
-    private final Predicate<RequestRetryCondition> shouldRetryCondition;
+    private final Predicate<HttpRequestRetryCondition> shouldRetryCondition;
     private static final int DEFAULT_MAX_RETRIES;
     private static final Duration DEFAULT_BASE_DELAY = Duration.ofMillis(800);
     private static final Duration DEFAULT_MAX_DELAY = Duration.ofSeconds(8);
@@ -102,7 +102,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * {@code retryAfterHeader} is not null.
      */
     RetryPolicy(Duration baseDelay, Duration maxDelay, Duration fixedDelay, int maxRetries,
-                Function<Headers, Duration> delayFromHeaders, Predicate<RequestRetryCondition> shouldRetryCondition) {
+                Function<Headers, Duration> delayFromHeaders, Predicate<HttpRequestRetryCondition> shouldRetryCondition) {
         if (fixedDelay == null && baseDelay == null) {
             this.baseDelay = DEFAULT_BASE_DELAY;
             this.maxDelay = DEFAULT_MAX_DELAY;
@@ -218,10 +218,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private boolean shouldRetryResponse(Response<?> response, int tryCount,
                                         List<Exception> retriedExceptions) {
         if (shouldRetryCondition != null) {
-            return tryCount < maxRetries && shouldRetryCondition.test(new RequestRetryCondition(response, null, tryCount,
+            return tryCount < maxRetries && shouldRetryCondition.test(new HttpRequestRetryCondition(response, null, tryCount,
                 retriedExceptions));
         } else {
-            return tryCount < maxRetries && defaultShouldRetryCondition(new RequestRetryCondition(response, null, tryCount,
+            return tryCount < maxRetries && defaultShouldRetryCondition(new HttpRequestRetryCondition(response, null, tryCount,
                 retriedExceptions));
         }
     }
@@ -235,7 +235,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
         // Unwrap the throwable.
         Throwable causalThrowable = exception.getCause();
-        RequestRetryCondition requestRetryCondition = new RequestRetryCondition(null, exception, tryCount,
+        HttpRequestRetryCondition requestRetryCondition = new HttpRequestRetryCondition(null, exception, tryCount,
             retriedExceptions);
 
         // Check all causal exceptions in the exception chain.
@@ -286,7 +286,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return Duration.ofNanos(Math.min((1L << retryAttempts) * delayWithJitterInNanos, maxDelayNanos));
     }
 
-    private boolean defaultShouldRetryCondition(RequestRetryCondition requestRetryCondition) {
+    private boolean defaultShouldRetryCondition(HttpRequestRetryCondition requestRetryCondition) {
         if (requestRetryCondition.getResponse() != null) {
             int code = requestRetryCondition.getResponse().getStatusCode();
             return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
