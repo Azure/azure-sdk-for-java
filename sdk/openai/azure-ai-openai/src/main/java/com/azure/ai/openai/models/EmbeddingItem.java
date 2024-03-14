@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -43,9 +44,10 @@ public final class EmbeddingItem {
      *
      * @return the embedding value.
      */
-    @Generated
-    public List<Double> getEmbedding() {
-        return this.embedding;
+    public List<Float> getEmbedding() {
+        List<Float> floatList = new ArrayList<>();
+        this.embedding.forEach(d -> floatList.add(d.floatValue()));
+        return floatList;
     }
 
     /*

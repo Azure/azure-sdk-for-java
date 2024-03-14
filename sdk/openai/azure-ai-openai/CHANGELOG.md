@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Changed the return type of `getEmbedding` to `List<Float>` from `List<Double>` in `EmbeddingItem` class.
+
 ### Bugs Fixed
 
 ### Other Changes
