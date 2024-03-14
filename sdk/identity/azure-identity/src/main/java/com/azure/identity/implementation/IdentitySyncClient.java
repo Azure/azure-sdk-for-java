@@ -216,27 +216,11 @@ public class IdentitySyncClient extends IdentityClientBase {
     @SuppressWarnings("deprecation")
     public MsalToken authenticateWithPublicClientCache(TokenRequestContext request, IAccount account) {
         PublicClientApplication pc =  getPublicClientInstance(request).getValue();
-        MsalToken token = acquireTokenFromPublicClientSilently(request, pc, account, false);
-        if (OffsetDateTime.now().isAfter(token.getExpiresAt().minus(REFRESH_OFFSET))) {
-            token = acquireTokenFromPublicClientSilently(request, pc, account, true);
-        }
-        return token;
-    }
-
-    private MsalToken acquireTokenFromPublicClientSilently(TokenRequestContext request,
-                                                           PublicClientApplication pc,
-                                                           IAccount account,
-                                                           boolean forceRefresh) {
         SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
             new HashSet<>(request.getScopes()));
 
-        if (forceRefresh) {
-            parametersBuilder.forceRefresh(true);
-        }
-
-        if (request.isCaeEnabled() && request.getClaims() != null) {
-            ClaimsRequest customClaimRequest = CustomClaimRequest
-                .formatAsClaimsRequest(request.getClaims());
+        if (request.getClaims() != null) {
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
             parametersBuilder.claims(customClaimRequest);
             parametersBuilder.forceRefresh(true);
         }
@@ -247,7 +231,38 @@ public class IdentitySyncClient extends IdentityClientBase {
         parametersBuilder.tenant(
             IdentityUtil.resolveTenantId(tenantId, request, options));
         try {
-            return new MsalToken(pc.acquireTokenSilently(parametersBuilder.build()).get());
+            MsalToken accessToken = new MsalToken(pc.acquireTokenSilently(parametersBuilder.build()).get());
+            if (OffsetDateTime.now().isBefore(accessToken.getExpiresAt().minus(REFRESH_OFFSET))) {
+                return accessToken;
+            }
+        } catch (MalformedURLException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage(), e));
+        } catch (ExecutionException | InterruptedException e) {
+            // Cache misses should not throw an exception, but should log.
+            if (e.getMessage().contains("Token not found in the cache")) {
+                LOGGER.verbose("Token not found in the MSAL cache.");
+                return null;
+            } else {
+                throw LOGGER.logExceptionAsError(new ClientAuthenticationException(e.getMessage(), null, e));
+            }
+        }
+
+        SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
+            new HashSet<>(request.getScopes())).forceRefresh(true);
+
+        if (request.isCaeEnabled() && request.getClaims() != null) {
+            ClaimsRequest customClaimRequest = CustomClaimRequest
+                .formatAsClaimsRequest(request.getClaims());
+            forceParametersBuilder.claims(customClaimRequest);
+        }
+
+        if (account != null) {
+            forceParametersBuilder = forceParametersBuilder.account(account);
+        }
+        forceParametersBuilder.tenant(
+            IdentityUtil.resolveTenantId(tenantId, request, options));
+        try {
+            return new MsalToken(pc.acquireTokenSilently(forceParametersBuilder.build()).get());
         } catch (MalformedURLException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e.getMessage(), e));
         } catch (ExecutionException | InterruptedException e) {
@@ -335,23 +350,15 @@ public class IdentitySyncClient extends IdentityClientBase {
         } catch (URISyntaxException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
-        PublicClientApplication pc = getPublicClientInstance(request).getValue();
 
-        if (options.isBrokerEnabled() && options.useOperatingSystemAccount()) {
-            return acquireTokenFromPublicClientSilently(request,
-                pc,
-                null,
-                false);
-        } else {
-            InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
-                buildInteractiveRequestParameters(request, loginHint, redirectUri);
-
-            try {
-                return new MsalToken(pc.acquireToken(builder.build()).get());
-            } catch (Exception e) {
-                throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
-                    "Failed to acquire token with Interactive Browser Authentication.", null, e));
-            }
+        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
+            buildInteractiveRequestParameters(request, loginHint, redirectUri);
+        PublicClientApplication pc =  getPublicClientInstance(request).getValue();
+        try {
+            return new MsalToken(pc.acquireToken(builder.build()).get());
+        } catch (Exception e) {
+            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
+                "Failed to acquire token with Interactive Browser Authentication.", null, e));
         }
     }
 
