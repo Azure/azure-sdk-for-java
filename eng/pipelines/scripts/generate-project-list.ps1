@@ -1,4 +1,5 @@
-if (!$env:ARTIFACTSJSON) {
+# Check if empty or still a literal devops variable reference $(<var name>)
+if (!$env:ARTIFACTSJSON -or $env:ARTIFACTSJSON -like '*ArtifactsJson*') {
   throw "ArtifactsJson devops variable was not set"
 }
 
@@ -15,9 +16,15 @@ $projectList = @()
 foreach ($artifact in $artifacts) {
   $projectList += "$($artifact.groupId):$($artifact.name)"
 }
-foreach ($artifact in $additionalModules) {
-  $projectList += "$($artifact.groupId):$($artifact.name)"
+
+# Check if empty or still a literal devops variable reference $(<var name>)
+if (!$env:ADDITIONALMODULESJSON -or $env:ADDITIONALMODULESJSON -like '*AdditionalModulesJson*') {
+  $additionalModules = $env:ADDITIONALMODULESJSON | ConvertFrom-Json
+  foreach ($artifact in $additionalModules) {
+    $projectList += "$($artifact.groupId):$($artifact.name)"
+  }
 }
+
 $projects = $projectList -join ','
 
 Write-Host "ProjectList = $projects"
