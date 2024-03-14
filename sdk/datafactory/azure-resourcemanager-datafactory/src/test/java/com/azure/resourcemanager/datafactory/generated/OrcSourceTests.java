@@ -14,18 +14,18 @@ public final class OrcSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OrcSource model = BinaryData.fromString(
-            "{\"type\":\"OrcSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"dataz\",\"disableMetricsCollection\":\"datamcmlzmfetidne\",\"\":{\"gowdavpqyhax\":\"datajgwnmxc\",\"gkwpbnefabgt\":\"dataorzozf\",\"ugddycfyfau\":\"dataggoppmxcm\"}},\"additionalColumns\":\"datamzq\",\"sourceRetryCount\":\"datawkesxvzcxxf\",\"sourceRetryWait\":\"dataj\",\"maxConcurrentConnections\":\"dataqwbrzkmgyl\",\"disableMetricsCollection\":\"datacxmh\",\"\":{\"hjhrkfptiiommis\":\"dataecoiqwnqlizlc\",\"vbwawymahboi\":\"datafmbvmajcmpohjdvf\",\"gcjssqpk\":\"datadiuyqdjk\",\"zqwwttqjyiw\":\"databryhvshkvup\"}}")
+            "{\"type\":\"OrcSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"dataaaepxlxbofdchbo\",\"disableMetricsCollection\":\"datafsk\",\"\":{\"tutqjs\":\"datas\",\"oixtrnakytzcma\":\"dataj\",\"l\":\"datav\"}},\"additionalColumns\":\"dataaarqhpxwqhzsxgmg\",\"sourceRetryCount\":\"datagmtywivbu\",\"sourceRetryWait\":\"dataeedjnklvbrsxykwb\",\"maxConcurrentConnections\":\"datasd\",\"disableMetricsCollection\":\"datajitlqxpsnnnxhgd\",\"\":{\"dbg\":\"dataxyl\",\"zfzkhdnp\":\"dataicjkq\",\"vquasvywkbiek\":\"datamrxjdfkqlkaipf\"}}")
             .toObject(OrcSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OrcSource model = new OrcSource().withSourceRetryCount("datawkesxvzcxxf").withSourceRetryWait("dataj")
-            .withMaxConcurrentConnections("dataqwbrzkmgyl").withDisableMetricsCollection("datacxmh")
-            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("dataz")
-                .withDisableMetricsCollection("datamcmlzmfetidne")
-                .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
-            .withAdditionalColumns("datamzq");
+        OrcSource model = new OrcSource().withSourceRetryCount("datagmtywivbu")
+            .withSourceRetryWait("dataeedjnklvbrsxykwb").withMaxConcurrentConnections("datasd")
+            .withDisableMetricsCollection("datajitlqxpsnnnxhgd")
+            .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("dataaaepxlxbofdchbo")
+                .withDisableMetricsCollection("datafsk").withAdditionalProperties(mapOf("type", "StoreReadSettings")))
+            .withAdditionalColumns("dataaarqhpxwqhzsxgmg");
         model = BinaryData.fromObject(model).toObject(OrcSource.class);
     }
 

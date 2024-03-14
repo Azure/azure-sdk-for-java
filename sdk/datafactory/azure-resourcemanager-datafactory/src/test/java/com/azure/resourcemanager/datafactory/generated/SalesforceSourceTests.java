@@ -11,16 +11,16 @@ public final class SalesforceSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SalesforceSource model = BinaryData.fromString(
-            "{\"type\":\"SalesforceSource\",\"query\":\"dataplqnilozf\",\"readBehavior\":\"datavsf\",\"queryTimeout\":\"datacarfdmlie\",\"additionalColumns\":\"datawocufcshqfc\",\"sourceRetryCount\":\"datanxfof\",\"sourceRetryWait\":\"datadroqktegi\",\"maxConcurrentConnections\":\"datakzctqbvntlzvgjme\",\"disableMetricsCollection\":\"dataoydyislepd\",\"\":{\"b\":\"dataklntspfnumpyy\",\"f\":\"databmjbmtxbi\"}}")
+            "{\"type\":\"SalesforceSource\",\"query\":\"databnekhjzbfb\",\"readBehavior\":\"dataeqkuozarr\",\"queryTimeout\":\"datapyzryjb\",\"additionalColumns\":\"databcvoyqnrjdrc\",\"sourceRetryCount\":\"datarvzewogh\",\"sourceRetryWait\":\"datazxkjqecj\",\"maxConcurrentConnections\":\"dataromeawthycbigpi\",\"disableMetricsCollection\":\"datapxhzjnparsulmuwl\",\"\":{\"xxqgoavzycxpza\":\"datakhe\",\"mftmxwtwzs\":\"datatalo\"}}")
             .toObject(SalesforceSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceSource model = new SalesforceSource().withSourceRetryCount("datanxfof")
-            .withSourceRetryWait("datadroqktegi").withMaxConcurrentConnections("datakzctqbvntlzvgjme")
-            .withDisableMetricsCollection("dataoydyislepd").withQueryTimeout("datacarfdmlie")
-            .withAdditionalColumns("datawocufcshqfc").withQuery("dataplqnilozf").withReadBehavior("datavsf");
+        SalesforceSource model = new SalesforceSource().withSourceRetryCount("datarvzewogh")
+            .withSourceRetryWait("datazxkjqecj").withMaxConcurrentConnections("dataromeawthycbigpi")
+            .withDisableMetricsCollection("datapxhzjnparsulmuwl").withQueryTimeout("datapyzryjb")
+            .withAdditionalColumns("databcvoyqnrjdrc").withQuery("databnekhjzbfb").withReadBehavior("dataeqkuozarr");
         model = BinaryData.fromObject(model).toObject(SalesforceSource.class);
     }
 }

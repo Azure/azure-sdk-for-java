@@ -19,29 +19,29 @@ public final class PrestoObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrestoObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"PrestoObject\",\"typeProperties\":{\"tableName\":\"dataarluobbvalq\",\"table\":\"dataknyujxysvclfjy\",\"schema\":\"datavildlfflle\"},\"description\":\"mtxfqpfi\",\"structure\":\"datacgbfou\",\"schema\":\"databpgcryvidbz\",\"linkedServiceName\":{\"referenceName\":\"ylbvj\",\"parameters\":{\"xjftecgprz\":\"datangw\",\"dq\":\"dataqm\"}},\"parameters\":{\"xoyxuuco\":{\"type\":\"String\",\"defaultValue\":\"datayqhaat\"}},\"annotations\":[\"datayruxrzhhlh\",\"datavmgsbpgmncrv\",\"datapi\",\"dataoromppzsauqmeu\"],\"folder\":{\"name\":\"fcmpuaiugoceqtl\"},\"\":{\"ncfunlakgixhqjqh\":\"datajymwiccu\"}}")
+            "{\"type\":\"PrestoObject\",\"typeProperties\":{\"tableName\":\"dataz\",\"table\":\"datayujxysv\",\"schema\":\"dataf\"},\"description\":\"clvildlf\",\"structure\":\"dataleirmtxfqpfildcg\",\"schema\":\"dataou\",\"linkedServiceName\":{\"referenceName\":\"fbpgcryvidbzdy\",\"parameters\":{\"jftecgprzsqmp\":\"datajatgngwn\",\"akzbyqha\":\"dataq\"}},\"parameters\":{\"lusyruxrz\":{\"type\":\"Array\",\"defaultValue\":\"datayxuuc\"},\"tpiforomppz\":{\"type\":\"Float\",\"defaultValue\":\"datahrvmgsbpgmncr\"}},\"annotations\":[\"dataqmeu\"],\"folder\":{\"name\":\"fcmpuaiugoceqtl\"},\"\":{\"ncfunlakgixhqjqh\":\"datajymwiccu\"}}")
             .toObject(PrestoObjectDataset.class);
-        Assertions.assertEquals("mtxfqpfi", model.description());
-        Assertions.assertEquals("ylbvj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("xoyxuuco").type());
+        Assertions.assertEquals("clvildlf", model.description());
+        Assertions.assertEquals("fbpgcryvidbzdy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("lusyruxrz").type());
         Assertions.assertEquals("fcmpuaiugoceqtl", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PrestoObjectDataset model = new PrestoObjectDataset().withDescription("mtxfqpfi").withStructure("datacgbfou")
-            .withSchema("databpgcryvidbz")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ylbvj")
-                .withParameters(mapOf("xjftecgprz", "datangw", "dq", "dataqm")))
-            .withParameters(mapOf("xoyxuuco",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datayqhaat")))
-            .withAnnotations(Arrays.asList("datayruxrzhhlh", "datavmgsbpgmncrv", "datapi", "dataoromppzsauqmeu"))
-            .withFolder(new DatasetFolder().withName("fcmpuaiugoceqtl")).withTableName("dataarluobbvalq")
-            .withTable("dataknyujxysvclfjy").withSchemaTypePropertiesSchema("datavildlfflle");
+        PrestoObjectDataset model = new PrestoObjectDataset().withDescription("clvildlf")
+            .withStructure("dataleirmtxfqpfildcg").withSchema("dataou")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("fbpgcryvidbzdy")
+                .withParameters(mapOf("jftecgprzsqmp", "datajatgngwn", "akzbyqha", "dataq")))
+            .withParameters(mapOf("lusyruxrz",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datayxuuc"), "tpiforomppz",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datahrvmgsbpgmncr")))
+            .withAnnotations(Arrays.asList("dataqmeu")).withFolder(new DatasetFolder().withName("fcmpuaiugoceqtl"))
+            .withTableName("dataz").withTable("datayujxysv").withSchemaTypePropertiesSchema("dataf");
         model = BinaryData.fromObject(model).toObject(PrestoObjectDataset.class);
-        Assertions.assertEquals("mtxfqpfi", model.description());
-        Assertions.assertEquals("ylbvj", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.STRING, model.parameters().get("xoyxuuco").type());
+        Assertions.assertEquals("clvildlf", model.description());
+        Assertions.assertEquals("fbpgcryvidbzdy", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("lusyruxrz").type());
         Assertions.assertEquals("fcmpuaiugoceqtl", model.folder().name());
     }
 

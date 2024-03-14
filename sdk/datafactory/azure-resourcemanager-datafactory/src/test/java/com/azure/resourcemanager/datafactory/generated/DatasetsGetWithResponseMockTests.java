@@ -32,7 +32,7 @@ public final class DatasetsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"izdfulv\",\"structure\":\"dataalvcahy\",\"schema\":\"datahdhtcopzfce\",\"linkedServiceName\":{\"referenceName\":\"btwicghxme\",\"parameters\":{\"motgkyfh\":\"datavmmkwazku\",\"fsvzczisiqns\":\"dataxmwq\",\"fvzxosrstevdts\":\"datavwjfuhqbatdn\"}},\"parameters\":{\"pjslrfpxlutfbhs\":{\"type\":\"Object\",\"defaultValue\":\"datadojimfaa\"}},\"annotations\":[\"datafcbxtabxd\",\"databoyqescvcv\"],\"folder\":{\"name\":\"r\"},\"\":{\"ikqz\":\"datajppmil\",\"lhnkvipjinjik\":\"dataqkxjcqdnzhjlb\"}},\"name\":\"c\",\"type\":\"kcnjzxezo\",\"etag\":\"ltewthslztxix\",\"id\":\"weuxycbvefldfw\"}";
+            = "{\"properties\":{\"type\":\"Dataset\",\"description\":\"cwtnzf\",\"structure\":\"dataghnfqwjwwhsf\",\"schema\":\"dataxlbclvp\",\"linkedServiceName\":{\"referenceName\":\"butyrsravsscbls\",\"parameters\":{\"yoilnixwxwaquuvb\":\"datacafgdtuzclfbvv\"}},\"parameters\":{\"zoibip\":{\"type\":\"String\",\"defaultValue\":\"datafeslxwlm\"},\"ufjahu\":{\"type\":\"Bool\",\"defaultValue\":\"datalomidvicd\"},\"klths\":{\"type\":\"Float\",\"defaultValue\":\"databdt\"}},\"annotations\":[\"datanxd\",\"datalovkt\",\"datafdipsshxxo\"],\"folder\":{\"name\":\"dryysv\"},\"\":{\"bfnkj\":\"datazs\",\"pbirltzyuahnlx\":\"datawty\",\"wqmzezf\":\"datadpjssdtysnl\",\"eukqioqhp\":\"datafjjjzcxtzkoloos\"}},\"name\":\"qkkacw\",\"type\":\"qmxkxfmwbrvsl\",\"etag\":\"rlaudemzrp\",\"id\":\"usujbibbgcloknh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,13 +49,13 @@ public final class DatasetsGetWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DatasetResource response = manager.datasets()
-            .getWithResponse("ql", "zpckxlc", "l", "yrsojqpjbarfn", com.azure.core.util.Context.NONE).getValue();
+        DatasetResource response = manager.datasets().getWithResponse("kldxc", "qjnnhotwqkgvr", "limzsutmsmdibzv",
+            "tempsaykcxu", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("weuxycbvefldfw", response.id());
-        Assertions.assertEquals("izdfulv", response.properties().description());
-        Assertions.assertEquals("btwicghxme", response.properties().linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.OBJECT, response.properties().parameters().get("pjslrfpxlutfbhs").type());
-        Assertions.assertEquals("r", response.properties().folder().name());
+        Assertions.assertEquals("usujbibbgcloknh", response.id());
+        Assertions.assertEquals("cwtnzf", response.properties().description());
+        Assertions.assertEquals("butyrsravsscbls", response.properties().linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.STRING, response.properties().parameters().get("zoibip").type());
+        Assertions.assertEquals("dryysv", response.properties().folder().name());
     }
 }
