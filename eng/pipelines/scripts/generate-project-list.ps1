@@ -11,8 +11,7 @@ foreach ($artifact in $artifacts) {
 }
 
 # Check if empty or still a literal devops variable reference $(<var name>)
-Write-Host $env:ADDITIONALMODULESJSON
-if (!$env:ADDITIONALMODULESJSON -or $env:ADDITIONALMODULESJSON -like '*AdditionalModulesJson*') {
+if ($env:ADDITIONALMODULESJSON -and $env:ADDITIONALMODULESJSON -notlike '*AdditionalModulesJson*') {
   $additionalModules = $env:ADDITIONALMODULESJSON | ConvertFrom-Json
   foreach ($artifact in $additionalModules) {
     $projectList += "$($artifact.groupId):$($artifact.name)"
