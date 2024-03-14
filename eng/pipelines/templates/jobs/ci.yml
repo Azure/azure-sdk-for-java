@@ -161,23 +161,6 @@ jobs:
         env:
           ARTIFACTSJSON: $(ArtifactsJson)
 
-      - pwsh: |
-          $artifacts = '$(ArtifactsJson)' | ConvertFrom-Json
-          python3 --version
-
-          # Append dev package version suffix for each artifact
-          foreach ($artifact in $artifacts) {
-            python3 eng/versioning/set_versions.py --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber) --artifact-id $artifact.name --group-id $artifact.groupId
-          }
-
-          # Set zero-dev-version for packages
-          python3 eng/versioning/set_versions.py --set-dev-zero-version --build-type ${{parameters.SDKType}} --build-qualifier alpha.$(Build.BuildNumber)
-
-          # Apply version settings to repository
-          python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}} --sr
-        condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
-        displayName: Setup Dev versioning
-
       - ${{if ne(parameters.ServiceDirectory, '')}}:
         - task: Powershell@2
           inputs:
