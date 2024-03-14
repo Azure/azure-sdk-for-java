@@ -2,6 +2,11 @@
 
 ## Code generation settings
 
+### Manual Modifications
+
+The following edits need to be made manually after code generation:
+- Rollback the edits to `module-info` file
+
 ```yaml
 java: true
 output-folder: ../
