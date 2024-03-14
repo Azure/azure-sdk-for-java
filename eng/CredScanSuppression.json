@@ -40,6 +40,7 @@
                 "test-proxy.log",
             ],
             "_justification": "Transient test file that is locked by test-proxy and should not be scanned"
+        },
         {
             "file": [
                 "eng/common/testproxy/dotnet-devcert.pfx",
