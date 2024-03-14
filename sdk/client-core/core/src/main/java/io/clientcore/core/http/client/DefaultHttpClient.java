@@ -71,6 +71,8 @@ class DefaultHttpClient implements HttpClient {
     private final long readTimeout;
     private final ProxyOptions proxyOptions;
     private final SSLSocketFactory sslSocketFactory;
+    private static int maxConnections;
+    private static boolean keepConnectionAlive;
 
     DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions,
         SSLSocketFactory sslSocketFactory) {
@@ -78,6 +80,14 @@ class DefaultHttpClient implements HttpClient {
         this.readTimeout = readTimeout == null ? -1 : readTimeout.toMillis();
         this.proxyOptions = proxyOptions;
         this.sslSocketFactory = sslSocketFactory;
+        String keepAlive = System.getProperty("http.keepAlive");
+        if (keepAlive != null && !Boolean.parseBoolean(keepAlive)) {
+            keepConnectionAlive = false;
+        }
+        String maxConnectionsString = System.getProperty("http.maxConnections");
+        maxConnections = maxConnectionsString != null
+            ? Integer.parseInt(maxConnectionsString)
+            : 5;
     }
 
     @Override
@@ -139,6 +149,15 @@ class DefaultHttpClient implements HttpClient {
 
         if (readTimeout != -1) {
             connection.setReadTimeout((int) readTimeout);
+        }
+
+        if (keepConnectionAlive) {
+            connection.setRequestProperty(HttpHeaderName.CONNECTION.toString(), "keep-alive");
+        }
+
+        if (maxConnections > 0) {
+            connection.setRequestProperty(HttpHeaderName.CONNECTION.toString(), "keep-alive");
+            connection.setRequestProperty(HttpHeaderName.KEEP_ALIVE.toString(), "max=" + maxConnections);
         }
 
         connection.setRequestMethod(httpRequest.getHttpMethod().toString());
@@ -413,12 +432,17 @@ class DefaultHttpClient implements HttpClient {
          * @param socket An instance of the SocketClient
          * @return an instance of Response
          */
-        @SuppressWarnings("deprecation")
         private static Response<?> doInputOutput(HttpRequest httpRequest, Socket socket,
             SSLSocketFactory sslSocketFactory) throws IOException {
-            httpRequest.getHeaders().set(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
-            if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HttpHeaderName.CONNECTION))) {
-                httpRequest.getHeaders().set(HttpHeaderName.CONNECTION, "close");
+            HttpHeaders requestHeaders = httpRequest.getHeaders();
+            requestHeaders.set(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
+            if (keepConnectionAlive) {
+                requestHeaders.set(HttpHeaderName.CONNECTION, "keep-alive");
+            }
+
+            if (maxConnections > 0) {
+                requestHeaders.set(HttpHeaderName.CONNECTION, "keep-alive");
+                requestHeaders.set(HttpHeaderName.KEEP_ALIVE, "max=" + maxConnections);
             }
 
             try (BufferedReader in = new BufferedReader(
