@@ -17,7 +17,7 @@ public enum PhoneNumbersServiceVersion implements ServiceVersion {
     /**
      * Number Lookup update to public preview {@code 2024-03-01-preview}
      */
-    V2024_03_01_Preview("2024-03-01-preview");
+    V2024_03_01_PREVIEW("2024-03-01-preview");
 
     private final String version;
 
@@ -42,6 +42,6 @@ public enum PhoneNumbersServiceVersion implements ServiceVersion {
      */
     public static PhoneNumbersServiceVersion getLatest() {
 
-        return V2024_03_01_Preview;
+        return V2024_03_01_PREVIEW;
     }
 }

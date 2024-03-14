@@ -7,13 +7,6 @@
   - Format only can be returned for no cost
   - Additional number details can be returned for a cost
 
-## 1.2.0-beta.1 (2023-09-07)
-
-### Features Added
-- Number Lookup API public preview
-- API version `2023-05-01-preview` is the default
-
-
 ## 1.1.9 (2023-12-04)
 
 ### Other Changes
@@ -49,6 +42,12 @@
 
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 - Upgraded `azure-communication-common` from `1.2.11` to version `1.2.12`.
+
+## 1.2.0-beta.1 (2023-09-07)
+
+### Features Added
+- Number Lookup API public preview
+- API version `2023-05-01-preview` is the default
 
 ## 1.1.5 (2023-08-18)
 
