@@ -14,6 +14,7 @@ trigger:
       - sdk/identity/azure-identity/pom.xml
       - sdk/identity/azure-identity-perf/pom.xml
       - sdk/identity/azure-identity-broker/pom.xml
+      - sdk/identity/azure-identity-extensions/
 
 pr:
   branches:
@@ -30,6 +31,7 @@ pr:
       - sdk/identity/azure-identity/pom.xml
       - sdk/identity/azure-identity-perf/pom.xml
       - sdk/identity/azure-identity-broker/pom.xml
+      - sdk/identity/azure-identity-extensions/
 
 parameters:
 - name: release_dependsonlivetests

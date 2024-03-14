@@ -895,12 +895,12 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
     Write-Log-Message $potentialLogMessage $hasError
 }
 
-# if ($UseVerboseLogging)
-# {
-$ElapsedTime = $(get-date) - $StartTime
-$TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
-Write-Host "Total run time=$($TotalRunTime)"
-# }
+if ($UseVerboseLogging)
+{
+    $ElapsedTime = $(get-date) - $StartTime
+    $TotalRunTime = "{0:HH:mm:ss}" -f ([datetime]$ElapsedTime.Ticks)
+    Write-Host "Total run time=$($TotalRunTime)"
+}
 
 if ($script:FoundError)
 {
