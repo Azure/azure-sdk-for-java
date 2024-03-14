@@ -16,6 +16,9 @@ if ($env:ADDITIONALMODULESJSON -and $env:ADDITIONALMODULESJSON -notlike '*Additi
 }
 
 $projects = $projectList -join ','
+if (!$projects) {
+    $projects = '@()'
+}
 
 Write-Host "ProjectList = $projects"
 Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
