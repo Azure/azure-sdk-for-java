@@ -66,10 +66,10 @@ jobs:
           # This will contain things such as heap dumps hprofs if testing hit OutOfMemory errors, log files captured
           # during testing if tests failed, and linting reports.
           - output: pipelineArtifact
-            artifactName: 'test-logs-vo-${{ versionOverride }}-troubleshooting-$(System.StageName)-$(System.JobName)'
+            artifactName: 'troubleshooting-vo-${{ versionOverride }}-troubleshooting-$(System.StageName)-$(System.JobName)'
             targetPath: $(System.DefaultWorkingDirectory)/troubleshooting
             displayName: 'Capture troubleshooting artifacts for version override ${{ versionOverride }}'
-            condition: eq(variables['HAS_TROUBLESHOOTING'], 'true')
+            condition: and(not(succeeded()), eq(variables['HAS_TROUBLESHOOTING'], 'true'))
             sbomEnabled: false
 
     steps:
