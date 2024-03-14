@@ -175,7 +175,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         } else {
             LOGGER.atError()
                 .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
-                .log(() -> "Request was redirected from an invalid redirect allowed method.");
+                .log(() -> "Request redirection is not enabled for this HTTP method.");
 
             return false;
         }
