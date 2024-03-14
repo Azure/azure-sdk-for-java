@@ -23,8 +23,7 @@ steps:
       displayName: 'Sparse checkout repositories'
     inputs:
       pwsh: true
-      filePath: /eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
-      targetType: inline
+      filePath: eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
       arguments: >
         -PathsJson ${{ convertToJson(parameters.Paths) }}
         -RepositoriesJson ${{ convertToJson(parameters.Repositories) }}

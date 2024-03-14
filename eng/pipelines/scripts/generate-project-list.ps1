@@ -4,10 +4,10 @@ if (!$env:ARTIFACTSJSON) {
 
 $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
 
-if (-not $env:ADDITIONALMODULESJSON -or $env:ADDITIONALMODULESJSON -eq "") {
-  $env:ADDITIONALMODULESJSON = "[]"
-} else {
+if ($env:ADDITIONALMODULESJSON) {
   $additionalModules = $env:ADDITIONALMODULESJSON | ConvertFrom-Json
+} else {
+  $additionalModules = @()
 }
 
 $projectList = @()
