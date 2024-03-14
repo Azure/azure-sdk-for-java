@@ -29,9 +29,11 @@ import java.util.function.Predicate;
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RedirectPolicy.class);
     private final int maxAttempts;
-    private final Predicate<RequestRedirectCondition> shouldRedirectCondition;
+    private final Predicate<HttpRequestRedirectCondition> shouldRedirectCondition;
     private static final int DEFAULT_MAX_REDIRECT_ATTEMPTS = 3;
     private static final String REDIRECT_URLS_KEY = "redirectUrls";
+    private static final String ORIGINATING_REQUEST_URL_KEY = "orginatingRequestUrl";
+
     private static final EnumSet<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
     private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
     private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
@@ -85,7 +87,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         // Make sure the context is not modified during redirect, except for the URL
         Response<?> response = next.clone().process();
 
-        RequestRedirectCondition requestRedirectCondition = new RequestRedirectCondition(response, redirectAttempt, attemptedRedirectUrls);
+        HttpRequestRedirectCondition requestRedirectCondition = new HttpRequestRedirectCondition(response, redirectAttempt, attemptedRedirectUrls);
         if ((shouldRedirectCondition != null && shouldRedirectCondition.test(requestRedirectCondition))
             || (shouldRedirectCondition == null && defaultShouldAttemptRedirect(requestRedirectCondition))) {
             createRedirectRequest(response);
@@ -95,7 +97,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         return response;
     }
 
-    public boolean defaultShouldAttemptRedirect(RequestRedirectCondition requestRedirectCondition) {
+    public boolean defaultShouldAttemptRedirect(HttpRequestRedirectCondition requestRedirectCondition) {
         Response<?> response = requestRedirectCondition.getResponse();
         int tryCount = requestRedirectCondition.getTryCount();
         Set<String> attemptedRedirectUrls = requestRedirectCondition.getRedirectedUrls();
@@ -110,6 +112,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
             LOGGER.atVerbose()
                 .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
                 .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString)
+                .addKeyValue(ORIGINATING_REQUEST_URL_KEY, response.getRequest().getUrl())
                 .log(() -> "Redirecting.");
 
             attemptedRedirectUrls.add(redirectUrl);

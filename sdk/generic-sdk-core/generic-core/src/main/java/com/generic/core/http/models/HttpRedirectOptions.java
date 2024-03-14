@@ -4,7 +4,7 @@
 package com.generic.core.http.models;
 
 import com.generic.core.http.Response;
-import com.generic.core.http.policy.RequestRedirectCondition;
+import com.generic.core.http.policy.HttpRequestRedirectCondition;
 import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
 
@@ -19,13 +19,10 @@ public final class HttpRedirectOptions {
     private final int maxAttempts;
     private final EnumSet<HttpMethod> allowedRedirectHttpMethods;
     private final HeaderName locationHeader;
-    private Predicate<RequestRedirectCondition> shouldRedirectCondition;
+    private Predicate<HttpRequestRedirectCondition> shouldRedirectCondition;
 
     /**
-     * Creates an instance of {@link HttpRedirectOptions} with values for {@code maxAttempts}
-     * defaulting to 3, if not specified, and the default set of allowed HTTP methods {@link HttpMethod#GET}
-     * and {@link HttpMethod#HEAD} and the default header name "Location" to locate the redirect url in the response
-     * headers.
+     * Creates an instance of {@link HttpRedirectOptions}.
      *
      * @param maxAttempts The maximum number of redirect attempts to be made.
      * @param allowedRedirectHttpMethods The set of HTTP methods that are allowed to be redirected.
@@ -40,7 +37,7 @@ public final class HttpRedirectOptions {
         this.maxAttempts = maxAttempts;
         this.allowedRedirectHttpMethods = allowedRedirectHttpMethods == null
             ? EnumSet.noneOf(HttpMethod.class)
-            : EnumSet.copyOf(allowedRedirectHttpMethods);
+            : allowedRedirectHttpMethods;
         this.locationHeader = locationHeader;
     }
 
@@ -59,7 +56,7 @@ public final class HttpRedirectOptions {
      *
      * @return The predicate that determines if a redirect should be attempted.
      */
-    public Predicate<RequestRedirectCondition> getShouldRedirectCondition() {
+    public Predicate<HttpRequestRedirectCondition> getShouldRedirectCondition() {
         return shouldRedirectCondition;
     }
 
@@ -72,7 +69,7 @@ public final class HttpRedirectOptions {
      * {@link Response}.
      * @return The updated {@link HttpRedirectOptions} object.
      */
-    public HttpRedirectOptions setShouldRedirectCondition(Predicate<RequestRedirectCondition> shouldRedirectCondition) {
+    public HttpRedirectOptions setShouldRedirectCondition(Predicate<HttpRequestRedirectCondition> shouldRedirectCondition) {
         this.shouldRedirectCondition = shouldRedirectCondition;
         return this;
     }

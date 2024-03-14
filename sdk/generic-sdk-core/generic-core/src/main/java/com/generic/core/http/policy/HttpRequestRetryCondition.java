@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Information about the request that failed, used to determine whether a retry should be attempted.
  */
-public final class RequestRetryCondition {
+public final class HttpRequestRetryCondition {
     private final Response<?> response;
     private final Exception exception;
     private final int tryCount;
@@ -25,7 +25,7 @@ public final class RequestRetryCondition {
      * @param tryCount The number of tries that have been attempted.
      * @param retriedExceptions The list of exceptions that have been encountered during retries.
      */
-    RequestRetryCondition(Response<?> response, Exception exception, int tryCount, List<Exception> retriedExceptions) {
+    HttpRequestRetryCondition(Response<?> response, Exception exception, int tryCount, List<Exception> retriedExceptions) {
         this.response = response;
         this.exception = exception;
         this.tryCount = tryCount;
