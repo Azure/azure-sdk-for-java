@@ -31,36 +31,26 @@ public final class SecureScoreControlsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"guyfazbkocbygvt\",\"score\":{\"max\":106120688,\"current\":11.396655943253176,\"percentage\":58.146251073289655},\"healthyResourceCount\":1344169378,\"unhealthyResourceCount\":1548281648,\"notApplicableResourceCount\":341199959,\"weight\":7359298779721457095,\"definition\":{\"id\":\"boozflyacagaed\",\"name\":\"oiqclmgdtwgab\",\"type\":\"xfkuzbw\"}},\"id\":\"ecooyvhtuqbp\",\"name\":\"lniibncg\",\"type\":\"gdvcdqhftz\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"displayName\":\"wtku\",\"score\":{\"max\":461488501,\"current\":11.467774585516654,\"percentage\":45.776645600766756},\"healthyResourceCount\":642587976,\"unhealthyResourceCount\":2039883976,\"notApplicableResourceCount\":1101043317,\"weight\":6169193516936130109,\"definition\":{\"properties\":{\"displayName\":\"fwyzqkebcu\",\"description\":\"euecokyduqzuscol\",\"maxScore\":1292784280,\"source\":{\"sourceType\":\"Custom\"},\"assessmentDefinitions\":[{},{},{}]},\"id\":\"xnvkdv\",\"name\":\"gowr\",\"type\":\"tddddwzdlbbcz\"}},\"id\":\"amkyrkwsthpiv\",\"name\":\"cffxhvnodqqzjbf\",\"type\":\"roswnfq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SecureScoreControlDetails> response =
-            manager.secureScoreControls().list(ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
+        PagedIterable<SecureScoreControlDetails> response
+            = manager.secureScoreControls().list(ExpandControlsEnum.DEFINITION, com.azure.core.util.Context.NONE);
+
     }
 }

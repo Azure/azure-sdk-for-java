@@ -8,45 +8,79 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A valid event source type. */
+/**
+ * A valid event source type.
+ */
 public final class EventSource extends ExpandableStringEnum<EventSource> {
-    /** Static value Assessments for EventSource. */
+    /**
+     * Static value Assessments for EventSource.
+     */
     public static final EventSource ASSESSMENTS = fromString("Assessments");
 
-    /** Static value AssessmentsSnapshot for EventSource. */
+    /**
+     * Static value AssessmentsSnapshot for EventSource.
+     */
     public static final EventSource ASSESSMENTS_SNAPSHOT = fromString("AssessmentsSnapshot");
 
-    /** Static value SubAssessments for EventSource. */
+    /**
+     * Static value SubAssessments for EventSource.
+     */
     public static final EventSource SUB_ASSESSMENTS = fromString("SubAssessments");
 
-    /** Static value SubAssessmentsSnapshot for EventSource. */
+    /**
+     * Static value SubAssessmentsSnapshot for EventSource.
+     */
     public static final EventSource SUB_ASSESSMENTS_SNAPSHOT = fromString("SubAssessmentsSnapshot");
 
-    /** Static value Alerts for EventSource. */
+    /**
+     * Static value Alerts for EventSource.
+     */
     public static final EventSource ALERTS = fromString("Alerts");
 
-    /** Static value SecureScores for EventSource. */
+    /**
+     * Static value SecureScores for EventSource.
+     */
     public static final EventSource SECURE_SCORES = fromString("SecureScores");
 
-    /** Static value SecureScoresSnapshot for EventSource. */
+    /**
+     * Static value SecureScoresSnapshot for EventSource.
+     */
     public static final EventSource SECURE_SCORES_SNAPSHOT = fromString("SecureScoresSnapshot");
 
-    /** Static value SecureScoreControls for EventSource. */
+    /**
+     * Static value SecureScoreControls for EventSource.
+     */
     public static final EventSource SECURE_SCORE_CONTROLS = fromString("SecureScoreControls");
 
-    /** Static value SecureScoreControlsSnapshot for EventSource. */
+    /**
+     * Static value SecureScoreControlsSnapshot for EventSource.
+     */
     public static final EventSource SECURE_SCORE_CONTROLS_SNAPSHOT = fromString("SecureScoreControlsSnapshot");
 
-    /** Static value RegulatoryComplianceAssessment for EventSource. */
+    /**
+     * Static value RegulatoryComplianceAssessment for EventSource.
+     */
     public static final EventSource REGULATORY_COMPLIANCE_ASSESSMENT = fromString("RegulatoryComplianceAssessment");
 
-    /** Static value RegulatoryComplianceAssessmentSnapshot for EventSource. */
-    public static final EventSource REGULATORY_COMPLIANCE_ASSESSMENT_SNAPSHOT =
-        fromString("RegulatoryComplianceAssessmentSnapshot");
+    /**
+     * Static value RegulatoryComplianceAssessmentSnapshot for EventSource.
+     */
+    public static final EventSource REGULATORY_COMPLIANCE_ASSESSMENT_SNAPSHOT
+        = fromString("RegulatoryComplianceAssessmentSnapshot");
+
+    /**
+     * Static value AttackPaths for EventSource.
+     */
+    public static final EventSource ATTACK_PATHS = fromString("AttackPaths");
+
+    /**
+     * Static value AttackPathsSnapshot for EventSource.
+     */
+    public static final EventSource ATTACK_PATHS_SNAPSHOT = fromString("AttackPathsSnapshot");
 
     /**
      * Creates a new instance of EventSource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -55,7 +89,7 @@ public final class EventSource extends ExpandableStringEnum<EventSource> {
 
     /**
      * Creates or finds a EventSource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EventSource.
      */
@@ -66,7 +100,7 @@ public final class EventSource extends ExpandableStringEnum<EventSource> {
 
     /**
      * Gets known EventSource values.
-     *
+     * 
      * @return known EventSource values.
      */
     public static Collection<EventSource> values() {

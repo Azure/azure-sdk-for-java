@@ -10,9 +10,8 @@ import com.azure.resourcemanager.security.models.DefenderForDevOpsGithubOffering
 public final class DefenderForDevOpsGithubOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForDevOpsGithubOffering model =
-            BinaryData
-                .fromString("{\"offeringType\":\"DefenderForDevOpsGithub\",\"description\":\"zuvrzmzqmz\"}")
+        DefenderForDevOpsGithubOffering model
+            = BinaryData.fromString("{\"offeringType\":\"DefenderForDevOpsGithub\",\"description\":\"vivjm\"}")
                 .toObject(DefenderForDevOpsGithubOffering.class);
     }
 

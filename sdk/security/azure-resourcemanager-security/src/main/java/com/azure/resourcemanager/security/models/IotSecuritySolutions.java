@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IotSecuritySolutions. */
+/**
+ * Resource collection API of IotSecuritySolutions.
+ */
 public interface IotSecuritySolutions {
     /**
      * Use this method to get the list of IoT Security solutions by subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
@@ -21,7 +23,7 @@ public interface IotSecuritySolutions {
 
     /**
      * Use this method to get the list of IoT Security solutions by subscription.
-     *
+     * 
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,9 +35,9 @@ public interface IotSecuritySolutions {
 
     /**
      * Use this method to get the list IoT Security solutions organized by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -45,9 +47,9 @@ public interface IotSecuritySolutions {
 
     /**
      * Use this method to get the list IoT Security solutions organized by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param filter Filter the IoT Security solution with OData syntax. Supports filtering by iotHubs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,14 +57,14 @@ public interface IotSecuritySolutions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IoTSecuritySolutionModel> listByResourceGroup(
-        String resourceGroupName, String filter, Context context);
+    PagedIterable<IoTSecuritySolutionModel> listByResourceGroup(String resourceGroupName, String filter,
+        Context context);
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -70,14 +72,14 @@ public interface IotSecuritySolutions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
-    Response<IoTSecuritySolutionModel> getByResourceGroupWithResponse(
-        String resourceGroupName, String solutionName, Context context);
+    Response<IoTSecuritySolutionModel> getByResourceGroupWithResponse(String resourceGroupName, String solutionName,
+        Context context);
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -88,9 +90,9 @@ public interface IotSecuritySolutions {
 
     /**
      * Use this method to delete yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,9 +104,9 @@ public interface IotSecuritySolutions {
 
     /**
      * Use this method to delete yours IoT Security solution.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param solutionName The name of the IoT Security solution.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -114,7 +116,7 @@ public interface IotSecuritySolutions {
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +127,7 @@ public interface IotSecuritySolutions {
 
     /**
      * User this method to get details of a specific IoT Security solution based on solution name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface IotSecuritySolutions {
 
     /**
      * Use this method to delete yours IoT Security solution.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,7 +149,7 @@ public interface IotSecuritySolutions {
 
     /**
      * Use this method to delete yours IoT Security solution.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -159,7 +161,7 @@ public interface IotSecuritySolutions {
 
     /**
      * Begins definition for a new IoTSecuritySolutionModel resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IoTSecuritySolutionModel definition.
      */

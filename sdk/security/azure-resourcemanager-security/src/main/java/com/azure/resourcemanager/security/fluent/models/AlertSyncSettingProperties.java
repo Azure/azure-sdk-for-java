@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The alert sync setting properties. */
+/**
+ * The alert sync setting properties.
+ */
 @Fluent
 public final class AlertSyncSettingProperties {
     /*
@@ -16,13 +18,15 @@ public final class AlertSyncSettingProperties {
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
-    /** Creates an instance of AlertSyncSettingProperties class. */
+    /**
+     * Creates an instance of AlertSyncSettingProperties class.
+     */
     public AlertSyncSettingProperties() {
     }
 
     /**
      * Get the enabled property: Is the alert sync setting enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -31,7 +35,7 @@ public final class AlertSyncSettingProperties {
 
     /**
      * Set the enabled property: Is the alert sync setting enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AlertSyncSettingProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class AlertSyncSettingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -14,7 +14,9 @@ import com.azure.resourcemanager.security.models.GovernanceRuleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Governance rule over a given scope. */
+/**
+ * Governance rule over a given scope.
+ */
 @Fluent
 public final class GovernanceRuleInner extends ProxyResource {
     /*
@@ -23,13 +25,15 @@ public final class GovernanceRuleInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private GovernanceRuleProperties innerProperties;
 
-    /** Creates an instance of GovernanceRuleInner class. */
+    /**
+     * Creates an instance of GovernanceRuleInner class.
+     */
     public GovernanceRuleInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of a governance rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GovernanceRuleProperties innerProperties() {
@@ -38,7 +42,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Get the tenantId property: The tenantId (GUID).
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -47,7 +51,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Get the displayName property: Display name of the governance rule.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -56,7 +60,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Set the displayName property: Display name of the governance rule.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -70,7 +74,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the governance rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -79,7 +83,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Set the description property: Description of the governance rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -94,7 +98,7 @@ public final class GovernanceRuleInner extends ProxyResource {
     /**
      * Get the remediationTimeframe property: Governance rule remediation timeframe - this is the time that will affect
      * on the grace-period duration e.g. 7.00:00:00 - means 7 days.
-     *
+     * 
      * @return the remediationTimeframe value.
      */
     public String remediationTimeframe() {
@@ -104,7 +108,7 @@ public final class GovernanceRuleInner extends ProxyResource {
     /**
      * Set the remediationTimeframe property: Governance rule remediation timeframe - this is the time that will affect
      * on the grace-period duration e.g. 7.00:00:00 - means 7 days.
-     *
+     * 
      * @param remediationTimeframe the remediationTimeframe value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -118,7 +122,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Get the isGracePeriod property: Defines whether there is a grace period on the governance rule.
-     *
+     * 
      * @return the isGracePeriod value.
      */
     public Boolean isGracePeriod() {
@@ -127,7 +131,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Set the isGracePeriod property: Defines whether there is a grace period on the governance rule.
-     *
+     * 
      * @param isGracePeriod the isGracePeriod value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -142,7 +146,7 @@ public final class GovernanceRuleInner extends ProxyResource {
     /**
      * Get the rulePriority property: The governance rule priority, priority to the lower number. Rules with the same
      * priority on the same scope will not be allowed.
-     *
+     * 
      * @return the rulePriority value.
      */
     public Integer rulePriority() {
@@ -152,7 +156,7 @@ public final class GovernanceRuleInner extends ProxyResource {
     /**
      * Set the rulePriority property: The governance rule priority, priority to the lower number. Rules with the same
      * priority on the same scope will not be allowed.
-     *
+     * 
      * @param rulePriority the rulePriority value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -166,7 +170,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Get the isDisabled property: Defines whether the rule is active/inactive.
-     *
+     * 
      * @return the isDisabled value.
      */
     public Boolean isDisabled() {
@@ -175,7 +179,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Set the isDisabled property: Defines whether the rule is active/inactive.
-     *
+     * 
      * @param isDisabled the isDisabled value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -189,7 +193,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Get the ruleType property: The rule type of the governance rule, defines the source of the rule e.g. Integrated.
-     *
+     * 
      * @return the ruleType value.
      */
     public GovernanceRuleType ruleType() {
@@ -198,7 +202,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Set the ruleType property: The rule type of the governance rule, defines the source of the rule e.g. Integrated.
-     *
+     * 
      * @param ruleType the ruleType value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -212,7 +216,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Get the sourceResourceType property: The governance rule source, what the rule affects, e.g. Assessments.
-     *
+     * 
      * @return the sourceResourceType value.
      */
     public GovernanceRuleSourceResourceType sourceResourceType() {
@@ -221,7 +225,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Set the sourceResourceType property: The governance rule source, what the rule affects, e.g. Assessments.
-     *
+     * 
      * @param sourceResourceType the sourceResourceType value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -234,8 +238,9 @@ public final class GovernanceRuleInner extends ProxyResource {
     }
 
     /**
-     * Get the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management scopes).
-     *
+     * Get the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management
+     * scopes).
+     * 
      * @return the excludedScopes value.
      */
     public List<String> excludedScopes() {
@@ -243,8 +248,9 @@ public final class GovernanceRuleInner extends ProxyResource {
     }
 
     /**
-     * Set the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management scopes).
-     *
+     * Set the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management
+     * scopes).
+     * 
      * @param excludedScopes the excludedScopes value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -258,7 +264,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Get the conditionSets property: The governance rule conditionSets - see examples.
-     *
+     * 
      * @return the conditionSets value.
      */
     public List<Object> conditionSets() {
@@ -267,7 +273,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Set the conditionSets property: The governance rule conditionSets - see examples.
-     *
+     * 
      * @param conditionSets the conditionSets value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -282,7 +288,7 @@ public final class GovernanceRuleInner extends ProxyResource {
     /**
      * Get the includeMemberScopes property: Defines whether the rule is management scope rule (master connector as a
      * single scope or management scope).
-     *
+     * 
      * @return the includeMemberScopes value.
      */
     public Boolean includeMemberScopes() {
@@ -292,7 +298,7 @@ public final class GovernanceRuleInner extends ProxyResource {
     /**
      * Set the includeMemberScopes property: Defines whether the rule is management scope rule (master connector as a
      * single scope or management scope).
-     *
+     * 
      * @param includeMemberScopes the includeMemberScopes value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -307,7 +313,7 @@ public final class GovernanceRuleInner extends ProxyResource {
     /**
      * Get the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
      * example.
-     *
+     * 
      * @return the ownerSource value.
      */
     public GovernanceRuleOwnerSource ownerSource() {
@@ -317,7 +323,7 @@ public final class GovernanceRuleInner extends ProxyResource {
     /**
      * Set the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
      * example.
-     *
+     * 
      * @param ownerSource the ownerSource value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -332,7 +338,7 @@ public final class GovernanceRuleInner extends ProxyResource {
     /**
      * Get the governanceEmailNotification property: The email notifications settings for the governance rule, states
      * whether to disable notifications for mangers and owners.
-     *
+     * 
      * @return the governanceEmailNotification value.
      */
     public GovernanceRuleEmailNotification governanceEmailNotification() {
@@ -342,12 +348,12 @@ public final class GovernanceRuleInner extends ProxyResource {
     /**
      * Set the governanceEmailNotification property: The email notifications settings for the governance rule, states
      * whether to disable notifications for mangers and owners.
-     *
+     * 
      * @param governanceEmailNotification the governanceEmailNotification value to set.
      * @return the GovernanceRuleInner object itself.
      */
-    public GovernanceRuleInner withGovernanceEmailNotification(
-        GovernanceRuleEmailNotification governanceEmailNotification) {
+    public GovernanceRuleInner
+        withGovernanceEmailNotification(GovernanceRuleEmailNotification governanceEmailNotification) {
         if (this.innerProperties() == null) {
             this.innerProperties = new GovernanceRuleProperties();
         }
@@ -357,7 +363,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Get the metadata property: The governance rule metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public GovernanceRuleMetadata metadata() {
@@ -366,7 +372,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Set the metadata property: The governance rule metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the GovernanceRuleInner object itself.
      */
@@ -380,7 +386,7 @@ public final class GovernanceRuleInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

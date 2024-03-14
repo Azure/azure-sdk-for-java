@@ -19,8 +19,7 @@ public final class SecurityConnectorApplicationsImpl implements SecurityConnecto
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public SecurityConnectorApplicationsImpl(
-        SecurityConnectorApplicationsClient innerClient,
+    public SecurityConnectorApplicationsImpl(SecurityConnectorApplicationsClient innerClient,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,13 +27,13 @@ public final class SecurityConnectorApplicationsImpl implements SecurityConnecto
 
     public PagedIterable<Application> list(String resourceGroupName, String securityConnectorName) {
         PagedIterable<ApplicationInner> inner = this.serviceClient().list(resourceGroupName, securityConnectorName);
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Application> list(String resourceGroupName, String securityConnectorName, Context context) {
-        PagedIterable<ApplicationInner> inner =
-            this.serviceClient().list(resourceGroupName, securityConnectorName, context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        PagedIterable<ApplicationInner> inner
+            = this.serviceClient().list(resourceGroupName, securityConnectorName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     private SecurityConnectorApplicationsClient serviceClient() {

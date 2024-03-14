@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** describes the custom entity store assignment properties. */
+/**
+ * describes the custom entity store assignment properties.
+ */
 @Fluent
 public final class CustomEntityStoreAssignmentProperties {
     /*
@@ -22,14 +24,16 @@ public final class CustomEntityStoreAssignmentProperties {
     @JsonProperty(value = "entityStoreDatabaseLink")
     private String entityStoreDatabaseLink;
 
-    /** Creates an instance of CustomEntityStoreAssignmentProperties class. */
+    /**
+     * Creates an instance of CustomEntityStoreAssignmentProperties class.
+     */
     public CustomEntityStoreAssignmentProperties() {
     }
 
     /**
      * Get the principal property: The principal assigned with entity store. Format of principal is: [AAD
      * type]=[PrincipalObjectId];[TenantId].
-     *
+     * 
      * @return the principal value.
      */
     public String principal() {
@@ -39,7 +43,7 @@ public final class CustomEntityStoreAssignmentProperties {
     /**
      * Set the principal property: The principal assigned with entity store. Format of principal is: [AAD
      * type]=[PrincipalObjectId];[TenantId].
-     *
+     * 
      * @param principal the principal value to set.
      * @return the CustomEntityStoreAssignmentProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class CustomEntityStoreAssignmentProperties {
 
     /**
      * Get the entityStoreDatabaseLink property: The link to entity store database.
-     *
+     * 
      * @return the entityStoreDatabaseLink value.
      */
     public String entityStoreDatabaseLink() {
@@ -59,7 +63,7 @@ public final class CustomEntityStoreAssignmentProperties {
 
     /**
      * Set the entityStoreDatabaseLink property: The link to entity store database.
-     *
+     * 
      * @param entityStoreDatabaseLink the entityStoreDatabaseLink value to set.
      * @return the CustomEntityStoreAssignmentProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class CustomEntityStoreAssignmentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

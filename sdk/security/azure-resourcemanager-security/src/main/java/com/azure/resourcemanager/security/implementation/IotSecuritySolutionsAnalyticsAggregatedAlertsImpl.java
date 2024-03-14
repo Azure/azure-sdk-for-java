@@ -16,8 +16,8 @@ import com.azure.resourcemanager.security.models.IotSecuritySolutionsAnalyticsAg
 
 public final class IotSecuritySolutionsAnalyticsAggregatedAlertsImpl
     implements IotSecuritySolutionsAnalyticsAggregatedAlerts {
-    private static final ClientLogger LOGGER =
-        new ClientLogger(IotSecuritySolutionsAnalyticsAggregatedAlertsImpl.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(IotSecuritySolutionsAnalyticsAggregatedAlertsImpl.class);
 
     private final IotSecuritySolutionsAnalyticsAggregatedAlertsClient innerClient;
 
@@ -31,27 +31,26 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsImpl
     }
 
     public PagedIterable<IoTSecurityAggregatedAlert> list(String resourceGroupName, String solutionName) {
-        PagedIterable<IoTSecurityAggregatedAlertInner> inner =
-            this.serviceClient().list(resourceGroupName, solutionName);
-        return Utils.mapPage(inner, inner1 -> new IoTSecurityAggregatedAlertImpl(inner1, this.manager()));
+        PagedIterable<IoTSecurityAggregatedAlertInner> inner
+            = this.serviceClient().list(resourceGroupName, solutionName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IoTSecurityAggregatedAlertImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<IoTSecurityAggregatedAlert> list(
-        String resourceGroupName, String solutionName, Integer top, Context context) {
-        PagedIterable<IoTSecurityAggregatedAlertInner> inner =
-            this.serviceClient().list(resourceGroupName, solutionName, top, context);
-        return Utils.mapPage(inner, inner1 -> new IoTSecurityAggregatedAlertImpl(inner1, this.manager()));
+    public PagedIterable<IoTSecurityAggregatedAlert> list(String resourceGroupName, String solutionName, Integer top,
+        Context context) {
+        PagedIterable<IoTSecurityAggregatedAlertInner> inner
+            = this.serviceClient().list(resourceGroupName, solutionName, top, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IoTSecurityAggregatedAlertImpl(inner1, this.manager()));
     }
 
-    public Response<IoTSecurityAggregatedAlert> getWithResponse(
-        String resourceGroupName, String solutionName, String aggregatedAlertName, Context context) {
-        Response<IoTSecurityAggregatedAlertInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, solutionName, aggregatedAlertName, context);
+    public Response<IoTSecurityAggregatedAlert> getWithResponse(String resourceGroupName, String solutionName,
+        String aggregatedAlertName, Context context) {
+        Response<IoTSecurityAggregatedAlertInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, solutionName, aggregatedAlertName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new IoTSecurityAggregatedAlertImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -59,8 +58,8 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsImpl
     }
 
     public IoTSecurityAggregatedAlert get(String resourceGroupName, String solutionName, String aggregatedAlertName) {
-        IoTSecurityAggregatedAlertInner inner =
-            this.serviceClient().get(resourceGroupName, solutionName, aggregatedAlertName);
+        IoTSecurityAggregatedAlertInner inner
+            = this.serviceClient().get(resourceGroupName, solutionName, aggregatedAlertName);
         if (inner != null) {
             return new IoTSecurityAggregatedAlertImpl(inner, this.manager());
         } else {
@@ -68,8 +67,8 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsImpl
         }
     }
 
-    public Response<Void> dismissWithResponse(
-        String resourceGroupName, String solutionName, String aggregatedAlertName, Context context) {
+    public Response<Void> dismissWithResponse(String resourceGroupName, String solutionName, String aggregatedAlertName,
+        Context context) {
         return this.serviceClient().dismissWithResponse(resourceGroupName, solutionName, aggregatedAlertName, context);
     }
 

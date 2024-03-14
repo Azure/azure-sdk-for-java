@@ -9,37 +9,49 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
-/** Number of direct method invokes is not in allowed range. */
+/**
+ * Number of direct method invokes is not in allowed range.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "ruleType")
 @JsonTypeName("DirectMethodInvokesNotInAllowedRange")
 @Fluent
 public final class DirectMethodInvokesNotInAllowedRange extends TimeWindowCustomAlertRule {
-    /** Creates an instance of DirectMethodInvokesNotInAllowedRange class. */
+    /**
+     * Creates an instance of DirectMethodInvokesNotInAllowedRange class.
+     */
     public DirectMethodInvokesNotInAllowedRange() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DirectMethodInvokesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {
         super.withTimeWindowSize(timeWindowSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DirectMethodInvokesNotInAllowedRange withMinThreshold(int minThreshold) {
         super.withMinThreshold(minThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DirectMethodInvokesNotInAllowedRange withMaxThreshold(int maxThreshold) {
         super.withMaxThreshold(maxThreshold);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DirectMethodInvokesNotInAllowedRange withIsEnabled(boolean isEnabled) {
         super.withIsEnabled(isEnabled);
@@ -48,7 +60,7 @@ public final class DirectMethodInvokesNotInAllowedRange extends TimeWindowCustom
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
