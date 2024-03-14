@@ -806,6 +806,7 @@ public class ImplementationBridgeHelpers {
                 logger.debug("CosmosAsyncContainerAccessor already initialized!");
             } else {
                 logger.debug("Setting CosmosAsyncContainerAccessor...");
+                cosmosAsyncContainerClassLoaded.set(true);
             }
         }
 

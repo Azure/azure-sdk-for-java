@@ -20,6 +20,8 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class ImplementationBridgeHelpersTest {
 
+    private static final Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
+
     @Test(groups = {"unit"})
     public void accessorInitialization() {
 
@@ -67,6 +69,8 @@ public class ImplementationBridgeHelpersTest {
 
                 if (declaredClass.getSimpleName().endsWith(helperClassSuffix)) {
 
+                    logger.info("Helper class name : {}", declaredClass.getSimpleName());
+
                     Field[] fields = declaredClass.getDeclaredFields();
                     boolean isAccessorSet = false;
                     boolean isClassLoaded = false;
@@ -76,6 +80,7 @@ public class ImplementationBridgeHelpersTest {
                         if (field.getName().contains("accessor")) {
                             field.setAccessible(true);
                             AtomicReference<?> value = (AtomicReference<?>) FieldUtils.readStaticField(field);
+                            logger.info("Accessor name : {}", field.getName());
                             assertThat(value.get()).isNotNull();
                             isAccessorSet = true;
                         }
@@ -83,6 +88,7 @@ public class ImplementationBridgeHelpersTest {
                         if (field.getName().contains("ClassLoaded")) {
                             field.setAccessible(true);
                             AtomicBoolean value = (AtomicBoolean) FieldUtils.readStaticField(field);
+                            logger.info("ClassLoaded name : {}", field.getName());
                             assertThat(value.get()).isTrue();
                             isClassLoaded = true;
                         }
