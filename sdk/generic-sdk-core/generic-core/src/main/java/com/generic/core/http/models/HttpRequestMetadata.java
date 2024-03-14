@@ -17,8 +17,7 @@ public final class HttpRequestMetadata {
     private int retryCount;
     private ClientLogger requestLogger;
     private boolean eagerlyConvertHeaders;
-    private boolean eagerlyReadResponse;
-    private boolean ignoreResponseBody;
+    private ResponseBodyHandling responseBodyHandling;
 
     /**
      * Creates an instance of {@link HttpRequestMetadata}.
@@ -106,43 +105,12 @@ public final class HttpRequestMetadata {
         return this;
     }
 
-    /**
-     * Whether the response body should be eagerly read.
-     *
-     * @return Whether the response body should be eagerly read.
-     */
-    public boolean isEagerlyReadResponse() {
-        return eagerlyReadResponse;
+    public ResponseBodyHandling getResponseBodyHandling() {
+        return responseBodyHandling;
     }
 
-    /**
-     * Sets whether the response body should be eagerly read.
-     *
-     * @param eagerlyReadResponse Whether the response body should be eagerly read.
-     * @return The updated {@link HttpRequestMetadata} object.
-     */
-    public HttpRequestMetadata setEagerlyReadResponse(boolean eagerlyReadResponse) {
-        this.eagerlyReadResponse = eagerlyReadResponse;
-        return this;
-    }
-
-    /**
-     * Whether the response body should be ignored.
-     *
-     * @return Whether the response body should be ignored.
-     */
-    public boolean isIgnoreResponseBody() {
-        return ignoreResponseBody;
-    }
-
-    /**
-     * Sets whether the response body should be ignored.
-     *
-     * @param ignoreResponseBody Whether the response body should be ignored.
-     * @return The updated {@link HttpRequestMetadata} object.
-     */
-    public HttpRequestMetadata setIgnoreResponseBody(boolean ignoreResponseBody) {
-        this.ignoreResponseBody = ignoreResponseBody;
+    public HttpRequestMetadata setResponseBodyHandling(ResponseBodyHandling responseBodyHandling) {
+        this.responseBodyHandling = responseBodyHandling;
         return this;
     }
 
@@ -157,8 +125,7 @@ public final class HttpRequestMetadata {
         copy.retryCount = retryCount;
         copy.requestLogger = requestLogger;
         copy.eagerlyConvertHeaders = eagerlyConvertHeaders;
-        copy.eagerlyReadResponse = eagerlyReadResponse;
-        copy.ignoreResponseBody = ignoreResponseBody;
+        copy.responseBodyHandling = responseBodyHandling;
 
         return copy;
     }
