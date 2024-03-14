@@ -317,6 +317,16 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         boolean nonIdempotentWriteRetriesEnabled,
         CosmosException cosmosException) {
 
+        // if partition-level circuit breaker is enabled
+        if (false) {
+
+            if (isReadRequest) {
+                this.globalEndpointManager.markPartitionKeyRangeAsUnavailableForRead(this.request);
+            } else {
+                this.globalEndpointManager.markPartitionKeyRangeAsUnavailableForWrite(this.request);
+            }
+        }
+
         // The request has failed with 503, SDK need to decide whether it is safe to retry for write operations
         // For server generated retries, it is safe to retry
         // For SDK generated 503, it will be more tricky as we have to decide the cause of it. For any causes that SDK not sure whether the request
