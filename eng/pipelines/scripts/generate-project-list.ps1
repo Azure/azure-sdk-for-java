@@ -4,6 +4,7 @@ if (!$env:ARTIFACTSJSON) {
 
 $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
 
+Write-Host $env:ADDITIONALMODULESJSON
 if (-not [string]::IsNullOrEmpty($env:ADDITIONALMODULESJSON)) {
   $additionalModules = $env:ADDITIONALMODULESJSON | ConvertFrom-Json
 } else {
