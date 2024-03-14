@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosThroughputControlHelper;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -42,6 +43,7 @@ public class CosmosSourceTask extends SourceTask {
 
     private CosmosSourceTaskConfig taskConfig;
     private CosmosAsyncClient cosmosClient;
+    private CosmosAsyncClient throughputControlCosmosClient;
     private Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
 
     @Override
@@ -64,6 +66,17 @@ public class CosmosSourceTask extends SourceTask {
 
         // TODO[GA]: optimize the client creation, client metadata cache?
         this.cosmosClient = CosmosClientStore.getCosmosClient(this.taskConfig.getAccountConfig());
+        this.throughputControlCosmosClient = this.getThroughputControlCosmosClient();
+    }
+
+    private CosmosAsyncClient getThroughputControlCosmosClient() {
+        if (this.taskConfig.getThroughputControlConfig().isThroughputControlEnabled()
+            && this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig() != null) {
+            // throughput control is using a different database account config
+            return CosmosClientStore.getCosmosClient(this.taskConfig.getThroughputControlConfig().getThroughputControlAccountConfig());
+        } else {
+            return this.cosmosClient;
+        }
     }
 
     @Override
@@ -154,17 +167,25 @@ public class CosmosSourceTask extends SourceTask {
     }
 
     private Pair<List<SourceRecord>, Boolean> executeFeedRangeTask(FeedRangeTaskUnit feedRangeTaskUnit) {
+        CosmosAsyncContainer container =
+            this.cosmosClient
+                .getDatabase(feedRangeTaskUnit.getDatabaseName())
+                .getContainer(feedRangeTaskUnit.getContainerName());
+        KafkaCosmosThroughputControlHelper.tryEnableThroughputControl(
+            container,
+            this.throughputControlCosmosClient,
+            this.taskConfig.getThroughputControlConfig());
+
         // each time we will only pull one page
         CosmosChangeFeedRequestOptions changeFeedRequestOptions =
             this.getChangeFeedRequestOptions(feedRangeTaskUnit);
 
         // split/merge will be handled in source task
         ModelBridgeInternal.getChangeFeedIsSplitHandlingDisabled(changeFeedRequestOptions);
-
-        CosmosAsyncContainer container =
-            this.cosmosClient
-                .getDatabase(feedRangeTaskUnit.getDatabaseName())
-                .getContainer(feedRangeTaskUnit.getContainerName());
+        KafkaCosmosThroughputControlHelper
+            .tryPopulateThroughputControlGroupName(
+                changeFeedRequestOptions,
+                this.taskConfig.getThroughputControlConfig());
 
         return container.queryChangeFeed(changeFeedRequestOptions, JsonNode.class)
             .byPage(this.taskConfig.getChangeFeedConfig().getMaxItemCountHint())

@@ -6,8 +6,10 @@ package com.azure.cosmos.kafka.connect.implementation.sink;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Function;
+import com.azure.cosmos.kafka.connect.implementation.CosmosThroughputControlConfig;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosThroughputControlHelper;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import org.apache.kafka.connect.sink.ErrantRecordReporter;
 import org.slf4j.Logger;
@@ -22,13 +24,16 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosPointWriter.class);
 
     private final CosmosSinkWriteConfig writeConfig;
+    private final CosmosThroughputControlConfig throughputControlConfig;
 
     public KafkaCosmosPointWriter(
         CosmosSinkWriteConfig writeConfig,
+        CosmosThroughputControlConfig throughputControlConfig,
         ErrantRecordReporter errantRecordReporter) {
         super(errantRecordReporter);
         checkNotNull(writeConfig, "Argument 'writeConfig' can not be null");
         this.writeConfig = writeConfig;
+        this.throughputControlConfig = throughputControlConfig;
     }
 
     @Override
@@ -63,7 +68,11 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
 
     private void upsertWithRetry(CosmosAsyncContainer container, SinkOperation sinkOperation) {
         executeWithRetry(
-            (operation) -> container.upsertItem(operation.getSinkRecord().value()).then(),
+            (operation) -> {
+                CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+                KafkaCosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(cosmosItemRequestOptions, this.throughputControlConfig);
+                return container.upsertItem(operation.getSinkRecord().value(), cosmosItemRequestOptions).then();
+            },
             (throwable) -> false, // no exceptions should be ignored
             sinkOperation
         );
@@ -71,7 +80,11 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
 
     private void createWithRetry(CosmosAsyncContainer container, SinkOperation sinkOperation) {
         executeWithRetry(
-            (operation) -> container.createItem(operation.getSinkRecord().value()).then(),
+            (operation) -> {
+                CosmosItemRequestOptions cosmosItemRequestOptions = new CosmosItemRequestOptions();
+                KafkaCosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(cosmosItemRequestOptions, this.throughputControlConfig);
+                return container.createItem(operation.getSinkRecord().value(), cosmosItemRequestOptions).then();
+            },
             (throwable) -> KafkaCosmosExceptionsHelper.isResourceExistsException(throwable),
             sinkOperation
         );
@@ -82,6 +95,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
             (operation) -> {
                 CosmosItemRequestOptions itemRequestOptions = new CosmosItemRequestOptions();
                 itemRequestOptions.setIfMatchETag(etag);
+                KafkaCosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
 
                 return this.getPartitionKeyDefinition(container)
                         .flatMap(partitionKeyDefinition -> {
@@ -110,6 +124,8 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
                         itemRequestOptions.setIfMatchETag(etag);
                     }
                 }
+
+                KafkaCosmosThroughputControlHelper.tryPopulateThroughputControlGroupName(itemRequestOptions, this.throughputControlConfig);
 
                 return this.getPartitionKeyDefinition(container)
                     .flatMap(partitionKeyDefinition -> {

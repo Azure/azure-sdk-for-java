@@ -19,6 +19,7 @@ import com.azure.cosmos.models.ThroughputResponse;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.source.SourceRecord;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -191,6 +192,76 @@ public class CosmosSourceTaskTest extends KafkaCosmosTestSuiteBase {
             if (client != null) {
                 // clean up containers
                 cleanUpContainer(client, databaseName, multiPartitionContainerName);
+                client.close();
+            }
+        }
+    }
+
+    @Test(groups = { "kafka" }, timeOut = TIMEOUT)
+    public void pollWithThroughputControl() {
+        // Test only items belong to the feedRange defined in the feedRangeTaskUnit will be returned
+        String throughputControlContainerName = "throughputControlContainer-" + UUID.randomUUID();
+
+        Map<String, String> sourceConfigMap = new HashMap<>();
+        sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
+        sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
+        sourceConfigMap.put("kafka.connect.cosmos.source.database.name", databaseName);
+        List<String> containersIncludedList = Arrays.asList(singlePartitionContainerName);
+        sourceConfigMap.put("kafka.connect.cosmos.source.containers.includedList", containersIncludedList.toString());
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.enabled", "true");
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.name", "pollWithThroughputControl-" + UUID.randomUUID());
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughput", "100");
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.database", databaseName);
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", throughputControlContainerName);
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
+        CosmosAsyncContainer throughputControlContainer = client.getDatabase(databaseName).getContainer(throughputControlContainerName);
+        CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(client);
+        try {
+            // create throughput control container
+            client
+                .getDatabase(databaseName)
+                .createContainerIfNotExists(throughputControlContainerName, "/groupId", ThroughputProperties.createManualThroughput(400))
+                .block();
+
+            Map<String, String> taskConfigMap = sourceConfig.originalsStrings();
+
+            // define feedRanges task
+            FeedRangeTaskUnit feedRangeTaskUnit = new FeedRangeTaskUnit(
+                databaseName,
+                singlePartitionContainer.getId(),
+                singlePartitionContainer.getResourceId(),
+                FeedRangeEpkImpl.forFullRange().getRange(),
+                null,
+                singlePartitionContainer.getId());
+            taskConfigMap.putAll(CosmosSourceTaskConfig.getFeedRangeTaskUnitsConfigMap(Arrays.asList(feedRangeTaskUnit)));
+
+            CosmosSourceTask sourceTask = new CosmosSourceTask();
+            sourceTask.start(taskConfigMap);
+
+            // first creating few items in the container
+            List<TestItem> createdItems = this.createItems(client, databaseName, singlePartitionContainer.getId(), 10);
+
+            List<SourceRecord> sourceRecords = new ArrayList<>();
+            for (int i = 0; i < 3; i++) { // poll few times
+                sourceRecords.addAll(sourceTask.poll());
+            }
+
+            validateFeedRangeRecords(sourceRecords, createdItems);
+        } finally {
+            if (client != null) {
+                // delete throughput control containers
+                throughputControlContainer
+                    .delete()
+                    .onErrorResume(throwable -> {
+                        logger.warn("Delete throughput control container {} failed", throughputControlContainer.getId(), throwable);
+                        return Mono.empty();
+                    })
+                    .block();
+
+                // clean up containers
+                cleanUpContainer(client, databaseName, singlePartitionContainer.getId());
                 client.close();
             }
         }

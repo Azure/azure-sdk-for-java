@@ -5,12 +5,15 @@ package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkConfig;
 import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.sink.IdStrategies;
 import com.azure.cosmos.kafka.connect.implementation.sink.ItemWriteStrategy;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
+import org.apache.kafka.common.config.types.Password;
 import org.testng.annotations.Test;
 
 import java.util.Arrays;
@@ -44,7 +47,12 @@ public class CosmosDBSinkConnectorTest extends KafkaCosmosTestSuiteBase {
 
             configs.containsKey(sinkConfigEntry.getName());
             if (sinkConfigEntry.isOptional()) {
-                assertThat(configs.get(sinkConfigEntry.getName()).defaultValue).isEqualTo(sinkConfigEntry.getDefaultValue());
+                if (sinkConfigEntry.isPassword()) {
+                    assertThat(((Password)configs.get(sinkConfigEntry.getName()).defaultValue).value())
+                        .isEqualTo(sinkConfigEntry.getDefaultValue());
+                } else {
+                    assertThat(configs.get(sinkConfigEntry.getName()).defaultValue).isEqualTo(sinkConfigEntry.getDefaultValue());
+                }
             } else {
                 assertThat(configs.get(sinkConfigEntry.getName()).defaultValue).isEqualTo(ConfigDef.NO_DEFAULT_VALUE);
             }
@@ -117,6 +125,54 @@ public class CosmosDBSinkConnectorTest extends KafkaCosmosTestSuiteBase {
         // TODO[Public Preview]: add other config validations
     }
 
+    @Test(groups = { "unit" })
+    public void sinkConfigWithThroughputControl() {
+        String throughputControlGroupName = "test";
+        int targetThroughput= 6;
+        double targetThroughputThreshold = 0.1;
+        String throughputControlDatabaseName = "throughputControlDatabase";
+        String throughputControlContainerName = "throughputControlContainer";
+
+        Map<String, String> sourceConfigMap = this.getValidSinkConfig();
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.enabled", "true");
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.name", throughputControlGroupName);
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughput", String.valueOf(targetThroughput));
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughputThreshold", String.valueOf(targetThroughputThreshold));
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.database", throughputControlDatabaseName);
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", throughputControlContainerName);
+
+        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sourceConfigMap);
+        assertThat(sinkConfig.getThroughputControlConfig()).isNotNull();
+        assertThat(sinkConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
+        assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlAccountConfig()).isNull();
+        assertThat(sinkConfig.getThroughputControlConfig().getThroughputControlGroupName()).isEqualTo(throughputControlGroupName);
+        assertThat(sinkConfig.getThroughputControlConfig().getTargetThroughput()).isEqualTo(targetThroughput);
+        assertThat(sinkConfig.getThroughputControlConfig().getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
+        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
+        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
+        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlRenewInterval()).isNull();
+        assertThat(sinkConfig.getThroughputControlConfig().getGlobalThroughputControlExpireInterval()).isNull();
+    }
+
+    @Test(groups = { "unit" })
+    public void invalidThroughputControlConfig() {
+        Map<String, String> sinkConfigMap = this.getValidSinkConfig();
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.enabled", "true");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughput", "-1");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughputThreshold", "-1");
+        sinkConfigMap.put("kafka.connect.cosmos.throughputControl.priorityLevel", "None");
+
+        Config config = new CosmosDBSinkConnector().validate(sinkConfigMap);
+        Map<String, List<String>> errorMessages = config.configValues().stream()
+            .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.name").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.targetThroughput").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.targetThroughputThreshold").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.priorityLevel").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.globalControl.database").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.globalControl.container").size()).isGreaterThan(0);
+    }
+
     private Map<String, String> getValidSinkConfig() {
         Map<String, String> sinkConfigMap = new HashMap<>();
         sinkConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
@@ -134,6 +190,20 @@ public class CosmosDBSinkConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<Boolean>("kafka.connect.cosmos.useGatewayMode", false, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.preferredRegionsList", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.applicationName", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.enabled", false, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.accountEndpoint", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.accountKey", Strings.Emtpy, true, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.preferredRegionsList", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.useGatewayMode", false, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.name", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.targetThroughput", -1, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.targetThroughputThreshold", -1d, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.priorityLevel", "None", true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.globalControl.database", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.globalControl.container", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.globalControl.renewIntervalInMS", -1, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.globalControl.expireIntervalInMS", -1, true),
+
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.sink.errors.tolerance", "None", true),
             new KafkaCosmosConfigEntry<Boolean>("kafka.connect.cosmos.sink.bulk.enabled", true, true),
             new KafkaCosmosConfigEntry<Integer>("kafka.connect.cosmos.sink.bulk.maxConcurrentCosmosPartitions", -1, true),

@@ -37,6 +37,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigValue;
+import org.apache.kafka.common.config.types.Password;
 import org.apache.kafka.connect.source.SourceConnectorContext;
 import org.mockito.Mockito;
 import org.testng.annotations.Test;
@@ -73,7 +74,12 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
             configs.containsKey(sourceConfigEntry.getName());
             if (sourceConfigEntry.isOptional()) {
-                assertThat(configs.get(sourceConfigEntry.getName()).defaultValue).isEqualTo(sourceConfigEntry.getDefaultValue());
+                if (sourceConfigEntry.isPassword()) {
+                    assertThat(((Password)configs.get(sourceConfigEntry.getName()).defaultValue).value())
+                        .isEqualTo(sourceConfigEntry.getDefaultValue());
+                } else {
+                    assertThat(configs.get(sourceConfigEntry.getName()).defaultValue).isEqualTo(sourceConfigEntry.getDefaultValue());
+                }
             } else {
                 assertThat(configs.get(sourceConfigEntry.getName()).defaultValue).isEqualTo(ConfigDef.NO_DEFAULT_VALUE);
             }
@@ -431,6 +437,54 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         // TODO[Public Preview]: add other config validations
     }
 
+    @Test(groups = { "unit" })
+    public void sourceConfigWithThroughputControl() {
+        String throughputControlGroupName = "test";
+        int targetThroughput= 6;
+        double targetThroughputThreshold = 0.1;
+        String throughputControlDatabaseName = "throughputControlDatabase";
+        String throughputControlContainerName = "throughputControlContainer";
+
+        Map<String, String> sourceConfigMap = this.getValidSourceConfig();
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.enabled", "true");
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.name", throughputControlGroupName);
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughput", String.valueOf(targetThroughput));
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughputThreshold", String.valueOf(targetThroughputThreshold));
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.database", throughputControlDatabaseName);
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.globalControl.container", throughputControlContainerName);
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        assertThat(sourceConfig.getThroughputControlConfig()).isNotNull();
+        assertThat(sourceConfig.getThroughputControlConfig().isThroughputControlEnabled()).isTrue();
+        assertThat(sourceConfig.getThroughputControlConfig().getThroughputControlAccountConfig()).isNull();
+        assertThat(sourceConfig.getThroughputControlConfig().getThroughputControlGroupName()).isEqualTo(throughputControlGroupName);
+        assertThat(sourceConfig.getThroughputControlConfig().getTargetThroughput()).isEqualTo(targetThroughput);
+        assertThat(sourceConfig.getThroughputControlConfig().getTargetThroughputThreshold()).isEqualTo(targetThroughputThreshold);
+        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlDatabaseName()).isEqualTo(throughputControlDatabaseName);
+        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlContainerName()).isEqualTo(throughputControlContainerName);
+        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlRenewInterval()).isNull();
+        assertThat(sourceConfig.getThroughputControlConfig().getGlobalThroughputControlExpireInterval()).isNull();
+    }
+
+    @Test(groups = { "unit" })
+    public void invalidThroughputControlConfig() {
+        Map<String, String> sourceConfigMap = this.getValidSourceConfig();
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.enabled", "true");
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughput", "-1");
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.targetThroughputThreshold", "-1");
+        sourceConfigMap.put("kafka.connect.cosmos.throughputControl.priorityLevel", "None");
+
+        Config config = new CosmosDBSourceConnector().validate(sourceConfigMap);
+        Map<String, List<String>> errorMessages = config.configValues().stream()
+            .collect(Collectors.toMap(ConfigValue::name, ConfigValue::errorMessages));
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.name").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.targetThroughput").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.targetThroughputThreshold").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.priorityLevel").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.globalControl.database").size()).isGreaterThan(0);
+        assertThat(errorMessages.get("kafka.connect.cosmos.throughputControl.globalControl.container").size()).isGreaterThan(0);
+    }
+
     private Map<String, String> getValidSourceConfig() {
         Map<String, String> sourceConfigMap = new HashMap<>();
         sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
@@ -586,6 +640,20 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<Boolean>("kafka.connect.cosmos.useGatewayMode", false, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.preferredRegionsList", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.applicationName", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.enabled", false, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.accountEndpoint", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.accountKey", Strings.Emtpy, true, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.preferredRegionsList", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.useGatewayMode", false, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.name", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.targetThroughput", -1, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.targetThroughputThreshold", -1d, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.priorityLevel", "None", true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.globalControl.database", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.globalControl.container", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.globalControl.renewIntervalInMS", -1, true),
+            new KafkaCosmosConfigEntry<>("kafka.connect.cosmos.throughputControl.globalControl.expireIntervalInMS", -1, true),
+
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.source.database.name", null, false),
             new KafkaCosmosConfigEntry<Boolean>("kafka.connect.cosmos.source.containers.includeAll", false, true),
             new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.source.containers.includedList", Strings.Emtpy, true),

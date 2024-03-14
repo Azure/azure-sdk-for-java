@@ -26,7 +26,9 @@ import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTo
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataTaskUnit;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import org.apache.kafka.common.config.Config;
 import org.apache.kafka.common.config.ConfigDef;
+import org.apache.kafka.common.config.ConfigValue;
 import org.apache.kafka.connect.connector.Task;
 import org.apache.kafka.connect.source.SourceConnector;
 import org.slf4j.Logger;
@@ -40,7 +42,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.stream.Collectors;
+
+import static com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConfig.validateThroughputControlConfig;
 
 /***
  * The CosmosDb source connector.
@@ -103,6 +108,24 @@ public class CosmosDBSourceConnector extends SourceConnector {
     @Override
     public String version() {
         return KafkaCosmosConstants.CURRENT_VERSION;
+    }
+
+    @Override
+    public Config validate(Map<String, String> connectorConfigs) {
+        Config config = super.validate(connectorConfigs);
+        //there are errors based on the config def
+        if (config.configValues().stream().anyMatch(cv -> !cv.errorMessages().isEmpty())) {
+            return config;
+        }
+
+        Map<String, ConfigValue> configValues =
+            config
+                .configValues()
+                .stream()
+                .collect(Collectors.toMap(ConfigValue::name, Function.identity()));
+
+        validateThroughputControlConfig(connectorConfigs, configValues);
+        return config;
     }
 
     private List<Map<String, String>> getTaskConfigs(int maxTasks) {
