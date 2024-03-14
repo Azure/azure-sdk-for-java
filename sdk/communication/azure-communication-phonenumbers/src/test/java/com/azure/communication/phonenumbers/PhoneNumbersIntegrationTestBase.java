@@ -62,10 +62,10 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
         interceptorManager.addSanitizers(Arrays.asList(
             new TestProxySanitizer("(?<=/phoneNumbers/)([^/?]+)", "REDACTED", TestProxySanitizerType.URL),
             new TestProxySanitizer("$..id", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..phoneNumbers", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
             new TestProxySanitizer("$..nationalFormat", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..internationalFormat", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+            new TestProxySanitizer("$..internationalFormat", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("((?:\\\\u002B)[0-9]{11,})|((?:\\\\%2B)[0-9]{11,})|((?:[+]?)[0-9]{11,})", "REDACTED", TestProxySanitizerType.BODY_REGEX)));
     }
 
     protected PhoneNumbersClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {
