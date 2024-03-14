@@ -50,7 +50,7 @@ stages:
             displayName: 'Generate FromSource POM and directories for sparse checkout'
             inputs:
               scriptPath: 'eng/scripts/generate_from_source_pom.py'
-              arguments: '--match-any-version --set-skip-linting-projects SkipLintingProjects --project-list com.azure:azure-core'
+              arguments: '--match-any-version --set-skip-linting-projects SkipLintingProjects --artifacts-list com.azure:azure-core'
               workingDirectory: '$(System.DefaultWorkingDirectory)'
 
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
