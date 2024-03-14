@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.54.0-beta.1 (Undefined)
+### 4.53.4-hotfix (2024-03-14)
 
 #### Other Changes
 * Removed `System.exit()` calls from `ImplementationBridgeHelpers`. - See [PR 39215](https://github.com/Azure/azure-sdk-for-java/pull/39215)
