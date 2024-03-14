@@ -1,6 +1,7 @@
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.ConstructorCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.azure.autorest.customization.JavadocCustomization;
@@ -36,6 +37,24 @@ public class ChatCompletionsToolCallCustomizations extends Customization {
         // remove unused class (no reference to them, after partial-update)
         customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/models/FileDetails.java");
         customization.getRawEditor().removeFile("src/main/java/com/azure/ai/openai/implementation/MultipartFormDataHelper.java");
+
+
+        // Customize Embedding Item
+        customizeEmbeddingItem(customization, logger);
+    }
+
+    private void customizeEmbeddingItem(LibraryCustomization customization, Logger logger) {
+        logger.info("Customizing the EmbeddingItem class");
+        PackageCustomization packageCustomization = customization.getPackage("com.azure.ai.openai.models");
+        ClassCustomization classCustomization = packageCustomization.getClass("EmbeddingItem");
+
+        MethodCustomization getEmbedding = classCustomization.getMethod("getEmbedding")
+                .setReturnType("List<Float>", "")
+                .replaceBody(joinWithNewline(
+                        "List<Float> floatList = new ArrayList<>();",
+                        "this.embedding.forEach(d -> floatList.add(d.floatValue()));",
+                        "return floatList;"
+                ), Arrays.asList("java.util.ArrayList"));
     }
 
     private static String joinWithNewline(String... lines) {
