@@ -4,6 +4,7 @@
 package com.generic.core.implementation.http.serializer;
 
 import com.generic.core.http.exception.HttpResponseException;
+import com.generic.core.http.models.ResponseBodyHandling;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.rest.SwaggerMethodParser;
 
@@ -94,43 +95,8 @@ public interface HttpResponseDecodeData {
         return SwaggerMethodParser.isReturnTypeDecodable(SwaggerMethodParser.unwrapReturnType(getReturnType()));
     }
 
-    /**
-     * Whether the network response body should be eagerly read based on its {@link #getReturnType() returnType}.
-     * <p>
-     * The following types, including subtypes, aren't eagerly read from the network:
-     * <ul>
-     * <li>BinaryData</li>
-     * <li>byte[]</li>
-     * <li>ByteBuffer</li>
-     * <li>InputStream</li>
-     * <li>Void</li>
-     * <li>void</li>
-     * </ul>
-     *
-     * cracked open and their generic types are inspected for being one of the types above.
-     *
-     * @return Whether the network response body should be eagerly read.
-     */
-    default boolean isResponseEagerlyRead() {
-        return SwaggerMethodParser.isResponseEagerlyRead(SwaggerMethodParser.unwrapReturnType(getReturnType()));
-    }
-
-    /**
-     * Whether the network response body will be ignored based on its {@link #getReturnType() returnType}.
-     * <p>
-     * The following types, including subtypes, ignored the network response body:
-     * <ul>
-     * <li>Void</li>
-     * <li>void</li>
-     * </ul>
-     *
-     * cracked open and their generic types are inspected for being one of the types above.
-     *
-     * @return Whether the network response body will be ignored.
-     */
-    default boolean isResponseBodyIgnored() {
-        return SwaggerMethodParser.isResponseBodyIgnored(SwaggerMethodParser.unwrapReturnType(getReturnType()));
-
+    default ResponseBodyHandling getResponseBodyHandling() {
+        return SwaggerMethodParser.getResponseBodyHandling(SwaggerMethodParser.unwrapReturnType(getReturnType()));
     }
 
     /**

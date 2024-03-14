@@ -6,9 +6,11 @@ package com.generic.core.implementation.http.rest;
 import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.TypeUtil;
+import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.models.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
@@ -21,6 +23,7 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.function.Consumer;
 
+import static com.generic.core.http.models.ResponseBodyHandling.DESERIALIZE;
 import static com.generic.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
 
 public class RestProxyImpl extends RestProxyBase {
@@ -118,8 +121,15 @@ public class RestProxyImpl extends RestProxyBase {
 
                 return createResponseIfNecessary(response, entityType, null);
             } else {
-                Object bodyAsObject = handleBodyReturnType(response, methodParser, bodyType);
-                Response<?> responseToReturn = createResponseIfNecessary(response, entityType, bodyAsObject);
+                if (methodParser.getResponseBodyHandling() == DESERIALIZE) {
+                    HttpResponseAccessHelper.setValue((HttpResponse<?>) response,
+                        handleBodyReturnType(response, methodParser, bodyType));
+                } else {
+                    HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response, (body) ->
+                        handleBodyReturnType(response, methodParser, bodyType));
+                }
+
+                Response<?> responseToReturn = createResponseIfNecessary(response, entityType, response.getBody());
 
                 if (responseToReturn == null) {
                     return createResponseIfNecessary(response, entityType, null);

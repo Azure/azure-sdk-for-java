@@ -6,12 +6,14 @@ package com.generic.core.http.client;
 import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpRequestMetadata;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.http.models.ServerSentEvent;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.http.ContentType;
+import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.util.ServerSentEventHelper;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
@@ -202,30 +204,49 @@ class DefaultHttpClient implements HttpClient {
      * @return A HttpResponse object
      */
     private Response<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
-        try {
-            int responseCode = connection.getResponseCode();
-            Headers responseHeaders = getResponseHeaders(connection);
+        Headers responseHeaders = getResponseHeaders(connection);
+        HttpResponse<?> httpResponse = createHttpResponse(httpRequest, connection);
 
+        if (connection.getErrorStream() == null && isTextEventStream(responseHeaders)) {
             ServerSentEventListener listener = httpRequest.getServerSentEventListener();
-            if (connection.getErrorStream() == null && isTextEventStream(responseHeaders)) {
-                if (listener != null) {
-                    processTextEventStream(httpRequest, connection, listener);
-                } else {
-                    LOGGER.atInfo().log(() -> "No listener attached to the server sent "
-                        + "event http request. Treating response as regular response.");
-                }
 
-                return new HttpResponse<>(httpRequest, responseCode, responseHeaders, null);
+            if (listener != null) {
+                processTextEventStream(httpRequest, connection, listener);
             } else {
-                AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
-
-                return new HttpResponse<>(httpRequest, responseCode, responseHeaders,
-                    BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
+                LOGGER.atInfo().log(() -> "No listener attached to the server sent "
+                    + "event http request. Treating response as regular response.");
             }
+        } else {
+            HttpRequestMetadata metadata = httpRequest.getMetadata();
+
+            if (metadata != null && metadata.getResponseBodyHandling() != null) {
+                switch (metadata.getResponseBodyHandling()) {
+                    case NO_BUFFER:
+                        setResponseBodySupplier(httpResponse, connection);
+
+                        break;
+                    case IGNORE:
+                        // TODO: Verify if we should ignore the body of void/Void response types.
+                    case BUFFER:
+                    case DESERIALIZE:
+                    default:
+                        eagerlyBufferResponseBody(httpResponse, connection);
+                }
+            } else {
+                eagerlyBufferResponseBody(httpResponse, connection);
+            }
+        }
+
+        return httpResponse;
+    }
+
+    private HttpResponse<?> createHttpResponse(HttpRequest httpRequest, HttpURLConnection connection) {
+        try {
+            return new HttpResponse<>(httpRequest, connection.getResponseCode(), getResponseHeaders(connection), null);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        } finally {
             connection.disconnect();
+
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -239,11 +260,37 @@ class DefaultHttpClient implements HttpClient {
             }
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        } finally {
+            connection.disconnect();
         }
     }
 
     private static boolean isTextEventStream(Headers responseHeaders) {
         return Objects.equals(ContentType.TEXT_EVENT_STREAM, responseHeaders.getValue(HeaderName.CONTENT_TYPE));
+    }
+
+    private void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
+        try {
+            AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
+
+            HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        } finally {
+            connection.disconnect();
+        }
+    }
+
+    private void setResponseBodySupplier(HttpResponse<?> httpResponse, HttpURLConnection connection) {
+        HttpResponseAccessHelper.setBodySupplier(httpResponse, () -> {
+            try {
+                return BinaryData.fromByteBuffer(getAccessibleByteArrayOutputStream(connection).toByteBuffer());
+            } catch (IOException e) {
+                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            } finally {
+                connection.disconnect();
+            }
+        });
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.generic.core.http;
 
+import com.generic.core.http.models.ResponseBodyHandling;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 
@@ -81,13 +82,8 @@ public class MockHttpResponseDecodeData implements HttpResponseDecodeData {
     }
 
     @Override
-    public boolean isResponseEagerlyRead() {
-        return HttpResponseDecodeData.super.isResponseEagerlyRead();
-    }
-
-    @Override
-    public boolean isResponseBodyIgnored() {
-        return HttpResponseDecodeData.super.isResponseBodyIgnored();
+    public ResponseBodyHandling getResponseBodyHandling() {
+        return HttpResponseDecodeData.super.getResponseBodyHandling();
     }
 
     @Override

@@ -17,6 +17,7 @@ import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
+import com.generic.core.http.models.ResponseBodyHandling;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.Base64Url;
@@ -50,6 +51,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
+import static com.generic.core.http.models.ResponseBodyHandling.DESERIALIZE;
+import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
 import static com.generic.core.implementation.http.ContentType.APPLICATION_JSON;
 import static com.generic.core.implementation.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -663,36 +667,11 @@ public class SwaggerMethodParserTests {
     }
 
     private static Stream<Arguments> isReturnTypeDecodableSupplier() {
-        return returnTypeSupplierForDecodableAndEagerReading(true, false, false);
+        return returnTypeSupplierForDecodable(true, false, false);
     }
 
-    @ParameterizedTest
-    @MethodSource("isResponseEagerlyReadSupplier")
-    public void isResponseEagerlyRead(Type returnType, boolean expected) {
-        Type unwrappedReturnType = SwaggerMethodParser.unwrapReturnType(returnType);
-
-        assertEquals(expected, SwaggerMethodParser.isResponseEagerlyRead(unwrappedReturnType));
-    }
-
-    private static Stream<Arguments> isResponseEagerlyReadSupplier() {
-        return returnTypeSupplierForDecodableAndEagerReading(true, false, false);
-    }
-
-    @ParameterizedTest
-    @MethodSource("isResponseBodyIgnoredSupplier")
-    public void isResponseBodyIgnored(Type returnType, boolean expected) {
-        Type unwrappedReturnType = SwaggerMethodParser.unwrapReturnType(returnType);
-
-        assertEquals(expected, SwaggerMethodParser.isResponseBodyIgnored(unwrappedReturnType));
-    }
-
-    private static Stream<Arguments> isResponseBodyIgnoredSupplier() {
-        return returnTypeSupplierForDecodableAndEagerReading(false, false, true);
-    }
-
-    private static Stream<Arguments> returnTypeSupplierForDecodableAndEagerReading(boolean nonBinaryTypeStatus,
-                                                                                    boolean binaryTypeStatus,
-                                                                                    boolean voidTypeStatus) {
+    private static Stream<Arguments> returnTypeSupplierForDecodable(boolean nonBinaryTypeStatus,
+                                                                    boolean binaryTypeStatus, boolean voidTypeStatus) {
         return Stream.of(
             // Unknown response type can't be determined to be decodable.
             Arguments.of(null, false),
@@ -735,6 +714,60 @@ public class SwaggerMethodParserTests {
             // Custom implementations of Response.
             Arguments.of(VoidResponse.class, voidTypeStatus),
             Arguments.of(StringResponse.class, nonBinaryTypeStatus)
+        );
+    }
+
+    @ParameterizedTest
+    @MethodSource("getResponseBodyHandlingSupplier")
+    public void getResponseBodyHandling(Type returnType, ResponseBodyHandling expected) {
+        Type unwrappedReturnType = SwaggerMethodParser.unwrapReturnType(returnType);
+
+        assertEquals(expected, SwaggerMethodParser.getResponseBodyHandling(unwrappedReturnType));
+    }
+
+    private static Stream<Arguments> getResponseBodyHandlingSupplier() {
+        return Stream.of(
+            // Unknown response type can't be determined to be decodable.
+            Arguments.of(null, BUFFER),
+
+            // BinaryData, Byte arrays, ByteBuffers, InputStream, and voids aren't decodable.
+            Arguments.of(BinaryData.class, BUFFER),
+
+            Arguments.of(byte[].class, BUFFER),
+
+            // Both ByteBuffer and subtypes shouldn't be decodable.
+            Arguments.of(ByteBuffer.class, BUFFER),
+            Arguments.of(MappedByteBuffer.class, BUFFER),
+
+            // Both InputSteam and subtypes shouldn't be decodable.
+            Arguments.of(InputStream.class, BUFFER),
+            Arguments.of(FileInputStream.class, BUFFER),
+
+            Arguments.of(void.class, IGNORE),
+            Arguments.of(Void.class, IGNORE),
+            Arguments.of(Void.TYPE, IGNORE),
+
+            // Other POJO types are decodable.
+            Arguments.of(SimpleClass.class, DESERIALIZE),
+
+            // In addition to the direct types, reactive and Response generic types should be handled.
+
+            // Response generics.
+            // If the raw type is Response it should check the first, and only, generic type.
+            Arguments.of(createParameterizedResponse(BinaryData.class), BUFFER),
+            Arguments.of(createParameterizedResponse(byte[].class), BUFFER),
+            Arguments.of(createParameterizedResponse(ByteBuffer.class), BUFFER),
+            Arguments.of(createParameterizedResponse(MappedByteBuffer.class), BUFFER),
+            Arguments.of(createParameterizedResponse(InputStream.class), BUFFER),
+            Arguments.of(createParameterizedResponse(FileInputStream.class), BUFFER),
+            Arguments.of(createParameterizedResponse(void.class), IGNORE),
+            Arguments.of(createParameterizedResponse(Void.class), IGNORE),
+            Arguments.of(createParameterizedResponse(Void.TYPE), IGNORE),
+            Arguments.of(createParameterizedResponse(SimpleClass.class), DESERIALIZE),
+
+            // Custom implementations of Response.
+            Arguments.of(VoidResponse.class, IGNORE),
+            Arguments.of(StringResponse.class, DESERIALIZE)
         );
     }
 

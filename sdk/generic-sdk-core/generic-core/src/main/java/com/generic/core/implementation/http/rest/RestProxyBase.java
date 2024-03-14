@@ -7,14 +7,12 @@ import com.generic.core.http.Response;
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
-import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
 import com.generic.core.implementation.util.UrlBuilder;
@@ -71,10 +69,10 @@ public abstract class RestProxyBase {
             context = RestProxyUtils.mergeRequestOptionsContext(context, options);
 
             request.getMetadata().setContext(context);
-            request.getMetadata().setRequestLogger(methodParser.getMethodLogger());
-            request.getMetadata().setEagerlyConvertHeaders(methodParser.isHeadersEagerlyConverted());
-            request.getMetadata().setEagerlyReadResponse(methodParser.isResponseEagerlyRead());
-            request.getMetadata().setIgnoreResponseBody(methodParser.isResponseBodyIgnored());
+            request.getMetadata().setRequestLogger(methodParser.getMethodLogger());;
+            request.getMetadata().setResponseBodyHandling(options != null
+                ? options.getResponseBodyHandling()
+                : methodParser.getResponseBodyHandling());
 
             return invoke(proxy, method, options, requestCallback, methodParser, request);
         } catch (IOException e) {
@@ -97,7 +95,7 @@ public abstract class RestProxyBase {
         // Response or rely on reflection to create an appropriate Response subtype.
         if (clazz.equals(Response.class)) {
             // Return the Response.
-            return HttpResponseAccessHelper.setValue((HttpResponse<?>) response, bodyAsObject);
+            return response;
         } else {
             // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
             // subtype.

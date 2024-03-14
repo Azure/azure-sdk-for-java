@@ -38,8 +38,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
 
+import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
+import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -188,8 +189,7 @@ public class RestProxyTests {
 
         testInterface.testVoidMethod();
 
-        assertFalse(client.getLastHttpRequest().getMetadata().isEagerlyReadResponse());
-        assertTrue(client.getLastHttpRequest().getMetadata().isIgnoreResponseBody());
+        assertEquals(IGNORE, client.getLastHttpRequest().getMetadata().getResponseBodyHandling());
     }
 
     @Test
@@ -203,8 +203,7 @@ public class RestProxyTests {
 
         testInterface.testMethodReturnsResponseVoid();
 
-        assertFalse(client.getLastHttpRequest().getMetadata().isEagerlyReadResponse());
-        assertTrue(client.getLastHttpRequest().getMetadata().isIgnoreResponseBody());
+        assertEquals(IGNORE, client.getLastHttpRequest().getMetadata().getResponseBodyHandling());
     }
 
     @Test
@@ -218,7 +217,7 @@ public class RestProxyTests {
 
         testInterface.testDownload();
 
-        assertFalse(client.getLastHttpRequest().getMetadata().isEagerlyReadResponse());
+        assertEquals(BUFFER, client.getLastHttpRequest().getMetadata().getResponseBodyHandling());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {
