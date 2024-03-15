@@ -12,8 +12,7 @@ public final class CheckNameAvailabilityResultImpl implements CheckNameAvailabil
 
     private final com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager;
 
-    CheckNameAvailabilityResultImpl(
-        CheckNameAvailabilityResultInner innerObject,
+    CheckNameAvailabilityResultImpl(CheckNameAvailabilityResultInner innerObject,
         com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

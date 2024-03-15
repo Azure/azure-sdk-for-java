@@ -7,7 +7,9 @@ package com.azure.resourcemanager.quantum.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Result of check name availability. */
+/**
+ * Result of check name availability.
+ */
 @Fluent
 public final class CheckNameAvailabilityResultInner {
     /*
@@ -28,13 +30,15 @@ public final class CheckNameAvailabilityResultInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of CheckNameAvailabilityResultInner class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityResultInner class.
+     */
     public CheckNameAvailabilityResultInner() {
     }
 
     /**
      * Get the nameAvailable property: Indicator of availability of the Quantum Workspace resource name.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -43,7 +47,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Set the nameAvailable property: Indicator of availability of the Quantum Workspace resource name.
-     *
+     * 
      * @param nameAvailable the nameAvailable value to set.
      * @return the CheckNameAvailabilityResultInner object itself.
      */
@@ -54,7 +58,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Get the reason property: The reason of unavailability.
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -63,7 +67,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Set the reason property: The reason of unavailability.
-     *
+     * 
      * @param reason the reason value to set.
      * @return the CheckNameAvailabilityResultInner object itself.
      */
@@ -74,7 +78,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Get the message property: The detailed info regarding the reason associated with the Namespace.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -83,7 +87,7 @@ public final class CheckNameAvailabilityResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
