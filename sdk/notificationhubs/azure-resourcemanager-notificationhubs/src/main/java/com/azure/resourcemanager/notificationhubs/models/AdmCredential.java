@@ -7,23 +7,28 @@ package com.azure.resourcemanager.notificationhubs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.fluent.models.AdmCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a NotificationHub AdmCredential. */
+/**
+ * Description of a NotificationHub AdmCredential.
+ */
 @Fluent
 public final class AdmCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdmCredential.class);
-
     /*
-     * Properties of NotificationHub AdmCredential.
+     * Description of a NotificationHub AdmCredential.
      */
-    @JsonProperty(value = "properties")
-    private AdmCredentialProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private AdmCredentialProperties innerProperties = new AdmCredentialProperties();
 
     /**
-     * Get the innerProperties property: Properties of NotificationHub AdmCredential.
-     *
+     * Creates an instance of AdmCredential class.
+     */
+    public AdmCredential() {
+    }
+
+    /**
+     * Get the innerProperties property: Description of a NotificationHub AdmCredential.
+     * 
      * @return the innerProperties value.
      */
     private AdmCredentialProperties innerProperties() {
@@ -31,8 +36,8 @@ public final class AdmCredential {
     }
 
     /**
-     * Get the clientId property: The client identifier.
-     *
+     * Get the clientId property: Gets or sets the client identifier.
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -40,8 +45,8 @@ public final class AdmCredential {
     }
 
     /**
-     * Set the clientId property: The client identifier.
-     *
+     * Set the clientId property: Gets or sets the client identifier.
+     * 
      * @param clientId the clientId value to set.
      * @return the AdmCredential object itself.
      */
@@ -54,8 +59,8 @@ public final class AdmCredential {
     }
 
     /**
-     * Get the clientSecret property: The credential secret access key.
-     *
+     * Get the clientSecret property: Gets or sets the credential secret access key.
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -63,8 +68,8 @@ public final class AdmCredential {
     }
 
     /**
-     * Set the clientSecret property: The credential secret access key.
-     *
+     * Set the clientSecret property: Gets or sets the credential secret access key.
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the AdmCredential object itself.
      */
@@ -77,8 +82,8 @@ public final class AdmCredential {
     }
 
     /**
-     * Get the authTokenUrl property: The URL of the authorization token.
-     *
+     * Get the authTokenUrl property: Gets or sets the URL of the authorization token.
+     * 
      * @return the authTokenUrl value.
      */
     public String authTokenUrl() {
@@ -86,8 +91,8 @@ public final class AdmCredential {
     }
 
     /**
-     * Set the authTokenUrl property: The URL of the authorization token.
-     *
+     * Set the authTokenUrl property: Gets or sets the URL of the authorization token.
+     * 
      * @param authTokenUrl the authTokenUrl value to set.
      * @return the AdmCredential object itself.
      */
@@ -101,12 +106,17 @@ public final class AdmCredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model AdmCredential"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AdmCredential.class);
 }
