@@ -31,7 +31,7 @@ stages:
           groupId: com.azure
         - name: azure-cosmos-benchmark
           groupId: com.azure
-      TimeoutInMinutes: 120
+      TimeoutInMinutes: 240
       MaxParallel: 20
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
