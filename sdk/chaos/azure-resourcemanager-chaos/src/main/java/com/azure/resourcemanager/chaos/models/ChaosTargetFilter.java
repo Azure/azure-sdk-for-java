@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Model that represents available filter types that can be applied to a targets list. */
+/**
+ * Model that represents available filter types that can be applied to a targets list.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "type",
     defaultImpl = ChaosTargetFilter.class)
 @JsonTypeName("ChaosTargetFilter")
-@JsonSubTypes({@JsonSubTypes.Type(name = "Simple", value = ChaosTargetSimpleFilter.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "Simple", value = ChaosTargetSimpleFilter.class) })
 @Immutable
 public class ChaosTargetFilter {
-    /** Creates an instance of ChaosTargetFilter class. */
+    /**
+     * Creates an instance of ChaosTargetFilter class.
+     */
     public ChaosTargetFilter() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
