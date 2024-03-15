@@ -12,35 +12,27 @@ import org.junit.jupiter.api.Assertions;
 public final class ProviderTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Provider model =
-            BinaryData
-                .fromString(
-                    "{\"providerId\":\"lhmwhfpmrqobm\",\"providerSku\":\"kknryrtihf\",\"instanceUri\":\"ijbpzvgnwzsymgl\",\"applicationName\":\"fcyzkohdbihanufh\",\"provisioningState\":\"Updating\",\"resourceUsageId\":\"y\"}")
-                .toObject(Provider.class);
-        Assertions.assertEquals("lhmwhfpmrqobm", model.providerId());
-        Assertions.assertEquals("kknryrtihf", model.providerSku());
-        Assertions.assertEquals("ijbpzvgnwzsymgl", model.instanceUri());
-        Assertions.assertEquals("fcyzkohdbihanufh", model.applicationName());
-        Assertions.assertEquals(Status.UPDATING, model.provisioningState());
+        Provider model = BinaryData.fromString(
+            "{\"providerId\":\"mofcq\",\"providerSku\":\"my\",\"instanceUri\":\"kdtmlxhekuk\",\"applicationName\":\"txukcdmp\",\"provisioningState\":\"Failed\",\"resourceUsageId\":\"y\"}")
+            .toObject(Provider.class);
+        Assertions.assertEquals("mofcq", model.providerId());
+        Assertions.assertEquals("my", model.providerSku());
+        Assertions.assertEquals("kdtmlxhekuk", model.instanceUri());
+        Assertions.assertEquals("txukcdmp", model.applicationName());
+        Assertions.assertEquals(Status.FAILED, model.provisioningState());
         Assertions.assertEquals("y", model.resourceUsageId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Provider model =
-            new Provider()
-                .withProviderId("lhmwhfpmrqobm")
-                .withProviderSku("kknryrtihf")
-                .withInstanceUri("ijbpzvgnwzsymgl")
-                .withApplicationName("fcyzkohdbihanufh")
-                .withProvisioningState(Status.UPDATING)
-                .withResourceUsageId("y");
+        Provider model = new Provider().withProviderId("mofcq").withProviderSku("my").withInstanceUri("kdtmlxhekuk")
+            .withApplicationName("txukcdmp").withProvisioningState(Status.FAILED).withResourceUsageId("y");
         model = BinaryData.fromObject(model).toObject(Provider.class);
-        Assertions.assertEquals("lhmwhfpmrqobm", model.providerId());
-        Assertions.assertEquals("kknryrtihf", model.providerSku());
-        Assertions.assertEquals("ijbpzvgnwzsymgl", model.instanceUri());
-        Assertions.assertEquals("fcyzkohdbihanufh", model.applicationName());
-        Assertions.assertEquals(Status.UPDATING, model.provisioningState());
+        Assertions.assertEquals("mofcq", model.providerId());
+        Assertions.assertEquals("my", model.providerSku());
+        Assertions.assertEquals("kdtmlxhekuk", model.instanceUri());
+        Assertions.assertEquals("txukcdmp", model.applicationName());
+        Assertions.assertEquals(Status.FAILED, model.provisioningState());
         Assertions.assertEquals("y", model.resourceUsageId());
     }
 }
