@@ -17,7 +17,7 @@ if ($env:ADDITIONALMODULESJSON -and $env:ADDITIONALMODULESJSON -notlike '*Additi
 
 $projects = $projectList -join ','
 if (!$projects) {
-    $projects = '@()'
+    throw "parameters.Artifacts cannot be empty"
 }
 
 Write-Host "ProjectList = $projects"

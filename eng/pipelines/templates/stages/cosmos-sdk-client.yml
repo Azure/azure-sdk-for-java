@@ -77,6 +77,8 @@ extends:
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
           - template: /eng/pipelines/templates/variables/image.yml
+          - name: ArtifactsJson
+            value: '${{ convertToJson(parameters.Artifacts) }}'
         jobs:
         - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
           parameters:
@@ -93,7 +95,6 @@ extends:
               BuildParallelization: 1
               DisableAzureResourceCreation: true
               ServiceDirectory: cosmos
-              Artifacts: ${{ parameters.Artifacts }}
               ACCOUNT_HOST: 'https://localhost:8081/'
               ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
               SECONDARY_ACCOUNT_KEY: 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
