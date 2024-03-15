@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerNameItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerNameItem model =
-            BinaryData
-                .fromString("{\"name\":\"fpownoizhwlr\",\"fullyQualifiedDomainName\":\"bqsoqijg\"}")
+        ServerNameItem model
+            = BinaryData.fromString("{\"name\":\"fpownoizhwlr\",\"fullyQualifiedDomainName\":\"bqsoqijg\"}")
                 .toObject(ServerNameItem.class);
         Assertions.assertEquals("fpownoizhwlr", model.name());
     }
