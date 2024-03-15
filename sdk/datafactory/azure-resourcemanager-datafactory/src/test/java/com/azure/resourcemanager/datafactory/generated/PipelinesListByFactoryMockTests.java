@@ -36,7 +36,7 @@ public final class PipelinesListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"qjtoeaugwosrywp\",\"activities\":[{\"type\":\"Activity\",\"name\":\"l\",\"description\":\"iafsizdec\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"lwquxrrju\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"phgsd\",\"value\":\"datatwfmvpsvwwtncvn\"},{\"name\":\"qwgn\",\"value\":\"datalicovvdcobfnb\"}],\"\":{\"xjfkpuszsjay\":\"dataoijxqgfmftrvv\",\"xwnircmodws\":\"datal\",\"wxwkjambfsxsr\":\"datahzlamdqgav\"}},{\"type\":\"Activity\",\"name\":\"jfapiodsn\",\"description\":\"ezwjq\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"uxo\",\"dependencyConditions\":[]},{\"activity\":\"mjxqintjhvcoro\",\"dependencyConditions\":[]},{\"activity\":\"mqudzi\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"k\",\"value\":\"dataea\"},{\"name\":\"kcygyqgvofhpg\",\"value\":\"datajibkwwyfsqga\"},{\"name\":\"svcxazvrmu\",\"value\":\"datasjegohpwnrm\"}],\"\":{\"udmefsxmdml\":\"datatknbruszq\",\"g\":\"datawesixpwfvt\",\"bhcjhin\":\"datameqirxwkomjsfkd\",\"wkzuaxsrmadakj\":\"datanwpivfplbajqecn\"}},{\"type\":\"Activity\",\"name\":\"yp\",\"description\":\"yvobkkekld\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"hotwq\",\"dependencyConditions\":[]},{\"activity\":\"gvrzlimz\",\"dependencyConditions\":[]},{\"activity\":\"utmsmdibzvytem\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"ykcxuvdcw\",\"value\":\"datanzf\"},{\"name\":\"eghn\",\"value\":\"dataqwjwwhs\"},{\"name\":\"jqxlbclvpgbuty\",\"value\":\"datasravsscblsxmsc\"}],\"\":{\"uzclfbvvuyoilni\":\"datad\",\"gxsfeslxwlmx\":\"datawxwaquuvbb\",\"bi\":\"datao\",\"dvicdqufjahuc\":\"dataktblom\"}}],\"parameters\":{\"trfdipss\":{\"type\":\"Object\",\"defaultValue\":\"datacklthsuasnxdhlov\"}},\"variables\":{\"zs\":{\"type\":\"Bool\",\"defaultValue\":\"databydryysvex\"},\"birltzyuahnl\":{\"type\":\"String\",\"defaultValue\":\"datankjjwtyn\"}},\"concurrency\":585093789,\"annotations\":[\"datassdtysnlx\",\"dataqmzezfhfjjj\",\"datacxtzk\"],\"runDimensions\":{\"h\":\"dataosceukqio\"},\"folder\":{\"name\":\"qkkacw\"},\"policy\":{\"elapsedTimeMetric\":{\"duration\":\"dataxk\"}}},\"name\":\"mwbrvslforlaudem\",\"type\":\"pdnusuj\",\"etag\":\"bbg\",\"\":{\"gmihxjpflzpuib\":\"dataknhadqfynrd\"},\"id\":\"lrewfrmqbmcmgeza\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"jvrxyr\",\"activities\":[{\"type\":\"Activity\",\"name\":\"rsyckq\",\"description\":\"fmqhtr\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"hhl\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"wffrzgeobzmxzrai\",\"value\":\"datalz\"},{\"name\":\"r\",\"value\":\"datajpnxz\"},{\"name\":\"rc\",\"value\":\"datayysycey\"}],\"\":{\"ghppy\":\"datalxhymc\",\"ygtetmpw\":\"dataro\",\"mnoecfjw\":\"datalbqdxvxdfkdwk\",\"r\":\"datakiupgmdsz\"}},{\"type\":\"Activity\",\"name\":\"djxltjsm\",\"description\":\"ecr\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"is\",\"dependencyConditions\":[]},{\"activity\":\"goapxdmxwetkj\",\"dependencyConditions\":[]},{\"activity\":\"xekql\",\"dependencyConditions\":[]},{\"activity\":\"ctdxargqff\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"fbfqw\",\"value\":\"datalzbtqzjmi\"},{\"name\":\"dcsdfbkiwumrf\",\"value\":\"datajrptsjecqwdosbs\"}],\"\":{\"cpwrgry\":\"dataiacwdxvlku\"}},{\"type\":\"Activity\",\"name\":\"blrqeqcdikcqc\",\"description\":\"dtfthnjxid\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"xgxtccmq\",\"dependencyConditions\":[]},{\"activity\":\"kuqrrzuegin\",\"dependencyConditions\":[]},{\"activity\":\"lnteoapszxqnjxv\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"cqm\",\"value\":\"datajihmcgzwoijtlhx\"},{\"name\":\"sxxra\",\"value\":\"datagaicgqgafkrtsa\"},{\"name\":\"agvq\",\"value\":\"datatcr\"},{\"name\":\"fxqhnw\",\"value\":\"dataujrnfdqlzggvo\"}],\"\":{\"a\":\"dataiumrdbqujyijqc\",\"lbfknxz\":\"datanpsvgupqwqshmn\"}},{\"type\":\"Activity\",\"name\":\"suvjbfryortbre\",\"description\":\"ccpbtvgiokz\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"wawomkzussgj\",\"dependencyConditions\":[]},{\"activity\":\"ubggjdluwbmwu\",\"dependencyConditions\":[]},{\"activity\":\"bekzcmfibboz\",\"dependencyConditions\":[]},{\"activity\":\"ptwvamymswfwc\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"sopffhqxh\",\"value\":\"datacohrhwxvvom\"},{\"name\":\"jpjrxvsggaubrk\",\"value\":\"datafvlqwi\"},{\"name\":\"eoenpihtgigaeeq\",\"value\":\"datapvirozlfcc\"}],\"\":{\"p\":\"dataqixxxgltqldlhhqp\"}}],\"parameters\":{\"nogyvpfyjlfnjmwb\":{\"type\":\"String\",\"defaultValue\":\"datacajhnnbp\"},\"vzqbvdlhc\":{\"type\":\"Int\",\"defaultValue\":\"datahyprpw\"},\"jqz\":{\"type\":\"String\",\"defaultValue\":\"datakmpxtfcrugitjnw\"},\"nbkcqoy\":{\"type\":\"Float\",\"defaultValue\":\"datafea\"}},\"variables\":{\"tzlflqpanceow\":{\"type\":\"Bool\",\"defaultValue\":\"databfbzhczyhtj\"},\"qu\":{\"type\":\"Array\",\"defaultValue\":\"datazxluozmedaq\"}},\"concurrency\":1169190885,\"annotations\":[\"dataux\",\"databsl\",\"datausvbvtcti\",\"dataovfe\"],\"runDimensions\":{\"jjrhvdxfs\":\"datagbacmnj\",\"lsrx\":\"datambbj\"},\"folder\":{\"name\":\"kcvksv\"},\"policy\":{\"elapsedTimeMetric\":{\"duration\":\"datarfnlhlfv\"}}},\"name\":\"ohyecblvpwuqq\",\"type\":\"fuuhm\",\"etag\":\"s\",\"\":{\"zvvrfplkemvvlge\":\"datarcxamgvi\",\"sh\":\"datay\",\"hxkifjvilazopwud\":\"dataplhwplyvqofpemc\",\"xaufowhmd\":\"dataew\"},\"id\":\"gaktugephqdoctg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -54,21 +54,22 @@ public final class PipelinesListByFactoryMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PipelineResource> response
-            = manager.pipelines().listByFactory("udtiecnp", "af", com.azure.core.util.Context.NONE);
+            = manager.pipelines().listByFactory("tdvwmefjpoe", "lyvbvxlrltrztrlo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lrewfrmqbmcmgeza", response.iterator().next().id());
-        Assertions.assertEquals("qjtoeaugwosrywp", response.iterator().next().description());
-        Assertions.assertEquals("l", response.iterator().next().activities().get(0).name());
-        Assertions.assertEquals("iafsizdec", response.iterator().next().activities().get(0).description());
-        Assertions.assertEquals(ActivityState.INACTIVE, response.iterator().next().activities().get(0).state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.SUCCEEDED,
+        Assertions.assertEquals("gaktugephqdoctg", response.iterator().next().id());
+        Assertions.assertEquals("jvrxyr", response.iterator().next().description());
+        Assertions.assertEquals("rsyckq", response.iterator().next().activities().get(0).name());
+        Assertions.assertEquals("fmqhtr", response.iterator().next().activities().get(0).description());
+        Assertions.assertEquals(ActivityState.ACTIVE, response.iterator().next().activities().get(0).state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED,
             response.iterator().next().activities().get(0).onInactiveMarkAs());
-        Assertions.assertEquals("lwquxrrju",
-            response.iterator().next().activities().get(0).dependsOn().get(0).activity());
-        Assertions.assertEquals("phgsd", response.iterator().next().activities().get(0).userProperties().get(0).name());
-        Assertions.assertEquals(ParameterType.OBJECT, response.iterator().next().parameters().get("trfdipss").type());
-        Assertions.assertEquals(VariableType.BOOL, response.iterator().next().variables().get("zs").type());
-        Assertions.assertEquals(585093789, response.iterator().next().concurrency());
-        Assertions.assertEquals("qkkacw", response.iterator().next().folder().name());
+        Assertions.assertEquals("hhl", response.iterator().next().activities().get(0).dependsOn().get(0).activity());
+        Assertions.assertEquals("wffrzgeobzmxzrai",
+            response.iterator().next().activities().get(0).userProperties().get(0).name());
+        Assertions.assertEquals(ParameterType.STRING,
+            response.iterator().next().parameters().get("nogyvpfyjlfnjmwb").type());
+        Assertions.assertEquals(VariableType.BOOL, response.iterator().next().variables().get("tzlflqpanceow").type());
+        Assertions.assertEquals(1169190885, response.iterator().next().concurrency());
+        Assertions.assertEquals("kcvksv", response.iterator().next().folder().name());
     }
 }

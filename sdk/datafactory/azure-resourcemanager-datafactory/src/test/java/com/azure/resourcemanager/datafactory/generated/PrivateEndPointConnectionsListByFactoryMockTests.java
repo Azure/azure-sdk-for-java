@@ -32,7 +32,7 @@ public final class PrivateEndPointConnectionsListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"waocfnf\",\"privateEndpoint\":{\"id\":\"dccwuz\"},\"privateLinkServiceConnectionState\":{\"status\":\"ckewl\",\"description\":\"weupsubawzafzdzh\",\"actionsRequired\":\"bxcelvaww\"}},\"name\":\"btkyjvzz\",\"type\":\"ylimnm\",\"etag\":\"sjuacdqvr\",\"id\":\"ykqotzpepm\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"bkazv\",\"privateEndpoint\":{\"id\":\"bky\"},\"privateLinkServiceConnectionState\":{\"status\":\"wzbfpcleniozqr\",\"description\":\"hrp\",\"actionsRequired\":\"hpyymlwall\"}},\"name\":\"yorhgo\",\"type\":\"v\",\"etag\":\"svrpnoxbokmqviv\",\"id\":\"fbzrfmfadvfkjdwu\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,15 +49,15 @@ public final class PrivateEndPointConnectionsListByFactoryMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<PrivateEndpointConnectionResource> response
-            = manager.privateEndPointConnections().listByFactory("itoibgv", "a", com.azure.core.util.Context.NONE);
+        PagedIterable<PrivateEndpointConnectionResource> response = manager.privateEndPointConnections()
+            .listByFactory("xiwulqp", "qxcygevgj", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ykqotzpepm", response.iterator().next().id());
-        Assertions.assertEquals("ckewl",
+        Assertions.assertEquals("fbzrfmfadvfkjdwu", response.iterator().next().id());
+        Assertions.assertEquals("wzbfpcleniozqr",
             response.iterator().next().properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("weupsubawzafzdzh",
+        Assertions.assertEquals("hrp",
             response.iterator().next().properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("bxcelvaww",
+        Assertions.assertEquals("hpyymlwall",
             response.iterator().next().properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

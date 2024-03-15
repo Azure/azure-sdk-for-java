@@ -11,16 +11,16 @@ public final class MySqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MySqlSource model = BinaryData.fromString(
-            "{\"type\":\"MySqlSource\",\"query\":\"datataevqafdhpkiiu\",\"queryTimeout\":\"datarobckelo\",\"additionalColumns\":\"datamrvdtqhrtnqssqy\",\"sourceRetryCount\":\"datapskitokphamefzz\",\"sourceRetryWait\":\"datajoauedmdpndouylf\",\"maxConcurrentConnections\":\"datagqin\",\"disableMetricsCollection\":\"datakxouknzh\",\"\":{\"mutdrrqqajhkl\":\"datassrsqzuknbtxt\",\"rtwqjf\":\"datatliuw\",\"ciwhumngi\":\"datayaqdswfno\"}}")
+            "{\"type\":\"MySqlSource\",\"query\":\"databgljcy\",\"queryTimeout\":\"datarzxipxhlxxkviyj\",\"additionalColumns\":\"dataqyejyavxgm\",\"sourceRetryCount\":\"datacnwxkqqxpnj\",\"sourceRetryWait\":\"datazdahvethn\",\"maxConcurrentConnections\":\"dataeggyqlvnhmuut\",\"disableMetricsCollection\":\"datawt\",\"\":{\"fbpfdsatrzqmt\":\"dataccmwsyfsgikgcbjc\"}}")
             .toObject(MySqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MySqlSource model = new MySqlSource().withSourceRetryCount("datapskitokphamefzz")
-            .withSourceRetryWait("datajoauedmdpndouylf").withMaxConcurrentConnections("datagqin")
-            .withDisableMetricsCollection("datakxouknzh").withQueryTimeout("datarobckelo")
-            .withAdditionalColumns("datamrvdtqhrtnqssqy").withQuery("datataevqafdhpkiiu");
+        MySqlSource model = new MySqlSource().withSourceRetryCount("datacnwxkqqxpnj")
+            .withSourceRetryWait("datazdahvethn").withMaxConcurrentConnections("dataeggyqlvnhmuut")
+            .withDisableMetricsCollection("datawt").withQueryTimeout("datarzxipxhlxxkviyj")
+            .withAdditionalColumns("dataqyejyavxgm").withQuery("databgljcy");
         model = BinaryData.fromObject(model).toObject(MySqlSource.class);
     }
 }

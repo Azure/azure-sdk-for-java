@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Details of the On Premise Sql resource that was assessed. */
+/**
+ * Details of the On Premise Sql resource that was assessed.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "source")
 @JsonTypeName("OnPremiseSql")
 @Fluent
@@ -27,13 +29,15 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
     @JsonProperty(value = "databaseName", required = true)
     private String databaseName;
 
-    /** Creates an instance of OnPremiseSqlResourceDetails class. */
+    /**
+     * Creates an instance of OnPremiseSqlResourceDetails class.
+     */
     public OnPremiseSqlResourceDetails() {
     }
 
     /**
      * Get the serverName property: The Sql server name installed on the machine.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -42,7 +46,7 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
 
     /**
      * Set the serverName property: The Sql server name installed on the machine.
-     *
+     * 
      * @param serverName the serverName value to set.
      * @return the OnPremiseSqlResourceDetails object itself.
      */
@@ -53,7 +57,7 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
 
     /**
      * Get the databaseName property: The Sql database name installed on the machine.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -62,7 +66,7 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
 
     /**
      * Set the databaseName property: The Sql database name installed on the machine.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the OnPremiseSqlResourceDetails object itself.
      */
@@ -71,28 +75,36 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OnPremiseSqlResourceDetails withWorkspaceId(String workspaceId) {
         super.withWorkspaceId(workspaceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OnPremiseSqlResourceDetails withVmuuid(String vmuuid) {
         super.withVmuuid(vmuuid);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OnPremiseSqlResourceDetails withSourceComputerId(String sourceComputerId) {
         super.withSourceComputerId(sourceComputerId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OnPremiseSqlResourceDetails withMachineName(String machineName) {
         super.withMachineName(machineName);
@@ -101,23 +113,19 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (serverName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverName in model OnPremiseSqlResourceDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serverName in model OnPremiseSqlResourceDetails"));
         }
         if (databaseName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseName in model OnPremiseSqlResourceDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property databaseName in model OnPremiseSqlResourceDetails"));
         }
     }
 

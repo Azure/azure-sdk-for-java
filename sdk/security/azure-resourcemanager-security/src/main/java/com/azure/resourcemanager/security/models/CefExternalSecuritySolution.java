@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Represents a security solution which sends CEF logs to an OMS workspace. */
+/**
+ * Represents a security solution which sends CEF logs to an OMS workspace.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("CEF")
 @Fluent
@@ -21,13 +23,15 @@ public final class CefExternalSecuritySolution extends ExternalSecuritySolutionI
     @JsonProperty(value = "properties")
     private CefSolutionProperties properties;
 
-    /** Creates an instance of CefExternalSecuritySolution class. */
+    /**
+     * Creates an instance of CefExternalSecuritySolution class.
+     */
     public CefExternalSecuritySolution() {
     }
 
     /**
      * Get the properties property: The external security solution properties for CEF solutions.
-     *
+     * 
      * @return the properties value.
      */
     public CefSolutionProperties properties() {
@@ -36,7 +40,7 @@ public final class CefExternalSecuritySolution extends ExternalSecuritySolutionI
 
     /**
      * Set the properties property: The external security solution properties for CEF solutions.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CefExternalSecuritySolution object itself.
      */
@@ -47,7 +51,7 @@ public final class CefExternalSecuritySolution extends ExternalSecuritySolutionI
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

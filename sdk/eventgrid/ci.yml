@@ -11,12 +11,11 @@ trigger:
       - sdk/eventgrid/ci.yml
       - sdk/eventgrid/azure-messaging-eventgrid/
       - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/
-      - sdk/eventgrid/azure-resourcemanager-eventgrid/
     exclude:
       - sdk/eventgrid/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/pom.xml
-      - sdk/eventgrid/azure-resourcemanager-eventgrid/pom.xml
+      - sdk/eventgrid/azure-resourcemanager-eventgrid/
 
 pr:
   branches:
@@ -30,12 +29,11 @@ pr:
       - sdk/eventgrid/ci.yml
       - sdk/eventgrid/azure-messaging-eventgrid/
       - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/
-      - sdk/eventgrid/azure-resourcemanager-eventgrid/
     exclude:
       - sdk/eventgrid/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid/pom.xml
       - sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/pom.xml
-      - sdk/eventgrid/azure-resourcemanager-eventgrid/pom.xml
+      - sdk/eventgrid/azure-resourcemanager-eventgrid/
 
 parameters:
 - name: release_azuremessagingeventgrid
@@ -46,10 +44,6 @@ parameters:
   displayName: 'azure-messaging-eventgrid-cloudnative-cloudevents'
   type: boolean
   default: true
-- name: release_azureresourcemanagereventgrid
-  displayName: 'azure-resourcemanager-eventgrid'
-  type: boolean
-  default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml

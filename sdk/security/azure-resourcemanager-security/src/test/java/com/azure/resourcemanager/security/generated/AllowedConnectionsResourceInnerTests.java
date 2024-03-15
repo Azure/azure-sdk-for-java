@@ -10,11 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.AllowedConnectionsResour
 public final class AllowedConnectionsResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AllowedConnectionsResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"calculatedDateTime\":\"2021-01-03T12:26:20Z\",\"connectableResources\":[{\"id\":\"vasylwxdzau\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"ohguuf\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"yjathwtzo\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]},{\"id\":\"mwmdxmebwjscjpa\",\"inboundConnectedResources\":[],\"outboundConnectedResources\":[]}]},\"location\":\"eabfqxnm\",\"id\":\"mqt\",\"name\":\"bxyijddtvq\",\"type\":\"ttadijae\"}")
-                .toObject(AllowedConnectionsResourceInner.class);
+        AllowedConnectionsResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"calculatedDateTime\":\"2021-03-29T18:58:21Z\",\"connectableResources\":[{\"id\":\"hlgmgbehl\",\"inboundConnectedResources\":[{\"connectedResourceId\":\"rflknd\",\"tcpPorts\":\"dpg\",\"udpPorts\":\"odhda\"}],\"outboundConnectedResources\":[{\"connectedResourceId\":\"fhipx\",\"tcpPorts\":\"sabvcip\",\"udpPorts\":\"zafczuumljci\"},{\"connectedResourceId\":\"pefyc\",\"tcpPorts\":\"ei\",\"udpPorts\":\"tjnsx\"}]}]},\"location\":\"jlnsj\",\"id\":\"wjuyxx\",\"name\":\"xqvmvuay\",\"type\":\"uadx\"}")
+            .toObject(AllowedConnectionsResourceInner.class);
     }
 
     @org.junit.jupiter.api.Test

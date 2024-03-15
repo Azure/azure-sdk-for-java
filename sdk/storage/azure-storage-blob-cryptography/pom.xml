@@ -87,7 +87,7 @@
       cross platform compatibility within SDKs -->
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-storage</artifactId>
-      <version>8.4.0</version> <!-- {x-version-update;storage_com.microsoft.azure:azure-storage;external_dependency} -->
+      <version>8.6.6</version> <!-- {x-version-update;storage_com.microsoft.azure:azure-storage;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>

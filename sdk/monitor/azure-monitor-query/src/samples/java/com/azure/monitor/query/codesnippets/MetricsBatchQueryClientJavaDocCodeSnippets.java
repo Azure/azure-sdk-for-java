@@ -4,9 +4,9 @@
 package com.azure.monitor.query.codesnippets;
 
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.monitor.query.MetricsBatchQueryAsyncClient;
-import com.azure.monitor.query.MetricsBatchQueryClient;
-import com.azure.monitor.query.MetricsBatchQueryClientBuilder;
+import com.azure.monitor.query.MetricsAsyncClient;
+import com.azure.monitor.query.MetricsClient;
+import com.azure.monitor.query.MetricsClientBuilder;
 import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricsBatchQueryResult;
 import com.azure.monitor.query.models.MetricsQueryResult;
@@ -16,15 +16,15 @@ import java.util.List;
 
 /**
  * This class contains code samples for generating javadocs through doclets
- * for {@link com.azure.monitor.query.MetricsBatchQueryClient}
+ * for {@link MetricsClient}
  */
 public class MetricsBatchQueryClientJavaDocCodeSnippets {
     /**
-     * Generates code sample for creating a {@link MetricsBatchQueryClient}.
+     * Generates code sample for creating a {@link MetricsClient}.
      */
     public void createClient() {
         // BEGIN: com.azure.monitor.query.MetricsBatchQueryClient.instantiation
-        MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBuilder()
+        MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
             .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
@@ -33,7 +33,7 @@ public class MetricsBatchQueryClientJavaDocCodeSnippets {
 
     public void createAsyncClient() {
         // BEGIN: com.azure.monitor.query.MetricsBatchQueryAsyncClient.instantiation
-        MetricsBatchQueryAsyncClient metricsBatchQueryAsyncClient = new MetricsBatchQueryClientBuilder()
+        MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
             .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
@@ -41,10 +41,10 @@ public class MetricsBatchQueryClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates a code sample for using {@link MetricsBatchQueryClient#queryBatch(List, List, String)}.
+     * Generates a code sample for using {@link MetricsClient#queryBatch(List, List, String)}.
      */
     public void queryBatch() {
-        MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBuilder()
+        MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
             .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
@@ -76,13 +76,13 @@ public class MetricsBatchQueryClientJavaDocCodeSnippets {
     }
 
     public void queryBatchAsync() {
-        MetricsBatchQueryAsyncClient metricsBatchQueryAsyncClient = new MetricsBatchQueryClientBuilder()
+        MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
             .endpoint("{endpoint}")
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // BEGIN: com.azure.monitor.query.MetricsBatchQueryAsyncClient.queryBatch#List-List-String
-        metricsBatchQueryAsyncClient.queryBatch(
+        metricsAsyncClient.queryBatch(
                 Arrays.asList("{resourceId1}", "{resourceId2}"),
                 Arrays.asList("{metricId}"), "{metricNamespace}")
             .subscribe(metricsBatchResult -> {

@@ -16,7 +16,9 @@ import com.azure.resourcemanager.security.models.UserImpact;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes properties of an assessment metadata. */
+/**
+ * Describes properties of an assessment metadata.
+ */
 @Fluent
 public class SecurityAssessmentMetadataProperties {
     /*
@@ -92,13 +94,15 @@ public class SecurityAssessmentMetadataProperties {
     @JsonProperty(value = "partnerData")
     private SecurityAssessmentMetadataPartnerData partnerData;
 
-    /** Creates an instance of SecurityAssessmentMetadataProperties class. */
+    /**
+     * Creates an instance of SecurityAssessmentMetadataProperties class.
+     */
     public SecurityAssessmentMetadataProperties() {
     }
 
     /**
      * Get the displayName property: User friendly display name of the assessment.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -107,7 +111,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Set the displayName property: User friendly display name of the assessment.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SecurityAssessmentMetadataProperties object itself.
      */
@@ -119,7 +123,7 @@ public class SecurityAssessmentMetadataProperties {
     /**
      * Get the policyDefinitionId property: Azure resource ID of the policy definition that turns this assessment
      * calculation on.
-     *
+     * 
      * @return the policyDefinitionId value.
      */
     public String policyDefinitionId() {
@@ -128,7 +132,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Get the description property: Human readable description of the assessment.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -137,7 +141,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Set the description property: Human readable description of the assessment.
-     *
+     * 
      * @param description the description value to set.
      * @return the SecurityAssessmentMetadataProperties object itself.
      */
@@ -149,7 +153,7 @@ public class SecurityAssessmentMetadataProperties {
     /**
      * Get the remediationDescription property: Human readable description of what you should do to mitigate this
      * security issue.
-     *
+     * 
      * @return the remediationDescription value.
      */
     public String remediationDescription() {
@@ -159,7 +163,7 @@ public class SecurityAssessmentMetadataProperties {
     /**
      * Set the remediationDescription property: Human readable description of what you should do to mitigate this
      * security issue.
-     *
+     * 
      * @param remediationDescription the remediationDescription value to set.
      * @return the SecurityAssessmentMetadataProperties object itself.
      */
@@ -170,7 +174,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Get the categories property: The categories property.
-     *
+     * 
      * @return the categories value.
      */
     public List<Categories> categories() {
@@ -179,7 +183,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Set the categories property: The categories property.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the SecurityAssessmentMetadataProperties object itself.
      */
@@ -190,7 +194,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Get the severity property: The severity level of the assessment.
-     *
+     * 
      * @return the severity value.
      */
     public Severity severity() {
@@ -199,7 +203,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Set the severity property: The severity level of the assessment.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the SecurityAssessmentMetadataProperties object itself.
      */
@@ -210,7 +214,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Get the userImpact property: The user impact of the assessment.
-     *
+     * 
      * @return the userImpact value.
      */
     public UserImpact userImpact() {
@@ -219,7 +223,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Set the userImpact property: The user impact of the assessment.
-     *
+     * 
      * @param userImpact the userImpact value to set.
      * @return the SecurityAssessmentMetadataProperties object itself.
      */
@@ -230,7 +234,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Get the implementationEffort property: The implementation effort required to remediate this assessment.
-     *
+     * 
      * @return the implementationEffort value.
      */
     public ImplementationEffort implementationEffort() {
@@ -239,7 +243,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Set the implementationEffort property: The implementation effort required to remediate this assessment.
-     *
+     * 
      * @param implementationEffort the implementationEffort value to set.
      * @return the SecurityAssessmentMetadataProperties object itself.
      */
@@ -250,7 +254,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Get the threats property: The threats property.
-     *
+     * 
      * @return the threats value.
      */
     public List<Threats> threats() {
@@ -259,7 +263,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Set the threats property: The threats property.
-     *
+     * 
      * @param threats the threats value to set.
      * @return the SecurityAssessmentMetadataProperties object itself.
      */
@@ -270,7 +274,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Get the preview property: True if this assessment is in preview release status.
-     *
+     * 
      * @return the preview value.
      */
     public Boolean preview() {
@@ -279,7 +283,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Set the preview property: True if this assessment is in preview release status.
-     *
+     * 
      * @param preview the preview value to set.
      * @return the SecurityAssessmentMetadataProperties object itself.
      */
@@ -291,7 +295,7 @@ public class SecurityAssessmentMetadataProperties {
     /**
      * Get the assessmentType property: BuiltIn if the assessment based on built-in Azure Policy definition, Custom if
      * the assessment based on custom Azure Policy definition.
-     *
+     * 
      * @return the assessmentType value.
      */
     public AssessmentType assessmentType() {
@@ -301,7 +305,7 @@ public class SecurityAssessmentMetadataProperties {
     /**
      * Set the assessmentType property: BuiltIn if the assessment based on built-in Azure Policy definition, Custom if
      * the assessment based on custom Azure Policy definition.
-     *
+     * 
      * @param assessmentType the assessmentType value to set.
      * @return the SecurityAssessmentMetadataProperties object itself.
      */
@@ -312,7 +316,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Get the partnerData property: Describes the partner that created the assessment.
-     *
+     * 
      * @return the partnerData value.
      */
     public SecurityAssessmentMetadataPartnerData partnerData() {
@@ -321,7 +325,7 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Set the partnerData property: Describes the partner that created the assessment.
-     *
+     * 
      * @param partnerData the partnerData value to set.
      * @return the SecurityAssessmentMetadataProperties object itself.
      */
@@ -332,27 +336,21 @@ public class SecurityAssessmentMetadataProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property displayName in model SecurityAssessmentMetadataProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property displayName in model SecurityAssessmentMetadataProperties"));
         }
         if (severity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property severity in model SecurityAssessmentMetadataProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property severity in model SecurityAssessmentMetadataProperties"));
         }
         if (assessmentType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property assessmentType in model SecurityAssessmentMetadataProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property assessmentType in model SecurityAssessmentMetadataProperties"));
         }
         if (partnerData() != null) {
             partnerData().validate();

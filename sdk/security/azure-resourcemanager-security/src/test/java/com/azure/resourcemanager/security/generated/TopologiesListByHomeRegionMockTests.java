@@ -30,36 +30,26 @@ public final class TopologiesListByHomeRegionMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-07-06T20:42:46Z\",\"topologyResources\":[]},\"location\":\"henigbeqngubab\",\"id\":\"jdeayscse\",\"name\":\"d\",\"type\":\"jemexmnv\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"calculatedDateTime\":\"2021-10-18T09:10:33Z\",\"topologyResources\":[{\"resourceId\":\"szk\",\"severity\":\"kosjwr\",\"recommendationsExist\":true,\"networkZones\":\"luqf\",\"topologyScore\":87557700,\"location\":\"iimi\",\"parents\":[{},{},{}],\"children\":[{},{},{}]},{\"resourceId\":\"buwbngeu\",\"severity\":\"dqngqamhb\",\"recommendationsExist\":false,\"networkZones\":\"qxn\",\"topologyScore\":1320935222,\"location\":\"affzqodokstkvomd\",\"parents\":[{},{}],\"children\":[{},{},{}]},{\"resourceId\":\"qipapifccydbjgh\",\"severity\":\"qnttrw\",\"recommendationsExist\":false,\"networkZones\":\"vvxdvphx\",\"topologyScore\":1446080525,\"location\":\"xcaicb\",\"parents\":[{},{}],\"children\":[{},{},{}]}]},\"location\":\"fovkmamiy\",\"id\":\"gunrukcyyaa\",\"name\":\"bkubzqazdlrkvi\",\"type\":\"zkifqbxmnnid\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<TopologyResource> response =
-            manager.topologies().listByHomeRegion("ptgongruat", com.azure.core.util.Context.NONE);
+        PagedIterable<TopologyResource> response
+            = manager.topologies().listByHomeRegion("poipdjxyotgvrax", com.azure.core.util.Context.NONE);
+
     }
 }
