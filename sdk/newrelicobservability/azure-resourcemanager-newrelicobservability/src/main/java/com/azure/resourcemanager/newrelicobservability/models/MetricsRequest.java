@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request of get metrics Operation. */
+/**
+ * Request of get metrics Operation.
+ */
 @Fluent
 public final class MetricsRequest {
     /*
@@ -17,13 +19,15 @@ public final class MetricsRequest {
     @JsonProperty(value = "userEmail", required = true)
     private String userEmail;
 
-    /** Creates an instance of MetricsRequest class. */
+    /**
+     * Creates an instance of MetricsRequest class.
+     */
     public MetricsRequest() {
     }
 
     /**
      * Get the userEmail property: User Email.
-     *
+     * 
      * @return the userEmail value.
      */
     public String userEmail() {
@@ -32,7 +36,7 @@ public final class MetricsRequest {
 
     /**
      * Set the userEmail property: User Email.
-     *
+     * 
      * @param userEmail the userEmail value to set.
      * @return the MetricsRequest object itself.
      */
@@ -43,14 +47,13 @@ public final class MetricsRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userEmail() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property userEmail in model MetricsRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property userEmail in model MetricsRequest"));
         }
     }
 
