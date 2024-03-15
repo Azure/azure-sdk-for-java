@@ -13,9 +13,12 @@ parameters:
 - name: stages
   type: stageList
   default: []
+- name: UseOfficial
+  type: boolean
+  default: true
 
 extends:
-  ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+  ${{ if and(parameters.UseOfficial, eq(variables['System.TeamProject'], 'internal')) }}:
     template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
   ${{ else }}:
     template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
