@@ -790,10 +790,8 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                 String idString = id != null ? id.toString() : "";
                 final CosmosBulkItemRequestOptions options = new CosmosBulkItemRequestOptions();
                 applyBulkVersioning(domainType, item, options);
-                return CosmosBulkOperations.getDeleteItemOperation(
-                    idString,
-                    new PartitionKey(entityInfo.getPartitionKeyFieldValue(object)),
-                    options,
+                return CosmosBulkOperations.getDeleteItemOperation(idString,
+                    getPartitionKeyFromValue(entityInfo, object), options,
                     object); // setup the original object in the context
             });
 
