@@ -38,9 +38,6 @@ parameters:
 - name: MaxParallel
   type: number
   default: 0
-- name: BuildInParallel
-  type: boolean
-  default: true
 - name: TimeoutInMinutes
   type: number
   default: 60
@@ -53,9 +50,6 @@ parameters:
 - name: TestResourceDirectories
   type: object
   default:
-- name: TestSetupSteps
-  type: stepList
-  default: []
 - name: TestMode
   type: string
   default: 'LIVE'
@@ -144,12 +138,10 @@ stages:
                 - ${{ parameters.PostSteps }}
               EnvVars: ${{ parameters.EnvVars }}
               MaxParallel: ${{ parameters.MaxParallel }}
-              BuildInParallel: ${{ parameters.BuildInParallel }}
               TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
               Location: ${{ parameters.Location }}
               ServiceDirectory: ${{ parameters.ServiceDirectory }}
               TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
-              TestSetupSteps: ${{ parameters.TestSetupSteps }}
               TestMode: ${{ parameters.TestMode }}
               TestVersionSupport: ${{ parameters.TestVersionSupport }}
               TestResultsFiles: ${{ parameters.TestResultsFiles }}

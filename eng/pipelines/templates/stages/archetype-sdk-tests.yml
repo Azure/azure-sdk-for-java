@@ -38,9 +38,6 @@ parameters:
   - name: MaxParallel
     type: number
     default: 0
-  - name: BuildInParallel
-    type: boolean
-    default: true
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -53,9 +50,6 @@ parameters:
   - name: TestResourceDirectories
     type: object
     default:
-  - name: TestSetupSteps
-    type: stepList
-    default: []
   - name: TestMode
     type: string
     default: 'LIVE'
