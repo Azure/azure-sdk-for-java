@@ -104,6 +104,9 @@ parameters:
   - name: CalledFromClient
     type: boolean
     default: false
+  - name: AdditionalVariables
+    type: object
+    default: []
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
