@@ -1,14 +1,159 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2024-03-15)
 
-### Features Added
+- Azure Resource Manager MobileNetwork client library for Java. This package contains Microsoft Azure SDK for MobileNetwork Management SDK. The resources in this API specification will be used to manage attached data network resources in mobile network attached to a particular packet core instance. Package tag package-2024-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+* `models.Ambr` was removed
 
-### Other Changes
+* `models.Snssai` was removed
+
+* `models.PlmnId` was removed
+
+#### `models.MobileNetwork$DefinitionStages` was modified
+
+* `withPublicLandMobileNetworkIdentifier(models.PlmnId)` was removed in stage 3
+
+#### `models.SimPolicy$DefinitionStages` was modified
+
+* `withUeAmbr(models.Ambr)` was removed in stage 3
+
+#### `models.Slice$DefinitionStages` was modified
+
+* `withSnssai(models.Snssai)` was removed in stage 3
+
+#### `models.Slice` was modified
+
+* `models.Snssai snssai()` -> `fluent.models.Snssai snssai()`
+
+#### `models.Slice$Definition` was modified
+
+* `withSnssai(models.Snssai)` was removed
+
+#### `models.PccRuleQosPolicy` was modified
+
+* `withMaximumBitRate(models.Ambr)` was removed
+* `withGuaranteedBitRate(models.Ambr)` was removed
+* `models.Ambr guaranteedBitRate()` -> `fluent.models.Ambr guaranteedBitRate()`
+
+#### `models.DataNetworkConfiguration` was modified
+
+* `withSessionAmbr(models.Ambr)` was removed
+* `models.Ambr sessionAmbr()` -> `fluent.models.Ambr sessionAmbr()`
+
+#### `models.SimPolicy$Definition` was modified
+
+* `withUeAmbr(models.Ambr)` was removed
+
+#### `models.SimPolicy` was modified
+
+* `models.Ambr ueAmbr()` -> `fluent.models.Ambr ueAmbr()`
+
+#### `models.MobileNetwork$Definition` was modified
+
+* `withPublicLandMobileNetworkIdentifier(models.PlmnId)` was removed
+
+#### `models.MobileNetwork` was modified
+
+* `models.PlmnId publicLandMobileNetworkIdentifier()` -> `fluent.models.PlmnId publicLandMobileNetworkIdentifier()`
+
+#### `models.QosPolicy` was modified
+
+* `models.Ambr maximumBitRate()` -> `fluent.models.Ambr maximumBitRate()`
+* `withMaximumBitRate(models.Ambr)` was removed
+
+### Features Added
+
+* `models.UeInformations` was added
+
+* `models.HomeNetworkPrivateKeysProvisioning` was added
+
+* `models.PublicLandMobileNetworkHomeNetworkPublicKeys` was added
+
+* `models.UeInfo` was added
+
+* `models.RatType` was added
+
+* `models.HomeNetworkPublicKey` was added
+
+* `models.ExtendedUeInfoProperties` was added
+
+* `models.UeUsageSetting` was added
+
+* `models.UeSessionInfo5G` was added
+
+* `models.UeSessionInfo4G` was added
+
+* `models.ExtendedUeInformations` was added
+
+* `models.UeInfoList` was added
+
+* `models.UeInfo4G` was added
+
+* `models.UeInfo5G` was added
+
+* `models.UeQosFlow` was added
+
+* `models.UeState` was added
+
+* `models.PublicLandMobileNetwork` was added
+
+* `models.PdnType` was added
+
+* `models.ExtendedUeInfo` was added
+
+* `models.HomeNetworkPrivateKeysProvisioningState` was added
+
+* `models.RrcEstablishmentCause` was added
+
+* `models.DnnIpPair` was added
+
+#### `models.Slice$Definition` was modified
+
+* `withSnssai(fluent.models.Snssai)` was added
+
+#### `models.PccRuleQosPolicy` was modified
+
+* `withMaximumBitRate(fluent.models.Ambr)` was added
+* `withGuaranteedBitRate(fluent.models.Ambr)` was added
+
+#### `models.DataNetworkConfiguration` was modified
+
+* `withSessionAmbr(fluent.models.Ambr)` was added
+
+#### `models.PacketCoreControlPlane` was modified
+
+* `homeNetworkPrivateKeysProvisioning()` was added
+
+#### `models.SimPolicy$Definition` was modified
+
+* `withUeAmbr(fluent.models.Ambr)` was added
+
+#### `models.MobileNetwork$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+* `withPublicLandMobileNetworkIdentifier(fluent.models.PlmnId)` was added
+* `withPublicLandMobileNetworks(java.util.List)` was added
+
+#### `models.MobileNetwork$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.MobileNetwork` was modified
+
+* `publicLandMobileNetworks()` was added
+* `identity()` was added
+
+#### `models.QosPolicy` was modified
+
+* `withMaximumBitRate(fluent.models.Ambr)` was added
+
+#### `MobileNetworkManager` was modified
+
+* `ueInformations()` was added
+* `extendedUeInformations()` was added
 
 ## 1.0.0 (2023-11-15)
 

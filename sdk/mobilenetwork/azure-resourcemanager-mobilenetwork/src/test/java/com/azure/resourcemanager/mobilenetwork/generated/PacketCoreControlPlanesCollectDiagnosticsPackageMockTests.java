@@ -31,50 +31,34 @@ public final class PacketCoreControlPlanesCollectDiagnosticsPackageMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"id\":\"kujrllfojui\",\"name\":\"puuyjucejik\",\"status\":\"oeo\",\"resourceId\":\"tzejetjklnt\",\"startTime\":\"2021-05-29T06:35:10Z\",\"endTime\":\"2021-10-12T06:41:45Z\",\"percentComplete\":4.448023219350572,\"properties\":\"dataqzolxrzvhqjw\"}";
+        String responseStr
+            = "{\"id\":\"ohzjqatucoigeb\",\"name\":\"cnwfepbnwgfmxjg\",\"status\":\"g\",\"resourceId\":\"bgdlfgtdysna\",\"startTime\":\"2021-11-27T06:47:30Z\",\"endTime\":\"2021-11-21T00:03:39Z\",\"percentComplete\":69.11632649551352,\"properties\":\"datahamzjrwdkqze\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        MobileNetworkManager manager =
-            MobileNetworkManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        MobileNetworkManager manager = MobileNetworkManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AsyncOperationStatus response =
-            manager
-                .packetCoreControlPlanes()
-                .collectDiagnosticsPackage(
-                    "w",
-                    "dqlvhukoveof",
-                    new PacketCoreControlPlaneCollectDiagnosticsPackage().withStorageAccountBlobUrl("zrvjfnmjmvlwyzgi"),
-                    com.azure.core.util.Context.NONE);
+        AsyncOperationStatus response = manager.packetCoreControlPlanes().collectDiagnosticsPackage("jlxuz", "hwpusxj",
+            new PacketCoreControlPlaneCollectDiagnosticsPackage().withStorageAccountBlobUrl("aqehg"),
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kujrllfojui", response.id());
-        Assertions.assertEquals("puuyjucejik", response.name());
-        Assertions.assertEquals("oeo", response.status());
-        Assertions.assertEquals("tzejetjklnt", response.resourceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T06:35:10Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-12T06:41:45Z"), response.endTime());
-        Assertions.assertEquals(4.448023219350572D, response.percentComplete());
+        Assertions.assertEquals("ohzjqatucoigeb", response.id());
+        Assertions.assertEquals("cnwfepbnwgfmxjg", response.name());
+        Assertions.assertEquals("g", response.status());
+        Assertions.assertEquals("bgdlfgtdysna", response.resourceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-27T06:47:30Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-21T00:03:39Z"), response.endTime());
+        Assertions.assertEquals(69.11632649551352D, response.percentComplete());
     }
 }
