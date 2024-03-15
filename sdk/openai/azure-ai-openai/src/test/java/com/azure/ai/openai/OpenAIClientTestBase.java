@@ -51,6 +51,10 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -59,6 +63,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Path;
@@ -68,6 +73,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -205,8 +212,18 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-35-turbo-1106", getChatMessages());
     }
 
+    void getChatCompletionsWithResponseRunner(Function<String,
+            Function<List<ChatRequestMessage>, Consumer<RequestOptions>>> testRunner) {
+        testRunner.apply("gpt-35-turbo-1106").apply(getChatMessages()).accept(getRequestOption());
+    }
+
     void getChatCompletionsRunnerForNonAzure(BiConsumer<String, List<ChatRequestMessage>> testRunner) {
         testRunner.accept("gpt-3.5-turbo", getChatMessages());
+    }
+
+    void getChatCompletionsWithResponseRunnerForNonAzure(Function<String,
+            Function<List<ChatRequestMessage>, Consumer<RequestOptions>>> testRunner) {
+        testRunner.apply("gpt-3.5-turbo").apply(getChatMessages()).accept(getRequestOption());
     }
 
     void getChatCompletionsAzureChatSearchRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
@@ -367,6 +384,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         chatMessages.add(new ChatRequestAssistantMessage("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatRequestUserMessage("What's the best way to train a parrot?"));
         return chatMessages;
+    }
+
+    private RequestOptions getRequestOption() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("my-header1", "my-header1-value");
+        headers.set("my-header2", "my-header2-value");
+        Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+        return new RequestOptions().setContext(context).setHeader("my-header3", "my-header3-value");
     }
 
     private List<ChatRequestMessage> getChatRequestMessagesWithVision() {
@@ -673,6 +698,23 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         ContentFilterResultDetailsForPrompt contentFilterResults = BinaryData.fromObject(
                 innerError.get("content_filter_results")).toObject(ContentFilterResultDetailsForPrompt.class);
         assertNotNull(contentFilterResults);
+    }
+
+    static void assertResponseRequestHeader(HttpRequest request) {
+        request.getHeaders().stream().filter(header -> {
+            String name = header.getName();
+            return "my-header1".equals(name) || "my-header2".equals(name) || "my-header3".equals(name);
+        }).forEach(header -> {
+            if (header.getName().equals("my-header1")) {
+                assertEquals("my-header1-value", header.getValue());
+            } else if (header.getName().equals("my-header2")) {
+                assertEquals("my-header2-value", header.getValue());
+            } else if (header.getName().equals("my-header3")) {
+                assertEquals("my-header3-value", header.getValue());
+            } else {
+                assertFalse(true);
+            }
+        });
     }
 
     protected static final String BATMAN_TRANSCRIPTION =
