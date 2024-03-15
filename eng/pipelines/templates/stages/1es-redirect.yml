@@ -34,6 +34,9 @@ extends:
         sourceRepositoriesToScan:
           exclude:
             - repository: azure-sdk-build-tools
+        # TODO: migrate analyze spot bugs configuration here from steps/run-and-validate-linting.yml
+        spotBugs:
+          enabled: false
         binskim:
           # Exclude imported azure-sdk-build-tools gpg/azcopy binaries
           # See https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1378/Glob-Format
