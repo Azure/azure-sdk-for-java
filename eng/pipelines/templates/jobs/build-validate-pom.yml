@@ -13,6 +13,14 @@ jobs:
   - job: 'BuildAndValidate'
     displayName: 'Build and Validate'
 
+    templateContext:
+      outputs:
+        - output: pipelineArtifact
+          displayName: 'Capture repo state for analysis'
+          targetPath: '$(System.DefaultWorkingDirectory)'
+          artifactName: 'repository'
+          sbomEnabled: false
+
     pool:
       name: $(LINUXPOOL)
       image: $(LINUXVMIMAGE)
@@ -86,9 +94,3 @@ jobs:
         parameters:
           ArtifactPath: '$(Build.ArtifactStagingDirectory)'
           ArtifactName: '$(ArtifactName)'
-
-      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
-        parameters:
-          DisplayName: 'Capture repo state for analysis'
-          ArtifactPath: '$(System.DefaultWorkingDirectory)'
-          ArtifactName: 'repository'

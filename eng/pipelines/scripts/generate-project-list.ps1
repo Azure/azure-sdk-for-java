@@ -1,9 +1,12 @@
 $projectList = @()
+$artifactsList = @()
+$additionalModulesList = @()
 
 if ($env:ARTIFACTSJSON -and $env:ARTIFACTSJSON -notlike '*ArtifactsJson*') {
   $artifacts = $env:ARTIFACTSJSON | ConvertFrom-Json
   foreach ($artifact in $artifacts) {
     $projectList += "$($artifact.groupId):$($artifact.name)"
+    $artifactsList += "$($artifact.groupId):$($artifact.name)"
   }
 }
 
@@ -12,6 +15,7 @@ if ($env:ADDITIONALMODULESJSON -and $env:ADDITIONALMODULESJSON -notlike '*Additi
   $additionalModules = $env:ADDITIONALMODULESJSON | ConvertFrom-Json
   foreach ($artifact in $additionalModules) {
     $projectList += "$($artifact.groupId):$($artifact.name)"
+    $additionalModulesList += "$($artifact.groupId):$($artifact.name)"
   }
 }
 
@@ -19,6 +23,14 @@ $projects = $projectList -join ','
 if (!$projects) {
     throw "parameters.Artifacts cannot be empty"
 }
+
+$artifactsString = $artifactsList -join ','
+Write-Host "ArtifactsList = $artifactsString"
+Write-Host "##vso[task.setvariable variable=ArtifactsList;]$artifactsString"
+
+$additionalModulesString = $additionalModulesList -join ','
+Write-Host "AdditionalModulesList = $additionalModulesString"
+Write-Host "##vso[task.setvariable variable=AdditionalModulesList;]$additionalModulesString"
 
 Write-Host "ProjectList = $projects"
 Write-Host "##vso[task.setvariable variable=ProjectList;]$projects"
