@@ -10,11 +10,9 @@ import com.azure.resourcemanager.chaos.models.ExperimentExecutionListResult;
 public final class ExperimentExecutionListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentExecutionListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"type\":\"xiebwwaloayqcg\",\"id\":\"tzjuzgwyzmhtxo\",\"name\":\"mtsavjcbpwxqp\",\"properties\":{\"status\":\"nftguvriuhpr\",\"startedAt\":\"2021-02-04T08:02:16Z\",\"stoppedAt\":\"2021-06-28T04:39:12Z\"}},{\"type\":\"qtayri\",\"id\":\"ro\",\"name\":\"bexrmcq\",\"properties\":{\"status\":\"cnojvknmefqsg\",\"startedAt\":\"2021-11-18T15:54:51Z\",\"stoppedAt\":\"2021-11-22T14:09:07Z\"}},{\"type\":\"jyzhpvgq\",\"id\":\"j\",\"name\":\"xdjzlmwlxk\",\"properties\":{\"status\":\"fhzovawjvzunluth\",\"startedAt\":\"2021-01-21T11:08:17Z\",\"stoppedAt\":\"2021-03-11T05:06:45Z\"}},{\"type\":\"i\",\"id\":\"ilpjzuaejxdult\",\"name\":\"zbbtdzumveek\",\"properties\":{\"status\":\"ozuhkfp\",\"startedAt\":\"2021-02-19T22:50:40Z\",\"stoppedAt\":\"2021-08-24T12:02:24Z\"}}],\"nextLink\":\"dxluu\"}")
-                .toObject(ExperimentExecutionListResult.class);
+        ExperimentExecutionListResult model = BinaryData.fromString(
+            "{\"value\":[{\"type\":\"nojvknmefqsg\",\"id\":\"ah\",\"name\":\"jyzhpvgq\",\"properties\":{\"status\":\"rvxdjzlmw\",\"startedAt\":\"2021-07-11T22:18:52Z\",\"stoppedAt\":\"2021-11-03T14:53:04Z\"}},{\"type\":\"hzovawjvzunlut\",\"id\":\"n\",\"name\":\"nxipeil\",\"properties\":{\"status\":\"uaejxdultsk\",\"startedAt\":\"2021-11-26T08:31:17Z\",\"stoppedAt\":\"2021-05-16T15:29:03Z\"}},{\"type\":\"umveekgpwozuhkf\",\"id\":\"sjyofdx\",\"name\":\"us\",\"properties\":{\"status\":\"ouwaboekqvkeln\",\"startedAt\":\"2021-02-02T03:25:54Z\",\"stoppedAt\":\"2020-12-28T23:28:21Z\"}},{\"type\":\"yjsflhhcaalnji\",\"id\":\"sxyawjoyaqcs\",\"name\":\"jpkiidzyexznelix\",\"properties\":{\"status\":\"ztfolhbnxk\",\"startedAt\":\"2021-03-24T05:03:40Z\",\"stoppedAt\":\"2021-09-05T19:55:42Z\"}}],\"nextLink\":\"ppg\"}")
+            .toObject(ExperimentExecutionListResult.class);
     }
 
     @org.junit.jupiter.api.Test

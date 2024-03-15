@@ -11,32 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class OperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OperationStatusInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"tsmypyynpcdp\",\"name\":\"nzgmwznmabik\",\"startTime\":\"orgjhxbldt\",\"endTime\":\"wrlkdmtn\",\"status\":\"ok\"}")
-                .toObject(OperationStatusInner.class);
-        Assertions.assertEquals("tsmypyynpcdp", model.id());
-        Assertions.assertEquals("nzgmwznmabik", model.name());
-        Assertions.assertEquals("orgjhxbldt", model.startTime());
-        Assertions.assertEquals("wrlkdmtn", model.endTime());
-        Assertions.assertEquals("ok", model.status());
+        OperationStatusInner model = BinaryData.fromString(
+            "{\"id\":\"ocrkvcikh\",\"name\":\"p\",\"startTime\":\"qgxqquezikyw\",\"endTime\":\"xkalla\",\"status\":\"elwuipi\"}")
+            .toObject(OperationStatusInner.class);
+        Assertions.assertEquals("ocrkvcikh", model.id());
+        Assertions.assertEquals("p", model.name());
+        Assertions.assertEquals("qgxqquezikyw", model.startTime());
+        Assertions.assertEquals("xkalla", model.endTime());
+        Assertions.assertEquals("elwuipi", model.status());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OperationStatusInner model =
-            new OperationStatusInner()
-                .withId("tsmypyynpcdp")
-                .withName("nzgmwznmabik")
-                .withStartTime("orgjhxbldt")
-                .withEndTime("wrlkdmtn")
-                .withStatus("ok");
+        OperationStatusInner model = new OperationStatusInner().withId("ocrkvcikh").withName("p")
+            .withStartTime("qgxqquezikyw").withEndTime("xkalla").withStatus("elwuipi");
         model = BinaryData.fromObject(model).toObject(OperationStatusInner.class);
-        Assertions.assertEquals("tsmypyynpcdp", model.id());
-        Assertions.assertEquals("nzgmwznmabik", model.name());
-        Assertions.assertEquals("orgjhxbldt", model.startTime());
-        Assertions.assertEquals("wrlkdmtn", model.endTime());
-        Assertions.assertEquals("ok", model.status());
+        Assertions.assertEquals("ocrkvcikh", model.id());
+        Assertions.assertEquals("p", model.name());
+        Assertions.assertEquals("qgxqquezikyw", model.startTime());
+        Assertions.assertEquals("xkalla", model.endTime());
+        Assertions.assertEquals("elwuipi", model.status());
     }
 }
