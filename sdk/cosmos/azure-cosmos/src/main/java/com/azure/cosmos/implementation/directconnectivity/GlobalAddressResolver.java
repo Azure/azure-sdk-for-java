@@ -290,7 +290,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.connectionPolicy,
                 this.proactiveOpenConnectionsProcessor,
                 this.gatewayServerErrorInjector);
-            AddressResolver addressResolver = new AddressResolver();
+            AddressResolver addressResolver = new AddressResolver(this.endpointManager);
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();
             cache.addressCache = gatewayAddressCache;

@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -54,8 +55,10 @@ public class AddressResolver implements IAddressResolver {
     private RxCollectionCache collectionCache;
     private ICollectionRoutingMapCache collectionRoutingMapCache;
     private IAddressCache addressCache;
+    private GlobalEndpointManager globalEndpointManager;
 
-    public AddressResolver() {
+    public AddressResolver(GlobalEndpointManager globalEndpointManager) {
+        this.globalEndpointManager = globalEndpointManager;
     }
 
     public void initializeCaches(
@@ -82,6 +85,11 @@ public class AddressResolver implements IAddressResolver {
             }
 
             request.requestContext.resolvedPartitionKeyRange = result.TargetPartitionKeyRange;
+
+            // TODO: use GlobalPartitionEndpointManager to add a partition-level request override
+            if (!this.globalEndpointManager.tryAddPartitionLevelOverride(request)) {
+                return this.resolveAsync(request, forceRefreshPartitionAddresses);
+            }
 
             return Mono.just(result.Addresses);
         });

@@ -4,8 +4,7 @@
 package com.azure.cosmos.implementation;
 
 public interface IGlobalPartitionEndpointManager {
-
     boolean tryMarkPartitionKeyRangeAsUnavailable(RxDocumentServiceRequest request);
-
-
+    boolean tryMarkPartitionKeyRangeAsAvailable(RxDocumentServiceRequest request);
+    boolean tryAddPartitionKeyRangeLevelOverride(RxDocumentServiceRequest request);
 }

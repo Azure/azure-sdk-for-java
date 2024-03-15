@@ -177,6 +177,10 @@ public class GlobalEndpointManager implements AutoCloseable {
         this.globalPartitionEndpointManager.tryMarkPartitionKeyRangeAsUnavailable(request);
     }
 
+    public boolean tryAddPartitionLevelOverride(RxDocumentServiceRequest request) {
+        return this.globalPartitionEndpointManager.tryMarkPartitionKeyRangeAsUnavailable(request);
+    }
+
     public boolean canUseMultipleWriteLocations() {
         return this.locationCache.canUseMultipleWriteLocations();
     }
