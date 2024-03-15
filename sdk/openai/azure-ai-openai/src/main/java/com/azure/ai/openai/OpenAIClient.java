@@ -736,7 +736,8 @@ public final class OpenAIClient {
      * <p>
      * <strong>Code Samples</strong>
      * </p>
-     * <!-- src_embed com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload -->
+     * <!-- src_embed com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload
+     * -->
      * <pre>
      * openAIClient.getChatCompletionsStreamWithResponse&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;,
      *                 new RequestOptions&#40;&#41;.setHeader&#40;&quot;my-header&quot;, &quot;my-header-value&quot;&#41;&#41;
@@ -776,11 +777,10 @@ public final class OpenAIClient {
         ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions) {
         chatCompletionsOptions.setStream(true);
         Response<BinaryData> response = getChatCompletionsWithResponse(deploymentOrModelName,
-                BinaryData.fromObject(chatCompletionsOptions), requestOptions);
+            BinaryData.fromObject(chatCompletionsOptions), requestOptions);
         Flux<ByteBuffer> responseStream = response.getValue().toFluxByteBuffer();
-
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream
-                = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
+            = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return new SimpleResponse<>(response, new IterableStream<>(chatCompletionsStream.getEvents()));
     }
 

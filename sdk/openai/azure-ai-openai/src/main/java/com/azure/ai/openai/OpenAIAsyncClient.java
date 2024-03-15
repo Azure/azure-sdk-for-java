@@ -47,7 +47,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.nio.ByteBuffer;
 import java.util.concurrent.atomic.AtomicReference;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -565,7 +564,8 @@ public final class OpenAIAsyncClient {
      * <p>
      * <strong>Code Samples</strong>
      * </p>
-     * <!-- src_embed com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload -->
+     * <!-- src_embed
+     * com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload -->
      * <pre>
      * openAIAsyncClient.getChatCompletionsStreamWithResponse&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;,
      *                 new RequestOptions&#40;&#41;.setHeader&#40;&quot;my-header&quot;, &quot;my-header-value&quot;&#41;&#41;
@@ -574,7 +574,8 @@ public final class OpenAIAsyncClient {
      *                 error -&gt; System.err.println&#40;&quot;There was an error getting chat completions.&quot; + error&#41;,
      *                 &#40;&#41; -&gt; System.out.println&#40;&quot;Completed called getChatCompletionsStreamWithResponse.&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload -->
+     * <!-- end com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload
+     * -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -592,21 +593,19 @@ public final class OpenAIAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<Response<ChatCompletions>> getChatCompletionsStreamWithResponse(String deploymentOrModelName,
-                                                                                ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions) {
+        ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions) {
         chatCompletionsOptions.setStream(true);
-
-        Mono<Response<BinaryData>> chatCompletionsWithResponse = getChatCompletionsWithResponse(
-                deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions), requestOptions);
-
+        Mono<Response<BinaryData>> chatCompletionsWithResponse = getChatCompletionsWithResponse(deploymentOrModelName,
+            BinaryData.fromObject(chatCompletionsOptions), requestOptions);
         AtomicReference<Response<BinaryData>> responseCopy = new AtomicReference<>();
         Flux<ByteBuffer> responseStream = chatCompletionsWithResponse.flatMapMany(response -> {
             responseCopy.set(response);
             return response.getValue().toFluxByteBuffer();
         });
-
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream
-                = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
-        return chatCompletionsStream.getEvents().map(chatCompletions -> new SimpleResponse<>(responseCopy.get(), chatCompletions));
+            = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
+        return chatCompletionsStream.getEvents()
+            .map(chatCompletions -> new SimpleResponse<>(responseCopy.get(), chatCompletions));
     }
 
     /**
