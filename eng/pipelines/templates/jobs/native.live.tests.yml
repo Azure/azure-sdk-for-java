@@ -5,9 +5,6 @@ parameters:
   - name: TestResourceDirectories
     type: object
     default: null
-  - name: Artifacts
-    type: object
-    default: []
   - name: EnvVars
     type: object
     default: {}
@@ -77,7 +74,6 @@ jobs:
       matrix: $[ ${{ parameters.Matrix }} ]
 
     variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
       - name: ArmTemplateParameters
         value: '@{}'
 
