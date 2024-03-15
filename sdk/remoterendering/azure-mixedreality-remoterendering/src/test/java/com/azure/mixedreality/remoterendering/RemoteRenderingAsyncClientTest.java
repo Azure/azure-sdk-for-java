@@ -34,7 +34,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void conversionTest(HttpClient httpClient) {
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
@@ -84,7 +84,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void failedConversionNoAccessTest(HttpClient httpClient) {
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
@@ -111,7 +111,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void failedConversionMissingAssetTest(HttpClient httpClient) {
         RemoteRenderingAsyncClient client = getClient(httpClient);
 
@@ -155,7 +155,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sessionTest(HttpClient httpClient) {
 
         final long firstExpectedLeaseTimeMinutes = 4;
@@ -214,7 +214,7 @@ public class RemoteRenderingAsyncClientTest extends RemoteRenderingTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void failedSessionTest(HttpClient httpClient) {
         RemoteRenderingAsyncClient client = getClient(httpClient);
         BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(RenderingSessionSize.STANDARD);

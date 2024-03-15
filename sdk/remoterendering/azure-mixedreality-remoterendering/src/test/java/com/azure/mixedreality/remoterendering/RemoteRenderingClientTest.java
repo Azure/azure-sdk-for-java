@@ -31,7 +31,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void conversionTest(HttpClient httpClient) {
         RemoteRenderingClient client = getClient(httpClient);
 
@@ -78,7 +78,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void failedConversionNoAccessTest(HttpClient httpClient) {
         RemoteRenderingClient client = getClient(httpClient);
 
@@ -102,7 +102,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void failedConversionMissingAssetTest(HttpClient httpClient) {
         RemoteRenderingClient client = getClient(httpClient);
 
@@ -133,7 +133,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void sessionTest(HttpClient httpClient) {
         RemoteRenderingClient client = getClient(httpClient);
         BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(4)).setSize(RenderingSessionSize.STANDARD);
@@ -170,7 +170,7 @@ public class RemoteRenderingClientTest extends RemoteRenderingTestBase {
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getHttpClients")
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void failedSessionTest(HttpClient httpClient) {
         RemoteRenderingClient client = getClient(httpClient);
         BeginSessionOptions options = new BeginSessionOptions().setMaxLeaseTime(Duration.ofMinutes(-4)).setSize(RenderingSessionSize.STANDARD);
