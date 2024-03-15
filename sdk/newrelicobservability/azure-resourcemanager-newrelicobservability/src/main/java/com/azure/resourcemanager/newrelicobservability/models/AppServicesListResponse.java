@@ -10,7 +10,9 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.AppServiceI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response of a list app services Operation. */
+/**
+ * Response of a list app services Operation.
+ */
 @Fluent
 public final class AppServicesListResponse {
     /*
@@ -25,13 +27,15 @@ public final class AppServicesListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of AppServicesListResponse class. */
+    /**
+     * Creates an instance of AppServicesListResponse class.
+     */
     public AppServicesListResponse() {
     }
 
     /**
      * Get the value property: The AppServiceInfo items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<AppServiceInfoInner> value() {
@@ -40,7 +44,7 @@ public final class AppServicesListResponse {
 
     /**
      * Set the value property: The AppServiceInfo items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the AppServicesListResponse object itself.
      */
@@ -51,7 +55,7 @@ public final class AppServicesListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class AppServicesListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AppServicesListResponse object itself.
      */
@@ -71,14 +75,13 @@ public final class AppServicesListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model AppServicesListResponse"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model AppServicesListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }
