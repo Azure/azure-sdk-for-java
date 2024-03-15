@@ -13,12 +13,9 @@ jobs:
   - job: 'BuildAndValidate'
     displayName: 'Build and Validate'
 
-    variables:
-      - template: /eng/pipelines/templates/variables/globals.yml
-
     pool:
       name: $(LINUXPOOL)
-      vmImage: $(LINUXVMIMAGE)
+      image: $(LINUXVMIMAGE)
       os: linux
 
     strategy:
@@ -55,7 +52,6 @@ jobs:
       - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
         parameters:
           JobType: 'Build and Validate'
-          Artifacts: ${{ parameters.Artifacts }}
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
