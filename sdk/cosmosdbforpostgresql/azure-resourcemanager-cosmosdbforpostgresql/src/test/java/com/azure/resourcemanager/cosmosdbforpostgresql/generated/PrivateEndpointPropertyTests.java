@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class PrivateEndpointPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateEndpointProperty model =
-            BinaryData.fromString("{\"id\":\"sarhmofc\"}").toObject(PrivateEndpointProperty.class);
+        PrivateEndpointProperty model
+            = BinaryData.fromString("{\"id\":\"sarhmofc\"}").toObject(PrivateEndpointProperty.class);
         Assertions.assertEquals("sarhmofc", model.id());
     }
 
