@@ -97,7 +97,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         return response;
     }
 
-    public boolean defaultShouldAttemptRedirect(HttpRequestRedirectCondition requestRedirectCondition) {
+    boolean defaultShouldAttemptRedirect(HttpRequestRedirectCondition requestRedirectCondition) {
         Response<?> response = requestRedirectCondition.getResponse();
         int tryCount = requestRedirectCondition.getTryCount();
         Set<String> attemptedRedirectUrls = requestRedirectCondition.getRedirectedUrls();

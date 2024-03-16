@@ -33,18 +33,18 @@
     <dependency>
       <groupId>com.generic</groupId>
       <artifactId>generic-core</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.generic:generic-core;current} -->
     </dependency>
     <dependency>
       <groupId>com.generic</groupId>
       <artifactId>generic-core-http-okhttp</artifactId>
-      <version>1.0.0-beta.1</version>
+      <version>1.0.0-beta.1</version>  <!-- {x-version-update;com.generic:generic-core-http-okhttp;current} -->
     </dependency>
     <!-- logging, tracing, metrics -->
     <dependency>
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-api</artifactId>
-      <version>1.32.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
+      <version>1.35.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -80,7 +80,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.opentelemetry:opentelemetry-api:[1.32.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;current|dependency|external_dependency<select one>} -->
+                <include>io.opentelemetry:opentelemetry-api:[1.35.0]</include> <!-- {x-include-update;io.opentelemetry:opentelemetry-api;external_dependency} -->
                 <include>io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8:[2.1.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-runtime-telemetry-java8;external_dependency} -->
                 <include>io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0:[2.1.0-alpha]</include> <!-- {x-include-update;io.opentelemetry.instrumentation:opentelemetry-logback-appender-1.0;external_dependency} -->
                 <include>ch.qos.logback:logback-classic:[1.3.12]</include> <!-- {x-include-update;ch.qos.logback:logback-classic;external_dependency} -->

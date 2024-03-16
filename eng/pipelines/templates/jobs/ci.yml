@@ -198,6 +198,7 @@ jobs:
             -TargetDirectory $(Build.ArtifactStagingDirectory)
             -Artifacts ('${{ replace(convertToJson(parameters.ReleaseArtifacts), '''', '`''') }}' | ConvertFrom-Json | Where-Object -Not skipPublishPackage )
             -InformationAction Continue
+        condition: ne('${{parameters.ServiceDirectory}}','generic-sdk-core')
 
       - template: /eng/common/pipelines/templates/steps/create-apireview.yml
         parameters:
