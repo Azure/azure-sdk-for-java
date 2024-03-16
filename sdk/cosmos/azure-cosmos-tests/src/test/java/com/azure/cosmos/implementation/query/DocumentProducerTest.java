@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.IGlobalPartitionEndpointManager;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.RetryPolicy;
@@ -118,9 +119,11 @@ public class DocumentProducerTest {
         }
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        IGlobalPartitionEndpointManager globalPartitionEndpointManager = Mockito.mock(IGlobalPartitionEndpointManager.class);
+
         Mockito.doReturn(url).when(globalEndpointManager).resolveServiceEndpoint(Mockito.any(RxDocumentServiceRequest.class));
         doReturn(false).when(globalEndpointManager).isClosed();
-        return new RetryPolicy(mockDiagnosticsClientContext(), globalEndpointManager, ConnectionPolicy.getDefaultPolicy());
+        return new RetryPolicy(mockDiagnosticsClientContext(), globalEndpointManager, ConnectionPolicy.getDefaultPolicy(), globalPartitionEndpointManager);
     }
 
         @Test(groups = {"unit"}, dataProvider = "splitParamProvider", timeOut = TIMEOUT)

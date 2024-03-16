@@ -216,6 +216,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      */
     private final QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
     private final GlobalEndpointManager globalEndpointManager;
+    private final IGlobalPartitionEndpointManager globalPartitionEndpointManager;
     private final RetryPolicy retryPolicy;
     private HttpClient reactorHttpClient;
     private Function<HttpClient, HttpClient> httpClientInterceptor;
@@ -508,7 +509,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.reactorHttpClient = httpClient();
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
-            this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
+            this.globalPartitionEndpointManager = new GlobalPartitionEndpointManagerForCircuitBreaker(this.globalEndpointManager);
+            this.retryPolicy = new RetryPolicy(
+                this,
+                this.globalEndpointManager,
+                this.connectionPolicy,
+                this.globalPartitionEndpointManager);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
             this.queryPlanCache = new ConcurrentHashMap<>();

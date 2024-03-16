@@ -170,6 +170,7 @@ public class Configs {
     public static final int MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
     public static final String TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS = "COSMOS.TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS";
+    private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED = false;
 
     public Configs() {
         this.sslContext = sslContextInit();
@@ -493,5 +494,9 @@ public class Configs {
                 defaultValueInMs
             )
         );
+    }
+
+    public static boolean isPartitionLevelCircuitBreakerEnabled() {
+        return DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_ENABLED;
     }
 }

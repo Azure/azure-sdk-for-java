@@ -52,12 +52,14 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
     private RxDocumentServiceRequest request;
     private RxCollectionCache rxCollectionCache;
     private final FaultInjectionRequestContext faultInjectionRequestContext;
+    private final IGlobalPartitionEndpointManager globalPartitionEndpointManager;
 
     public ClientRetryPolicy(DiagnosticsClientContext diagnosticsClientContext,
                              GlobalEndpointManager globalEndpointManager,
                              boolean enableEndpointDiscovery,
                              ThrottlingRetryOptions throttlingRetryOptions,
-                             RxCollectionCache rxCollectionCache) {
+                             RxCollectionCache rxCollectionCache,
+                             IGlobalPartitionEndpointManager globalPartitionEndpointManager) {
 
         this.globalEndpointManager = globalEndpointManager;
         this.failoverRetryCount = 0;
@@ -73,6 +75,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             false);
         this.rxCollectionCache = rxCollectionCache;
         this.faultInjectionRequestContext = new FaultInjectionRequestContext();
+        this.globalPartitionEndpointManager = globalPartitionEndpointManager;
     }
 
     @Override
@@ -318,13 +321,8 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         CosmosException cosmosException) {
 
         // if partition-level circuit breaker is enabled
-        if (false) {
-
-            if (isReadRequest) {
-                this.globalEndpointManager.markPartitionKeyRangeAsUnavailableForRead(this.request);
-            } else {
-                this.globalEndpointManager.markPartitionKeyRangeAsUnavailableForWrite(this.request);
-            }
+        if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
+            this.globalPartitionEndpointManager.tryMarkPartitionKeyRangeAsUnavailable(this.request);
         }
 
         // The request has failed with 503, SDK need to decide whether it is safe to retry for write operations
