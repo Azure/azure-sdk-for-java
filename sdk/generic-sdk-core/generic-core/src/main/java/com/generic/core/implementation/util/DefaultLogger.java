@@ -10,8 +10,6 @@ import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
 import java.io.PrintStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
@@ -388,7 +386,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             .append(WHITESPACE)
             .append(classPath)
             .append(HYPHEN)
-            .append(addExceptionStacktrace(message, t))
+            .append(message)
             .append(System.lineSeparator());
 
         logLocation.print(stringBuilder);
@@ -450,20 +448,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
 
         // Use UTF-8 as it's more performant than ASCII in Java 8
         return new String(bytes, StandardCharsets.UTF_8);
-    }
-
-    private String addExceptionStacktrace(String message, Throwable t) {
-        if (t != null) {
-            message += "\",\"exception.stacktrace\":\"" + getStackTrace(t) + "\"";
-        }
-        return message + "}";
-    }
-
-    private static String getStackTrace(Throwable t) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        t.printStackTrace(pw);
-        return sw.toString().trim();
     }
 
     private static void zeroPad(int value, byte[] bytes, int index) {

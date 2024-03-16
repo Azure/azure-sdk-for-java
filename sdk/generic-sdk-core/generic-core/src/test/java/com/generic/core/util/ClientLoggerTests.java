@@ -34,6 +34,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * Tests for {@link ClientLogger}.
  */
 public class ClientLoggerTests {
+    private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
+    private static final String ESCAPED_NEW_LINE = new String(JSON_STRING_ENCODER.quoteAsString(System.lineSeparator()));
     private final AccessibleByteArrayOutputStream logCaptureStream;
     private final Map<String, Object> globalContext;
 
@@ -210,29 +212,29 @@ public class ClientLoggerTests {
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithSupplier(LogLevel logLevel) {
-        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        String message = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
         if (logLevel.equals(LogLevel.ERROR)) {
-            logger.atError().log(supplier);
+            logger.atError().log(message);
         } else if (logLevel.equals(LogLevel.WARNING)) {
-            logger.atWarning().log(supplier);
+            logger.atWarning().log(message);
         } else if (logLevel.equals(LogLevel.INFORMATIONAL)) {
-            logger.atInfo().log(supplier);
+            logger.atInfo().log(message);
         } else if (logLevel.equals(LogLevel.VERBOSE)) {
-            logger.atVerbose().log(supplier);
+            logger.atVerbose().log(message);
         } else {
             throw new IllegalArgumentException("Unknown log level: " + logLevel);
         }
 
         String logValues = byteArraySteamToString(logCaptureStream);
-        assertTrue(logValues.contains(supplier.get()));
+        assertTrue(logValues.contains(message));
     }
 
     @Test
     public void logWithNewLine() {
         String message = String.format("Param 1: %s%s, Param 2: %s%s, Param 3: %s", "test1", System.lineSeparator(), "test2", System.lineSeparator(), "test3");
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
-        logger.atInfo().log(() -> message);
+        logger.atInfo().log(message);
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertTrue(logValues.contains("{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\"}"));
@@ -243,13 +245,13 @@ public class ClientLoggerTests {
     public void logWithNullSupplier(LogLevel logLevel) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
         if (logLevel.equals(LogLevel.ERROR)) {
-            logger.atError().log((Supplier<String>) null);
+            logger.atError().log(null);
         } else if (logLevel.equals(LogLevel.WARNING)) {
-            logger.atWarning().log((Supplier<String>) null);
+            logger.atWarning().log(null);
         } else if (logLevel.equals(LogLevel.INFORMATIONAL)) {
-            logger.atInfo().log((Supplier<String>) null);
+            logger.atInfo().log(null);
         } else if (logLevel.equals(LogLevel.VERBOSE)) {
-            logger.atVerbose().log((Supplier<String>) null);
+            logger.atVerbose().log(null);
         } else {
             throw new IllegalArgumentException("Unknown log level: " + logLevel);
         }
@@ -262,43 +264,43 @@ public class ClientLoggerTests {
     @MethodSource("provideLogLevels")
     public void logSupplierWithException(LogLevel logLevel) {
         NullPointerException exception = new NullPointerException();
-        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        String message = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
         if (logLevel.equals(LogLevel.ERROR)) {
-            logger.atError().log(supplier, exception);
+            logger.atError().log(message, exception);
         } else if (logLevel.equals(LogLevel.WARNING)) {
-            logger.atWarning().log(supplier, exception);
+            logger.atWarning().log(message, exception);
         } else if (logLevel.equals(LogLevel.INFORMATIONAL)) {
-            logger.atInfo().log(supplier, exception);
+            logger.atInfo().log(message, exception);
         } else if (logLevel.equals(LogLevel.VERBOSE)) {
-            logger.atVerbose().log(supplier, exception);
+            logger.atVerbose().log(message, exception);
         } else {
             throw new IllegalArgumentException("Unknown log level: " + logLevel);
         }
         String logValues = byteArraySteamToString(logCaptureStream);
 
-        assertTrue(logValues.contains(supplier.get()));
+        assertTrue(logValues.contains(message));
     }
 
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logShouldEvaluateSupplierWithNullException(LogLevel logLevel) {
-        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        String message = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
         if (logLevel.equals(LogLevel.ERROR)) {
-            logger.atError().log(supplier, null);
+            logger.atError().log(message, null);
         } else if (logLevel.equals(LogLevel.WARNING)) {
-            logger.atWarning().log(supplier, null);
+            logger.atWarning().log(message, null);
         } else if (logLevel.equals(LogLevel.INFORMATIONAL)) {
-            logger.atInfo().log(supplier, null);
+            logger.atInfo().log(message, null);
         } else if (logLevel.equals(LogLevel.VERBOSE)) {
-            logger.atVerbose().log(supplier, null);
+            logger.atVerbose().log(message, null);
         } else {
             throw new IllegalArgumentException("Unknown log level: " + logLevel);
         }
 
         String logValues = byteArraySteamToString(logCaptureStream);
-        assertTrue(logValues.contains(supplier.get()));
+        assertTrue(logValues.contains(message));
     }
 
     /**
@@ -315,7 +317,7 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", 1)
-            .log(() -> message);
+            .log(message);
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":1}",
@@ -332,8 +334,7 @@ public class ClientLoggerTests {
     @MethodSource("provideLogLevels")
     public void logWithGlobalContext(LogLevel logLevelToConfigure) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure, globalContext);
-        logger.atWarning().log(() ->
-            String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+        logger.atWarning().log(String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
@@ -349,7 +350,7 @@ public class ClientLoggerTests {
     @Test
     public void logInfoWithGlobalContext() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalContext);
-        logger.atInfo().log(() -> "message");
+        logger.atInfo().log("message");
 
         assertMessage(
             "{\"message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
@@ -365,7 +366,7 @@ public class ClientLoggerTests {
     @Test
     public void logVerboseWithGlobalContext() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalContext);
-        logger.atVerbose().log(() -> "message");
+        logger.atVerbose().log("message");
 
         assertMessage(
             "{\"message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
@@ -381,7 +382,7 @@ public class ClientLoggerTests {
     @Test
     public void logWarningWithGlobalContext() {
         setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalContext)
-            .atWarning().log(() -> "message");
+            .atWarning().log("message");
 
         assertMessage(
             "{\"message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
@@ -397,7 +398,7 @@ public class ClientLoggerTests {
     @Test
     public void logErrorWithGlobalContext() {
         setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalContext)
-            .atError().log(() -> "message");
+            .atError().log("message");
 
         assertMessage(
             "{\"message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
@@ -412,7 +413,7 @@ public class ClientLoggerTests {
     @Test
     public void logWithEmptyGlobalContext() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL, Collections.emptyMap());
-        logger.atWarning().log(() -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+        logger.atWarning().log(String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\"}",
@@ -427,8 +428,7 @@ public class ClientLoggerTests {
     @Test
     public void logWithNullGlobalContext() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL, null);
-        logger.atInfo().log(
-            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+        logger.atInfo().log(String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\"}",
@@ -448,8 +448,7 @@ public class ClientLoggerTests {
         logger.atInfo()
             .addKeyValue("local", true)
             .addKeyValue("connectionId", "conflict")
-            .log(() ->
-                String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+            .log(String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\",\"local\":true,\"connectionId\":\"conflict\"}",
@@ -467,8 +466,7 @@ public class ClientLoggerTests {
     public void contextualLogWithoutContext(LogLevel logLevelToConfigure) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure);
 
-        logger.atWarning().log(
-            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+        logger.atWarning().log(String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\"}",
@@ -486,7 +484,7 @@ public class ClientLoggerTests {
     public void logWithGlobalContextMessageSupplier(LogLevel logLevelToConfigure) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevelToConfigure, globalContext);
 
-        logger.atInfo().log(() -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+        logger.atInfo().log(String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
@@ -508,7 +506,7 @@ public class ClientLoggerTests {
         logger.atInfo()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(() -> message);
+            .log(message);
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}",
@@ -527,7 +525,7 @@ public class ClientLoggerTests {
         logger.atVerbose()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", true)
-            .log(() -> (String) null);
+            .log(null);
 
         assertMessage(
             "{\"message\":\"\",\"connectionId\":\"foo\",\"linkName\":true}",
@@ -546,12 +544,10 @@ public class ClientLoggerTests {
         logger.atVerbose()
             .addKeyValue("connection\nId" + System.lineSeparator(), "foo")
             .addKeyValue("link\r\nName", "test" + System.lineSeparator() + "me")
-            .log(() -> "multiline " + System.lineSeparator() + "message");
-
-        String escapedNewLine = new String(JsonStringEncoder.getInstance().quoteAsString(System.lineSeparator()));
+            .log("multiline " + System.lineSeparator() + "message");
 
         assertMessage(
-            "{\"message\":\"multiline " + "message\",\"connection\\nId" + escapedNewLine + "\":\"foo\",\"link\\r\\nName\":\"test" + escapedNewLine + "me\"}",
+            "{\"message\":\"multiline " + "message\",\"connection\\nId" + ESCAPED_NEW_LINE + "\":\"foo\",\"link\\r\\nName\":\"test" + ESCAPED_NEW_LINE + "me\"}",
             byteArraySteamToString(logCaptureStream),
             LogLevel.VERBOSE,
             LogLevel.INFORMATIONAL);
@@ -569,7 +565,7 @@ public class ClientLoggerTests {
 
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE, globalCtx);
 
-        logger.atVerbose().log(() -> "\"message\"");
+        logger.atVerbose().log("\"message\"");
 
         assertMessage(
             "{\"message\":\"\\\"message\\\"\",\"link\\tName\":1,\"another\\rKey\\n\":\"hello \\\"world\\\"\\r\\n\"}",
@@ -585,12 +581,10 @@ public class ClientLoggerTests {
     public void logWithContextNullSupplier() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
-        Supplier<String> message = null;
-
         logger.atError()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", (String) null)
-            .log(message);
+            .log(null);
 
         assertMessage(
             "{\"message\":\"\",\"connectionId\":\"foo\",\"linkName\":null}",
@@ -610,7 +604,7 @@ public class ClientLoggerTests {
             // this is technically invalid, but we should not throw because of logging in runtime
             .addKeyValue("connectionId", (Supplier<String>) null)
             .addKeyValue("linkName", () -> String.format("complex value %s", 123))
-            .log(() -> "test");
+            .log("test");
 
         assertMessage(
             "{\"message\":\"test\",\"connectionId\":null,\"linkName\":\"complex value 123\"}",
@@ -628,7 +622,7 @@ public class ClientLoggerTests {
 
         logger.atWarning()
             .addKeyValue("linkName", new LoggableObject("some complex object"))
-            .log(() -> "test");
+            .log("test");
 
         assertMessage(
             "{\"message\":\"test\",\"linkName\":\"some complex object\"}",
@@ -648,8 +642,7 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", () -> null)
             .addKeyValue("linkName", "bar")
-            .log(() ->
-                String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+            .log(String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":null,\"linkName\":\"bar\"}",
@@ -672,12 +665,12 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(() -> String.format("hello %s", "world"), runtimeException);
+            .log(String.format("Don't format strings when writing logs, %s!", "please"), runtimeException);
 
-        String message = "{\"message\":\"hello world\",\"exception.message\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
+        String message = "{\"message\":\"Don't format strings when writing logs, please!\",\"connectionId\":\"foo\",\"linkName\":\"bar\",\"exception.message\":\"" + exceptionMessage + "\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             message = message.substring(0, message.length() - 1);
-            message += "\",\"exception.stacktrace\":\""  + runtimeException + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString() + "\"}";
+            message += ",\"exception.stacktrace\":\""  + stackTraceToString(runtimeException) + "\"}";
         }
 
         assertMessage(
@@ -701,12 +694,13 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(() -> String.format("hello %s", "world"), ioException);
+            .log(String.format("hello %s", "world"), ioException);
 
-        String message = "{\"message\":\"hello world\",\"exception.message\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
+        String message = "{\"message\":\"hello world\",\"connectionId\":\"foo\",\"linkName\":\"bar\",\"exception.message\":\"" + exceptionMessage + "\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             message = message.substring(0, message.length() - 1);
-            message += "\",\"exception.stacktrace\":\""  + ioException + System.lineSeparator() + "\tat " + ioException.getStackTrace()[0].toString() + "\"}";
+            StringBuilder stackTrace = new StringBuilder();
+            message += ",\"exception.stacktrace\":\""  + stackTraceToString(ioException) + "\"}";
         }
 
         assertMessage(
@@ -730,15 +724,15 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connection\tId", "foo")
             .addKeyValue("linkName", "\rbar")
-            .log(() -> String.format("hello %s, \"and\" {more}", "world"), runtimeException);
+            .log(String.format("hello %s, \"and\" {more}", "world"), runtimeException);
 
 
         String escapedExceptionMessage = "An exception \\tmessage with \\\"special characters\\\"\\r\\n";
 
-        String expectedMessage = "{\"message\":\"hello world, \\\"and\\\" {more}\",\"exception.message\":\"" + escapedExceptionMessage + "\",\"connection\\tId\":\"foo\",\"linkName\":\"\\rbar\"}";
+        String expectedMessage = "{\"message\":\"hello world, \\\"and\\\" {more}\",\"connection\\tId\":\"foo\",\"linkName\":\"\\rbar\",\"exception.message\":\"" + escapedExceptionMessage + "\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             expectedMessage = expectedMessage.substring(0, expectedMessage.length() - 1);
-            expectedMessage += "\",\"exception.stacktrace\":\"" + runtimeException + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString() + "\"}";
+            expectedMessage += ",\"exception.stacktrace\":\""  + stackTraceToString(runtimeException) + "\"}";
         }
 
         assertMessage(
@@ -764,10 +758,10 @@ public class ClientLoggerTests {
             .addKeyValue("linkName", "bar")
             .log(null, runtimeException));
 
-        String message = "{\"message\":\"\",\"exception.message\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
+        String message = "{\"message\":\"\",\"connectionId\":\"foo\",\"linkName\":\"bar\",\"exception.message\":\"" + exceptionMessage + "\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             message = message.substring(0, message.length() - 1);
-            message += "\",\"exception.stacktrace\":\""  + runtimeException + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString() + "\"}";
+            message += ",\"exception.stacktrace\":\"" + stackTraceToString(runtimeException) + "\"}";
         }
 
         assertMessage(
@@ -793,10 +787,10 @@ public class ClientLoggerTests {
             .addKeyValue("linkName", "bar")
             .log(null, ioException));
 
-        String message = "{\"message\":\"\",\"exception.message\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
+        String message = "{\"message\":\"\",\"connectionId\":\"foo\",\"linkName\":\"bar\",\"exception.message\":\"" + exceptionMessage + "\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             message = message.substring(0, message.length() - 1);
-            message += "\",\"exception.stacktrace\":\"" + ioException + System.lineSeparator() + "\tat " + ioException.getStackTrace()[0].toString() + "\"}";
+            message += ",\"exception.stacktrace\":\""  + stackTraceToString(ioException) + "\"}";
         }
 
         assertMessage(
@@ -809,14 +803,14 @@ public class ClientLoggerTests {
     @Test
     public void logSupplierShouldLogExceptionOnVerboseLevel() {
         NullPointerException exception = new NullPointerException();
-        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        String message = "A log message";
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE);
         String expectedStackTrace = stackTraceToString(exception);
-        logger.atVerbose().log(supplier, exception);
+        logger.atVerbose().log(message, exception);
 
         String logValues = byteArraySteamToString(logCaptureStream);
 
-        assertTrue(logValues.contains(supplier.get()));
+        assertTrue(logValues.contains(message));
         assertTrue(logValues.contains(expectedStackTrace));
     }
 
@@ -828,7 +822,7 @@ public class ClientLoggerTests {
         logger.atLevel(level)
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(() -> "message");
+            .log("message");
 
         assertMessage(
             "{\"message\":\"message\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}",
@@ -840,7 +834,9 @@ public class ClientLoggerTests {
     private String stackTraceToString(Throwable exception) {
         StringWriter stringWriter = new StringWriter();
         exception.printStackTrace(new PrintWriter(stringWriter));
-        return stringWriter.toString().trim();
+        StringBuilder sb = new StringBuilder();
+        JSON_STRING_ENCODER.quoteAsString(stringWriter.toString().trim(), sb);
+        return sb.toString();
     }
 
     private ClientLogger setupLogLevelAndGetLogger(LogLevel logLevelToSet) {
@@ -854,46 +850,46 @@ public class ClientLoggerTests {
         return new ClientLogger(logger, globalContext);
     }
 
-    private void logMessage(ClientLogger logger, LogLevel logLevel, String logFormat, RuntimeException runtimeException) {
+    private void logMessage(ClientLogger logger, LogLevel logLevel, String logMessage, RuntimeException runtimeException) {
         if (logLevel == null) {
             return;
         }
 
         switch (logLevel) {
             case VERBOSE:
-                logger.atVerbose().log(() -> logFormat, runtimeException);
+                logger.atVerbose().log(logMessage, runtimeException);
                 break;
             case INFORMATIONAL:
-                logger.atInfo().log(() -> logFormat, runtimeException);
+                logger.atInfo().log(logMessage, runtimeException);
                 break;
             case WARNING:
-                logger.atWarning().log(() -> logFormat, runtimeException);
+                logger.atWarning().log(logMessage, runtimeException);
                 break;
             case ERROR:
-                logger.atError().log(() -> logFormat, runtimeException);
+                logger.atError().log(logMessage, runtimeException);
                 break;
             default:
                 break;
         }
     }
 
-    private void logMessage(ClientLogger logger, LogLevel logLevel, String logFormat) {
+    private void logMessage(ClientLogger logger, LogLevel logLevel, String logMessage) {
         if (logLevel == null) {
             return;
         }
 
         switch (logLevel) {
             case VERBOSE:
-                logger.atVerbose().log(() -> logFormat);
+                logger.atVerbose().log(logMessage);
                 break;
             case INFORMATIONAL:
-                logger.atInfo().log(() -> logFormat);
+                logger.atInfo().log(logMessage);
                 break;
             case WARNING:
-                logger.atWarning().log(() -> logFormat);
+                logger.atWarning().log(logMessage);
                 break;
             case ERROR:
-                logger.atError().log(() -> logFormat);
+                logger.atError().log(logMessage);
                 break;
             default:
                 break;

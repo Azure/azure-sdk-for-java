@@ -97,7 +97,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         return response;
     }
 
-    boolean defaultShouldAttemptRedirect(HttpRequestRedirectCondition requestRedirectCondition) {
+    private boolean defaultShouldAttemptRedirect(HttpRequestRedirectCondition requestRedirectCondition) {
         Response<?> response = requestRedirectCondition.getResponse();
         int tryCount = requestRedirectCondition.getTryCount();
         Set<String> attemptedRedirectUrls = requestRedirectCondition.getRedirectedUrls();
@@ -113,7 +113,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
                 .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
                 .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString)
                 .addKeyValue(ORIGINATING_REQUEST_URL_KEY, response.getRequest().getUrl())
-                .log(() -> "Redirecting.");
+                .log("Redirecting.");
 
             attemptedRedirectUrls.add(redirectUrl);
 
@@ -134,7 +134,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         if (tryCount >= this.maxAttempts) {
             LOGGER.atError()
                 .addKeyValue("maxAttempts", this.maxAttempts)
-                .log(() -> "Redirect attempts have been exhausted.");
+                .log("Redirect attempts have been exhausted.");
 
             return false;
         }
@@ -156,7 +156,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
             LOGGER.atError()
                 .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
-                .log(() -> "Request was redirected more than once to the same URL.");
+                .log("Request was redirected more than once to the same URL.");
 
             return true;
         }
@@ -178,7 +178,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         } else {
             LOGGER.atError()
                 .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
-                .log(() -> "Request redirection is not enabled for this HTTP method.");
+                .log("Request redirection is not enabled for this HTTP method.");
 
             return false;
         }

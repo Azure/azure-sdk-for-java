@@ -9,7 +9,7 @@
             class="io.opentelemetry.instrumentation.logback.appender.v1_0.OpenTelemetryAppender">
   </appender>
 
-  <root level="WARN">
+  <root level="INFO">
     <appender-ref ref="STDOUT" />
     <appender-ref ref="OpenTelemetry"/>
   </root>

@@ -24,41 +24,52 @@ public class ClientLoggerJavaDocCodeSnippets {
         String name = getName();
 
         // BEGIN: com.generic.core.util.logging.clientlogger.verbose
-        logger.atVerbose().log(() -> "A log message");
+        logger.atVerbose().log("A log message");
         // END: com.generic.core.util.logging.clientlogger.verbose
 
         // BEGIN: com.generic.core.util.logging.clientlogger.verbose#string-object
-        logger.atVerbose().log(() -> String.format("A formattable message. Hello, %s", name));
+        logger.atVerbose()
+            .addKeyValue("hello", name)
+            .log("A structured log message.");
         // END: com.generic.core.util.logging.clientlogger.verbose#string-object
 
         // BEGIN: com.generic.core.util.logging.clientlogger.info
-        logger.atInfo().log(() -> "A log message");
+        logger.atInfo().log("A log message");
         // END: com.generic.core.util.logging.clientlogger.info
 
         // BEGIN: com.generic.core.util.logging.clientlogger.info#string-object
-        logger.atInfo().log(() -> String.format("A formattable message. Hello, %s", name));
+        logger.atInfo()
+            .addKeyValue("hello", name)
+            .log("A structured log message.");
         // END: com.generic.core.util.logging.clientlogger.info#string-object
 
         // BEGIN: com.generic.core.util.logging.clientlogger.log
-        logger.atVerbose().log(
-            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"));
+        logger.atVerbose()
+            .addKeyValue("param1", 1)
+            .addKeyValue("param2", 2)
+            .addKeyValue("param3", 2)
+            .log("A structured log message.");
         // END: com.generic.core.util.logging.clientlogger.log
 
         // BEGIN: com.generic.core.util.logging.clientlogger.log#throwable
         Throwable illegalArgumentException = new IllegalArgumentException("An invalid argument was encountered.");
-        logger.atVerbose().log(
-            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"),
-            illegalArgumentException);
+        logger.atVerbose()
+            .addKeyValue("param1", 1)
+            .addKeyValue("param2", 2)
+            .addKeyValue("param3", 2)
+            .log("A structured log message with exception.", illegalArgumentException);
         // END: com.generic.core.util.logging.clientlogger.log#throwable
 
         // BEGIN: com.generic.core.util.logging.clientlogger.warning
         Throwable detailedException = new IllegalArgumentException("A exception with a detailed message");
-        logger.atWarning().log(detailedException::getMessage);
+        logger.atWarning().log("A warning with exception.", detailedException);
         // END: com.generic.core.util.logging.clientlogger.warning
 
         // BEGIN: com.generic.core.util.logging.clientlogger.warning#string-object
         Throwable exception = new IllegalArgumentException("An invalid argument was encountered.");
-        logger.atWarning().log(() -> String.format("A formattable message. Hello, %s", name),  exception);
+        logger.atWarning()
+            .addKeyValue("hello", name)
+            .log("A structured warning with exception.", exception);
         // END: com.generic.core.util.logging.clientlogger.warning#string-object
 
         File resource = getFile();
@@ -66,7 +77,7 @@ public class ClientLoggerJavaDocCodeSnippets {
         try {
             upload(resource);
         } catch (IOException ex) {
-            logger.atError().log(ex::getMessage);
+            logger.atError().log("A structured error with exception.", ex);
         }
         // END: com.generic.core.util.logging.clientlogger.error
 
@@ -74,7 +85,9 @@ public class ClientLoggerJavaDocCodeSnippets {
         try {
             upload(resource);
         } catch (IOException ex) {
-            logger.atError().log(() -> String.format("A formattable message. Hello, %s", name), ex);
+            logger.atError()
+                .addKeyValue("hello", name)
+                .log("A structured error with exception and context.", ex);
         }
         // END: com.generic.core.util.logging.clientlogger.error#string-object
 
@@ -83,19 +96,22 @@ public class ClientLoggerJavaDocCodeSnippets {
         context.put("connectionId", "95a47cf");
 
         ClientLogger loggerWithContext = new ClientLogger(ClientLoggerJavaDocCodeSnippets.class, context);
-        loggerWithContext.atInfo().log(() -> String.format("A formattable message. Hello, %s", name));
+        loggerWithContext.atInfo()
+            .addKeyValue("hello", name)
+            .log("A structured log with global and local contexts.");
         // END: com.generic.core.util.logging.clientlogger#globalcontext
 
         // BEGIN: com.generic.core.util.logging.clientlogger.atInfo
         logger.atInfo()
             .addKeyValue("key", "value")
-            .log(() -> String.format("A formattable message. Hello, %s", name));
+            .addKeyValue("hello", name)
+            .log("A structured log message.");
         // END: com.generic.core.util.logging.clientlogger.atInfo
 
         // BEGIN: com.generic.core.util.logging.clientlogger.atWarning
         logger.atWarning()
             .addKeyValue("key", "value")
-            .log(() -> String.format("A formattable message. Hello, %s", name), exception);
+            .log("A structured log message with exception.", exception);
         // END: com.generic.core.util.logging.clientlogger.atWarning
 
         // BEGIN: com.generic.core.util.logging.clientlogger.atError#deffered-value
@@ -104,7 +120,7 @@ public class ClientLoggerJavaDocCodeSnippets {
         } catch (IOException ex) {
             logger.atError()
                 .addKeyValue("key", () -> "Expensive to calculate value")
-                .log(() -> String.format("A formattable message. Hello, %s", name), ex);
+                .log("A structured log message with exception.", ex);
         }
         // END: com.generic.core.util.logging.clientlogger.atError#deffered-value
 
@@ -114,13 +130,13 @@ public class ClientLoggerJavaDocCodeSnippets {
             ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
         logger.atLevel(level)
             .addKeyValue("key", "value")
-            .log(() -> "message");
+            .log("message");
         // END: com.generic.core.util.logging.clientlogger.atLevel
 
         // BEGIN: com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive
         logger.atVerbose()
             .addKeyValue("key", 1L)
-            .log(() -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"));
+            .log("A structured log message.");
         // END: com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive
 
         // BEGIN: com.generic.core.util.logging.loggingeventbuilder
@@ -128,14 +144,14 @@ public class ClientLoggerJavaDocCodeSnippets {
             .addKeyValue("key1", "value1")
             .addKeyValue("key2", true)
             .addKeyValue("key3", this::getName)
-            .log(() -> String.format("A formattable message. Hello, %s", name));
+            .log("A structured log message.");
         // END: com.generic.core.util.logging.loggingeventbuilder
 
         // BEGIN: com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object
         logger.atVerbose()
             // equivalent to addKeyValue("key", () -> new LoggableObject("string representation").toString()
             .addKeyValue("key", new LoggableObject("string representation"))
-            .log(() -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"));
+            .log("A structured log message.");
         // END: com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object
     }
 
