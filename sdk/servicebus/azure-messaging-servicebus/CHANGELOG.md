@@ -1,6 +1,16 @@
 # Release History
 
-## 7.16.0-beta.1 (Unreleased)
+## 7.16.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 7.16.0-beta.1 (2024-03-14)
 
 ### Features Added
 
