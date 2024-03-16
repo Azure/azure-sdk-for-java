@@ -143,7 +143,7 @@ public class TelemetryHelper {
 
     private void trackSuccess(Instant start, Span span) {
         logger.atInfo()
-            .log("run ended");
+            .log(() -> "run ended");
 
         runDuration.record(getDuration(start), commonAttributes);
         span.end();
@@ -152,7 +152,7 @@ public class TelemetryHelper {
     private void trackCancellation(Instant start, Span span) {
         logger.atWarning()
             .addKeyValue("error.type", "cancelled")
-            .log("run ended");
+            .log(() -> "run ended");
 
         runDuration.record(getDuration(start), canceledAttributes);
         span.setAttribute(ERROR_TYPE_ATTRIBUTE, "cancelled");
@@ -172,7 +172,7 @@ public class TelemetryHelper {
         String errorType = unwrapped.getClass().getName();
         logger.atError()
             .addKeyValue("error.type", errorType)
-            .log("run ended", unwrapped);
+            .log(() -> "run ended", unwrapped);
 
         Attributes attributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, errorType);
         runDuration.record(getDuration(start), canceledAttributes, io.opentelemetry.context.Context.current().with(span));

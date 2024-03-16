@@ -1,5 +1,5 @@
-{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-template2") -}}
-{{- define "stress.java-template2" -}}
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-template") -}}
+{{- define "stress.java-template" -}}
 metadata:
   labels:
     testName: "{{ .Release.Name }}"
@@ -41,7 +41,7 @@ spec:
           --parallel {{ .Stress.concurrency }} \
           --duration {{ mul .Stress.testDurationMin 60 }} \
           --endpoint https://localhost:8081 \
-          {{ if .Stress.httpClient != "default" }}--http-client {{ .Stress.httpClient }}{{ end }} \
+          {{ if ne .Stress.httpClient "default" }}--http-client {{ .Stress.httpClient }}{{ end }} \
           --sync \
           --warmup 0
       # add your test parameters here

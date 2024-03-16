@@ -6,9 +6,10 @@ package com.azure.sdk.template.stress;
 
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.sdk.template.stress.util.TelemetryHelper;
+import com.generic.core.http.Response;
+import com.generic.core.http.models.HttpLogOptions;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.okhttp.OkHttpHttpClientProvider;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
@@ -19,6 +20,8 @@ import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.time.Instant;
@@ -60,8 +63,10 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     private void runInternal() {
         // no need to handle exceptions here, they will be handled (and recorded) by the telemetry helper
         HttpRequest request = createRequest();
-        try (HttpResponse response = pipeline.send(request)) {
+        try (Response<?> response = pipeline.send(request)) {
             response.getBody().toBytes();
+        } catch (IOException e) {
+            new UncheckedIOException(e);
         }
     }
 
@@ -78,8 +83,8 @@ public class HttpGet extends ScenarioBase<StressOptions> {
     }
 
     private HttpPipelineBuilder getPipelineBuilder() {
-        HttpLoggingPolicy.HttpLogOptions logOptions = new HttpLoggingPolicy.HttpLogOptions()
-            .setLogLevel(HttpLoggingPolicy.HttpLogOptions.HttpLogDetailLevel.HEADERS);
+        HttpLogOptions logOptions = new HttpLogOptions()
+            .setLogLevel(HttpLogOptions.HttpLogDetailLevel.HEADERS);
 
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
