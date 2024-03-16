@@ -9,25 +9,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class JsonBuilderTests {
 
-    //JsonBuilder builder = new JsonBuilder();
-
-    //Section 0:Check initialization is correct -----------------------------------------------------------------------
-//    TODO these tests become irrelevant
-//     @Test
-//    public void initializeObject(){
-//        JsonElement result = builder.createObject();
-//        boolean check = result != null && result.isObject();
-//        assertTrue(check);
-//    }
-//
-//    @Test
-//    public void initializeArray(){
-//        JsonElement result = builder.createArray();
-//        boolean check = result != null && result.isArray();
-//        assertTrue(check);
-//    }
-
-
     //Section 1:Testing parsing Singular JSON Objects -----------------------------------------------------------------
     //Section 1.1:Object - Single String
     @Test
@@ -787,5 +768,38 @@ public class JsonBuilderTests {
         JsonElement output = JsonElement.fromString(input);
         assertEquals("[\"Word\",1,null,true]", output.toJson());
     }
+
+    // Section 5: Partial and Complete JSON parsing tests. This is to ascertain that the library can handle situations where the streams hold
+    // multiple JSON objects, or start part way through
+
+    @Test
+    public void jsonPartialObject() throws IOException {
+        String input = "{\"Key\":\"Value\"} {\"Key2\":\"Value2\"}";
+        JsonElement output = JsonElement.fromString(input);
+        assertEquals("{\"Key\":\"Value\"}", output.toJson());
+    }
+
+    @Test
+    public void jsonPartialArray() throws IOException {
+        String input = "[\"Value1\"] [\"Value2\"]";
+        JsonElement output = JsonElement.fromString(input);
+        assertEquals("[\"Value1\"]", output.toJson());
+    }
+
+    @Test
+    public void jsonPartialObjectArray() throws IOException {
+        String input = "{\"Key\":\"Value\"} [\"Value2\"]";
+        JsonElement output = JsonElement.fromString(input);
+        assertEquals("{\"Key\":\"Value\"}", output.toJson());
+    }
+
+    @Test
+    public void jsonPartialArrayObject() throws IOException {
+        String input = "[\"Value1\"] {\"Key2\":\"Value2\"}";
+        JsonElement output = JsonElement.fromString(input);
+        assertEquals("[\"Value1\"]", output.toJson());
+    }
+
+
 
 }

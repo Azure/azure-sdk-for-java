@@ -81,6 +81,8 @@ public abstract class JsonElement {
         JsonElement output = null;
         JsonToken token = jsonReader.nextToken();
 
+        // TODO rework this so that it closes the first object and returns the reader. At the moment what happens, if there are 2 JSON objects in the string, then the second overwrites the first
+
         while (token != END_DOCUMENT) {
 
             switch (token) {
@@ -93,7 +95,6 @@ public abstract class JsonElement {
                     output = new JsonObject(jsonReader);
                     break;
                 // Invalid JsonToken token cases:
-                // NOTE: previous comment mentioned "In theory the reader takes care of this"
                 case END_ARRAY:
                     break;
                 //              throw new IOException("Invalid JsonToken.END_ARRAY token read from deserialised JSON. Deserialisation aborted.");
