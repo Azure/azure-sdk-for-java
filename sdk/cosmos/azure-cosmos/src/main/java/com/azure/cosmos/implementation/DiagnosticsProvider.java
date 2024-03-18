@@ -93,6 +93,7 @@ public final class DiagnosticsProvider {
     private final CosmosTracer cosmosTracer;
 
     private final CosmosClientTelemetryConfig telemetryConfig;
+    private final boolean shouldSystemExitOnError;
 
 
     public DiagnosticsProvider(
@@ -138,6 +139,7 @@ public final class DiagnosticsProvider {
 
         this.propagatingMono = new PropagatingMono();
         this.propagatingFlux = new PropagatingFlux();
+        this.shouldSystemExitOnError = Configs.shouldDiagnosticsProviderSystemExitOnError();
     }
 
     public boolean isEnabled() {
@@ -246,8 +248,7 @@ public final class DiagnosticsProvider {
         try {
             this.endSpanCore(signal, statusCode, actualItemCount, requestCharge, diagnostics);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9901);
+            this.handleErrors(error, 9901);
         }
     }
 
@@ -267,8 +268,10 @@ public final class DiagnosticsProvider {
 
         switch (signal.getType()) {
             case ON_COMPLETE:
+                end(statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, true);
+                break;
             case ON_NEXT:
-                end(statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context);
+                end(statusCode, 0, actualItemCount, requestCharge, diagnostics,null, context, false);
                 break;
             case ON_ERROR:
                 Throwable throwable = null;
@@ -291,7 +294,7 @@ public final class DiagnosticsProvider {
                         effectiveDiagnostics = exception.getDiagnostics();
                     }
                 }
-                end(statusCode, subStatusCode, actualItemCount, effectiveRequestCharge, effectiveDiagnostics, throwable, context);
+                end(statusCode, subStatusCode, actualItemCount, effectiveRequestCharge, effectiveDiagnostics, throwable, context, true);
                 break;
             default:
                 // ON_SUBSCRIBE isn't the right state to end span
@@ -314,20 +317,18 @@ public final class DiagnosticsProvider {
                 effectiveRequestCharge = exception.getRequestCharge();
                 effectiveDiagnostics = exception.getDiagnostics();
             }
-            end(statusCode, subStatusCode, null, effectiveRequestCharge, effectiveDiagnostics, throwable, context);
+            end(statusCode, subStatusCode, null, effectiveRequestCharge, effectiveDiagnostics, throwable, context, true);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9905);
+            this.handleErrors(error, 9905);
         }
     }
 
     public void endSpan(Context context) {
         // called in PagedFlux - needs to be exception less - otherwise will result in hanging Flux.
         try {
-            end(200, 0, null, null, null,null, context);
+            end(200, 0, null, null, null,null, context, true);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9904);
+            this.handleErrors(error, 9904);
         }
     }
 
@@ -341,8 +342,7 @@ public final class DiagnosticsProvider {
         try {
             this.recordPageCore(context, diagnostics, actualItemCount, requestCharge);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordPage. ", error);
-            System.exit(9902);
+            this.handleErrors(error, 9902);
         }
     }
 
@@ -381,8 +381,7 @@ public final class DiagnosticsProvider {
             this.recordFeedResponseConsumerLatencyCore(
                 context, getCosmosDiagnosticsContextFromTraceContextOrNull(context), feedResponseConsumerLatency);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordFeedResponseConsumerLatency. ", error);
-            System.exit(9902);
+            this.handleErrors(error, 9903);
         }
     }
 
@@ -434,7 +433,11 @@ public final class DiagnosticsProvider {
         // but there is some risk given that diagnostic handlers are custom code of course
         if (this.diagnosticHandlers != null && this.diagnosticHandlers.size() > 0) {
             for (CosmosDiagnosticsHandler handler: this.diagnosticHandlers) {
-                handler.handleDiagnostics(cosmosCtx, context);
+                try {
+                    handler.handleDiagnostics(cosmosCtx, context);
+                } catch (Exception e) {
+                    LOGGER.error("HandledDiagnostics failed. ", e);
+                }
             }
         }
     }
@@ -578,18 +581,14 @@ public final class DiagnosticsProvider {
      * @param publisher publisher to run.
      * @return wrapped publisher.
      */
-    public <T> Flux<T> runUnderSpanInContext(Flux<T> publisher, CosmosPagedFluxOptions options) {
+    public <T> Flux<T> runUnderSpanInContext(Flux<T> publisher) {
+        return propagatingFlux.flatMap(ignored -> publisher);
+    }
 
+    public boolean shouldSampleOutOperation(CosmosPagedFluxOptions options) {
         final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
-
         options.setSamplingRateSnapshot(samplingRateSnapshot);
-
-        if (shouldSampleOutOperation(samplingRateSnapshot)) {
-            return publisher;
-        }
-
-        return propagatingFlux
-            .flatMap(ignored -> publisher);
+        return shouldSampleOutOperation(samplingRateSnapshot);
     }
 
     private boolean shouldSampleOutOperation(double samplingRate) {
@@ -719,7 +718,8 @@ public final class DiagnosticsProvider {
         Double requestCharge,
         CosmosDiagnostics diagnostics,
         Throwable throwable,
-        Context context) {
+        Context context,
+        boolean isFluxCompleted) {
 
         CosmosDiagnosticsContext cosmosCtx = getCosmosDiagnosticsContextFromTraceContextOrThrow(context);
 
@@ -733,10 +733,12 @@ public final class DiagnosticsProvider {
             diagnostics,
             throwable)) {
 
-            this.handleDiagnostics(context, cosmosCtx);
+            if (!isFluxCompleted || !cosmosCtx.getDiagnostics().isEmpty()) {
+                this.handleDiagnostics(context, cosmosCtx);
 
-            if (this.cosmosTracer != null) {
-                this.cosmosTracer.endSpan(cosmosCtx, context);
+                if (this.cosmosTracer != null) {
+                    this.cosmosTracer.endSpan(cosmosCtx, context);
+                }
             }
         }
     }
@@ -1363,6 +1365,39 @@ public final class DiagnosticsProvider {
         }
 
         return prettifiedCallstack;
+    }
+
+    private void handleErrors(Throwable throwable, int systemExitCode) {
+        if (throwable instanceof Error) {
+            handleFatalError((Error) throwable, systemExitCode);
+        } else {
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ",  throwable);
+            throw new RuntimeException(throwable);
+        }
+    }
+
+    private void handleFatalError(Error error, int systemExitCode) {
+        Exception exception = DiagnosticsProviderJvmFatalErrorMapper.getMapper().mapFatalError(error);
+        if (exception != null) {
+            String errorMessage = "Runtime exception mapped from fatal error " + error;
+            throw new RuntimeException(errorMessage, exception);
+        }
+
+        // there is no mapping, handle error
+        if (this.shouldSystemExitOnError) {
+            LOGGER.error("Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit({})...", systemExitCode, error);
+            System.err.println(
+                String.format(
+                    "Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit(%d)... %s",
+                    systemExitCode,
+                    error)
+            );
+
+            System.exit(systemExitCode);
+        } else {
+            // bubble up the error
+            throw error;
+        }
     }
 
     private static final class EnabledNoOpTracer implements Tracer {
