@@ -53,7 +53,6 @@ import java.util.stream.Stream;
 
 import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
 import static com.generic.core.http.models.ResponseBodyHandling.DESERIALIZE;
-import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
 import static com.generic.core.http.models.ResponseBodyHandling.NO_BUFFER;
 import static com.generic.core.implementation.http.ContentType.APPLICATION_JSON;
 import static com.generic.core.implementation.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;

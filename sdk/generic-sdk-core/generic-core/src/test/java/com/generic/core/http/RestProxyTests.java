@@ -39,7 +39,6 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
-import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
 import static com.generic.core.http.models.ResponseBodyHandling.NO_BUFFER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;

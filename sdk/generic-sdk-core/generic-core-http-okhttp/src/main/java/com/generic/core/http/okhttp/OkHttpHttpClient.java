@@ -27,9 +27,7 @@ import okhttp3.ResponseBody;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
-import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
 import static com.generic.core.http.models.ResponseBodyHandling.DESERIALIZE;
-import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
 
 /**
  * HttpClient implementation for OkHttp.
@@ -143,26 +141,13 @@ class OkHttpHttpClient implements HttpClient {
 
     private static Response<?> toResponse(HttpRequest request, okhttp3.Response response,
                                           ResponseBodyHandling responseBodyHandling, boolean eagerlyConvertHeaders) throws IOException {
-        /*// For now, eagerlyReadResponse and ignoreResponseBody works the same.
-        if (ignoreResponseBody) {
-            ResponseBody body = response.body();
-
-            if (body != null) {
-                if (body.contentLength() > 0) {
-                    LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
-                        + "Response body will be ignored as directed.");
-                }
-
-                body.close();
-            }
-
-            return new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
-        }*/
-
-        // Use a buffered response when we are eagerly reading the response from the network and the body isn't empty.
-        if (responseBodyHandling == IGNORE || responseBodyHandling == DESERIALIZE) {
+        if (responseBodyHandling == DESERIALIZE) {
             try (ResponseBody body = response.body()) {
-                byte[] bytes = (body != null) ? body.bytes() : EMPTY_BODY;
+                byte[] bytes = body == null
+                    ? null
+                    : body.contentLength() == 0
+                        ? null
+                        : body.bytes();
 
                 return new OkHttpResponse(response, request, eagerlyConvertHeaders, bytes);
             }
