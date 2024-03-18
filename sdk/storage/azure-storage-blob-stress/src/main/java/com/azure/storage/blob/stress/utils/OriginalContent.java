@@ -15,7 +15,6 @@ import com.azure.storage.stress.CrcInputStream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Base64;
 
@@ -93,5 +92,9 @@ public class OriginalContent {
         } catch (Throwable e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    public BinaryData getBlobContentHead() {
+        return BLOB_CONTENT_HEAD;
     }
 }

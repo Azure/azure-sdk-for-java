@@ -3,22 +3,25 @@
 
 package com.azure.storage.blob.stress;
 
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
+import com.azure.storage.common.Utility;
+import com.azure.storage.stress.CrcInputStream;
 import com.azure.storage.stress.StorageStressOptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
+import java.nio.ByteBuffer;
+
+public class Upload extends BlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
 
-    public DownloadContent(StorageStressOptions options) {
+    public Upload(StorageStressOptions options) {
         super(options);
         String blobName = generateBlobName();
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
@@ -28,32 +31,31 @@ public class DownloadContent extends BlobScenarioBase<StorageStressOptions> {
 
     @Override
     protected void runInternal(Context span) {
-        originalContent.checkMatch(syncClient.downloadContent(), span).block();
+        try (CrcInputStream inputStream = new CrcInputStream(originalContent.getBlobContentHead(), options.getSize())) {
+            syncClient.upload(inputStream, options.getSize(), true);
+            originalContent.checkMatch(inputStream.getContentInfo(), span).block();
+        }
     }
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
-        // TODO return downloadContent once it stops buffering
+        Flux<ByteBuffer> byteBufferFlux = Utility.convertStreamToByteBuffer(
+            new CrcInputStream(originalContent.getBlobContentHead(), options.getSize()), options.getSize(),
+            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE);
 
-        return asyncClient.downloadStreamWithResponse(null, null, null, false)
-            .flatMap(response ->  {
-                long contentLength = Long.valueOf(response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH));
-                return BinaryData.fromFlux(response.getValue(), contentLength, false);
-            })
-            .flatMap(bd -> originalContent.checkMatch(bd, span));
+        // Using the same Flux<ByteBuffer> that was used to upload the blob to check the content.
+        return asyncClient.upload(byteBufferFlux, null, true)
+            .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 
     @Override
     public Mono<Void> setupAsync() {
-        // setup is called for each instance of scenario. Number of instances equals options.getParallel()
-        // so we're setting up options.getParallel() blobs to scale beyond service limits for 1 blob.
-        return super.setupAsync()
-            .then(originalContent.setupBlob(asyncNoFaultClient, options.getSize()));
+        return super.setupAsync().then(originalContent.setupBlob(asyncNoFaultClient, options.getSize()));
     }
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.deleteIfExists()
+        return asyncNoFaultClient.delete()
             .then(super.cleanupAsync());
     }
 }

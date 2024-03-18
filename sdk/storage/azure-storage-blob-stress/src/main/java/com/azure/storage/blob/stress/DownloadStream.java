@@ -30,6 +30,7 @@ public class DownloadStream extends BlobScenarioBase<StorageStressOptions> {
     @Override
     protected void runInternal(Context span) throws IOException {
         try (CrcOutputStream outputStream = new CrcOutputStream()) {
+            System.out.println("client name: " + syncClient.getBlobName());
             syncClient.downloadStreamWithResponse(outputStream, null, null, null, false, null, span);
             outputStream.close();
             originalContent.checkMatch(outputStream.getContentInfo(), span).block();

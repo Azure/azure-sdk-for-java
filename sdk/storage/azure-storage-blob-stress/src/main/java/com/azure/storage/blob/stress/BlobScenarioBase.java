@@ -28,6 +28,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     private final BlobServiceClient syncClient;
     private final BlobServiceAsyncClient asyncClient;
     private final BlobServiceAsyncClient asyncNoFaultClient;
+    private final BlobServiceClient noFaultServiceClient;
     private final BlobContainerClient syncContainerClient;
     private final BlobContainerAsyncClient asyncContainerClient;
     private final BlobContainerAsyncClient asyncNoFaultContainerClient;
@@ -45,6 +46,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
             .httpLogOptions(getLogOptions());
 
         asyncNoFaultClient = clientBuilder.buildAsyncClient();
+        noFaultServiceClient = clientBuilder.buildClient();
 
         if (options.isFaultInjectionEnabled()) {
             clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(),
@@ -101,6 +103,11 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     protected BlobContainerAsyncClient getAsyncContainerClientNoFault() {
         return asyncNoFaultContainerClient;
     }
+
+    protected BlobContainerClient getSyncContainerClientNoFault() {
+        return noFaultServiceClient.getBlobContainerClient(CONTAINER_NAME);
+    }
+
 
     protected String generateBlobName() {
         return "blob-" + UUID.randomUUID();
