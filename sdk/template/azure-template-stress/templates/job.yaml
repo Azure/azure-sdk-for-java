@@ -34,7 +34,7 @@ spec:
           -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
           -Dotel.traces.sampler=traceidratio \
           -Dotel.traces.sampler.arg=0.00001 \
-          -Xms500m \
+          -XX:InitialRAMPercentage=75.0 \
           -XX:MaxRAMPercentage=75.0 \
           -jar /app/azure-template-stress-1.0.0-beta.1-jar-with-dependencies.jar \
           {{ .Stress.testScenario }} \

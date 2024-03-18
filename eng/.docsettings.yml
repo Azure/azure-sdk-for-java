@@ -64,9 +64,6 @@ known_presence_issues:
   - ['sdk/servicebus/microsoft-azure-servicebus', '#2847']
   # Changelog List
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/CHANGELOG.md', '#2847']
-  - ['sdk/generic-sdk-core/generic-core/CHANGELOG.md', '#2847']
-  - ['sdk/generic-sdk-core/generic-core-http-okhttp/CHANGELOG.md', '#2847']
-  - ['sdk/generic-sdk-core/generic-json/CHANGELOG.md', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-autosuggest/CHANGELOG.md', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-computervision/CHANGELOG.md', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-contentmoderator/CHANGELOG.md', '#2847']
