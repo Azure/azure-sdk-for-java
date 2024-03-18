@@ -80,18 +80,4 @@ public interface CommunicationServiceManagementClient {
      * @return the SenderUsernamesClient object.
      */
     SenderUsernamesClient getSenderUsernames();
-
-    /**
-     * Gets the SuppressionListsClient object to access its operations.
-     * 
-     * @return the SuppressionListsClient object.
-     */
-    SuppressionListsClient getSuppressionLists();
-
-    /**
-     * Gets the SuppressionListAddressesClient object to access its operations.
-     * 
-     * @return the SuppressionListAddressesClient object.
-     */
-    SuppressionListAddressesClient getSuppressionListAddresses();
 }
