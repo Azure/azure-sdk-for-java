@@ -3,6 +3,7 @@
 
 package com.generic.core.http.client;
 
+import com.generic.core.http.models.ContentType;
 import com.generic.core.http.models.HttpHeader;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
@@ -14,8 +15,8 @@ import com.generic.core.http.models.Response;
 import com.generic.core.http.models.ServerSentEvent;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
-import com.generic.core.http.models.ContentType;
 import com.generic.core.implementation.util.ServerSentEventHelper;
+import com.generic.core.models.RetrySSEResult;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.binarydata.BinaryData;
 
@@ -43,7 +44,11 @@ import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.regex.Pattern;
+
+import static com.generic.core.implementation.util.ServerSentEventUtil.DEFAULT_EVENT;
+import static com.generic.core.implementation.util.ServerSentEventUtil.DIGITS_ONLY;
+import static com.generic.core.implementation.util.ServerSentEventUtil.LAST_EVENT_ID;
+import static com.generic.core.implementation.util.ServerSentEventUtil.NO_LISTENER_LOG_MESSAGE;
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
@@ -53,9 +58,6 @@ class DefaultHttpClient implements HttpClient {
     private final long connectionTimeout;
     private final long readTimeout;
     private final ProxyOptions proxyOptions;
-    private static final String LAST_EVENT_ID = "Last-Event-Id";
-    private static final String DEFAULT_EVENT = "message";
-    private static final Pattern DIGITS_ONLY = Pattern.compile("^[\\d]*$");
 
     DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions) {
         this.connectionTimeout = connectionTimeout == null ? -1 : connectionTimeout.toMillis();
@@ -211,8 +213,7 @@ class DefaultHttpClient implements HttpClient {
                 if (listener != null) {
                     processTextEventStream(httpRequest, connection, listener);
                 } else {
-                    LOGGER.atInfo().log("No listener attached to the server sent "
-                        + "event http request. Treating response as regular response.");
+                    LOGGER.atInfo().log(NO_LISTENER_LOG_MESSAGE);
                 }
 
                 return new HttpResponse<>(httpRequest, responseCode, responseHeaders, null);
@@ -232,10 +233,11 @@ class DefaultHttpClient implements HttpClient {
     private void processTextEventStream(HttpRequest httpRequest, HttpURLConnection connection,
         ServerSentEventListener listener) {
         RetrySSEResult retrySSEResult;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8"))) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
             retrySSEResult = processBuffer(reader, listener);
-            if (retrySSEResult != null) {
-                retryExceptionForSSE(retrySSEResult, listener, httpRequest);
+            if (retrySSEResult != null && !retryExceptionForSSE(retrySSEResult, listener, httpRequest)
+                && !Thread.currentThread().isInterrupted()) {
+                this.send(httpRequest);
             }
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
@@ -246,6 +248,7 @@ class DefaultHttpClient implements HttpClient {
         return Objects.equals(ContentType.TEXT_EVENT_STREAM, responseHeaders.getValue(HttpHeaderName.CONTENT_TYPE));
     }
 
+<<<<<<< HEAD
     /**
      * Processes the sse buffer and dispatches the event
      *
@@ -391,33 +394,6 @@ class DefaultHttpClient implements HttpClient {
             }
         }
         return outputStream;
-    }
-
-    /**
-     * Inner class to hold the result for a retry of an SSE request
-     */
-    private static class RetrySSEResult {
-        private final long lastEventId;
-        private final Duration retryAfter;
-        private final IOException ioException;
-
-        RetrySSEResult(IOException e, long lastEventId, Duration retryAfter) {
-            this.ioException = e;
-            this.lastEventId = lastEventId;
-            this.retryAfter = retryAfter;
-        }
-
-        public long getLastEventId() {
-            return lastEventId;
-        }
-
-        public Duration getRetryAfter() {
-            return retryAfter;
-        }
-
-        public IOException getException() {
-            return ioException;
-        }
     }
 
     private static class SocketClient {

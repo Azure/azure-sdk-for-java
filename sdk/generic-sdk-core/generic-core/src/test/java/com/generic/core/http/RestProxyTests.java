@@ -9,15 +9,17 @@ import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.client.HttpClient;
+<<<<<<< HEAD
 import com.generic.core.http.models.HttpHeaderName;
+=======
+import com.generic.core.http.models.ContentType;
+>>>>>>> e09e6dd7419 (extract common to impl)
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.implementation.http.ContentType;
-import com.generic.core.http.RestProxy;
 import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.util.Context;

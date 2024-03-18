@@ -5,6 +5,7 @@ package com.generic.core.http.okhttp;
 
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.ContentType;
+<<<<<<< HEAD
 import com.generic.core.http.models.HttpHeader;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
@@ -12,11 +13,25 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
 import com.generic.core.http.models.ServerSentEvent;
+=======
+import com.generic.core.http.models.HttpMethod;
+import com.generic.core.http.models.HttpRequest;
+>>>>>>> e09e6dd7419 (extract common to impl)
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.http.okhttp.implementation.OkHttpFileRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpResponse;
+<<<<<<< HEAD
 import com.generic.core.implementation.util.ServerSentEventHelper;
+=======
+import com.generic.core.models.BinaryData;
+import com.generic.core.models.FileBinaryData;
+import com.generic.core.models.Header;
+import com.generic.core.models.HeaderName;
+import com.generic.core.models.Headers;
+import com.generic.core.models.InputStreamBinaryData;
+import com.generic.core.models.RetrySSEResult;
+>>>>>>> e09e6dd7419 (extract common to impl)
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.binarydata.FileBinaryData;
@@ -29,28 +44,23 @@ import okhttp3.ResponseBody;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.regex.Pattern;
+
+import static com.generic.core.implementation.util.ServerSentEventUtil.NO_LISTENER_LOG_MESSAGE;
+import static com.generic.core.implementation.util.ServerSentEventUtil.processBuffer;
+import static com.generic.core.implementation.util.ServerSentEventUtil.retryExceptionForSSE;
 
 /**
  * HttpClient implementation for OkHttp.
  */
 class OkHttpHttpClient implements HttpClient {
-
     private static final ClientLogger LOGGER = new ClientLogger(OkHttpHttpClient.class);
     private static final byte[] EMPTY_BODY = new byte[0];
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
     final OkHttpClient httpClient;
-    private static final String LAST_EVENT_ID = "Last-Event-Id";
-    private static final String DEFAULT_EVENT = "message";
-    private static final Pattern DIGITS_ONLY = Pattern.compile("^[\\d]*$");
 
     OkHttpHttpClient(OkHttpClient httpClient) {
         this.httpClient = httpClient;
@@ -152,10 +162,11 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     private Response<?> toResponse(HttpRequest request, okhttp3.Response response, boolean eagerlyReadResponse,
-                                          boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
+        boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
         okhttp3.Headers responseHeaders = response.headers();
 
         if (isTextEventStream(responseHeaders)) {
+<<<<<<< HEAD
             ServerSentEventListener listener = request.getServerSentEventListener();
             if (listener != null && response.body() != null) {
                 processTextEventStream(request, response.body().byteStream(), listener);
@@ -164,26 +175,43 @@ class OkHttpHttpClient implements HttpClient {
                     + "Treating response as regular response.");
             }
             return new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
+=======
+            return processServerSentEvent(request, response, eagerlyConvertHeaders);
+>>>>>>> e09e6dd7419 (extract common to impl)
         } else {
-            if (eagerlyReadResponse || ignoreResponseBody) {
-                try (ResponseBody body = response.body()) {
-                    byte[] bytes = (body != null) ? body.bytes() : EMPTY_BODY;
-                    return new OkHttpResponse(response, request, eagerlyConvertHeaders, bytes);
-                }
-            } else {
-                return new OkHttpResponse(response, request, eagerlyConvertHeaders, null);
-            }
+            return processResponse(request, response, eagerlyReadResponse, ignoreResponseBody, eagerlyConvertHeaders);
         }
     }
 
-    private void processTextEventStream(HttpRequest httpRequest, InputStream inputStream, ServerSentEventListener listener) {
-        RetrySSEResult retrySSEResult;
-        try (BufferedReader reader
-                 = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
-            retrySSEResult = processBuffer(reader, listener);
-            if (retrySSEResult != null) {
-                retryExceptionForSSE(retrySSEResult, listener, httpRequest);
+    private OkHttpResponse processServerSentEvent(HttpRequest request, okhttp3.Response response,
+        boolean eagerlyConvertHeaders) {
+        ServerSentEventListener listener = request.getServerSentEventListener();
+
+        if (listener != null && response.body() != null) {
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(response.body().byteStream(),
+                StandardCharsets.UTF_8))) {
+                RetrySSEResult retrySSEResult = processBuffer(reader, listener);
+                if (retrySSEResult != null && !retryExceptionForSSE(retrySSEResult, listener, request)
+                    && !Thread.currentThread().isInterrupted()) {
+                    this.send(request);
+                }
+            } catch (IOException e) {
+                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
             }
+        } else {
+            LOGGER.atInfo().log(NO_LISTENER_LOG_MESSAGE);
+        }
+        return new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
+    }
+
+    private Response<?> processResponse(HttpRequest request, okhttp3.Response response, boolean eagerlyReadResponse,
+        boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
+        if (eagerlyReadResponse || ignoreResponseBody) {
+            try (ResponseBody body = response.body()) {
+                byte[] bytes = (body != null) ? body.bytes() : EMPTY_BODY;
+                return new OkHttpResponse(response, request, eagerlyConvertHeaders, bytes);
+            }
+<<<<<<< HEAD
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
@@ -304,39 +332,20 @@ class OkHttpHttpClient implements HttpClient {
 
         if (!Thread.currentThread().isInterrupted()) {
             this.send(httpRequest);
+=======
+        } else {
+            return new OkHttpResponse(response, request, eagerlyConvertHeaders, null);
+>>>>>>> e09e6dd7419 (extract common to impl)
         }
     }
 
     private static boolean isTextEventStream(okhttp3.Headers responseHeaders) {
+<<<<<<< HEAD
         return responseHeaders != null && responseHeaders.get(HttpHeaderName.CONTENT_TYPE.toString()) != null &&
                 Objects.equals(responseHeaders.get(HttpHeaderName.CONTENT_TYPE.toString()), ContentType.TEXT_EVENT_STREAM);
+=======
+        return responseHeaders != null && responseHeaders.get(HeaderName.CONTENT_TYPE.toString()) != null &&
+            Objects.equals(responseHeaders.get(HeaderName.CONTENT_TYPE.toString()), ContentType.TEXT_EVENT_STREAM);
+>>>>>>> e09e6dd7419 (extract common to impl)
     }
-
-    /**
-     * Inner class to hold the result for a retry of an SSE request
-     */
-    private static class RetrySSEResult {
-        private final long lastEventId;
-        private final Duration retryAfter;
-        private final IOException ioException;
-
-        public RetrySSEResult(IOException e, long lastEventId, Duration retryAfter) {
-            this.ioException = e;
-            this.lastEventId = lastEventId;
-            this.retryAfter = retryAfter;
-        }
-
-        public long getLastEventId() {
-            return lastEventId;
-        }
-
-        public Duration getRetryAfter() {
-            return retryAfter;
-        }
-
-        public IOException getException() {
-            return ioException;
-        }
-    }
-
 }
