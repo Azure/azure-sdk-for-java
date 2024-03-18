@@ -3,6 +3,7 @@ package com.azure.json;
 import org.junit.jupiter.api.Test;
 
 import java.io.*;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -22,6 +23,7 @@ public class JsonInputTests {
 //    File jFileG = new File("src/test/resources/jsonArrayFileG.json");
 //    File jFileEmpty = new File("src/test/resources/jsonArrayFileEmpty.json");
 
+/*
     URL jsonTestFileB = getClass().getClassLoader().getResource("jsonTestFileB.json");
     URL jsonArrayFileA = getClass().getClassLoader().getResource("jsonArrayFileA.json");
     URL jsonArrayFileB = getClass().getClassLoader().getResource("jsonArrayFileB.json");
@@ -31,18 +33,39 @@ public class JsonInputTests {
     URL jsonArrayFileF = getClass().getClassLoader().getResource("jsonArrayFileF.json");
     URL jsonArrayFileG = getClass().getClassLoader().getResource("jsonArrayFileG.json");
     URL jsonArrayFileEmpty = getClass().getClassLoader().getResource("jsonArrayFileEmpty.json");
+ */
 
+    URI jsonTestFileB = ClassLoader.getSystemResource("jsonTestFileB.json").toURI();
+    URI jsonArrayFileA = ClassLoader.getSystemResource("jsonArrayFileA.json").toURI();
+    URI jsonArrayFileB = ClassLoader.getSystemResource("jsonArrayFileB.json").toURI();
+    URI jsonArrayFileC = ClassLoader.getSystemResource("jsonArrayFileC.json").toURI();
+    URI jsonArrayFileD = ClassLoader.getSystemResource("jsonArrayFileD.json").toURI();
+    URI jsonArrayFileE = ClassLoader.getSystemResource("jsonArrayFileE.json").toURI();
+    URI jsonArrayFileF = ClassLoader.getSystemResource("jsonArrayFileF.json").toURI();
+    URI jsonArrayFileG = ClassLoader.getSystemResource("jsonArrayFileG.json").toURI();
+    URI jsonArrayFileEmpty = ClassLoader.getSystemResource("jsonArrayFileEmpty.json").toURI();
+
+    public JsonInputTests() throws URISyntaxException {
+    }
+
+    @Test
+    public void URITesting() throws IOException, URISyntaxException {
+        URI uri = ClassLoader.getSystemResource("jsonArrayFileA.json").toURI();
+        String content = Files.readString(Path.of(uri));
+        JsonElement result = JsonElement.fromString(content);
+        assertEquals("{\"soloArray\":[1,2,3]}", result.toJson());
+    }
 
     @Test
     public void builderDeserializeString() throws IOException {
-        String content = Files.readString(Path.of(jsonTestFileB.getPath()));
+        String content = Files.readString(Path.of(jsonTestFileB));
         JsonElement result = JsonElement.fromString(content);
         assertEquals("{\"json\":{\"name\":\"Dave\",\"age\":22}}", result.toJson());
     }
 
     @Test
     public void builderDeserializeBytes() throws IOException {
-        byte[] content = Files.readAllBytes(Path.of(jsonTestFileB.getPath()));
+        byte[] content = Files.readAllBytes(Path.of(jsonTestFileB));
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals("{\"json\":{\"name\":\"Dave\",\"age\":22}}", result.toJson());
     }
@@ -64,56 +87,56 @@ public class JsonInputTests {
     //----------------------------------------------------------------------------------
     @Test
     public void builderDeserializeOnlyArrayString() throws IOException {
-        String content = Files.readString(Path.of(jsonArrayFileA.getPath()));
+        String content = Files.readString(Path.of(jsonArrayFileA));
         JsonElement result = JsonElement.fromString(content);
         assertEquals("{\"soloArray\":[1,2,3]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayDataPriorString() throws IOException {
-        String content = Files.readString(Path.of(jsonArrayFileB.getPath()));
+        String content = Files.readString(Path.of(jsonArrayFileB));
         JsonElement result = JsonElement.fromString(content);
         assertEquals("{\"priorJson\":\"This is before the array\",\"boolean\":true,\"array\":[1,2,3]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayDataAfterString() throws IOException {
-        String content = Files.readString(Path.of(jsonArrayFileC.getPath()));
+        String content = Files.readString(Path.of(jsonArrayFileC));
         JsonElement result = JsonElement.fromString(content);
         assertEquals("{\"Array\":[1,2,3],\"JsonAfter\":\"This is after an array\",\"Number\":5}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayInArrayString() throws IOException {
-        String content = Files.readString(Path.of(jsonArrayFileD.getPath()));
+        String content = Files.readString(Path.of(jsonArrayFileD));
         JsonElement result = JsonElement.fromString(content);
         assertEquals("{\"array\":[1,2,[\"array in\",\"array\"],\"follow-up word\"]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayObjectInArrayString() throws IOException {
-        String content = Files.readString(Path.of(jsonArrayFileE.getPath()));
+        String content = Files.readString(Path.of(jsonArrayFileE));
         JsonElement result = JsonElement.fromString(content);
         assertEquals("{\"Data\":[{\"name\":\"A\",\"age\":1,\"input\":[true,false,true]},{\"name\":\"B\",\"age\":2,\"input\":[true,false,false]},{\"name\":\"C\",\"age\":3,\"input\":[false,true,true],\"favourite fruit\":\"lemons\"}]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayInArrayMultiString() throws IOException {
-        String content = Files.readString(Path.of(jsonArrayFileF.getPath()));
+        String content = Files.readString(Path.of(jsonArrayFileF));
         JsonElement result = JsonElement.fromString(content);
         assertEquals("{\"superDeepObjects\":[{\"layer1\":[{\"layer2\":[{\"layer3\":[{\"layer4\":[1,2,3]},{\"layer4Second\":[4,5,6]}]}]}]}]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayObjectInArrayMultiString() throws IOException {
-        String content = Files.readString(Path.of(jsonArrayFileG.getPath()));
+        String content = Files.readString(Path.of(jsonArrayFileG));
         JsonElement result = JsonElement.fromString(content);
         assertEquals("{\"superDeepArray\":[[[[null,[[[\"deep\",[1,2,3],4]]]]],false]]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeEmptyArrayString() throws IOException {
-        String content = Files.readString(Path.of(jsonArrayFileEmpty.getPath()));
+        String content = Files.readString(Path.of(jsonArrayFileEmpty));
         JsonElement result = JsonElement.fromString(content);
         assertEquals("{\"inputA\":\"A\",\"array\":[],\"inputC\":null}", result.toJson());
     }
@@ -122,56 +145,56 @@ public class JsonInputTests {
 
     @Test
     public void builderDeserializeOnlyArrayBytes() throws IOException {
-        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileA.getPath()));
+        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileA));
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals("{\"soloArray\":[1,2,3]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayDataPriorBytes () throws IOException {
-        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileB.getPath()));
+        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileB));
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals("{\"priorJson\":\"This is before the array\",\"boolean\":true,\"array\":[1,2,3]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayDataAfterBytes () throws IOException {
-        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileC.getPath()));
+        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileC));
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals("{\"Array\":[1,2,3],\"JsonAfter\":\"This is after an array\",\"Number\":5}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayInArrayBytes () throws IOException {
-        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileD.getPath()));
+        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileD));
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals("{\"array\":[1,2,[\"array in\",\"array\"],\"follow-up word\"]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayObjectInArrayBytes () throws IOException {
-        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileE.getPath()));
+        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileE));
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals("{\"Data\":[{\"name\":\"A\",\"age\":1,\"input\":[true,false,true]},{\"name\":\"B\",\"age\":2,\"input\":[true,false,false]},{\"name\":\"C\",\"age\":3,\"input\":[false,true,true],\"favourite fruit\":\"lemons\"}]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayInArrayMultiBytes () throws IOException {
-        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileF.getPath()));
+        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileF));
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals("{\"superDeepObjects\":[{\"layer1\":[{\"layer2\":[{\"layer3\":[{\"layer4\":[1,2,3]},{\"layer4Second\":[4,5,6]}]}]}]}]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeArrayObjectInArrayMultiBytes () throws IOException {
-        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileG.getPath()));
+        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileG));
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals("{\"superDeepArray\":[[[[null,[[[\"deep\",[1,2,3],4]]]]],false]]}", result.toJson());
     }
 
     @Test
     public void builderDeserializeEmptyArrayBytes () throws IOException {
-        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileEmpty.getPath()));
+        byte[] content = Files.readAllBytes(Path.of(jsonArrayFileEmpty));
         JsonElement result = JsonElement.fromBytes(content);
         assertEquals("{\"inputA\":\"A\",\"array\":[],\"inputC\":null}", result.toJson());
     }
@@ -180,7 +203,7 @@ public class JsonInputTests {
 
     @Test
     public void builderDeserializeOnlyArrayInputStream() throws IOException {
-        InputStream content = new FileInputStream(String.valueOf(Path.of(jsonArrayFileA.getPath())));
+        InputStream content = new FileInputStream(String.valueOf(Path.of(jsonArrayFileA)));
         JsonElement result = JsonElement.fromStream(content);
         assertEquals("{\"soloArray\":[1,2,3]}", result.toJson());
     }
@@ -291,7 +314,4 @@ public class JsonInputTests {
         JsonElement result = JsonElement.fromReader(content);
         assertEquals("{\"inputA\":\"A\",\"array\":[],\"inputC\":null}", result.toJson());
     }
-
-
-
 }

@@ -77,21 +77,23 @@ public abstract class JsonElement {
     }
 
     private static JsonElement deserializeOutput(JsonReader jsonReader) throws IOException {
-
         JsonElement output = null;
         JsonToken token = jsonReader.nextToken();
+        boolean elementFound = false;
 
         // TODO rework this so that it closes the first object and returns the reader. At the moment what happens, if there are 2 JSON objects in the string, then the second overwrites the first
 
-        while (token != END_DOCUMENT) {
+        while ((token != END_DOCUMENT)&&(!elementFound)) {
 
             switch (token) {
                 // Case: deserialising top level JSON array
                 case START_ARRAY:
+                    elementFound = true;
                     output = new JsonArray(jsonReader);
                     break;
                 // Case: deserialising top level JSON object
                 case START_OBJECT:
+                    elementFound = true;
                     output = new JsonObject(jsonReader);
                     break;
                 // Invalid JsonToken token cases:
