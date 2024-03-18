@@ -123,10 +123,10 @@ public class RestProxyImpl extends RestProxyBase {
             } else {
                 if (methodParser.getResponseBodyHandling() == DESERIALIZE) {
                     HttpResponseAccessHelper.setValue((HttpResponse<?>) response,
-                        handleBodyReturnType(response, methodParser, bodyType));
+                        handleResponseBody(response, methodParser, bodyType, response.getBody()));
                 } else {
                     HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response, (body) ->
-                        handleBodyReturnType(response, methodParser, bodyType));
+                        handleResponseBody(response, methodParser, bodyType, body));
                 }
 
                 Response<?> responseToReturn = createResponseIfNecessary(response, entityType, response.getBody());
@@ -140,11 +140,12 @@ public class RestProxyImpl extends RestProxyBase {
         } else {
             // When not handling a Response subtype, we need to eagerly read the response body to construct the correct
             // return type.
-            return handleBodyReturnType(response, methodParser, entityType);
+            return handleResponseBody(response, methodParser, entityType, response.getBody());
         }
     }
 
-    private Object handleBodyReturnType(Response<?> response, SwaggerMethodParser methodParser, Type entityType) {
+    private Object handleResponseBody(Response<?> response, SwaggerMethodParser methodParser, Type entityType,
+                                      BinaryData responseBody) {
         final int responseStatusCode = response.getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
@@ -156,18 +157,15 @@ public class RestProxyImpl extends RestProxyBase {
                 || TypeUtil.isTypeOrSubTypeOf(entityType, Boolean.class))) {
             result = (responseStatusCode / 100) == 2;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
-            // byte[]
-            BinaryData binaryData = response.getBody();
-            byte[] responseBodyBytes = binaryData != null ? binaryData.toBytes() : null;
+            byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
 
             if (returnValueWireType == Base64Url.class) {
-                // Base64Url
                 responseBodyBytes = new Base64Url(responseBodyBytes).decodedBytes();
             }
 
             result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
-            result = response.getBody().toStream();
+            result = responseBody.toStream();
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // BinaryData
             //
@@ -175,9 +173,9 @@ public class RestProxyImpl extends RestProxyBase {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            result = response.getBody();
+            result = responseBody;
         } else {
-            result = decodeByteArray(response.getBody().toBytes(), response, serializer, methodParser);
+            result = decodeByteArray(responseBody.toBytes(), response, serializer, methodParser);
         }
 
         return result;

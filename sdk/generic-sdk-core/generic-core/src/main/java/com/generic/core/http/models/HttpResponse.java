@@ -106,7 +106,7 @@ public class HttpResponse<T> implements Response<T> {
     public T getValue() {
         if (!isValueDeserialized && bodyDeserializer != null) {
             // Deserialize the value
-            value = (T) bodyDeserializer.apply(getBody());
+            value = (T) bodyDeserializer.apply(body);
 
             this.isValueDeserialized = true;
         }
