@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.quantum.models.OperationDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Operation provided by provider. */
+/**
+ * Operation provided by provider.
+ */
 @Fluent
 public final class OperationInner {
     /*
@@ -29,13 +31,15 @@ public final class OperationInner {
     @JsonProperty(value = "display")
     private OperationDisplay display;
 
-    /** Creates an instance of OperationInner class. */
+    /**
+     * Creates an instance of OperationInner class.
+     */
     public OperationInner() {
     }
 
     /**
      * Get the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class OperationInner {
 
     /**
      * Set the name property: Name of the operation.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationInner object itself.
      */
@@ -55,7 +59,7 @@ public final class OperationInner {
 
     /**
      * Get the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -64,7 +68,7 @@ public final class OperationInner {
 
     /**
      * Set the isDataAction property: Indicates whether the operation is a data action.
-     *
+     * 
      * @param isDataAction the isDataAction value to set.
      * @return the OperationInner object itself.
      */
@@ -75,7 +79,7 @@ public final class OperationInner {
 
     /**
      * Get the display property: Properties of the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -84,7 +88,7 @@ public final class OperationInner {
 
     /**
      * Set the display property: Properties of the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationInner object itself.
      */
@@ -95,7 +99,7 @@ public final class OperationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

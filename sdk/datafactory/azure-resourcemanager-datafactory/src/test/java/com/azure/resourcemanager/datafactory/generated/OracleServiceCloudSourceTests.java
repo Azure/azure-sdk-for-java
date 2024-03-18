@@ -11,16 +11,16 @@ public final class OracleServiceCloudSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         OracleServiceCloudSource model = BinaryData.fromString(
-            "{\"type\":\"OracleServiceCloudSource\",\"query\":\"datadaeiepvjrmk\",\"queryTimeout\":\"dataxymkb\",\"additionalColumns\":\"datauawokrhhj\",\"sourceRetryCount\":\"datahrmuwvs\",\"sourceRetryWait\":\"dataru\",\"maxConcurrentConnections\":\"dataidtxmbnmjimggz\",\"disableMetricsCollection\":\"datagpldrnbjh\",\"\":{\"kvxerbddrtngdct\":\"datafbmsbetzu\",\"gvheqzlqevas\":\"datajzgzaeuu\"}}")
+            "{\"type\":\"OracleServiceCloudSource\",\"query\":\"datagdwpgmhqhvnexnw\",\"queryTimeout\":\"datawcxaqlym\",\"additionalColumns\":\"datazv\",\"sourceRetryCount\":\"datatecfyusfkcwfpo\",\"sourceRetryWait\":\"datalgkzgzxqwv\",\"maxConcurrentConnections\":\"datakqbgkssygdvll\",\"disableMetricsCollection\":\"datadfulvhpwpsxygrn\",\"\":{\"qgn\":\"dataxpsebazbtyrjr\",\"imtu\":\"datafzrra\",\"kve\":\"datajqzgyymyywhfdkj\",\"mccqljrnveq\":\"datasoztzdhzkbmzldpl\"}}")
             .toObject(OracleServiceCloudSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleServiceCloudSource model
-            = new OracleServiceCloudSource().withSourceRetryCount("datahrmuwvs").withSourceRetryWait("dataru")
-                .withMaxConcurrentConnections("dataidtxmbnmjimggz").withDisableMetricsCollection("datagpldrnbjh")
-                .withQueryTimeout("dataxymkb").withAdditionalColumns("datauawokrhhj").withQuery("datadaeiepvjrmk");
+        OracleServiceCloudSource model = new OracleServiceCloudSource().withSourceRetryCount("datatecfyusfkcwfpo")
+            .withSourceRetryWait("datalgkzgzxqwv").withMaxConcurrentConnections("datakqbgkssygdvll")
+            .withDisableMetricsCollection("datadfulvhpwpsxygrn").withQueryTimeout("datawcxaqlym")
+            .withAdditionalColumns("datazv").withQuery("datagdwpgmhqhvnexnw");
         model = BinaryData.fromObject(model).toObject(OracleServiceCloudSource.class);
     }
 }

@@ -22,8 +22,8 @@ public final class SecurityOperatorsImpl implements SecurityOperators {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public SecurityOperatorsImpl(
-        SecurityOperatorsClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public SecurityOperatorsImpl(SecurityOperatorsClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -31,10 +31,7 @@ public final class SecurityOperatorsImpl implements SecurityOperators {
     public Response<SecurityOperatorList> listWithResponse(String pricingName, Context context) {
         Response<SecurityOperatorListInner> inner = this.serviceClient().listWithResponse(pricingName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SecurityOperatorListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -50,15 +47,12 @@ public final class SecurityOperatorsImpl implements SecurityOperators {
         }
     }
 
-    public Response<SecurityOperator> getWithResponse(
-        String pricingName, String securityOperatorName, Context context) {
-        Response<SecurityOperatorInner> inner =
-            this.serviceClient().getWithResponse(pricingName, securityOperatorName, context);
+    public Response<SecurityOperator> getWithResponse(String pricingName, String securityOperatorName,
+        Context context) {
+        Response<SecurityOperatorInner> inner
+            = this.serviceClient().getWithResponse(pricingName, securityOperatorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SecurityOperatorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -74,15 +68,12 @@ public final class SecurityOperatorsImpl implements SecurityOperators {
         }
     }
 
-    public Response<SecurityOperator> createOrUpdateWithResponse(
-        String pricingName, String securityOperatorName, Context context) {
-        Response<SecurityOperatorInner> inner =
-            this.serviceClient().createOrUpdateWithResponse(pricingName, securityOperatorName, context);
+    public Response<SecurityOperator> createOrUpdateWithResponse(String pricingName, String securityOperatorName,
+        Context context) {
+        Response<SecurityOperatorInner> inner
+            = this.serviceClient().createOrUpdateWithResponse(pricingName, securityOperatorName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new SecurityOperatorImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -98,8 +89,8 @@ public final class SecurityOperatorsImpl implements SecurityOperators {
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String pricingName, String securityOperatorName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String pricingName, String securityOperatorName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(pricingName, securityOperatorName, context);
     }
 

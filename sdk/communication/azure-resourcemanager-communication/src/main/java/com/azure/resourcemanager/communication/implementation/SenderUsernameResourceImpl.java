@@ -119,10 +119,10 @@ public final class SenderUsernameResourceImpl
         com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.emailServiceName = Utils.getValueFromIdByName(innerObject.id(), "emailServices");
-        this.domainName = Utils.getValueFromIdByName(innerObject.id(), "domains");
-        this.senderUsername = Utils.getValueFromIdByName(innerObject.id(), "senderUsernames");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.emailServiceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "emailServices");
+        this.domainName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "domains");
+        this.senderUsername = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "senderUsernames");
     }
 
     public SenderUsernameResource refresh() {

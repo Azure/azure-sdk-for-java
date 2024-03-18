@@ -11,7 +11,9 @@ import com.azure.resourcemanager.security.models.SecureScoreControlDefinitionSou
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information about the security control. */
+/**
+ * Information about the security control.
+ */
 @Immutable
 public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
     /*
@@ -20,13 +22,15 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecureScoreControlDefinitionItemProperties innerProperties;
 
-    /** Creates an instance of SecureScoreControlDefinitionItemInner class. */
+    /**
+     * Creates an instance of SecureScoreControlDefinitionItemInner class.
+     */
     public SecureScoreControlDefinitionItemInner() {
     }
 
     /**
      * Get the innerProperties property: Security Control Definition Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecureScoreControlDefinitionItemProperties innerProperties() {
@@ -35,7 +39,7 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
 
     /**
      * Get the displayName property: User friendly display name of the control.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -44,7 +48,7 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
 
     /**
      * Get the description property: User friendly description of the control.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -53,7 +57,7 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
 
     /**
      * Get the maxScore property: Maximum control score (0..10).
-     *
+     * 
      * @return the maxScore value.
      */
     public Integer maxScore() {
@@ -62,7 +66,7 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
 
     /**
      * Get the source property: Source object from which the control was created.
-     *
+     * 
      * @return the source value.
      */
     public SecureScoreControlDefinitionSource source() {
@@ -72,7 +76,7 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
     /**
      * Get the assessmentDefinitions property: Array of assessments metadata IDs that are included in this security
      * control.
-     *
+     * 
      * @return the assessmentDefinitions value.
      */
     public List<AzureResourceLink> assessmentDefinitions() {
@@ -81,7 +85,7 @@ public final class SecureScoreControlDefinitionItemInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

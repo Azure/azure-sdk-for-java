@@ -45,7 +45,7 @@ public final class ManagedPrivateEndpointsDeleteWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.managedPrivateEndpoints().deleteWithResponse("zxxpwex", "ktgpcccgo", "knjjskzuh", "iyavfeyyb",
+        manager.managedPrivateEndpoints().deleteWithResponse("l", "rctrpun", "bhoety", "wx",
             com.azure.core.util.Context.NONE);
 
     }

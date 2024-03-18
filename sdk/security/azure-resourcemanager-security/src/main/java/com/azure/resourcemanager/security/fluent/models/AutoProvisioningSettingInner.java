@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.security.models.AutoProvision;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Auto provisioning setting. */
+/**
+ * Auto provisioning setting.
+ */
 @Fluent
 public final class AutoProvisioningSettingInner extends ProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class AutoProvisioningSettingInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private AutoProvisioningSettingProperties innerProperties;
 
-    /** Creates an instance of AutoProvisioningSettingInner class. */
+    /**
+     * Creates an instance of AutoProvisioningSettingInner class.
+     */
     public AutoProvisioningSettingInner() {
     }
 
     /**
      * Get the innerProperties property: Auto provisioning setting data.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AutoProvisioningSettingProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class AutoProvisioningSettingInner extends ProxyResource {
 
     /**
      * Get the autoProvision property: Describes what kind of security agent provisioning action to take.
-     *
+     * 
      * @return the autoProvision value.
      */
     public AutoProvision autoProvision() {
@@ -42,7 +46,7 @@ public final class AutoProvisioningSettingInner extends ProxyResource {
 
     /**
      * Set the autoProvision property: Describes what kind of security agent provisioning action to take.
-     *
+     * 
      * @param autoProvision the autoProvision value to set.
      * @return the AutoProvisioningSettingInner object itself.
      */
@@ -56,7 +60,7 @@ public final class AutoProvisioningSettingInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -38,12 +38,14 @@ stages:
           - template: /eng/pipelines/templates/variables/globals.yml
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
-          vmImage: MMSUbuntu20.04
+          image: azsdk-pool-mms-ubuntu-2004-1espt
+          os: linux
         strategy:
           runOnce:
             deploy:
               steps:
                 - checkout: none
+                - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
                 - download: current
                   displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
@@ -54,9 +56,10 @@ stages:
                     Artifacts: ${{parameters.Artifacts}}
                     ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
 
-                - publish: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
-                  artifact: ${{parameters.ArtifactName}}-signed
-                  displayName: 'Store signed packages in ${{parameters.ArtifactName}}-signed artifact'
+                - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+                  parameters:
+                    ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}'
+                    ArtifactName: '${{parameters.ArtifactName}}-signed'
 
   # We generate two interdependent stages for each artifact listed in the ci.yml file, creates the release
   # in GitHub. The Release stage publishes to Maven Central. Both stages require approval since they
@@ -77,7 +80,8 @@ stages:
               - template: /eng/pipelines/templates/variables/globals.yml
             pool:
               name: azsdk-pool-mms-ubuntu-2004-general
-              vmImage: MMSUbuntu20.04
+              image: azsdk-pool-mms-ubuntu-2004-1espt
+              os: linux
 
             steps:
               - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
@@ -146,7 +150,8 @@ stages:
               - template: /eng/pipelines/templates/variables/globals.yml
             pool:
               name: azsdk-pool-mms-win-2022-general
-              vmImage: windows-2022
+              image: azsdk-pool-mms-win-2022-1espt
+              os: windows
             strategy:
               runOnce:
                 deploy:
@@ -173,7 +178,8 @@ stages:
                 - template: /eng/pipelines/templates/variables/globals.yml
               pool:
                 name: azsdk-pool-mms-win-2022-general
-                vmImage: windows-2022
+                image: azsdk-pool-mms-win-2022-1espt
+                os: windows
               strategy:
                 runOnce:
                   deploy:
@@ -202,7 +208,7 @@ stages:
                             Target: EsrpRelease
                             BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                             JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                        - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                           parameters:
                             ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-esrp-$(System.JobAttempt)
                             ArtifactPath: $(Pipeline.Workspace)/EsrpPackages
@@ -215,7 +221,7 @@ stages:
                             Target: MavenCentral
                             BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                             JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                        - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                           parameters:
                             ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-mavencentral-$(System.JobAttempt)
                             ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
@@ -231,7 +237,7 @@ stages:
                           Target: JavaDevFeed
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                         parameters:
                           ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
                           ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
@@ -245,7 +251,8 @@ stages:
 
               pool:
                 name: azsdk-pool-mms-ubuntu-2004-general
-                vmImage: MMSUbuntu20.04
+                image: azsdk-pool-mms-ubuntu-2004-1espt
+                os: linux
 
               variables:
                 - template: /eng/pipelines/templates/variables/globals.yml
@@ -299,7 +306,8 @@ stages:
                 - template: /eng/pipelines/templates/variables/globals.yml
               pool:
                 name: azsdk-pool-mms-win-2022-general
-                vmImage: windows-2022
+                image: azsdk-pool-mms-win-2022-1espt
+                os: windows
               strategy:
                 runOnce:
                   deploy:
@@ -333,7 +341,8 @@ stages:
                 - template: /eng/pipelines/templates/variables/globals.yml
               pool:
                 name: azsdk-pool-mms-win-2022-general
-                vmImage: windows-2022
+                image: azsdk-pool-mms-win-2022-1espt
+                os: windows
               strategy:
                 runOnce:
                   deploy:
@@ -384,7 +393,8 @@ stages:
 
         pool:
           name: azsdk-pool-mms-win-2022-general
-          vmImage: windows-2022
+          image: azsdk-pool-mms-win-2022-1espt
+          os: windows
         steps:
         - checkout: azure-sdk-build-tools
           path: azure-sdk-build-tools
@@ -424,7 +434,7 @@ stages:
                 RepositoryUrl: $(RepositoryUrl)
                 Target: JavaDevFeed
                 JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-            - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+            - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
               parameters:
                 ArtifactName: integration-${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
                 ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
@@ -434,7 +444,8 @@ stages:
         condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
-          vmImage: MMSUbuntu20.04
+          image: azsdk-pool-mms-ubuntu-2004-1espt
+          os: linux
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
           - name: DocValidationImageId

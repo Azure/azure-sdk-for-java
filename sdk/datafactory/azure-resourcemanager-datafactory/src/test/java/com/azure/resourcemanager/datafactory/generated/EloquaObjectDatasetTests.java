@@ -19,34 +19,33 @@ public final class EloquaObjectDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EloquaObjectDataset model = BinaryData.fromString(
-            "{\"type\":\"EloquaObject\",\"typeProperties\":{\"tableName\":\"datalvxboc\"},\"description\":\"wmfvuhzmolhveoln\",\"structure\":\"datafm\",\"schema\":\"datadxqupyml\",\"linkedServiceName\":{\"referenceName\":\"klmnjqzmqynhitr\",\"parameters\":{\"nrjocogwf\":\"datagqrbthbfpi\",\"pkhuvnlmdcnut\":\"datakywzrqeiad\",\"ioynctfqhhvv\":\"dataexmizunzbq\"}},\"parameters\":{\"vavlyaqtlocnwme\":{\"type\":\"Array\",\"defaultValue\":\"dataaaaiaib\"},\"v\":{\"type\":\"Int\",\"defaultValue\":\"datazuzqcrlko\"},\"ozf\":{\"type\":\"Bool\",\"defaultValue\":\"datayhenfsfyqncowmh\"},\"agwaakktbjort\":{\"type\":\"Float\",\"defaultValue\":\"datajiaaosla\"}},\"annotations\":[\"dataajqhsnsejplis\",\"dataxyljzbkdw\",\"datafjwxgvtkjctvrpea\",\"datazzkvfc\"],\"folder\":{\"name\":\"vq\"},\"\":{\"tgcptctxpoeg\":\"datahtraitrmsukxtu\"}}")
+            "{\"type\":\"EloquaObject\",\"typeProperties\":{\"tableName\":\"dataqejex\"},\"description\":\"lhuhdkubgyw\",\"structure\":\"datarklpdyehjrwcflv\",\"schema\":\"dataocaywmfvuhz\",\"linkedServiceName\":{\"referenceName\":\"olhve\",\"parameters\":{\"ymlhklmnjqzm\":\"datagsfmhwdxqu\",\"bthb\":\"dataynhitrnwqgq\"}},\"parameters\":{\"ywzrqeiadd\":{\"type\":\"Bool\",\"defaultValue\":\"datarjocogwfv\"},\"z\":{\"type\":\"Int\",\"defaultValue\":\"datauvnlmdcnutiexm\"},\"tfqhhvvwzprjaaai\":{\"type\":\"String\",\"defaultValue\":\"databqvioyn\"},\"cn\":{\"type\":\"String\",\"defaultValue\":\"datatvavlyaqtl\"}},\"annotations\":[\"datafzvz\",\"datazqcrlkorvbzg\",\"datahenfsfyq\"],\"folder\":{\"name\":\"wmh\"},\"\":{\"agwaakktbjort\":\"datafbywjiaaosla\",\"lislxyljzbkd\":\"datatkajqhsnsej\"}}")
             .toObject(EloquaObjectDataset.class);
-        Assertions.assertEquals("wmfvuhzmolhveoln", model.description());
-        Assertions.assertEquals("klmnjqzmqynhitr", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vavlyaqtlocnwme").type());
-        Assertions.assertEquals("vq", model.folder().name());
+        Assertions.assertEquals("lhuhdkubgyw", model.description());
+        Assertions.assertEquals("olhve", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("ywzrqeiadd").type());
+        Assertions.assertEquals("wmh", model.folder().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EloquaObjectDataset model = new EloquaObjectDataset().withDescription("wmfvuhzmolhveoln")
-            .withStructure("datafm").withSchema("datadxqupyml")
-            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("klmnjqzmqynhitr")
-                .withParameters(mapOf("nrjocogwf", "datagqrbthbfpi", "pkhuvnlmdcnut", "datakywzrqeiad", "ioynctfqhhvv",
-                    "dataexmizunzbq")))
-            .withParameters(mapOf("vavlyaqtlocnwme",
-                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataaaaiaib"), "v",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datazuzqcrlko"), "ozf",
-                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datayhenfsfyqncowmh"),
-                "agwaakktbjort",
-                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datajiaaosla")))
-            .withAnnotations(Arrays.asList("dataajqhsnsejplis", "dataxyljzbkdw", "datafjwxgvtkjctvrpea", "datazzkvfc"))
-            .withFolder(new DatasetFolder().withName("vq")).withTableName("datalvxboc");
+        EloquaObjectDataset model = new EloquaObjectDataset().withDescription("lhuhdkubgyw")
+            .withStructure("datarklpdyehjrwcflv").withSchema("dataocaywmfvuhz")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("olhve")
+                .withParameters(mapOf("ymlhklmnjqzm", "datagsfmhwdxqu", "bthb", "dataynhitrnwqgq")))
+            .withParameters(mapOf("ywzrqeiadd",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("datarjocogwfv"), "z",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datauvnlmdcnutiexm"),
+                "tfqhhvvwzprjaaai",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("databqvioyn"), "cn",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datatvavlyaqtl")))
+            .withAnnotations(Arrays.asList("datafzvz", "datazqcrlkorvbzg", "datahenfsfyq"))
+            .withFolder(new DatasetFolder().withName("wmh")).withTableName("dataqejex");
         model = BinaryData.fromObject(model).toObject(EloquaObjectDataset.class);
-        Assertions.assertEquals("wmfvuhzmolhveoln", model.description());
-        Assertions.assertEquals("klmnjqzmqynhitr", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("vavlyaqtlocnwme").type());
-        Assertions.assertEquals("vq", model.folder().name());
+        Assertions.assertEquals("lhuhdkubgyw", model.description());
+        Assertions.assertEquals("olhve", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("ywzrqeiadd").type());
+        Assertions.assertEquals("wmh", model.folder().name());
     }
 
     // Use "Map.of" if available

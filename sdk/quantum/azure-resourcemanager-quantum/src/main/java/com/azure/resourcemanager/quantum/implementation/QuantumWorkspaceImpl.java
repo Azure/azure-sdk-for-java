@@ -82,6 +82,10 @@ public final class QuantumWorkspaceImpl
         return this.innerModel().endpointUri();
     }
 
+    public Boolean apiKeyEnabled() {
+        return this.innerModel().apiKeyEnabled();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
@@ -114,20 +118,14 @@ public final class QuantumWorkspaceImpl
     }
 
     public QuantumWorkspace create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getWorkspaces().createOrUpdate(resourceGroupName,
+            workspaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public QuantumWorkspace create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getWorkspaces().createOrUpdate(resourceGroupName,
+            workspaceName, this.innerModel(), context);
         return this;
     }
 
@@ -143,50 +141,34 @@ public final class QuantumWorkspaceImpl
     }
 
     public QuantumWorkspace apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .updateTagsWithResponse(resourceGroupName, workspaceName, updateWorkspaceTags, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+            .updateTagsWithResponse(resourceGroupName, workspaceName, updateWorkspaceTags, Context.NONE).getValue();
         return this;
     }
 
     public QuantumWorkspace apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .updateTagsWithResponse(resourceGroupName, workspaceName, updateWorkspaceTags, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+            .updateTagsWithResponse(resourceGroupName, workspaceName, updateWorkspaceTags, context).getValue();
         return this;
     }
 
-    QuantumWorkspaceImpl(
-        QuantumWorkspaceInner innerObject, com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager) {
+    QuantumWorkspaceImpl(QuantumWorkspaceInner innerObject,
+        com.azure.resourcemanager.quantum.AzureQuantumManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
     }
 
     public QuantumWorkspace refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE).getValue();
         return this;
     }
 
     public QuantumWorkspace refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context).getValue();
         return this;
     }
 
@@ -222,6 +204,11 @@ public final class QuantumWorkspaceImpl
 
     public QuantumWorkspaceImpl withStorageAccount(String storageAccount) {
         this.innerModel().withStorageAccount(storageAccount);
+        return this;
+    }
+
+    public QuantumWorkspaceImpl withApiKeyEnabled(Boolean apiKeyEnabled) {
+        this.innerModel().withApiKeyEnabled(apiKeyEnabled);
         return this;
     }
 

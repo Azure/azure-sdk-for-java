@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The configuration status of the machines group or machine or rule. */
+/**
+ * The configuration status of the machines group or machine or rule.
+ */
 public final class ConfigurationStatus extends ExpandableStringEnum<ConfigurationStatus> {
-    /** Static value Configured for ConfigurationStatus. */
+    /**
+     * Static value Configured for ConfigurationStatus.
+     */
     public static final ConfigurationStatus CONFIGURED = fromString("Configured");
 
-    /** Static value NotConfigured for ConfigurationStatus. */
+    /**
+     * Static value NotConfigured for ConfigurationStatus.
+     */
     public static final ConfigurationStatus NOT_CONFIGURED = fromString("NotConfigured");
 
-    /** Static value InProgress for ConfigurationStatus. */
+    /**
+     * Static value InProgress for ConfigurationStatus.
+     */
     public static final ConfigurationStatus IN_PROGRESS = fromString("InProgress");
 
-    /** Static value Failed for ConfigurationStatus. */
+    /**
+     * Static value Failed for ConfigurationStatus.
+     */
     public static final ConfigurationStatus FAILED = fromString("Failed");
 
-    /** Static value NoStatus for ConfigurationStatus. */
+    /**
+     * Static value NoStatus for ConfigurationStatus.
+     */
     public static final ConfigurationStatus NO_STATUS = fromString("NoStatus");
 
     /**
      * Creates a new instance of ConfigurationStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class ConfigurationStatus extends ExpandableStringEnum<Configuratio
 
     /**
      * Creates or finds a ConfigurationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConfigurationStatus.
      */
@@ -47,7 +59,7 @@ public final class ConfigurationStatus extends ExpandableStringEnum<Configuratio
 
     /**
      * Gets known ConfigurationStatus values.
-     *
+     * 
      * @return known ConfigurationStatus values.
      */
     public static Collection<ConfigurationStatus> values() {

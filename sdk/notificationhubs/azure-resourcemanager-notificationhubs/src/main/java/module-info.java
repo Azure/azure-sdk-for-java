@@ -4,16 +4,10 @@
 
 module com.azure.resourcemanager.notificationhubs {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.notificationhubs;
     exports com.azure.resourcemanager.notificationhubs.fluent;
     exports com.azure.resourcemanager.notificationhubs.fluent.models;
     exports com.azure.resourcemanager.notificationhubs.models;
-
-    opens com.azure.resourcemanager.notificationhubs.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.notificationhubs.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.notificationhubs.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.notificationhubs.models to com.azure.core, com.fasterxml.jackson.databind;
 }

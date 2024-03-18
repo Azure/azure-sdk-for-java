@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** configuration for Microsoft Defender for Server VM scanning. */
+/**
+ * configuration for Microsoft Defender for Server VM scanning.
+ */
 @Fluent
 public final class DefenderForServersGcpOfferingVmScannersConfiguration {
     /*
@@ -25,13 +27,15 @@ public final class DefenderForServersGcpOfferingVmScannersConfiguration {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> exclusionTags;
 
-    /** Creates an instance of DefenderForServersGcpOfferingVmScannersConfiguration class. */
+    /**
+     * Creates an instance of DefenderForServersGcpOfferingVmScannersConfiguration class.
+     */
     public DefenderForServersGcpOfferingVmScannersConfiguration() {
     }
 
     /**
      * Get the scanningMode property: The scanning mode for the VM scan.
-     *
+     * 
      * @return the scanningMode value.
      */
     public ScanningMode scanningMode() {
@@ -40,7 +44,7 @@ public final class DefenderForServersGcpOfferingVmScannersConfiguration {
 
     /**
      * Set the scanningMode property: The scanning mode for the VM scan.
-     *
+     * 
      * @param scanningMode the scanningMode value to set.
      * @return the DefenderForServersGcpOfferingVmScannersConfiguration object itself.
      */
@@ -51,7 +55,7 @@ public final class DefenderForServersGcpOfferingVmScannersConfiguration {
 
     /**
      * Get the exclusionTags property: VM tags that indicate that VM should not be scanned.
-     *
+     * 
      * @return the exclusionTags value.
      */
     public Map<String, String> exclusionTags() {
@@ -60,7 +64,7 @@ public final class DefenderForServersGcpOfferingVmScannersConfiguration {
 
     /**
      * Set the exclusionTags property: VM tags that indicate that VM should not be scanned.
-     *
+     * 
      * @param exclusionTags the exclusionTags value to set.
      * @return the DefenderForServersGcpOfferingVmScannersConfiguration object itself.
      */
@@ -71,7 +75,7 @@ public final class DefenderForServersGcpOfferingVmScannersConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.ClusterServ
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of servers in a cluster. */
+/**
+ * A list of servers in a cluster.
+ */
 @Fluent
 public final class ClusterServerListResult {
     /*
@@ -18,13 +20,15 @@ public final class ClusterServerListResult {
     @JsonProperty(value = "value")
     private List<ClusterServerInner> value;
 
-    /** Creates an instance of ClusterServerListResult class. */
+    /**
+     * Creates an instance of ClusterServerListResult class.
+     */
     public ClusterServerListResult() {
     }
 
     /**
      * Get the value property: The list of servers in a cluster.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterServerInner> value() {
@@ -33,7 +37,7 @@ public final class ClusterServerListResult {
 
     /**
      * Set the value property: The list of servers in a cluster.
-     *
+     * 
      * @param value the value value to set.
      * @return the ClusterServerListResult object itself.
      */
@@ -44,7 +48,7 @@ public final class ClusterServerListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

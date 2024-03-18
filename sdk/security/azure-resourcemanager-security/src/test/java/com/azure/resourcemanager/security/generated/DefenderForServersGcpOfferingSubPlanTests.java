@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForServersGcpOfferingSubPlanTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForServersGcpOfferingSubPlan model =
-            BinaryData.fromString("{\"type\":\"P1\"}").toObject(DefenderForServersGcpOfferingSubPlan.class);
-        Assertions.assertEquals(SubPlan.P1, model.type());
+        DefenderForServersGcpOfferingSubPlan model
+            = BinaryData.fromString("{\"type\":\"P2\"}").toObject(DefenderForServersGcpOfferingSubPlan.class);
+        Assertions.assertEquals(SubPlan.P2, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForServersGcpOfferingSubPlan model = new DefenderForServersGcpOfferingSubPlan().withType(SubPlan.P1);
+        DefenderForServersGcpOfferingSubPlan model = new DefenderForServersGcpOfferingSubPlan().withType(SubPlan.P2);
         model = BinaryData.fromObject(model).toObject(DefenderForServersGcpOfferingSubPlan.class);
-        Assertions.assertEquals(SubPlan.P1, model.type());
+        Assertions.assertEquals(SubPlan.P2, model.type());
     }
 }

@@ -22,8 +22,8 @@ public final class MdeOnboardingsImpl implements MdeOnboardings {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public MdeOnboardingsImpl(
-        MdeOnboardingsClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public MdeOnboardingsImpl(MdeOnboardingsClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -31,10 +31,7 @@ public final class MdeOnboardingsImpl implements MdeOnboardings {
     public Response<MdeOnboardingDataList> listWithResponse(Context context) {
         Response<MdeOnboardingDataListInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MdeOnboardingDataListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,10 +50,7 @@ public final class MdeOnboardingsImpl implements MdeOnboardings {
     public Response<MdeOnboardingData> getWithResponse(Context context) {
         Response<MdeOnboardingDataInner> inner = this.serviceClient().getWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new MdeOnboardingDataImpl(inner.getValue(), this.manager()));
         } else {
             return null;

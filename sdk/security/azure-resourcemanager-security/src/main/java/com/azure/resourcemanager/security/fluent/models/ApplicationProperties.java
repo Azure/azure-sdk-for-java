@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.models.ApplicationSourceResourceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes properties of an application. */
+/**
+ * Describes properties of an application.
+ */
 @Fluent
 public final class ApplicationProperties {
     /*
@@ -37,13 +39,15 @@ public final class ApplicationProperties {
     @JsonProperty(value = "conditionSets", required = true)
     private List<Object> conditionSets;
 
-    /** Creates an instance of ApplicationProperties class. */
+    /**
+     * Creates an instance of ApplicationProperties class.
+     */
     public ApplicationProperties() {
     }
 
     /**
      * Get the displayName property: display name of the application.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -52,7 +56,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the displayName property: display name of the application.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the description property: description of the application.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -72,7 +76,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the description property: description of the application.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the sourceResourceType property: The application source, what it affects, e.g. Assessments.
-     *
+     * 
      * @return the sourceResourceType value.
      */
     public ApplicationSourceResourceType sourceResourceType() {
@@ -92,7 +96,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the sourceResourceType property: The application source, what it affects, e.g. Assessments.
-     *
+     * 
      * @param sourceResourceType the sourceResourceType value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class ApplicationProperties {
 
     /**
      * Get the conditionSets property: The application conditionSets - see examples.
-     *
+     * 
      * @return the conditionSets value.
      */
     public List<Object> conditionSets() {
@@ -112,7 +116,7 @@ public final class ApplicationProperties {
 
     /**
      * Set the conditionSets property: The application conditionSets - see examples.
-     *
+     * 
      * @param conditionSets the conditionSets value to set.
      * @return the ApplicationProperties object itself.
      */
@@ -123,21 +127,17 @@ public final class ApplicationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceResourceType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceResourceType in model ApplicationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceResourceType in model ApplicationProperties"));
         }
         if (conditionSets() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property conditionSets in model ApplicationProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property conditionSets in model ApplicationProperties"));
         }
     }
 

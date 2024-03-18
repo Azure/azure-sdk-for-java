@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Microsoft Defender for Server VM scanning configuration. */
+/**
+ * The Microsoft Defender for Server VM scanning configuration.
+ */
 @Fluent
 public final class DefenderForServersGcpOfferingVmScanners {
     /*
@@ -22,13 +24,15 @@ public final class DefenderForServersGcpOfferingVmScanners {
     @JsonProperty(value = "configuration")
     private DefenderForServersGcpOfferingVmScannersConfiguration configuration;
 
-    /** Creates an instance of DefenderForServersGcpOfferingVmScanners class. */
+    /**
+     * Creates an instance of DefenderForServersGcpOfferingVmScanners class.
+     */
     public DefenderForServersGcpOfferingVmScanners() {
     }
 
     /**
      * Get the enabled property: Is Microsoft Defender for Server VM scanning enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -37,7 +41,7 @@ public final class DefenderForServersGcpOfferingVmScanners {
 
     /**
      * Set the enabled property: Is Microsoft Defender for Server VM scanning enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the DefenderForServersGcpOfferingVmScanners object itself.
      */
@@ -48,7 +52,7 @@ public final class DefenderForServersGcpOfferingVmScanners {
 
     /**
      * Get the configuration property: configuration for Microsoft Defender for Server VM scanning.
-     *
+     * 
      * @return the configuration value.
      */
     public DefenderForServersGcpOfferingVmScannersConfiguration configuration() {
@@ -57,19 +61,19 @@ public final class DefenderForServersGcpOfferingVmScanners {
 
     /**
      * Set the configuration property: configuration for Microsoft Defender for Server VM scanning.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the DefenderForServersGcpOfferingVmScanners object itself.
      */
-    public DefenderForServersGcpOfferingVmScanners withConfiguration(
-        DefenderForServersGcpOfferingVmScannersConfiguration configuration) {
+    public DefenderForServersGcpOfferingVmScanners
+        withConfiguration(DefenderForServersGcpOfferingVmScannersConfiguration configuration) {
         this.configuration = configuration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

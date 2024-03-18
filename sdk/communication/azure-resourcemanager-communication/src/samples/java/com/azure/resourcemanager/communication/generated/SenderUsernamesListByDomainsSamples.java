@@ -10,16 +10,16 @@ package com.azure.resourcemanager.communication.generated;
 public final class SenderUsernamesListByDomainsSamples {
     /*
      * x-ms-original-file:
-     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/
-     * senderUsernames/listByDomain.json
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/senderUsernames/
+     * listByDomain.json
      */
     /**
-     * Sample code: Get all SenderUsernames resources for a Domain.
+     * Sample code: Get SenderUsernames resource.
      * 
      * @param manager Entry point to CommunicationManager.
      */
     public static void
-        getAllSenderUsernamesResourcesForADomain(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        getSenderUsernamesResource(com.azure.resourcemanager.communication.CommunicationManager manager) {
         manager.senderUsernames().listByDomains("contosoResourceGroup", "contosoEmailService", "contoso.com",
             com.azure.core.util.Context.NONE);
     }

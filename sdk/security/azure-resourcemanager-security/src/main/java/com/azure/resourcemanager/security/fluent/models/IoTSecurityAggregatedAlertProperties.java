@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
 
-/** IoT Security solution aggregated alert details. */
+/**
+ * IoT Security solution aggregated alert details.
+ */
 @Immutable
 public final class IoTSecurityAggregatedAlertProperties {
     /*
@@ -92,13 +94,15 @@ public final class IoTSecurityAggregatedAlertProperties {
     @JsonProperty(value = "topDevicesList", access = JsonProperty.Access.WRITE_ONLY)
     private List<IoTSecurityAggregatedAlertPropertiesTopDevicesListItem> topDevicesList;
 
-    /** Creates an instance of IoTSecurityAggregatedAlertProperties class. */
+    /**
+     * Creates an instance of IoTSecurityAggregatedAlertProperties class.
+     */
     public IoTSecurityAggregatedAlertProperties() {
     }
 
     /**
      * Get the alertType property: Name of the alert type.
-     *
+     * 
      * @return the alertType value.
      */
     public String alertType() {
@@ -107,7 +111,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the alertDisplayName property: Display name of the alert type.
-     *
+     * 
      * @return the alertDisplayName value.
      */
     public String alertDisplayName() {
@@ -116,7 +120,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the aggregatedDateUtc property: Date of detection.
-     *
+     * 
      * @return the aggregatedDateUtc value.
      */
     public LocalDate aggregatedDateUtc() {
@@ -125,7 +129,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the vendorName property: Name of the organization that raised the alert.
-     *
+     * 
      * @return the vendorName value.
      */
     public String vendorName() {
@@ -134,7 +138,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the reportedSeverity property: Assessed alert severity.
-     *
+     * 
      * @return the reportedSeverity value.
      */
     public ReportedSeverity reportedSeverity() {
@@ -143,7 +147,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the remediationSteps property: Recommended steps for remediation.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public String remediationSteps() {
@@ -152,7 +156,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the description property: Description of the suspected vulnerability and meaning.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -161,7 +165,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the count property: Number of alerts occurrences within the aggregated time window.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -170,7 +174,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the effectedResourceType property: Azure resource ID of the resource that received the alerts.
-     *
+     * 
      * @return the effectedResourceType value.
      */
     public String effectedResourceType() {
@@ -179,7 +183,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the systemSource property: The type of the alerted resource (Azure, Non-Azure).
-     *
+     * 
      * @return the systemSource value.
      */
     public String systemSource() {
@@ -188,7 +192,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the actionTaken property: IoT Security solution alert response.
-     *
+     * 
      * @return the actionTaken value.
      */
     public String actionTaken() {
@@ -197,7 +201,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Get the logAnalyticsQuery property: Log analytics query for getting the list of affected devices/alerts.
-     *
+     * 
      * @return the logAnalyticsQuery value.
      */
     public String logAnalyticsQuery() {
@@ -207,7 +211,7 @@ public final class IoTSecurityAggregatedAlertProperties {
     /**
      * Get the topDevicesList property: 10 devices with the highest number of occurrences of this alert type, on this
      * day.
-     *
+     * 
      * @return the topDevicesList value.
      */
     public List<IoTSecurityAggregatedAlertPropertiesTopDevicesListItem> topDevicesList() {
@@ -216,7 +220,7 @@ public final class IoTSecurityAggregatedAlertProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

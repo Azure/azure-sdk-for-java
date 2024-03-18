@@ -13,37 +13,29 @@ import org.junit.jupiter.api.Assertions;
 public final class CefExternalSecuritySolutionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CefExternalSecuritySolution model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"CEF\",\"properties\":{\"hostname\":\"qacdmkxwxdcvjwcy\",\"agent\":\"akeciqchx\",\"lastEventReceived\":\"uicdsiwdfmmpzhzz\",\"deviceVendor\":\"ywrgyngydgr\",\"deviceType\":\"n\",\"workspace\":{\"id\":\"iqao\"},\"\":{\"lvlmfej\":\"datarkclamg\"}},\"location\":\"qey\",\"id\":\"gltygxhqfgq\",\"name\":\"ayejsxtlgflwfgz\",\"type\":\"iucijjcea\"}")
-                .toObject(CefExternalSecuritySolution.class);
-        Assertions.assertEquals("ywrgyngydgr", model.properties().deviceVendor());
-        Assertions.assertEquals("n", model.properties().deviceType());
-        Assertions.assertEquals("iqao", model.properties().workspace().id());
-        Assertions.assertEquals("qacdmkxwxdcvjwcy", model.properties().hostname());
-        Assertions.assertEquals("akeciqchx", model.properties().agent());
-        Assertions.assertEquals("uicdsiwdfmmpzhzz", model.properties().lastEventReceived());
+        CefExternalSecuritySolution model = BinaryData.fromString(
+            "{\"kind\":\"CEF\",\"properties\":{\"hostname\":\"esylslur\",\"agent\":\"fygpnyhgd\",\"lastEventReceived\":\"qscag\",\"deviceVendor\":\"voupr\",\"deviceType\":\"tqzsslhmgwfnivr\",\"workspace\":{\"id\":\"duiolh\"},\"\":{\"zluczdq\":\"datavpbfjpoqzuc\",\"zielbprnq\":\"dataurbormvh\",\"mnwsvh\":\"datajywzcqyg\",\"ejto\":\"datangqiw\"}},\"location\":\"r\",\"id\":\"pnrehkunsb\",\"name\":\"jhhlwtpkvegeat\",\"type\":\"bzkgtz\"}")
+            .toObject(CefExternalSecuritySolution.class);
+        Assertions.assertEquals("voupr", model.properties().deviceVendor());
+        Assertions.assertEquals("tqzsslhmgwfnivr", model.properties().deviceType());
+        Assertions.assertEquals("duiolh", model.properties().workspace().id());
+        Assertions.assertEquals("esylslur", model.properties().hostname());
+        Assertions.assertEquals("fygpnyhgd", model.properties().agent());
+        Assertions.assertEquals("qscag", model.properties().lastEventReceived());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CefExternalSecuritySolution model =
-            new CefExternalSecuritySolution()
-                .withProperties(
-                    new CefSolutionProperties()
-                        .withDeviceVendor("ywrgyngydgr")
-                        .withDeviceType("n")
-                        .withWorkspace(new ConnectedWorkspace().withId("iqao"))
-                        .withHostname("qacdmkxwxdcvjwcy")
-                        .withAgent("akeciqchx")
-                        .withLastEventReceived("uicdsiwdfmmpzhzz"));
+        CefExternalSecuritySolution model
+            = new CefExternalSecuritySolution().withProperties(new CefSolutionProperties().withDeviceVendor("voupr")
+                .withDeviceType("tqzsslhmgwfnivr").withWorkspace(new ConnectedWorkspace().withId("duiolh"))
+                .withHostname("esylslur").withAgent("fygpnyhgd").withLastEventReceived("qscag"));
         model = BinaryData.fromObject(model).toObject(CefExternalSecuritySolution.class);
-        Assertions.assertEquals("ywrgyngydgr", model.properties().deviceVendor());
-        Assertions.assertEquals("n", model.properties().deviceType());
-        Assertions.assertEquals("iqao", model.properties().workspace().id());
-        Assertions.assertEquals("qacdmkxwxdcvjwcy", model.properties().hostname());
-        Assertions.assertEquals("akeciqchx", model.properties().agent());
-        Assertions.assertEquals("uicdsiwdfmmpzhzz", model.properties().lastEventReceived());
+        Assertions.assertEquals("voupr", model.properties().deviceVendor());
+        Assertions.assertEquals("tqzsslhmgwfnivr", model.properties().deviceType());
+        Assertions.assertEquals("duiolh", model.properties().workspace().id());
+        Assertions.assertEquals("esylslur", model.properties().hostname());
+        Assertions.assertEquals("fygpnyhgd", model.properties().agent());
+        Assertions.assertEquals("qscag", model.properties().lastEventReceived());
     }
 }

@@ -235,11 +235,13 @@ def update_versions_all(update_type, build_type, target_file, skip_readme, auto_
     # Load the version and/or external dependency file for the given UpdateType
     # into the verion_map. If UpdateType.all is selected then versions for both
     # the libraries and external dependencies are being updated.
-    version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
-    load_version_map_from_file(version_file, version_map)
+    if update_type == UpdateType.library or update_type == UpdateType.all:
+        version_file = os.path.normpath('eng/versioning/version_' + build_type.name + '.txt')
+        load_version_map_from_file(version_file, version_map)
 
-    dependency_file = os.path.normpath('eng/versioning/external_dependencies.txt')
-    load_version_map_from_file(dependency_file, ext_dep_map)
+    if update_type == UpdateType.external_dependency or update_type == UpdateType.all:
+        dependency_file = os.path.normpath('eng/versioning/external_dependencies.txt')
+        load_version_map_from_file(dependency_file, ext_dep_map)
 
     if version_overrides and not version_overrides.startswith('$'):
         # Azure DevOps passes '$(VersionOverrides)' when the variable value is not set

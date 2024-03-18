@@ -45,7 +45,7 @@ public final class CredentialOperationsDeleteWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.credentialOperations().deleteWithResponse("jjfvanefwsodnlw", "npbgqemjdtc", "wk",
+        manager.credentialOperations().deleteWithResponse("ouvsmmiqfiigsl", "riawknncdfcyey", "l",
             com.azure.core.util.Context.NONE);
 
     }

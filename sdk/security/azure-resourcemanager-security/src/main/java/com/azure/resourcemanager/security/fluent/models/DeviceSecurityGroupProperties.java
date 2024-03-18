@@ -12,7 +12,9 @@ import com.azure.resourcemanager.security.models.TimeWindowCustomAlertRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** describes properties of a security group. */
+/**
+ * describes properties of a security group.
+ */
 @Fluent
 public final class DeviceSecurityGroupProperties {
     /*
@@ -39,13 +41,15 @@ public final class DeviceSecurityGroupProperties {
     @JsonProperty(value = "denylistRules")
     private List<DenylistCustomAlertRule> denylistRules;
 
-    /** Creates an instance of DeviceSecurityGroupProperties class. */
+    /**
+     * Creates an instance of DeviceSecurityGroupProperties class.
+     */
     public DeviceSecurityGroupProperties() {
     }
 
     /**
      * Get the thresholdRules property: The list of custom alert threshold rules.
-     *
+     * 
      * @return the thresholdRules value.
      */
     public List<ThresholdCustomAlertRule> thresholdRules() {
@@ -54,7 +58,7 @@ public final class DeviceSecurityGroupProperties {
 
     /**
      * Set the thresholdRules property: The list of custom alert threshold rules.
-     *
+     * 
      * @param thresholdRules the thresholdRules value to set.
      * @return the DeviceSecurityGroupProperties object itself.
      */
@@ -65,7 +69,7 @@ public final class DeviceSecurityGroupProperties {
 
     /**
      * Get the timeWindowRules property: The list of custom alert time-window rules.
-     *
+     * 
      * @return the timeWindowRules value.
      */
     public List<TimeWindowCustomAlertRule> timeWindowRules() {
@@ -74,7 +78,7 @@ public final class DeviceSecurityGroupProperties {
 
     /**
      * Set the timeWindowRules property: The list of custom alert time-window rules.
-     *
+     * 
      * @param timeWindowRules the timeWindowRules value to set.
      * @return the DeviceSecurityGroupProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class DeviceSecurityGroupProperties {
 
     /**
      * Get the allowlistRules property: The allow-list custom alert rules.
-     *
+     * 
      * @return the allowlistRules value.
      */
     public List<AllowlistCustomAlertRule> allowlistRules() {
@@ -94,7 +98,7 @@ public final class DeviceSecurityGroupProperties {
 
     /**
      * Set the allowlistRules property: The allow-list custom alert rules.
-     *
+     * 
      * @param allowlistRules the allowlistRules value to set.
      * @return the DeviceSecurityGroupProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class DeviceSecurityGroupProperties {
 
     /**
      * Get the denylistRules property: The deny-list custom alert rules.
-     *
+     * 
      * @return the denylistRules value.
      */
     public List<DenylistCustomAlertRule> denylistRules() {
@@ -114,7 +118,7 @@ public final class DeviceSecurityGroupProperties {
 
     /**
      * Set the denylistRules property: The deny-list custom alert rules.
-     *
+     * 
      * @param denylistRules the denylistRules value to set.
      * @return the DeviceSecurityGroupProperties object itself.
      */
@@ -125,7 +129,7 @@ public final class DeviceSecurityGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

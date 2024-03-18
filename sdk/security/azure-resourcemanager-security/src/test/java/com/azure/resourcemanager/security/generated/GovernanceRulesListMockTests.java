@@ -34,57 +34,44 @@ public final class GovernanceRulesListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"tenantId\":\"oaeoc\",\"displayName\":\"ajtfey\",\"description\":\"bdgddkrh\",\"remediationTimeframe\":\"cxbeuuqutkzwtjww\",\"isGracePeriod\":false,\"rulePriority\":574110550,\"isDisabled\":false,\"ruleType\":\"Integrated\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"nondegjdyd\"],\"conditionSets\":[\"datakkkbjuckcatuqbh\",\"dataowcnxtpz\",\"datalyseidtoak\",\"datat\"],\"includeMemberScopes\":true,\"ownerSource\":{\"type\":\"ByTag\",\"value\":\"hzbqfdpfawrptvcs\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":true},\"metadata\":{\"createdBy\":\"tbqgdirdamm\",\"createdOn\":\"2021-04-05T19:23:11Z\",\"updatedBy\":\"cfjfxtbwjj\",\"updatedOn\":\"2021-06-25T16:41:01Z\"}},\"id\":\"uydgfttmdofgeoa\",\"name\":\"fuof\",\"type\":\"nxodwxmdajwiyg\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"tenantId\":\"rqoxzyhlbeqvhskb\",\"displayName\":\"pwxslaj\",\"description\":\"fzga\",\"remediationTimeframe\":\"hawkmibuydwi\",\"isGracePeriod\":false,\"rulePriority\":1717351767,\"isDisabled\":false,\"ruleType\":\"ServiceNow\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"tqmiuvjplosebm\",\"htuqmt\",\"ynoflqobfixngxe\",\"i\"],\"conditionSets\":[\"dataxhnkingiqcd\",\"datalrpgupsjlbs\",\"datandaf\"],\"includeMemberScopes\":true,\"ownerSource\":{\"type\":\"Manually\",\"value\":\"eykcnhpplzh\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":true},\"metadata\":{\"createdBy\":\"ucrln\",\"createdOn\":\"2021-12-02T16:26:54Z\",\"updatedBy\":\"wkkfzzetl\",\"updatedOn\":\"2021-01-19T14:34:53Z\"}},\"id\":\"yxzlv\",\"name\":\"ywj\",\"type\":\"rlgqp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<GovernanceRule> response =
-            manager.governanceRules().list("yjfzi", com.azure.core.util.Context.NONE);
+        PagedIterable<GovernanceRule> response
+            = manager.governanceRules().list("lumodpegqxsorc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ajtfey", response.iterator().next().displayName());
-        Assertions.assertEquals("bdgddkrh", response.iterator().next().description());
-        Assertions.assertEquals("cxbeuuqutkzwtjww", response.iterator().next().remediationTimeframe());
+        Assertions.assertEquals("pwxslaj", response.iterator().next().displayName());
+        Assertions.assertEquals("fzga", response.iterator().next().description());
+        Assertions.assertEquals("hawkmibuydwi", response.iterator().next().remediationTimeframe());
         Assertions.assertEquals(false, response.iterator().next().isGracePeriod());
-        Assertions.assertEquals(574110550, response.iterator().next().rulePriority());
+        Assertions.assertEquals(1717351767, response.iterator().next().rulePriority());
         Assertions.assertEquals(false, response.iterator().next().isDisabled());
-        Assertions.assertEquals(GovernanceRuleType.INTEGRATED, response.iterator().next().ruleType());
-        Assertions
-            .assertEquals(
-                GovernanceRuleSourceResourceType.ASSESSMENTS, response.iterator().next().sourceResourceType());
-        Assertions.assertEquals("nondegjdyd", response.iterator().next().excludedScopes().get(0));
+        Assertions.assertEquals(GovernanceRuleType.SERVICE_NOW, response.iterator().next().ruleType());
+        Assertions.assertEquals(GovernanceRuleSourceResourceType.ASSESSMENTS,
+            response.iterator().next().sourceResourceType());
+        Assertions.assertEquals("tqmiuvjplosebm", response.iterator().next().excludedScopes().get(0));
         Assertions.assertEquals(true, response.iterator().next().includeMemberScopes());
-        Assertions.assertEquals(GovernanceRuleOwnerSourceType.BY_TAG, response.iterator().next().ownerSource().type());
-        Assertions.assertEquals("hzbqfdpfawrptvcs", response.iterator().next().ownerSource().value());
-        Assertions
-            .assertEquals(
-                true, response.iterator().next().governanceEmailNotification().disableManagerEmailNotification());
-        Assertions
-            .assertEquals(
-                true, response.iterator().next().governanceEmailNotification().disableOwnerEmailNotification());
+        Assertions.assertEquals(GovernanceRuleOwnerSourceType.MANUALLY,
+            response.iterator().next().ownerSource().type());
+        Assertions.assertEquals("eykcnhpplzh", response.iterator().next().ownerSource().value());
+        Assertions.assertEquals(true,
+            response.iterator().next().governanceEmailNotification().disableManagerEmailNotification());
+        Assertions.assertEquals(true,
+            response.iterator().next().governanceEmailNotification().disableOwnerEmailNotification());
     }
 }
