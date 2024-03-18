@@ -78,6 +78,11 @@ extends:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
           ServiceDirectory: identity
+          AdditionalMatrixConfigs:
+            - Name: identity_msi
+              Path: sdk/identity/platform-matrix.json
+              Selection: sparse
+              GenerateVMJobs: true
           SupportedClouds: 'Public,UsGov,China'
           Artifacts:
             - name: azure-identity
