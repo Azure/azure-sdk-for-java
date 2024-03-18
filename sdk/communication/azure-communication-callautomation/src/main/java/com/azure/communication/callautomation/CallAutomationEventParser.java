@@ -25,8 +25,6 @@ import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
-import com.azure.communication.callautomation.models.events.TeamsComplianceRecordingStateChanged;
-import com.azure.communication.callautomation.models.events.TeamsRecordingStateChanged;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesFailed;
 import com.azure.core.models.CloudEvent;
@@ -138,10 +136,6 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, CancelAddParticipantSucceeded.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CancelAddParticipantFailed")) {
                 ret = mapper.convertValue(eventData, CancelAddParticipantFailed.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TeamsComplianceRecordingStateChanged")) {
-                ret = mapper.convertValue(eventData, TeamsComplianceRecordingStateChanged.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TeamsRecordingStateChanged")) {
-                ret = mapper.convertValue(eventData, TeamsRecordingStateChanged.class);
             }
             return ret;
         } catch (RuntimeException e) {

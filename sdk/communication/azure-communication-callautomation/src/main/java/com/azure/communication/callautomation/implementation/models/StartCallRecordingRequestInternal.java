@@ -61,7 +61,7 @@ public final class StartCallRecordingRequestInternal {
     private List<ChannelAffinityInternal> channelAffinity;
 
     /*
-     * When set to true will start recording in Pause mode, which could be resumed.
+     * When set to true will start recording in Pause mode, which can be resumed.
      */
     @JsonProperty(value = "pauseOnStart")
     private Boolean pauseOnStart;
@@ -229,7 +229,7 @@ public final class StartCallRecordingRequestInternal {
     }
 
     /**
-     * Get the pauseOnStart property: When set to true will start recording in Pause mode, which could be resumed.
+     * Get the pauseOnStart property: When set to true will start recording in Pause mode, which can be resumed.
      *
      * @return the pauseOnStart value.
      */
@@ -238,7 +238,7 @@ public final class StartCallRecordingRequestInternal {
     }
 
     /**
-     * Set the pauseOnStart property: When set to true will start recording in Pause mode, which could be resumed.
+     * Set the pauseOnStart property: When set to true will start recording in Pause mode, which can be resumed.
      *
      * @param pauseOnStart the pauseOnStart value to set.
      * @return the StartCallRecordingRequestInternal object itself.

@@ -12,10 +12,10 @@ import java.util.Collection;
 public final class RecordingStorageType extends ExpandableStringEnum<RecordingStorageType> {
 
     /** Static value acs for RecordingStorageTypeInternal. */
-    public static final RecordingStorageType ACS = fromString("acs");
+    public static final RecordingStorageType ACS = fromString("azureCommunicationServices");
 
     /** Static value blobStorage for RecordingStorageTypeInternal. */
-    public static final RecordingStorageType BLOB_STORAGE = fromString("blobStorage");
+    public static final RecordingStorageType BLOB_STORAGE = fromString("azureBlobStorage");
 
     /**
      * Creates or finds a RecordingStorageTypeInternal from its string representation.

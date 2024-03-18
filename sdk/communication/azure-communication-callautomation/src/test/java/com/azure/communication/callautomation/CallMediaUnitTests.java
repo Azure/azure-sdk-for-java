@@ -26,7 +26,6 @@ public class CallMediaUnitTests {
     private CallMedia callMedia;
     private FileSource playFileSource;
     private PlayOptions playOptions;
-    private PlayToAllOptions playToAllOptions;
     private TextSource playTextSource;
 
     @BeforeEach

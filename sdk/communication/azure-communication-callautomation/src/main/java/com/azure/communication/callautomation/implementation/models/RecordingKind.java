@@ -10,17 +10,14 @@ import java.util.Collection;
 
 /** Defines values for RecordingKind. */
 public final class RecordingKind extends ExpandableStringEnum<RecordingKind> {
-    /** Static value azureCommunicationServices for RecordingKind. */
-    public static final RecordingKind AZURE_COMMUNICATION_SERVICES = fromString("azureCommunicationServices");
+    /** Static value AzureCommunicationServices for RecordingKind. */
+    public static final RecordingKind AZURE_COMMUNICATION_SERVICES = fromString("AzureCommunicationServices");
 
-    /** Static value teams for RecordingKind. */
-    public static final RecordingKind TEAMS = fromString("teams");
+    /** Static value Teams for RecordingKind. */
+    public static final RecordingKind TEAMS = fromString("Teams");
 
-    /** Static value teamsCompliance for RecordingKind. */
-    public static final RecordingKind TEAMS_COMPLIANCE = fromString("teamsCompliance");
-
-    /** Static value others for RecordingKind. */
-    public static final RecordingKind OTHERS = fromString("others");
+    /** Static value TeamsCompliance for RecordingKind. */
+    public static final RecordingKind TEAMS_COMPLIANCE = fromString("TeamsCompliance");
 
     /**
      * Creates a new instance of RecordingKind value.

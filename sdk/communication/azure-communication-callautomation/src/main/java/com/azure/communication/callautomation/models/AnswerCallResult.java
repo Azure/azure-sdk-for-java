@@ -5,13 +5,7 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.communication.callautomation.CallConnection;
 import com.azure.communication.callautomation.CallConnectionAsync;
-import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.core.annotation.Immutable;
-import reactor.core.publisher.Mono;
-
-import java.time.Duration;
-import java.util.Objects;
 
 /**
  * The result of answering a call

@@ -5,8 +5,6 @@ package com.azure.communication.callautomation.implementation.converters;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.List;
-
 /**
  * The TranscriptionDataInternal model.
  */

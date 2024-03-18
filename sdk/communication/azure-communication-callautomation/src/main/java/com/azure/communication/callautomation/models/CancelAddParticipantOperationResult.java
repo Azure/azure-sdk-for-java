@@ -6,13 +6,8 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.callautomation.implementation.accesshelpers.CancelAddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CancelAddParticipantResponseConstructorProxy.CancelAddParticipantResponseConstructorAccessor;
 import com.azure.communication.callautomation.implementation.models.CancelAddParticipantResponse;
-import com.azure.communication.callautomation.models.events.CancelAddParticipantSucceeded;
-import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.CancelAddParticipantFailed;
 import com.azure.core.annotation.Immutable;
-import reactor.core.publisher.Mono;
 
-import java.time.Duration;
 import java.util.Objects;
 
 /** The CancelAddParticipantResult model. */

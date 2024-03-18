@@ -17,10 +17,10 @@ public final class ExternalStorageInternal {
     private RecordingStorageKind recordingStorageKind;
 
     /*
-     * Defines the Azure Blob storage location where the recording will be stored
+     * Uri of a container or a location within a container
      */
-    @JsonProperty(value = "azureBlobStorage")
-    private AzureBlobStorage azureBlobStorage;
+    @JsonProperty(value = "recordingDestinationContainerUrl")
+    private String recordingDestinationContainerUrl;
 
     /** Creates an instance of ExternalStorageInternal class. */
     public ExternalStorageInternal() {}
@@ -46,22 +46,22 @@ public final class ExternalStorageInternal {
     }
 
     /**
-     * Get the azureBlobStorage property: Defines the Azure Blob storage location where the recording will be stored.
+     * Get the recordingDestinationContainerUrl property: Uri of a container or a location within a container.
      *
-     * @return the azureBlobStorage value.
+     * @return the recordingDestinationContainerUrl value.
      */
-    public AzureBlobStorage getAzureBlobStorage() {
-        return this.azureBlobStorage;
+    public String getRecordingDestinationContainerUrl() {
+        return this.recordingDestinationContainerUrl;
     }
 
     /**
-     * Set the azureBlobStorage property: Defines the Azure Blob storage location where the recording will be stored.
+     * Set the recordingDestinationContainerUrl property: Uri of a container or a location within a container.
      *
-     * @param azureBlobStorage the azureBlobStorage value to set.
+     * @param recordingDestinationContainerUrl the recordingDestinationContainerUrl value to set.
      * @return the ExternalStorageInternal object itself.
      */
-    public ExternalStorageInternal setAzureBlobStorage(AzureBlobStorage azureBlobStorage) {
-        this.azureBlobStorage = azureBlobStorage;
+    public ExternalStorageInternal setRecordingDestinationContainerUrl(String recordingDestinationContainerUrl) {
+        this.recordingDestinationContainerUrl = recordingDestinationContainerUrl;
         return this;
     }
 }

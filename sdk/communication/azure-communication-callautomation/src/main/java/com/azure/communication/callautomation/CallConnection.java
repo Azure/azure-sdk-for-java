@@ -19,6 +19,7 @@ import com.azure.communication.callautomation.models.TransferCallToParticipantOp
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.exception.HttpResponseException;
@@ -109,6 +110,31 @@ public final class CallConnection {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CallParticipant> getParticipantWithResponse(CommunicationIdentifier targetParticipant, Context context) {
         return callConnectionAsync.getParticipantWithResponseInternal(targetParticipant, context).block();
+    }
+
+    /**
+     * Get all participants.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A list of all participants in the call.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CallParticipant> listParticipants() {
+        return new PagedIterable<>(callConnectionAsync.listParticipants());
+    }
+
+    /**
+     * Get all participants.
+     *
+     * @param context A {@link Context} representing the request context.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response with a list of all participants in the call.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<CallParticipant> listParticipants(Context context) {
+        return new PagedIterable<>(callConnectionAsync.listParticipantsWithContext(context));
     }
 
     /**
@@ -208,14 +234,15 @@ public final class CallConnection {
     /**
      * Mutes a participant in the call.
      *
-     * @param options - Options for the request.
-     * @param context A {@link Context} representing the request context.
-     * @return a Response containing the MuteParticipantResult object.
+     * @param options -  MuteParticipantOptions configuration options.
+     * @param context Context
+     * @return Response with result of muting a participant from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MuteParticipantResult> muteParticipantWithResponse(MuteParticipantOptions options, Context context) {
         return callConnectionAsync.muteParticipantWithResponseInternal(options, context).block();
     }
+
 
     /**
      * Cancel add participant operation request.

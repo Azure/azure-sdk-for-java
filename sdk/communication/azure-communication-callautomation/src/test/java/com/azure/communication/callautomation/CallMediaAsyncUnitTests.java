@@ -12,7 +12,6 @@ import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOp
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
-import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognitionChoice;
 import com.azure.communication.callautomation.models.RecognizeInputType;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
@@ -42,7 +41,6 @@ public class CallMediaAsyncUnitTests {
     private TextSource playTextSource;
     private SsmlSource playSsmlSource;
     private PlayOptions playOptions;
-    private PlayToAllOptions playToAllOptions;
 
     @BeforeEach
     public void setup() {
