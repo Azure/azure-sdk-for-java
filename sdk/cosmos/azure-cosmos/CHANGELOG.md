@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.45.3-hotfix (2024-03-15)
+
+#### Bugs Fixed
+* Fixed an issue where `sampleDiagnostics` is not being honored for `query. See [PR 37015](https://github.com/Azure/azure-sdk-for-java/pull/37015)
+* Suppress exceptions when calling diagnostics handlers. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+
+### Other Changes
+* Only call `System.exit()` in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Removed `System.exit()` calls from `ImplementationBridgeHelpers`. - See [PR 39184](https://github.com/Azure/azure-sdk-for-java/pull/39184)
+
 ### 4.45.2-hotfix (2023-09-18)
 > [!IMPORTANT]
 > We strongly recommend our customers to upgrade directly to at least 4.48.2 or above if they have been using the 4.45.2-hotfix version of `azure-cosmos`. Versions 4.46.0 - 4.48.1 will miss important fixes that have been backported to 4.45.2-hotfix.

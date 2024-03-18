@@ -141,6 +141,10 @@ public class Configs {
     private static final String DEFENSIVE_WARMUP_CONCURRENCY = "COSMOS.DEFENSIVE_WARMUP_CONCURRENCY";
     private static final int DEFAULT_DEFENSIVE_WARMUP_CONCURRENCY = 1;
 
+    // Error handling strategy in diagnostics provider
+    public static final String DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = "COSMOS.DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR";
+    public static final boolean DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = true;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -389,5 +393,16 @@ public class Configs {
 
     public static int getAggressiveWarmupConcurrency() {
         return getIntValue(System.getProperty(AGGRESSIVE_WARMUP_CONCURRENCY), DEFAULT_AGGRESSIVE_WARMUP_CONCURRENCY);
+    }
+
+    public static boolean shouldDiagnosticsProviderSystemExitOnError() {
+        String shouldSystemExit =
+            System.getProperty(
+                DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR)),
+                    String.valueOf(DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR)));
+
+        return Boolean.parseBoolean(shouldSystemExit);
     }
 }

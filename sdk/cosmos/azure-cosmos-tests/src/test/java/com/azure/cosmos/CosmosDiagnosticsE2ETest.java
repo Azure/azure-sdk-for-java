@@ -5,27 +5,40 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
+import com.azure.cosmos.implementation.DiagnosticsProviderJvmFatalErrorMapper;
+import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -50,8 +63,22 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
     @AfterClass(groups = {"simple", "emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        assertThat(this.client).isNotNull();
-        this.client.close();
+
+        CosmosClient clientSnapshot = this.client;
+        if (clientSnapshot != null) {
+            clientSnapshot.close();
+        }
+    }
+
+    @DataProvider
+    public static Object[][] operationTypeProvider() {
+        return new Object[][]{
+            {OperationType.Read},
+            {OperationType.Replace},
+            {OperationType.Create},
+            {OperationType.Delete},
+            {OperationType.Query}
+        };
     }
 
     public String resolveTestNameSuffix(Object[] row) {
@@ -179,12 +206,13 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         // with custom appender
     }
 
-    @Test(groups = { "simple", "emulator" }, timeOut = TIMEOUT)
-    public void delayedSampling() {
+    @Test(groups = { "simple", "emulator" }, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void delayedSampling(OperationType operationType) {
         MeterRegistry meterRegistry = ConsoleLoggingRegistryFactory.create(1);
 
+        CapturingLogger capturingLogger = new CapturingLogger();
         CosmosClientTelemetryConfig clientTelemetryCfg = new CosmosClientTelemetryConfig()
-            .diagnosticsHandler(CosmosDiagnosticsHandler.DEFAULT_LOGGING_HANDLER)
+            .diagnosticsHandler(capturingLogger)
             .metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(meterRegistry));
 
         CosmosClientBuilder builder = this
@@ -197,17 +225,29 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         meterRegistry.clear();
         meterRegistry.close();
 
+        String id = UUID.randomUUID().toString();
+        ObjectNode newItem = getDocumentDefinition(id);
+        container.createItem(newItem);
+
         // change sample rate to 25%
         clientTelemetryCfg.sampleDiagnostics(0.25);
-        executeTestCase(container);
+        executeDocumentOperation(container, operationType, id, newItem);
+
+        int loggedMessageSizeBefore = capturingLogger.getLoggedMessages().size();
 
         // reduce sample rate to 0 - disable all diagnostics
         clientTelemetryCfg.sampleDiagnostics(0);
-        executeTestCase(container);
+        executeDocumentOperation(container, operationType, id, newItem);
+        int loggedMessageSizeAfter = capturingLogger.getLoggedMessages().size();
+        // verify when sample rate is 0, the diagnostics will not be logged
+        assertThat(loggedMessageSizeBefore).isEqualTo(loggedMessageSizeAfter);
 
         // set sample rate to 1 - enable all diagnostics (no sampling anymore)
         clientTelemetryCfg.sampleDiagnostics(1);
-        executeTestCase(container);
+        executeDocumentOperation(container, operationType, id, newItem);
+        loggedMessageSizeAfter = capturingLogger.getLoggedMessages().size();
+        // Verify when sample rate is 1, the diagnostics will be logged
+        assertThat(loggedMessageSizeBefore + 1).isEqualTo(loggedMessageSizeAfter);
 
         // no assertions here - invocations for diagnostics handler are validated above
         // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
@@ -230,6 +270,104 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         // log4j event logging isn't validated in general in unit tests because it is too brittle to do so
         // with custom appender
         System.setProperty("COSMOS.USE_LEGACY_TRACING", "false");
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void nullPointerDiagnosticsHandler() {
+        NullPointerDiagnosticsHandle capturingHandler = new NullPointerDiagnosticsHandle();
+
+        CosmosClientBuilder builder = this
+            .getClientBuilder()
+            .clientTelemetryConfig(new CosmosClientTelemetryConfig().diagnosticsHandler(capturingHandler));
+
+        CosmosContainer container = this.getContainer(builder);
+
+        AtomicBoolean systemExited = new AtomicBoolean(false);
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                systemExited.set(true);
+            }
+        });
+
+        executeTestCase(container);
+        assertThat(systemExited.get()).isFalse();
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void OOMDiagnosticsHandler() throws InterruptedException {
+        // validate when false, System.exit will not be called
+        System.setProperty("COSMOS.DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR", "false");
+
+        try {
+            OOMDiagnosticsHandle capturingHandler = new OOMDiagnosticsHandle();
+
+            CosmosClientBuilder builder = this
+                .getClientBuilder()
+                .clientTelemetryConfig(new CosmosClientTelemetryConfig().diagnosticsHandler(capturingHandler));
+
+            CosmosContainer container = this.getContainer(builder);
+
+            AtomicBoolean systemExited = new AtomicBoolean(false);
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                @Override
+                public void run() {
+                    systemExited.set(true);
+                }
+            });
+
+            // with OOM exception, if no system.exit is called, the reactor thread will hang
+            // so put it in different thead
+            Mono.just(this)
+                .doOnNext(t -> executeTestCase(container))
+                .subscribeOn(Schedulers.parallel())
+                .subscribe();
+
+            Thread.sleep(2000);
+            assertThat(systemExited.get()).isFalse();
+        } finally {
+            System.clearProperty("COSMOS.DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR");
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void OOMDiagnosticsHandlerWithErrorMapper() throws JsonProcessingException {
+        DiagnosticsProviderJvmFatalErrorMapper
+            .getMapper()
+            .registerFatalErrorMapper((error) -> new NullPointerException("test"));
+
+        // validate when false, System.exit will not be called
+        OOMDiagnosticsHandle capturingHandler = new OOMDiagnosticsHandle(ResourceType.Document, OperationType.Create);
+
+        CosmosClientBuilder builder = this
+            .getClientBuilder()
+            .clientTelemetryConfig(new CosmosClientTelemetryConfig().diagnosticsHandler(capturingHandler));
+
+        CosmosContainer container = this.getContainer(builder);
+
+        AtomicBoolean systemExited = new AtomicBoolean(false);
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                systemExited.set(true);
+            }
+        });
+
+        try {
+            executeTestCase(container);
+            fail("should fail with RuntimeException");
+
+        } catch (RuntimeException e) {
+            assertThat(e.getCause() instanceof NullPointerException).isTrue();
+            assertThat(systemExited.get()).isFalse();
+        }
+
+        // doing an upsert and verify in the diagnostics contain mapper execution count
+        CosmosDiagnostics cosmosDiagnostics =
+            container.upsertItem(getDocumentDefinition(UUID.randomUUID().toString())).getDiagnostics();
+        ObjectNode cosmosDiagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
+        assertThat(cosmosDiagnosticsNode.get("jvmFatalErrorMapperExecutionCount")).isNotNull();
+        assertThat(cosmosDiagnosticsNode.get("jvmFatalErrorMapperExecutionCount").asLong()).isGreaterThan(0);
     }
 
     private void executeTestCase(CosmosContainer container) {
@@ -269,6 +407,49 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         this.client = builder.buildClient();
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
         return this.client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
+    }
+
+    private void executeDocumentOperation(
+        CosmosContainer cosmosContainer,
+        OperationType operationType,
+        String createdItemId,
+        ObjectNode createdItem) {
+        switch (operationType) {
+            case Query:
+                String query = String.format("SELECT * from c");
+                CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
+                queryRequestOptions.setFeedRange(FeedRange.forLogicalPartition(new PartitionKey(createdItemId)));
+                Iterable<FeedResponse<JsonNode>> results = cosmosContainer.queryItems(query, queryRequestOptions, JsonNode.class).iterableByPage();
+                results.forEach(t -> {});
+                break;
+            case ReadFeed:
+                CosmosChangeFeedRequestOptions changeFeedRequestOptions = CosmosChangeFeedRequestOptions
+                    .createForProcessingFromBeginning(FeedRange.forFullRange());
+                cosmosContainer.queryChangeFeed(changeFeedRequestOptions, JsonNode.class).iterableByPage();
+                break;
+            case Read:
+                cosmosContainer
+                    .readItem(createdItemId, new PartitionKey(createdItemId), JsonNode.class);
+                break;
+            case Replace:
+                cosmosContainer
+                    .replaceItem(createdItem, createdItemId, new PartitionKey(createdItemId), new CosmosItemRequestOptions());
+                break;
+            case Delete:
+                try {
+                    cosmosContainer.deleteItem(getDocumentDefinition(UUID.randomUUID().toString()), new CosmosItemRequestOptions());
+                } catch (CosmosException e) {
+                    if (!Exceptions.isNotFound(e)) {
+                        throw e;
+                    }
+                }
+                break;
+            case Create:
+                cosmosContainer.createItem(getDocumentDefinition(UUID.randomUUID().toString()));
+                break;
+            default:
+                throw new IllegalArgumentException("The operation type is not supported");
+        }
     }
 
     private static class CapturingDiagnosticsHandler implements CosmosDiagnosticsHandler {
@@ -338,6 +519,42 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
         public List<String> getLoggedMessages() {
             return this.loggedMessages;
+        }
+    }
+
+    private static class NullPointerDiagnosticsHandle implements CosmosDiagnosticsHandler {
+
+        @Override
+        public void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
+            throw new NullPointerException("NullPointerDiagnosticsHandle");
+        }
+    }
+
+    private static class OOMDiagnosticsHandle implements CosmosDiagnosticsHandler {
+        private ResourceType resourceType;
+        private OperationType operationType;
+        private final boolean oomLimitByResourceAndOperationType;
+
+        public OOMDiagnosticsHandle(ResourceType resourceType, OperationType operationType) {
+            this.resourceType = resourceType;
+            this.operationType = operationType;
+            this.oomLimitByResourceAndOperationType = true;
+        }
+
+        public OOMDiagnosticsHandle() {
+            this.oomLimitByResourceAndOperationType = false;
+        }
+
+        @Override
+        public void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
+            if (this.oomLimitByResourceAndOperationType) {
+                if (diagnosticsContext.getOperationType() == this.operationType.toString()
+                    && diagnosticsContext.getResourceType() == this.resourceType.toString()) {
+                    throw new OutOfMemoryError("OOMDiagnosticsHandle");
+                }
+            } else {
+                throw new OutOfMemoryError("OOMDiagnosticsHandle");
+            }
         }
     }
 }
