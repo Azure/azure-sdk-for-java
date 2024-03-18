@@ -154,8 +154,7 @@ public final class VolumeProperties {
     private List<MountTargetProperties> mountTargets;
 
     /*
-     * What type of volume is this. For destination volumes in Cross Region Replication, set type to DataProtection.
-     * For creating clone volume, set type to ShortTermClone
+     * What type of volume is this. For destination volumes in Cross Region Replication, set type to DataProtection
      */
     @JsonProperty(value = "volumeType")
     private String volumeType;
@@ -419,14 +418,6 @@ public final class VolumeProperties {
      */
     @JsonProperty(value = "originatingResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String originatingResourceId;
-
-    /*
-     * inheritedSizeInBytes
-     * 
-     * Space shared by short term clone volume with parent volume in bytes.
-     */
-    @JsonProperty(value = "inheritedSizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
-    private Long inheritedSizeInBytes;
 
     /**
      * Creates an instance of VolumeProperties class.
@@ -740,7 +731,7 @@ public final class VolumeProperties {
 
     /**
      * Get the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @return the volumeType value.
      */
@@ -750,7 +741,7 @@ public final class VolumeProperties {
 
     /**
      * Set the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @param volumeType the volumeType value to set.
      * @return the VolumeProperties object itself.
@@ -1473,17 +1464,6 @@ public final class VolumeProperties {
      */
     public String originatingResourceId() {
         return this.originatingResourceId;
-    }
-
-    /**
-     * Get the inheritedSizeInBytes property: inheritedSizeInBytes
-     * 
-     * Space shared by short term clone volume with parent volume in bytes.
-     * 
-     * @return the inheritedSizeInBytes value.
-     */
-    public Long inheritedSizeInBytes() {
-        return this.inheritedSizeInBytes;
     }
 
     /**
