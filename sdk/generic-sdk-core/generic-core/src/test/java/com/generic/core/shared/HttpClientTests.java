@@ -22,7 +22,7 @@ import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.policy.HttpLoggingPolicy;
 import com.generic.core.implementation.http.ContentType;
-import com.generic.core.implementation.http.RestProxy;
+import com.generic.core.http.RestProxy;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.UrlBuilder;
