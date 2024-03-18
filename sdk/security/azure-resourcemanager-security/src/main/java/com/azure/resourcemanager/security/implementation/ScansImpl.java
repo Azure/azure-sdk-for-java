@@ -25,9 +25,8 @@ public final class ScansImpl implements Scans {
     public List<Scan> value() {
         List<ScanInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner.stream().map(inner1 -> new ScanImpl(inner1, this.manager())).collect(Collectors.toList()));
+            return Collections.unmodifiableList(
+                inner.stream().map(inner1 -> new ScanImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

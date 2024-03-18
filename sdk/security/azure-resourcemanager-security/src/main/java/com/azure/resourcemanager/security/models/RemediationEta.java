@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ETA (estimated time of arrival) for remediation. */
+/**
+ * The ETA (estimated time of arrival) for remediation.
+ */
 @Fluent
 public final class RemediationEta {
     /*
@@ -24,13 +26,15 @@ public final class RemediationEta {
     @JsonProperty(value = "justification", required = true)
     private String justification;
 
-    /** Creates an instance of RemediationEta class. */
+    /**
+     * Creates an instance of RemediationEta class.
+     */
     public RemediationEta() {
     }
 
     /**
      * Get the eta property: ETA for remediation.
-     *
+     * 
      * @return the eta value.
      */
     public OffsetDateTime eta() {
@@ -39,7 +43,7 @@ public final class RemediationEta {
 
     /**
      * Set the eta property: ETA for remediation.
-     *
+     * 
      * @param eta the eta value to set.
      * @return the RemediationEta object itself.
      */
@@ -50,7 +54,7 @@ public final class RemediationEta {
 
     /**
      * Get the justification property: Justification for change of Eta.
-     *
+     * 
      * @return the justification value.
      */
     public String justification() {
@@ -59,7 +63,7 @@ public final class RemediationEta {
 
     /**
      * Set the justification property: Justification for change of Eta.
-     *
+     * 
      * @param justification the justification value to set.
      * @return the RemediationEta object itself.
      */
@@ -70,19 +74,17 @@ public final class RemediationEta {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (eta() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property eta in model RemediationEta"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property eta in model RemediationEta"));
         }
         if (justification() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property justification in model RemediationEta"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property justification in model RemediationEta"));
         }
     }
 

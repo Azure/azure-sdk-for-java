@@ -7,7 +7,9 @@ package com.azure.resourcemanager.newrelicobservability.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** List of all the New relic accounts for the given user. */
+/**
+ * List of all the New relic accounts for the given user.
+ */
 @Fluent
 public final class AccountProperties {
     /*
@@ -29,18 +31,20 @@ public final class AccountProperties {
     private String accountName;
 
     /*
-     * region
+     * Region where New Relic account is present
      */
     @JsonProperty(value = "region")
     private String region;
 
-    /** Creates an instance of AccountProperties class. */
+    /**
+     * Creates an instance of AccountProperties class.
+     */
     public AccountProperties() {
     }
 
     /**
      * Get the organizationId property: organization id.
-     *
+     * 
      * @return the organizationId value.
      */
     public String organizationId() {
@@ -49,7 +53,7 @@ public final class AccountProperties {
 
     /**
      * Set the organizationId property: organization id.
-     *
+     * 
      * @param organizationId the organizationId value to set.
      * @return the AccountProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class AccountProperties {
 
     /**
      * Get the accountId property: account id.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -69,7 +73,7 @@ public final class AccountProperties {
 
     /**
      * Set the accountId property: account id.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the AccountProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class AccountProperties {
 
     /**
      * Get the accountName property: account name.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -89,7 +93,7 @@ public final class AccountProperties {
 
     /**
      * Set the accountName property: account name.
-     *
+     * 
      * @param accountName the accountName value to set.
      * @return the AccountProperties object itself.
      */
@@ -99,8 +103,8 @@ public final class AccountProperties {
     }
 
     /**
-     * Get the region property: region.
-     *
+     * Get the region property: Region where New Relic account is present.
+     * 
      * @return the region value.
      */
     public String region() {
@@ -108,8 +112,8 @@ public final class AccountProperties {
     }
 
     /**
-     * Set the region property: region.
-     *
+     * Set the region property: Region where New Relic account is present.
+     * 
      * @param region the region value to set.
      * @return the AccountProperties object itself.
      */
@@ -120,7 +124,7 @@ public final class AccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.redisenterprise.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.redisenterprise.models.PrivateEndpoint;
@@ -28,10 +27,6 @@ public final class PrivateEndpointConnectionImpl
 
     public String type() {
         return this.innerModel().type();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
     }
 
     public PrivateEndpoint privateEndpoint() {
@@ -71,25 +66,19 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .put(resourceGroupName, clusterName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(resourceGroupName,
+            clusterName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnection create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .put(resourceGroupName, clusterName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(resourceGroupName,
+            clusterName, privateEndpointConnectionName, this.innerModel(), context);
         return this;
     }
 
-    PrivateEndpointConnectionImpl(
-        String name, com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
+    PrivateEndpointConnectionImpl(String name,
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = new PrivateEndpointConnectionInner();
         this.serviceManager = serviceManager;
         this.privateEndpointConnectionName = name;
@@ -100,50 +89,36 @@ public final class PrivateEndpointConnectionImpl
     }
 
     public PrivateEndpointConnection apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .put(resourceGroupName, clusterName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(resourceGroupName,
+            clusterName, privateEndpointConnectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrivateEndpointConnection apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .put(resourceGroupName, clusterName, privateEndpointConnectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections().put(resourceGroupName,
+            clusterName, privateEndpointConnectionName, this.innerModel(), context);
         return this;
     }
 
-    PrivateEndpointConnectionImpl(
-        PrivateEndpointConnectionInner innerObject,
+    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject,
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "redisEnterprise");
-        this.privateEndpointConnectionName = Utils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "redisEnterprise");
+        this.privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
     }
 
     public PrivateEndpointConnection refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .getWithResponse(resourceGroupName, clusterName, privateEndpointConnectionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, clusterName, privateEndpointConnectionName, Context.NONE).getValue();
         return this;
     }
 
     public PrivateEndpointConnection refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrivateEndpointConnections()
-                .getWithResponse(resourceGroupName, clusterName, privateEndpointConnectionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPrivateEndpointConnections()
+            .getWithResponse(resourceGroupName, clusterName, privateEndpointConnectionName, context).getValue();
         return this;
     }
 
@@ -152,8 +127,8 @@ public final class PrivateEndpointConnectionImpl
         return this;
     }
 
-    public PrivateEndpointConnectionImpl withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionImpl
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         this.innerModel().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }

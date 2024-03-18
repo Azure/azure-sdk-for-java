@@ -2784,6 +2784,11 @@ public class CosmosAsyncContainer {
 
                     return cosmosAsyncContainer.trySplitFeedRange(feedRange, targetedCountAfterSplit);
                 }
+
+                @Override
+                public String getLinkWithoutTrailingSlash(CosmosAsyncContainer cosmosAsyncContainer) {
+                    return cosmosAsyncContainer.getLinkWithoutTrailingSlash();
+                }
             });
     }
 

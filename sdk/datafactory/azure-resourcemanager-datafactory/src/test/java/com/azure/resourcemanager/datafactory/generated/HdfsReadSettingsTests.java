@@ -12,20 +12,21 @@ public final class HdfsReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HdfsReadSettings model = BinaryData.fromString(
-            "{\"type\":\"HdfsReadSettings\",\"recursive\":\"datayktu\",\"wildcardFolderPath\":\"datalhegoxefsa\",\"wildcardFileName\":\"datadcoeexwg\",\"fileListPath\":\"dataz\",\"enablePartitionDiscovery\":\"datazmqjhghihkhjldw\",\"partitionRootPath\":\"dataqt\",\"modifiedDatetimeStart\":\"datatgn\",\"modifiedDatetimeEnd\":\"databjvmdkgvu\",\"distcpSettings\":{\"resourceManagerEndpoint\":\"datamlsuuhwuox\",\"tempScriptPath\":\"datauiaizzjotm\",\"distcpOptions\":\"datazjrkslqbaf\"},\"deleteFilesAfterCompletion\":\"datajxxcruleimswxoig\",\"maxConcurrentConnections\":\"dataumjmpgze\",\"disableMetricsCollection\":\"datavf\",\"\":{\"ks\":\"datajpmeptnqsnpa\",\"qol\":\"datarrvjwbeeolmob\"}}")
+            "{\"type\":\"HdfsReadSettings\",\"recursive\":\"dataerxfe\",\"wildcardFolderPath\":\"datamzsekvsuzyowr\",\"wildcardFileName\":\"datavofrenuvp\",\"fileListPath\":\"dataltnyyeyj\",\"enablePartitionDiscovery\":\"datafpbxnretpg\",\"partitionRootPath\":\"datatohruqtximrxeyz\",\"modifiedDatetimeStart\":\"datanxb\",\"modifiedDatetimeEnd\":\"datayglfyfcsbkjhoxtb\",\"distcpSettings\":{\"resourceManagerEndpoint\":\"databpef\",\"tempScriptPath\":\"datajpnixd\",\"distcpOptions\":\"datajkfvmrnwgeaj\"},\"deleteFilesAfterCompletion\":\"datafeiiri\",\"maxConcurrentConnections\":\"datajdnknbt\",\"disableMetricsCollection\":\"datardep\",\"\":{\"onovfnob\":\"datazhkp\",\"mmzxpsrlbppjq\":\"datawhutvcdtgxsyfuh\"}}")
             .toObject(HdfsReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HdfsReadSettings model = new HdfsReadSettings().withMaxConcurrentConnections("dataumjmpgze")
-            .withDisableMetricsCollection("datavf").withRecursive("datayktu").withWildcardFolderPath("datalhegoxefsa")
-            .withWildcardFileName("datadcoeexwg").withFileListPath("dataz")
-            .withEnablePartitionDiscovery("datazmqjhghihkhjldw").withPartitionRootPath("dataqt")
-            .withModifiedDatetimeStart("datatgn").withModifiedDatetimeEnd("databjvmdkgvu")
-            .withDistcpSettings(new DistcpSettings().withResourceManagerEndpoint("datamlsuuhwuox")
-                .withTempScriptPath("datauiaizzjotm").withDistcpOptions("datazjrkslqbaf"))
-            .withDeleteFilesAfterCompletion("datajxxcruleimswxoig");
+        HdfsReadSettings model = new HdfsReadSettings().withMaxConcurrentConnections("datajdnknbt")
+            .withDisableMetricsCollection("datardep").withRecursive("dataerxfe")
+            .withWildcardFolderPath("datamzsekvsuzyowr").withWildcardFileName("datavofrenuvp")
+            .withFileListPath("dataltnyyeyj").withEnablePartitionDiscovery("datafpbxnretpg")
+            .withPartitionRootPath("datatohruqtximrxeyz").withModifiedDatetimeStart("datanxb")
+            .withModifiedDatetimeEnd("datayglfyfcsbkjhoxtb")
+            .withDistcpSettings(new DistcpSettings().withResourceManagerEndpoint("databpef")
+                .withTempScriptPath("datajpnixd").withDistcpOptions("datajkfvmrnwgeaj"))
+            .withDeleteFilesAfterCompletion("datafeiiri");
         model = BinaryData.fromObject(model).toObject(HdfsReadSettings.class);
     }
 }

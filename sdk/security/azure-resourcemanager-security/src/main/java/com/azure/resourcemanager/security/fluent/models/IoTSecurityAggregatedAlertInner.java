@@ -14,7 +14,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-/** Security Solution Aggregated Alert information. */
+/**
+ * Security Solution Aggregated Alert information.
+ */
 @Fluent
 public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
     /*
@@ -30,13 +32,15 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of IoTSecurityAggregatedAlertInner class. */
+    /**
+     * Creates an instance of IoTSecurityAggregatedAlertInner class.
+     */
     public IoTSecurityAggregatedAlertInner() {
     }
 
     /**
      * Get the innerProperties property: IoT Security solution aggregated alert details.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IoTSecurityAggregatedAlertProperties innerProperties() {
@@ -45,7 +49,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -54,7 +58,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the IoTSecurityAggregatedAlertInner object itself.
      */
@@ -65,7 +69,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the alertType property: Name of the alert type.
-     *
+     * 
      * @return the alertType value.
      */
     public String alertType() {
@@ -74,7 +78,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the alertDisplayName property: Display name of the alert type.
-     *
+     * 
      * @return the alertDisplayName value.
      */
     public String alertDisplayName() {
@@ -83,7 +87,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the aggregatedDateUtc property: Date of detection.
-     *
+     * 
      * @return the aggregatedDateUtc value.
      */
     public LocalDate aggregatedDateUtc() {
@@ -92,7 +96,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the vendorName property: Name of the organization that raised the alert.
-     *
+     * 
      * @return the vendorName value.
      */
     public String vendorName() {
@@ -101,7 +105,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the reportedSeverity property: Assessed alert severity.
-     *
+     * 
      * @return the reportedSeverity value.
      */
     public ReportedSeverity reportedSeverity() {
@@ -110,7 +114,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the remediationSteps property: Recommended steps for remediation.
-     *
+     * 
      * @return the remediationSteps value.
      */
     public String remediationSteps() {
@@ -119,7 +123,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the suspected vulnerability and meaning.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -128,7 +132,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the count property: Number of alerts occurrences within the aggregated time window.
-     *
+     * 
      * @return the count value.
      */
     public Long count() {
@@ -137,7 +141,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the effectedResourceType property: Azure resource ID of the resource that received the alerts.
-     *
+     * 
      * @return the effectedResourceType value.
      */
     public String effectedResourceType() {
@@ -146,7 +150,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the systemSource property: The type of the alerted resource (Azure, Non-Azure).
-     *
+     * 
      * @return the systemSource value.
      */
     public String systemSource() {
@@ -155,7 +159,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the actionTaken property: IoT Security solution alert response.
-     *
+     * 
      * @return the actionTaken value.
      */
     public String actionTaken() {
@@ -164,7 +168,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Get the logAnalyticsQuery property: Log analytics query for getting the list of affected devices/alerts.
-     *
+     * 
      * @return the logAnalyticsQuery value.
      */
     public String logAnalyticsQuery() {
@@ -174,7 +178,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
     /**
      * Get the topDevicesList property: 10 devices with the highest number of occurrences of this alert type, on this
      * day.
-     *
+     * 
      * @return the topDevicesList value.
      */
     public List<IoTSecurityAggregatedAlertPropertiesTopDevicesListItem> topDevicesList() {
@@ -183,7 +187,7 @@ public final class IoTSecurityAggregatedAlertInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

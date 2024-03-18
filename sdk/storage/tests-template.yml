@@ -4,7 +4,7 @@ parameters:
     default: []
 
 stages:
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
     parameters:
       ServiceDirectory: storage
       Artifacts:
@@ -55,7 +55,8 @@ stages:
       SupportedClouds: Preview
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
-        - Pool=(.*)-general/$1-storage
+        - Pool=.*LINUXPOOL.*/azsdk-pool-mms-ubuntu-2004-storage
+        - Pool=.*WINDOWSPOOL.*/azsdk-pool-mms-win-2022-general
         - ${{ each additionalReplace in parameters.AdditionalMatrixReplace }}:
             - ${{ additionalReplace }}
       MatrixConfigs:

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of TargetTypes. */
+/**
+ * Resource collection API of TargetTypes.
+ */
 public interface TargetTypes {
     /**
      * Get a list of Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -23,7 +25,7 @@ public interface TargetTypes {
 
     /**
      * Get a list of Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param continuationToken String that sets the continuation token.
      * @param context The context to associate with this operation.
@@ -36,7 +38,7 @@ public interface TargetTypes {
 
     /**
      * Get a Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param targetTypeName String that represents a Target Type resource name.
      * @param context The context to associate with this operation.
@@ -49,7 +51,7 @@ public interface TargetTypes {
 
     /**
      * Get a Target Type resources for given location.
-     *
+     * 
      * @param locationName String that represents a Location resource name.
      * @param targetTypeName String that represents a Target Type resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

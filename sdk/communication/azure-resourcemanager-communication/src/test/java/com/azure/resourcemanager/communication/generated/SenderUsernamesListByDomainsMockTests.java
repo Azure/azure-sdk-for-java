@@ -32,7 +32,7 @@ public final class SenderUsernamesListByDomainsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"dataLocation\":\"qkacewii\",\"username\":\"fpubjibwwi\",\"displayName\":\"ohqkvpuvksgpls\",\"provisioningState\":\"Failed\"},\"id\":\"n\",\"name\":\"synljphuopxodl\",\"type\":\"iyntorzihle\"}]}";
+            = "{\"value\":[{\"properties\":{\"dataLocation\":\"tmuwlauwzi\",\"username\":\"xbmp\",\"displayName\":\"jefuzmuvpbttdumo\",\"provisioningState\":\"Succeeded\"},\"id\":\"ebmnzbtbhjpglk\",\"name\":\"gohdneuelfphsd\",\"type\":\"htozfikdow\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,10 +49,10 @@ public final class SenderUsernamesListByDomainsMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SenderUsernameResource> response = manager.senderUsernames().listByDomains("rsndsytgadgvra",
-            "aeneqnzarrwl", "uu", com.azure.core.util.Context.NONE);
+        PagedIterable<SenderUsernameResource> response = manager.senderUsernames().listByDomains("ebxmubyynt", "lrb",
+            "tkoievseotgq", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fpubjibwwi", response.iterator().next().username());
-        Assertions.assertEquals("ohqkvpuvksgpls", response.iterator().next().displayName());
+        Assertions.assertEquals("xbmp", response.iterator().next().username());
+        Assertions.assertEquals("jefuzmuvpbttdumo", response.iterator().next().displayName());
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The information type keyword. */
+/**
+ * The information type keyword.
+ */
 @Fluent
 public final class InformationProtectionKeyword {
     /*
@@ -34,13 +36,15 @@ public final class InformationProtectionKeyword {
     @JsonProperty(value = "excluded")
     private Boolean excluded;
 
-    /** Creates an instance of InformationProtectionKeyword class. */
+    /**
+     * Creates an instance of InformationProtectionKeyword class.
+     */
     public InformationProtectionKeyword() {
     }
 
     /**
      * Get the pattern property: The keyword pattern.
-     *
+     * 
      * @return the pattern value.
      */
     public String pattern() {
@@ -49,7 +53,7 @@ public final class InformationProtectionKeyword {
 
     /**
      * Set the pattern property: The keyword pattern.
-     *
+     * 
      * @param pattern the pattern value to set.
      * @return the InformationProtectionKeyword object itself.
      */
@@ -60,7 +64,7 @@ public final class InformationProtectionKeyword {
 
     /**
      * Get the custom property: Indicates whether the keyword is custom or not.
-     *
+     * 
      * @return the custom value.
      */
     public Boolean custom() {
@@ -69,7 +73,7 @@ public final class InformationProtectionKeyword {
 
     /**
      * Set the custom property: Indicates whether the keyword is custom or not.
-     *
+     * 
      * @param custom the custom value to set.
      * @return the InformationProtectionKeyword object itself.
      */
@@ -80,7 +84,7 @@ public final class InformationProtectionKeyword {
 
     /**
      * Get the canBeNumeric property: Indicates whether the keyword can be applied on numeric types or not.
-     *
+     * 
      * @return the canBeNumeric value.
      */
     public Boolean canBeNumeric() {
@@ -89,7 +93,7 @@ public final class InformationProtectionKeyword {
 
     /**
      * Set the canBeNumeric property: Indicates whether the keyword can be applied on numeric types or not.
-     *
+     * 
      * @param canBeNumeric the canBeNumeric value to set.
      * @return the InformationProtectionKeyword object itself.
      */
@@ -100,7 +104,7 @@ public final class InformationProtectionKeyword {
 
     /**
      * Get the excluded property: Indicates whether the keyword is excluded or not.
-     *
+     * 
      * @return the excluded value.
      */
     public Boolean excluded() {
@@ -109,7 +113,7 @@ public final class InformationProtectionKeyword {
 
     /**
      * Set the excluded property: Indicates whether the keyword is excluded or not.
-     *
+     * 
      * @param excluded the excluded value to set.
      * @return the InformationProtectionKeyword object itself.
      */
@@ -120,7 +124,7 @@ public final class InformationProtectionKeyword {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

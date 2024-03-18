@@ -11,18 +11,18 @@ public final class AzureBlobStorageReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobStorageReadSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobStorageReadSettings\",\"recursive\":\"datadhlnar\",\"wildcardFolderPath\":\"datauoa\",\"wildcardFileName\":\"datairiccuyqtjvrz\",\"prefix\":\"datagmgfa\",\"fileListPath\":\"datab\",\"enablePartitionDiscovery\":\"dataaenvpzd\",\"partitionRootPath\":\"datapizgaujvc\",\"deleteFilesAfterCompletion\":\"datafybx\",\"modifiedDatetimeStart\":\"datarceomsqarbtrk\",\"modifiedDatetimeEnd\":\"dataoefi\",\"maxConcurrentConnections\":\"datajiudnus\",\"disableMetricsCollection\":\"datamoxohgkd\",\"\":{\"xzqzjv\":\"datahuepuvr\",\"wqyousqmern\":\"datarhyx\",\"memkyouwmj\":\"datajpl\",\"d\":\"datahmkch\"}}")
+            "{\"type\":\"AzureBlobStorageReadSettings\",\"recursive\":\"dataouxpdnlbp\",\"wildcardFolderPath\":\"datackohn\",\"wildcardFileName\":\"dataaqzekggurwxf\",\"prefix\":\"dataxg\",\"fileListPath\":\"datafiyuofegrzf\",\"enablePartitionDiscovery\":\"dataulookwnzotjbvh\",\"partitionRootPath\":\"datadlo\",\"deleteFilesAfterCompletion\":\"dataqsylkkqvmmm\",\"modifiedDatetimeStart\":\"dataljcauegymc\",\"modifiedDatetimeEnd\":\"datasmnjitxu\",\"maxConcurrentConnections\":\"datalbibwodayipgsh\",\"disableMetricsCollection\":\"dataoecmbyo\",\"\":{\"qpddebokzdshhhd\":\"databvfchfux\",\"zzkzvfywspaja\":\"dataxnzapzibmst\",\"zzpauts\":\"datajhvpktbnmhxt\"}}")
             .toObject(AzureBlobStorageReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureBlobStorageReadSettings model = new AzureBlobStorageReadSettings()
-            .withMaxConcurrentConnections("datajiudnus").withDisableMetricsCollection("datamoxohgkd")
-            .withRecursive("datadhlnar").withWildcardFolderPath("datauoa").withWildcardFileName("datairiccuyqtjvrz")
-            .withPrefix("datagmgfa").withFileListPath("datab").withEnablePartitionDiscovery("dataaenvpzd")
-            .withPartitionRootPath("datapizgaujvc").withDeleteFilesAfterCompletion("datafybx")
-            .withModifiedDatetimeStart("datarceomsqarbtrk").withModifiedDatetimeEnd("dataoefi");
+            .withMaxConcurrentConnections("datalbibwodayipgsh").withDisableMetricsCollection("dataoecmbyo")
+            .withRecursive("dataouxpdnlbp").withWildcardFolderPath("datackohn").withWildcardFileName("dataaqzekggurwxf")
+            .withPrefix("dataxg").withFileListPath("datafiyuofegrzf").withEnablePartitionDiscovery("dataulookwnzotjbvh")
+            .withPartitionRootPath("datadlo").withDeleteFilesAfterCompletion("dataqsylkkqvmmm")
+            .withModifiedDatetimeStart("dataljcauegymc").withModifiedDatetimeEnd("datasmnjitxu");
         model = BinaryData.fromObject(model).toObject(AzureBlobStorageReadSettings.class);
     }
 }

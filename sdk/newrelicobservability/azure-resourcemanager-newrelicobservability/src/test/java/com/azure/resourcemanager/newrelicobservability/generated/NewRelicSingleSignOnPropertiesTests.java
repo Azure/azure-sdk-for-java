@@ -13,29 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class NewRelicSingleSignOnPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NewRelicSingleSignOnProperties model =
-            BinaryData
-                .fromString(
-                    "{\"singleSignOnState\":\"Initial\",\"enterpriseAppId\":\"itnwuizgazxufi\",\"singleSignOnUrl\":\"ckyfih\",\"provisioningState\":\"NotSpecified\"}")
-                .toObject(NewRelicSingleSignOnProperties.class);
-        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
-        Assertions.assertEquals("itnwuizgazxufi", model.enterpriseAppId());
-        Assertions.assertEquals("ckyfih", model.singleSignOnUrl());
-        Assertions.assertEquals(ProvisioningState.NOT_SPECIFIED, model.provisioningState());
+        NewRelicSingleSignOnProperties model = BinaryData.fromString(
+            "{\"singleSignOnState\":\"Enable\",\"enterpriseAppId\":\"o\",\"singleSignOnUrl\":\"si\",\"provisioningState\":\"Deleting\"}")
+            .toObject(NewRelicSingleSignOnProperties.class);
+        Assertions.assertEquals(SingleSignOnStates.ENABLE, model.singleSignOnState());
+        Assertions.assertEquals("o", model.enterpriseAppId());
+        Assertions.assertEquals("si", model.singleSignOnUrl());
+        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NewRelicSingleSignOnProperties model =
-            new NewRelicSingleSignOnProperties()
-                .withSingleSignOnState(SingleSignOnStates.INITIAL)
-                .withEnterpriseAppId("itnwuizgazxufi")
-                .withSingleSignOnUrl("ckyfih")
-                .withProvisioningState(ProvisioningState.NOT_SPECIFIED);
+        NewRelicSingleSignOnProperties model
+            = new NewRelicSingleSignOnProperties().withSingleSignOnState(SingleSignOnStates.ENABLE)
+                .withEnterpriseAppId("o").withSingleSignOnUrl("si").withProvisioningState(ProvisioningState.DELETING);
         model = BinaryData.fromObject(model).toObject(NewRelicSingleSignOnProperties.class);
-        Assertions.assertEquals(SingleSignOnStates.INITIAL, model.singleSignOnState());
-        Assertions.assertEquals("itnwuizgazxufi", model.enterpriseAppId());
-        Assertions.assertEquals("ckyfih", model.singleSignOnUrl());
-        Assertions.assertEquals(ProvisioningState.NOT_SPECIFIED, model.provisioningState());
+        Assertions.assertEquals(SingleSignOnStates.ENABLE, model.singleSignOnState());
+        Assertions.assertEquals("o", model.enterpriseAppId());
+        Assertions.assertEquals("si", model.singleSignOnUrl());
+        Assertions.assertEquals(ProvisioningState.DELETING, model.provisioningState());
     }
 }

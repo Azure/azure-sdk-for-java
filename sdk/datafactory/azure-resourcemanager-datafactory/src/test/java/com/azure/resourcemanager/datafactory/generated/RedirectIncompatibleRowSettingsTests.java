@@ -13,14 +13,14 @@ public final class RedirectIncompatibleRowSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RedirectIncompatibleRowSettings model = BinaryData.fromString(
-            "{\"linkedServiceName\":\"datayod\",\"path\":\"datawnqbpxy\",\"\":{\"elsslfxej\":\"datatxzovbh\",\"jwmglgstrzfhe\":\"dataocsgigsabtxnd\",\"fhmljim\":\"datadzovkbcbefohny\"}}")
+            "{\"linkedServiceName\":\"databmzwlej\",\"path\":\"datayoonbualri\",\"\":{\"fmzmq\":\"databntopbabndw\"}}")
             .toObject(RedirectIncompatibleRowSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RedirectIncompatibleRowSettings model = new RedirectIncompatibleRowSettings().withLinkedServiceName("datayod")
-            .withPath("datawnqbpxy").withAdditionalProperties(mapOf());
+        RedirectIncompatibleRowSettings model = new RedirectIncompatibleRowSettings()
+            .withLinkedServiceName("databmzwlej").withPath("datayoonbualri").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(RedirectIncompatibleRowSettings.class);
     }
 

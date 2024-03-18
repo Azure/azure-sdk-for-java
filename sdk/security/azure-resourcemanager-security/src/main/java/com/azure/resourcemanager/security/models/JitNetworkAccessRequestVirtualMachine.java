@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The JitNetworkAccessRequestVirtualMachine model. */
+/**
+ * The JitNetworkAccessRequestVirtualMachine model.
+ */
 @Fluent
 public final class JitNetworkAccessRequestVirtualMachine {
     /*
@@ -24,13 +26,15 @@ public final class JitNetworkAccessRequestVirtualMachine {
     @JsonProperty(value = "ports", required = true)
     private List<JitNetworkAccessRequestPort> ports;
 
-    /** Creates an instance of JitNetworkAccessRequestVirtualMachine class. */
+    /**
+     * Creates an instance of JitNetworkAccessRequestVirtualMachine class.
+     */
     public JitNetworkAccessRequestVirtualMachine() {
     }
 
     /**
      * Get the id property: Resource ID of the virtual machine that is linked to this policy.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -39,7 +43,7 @@ public final class JitNetworkAccessRequestVirtualMachine {
 
     /**
      * Set the id property: Resource ID of the virtual machine that is linked to this policy.
-     *
+     * 
      * @param id the id value to set.
      * @return the JitNetworkAccessRequestVirtualMachine object itself.
      */
@@ -50,7 +54,7 @@ public final class JitNetworkAccessRequestVirtualMachine {
 
     /**
      * Get the ports property: The ports that were opened for the virtual machine.
-     *
+     * 
      * @return the ports value.
      */
     public List<JitNetworkAccessRequestPort> ports() {
@@ -59,7 +63,7 @@ public final class JitNetworkAccessRequestVirtualMachine {
 
     /**
      * Set the ports property: The ports that were opened for the virtual machine.
-     *
+     * 
      * @param ports the ports value to set.
      * @return the JitNetworkAccessRequestVirtualMachine object itself.
      */
@@ -70,21 +74,17 @@ public final class JitNetworkAccessRequestVirtualMachine {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property id in model JitNetworkAccessRequestVirtualMachine"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property id in model JitNetworkAccessRequestVirtualMachine"));
         }
         if (ports() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ports in model JitNetworkAccessRequestVirtualMachine"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ports in model JitNetworkAccessRequestVirtualMachine"));
         } else {
             ports().forEach(e -> e.validate());
         }

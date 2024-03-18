@@ -5,6 +5,22 @@
 
 - [List](#accounts_list)
 
+## BillingInfo
+
+- [Get](#billinginfo_get)
+
+## ConnectedPartnerResources
+
+- [List](#connectedpartnerresources_list)
+
+## MonitoredSubscriptions
+
+- [CreateorUpdate](#monitoredsubscriptions_createorupdate)
+- [Delete](#monitoredsubscriptions_delete)
+- [Get](#monitoredsubscriptions_get)
+- [List](#monitoredsubscriptions_list)
+- [Update](#monitoredsubscriptions_update)
+
 ## Monitors
 
 - [CreateOrUpdate](#monitors_createorupdate)
@@ -16,6 +32,7 @@
 - [ListAppServices](#monitors_listappservices)
 - [ListByResourceGroup](#monitors_listbyresourcegroup)
 - [ListHosts](#monitors_listhosts)
+- [ListLinkedResources](#monitors_listlinkedresources)
 - [ListMonitoredResources](#monitors_listmonitoredresources)
 - [SwitchBilling](#monitors_switchbilling)
 - [Update](#monitors_update)
@@ -43,14 +60,17 @@
 ### Accounts_List
 
 ```java
-/** Samples for Accounts List. */
+/**
+ * Samples for Accounts List.
+ */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Accounts_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Accounts_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Accounts_List_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void accountsListMinimumSetGen(
@@ -59,16 +79,193 @@ public final class AccountsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Accounts_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Accounts_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Accounts_List_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void accountsListMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
         manager.accounts().list("ruxvg@xqkmdhrnoo.hlmbpm", "egh", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### BillingInfo_Get
+
+```java
+/**
+ * Samples for BillingInfo Get.
+ */
+public final class BillingInfoGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/BillingInfo_Get.json
+     */
+    /**
+     * Sample code: BillingInfo_Get.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void
+        billingInfoGet(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.billingInfoes().getWithResponse("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ConnectedPartnerResources_List
+
+```java
+/**
+ * Samples for ConnectedPartnerResources List.
+ */
+public final class ConnectedPartnerResourcesListSamples {
+    /*
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * ConnectedPartnerResources_List.json
+     */
+    /**
+     * Sample code: ConnectedPartnerResources_List.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void connectedPartnerResourcesList(
+        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.connectedPartnerResources().list("myResourceGroup", "myMonitor", null,
+            com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitoredSubscriptions_CreateorUpdate
+
+```java
+import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
+
+/**
+ * Samples for MonitoredSubscriptions CreateorUpdate.
+ */
+public final class MonitoredSubscriptionsCreateorUpdateSamples {
+    /*
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * MonitoredSubscriptions_CreateorUpdate.json
+     */
+    /**
+     * Sample code: Monitors_AddMonitoredSubscriptions.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void monitorsAddMonitoredSubscriptions(
+        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.monitoredSubscriptions().define(ConfigurationName.DEFAULT)
+            .withExistingMonitor("myResourceGroup", "myMonitor").create();
+    }
+}
+```
+
+### MonitoredSubscriptions_Delete
+
+```java
+import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
+
+/**
+ * Samples for MonitoredSubscriptions Delete.
+ */
+public final class MonitoredSubscriptionsDeleteSamples {
+    /*
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * MonitoredSubscriptions_Delete.json
+     */
+    /**
+     * Sample code: Monitors_DeleteMonitoredSubscriptions.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void monitorsDeleteMonitoredSubscriptions(
+        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.monitoredSubscriptions().delete("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT,
+            com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitoredSubscriptions_Get
+
+```java
+import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
+
+/**
+ * Samples for MonitoredSubscriptions Get.
+ */
+public final class MonitoredSubscriptionsGetSamples {
+    /*
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * MonitoredSubscriptions_Get.json
+     */
+    /**
+     * Sample code: Monitors_GetMonitoredSubscriptions.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void monitorsGetMonitoredSubscriptions(
+        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.monitoredSubscriptions().getWithResponse("myResourceGroup", "myMonitor", ConfigurationName.DEFAULT,
+            com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitoredSubscriptions_List
+
+```java
+/**
+ * Samples for MonitoredSubscriptions List.
+ */
+public final class MonitoredSubscriptionsListSamples {
+    /*
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * MonitoredSubscriptions_List.json
+     */
+    /**
+     * Sample code: Monitors_GetMonitoredSubscriptions.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void monitorsGetMonitoredSubscriptions(
+        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.monitoredSubscriptions().list("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### MonitoredSubscriptions_Update
+
+```java
+import com.azure.resourcemanager.newrelicobservability.models.ConfigurationName;
+import com.azure.resourcemanager.newrelicobservability.models.MonitoredSubscriptionProperties;
+
+/**
+ * Samples for MonitoredSubscriptions Update.
+ */
+public final class MonitoredSubscriptionsUpdateSamples {
+    /*
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * MonitoredSubscriptions_Update.json
+     */
+    /**
+     * Sample code: Monitors_UpdateMonitoredSubscriptions.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void monitorsUpdateMonitoredSubscriptions(
+        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        MonitoredSubscriptionProperties resource = manager.monitoredSubscriptions().getWithResponse("myResourceGroup",
+            "myMonitor", ConfigurationName.DEFAULT, com.azure.core.util.Context.NONE).getValue();
+        resource.update().apply();
     }
 }
 ```
@@ -79,6 +276,8 @@ public final class AccountsListSamples {
 import com.azure.resourcemanager.newrelicobservability.models.AccountCreationSource;
 import com.azure.resourcemanager.newrelicobservability.models.AccountInfo;
 import com.azure.resourcemanager.newrelicobservability.models.BillingCycle;
+import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.newrelicobservability.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicAccountProperties;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicSingleSignOnProperties;
 import com.azure.resourcemanager.newrelicobservability.models.OrgCreationSource;
@@ -87,62 +286,48 @@ import com.azure.resourcemanager.newrelicobservability.models.PlanData;
 import com.azure.resourcemanager.newrelicobservability.models.ProvisioningState;
 import com.azure.resourcemanager.newrelicobservability.models.SingleSignOnStates;
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
+import com.azure.resourcemanager.newrelicobservability.models.UserAssignedIdentity;
 import com.azure.resourcemanager.newrelicobservability.models.UserInfo;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Monitors CreateOrUpdate. */
+/**
+ * Samples for Monitors CreateOrUpdate.
+ */
 public final class MonitorsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_CreateOrUpdate_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .define("cdlymktqw")
-            .withRegion("k")
-            .withExistingResourceGroup("rgNewRelic")
-            .withTags(mapOf("key6976", "oaxfhf"))
-            .withNewRelicAccountProperties(
-                new NewRelicAccountProperties()
-                    .withUserId("vcscxlncofcuduadesd")
-                    .withAccountInfo(
-                        new AccountInfo()
-                            .withAccountId("xhqmg")
-                            .withIngestionKey("fakeTokenPlaceholder")
-                            .withRegion("ljcf"))
-                    .withOrganizationInfo(new OrganizationInfo().withOrganizationId("k"))
-                    .withSingleSignOnProperties(
-                        new NewRelicSingleSignOnProperties()
-                            .withSingleSignOnState(SingleSignOnStates.INITIAL)
-                            .withEnterpriseAppId("kwiwfz")
-                            .withSingleSignOnUrl("kvseueuljsxmfwpqctz")
-                            .withProvisioningState(ProvisioningState.ACCEPTED)))
-            .withUserInfo(
-                new UserInfo()
-                    .withFirstName("vdftzcggirefejajwahhwhyibutramdaotvnuf")
-                    .withLastName("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc")
-                    .withEmailAddress("%6%@4-g.N1.3F-kI1.Ue-.lJso")
-                    .withPhoneNumber("krf")
-                    .withCountry("hslqnwdanrconqyekwbnttaetv"))
-            .withPlanData(
-                new PlanData()
-                    .withUsageType(UsageType.PAYG)
-                    .withBillingCycle(BillingCycle.YEARLY)
-                    .withPlanDetails("tbbiaga")
-                    .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
-            .withOrgCreationSource(OrgCreationSource.LIFTR)
-            .withAccountCreationSource(AccountCreationSource.LIFTR)
-            .create();
+        manager.monitors().define("cdlymktqw").withRegion("k").withExistingResourceGroup("rgNewRelic")
+            .withTags(mapOf("key6976", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key8903", new UserAssignedIdentity())))
+            .withNewRelicAccountProperties(new NewRelicAccountProperties().withUserId("vcscxlncofcuduadesd")
+                .withAccountInfo(new AccountInfo()
+                    .withAccountId("xhqmg").withIngestionKey("fakeTokenPlaceholder").withRegion("ljcf"))
+                .withOrganizationInfo(new OrganizationInfo().withOrganizationId("k"))
+                .withSingleSignOnProperties(new NewRelicSingleSignOnProperties()
+                    .withSingleSignOnState(SingleSignOnStates.INITIAL).withEnterpriseAppId("kwiwfz")
+                    .withSingleSignOnUrl("kvseueuljsxmfwpqctz").withProvisioningState(ProvisioningState.ACCEPTED)))
+            .withUserInfo(new UserInfo().withFirstName("vdftzcggirefejajwahhwhyibutramdaotvnuf")
+                .withLastName("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc").withEmailAddress("%6%@4-g.N1.3F-kI1.Ue-.lJso")
+                .withPhoneNumber("krf").withCountry("hslqnwdanrconqyekwbnttaetv"))
+            .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.YEARLY)
+                .withPlanDetails("tbbiaga").withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
+            .withOrgCreationSource(OrgCreationSource.LIFTR).withAccountCreationSource(AccountCreationSource.LIFTR)
+            .withSubscriptionState("Suspended").withSaaSAzureSubscriptionStatus("Subscribed").create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -159,44 +344,38 @@ public final class MonitorsCreateOrUpdateSamples {
 ### Monitors_Delete
 
 ```java
-/** Samples for Monitors Delete. */
+/**
+ * Samples for Monitors Delete.
+ */
 public final class MonitorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Delete_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsDeleteMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .delete(
-                "rgopenapi",
-                "ruxvg@xqkmdhrnoo.hlmbpm",
-                "ipxmlcbonyxtolzejcjshkmlron",
-                com.azure.core.util.Context.NONE);
+        manager.monitors().delete("rgopenapi", "ruxvg@xqkmdhrnoo.hlmbpm", "ipxmlcbonyxtolzejcjshkmlron",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Delete_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsDeleteMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .delete(
-                "rgopenapi",
-                "ruxvg@xqkmdhrnoo.hlmbpm",
-                "ipxmlcbonyxtolzejcjshkmlron",
-                com.azure.core.util.Context.NONE);
+        manager.monitors().delete("rgopenapi", "ruxvg@xqkmdhrnoo.hlmbpm", "ipxmlcbonyxtolzejcjshkmlron",
+            com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -204,18 +383,21 @@ public final class MonitorsDeleteSamples {
 ### Monitors_GetByResourceGroup
 
 ```java
-/** Samples for Monitors GetByResourceGroup. */
+/**
+ * Samples for Monitors GetByResourceGroup.
+ */
 public final class MonitorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Get_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
-    public static void monitorsGetMaximumSetGen(
-        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+    public static void
+        monitorsGetMaximumSetGen(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
         manager.monitors().getByResourceGroupWithResponse("rgNewRelic", "cdlymktqw", com.azure.core.util.Context.NONE);
     }
 }
@@ -226,44 +408,38 @@ public final class MonitorsGetByResourceGroupSamples {
 ```java
 import com.azure.resourcemanager.newrelicobservability.models.MetricsRequest;
 
-/** Samples for Monitors GetMetricRules. */
+/**
+ * Samples for Monitors GetMetricRules.
+ */
 public final class MonitorsGetMetricRulesSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricRules_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_GetMetricRules_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricRules_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsGetMetricRulesMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .getMetricRulesWithResponse(
-                "rgNewRelic",
-                "fhcjxnxumkdlgpwanewtkdnyuz",
-                new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+            new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricRules_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_GetMetricRules_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricRules_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsGetMetricRulesMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .getMetricRulesWithResponse(
-                "rgNewRelic",
-                "fhcjxnxumkdlgpwanewtkdnyuz",
-                new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().getMetricRulesWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+            new MetricsRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -274,46 +450,44 @@ public final class MonitorsGetMetricRulesSamples {
 import com.azure.resourcemanager.newrelicobservability.models.MetricsStatusRequest;
 import java.util.Arrays;
 
-/** Samples for Monitors GetMetricStatus. */
+/**
+ * Samples for Monitors GetMetricStatus.
+ */
 public final class MonitorsGetMetricStatusSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricStatus_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_GetMetricStatus_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricStatus_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsGetMetricStatusMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .getMetricStatusWithResponse(
-                "rgNewRelic",
-                "fhcjxnxumkdlgpwanewtkdnyuz",
-                new MetricsStatusRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().getMetricStatusWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+            new MetricsStatusRequest().withAzureResourceIds(Arrays.asList(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
+                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_GetMetricStatus_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_GetMetricStatus_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_GetMetricStatus_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsGetMetricStatusMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .getMetricStatusWithResponse(
-                "rgNewRelic",
-                "fhcjxnxumkdlgpwanewtkdnyuz",
-                new MetricsStatusRequest()
-                    .withAzureResourceIds(Arrays.asList("enfghpfw"))
-                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().getMetricStatusWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+            new MetricsStatusRequest().withAzureResourceIds(Arrays.asList(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
+                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+            com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -321,14 +495,17 @@ public final class MonitorsGetMetricStatusSamples {
 ### Monitors_List
 
 ```java
-/** Samples for Monitors List. */
+/**
+ * Samples for Monitors List.
+ */
 public final class MonitorsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListBySubscription_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_ListBySubscription_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListBySubscription_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsListBySubscriptionMaximumSetGen(
@@ -344,46 +521,44 @@ public final class MonitorsListSamples {
 import com.azure.resourcemanager.newrelicobservability.models.AppServicesGetRequest;
 import java.util.Arrays;
 
-/** Samples for Monitors ListAppServices. */
+/**
+ * Samples for Monitors ListAppServices.
+ */
 public final class MonitorsListAppServicesSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListAppServices_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_ListAppServices_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListAppServices_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsListAppServicesMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .listAppServices(
-                "rgNewRelic",
-                "fhcjxnxumkdlgpwanewtkdnyuz",
-                new AppServicesGetRequest()
-                    .withAzureResourceIds(Arrays.asList("pvzrksrmzowobuhxpwiotnpcvjbu"))
-                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().listAppServices("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+            new AppServicesGetRequest().withAzureResourceIds(Arrays.asList(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
+                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListAppServices_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_ListAppServices_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListAppServices_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsListAppServicesMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .listAppServices(
-                "rgNewRelic",
-                "fhcjxnxumkdlgpwanewtkdnyuz",
-                new AppServicesGetRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().listAppServices("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+            new AppServicesGetRequest().withAzureResourceIds(Arrays.asList(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz"))
+                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+            com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -391,14 +566,17 @@ public final class MonitorsListAppServicesSamples {
 ### Monitors_ListByResourceGroup
 
 ```java
-/** Samples for Monitors ListByResourceGroup. */
+/**
+ * Samples for Monitors ListByResourceGroup.
+ */
 public final class MonitorsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListByResourceGroup_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsListByResourceGroupMaximumSetGen(
@@ -414,48 +592,66 @@ public final class MonitorsListByResourceGroupSamples {
 import com.azure.resourcemanager.newrelicobservability.models.HostsGetRequest;
 import java.util.Arrays;
 
-/** Samples for Monitors ListHosts. */
+/**
+ * Samples for Monitors ListHosts.
+ */
 public final class MonitorsListHostsSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListHosts_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_ListHosts_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListHosts_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsListHostsMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .listHosts(
-                "rgopenapi",
-                "ipxmlcbonyxtolzejcjshkmlron",
-                new HostsGetRequest()
-                    .withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns"))
-                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().listHosts(
+            "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", new HostsGetRequest()
+                .withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns")).withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListHosts_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_ListHosts_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListHosts_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsListHostsMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .listHosts(
-                "rgopenapi",
-                "ipxmlcbonyxtolzejcjshkmlron",
-                new HostsGetRequest()
-                    .withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns"))
-                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().listHosts(
+            "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", new HostsGetRequest()
+                .withVmIds(Arrays.asList("xzphvxvfmvjrnsgyns")).withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+            com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Monitors_ListLinkedResources
+
+```java
+/**
+ * Samples for Monitors ListLinkedResources.
+ */
+public final class MonitorsListLinkedResourcesSamples {
+    /*
+     * x-ms-original-file:
+     * specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/LinkedResources_List.
+     * json
+     */
+    /**
+     * Sample code: Monitors_ListLinkedResources.
+     * 
+     * @param manager Entry point to NewRelicObservabilityManager.
+     */
+    public static void monitorsListLinkedResources(
+        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.monitors().listLinkedResources("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -463,36 +659,38 @@ public final class MonitorsListHostsSamples {
 ### Monitors_ListMonitoredResources
 
 ```java
-/** Samples for Monitors ListMonitoredResources. */
+/**
+ * Samples for Monitors ListMonitoredResources.
+ */
 public final class MonitorsListMonitoredResourcesSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListMonitoredResources_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_ListMonitoredResources_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListMonitoredResources_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsListMonitoredResourcesMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
+        manager.monitors().listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_ListMonitoredResources_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_ListMonitoredResources_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_ListMonitoredResources_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsListMonitoredResourcesMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
+        manager.monitors().listMonitoredResources("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+            com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -506,53 +704,44 @@ import com.azure.resourcemanager.newrelicobservability.models.SwitchBillingReque
 import com.azure.resourcemanager.newrelicobservability.models.UsageType;
 import java.time.OffsetDateTime;
 
-/** Samples for Monitors SwitchBilling. */
+/**
+ * Samples for Monitors SwitchBilling.
+ */
 public final class MonitorsSwitchBillingSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_SwitchBilling_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_SwitchBilling_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_SwitchBilling_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsSwitchBillingMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .switchBillingWithResponse(
-                "rgNewRelic",
-                "fhcjxnxumkdlgpwanewtkdnyuz",
-                new SwitchBillingRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().switchBillingWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+            new SwitchBillingRequest().withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"), com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_SwitchBilling_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_SwitchBilling_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_SwitchBilling_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsSwitchBillingMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .switchBillingWithResponse(
-                "rgNewRelic",
-                "fhcjxnxumkdlgpwanewtkdnyuz",
-                new SwitchBillingRequest()
-                    .withAzureResourceId("enfghpfw")
-                    .withOrganizationId("k")
-                    .withPlanData(
-                        new PlanData()
-                            .withUsageType(UsageType.PAYG)
-                            .withBillingCycle(BillingCycle.YEARLY)
-                            .withPlanDetails("tbbiaga")
-                            .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
-                    .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
-                com.azure.core.util.Context.NONE);
+        manager.monitors().switchBillingWithResponse("rgNewRelic", "fhcjxnxumkdlgpwanewtkdnyuz",
+            new SwitchBillingRequest().withAzureResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgNewRelic/providers/NewRelic.Observability/monitors/fhcjxnxumkdlgpwanewtkdnyuz")
+                .withOrganizationId("k")
+                .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.YEARLY)
+                    .withPlanDetails("tbbiaga").withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
+                .withUserEmail("ruxvg@xqkmdhrnoo.hlmbpm"),
+            com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -580,63 +769,43 @@ import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Monitors Update. */
+/**
+ * Samples for Monitors Update.
+ */
 public final class MonitorsUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_Update_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsUpdateMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        NewRelicMonitorResource resource =
-            manager
-                .monitors()
-                .getByResourceGroupWithResponse("rgNewRelic", "cdlymktqw", com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withTags(mapOf("key164", "jqakdrrmmyzytqu"))
-            .withIdentity(
-                new ManagedServiceIdentity()
-                    .withType(ManagedServiceIdentityType.NONE)
-                    .withUserAssignedIdentities(mapOf("key8903", new UserAssignedIdentity())))
-            .withNewRelicAccountProperties(
-                new NewRelicAccountProperties()
-                    .withUserId("vcscxlncofcuduadesd")
-                    .withAccountInfo(
-                        new AccountInfo()
-                            .withAccountId("xhqmg")
-                            .withIngestionKey("fakeTokenPlaceholder")
-                            .withRegion("ljcf"))
-                    .withOrganizationInfo(new OrganizationInfo().withOrganizationId("k"))
-                    .withSingleSignOnProperties(
-                        new NewRelicSingleSignOnProperties()
-                            .withSingleSignOnState(SingleSignOnStates.INITIAL)
-                            .withEnterpriseAppId("kwiwfz")
-                            .withSingleSignOnUrl("kvseueuljsxmfwpqctz")
-                            .withProvisioningState(ProvisioningState.ACCEPTED)))
-            .withUserInfo(
-                new UserInfo()
-                    .withFirstName("vdftzcggirefejajwahhwhyibutramdaotvnuf")
-                    .withLastName("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc")
-                    .withEmailAddress("%6%@4-g.N1.3F-kI1.Ue-.lJso")
-                    .withPhoneNumber("krf")
-                    .withCountry("hslqnwdanrconqyekwbnttaetv"))
-            .withPlanData(
-                new PlanData()
-                    .withUsageType(UsageType.PAYG)
-                    .withBillingCycle(BillingCycle.YEARLY)
-                    .withPlanDetails("tbbiaga")
-                    .withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
-            .withOrgCreationSource(OrgCreationSource.LIFTR)
-            .withAccountCreationSource(AccountCreationSource.LIFTR)
+        NewRelicMonitorResource resource = manager.monitors()
+            .getByResourceGroupWithResponse("rgNewRelic", "cdlymktqw", com.azure.core.util.Context.NONE).getValue();
+        resource.update().withTags(mapOf("key164", "fakeTokenPlaceholder"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key8903", new UserAssignedIdentity())))
+            .withNewRelicAccountProperties(new NewRelicAccountProperties().withUserId("vcscxlncofcuduadesd")
+                .withAccountInfo(new AccountInfo()
+                    .withAccountId("xhqmg").withIngestionKey("fakeTokenPlaceholder").withRegion("ljcf"))
+                .withOrganizationInfo(new OrganizationInfo().withOrganizationId("k"))
+                .withSingleSignOnProperties(new NewRelicSingleSignOnProperties()
+                    .withSingleSignOnState(SingleSignOnStates.INITIAL).withEnterpriseAppId("kwiwfz")
+                    .withSingleSignOnUrl("kvseueuljsxmfwpqctz").withProvisioningState(ProvisioningState.ACCEPTED)))
+            .withUserInfo(new UserInfo().withFirstName("vdftzcggirefejajwahhwhyibutramdaotvnuf")
+                .withLastName("bcsztgqovdlmzfkjdrngidwzqsevagexzzilnlc").withEmailAddress("%6%@4-g.N1.3F-kI1.Ue-.lJso")
+                .withPhoneNumber("krf").withCountry("hslqnwdanrconqyekwbnttaetv"))
+            .withPlanData(new PlanData().withUsageType(UsageType.PAYG).withBillingCycle(BillingCycle.YEARLY)
+                .withPlanDetails("tbbiaga").withEffectiveDate(OffsetDateTime.parse("2022-12-05T14:11:37.786Z")))
+            .withOrgCreationSource(OrgCreationSource.LIFTR).withAccountCreationSource(AccountCreationSource.LIFTR)
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -653,36 +822,38 @@ public final class MonitorsUpdateSamples {
 ### Monitors_VmHostPayload
 
 ```java
-/** Samples for Monitors VmHostPayload. */
+/**
+ * Samples for Monitors VmHostPayload.
+ */
 public final class MonitorsVmHostPayloadSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_VmHostPayload_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_VmHostPayload_MinimumSet_Gen.json
      */
     /**
      * Sample code: Monitors_VmHostPayload_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsVmHostPayloadMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
+        manager.monitors().vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Monitors_VmHostPayload_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Monitors_VmHostPayload_MaximumSet_Gen.json
      */
     /**
      * Sample code: Monitors_VmHostPayload_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void monitorsVmHostPayloadMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .monitors()
-            .vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
+        manager.monitors().vmHostPayloadWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+            com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -690,14 +861,17 @@ public final class MonitorsVmHostPayloadSamples {
 ### Operations_List
 
 ```java
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Operations_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Operations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void operationsListMinimumSetGen(
@@ -706,11 +880,12 @@ public final class OperationsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Operations_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Operations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Operations_List_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void operationsListMaximumSetGen(
@@ -723,14 +898,17 @@ public final class OperationsListSamples {
 ### Organizations_List
 
 ```java
-/** Samples for Organizations List. */
+/**
+ * Samples for Organizations List.
+ */
 public final class OrganizationsListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Organizations_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Organizations_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Organizations_List_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void organizationsListMinimumSetGen(
@@ -739,11 +917,12 @@ public final class OrganizationsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Organizations_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Organizations_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Organizations_List_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void organizationsListMaximumSetGen(
@@ -756,32 +935,36 @@ public final class OrganizationsListSamples {
 ### Plans_List
 
 ```java
-/** Samples for Plans List. */
+/**
+ * Samples for Plans List.
+ */
 public final class PlansListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Plans_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Plans_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Plans_List_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
-    public static void plansListMaximumSetGen(
-        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+    public static void
+        plansListMaximumSetGen(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
         manager.plans().list("pwuxgvrmkk", "hilawwjz", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Plans_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * Plans_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Plans_List_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
-    public static void plansListMinimumSetGen(
-        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager.plans().list(null, null, com.azure.core.util.Context.NONE);
+    public static void
+        plansListMinimumSetGen(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.plans().list(null, "hilawwjz", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -798,62 +981,48 @@ import com.azure.resourcemanager.newrelicobservability.models.SendSubscriptionLo
 import com.azure.resourcemanager.newrelicobservability.models.TagAction;
 import java.util.Arrays;
 
-/** Samples for TagRules CreateOrUpdate. */
+/**
+ * Samples for TagRules CreateOrUpdate.
+ */
 public final class TagRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * TagRules_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void tagRulesCreateOrUpdateMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .tagRules()
-            .define("bxcantgzggsepbhqmedjqyrqeezmfb")
+        manager.tagRules().define("bxcantgzggsepbhqmedjqyrqeezmfb")
             .withExistingMonitor("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron")
-            .withLogRules(
-                new LogRules()
-                    .withSendAadLogs(SendAadLogsStatus.ENABLED)
-                    .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
-                    .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
-                    .withFilteringTags(
-                        Arrays
-                            .asList(
-                                new FilteringTag()
-                                    .withName("saokgpjvdlorciqbjmjxazpee")
-                                    .withValue("sarxrqsxouhdjwsrqqicbeirdb")
-                                    .withAction(TagAction.INCLUDE))))
-            .withMetricRules(
-                new MetricRulesInner()
-                    .withFilteringTags(
-                        Arrays
-                            .asList(
-                                new FilteringTag()
-                                    .withName("saokgpjvdlorciqbjmjxazpee")
-                                    .withValue("sarxrqsxouhdjwsrqqicbeirdb")
-                                    .withAction(TagAction.INCLUDE)))
-                    .withUserEmail("test@testing.com"))
+            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
+                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
+                .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
+                .withFilteringTags(Arrays.asList(new FilteringTag().withName("saokgpjvdlorciqbjmjxazpee")
+                    .withValue("sarxrqsxouhdjwsrqqicbeirdb").withAction(TagAction.INCLUDE))))
+            .withMetricRules(new MetricRulesInner()
+                .withFilteringTags(Arrays.asList(new FilteringTag().withName("saokgpjvdlorciqbjmjxazpee")
+                    .withValue("sarxrqsxouhdjwsrqqicbeirdb").withAction(TagAction.INCLUDE)))
+                .withUserEmail("test@testing.com"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * TagRules_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_CreateOrUpdate_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void tagRulesCreateOrUpdateMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .tagRules()
-            .define("bxcantgzggsepbhqmedjqyrqeezmfb")
-            .withExistingMonitor("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron")
-            .create();
+        manager.tagRules().define("bxcantgzggsepbhqmedjqyrqeezmfb")
+            .withExistingMonitor("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron").create();
     }
 }
 ```
@@ -861,44 +1030,38 @@ public final class TagRulesCreateOrUpdateSamples {
 ### TagRules_Delete
 
 ```java
-/** Samples for TagRules Delete. */
+/**
+ * Samples for TagRules Delete.
+ */
 public final class TagRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * TagRules_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Delete_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void tagRulesDeleteMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .tagRules()
-            .delete(
-                "rgopenapi",
-                "ipxmlcbonyxtolzejcjshkmlron",
-                "bxcantgzggsepbhqmedjqyrqeezmfb",
-                com.azure.core.util.Context.NONE);
+        manager.tagRules().delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * TagRules_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Delete_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void tagRulesDeleteMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .tagRules()
-            .delete(
-                "rgopenapi",
-                "ipxmlcbonyxtolzejcjshkmlron",
-                "bxcantgzggsepbhqmedjqyrqeezmfb",
-                com.azure.core.util.Context.NONE);
+        manager.tagRules().delete("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+            com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -906,44 +1069,38 @@ public final class TagRulesDeleteSamples {
 ### TagRules_Get
 
 ```java
-/** Samples for TagRules Get. */
+/**
+ * Samples for TagRules Get.
+ */
 public final class TagRulesGetSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Get_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * TagRules_Get_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Get_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
-    public static void tagRulesGetMinimumSetGen(
-        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .tagRules()
-            .getWithResponse(
-                "rgopenapi",
-                "ipxmlcbonyxtolzejcjshkmlron",
-                "bxcantgzggsepbhqmedjqyrqeezmfb",
-                com.azure.core.util.Context.NONE);
+    public static void
+        tagRulesGetMinimumSetGen(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.tagRules().getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Get_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * TagRules_Get_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Get_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
-    public static void tagRulesGetMaximumSetGen(
-        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .tagRules()
-            .getWithResponse(
-                "rgopenapi",
-                "ipxmlcbonyxtolzejcjshkmlron",
-                "bxcantgzggsepbhqmedjqyrqeezmfb",
-                com.azure.core.util.Context.NONE);
+    public static void
+        tagRulesGetMaximumSetGen(com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
+        manager.tagRules().getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", "bxcantgzggsepbhqmedjqyrqeezmfb",
+            com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -951,38 +1108,38 @@ public final class TagRulesGetSamples {
 ### TagRules_ListByNewRelicMonitorResource
 
 ```java
-/** Samples for TagRules ListByNewRelicMonitorResource. */
+/**
+ * Samples for TagRules ListByNewRelicMonitorResource.
+ */
 public final class TagRulesListByNewRelicMonitorResourceSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_ListByNewRelicMonitorResource_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void tagRulesListByNewRelicMonitorResourceMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .tagRules()
-            .listByNewRelicMonitorResource(
-                "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
+        manager.tagRules().listByNewRelicMonitorResource("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_ListByNewRelicMonitorResource_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void tagRulesListByNewRelicMonitorResourceMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        manager
-            .tagRules()
-            .listByNewRelicMonitorResource(
-                "rgopenapi", "ipxmlcbonyxtolzejcjshkmlron", com.azure.core.util.Context.NONE);
+        manager.tagRules().listByNewRelicMonitorResource("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+            com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1000,73 +1157,49 @@ import com.azure.resourcemanager.newrelicobservability.models.TagAction;
 import com.azure.resourcemanager.newrelicobservability.models.TagRule;
 import java.util.Arrays;
 
-/** Samples for TagRules Update. */
+/**
+ * Samples for TagRules Update.
+ */
 public final class TagRulesUpdateSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * TagRules_Update_MaximumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Update_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void tagRulesUpdateMaximumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        TagRule resource =
-            manager
-                .tagRules()
-                .getWithResponse(
-                    "rgopenapi",
-                    "ipxmlcbonyxtolzejcjshkmlron",
-                    "bxcantgzggsepbhqmedjqyrqeezmfb",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withLogRules(
-                new LogRules()
-                    .withSendAadLogs(SendAadLogsStatus.ENABLED)
-                    .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
-                    .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
-                    .withFilteringTags(
-                        Arrays
-                            .asList(
-                                new FilteringTag()
-                                    .withName("saokgpjvdlorciqbjmjxazpee")
-                                    .withValue("sarxrqsxouhdjwsrqqicbeirdb")
-                                    .withAction(TagAction.INCLUDE))))
-            .withMetricRules(
-                new MetricRulesInner()
-                    .withFilteringTags(
-                        Arrays
-                            .asList(
-                                new FilteringTag()
-                                    .withName("saokgpjvdlorciqbjmjxazpee")
-                                    .withValue("sarxrqsxouhdjwsrqqicbeirdb")
-                                    .withAction(TagAction.INCLUDE)))
-                    .withUserEmail("test@testing.com"))
+        TagRule resource = manager.tagRules().getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+            "bxcantgzggsepbhqmedjqyrqeezmfb", com.azure.core.util.Context.NONE).getValue();
+        resource.update()
+            .withLogRules(new LogRules().withSendAadLogs(SendAadLogsStatus.ENABLED)
+                .withSendSubscriptionLogs(SendSubscriptionLogsStatus.ENABLED)
+                .withSendActivityLogs(SendActivityLogsStatus.ENABLED)
+                .withFilteringTags(Arrays.asList(new FilteringTag().withName("saokgpjvdlorciqbjmjxazpee")
+                    .withValue("sarxrqsxouhdjwsrqqicbeirdb").withAction(TagAction.INCLUDE))))
+            .withMetricRules(new MetricRulesInner()
+                .withFilteringTags(Arrays.asList(new FilteringTag().withName("saokgpjvdlorciqbjmjxazpee")
+                    .withValue("sarxrqsxouhdjwsrqqicbeirdb").withAction(TagAction.INCLUDE)))
+                .withUserEmail("test@testing.com"))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/TagRules_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2024-01-01/examples/
+     * TagRules_Update_MinimumSet_Gen.json
      */
     /**
      * Sample code: TagRules_Update_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to NewRelicObservabilityManager.
      */
     public static void tagRulesUpdateMinimumSetGen(
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager manager) {
-        TagRule resource =
-            manager
-                .tagRules()
-                .getWithResponse(
-                    "rgopenapi",
-                    "ipxmlcbonyxtolzejcjshkmlron",
-                    "bxcantgzggsepbhqmedjqyrqeezmfb",
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        TagRule resource = manager.tagRules().getWithResponse("rgopenapi", "ipxmlcbonyxtolzejcjshkmlron",
+            "bxcantgzggsepbhqmedjqyrqeezmfb", com.azure.core.util.Context.NONE).getValue();
         resource.update().apply();
     }
 }

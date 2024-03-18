@@ -53,7 +53,6 @@ extends:
         jobs:
           - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
             parameters:
-              ServiceDirectory: serialization
               Artifacts:
                 - name: azure-json-reflect
                   groupId: com.azure
@@ -76,7 +75,7 @@ extends:
               TestGoals: surefire:test
 
     LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
           ServiceDirectory: serialization
           Artifacts:

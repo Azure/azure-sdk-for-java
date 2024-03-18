@@ -11,23 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomationActionEventHubTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationActionEventHub model =
-            BinaryData
-                .fromString(
-                    "{\"actionType\":\"EventHub\",\"eventHubResourceId\":\"gvpyigdaqqilzdc\",\"sasPolicyName\":\"wjoe\",\"connectionString\":\"ngucaifpaurww\"}")
-                .toObject(AutomationActionEventHub.class);
-        Assertions.assertEquals("gvpyigdaqqilzdc", model.eventHubResourceId());
-        Assertions.assertEquals("ngucaifpaurww", model.connectionString());
+        AutomationActionEventHub model = BinaryData.fromString(
+            "{\"actionType\":\"EventHub\",\"eventHubResourceId\":\"slz\",\"sasPolicyName\":\"cdsvmwbitek\",\"connectionString\":\"fobvfiybxqich\",\"isTrustedServiceEnabled\":true}")
+            .toObject(AutomationActionEventHub.class);
+        Assertions.assertEquals("slz", model.eventHubResourceId());
+        Assertions.assertEquals("fobvfiybxqich", model.connectionString());
+        Assertions.assertEquals(true, model.isTrustedServiceEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationActionEventHub model =
-            new AutomationActionEventHub()
-                .withEventHubResourceId("gvpyigdaqqilzdc")
-                .withConnectionString("ngucaifpaurww");
+        AutomationActionEventHub model = new AutomationActionEventHub().withEventHubResourceId("slz")
+            .withConnectionString("fobvfiybxqich").withIsTrustedServiceEnabled(true);
         model = BinaryData.fromObject(model).toObject(AutomationActionEventHub.class);
-        Assertions.assertEquals("gvpyigdaqqilzdc", model.eventHubResourceId());
-        Assertions.assertEquals("ngucaifpaurww", model.connectionString());
+        Assertions.assertEquals("slz", model.eventHubResourceId());
+        Assertions.assertEquals("fobvfiybxqich", model.connectionString());
+        Assertions.assertEquals(true, model.isTrustedServiceEnabled());
     }
 }

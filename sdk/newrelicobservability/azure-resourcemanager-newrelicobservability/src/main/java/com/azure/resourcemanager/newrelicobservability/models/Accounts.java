@@ -7,11 +7,13 @@ package com.azure.resourcemanager.newrelicobservability.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Accounts. */
+/**
+ * Resource collection API of Accounts.
+ */
 public interface Accounts {
     /**
      * List all the existing accounts.
-     *
+     * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,7 +25,7 @@ public interface Accounts {
 
     /**
      * List all the existing accounts.
-     *
+     * 
      * @param userEmail User Email.
      * @param location Location for NewRelic.
      * @param context The context to associate with this operation.

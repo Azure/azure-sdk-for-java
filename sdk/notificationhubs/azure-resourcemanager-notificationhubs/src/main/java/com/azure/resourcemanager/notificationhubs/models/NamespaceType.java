@@ -4,44 +4,50 @@
 
 package com.azure.resourcemanager.notificationhubs.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** Defines values for NamespaceType. */
-public enum NamespaceType {
-    /** Enum value Messaging. */
-    MESSAGING("Messaging"),
+/**
+ * Defines values for NamespaceType.
+ */
+public final class NamespaceType extends ExpandableStringEnum<NamespaceType> {
+    /**
+     * Static value Messaging for NamespaceType.
+     */
+    public static final NamespaceType MESSAGING = fromString("Messaging");
 
-    /** Enum value NotificationHub. */
-    NOTIFICATION_HUB("NotificationHub");
+    /**
+     * Static value NotificationHub for NamespaceType.
+     */
+    public static final NamespaceType NOTIFICATION_HUB = fromString("NotificationHub");
 
-    /** The actual serialized value for a NamespaceType instance. */
-    private final String value;
-
-    NamespaceType(String value) {
-        this.value = value;
+    /**
+     * Creates a new instance of NamespaceType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NamespaceType() {
     }
 
     /**
-     * Parses a serialized value to a NamespaceType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed NamespaceType object, or null if unable to parse.
+     * Creates or finds a NamespaceType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding NamespaceType.
      */
     @JsonCreator
-    public static NamespaceType fromString(String value) {
-        NamespaceType[] items = NamespaceType.values();
-        for (NamespaceType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static NamespaceType fromString(String name) {
+        return fromString(name, NamespaceType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known NamespaceType values.
+     * 
+     * @return known NamespaceType values.
+     */
+    public static Collection<NamespaceType> values() {
+        return values(NamespaceType.class);
     }
 }

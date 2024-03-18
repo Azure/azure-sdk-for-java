@@ -30,22 +30,28 @@ import com.azure.resourcemanager.security.fluent.models.HealthReportInner;
 import com.azure.resourcemanager.security.models.HealthReportsList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in HealthReportsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HealthReportsClient.
+ */
 public final class HealthReportsClientImpl implements HealthReportsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final HealthReportsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of HealthReportsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     HealthReportsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy.create(HealthReportsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(HealthReportsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,64 +62,59 @@ public final class HealthReportsClientImpl implements HealthReportsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterHealth")
     public interface HealthReportsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Security/healthReports")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HealthReportsList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<HealthReportsList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/{resourceId}/providers/Microsoft.Security/healthReports/{healthReportName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<HealthReportInner>> get(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
-            @PathParam(value = "scope", encoded = true) String scope,
-            @HeaderParam("Accept") String accept,
+            @PathParam(value = "resourceId", encoded = true) String resourceId,
+            @PathParam("healthReportName") String healthReportName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<HealthReportsList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<HealthReportsList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
      * 'subscriptions/{subscriptionId}'), or security connector (format:
      * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     *
+     * 
      * @param scope The scope at which the operation is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all health reports inside a scope along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HealthReportInner>> listSinglePageAsync(String scope) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01-preview";
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), apiVersion, scope, accept, context))
-            .<PagedResponse<HealthReportInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<HealthReportInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -121,47 +122,37 @@ public final class HealthReportsClientImpl implements HealthReportsClient {
      * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
      * 'subscriptions/{subscriptionId}'), or security connector (format:
      * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     *
+     * 
      * @param scope The scope at which the operation is performed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all health reports inside a scope along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<HealthReportInner>> listSinglePageAsync(String scope, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        final String apiVersion = "2023-02-01-preview";
+        final String apiVersion = "2023-05-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), apiVersion, scope, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), apiVersion, scope, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
      * 'subscriptions/{subscriptionId}'), or security connector (format:
      * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     *
+     * 
      * @param scope The scope at which the operation is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -177,7 +168,7 @@ public final class HealthReportsClientImpl implements HealthReportsClient {
      * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
      * 'subscriptions/{subscriptionId}'), or security connector (format:
      * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     *
+     * 
      * @param scope The scope at which the operation is performed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -187,15 +178,15 @@ public final class HealthReportsClientImpl implements HealthReportsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<HealthReportInner> listAsync(String scope, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(scope, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(scope, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
      * 'subscriptions/{subscriptionId}'), or security connector (format:
      * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     *
+     * 
      * @param scope The scope at which the operation is performed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -211,7 +202,7 @@ public final class HealthReportsClientImpl implements HealthReportsClient {
      * Get a list of all health reports inside a scope. Valid scopes are: subscription (format:
      * 'subscriptions/{subscriptionId}'), or security connector (format:
      * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName})'.
-     *
+     * 
      * @param scope The scope at which the operation is performed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -225,10 +216,119 @@ public final class HealthReportsClientImpl implements HealthReportsClient {
     }
 
     /**
+     * Get health report of resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param healthReportName The health report Key - Unique key for the health report type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health report of resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<HealthReportInner>> getWithResponseAsync(String resourceId, String healthReportName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        if (healthReportName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter healthReportName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-05-01-preview";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, resourceId, healthReportName,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get health report of resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param healthReportName The health report Key - Unique key for the health report type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health report of resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<HealthReportInner>> getWithResponseAsync(String resourceId, String healthReportName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+        }
+        if (healthReportName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter healthReportName is required and cannot be null."));
+        }
+        final String apiVersion = "2023-05-01-preview";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.get(this.client.getEndpoint(), apiVersion, resourceId, healthReportName, accept, context);
+    }
+
+    /**
+     * Get health report of resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param healthReportName The health report Key - Unique key for the health report type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health report of resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<HealthReportInner> getAsync(String resourceId, String healthReportName) {
+        return getWithResponseAsync(resourceId, healthReportName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get health report of resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param healthReportName The health report Key - Unique key for the health report type.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health report of resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<HealthReportInner> getWithResponse(String resourceId, String healthReportName, Context context) {
+        return getWithResponseAsync(resourceId, healthReportName, context).block();
+    }
+
+    /**
+     * Get health report of resource.
+     * 
+     * @param resourceId The identifier of the resource.
+     * @param healthReportName The health report Key - Unique key for the health report type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health report of resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public HealthReportInner get(String resourceId, String healthReportName) {
+        return getWithResponse(resourceId, healthReportName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -240,31 +340,22 @@ public final class HealthReportsClientImpl implements HealthReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<HealthReportInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<HealthReportInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -277,23 +368,13 @@ public final class HealthReportsClientImpl implements HealthReportsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -15,39 +15,29 @@ import org.junit.jupiter.api.Assertions;
 public final class MetricRulesInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MetricRulesInner model =
-            BinaryData
-                .fromString(
-                    "{\"sendMetrics\":\"Enabled\",\"filteringTags\":[{\"name\":\"m\",\"value\":\"qabcypm\",\"action\":\"Exclude\"},{\"name\":\"lzu\",\"value\":\"c\",\"action\":\"Exclude\"},{\"name\":\"nbacfi\",\"value\":\"l\",\"action\":\"Include\"},{\"name\":\"tqgtzxdpnqbqq\",\"value\":\"rjfeallnwsubisnj\",\"action\":\"Include\"}],\"userEmail\":\"ngnzscxaqwoochc\"}")
-                .toObject(MetricRulesInner.class);
+        MetricRulesInner model = BinaryData.fromString(
+            "{\"sendMetrics\":\"Enabled\",\"filteringTags\":[{\"name\":\"dsoifiyipj\",\"value\":\"qwpgrjbzn\",\"action\":\"Exclude\"},{\"name\":\"xv\",\"value\":\"byxqabn\",\"action\":\"Include\"},{\"name\":\"cyshurzafbljjgp\",\"value\":\"oq\",\"action\":\"Include\"}],\"userEmail\":\"ljavbqid\"}")
+            .toObject(MetricRulesInner.class);
         Assertions.assertEquals(SendMetricsStatus.ENABLED, model.sendMetrics());
-        Assertions.assertEquals("m", model.filteringTags().get(0).name());
-        Assertions.assertEquals("qabcypm", model.filteringTags().get(0).value());
+        Assertions.assertEquals("dsoifiyipj", model.filteringTags().get(0).name());
+        Assertions.assertEquals("qwpgrjbzn", model.filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.EXCLUDE, model.filteringTags().get(0).action());
-        Assertions.assertEquals("ngnzscxaqwoochc", model.userEmail());
+        Assertions.assertEquals("ljavbqid", model.userEmail());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MetricRulesInner model =
-            new MetricRulesInner()
-                .withSendMetrics(SendMetricsStatus.ENABLED)
-                .withFilteringTags(
-                    Arrays
-                        .asList(
-                            new FilteringTag().withName("m").withValue("qabcypm").withAction(TagAction.EXCLUDE),
-                            new FilteringTag().withName("lzu").withValue("c").withAction(TagAction.EXCLUDE),
-                            new FilteringTag().withName("nbacfi").withValue("l").withAction(TagAction.INCLUDE),
-                            new FilteringTag()
-                                .withName("tqgtzxdpnqbqq")
-                                .withValue("rjfeallnwsubisnj")
-                                .withAction(TagAction.INCLUDE)))
-                .withUserEmail("ngnzscxaqwoochc");
+        MetricRulesInner model = new MetricRulesInner().withSendMetrics(SendMetricsStatus.ENABLED)
+            .withFilteringTags(Arrays.asList(
+                new FilteringTag().withName("dsoifiyipj").withValue("qwpgrjbzn").withAction(TagAction.EXCLUDE),
+                new FilteringTag().withName("xv").withValue("byxqabn").withAction(TagAction.INCLUDE),
+                new FilteringTag().withName("cyshurzafbljjgp").withValue("oq").withAction(TagAction.INCLUDE)))
+            .withUserEmail("ljavbqid");
         model = BinaryData.fromObject(model).toObject(MetricRulesInner.class);
         Assertions.assertEquals(SendMetricsStatus.ENABLED, model.sendMetrics());
-        Assertions.assertEquals("m", model.filteringTags().get(0).name());
-        Assertions.assertEquals("qabcypm", model.filteringTags().get(0).value());
+        Assertions.assertEquals("dsoifiyipj", model.filteringTags().get(0).name());
+        Assertions.assertEquals("qwpgrjbzn", model.filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.EXCLUDE, model.filteringTags().get(0).action());
-        Assertions.assertEquals("ngnzscxaqwoochc", model.userEmail());
+        Assertions.assertEquals("ljavbqid", model.userEmail());
     }
 }

@@ -6,26 +6,29 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.SecurityContactInner;
+import java.util.List;
 
-/** An immutable client-side representation of SecurityContact. */
+/**
+ * An immutable client-side representation of SecurityContact.
+ */
 public interface SecurityContact {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
@@ -33,128 +36,167 @@ public interface SecurityContact {
     /**
      * Gets the emails property: List of email addresses which will get notifications from Microsoft Defender for Cloud
      * by the configurations defined in this security contact.
-     *
+     * 
      * @return the emails value.
      */
     String emails();
 
     /**
      * Gets the phone property: The security contact's phone number.
-     *
+     * 
      * @return the phone value.
      */
     String phone();
 
     /**
-     * Gets the alertNotifications property: Defines whether to send email notifications about new security alerts.
-     *
-     * @return the alertNotifications value.
+     * Gets the isEnabled property: Indicates whether the security contact is enabled.
+     * 
+     * @return the isEnabled value.
      */
-    SecurityContactPropertiesAlertNotifications alertNotifications();
+    Boolean isEnabled();
+
+    /**
+     * Gets the notificationsSources property: A collection of sources types which evaluate the email notification.
+     * 
+     * @return the notificationsSources value.
+     */
+    List<NotificationsSource> notificationsSources();
 
     /**
      * Gets the notificationsByRole property: Defines whether to send email notifications from Microsoft Defender for
      * Cloud to persons with specific RBAC roles on the subscription.
-     *
+     * 
      * @return the notificationsByRole value.
      */
     SecurityContactPropertiesNotificationsByRole notificationsByRole();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.SecurityContactInner object.
-     *
+     * 
      * @return the inner object.
      */
     SecurityContactInner innerModel();
 
-    /** The entirety of the SecurityContact definition. */
+    /**
+     * The entirety of the SecurityContact definition.
+     */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate {
     }
-    /** The SecurityContact definition stages. */
+
+    /**
+     * The SecurityContact definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the SecurityContact definition. */
+        /**
+         * The first stage of the SecurityContact definition.
+         */
         interface Blank extends WithCreate {
         }
+
         /**
          * The stage of the SecurityContact definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithEmails,
-                DefinitionStages.WithPhone,
-                DefinitionStages.WithAlertNotifications,
-                DefinitionStages.WithNotificationsByRole {
+            extends DefinitionStages.WithEmails, DefinitionStages.WithPhone, DefinitionStages.WithIsEnabled,
+            DefinitionStages.WithNotificationsSources, DefinitionStages.WithNotificationsByRole {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             SecurityContact create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             SecurityContact create(Context context);
         }
-        /** The stage of the SecurityContact definition allowing to specify emails. */
+
+        /**
+         * The stage of the SecurityContact definition allowing to specify emails.
+         */
         interface WithEmails {
             /**
              * Specifies the emails property: List of email addresses which will get notifications from Microsoft
              * Defender for Cloud by the configurations defined in this security contact..
-             *
+             * 
              * @param emails List of email addresses which will get notifications from Microsoft Defender for Cloud by
-             *     the configurations defined in this security contact.
+             * the configurations defined in this security contact.
              * @return the next definition stage.
              */
             WithCreate withEmails(String emails);
         }
-        /** The stage of the SecurityContact definition allowing to specify phone. */
+
+        /**
+         * The stage of the SecurityContact definition allowing to specify phone.
+         */
         interface WithPhone {
             /**
              * Specifies the phone property: The security contact's phone number.
-             *
+             * 
              * @param phone The security contact's phone number.
              * @return the next definition stage.
              */
             WithCreate withPhone(String phone);
         }
-        /** The stage of the SecurityContact definition allowing to specify alertNotifications. */
-        interface WithAlertNotifications {
+
+        /**
+         * The stage of the SecurityContact definition allowing to specify isEnabled.
+         */
+        interface WithIsEnabled {
             /**
-             * Specifies the alertNotifications property: Defines whether to send email notifications about new security
-             * alerts.
-             *
-             * @param alertNotifications Defines whether to send email notifications about new security alerts.
+             * Specifies the isEnabled property: Indicates whether the security contact is enabled..
+             * 
+             * @param isEnabled Indicates whether the security contact is enabled.
              * @return the next definition stage.
              */
-            WithCreate withAlertNotifications(SecurityContactPropertiesAlertNotifications alertNotifications);
+            WithCreate withIsEnabled(Boolean isEnabled);
         }
-        /** The stage of the SecurityContact definition allowing to specify notificationsByRole. */
+
+        /**
+         * The stage of the SecurityContact definition allowing to specify notificationsSources.
+         */
+        interface WithNotificationsSources {
+            /**
+             * Specifies the notificationsSources property: A collection of sources types which evaluate the email
+             * notification..
+             * 
+             * @param notificationsSources A collection of sources types which evaluate the email notification.
+             * @return the next definition stage.
+             */
+            WithCreate withNotificationsSources(List<NotificationsSource> notificationsSources);
+        }
+
+        /**
+         * The stage of the SecurityContact definition allowing to specify notificationsByRole.
+         */
         interface WithNotificationsByRole {
             /**
              * Specifies the notificationsByRole property: Defines whether to send email notifications from Microsoft
              * Defender for Cloud to persons with specific RBAC roles on the subscription..
-             *
+             * 
              * @param notificationsByRole Defines whether to send email notifications from Microsoft Defender for Cloud
-             *     to persons with specific RBAC roles on the subscription.
+             * to persons with specific RBAC roles on the subscription.
              * @return the next definition stage.
              */
             WithCreate withNotificationsByRole(SecurityContactPropertiesNotificationsByRole notificationsByRole);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     SecurityContact refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
