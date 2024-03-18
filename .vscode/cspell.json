@@ -216,15 +216,12 @@
     "sdk/search/.idea/**",
     "sdk/devcenter/azure-developer-devcenter/**",
     "sdk/loadtesting/azure-developer-loadtesting/**",
-<<<<<<< HEAD
     "sdk/generic-sdk-core/generic-core/**",
     "sdk/generic-sdk-core/generic-core-http-okhttp/**",
-    "sdk/generic-sdk-core/generic-json/**"
-=======
+    "sdk/generic-sdk-core/generic-json/**",
     "sdk/serialization/azure-json-gson/**",
     "sdk/serialization/azure-json/**",
     "sdk/serialization/azure-xml/**"
->>>>>>> 1f727e9cc72d0cdcdf94aa65296fac315a441771
   ],
   "words": [
     "adal",
