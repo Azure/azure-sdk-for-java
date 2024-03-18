@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 import static com.generic.core.http.models.ResponseBodyHandling.DESERIALIZE;
+import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
 
 /**
  * HttpClient implementation for OkHttp.
@@ -141,7 +142,9 @@ class OkHttpHttpClient implements HttpClient {
 
     private static Response<?> toResponse(HttpRequest request, okhttp3.Response response,
                                           ResponseBodyHandling responseBodyHandling, boolean eagerlyConvertHeaders) throws IOException {
-        if (responseBodyHandling == DESERIALIZE) {
+        if (responseBodyHandling == IGNORE) {
+            return new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
+        } else if (responseBodyHandling == DESERIALIZE) {
             try (ResponseBody body = response.body()) {
                 byte[] bytes = body == null
                     ? null

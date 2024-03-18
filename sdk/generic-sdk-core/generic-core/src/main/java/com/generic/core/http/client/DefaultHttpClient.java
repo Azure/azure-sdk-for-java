@@ -55,6 +55,7 @@ class DefaultHttpClient implements HttpClient {
     private final long connectionTimeout;
     private final long readTimeout;
     private final ProxyOptions proxyOptions;
+    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
     private static final String LAST_EVENT_ID = "Last-Event-Id";
     private static final String DEFAULT_EVENT = "message";
     private static final Pattern DIGITS_ONLY = Pattern.compile("^[\\d]*$");
@@ -226,6 +227,9 @@ class DefaultHttpClient implements HttpClient {
 
                         break;
                     case IGNORE:
+                        ignoreResponseBody(httpResponse, connection);
+
+                        break;
                     case BUFFER:
                     case DESERIALIZE:
                     default:
@@ -268,18 +272,6 @@ class DefaultHttpClient implements HttpClient {
         return Objects.equals(ContentType.TEXT_EVENT_STREAM, responseHeaders.getValue(HeaderName.CONTENT_TYPE));
     }
 
-    private void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
-        try {
-            AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
-
-            HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        } finally {
-            connection.disconnect();
-        }
-    }
-
     private void setResponseBodySupplier(HttpResponse<?> httpResponse, HttpURLConnection connection) {
         HttpResponseAccessHelper.setBodySupplier(httpResponse, () -> {
             try {
@@ -290,6 +282,24 @@ class DefaultHttpClient implements HttpClient {
                 connection.disconnect();
             }
         });
+    }
+
+    private void ignoreResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
+        HttpResponseAccessHelper.setBody(httpResponse, EMPTY_BODY);
+
+        connection.disconnect();
+    }
+
+    private void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
+        try {
+            AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
+
+            HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        } finally {
+            connection.disconnect();
+        }
     }
 
     /**
