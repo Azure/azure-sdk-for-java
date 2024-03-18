@@ -3,8 +3,6 @@
 
 package com.generic.core.http.annotation;
 
-import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
-
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
