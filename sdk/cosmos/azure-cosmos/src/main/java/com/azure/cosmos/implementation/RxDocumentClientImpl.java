@@ -681,7 +681,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             //     this.gatewayConfigurationReader,
             null,
             this.connectionPolicy,
-            this.apiType);
+            this.apiType,
+            this.globalPartitionEndpointManager);
 
         this.storeClientFactory = new StoreClientFactory(
             this.addressResolver,

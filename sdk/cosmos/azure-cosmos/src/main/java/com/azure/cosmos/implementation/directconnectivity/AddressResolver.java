@@ -9,9 +9,9 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Exceptions;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
+import com.azure.cosmos.implementation.IGlobalPartitionEndpointManager;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.NotFoundException;
@@ -55,10 +55,10 @@ public class AddressResolver implements IAddressResolver {
     private RxCollectionCache collectionCache;
     private ICollectionRoutingMapCache collectionRoutingMapCache;
     private IAddressCache addressCache;
-    private GlobalEndpointManager globalEndpointManager;
+    private IGlobalPartitionEndpointManager globalPartitionEndpointManager;
 
-    public AddressResolver(GlobalEndpointManager globalEndpointManager) {
-        this.globalEndpointManager = globalEndpointManager;
+    public AddressResolver(IGlobalPartitionEndpointManager globalPartitionEndpointManager) {
+        this.globalPartitionEndpointManager = globalPartitionEndpointManager;
     }
 
     public void initializeCaches(
@@ -87,7 +87,7 @@ public class AddressResolver implements IAddressResolver {
             request.requestContext.resolvedPartitionKeyRange = result.TargetPartitionKeyRange;
 
             // TODO: use GlobalPartitionEndpointManager to add a partition-level request override
-            if (!this.globalEndpointManager.tryAddPartitionLevelOverride(request)) {
+            if (!this.globalPartitionEndpointManager.tryAddPartitionKeyRangeLevelOverride(request)) {
                 return this.resolveAsync(request, forceRefreshPartitionAddresses);
             }
 
@@ -103,6 +103,11 @@ public class AddressResolver implements IAddressResolver {
     @Override
     public void setOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         throw new NotImplementedException("setOpenConnectionsProcessor is not supported on AddressResolver");
+    }
+
+    @Override
+    public IGlobalPartitionEndpointManager getGlobalPartitionEndpointManager() {
+        return this.globalPartitionEndpointManager;
     }
 
     private static boolean isSameCollection(PartitionKeyRange initiallyResolved, PartitionKeyRange newlyResolved) {

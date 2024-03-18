@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.IGlobalPartitionEndpointManager;
 import com.azure.cosmos.implementation.IRetryPolicy;
 import com.azure.cosmos.implementation.ISessionToken;
 import com.azure.cosmos.implementation.InternalServerErrorException;
@@ -51,7 +52,7 @@ public class StoreClient implements IStoreClient {
     private final DiagnosticsClientContext diagnosticsClientContext;
     private final Logger logger = LoggerFactory.getLogger(StoreClient.class);
     private final GatewayServiceConfigurationReader serviceConfigurationReader;
-
+    private final IAddressResolver addressResolver;
     private final SessionContainer sessionContainer;
     private final ReplicatedResourceClient replicatedResourceClient;
     private final TransportClient transportClient;
@@ -82,6 +83,7 @@ public class StoreClient implements IStoreClient {
             sessionRetryOptions);
 
         addressResolver.setOpenConnectionsProcessor(this.transportClient.getProactiveOpenConnectionsProcessor());
+        this.addressResolver = addressResolver;
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -189,6 +191,10 @@ public class StoreClient implements IStoreClient {
         RxDocumentServiceResponse rxDocumentServiceResponse =
             new RxDocumentServiceResponse(this.diagnosticsClientContext, storeResponse);
         rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
+
+        IGlobalPartitionEndpointManager globalPartitionEndpointManager = addressResolver.getGlobalPartitionEndpointManager();
+        globalPartitionEndpointManager.tryMarkPartitionKeyRangeAsUnavailable(request);
+
         return rxDocumentServiceResponse;
     }
 

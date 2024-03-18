@@ -69,8 +69,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                     this.globalEndpointManager.getApplicableReadEndpoints(request.requestContext.getExcludeRegions()) :
                     this.globalEndpointManager.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
 
-                isFailoverPossible.set(partitionKeyRangeFailoverInfoAsVal
-                    .tryMoveNextLocation(applicableEndpoints, failedLocation, request.isReadOnlyRequest()));
+                isFailoverPossible.set(partitionKeyRangeFailoverInfoAsVal.tryMoveNextLocation(applicableEndpoints, failedLocation, request.isReadOnlyRequest()));
             }
 
             return partitionKeyRangeFailoverInfoAsVal;
@@ -88,12 +87,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
     }
 
     @Override
-    public boolean tryMarkPartitionKeyRangeAsAvailable(RxDocumentServiceRequest request) {
-        return false;
-    }
-
-    @Override
-    public boolean tryAddPartitionKeyRangeLevelOverride(RxDocumentServiceRequest request) {
+    public boolean tryBookmarkPartitionKeyRangeSuccess(RxDocumentServiceRequest request) {
 
         if (request == null) {
             throw new IllegalArgumentException("request cannot be null!");
@@ -114,26 +108,72 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
             return false;
         }
 
+        URI succeededLocation = request.requestContext.locationEndpointToRoute;
+
         if (this.partitionKeyRangeToFailoverInfo.containsKey(partitionKeyRange)) {
+            this.partitionKeyRangeToFailoverInfo.compute(partitionKeyRange, (partitionKeyRangeAsKey, partitionKeyRangeFailoverInfoAsVal) -> {
 
-            // is it possible for this instance to go stale?
-            PartitionLevelFailoverInfo partitionLevelFailoverInfo = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRange);
+                if (partitionKeyRangeFailoverInfoAsVal == null) {
+                    partitionKeyRangeFailoverInfoAsVal = new PartitionLevelFailoverInfo();
+                }
 
-            // it could be possible that this currentLocationSnapshot is stale since the ConcurrentHashMap.get
-            // thread won over ConcurrentHashMap.compute (can mark a location as failed), in that case, the request
-            // could hit possible unavailability issues again
-            URI currentLocationSnapshot = partitionLevelFailoverInfo.current;
-
-            if (logger.isDebugEnabled()) {
-                logger.debug("Moving request to location : {}", currentLocationSnapshot.getPath());
-            }
-
-            request.requestContext.routeToLocation(currentLocationSnapshot);
-
-            return true;
+                partitionKeyRangeFailoverInfoAsVal.bookmarkSuccess(succeededLocation, request.isReadOnlyRequest());
+                return partitionKeyRangeFailoverInfoAsVal;
+            });
         }
 
         return false;
+    }
+
+    @Override
+    public boolean tryMarkPartitionKeyRangeAsAvailable(RxDocumentServiceRequest request) {
+        return false;
+    }
+
+    @Override
+    public boolean tryAddPartitionKeyRangeLevelOverride(RxDocumentServiceRequest request) {
+
+        return true;
+
+//        if (request == null) {
+//            throw new IllegalArgumentException("request cannot be null!");
+//        }
+//
+//        if (request.requestContext == null) {
+//
+//            if (logger.isDebugEnabled()) {
+//                logger.warn("requestContext is null!");
+//            }
+//
+//            return false;
+//        }
+//
+//        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+//
+//        if (partitionKeyRange == null) {
+//            return false;
+//        }
+//
+//        if (this.partitionKeyRangeToFailoverInfo.containsKey(partitionKeyRange)) {
+//
+//            // is it possible for this instance to go stale?
+//            PartitionLevelFailoverInfo partitionLevelFailoverInfo = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRange);
+//
+//            // it could be possible that this currentLocationSnapshot is stale since the ConcurrentHashMap.get
+//            // thread won over ConcurrentHashMap.compute (can mark a location as failed), in that case, the request
+//            // could hit possible unavailability issues again
+//            URI currentLocationSnapshot = partitionLevelFailoverInfo.current;
+//
+//            if (logger.isDebugEnabled()) {
+//                logger.debug("Moving request to location : {}", currentLocationSnapshot.getPath());
+//            }
+//
+//            request.requestContext.routeToLocation(currentLocationSnapshot);
+//
+//            return true;
+//        }
+//
+//        return false;
     }
 
     // what is the point of an inner class?
@@ -190,15 +230,21 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         }
 
         // bookmark success
-        public void bookmarkSuccess(URI succeededLocation) {
+        public void bookmarkSuccess(URI succeededLocation, boolean isReadRequest) {
             this.partitionLevelFailureMetadata.compute(succeededLocation, (locationAsKey, partitionLevelFailureMetadataAsVal) -> {
 
                 if (partitionLevelFailureMetadataAsVal == null) {
                     return new PartitionLevelFailureMetadata();
                 }
 
-                if (partitionLevelFailureMetadataAsVal.consecutiveFailureCountForReads.get() > 1) {
-                    partitionLevelFailureMetadataAsVal.consecutiveFailureCountForReads.decrementAndGet();
+                if (isReadRequest) {
+                    if (partitionLevelFailureMetadataAsVal.consecutiveFailureCountForReads.get() > 1) {
+                        partitionLevelFailureMetadataAsVal.consecutiveFailureCountForReads.decrementAndGet();
+                    }
+                } else {
+                    if (partitionLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.get() > 1) {
+                        partitionLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.decrementAndGet();
+                    }
                 }
 
                 return partitionLevelFailureMetadataAsVal;

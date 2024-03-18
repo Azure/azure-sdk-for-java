@@ -9,8 +9,8 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
+import com.azure.cosmos.implementation.IGlobalPartitionEndpointManager;
 import com.azure.cosmos.implementation.InvalidPartitionException;
-import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -66,15 +66,15 @@ public class AddressResolverTest {
     private RxCollectionCache collectionCache;
     private ICollectionRoutingMapCache collectionRoutingMapCache;
     private IAddressCache fabricAddressCache;
-    private GlobalEndpointManager globalEndpointManager;
+    private IGlobalPartitionEndpointManager globalPartitionEndpointManager;
     private int collectionCacheRefreshedCount;
     private Map<String, Integer> routingMapRefreshCount;
     private Map<ServiceIdentity, Integer> addressesRefreshCount;
 
     @BeforeClass(groups = "unit")
     public void before_AddressResolverTest() throws Exception {
-        this.globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        this.addressResolver = new AddressResolver(this.globalEndpointManager);
+        this.globalPartitionEndpointManager = Mockito.mock(IGlobalPartitionEndpointManager.class);
+        this.addressResolver = new AddressResolver(this.globalPartitionEndpointManager);
         this.collectionCache = Mockito.mock(RxCollectionCache.class);
         this.collectionRoutingMapCache = Mockito.mock(ICollectionRoutingMapCache.class);
         this.fabricAddressCache = Mockito.mock(IAddressCache.class);
