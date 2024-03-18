@@ -73,7 +73,7 @@ Response<BinaryData> response =
 ```java readme-sample-submitUserRequests
 BinaryData userRequestsPayload =
     BinaryData.fromString(
-        "{\"comment\":\"Thanks!\",\"operations\":[{\"type\":\"CreateTerm\",\"payload\":{\"glossaryTerm\":{\"name\":\"term\",\"anchor\":{\"glossaryGuid\":\"20031e20-b4df-4a66-a61d-1b0716f3fa48\"},\"nickName\":\"term\",\"status\":\"Approved\"}}}]}");
+        "{\"comment\":\"Thanks!\",\"operations\":[{\"type\":\"CreateTerm\",\"payload\":{\"glossaryTerm\":{\"name\":\"term\",\"anchor\":{\"glossaryGuid\":\"20031e20-b4df-4a66-a61d-1b0716f3fa48\"},\"nickName\":\"term\",\"status\":\"Approved\"}}},{\"type\":\"DeleteTerm\",\"payload\":{\"termGuid\":\"11bca96d-4565-4a49-96ab-dd418ba83f7c\",\"forceDeleteChild\":true}}]}");
 RequestOptions requestOptions = new RequestOptions();
 Response<BinaryData> response =
     userRequestsClient.submitWithResponse(userRequestsPayload, requestOptions);
