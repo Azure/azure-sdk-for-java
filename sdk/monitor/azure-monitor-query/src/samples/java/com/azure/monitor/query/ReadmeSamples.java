@@ -21,7 +21,7 @@ import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.LogsTableRow;
 import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricValue;
-import com.azure.monitor.query.models.MetricsBatchQueryResult;
+import com.azure.monitor.query.models.MetricsQueryResourcesResult;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
 import com.azure.monitor.query.models.QueryTimeInterval;
@@ -453,12 +453,12 @@ public class ReadmeSamples {
             .endpoint("{endpoint}")
             .buildClient();
 
-        MetricsBatchQueryResult metricsBatchQueryResult = metricsBatchQueryClient.queryBatch(
+        MetricsQueryResourcesResult metricsQueryResourcesResult = metricsBatchQueryClient.queryResources(
             Arrays.asList("{resourceId1}", "{resourceId2}"),
             Arrays.asList("{metric1}", "{metric2}"),
             "{metricNamespace}");
 
-        for (MetricsQueryResult metricsQueryResult : metricsBatchQueryResult.getMetricsQueryResults()) {
+        for (MetricsQueryResult metricsQueryResult : metricsQueryResourcesResult.getMetricsQueryResults()) {
             // Each MetricsQueryResult corresponds to one of the resourceIds in the batch request.
             List<MetricResult> metrics = metricsQueryResult.getMetrics();
             metrics.forEach(metric -> {
