@@ -1,12 +1,17 @@
 ## Release History
 
+### 4.53.4-hotfix (2024-03-15)
+
+#### Other Changes
+* Removed `System.exit()` calls from `ImplementationBridgeHelpers`. - See [PR 39215](https://github.com/Azure/azure-sdk-for-java/pull/39215)
+
 ### 4.53.3-hotfix (2024-03-07)
 
 #### Bugs Fixed
-* Suppress exceptions when calling diagnostics handlers. - See[39121](https://github.com/Azure/azure-sdk-for-java/pull/39121)
+* Suppress exceptions when calling diagnostics handlers. - See [PR 39121](https://github.com/Azure/azure-sdk-for-java/pull/39121)
 
 #### Other Changes
-* Only call System.exit in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See[39121](https://github.com/Azure/azure-sdk-for-java/pull/39121)
+* Only call System.exit in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See [PR 39121](https://github.com/Azure/azure-sdk-for-java/pull/39121)
 
 ### 4.53.2-hotfix (2024-02-04)
 #### Other Changes
