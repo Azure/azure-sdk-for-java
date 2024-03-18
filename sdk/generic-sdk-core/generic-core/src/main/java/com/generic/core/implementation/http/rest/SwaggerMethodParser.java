@@ -58,7 +58,7 @@ import java.util.stream.Collectors;
 
 import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
 import static com.generic.core.http.models.ResponseBodyHandling.DESERIALIZE;
-import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
+import static com.generic.core.http.models.ResponseBodyHandling.NO_BUFFER;
 import static com.generic.core.implementation.TypeUtil.typeImplementsInterface;
 
 /**
@@ -746,7 +746,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             && (TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.TYPE)
                 || TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.class))) {
 
-            return IGNORE;
+            return NO_BUFFER;
         } else if (isReturnTypeDecodable(unwrappedReturnType)) {
             return DESERIALIZE;
         } else {

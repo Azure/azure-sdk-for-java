@@ -54,6 +54,7 @@ import java.util.stream.Stream;
 import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
 import static com.generic.core.http.models.ResponseBodyHandling.DESERIALIZE;
 import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
+import static com.generic.core.http.models.ResponseBodyHandling.NO_BUFFER;
 import static com.generic.core.implementation.http.ContentType.APPLICATION_JSON;
 import static com.generic.core.implementation.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -743,9 +744,9 @@ public class SwaggerMethodParserTests {
             Arguments.of(InputStream.class, BUFFER),
             Arguments.of(FileInputStream.class, BUFFER),
 
-            Arguments.of(void.class, IGNORE),
-            Arguments.of(Void.class, IGNORE),
-            Arguments.of(Void.TYPE, IGNORE),
+            Arguments.of(void.class, NO_BUFFER),
+            Arguments.of(Void.class, NO_BUFFER),
+            Arguments.of(Void.TYPE, NO_BUFFER),
 
             // Other POJO types are decodable.
             Arguments.of(SimpleClass.class, DESERIALIZE),
@@ -760,13 +761,13 @@ public class SwaggerMethodParserTests {
             Arguments.of(createParameterizedResponse(MappedByteBuffer.class), BUFFER),
             Arguments.of(createParameterizedResponse(InputStream.class), BUFFER),
             Arguments.of(createParameterizedResponse(FileInputStream.class), BUFFER),
-            Arguments.of(createParameterizedResponse(void.class), IGNORE),
-            Arguments.of(createParameterizedResponse(Void.class), IGNORE),
-            Arguments.of(createParameterizedResponse(Void.TYPE), IGNORE),
+            Arguments.of(createParameterizedResponse(void.class), NO_BUFFER),
+            Arguments.of(createParameterizedResponse(Void.class), NO_BUFFER),
+            Arguments.of(createParameterizedResponse(Void.TYPE), NO_BUFFER),
             Arguments.of(createParameterizedResponse(SimpleClass.class), DESERIALIZE),
 
             // Custom implementations of Response.
-            Arguments.of(VoidResponse.class, IGNORE),
+            Arguments.of(VoidResponse.class, NO_BUFFER),
             Arguments.of(StringResponse.class, DESERIALIZE)
         );
     }

@@ -40,6 +40,7 @@ import java.util.stream.Stream;
 
 import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
 import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
+import static com.generic.core.http.models.ResponseBodyHandling.NO_BUFFER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -189,7 +190,7 @@ public class RestProxyTests {
 
         testInterface.testVoidMethod();
 
-        assertEquals(IGNORE, client.getLastHttpRequest().getMetadata().getResponseBodyHandling());
+        assertEquals(NO_BUFFER, client.getLastHttpRequest().getMetadata().getResponseBodyHandling());
     }
 
     @Test
@@ -203,11 +204,11 @@ public class RestProxyTests {
 
         testInterface.testMethodReturnsResponseVoid();
 
-        assertEquals(IGNORE, client.getLastHttpRequest().getMetadata().getResponseBodyHandling());
+        assertEquals(NO_BUFFER, client.getLastHttpRequest().getMetadata().getResponseBodyHandling());
     }
 
     @Test
-    public void streamingResponseDoesNotEagerlyReadsResponse() {
+    public void streamingResponseDoesNotEagerlyDeserializeResponse() {
         LocalHttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(client)

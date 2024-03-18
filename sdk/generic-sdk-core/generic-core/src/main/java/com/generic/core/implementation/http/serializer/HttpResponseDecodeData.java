@@ -95,6 +95,18 @@ public interface HttpResponseDecodeData {
         return SwaggerMethodParser.isReturnTypeDecodable(SwaggerMethodParser.unwrapReturnType(getReturnType()));
     }
 
+    /**
+     * How to handle the HTTP response body. The default value is {@link ResponseBodyHandling#BUFFER}.
+     * <p>
+     * Types whose body won't be buffered by default (including sub-types):
+     * <ul>
+     * <li>Void</li>
+     * <li>void</li>
+     * </ul>
+     *
+     * @return A {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP
+     * response should be handled.
+     */
     default ResponseBodyHandling getResponseBodyHandling() {
         return SwaggerMethodParser.getResponseBodyHandling(SwaggerMethodParser.unwrapReturnType(getReturnType()));
     }
