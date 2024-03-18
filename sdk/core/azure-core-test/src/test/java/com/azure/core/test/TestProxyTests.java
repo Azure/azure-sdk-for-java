@@ -241,8 +241,8 @@ public class TestProxyTests extends TestProxyTestBase {
     @Tag("Playback")
     public void testPlaybackWithRedaction() {
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
-        interceptorManager.addMatchers(Collections.singletonList(
-            new CustomMatcher().setExcludedHeaders(Collections.singletonList("Ocp-Apim-Subscription-Key"))));
+        interceptorManager
+            .setMatcher(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Ocp-Apim-Subscription-Key")));
         HttpClient client = interceptorManager.getPlaybackClient();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, "http://localhost:" + server.port() + "/fr/models")
@@ -263,7 +263,7 @@ public class TestProxyTests extends TestProxyTestBase {
         HttpClient client = interceptorManager.getPlaybackClient();
 
         interceptorManager.addSanitizers(CUSTOM_SANITIZER);
-        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept")));
+        interceptorManager.setMatcher(new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Accept")));
 
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 

@@ -55,7 +55,6 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new AzureKeyCredential(INVALID_KEY));
-                setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_DOCUMENTINTELLIGENCE_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -65,7 +64,6 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
         } else {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new MockTokenCredential());
-                setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new DefaultAzureCredentialBuilder().build());
                 builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -77,9 +75,6 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
             interceptorManager.addSanitizers(getTestProxySanitizers());
         }
         return builder;
-    }
-    private void setMatchers() {
-        interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
     }
 
     static void validateCopyAuthorizationResult(CopyAuthorization actualResult) {
