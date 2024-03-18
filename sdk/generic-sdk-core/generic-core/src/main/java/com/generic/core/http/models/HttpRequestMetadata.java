@@ -6,6 +6,8 @@ package com.generic.core.http.models;
 import com.generic.core.models.Context;
 import com.generic.core.util.ClientLogger;
 
+import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
+
 /**
  * Contains metadata associated with a given {@link HttpRequest}.
  * <p>
@@ -17,7 +19,7 @@ public final class HttpRequestMetadata {
     private int retryCount;
     private ClientLogger requestLogger;
     private boolean eagerlyConvertHeaders;
-    private ResponseBodyHandling responseBodyHandling;
+    private ResponseBodyHandling responseBodyHandling = BUFFER;
 
     /**
      * Creates an instance of {@link HttpRequestMetadata}.
@@ -105,10 +107,26 @@ public final class HttpRequestMetadata {
         return this;
     }
 
+    /**
+     * Gets a {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
+     * handled.
+     *
+     * @return A {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
+     * handled.
+     */
     public ResponseBodyHandling getResponseBodyHandling() {
         return responseBodyHandling;
     }
 
+    /**
+     * Sets a {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
+     * handled.
+     *
+     * @param responseBodyHandling A {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP
+     * response should be handled.
+     *
+     * @return The updated {@link HttpRequestMetadata} object.
+     */
     public HttpRequestMetadata setResponseBodyHandling(ResponseBodyHandling responseBodyHandling) {
         this.responseBodyHandling = responseBodyHandling;
         return this;

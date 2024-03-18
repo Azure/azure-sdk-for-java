@@ -145,6 +145,13 @@ public final class RequestOptions {
         return context;
     }
 
+    /**
+     * Gets a {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
+     * handled.
+     *
+     * @return A {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
+     * handled.
+     */
     public ResponseBodyHandling getResponseBodyHandling() {
         return responseBodyHandling;
     }
@@ -266,6 +273,15 @@ public final class RequestOptions {
         return this;
     }
 
+    /**
+     * Sets a {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
+     * handled.
+     *
+     * @param responseBodyHandling A {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP
+     * response should be handled.
+     *
+     * @return The updated {@link RequestOptions} object.
+     */
     public RequestOptions setResponseBodyHandling(ResponseBodyHandling responseBodyHandling) {
         this.responseBodyHandling = responseBodyHandling;
 
