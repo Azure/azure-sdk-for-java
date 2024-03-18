@@ -226,7 +226,6 @@ class DefaultHttpClient implements HttpClient {
 
                         break;
                     case IGNORE:
-                        // TODO: Verify if we should ignore the body of void/Void response types.
                     case BUFFER:
                     case DESERIALIZE:
                     default:

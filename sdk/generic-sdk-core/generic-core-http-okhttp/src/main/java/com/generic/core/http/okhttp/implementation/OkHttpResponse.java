@@ -14,8 +14,6 @@ import okhttp3.ResponseBody;
  * Base response class for OkHttp with implementations for response metadata.
  */
 public class OkHttpResponse extends HttpResponse<BinaryData> {
-    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
-
     private final ResponseBody responseBody;
 
     public OkHttpResponse(okhttp3.Response response, HttpRequest request, boolean eagerlyConvertHeaders,
@@ -27,8 +25,10 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
                 : new OkHttpToCoreHttpHeadersWrapper(response.headers()),
             bodyBytes == null
                 ? response.body() == null
-                    ? EMPTY_BODY
-                    : BinaryData.fromStream(response.body().byteStream())
+                    ? null
+                    : response.body().contentLength() == 0
+                        ? null
+                        : BinaryData.fromStream(response.body().byteStream())
                 : BinaryData.fromBytes(bodyBytes));
         // innerResponse.body() getter will not return null for server returned responses.
         // It can be null:
