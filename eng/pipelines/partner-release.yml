@@ -29,7 +29,7 @@ extends:
         - job: Signing
           pool:
             name: $(WINDOWSPOOL)
-            vmImage: $(WINDOWSVMIMAGE)
+            image: $(WINDOWSVMIMAGE)
             os: windows
           steps:
           - checkout: azure-sdk-build-tools
@@ -55,7 +55,7 @@ extends:
           dependsOn: Signing
           pool:
             name: $(WINDOWSPOOL)
-            vmImage: $(WINDOWSVMIMAGE)
+            image: $(WINDOWSVMIMAGE)
             os: windows
           steps:
           - checkout: self
