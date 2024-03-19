@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The ContactAssetResource model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = ContactAssetResource.class, visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("contact")
 @Immutable
 public final class ContactAssetResource extends AssetResource {
@@ -23,7 +23,7 @@ public final class ContactAssetResource extends AssetResource {
      */
     @Generated
     @JsonProperty(value = "asset")
-    private final ContactAsset asset;
+    private ContactAsset asset;
 
     /**
      * Creates an instance of ContactAssetResource class.
@@ -33,7 +33,6 @@ public final class ContactAssetResource extends AssetResource {
     @Generated
     @JsonCreator
     private ContactAssetResource(@JsonProperty(value = "asset") ContactAsset asset) {
-        setKind("contact");
         this.asset = asset;
     }
 

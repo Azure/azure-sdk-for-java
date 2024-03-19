@@ -20,14 +20,14 @@ public final class ErrorDetail {
      */
     @Generated
     @JsonProperty(value = "code")
-    private final String code;
+    private String code;
 
     /*
      * This is a human-readable representation of the error.
      */
     @Generated
     @JsonProperty(value = "message")
-    private final String message;
+    private String message;
 
     /*
      * This is the error target.
@@ -104,7 +104,8 @@ public final class ErrorDetail {
     }
 
     /**
-     * Get the innererror property: This is an object containing more specific information than the current object about the error.
+     * Get the innererror property: This is an object containing more specific information than the current object
+     * about the error.
      *
      * @return the innererror value.
      */

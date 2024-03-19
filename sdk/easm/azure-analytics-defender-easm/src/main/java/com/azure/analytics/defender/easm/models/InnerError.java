@@ -45,7 +45,8 @@ public final class InnerError {
     }
 
     /**
-     * Get the value property: This is an additional field representing the value that caused the error to help with debugging.
+     * Get the value property: This is an additional field representing the value that caused the error to help with
+     * debugging.
      *
      * @return the value value.
      */

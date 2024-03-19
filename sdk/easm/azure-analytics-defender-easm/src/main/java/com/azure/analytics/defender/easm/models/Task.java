@@ -65,7 +65,7 @@ public final class Task {
     private String reason;
 
     /*
-     * Attributes unique to the task.  This differs by task type.
+     * Attributes unique to the task. This differs by task type.
      */
     @Generated
     @JsonProperty(value = "metadata")
@@ -149,7 +149,7 @@ public final class Task {
     }
 
     /**
-     * Get the metadata property: Attributes unique to the task.  This differs by task type.
+     * Get the metadata property: Attributes unique to the task. This differs by task type.
      *
      * @return the metadata value.
      */

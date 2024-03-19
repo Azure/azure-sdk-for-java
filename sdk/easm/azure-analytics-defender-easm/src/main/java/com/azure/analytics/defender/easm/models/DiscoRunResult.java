@@ -156,7 +156,8 @@ public final class DiscoRunResult {
     }
 
     /**
-     * Get the excludes property: The list of excludes used for the disco run, aka assets to exclude from the discovery algorithm.
+     * Get the excludes property: The list of excludes used for the disco run, aka assets to exclude from the discovery
+     * algorithm.
      *
      * @return the excludes value.
      */

@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * state of observed port.
+ * Defines values for ObservedPortStateValue.
  */
 public final class ObservedPortStateValue extends ExpandableStringEnum<ObservedPortStateValue> {
 

@@ -122,7 +122,8 @@ public final class DiscoGroupData {
     }
 
     /**
-     * Get the tier property: The tier for the disco group which will affect the algorithm used for the disco runs in this group.
+     * Get the tier property: The tier for the disco group which will affect the algorithm used for the disco runs in
+     * this group.
      *
      * @return the tier value.
      */
@@ -132,7 +133,8 @@ public final class DiscoGroupData {
     }
 
     /**
-     * Set the tier property: The tier for the disco group which will affect the algorithm used for the disco runs in this group.
+     * Set the tier property: The tier for the disco group which will affect the algorithm used for the disco runs in
+     * this group.
      *
      * @param tier the tier value to set.
      * @return the DiscoGroupData object itself.
@@ -144,7 +146,8 @@ public final class DiscoGroupData {
     }
 
     /**
-     * Get the frequencyMilliseconds property: The frequency at which the disco group is supposed to be rerun in milliseconds.
+     * Get the frequencyMilliseconds property: The frequency at which the disco group is supposed to be rerun in
+     * milliseconds.
      *
      * @return the frequencyMilliseconds value.
      */
@@ -154,7 +157,8 @@ public final class DiscoGroupData {
     }
 
     /**
-     * Set the frequencyMilliseconds property: The frequency at which the disco group is supposed to be rerun in milliseconds.
+     * Set the frequencyMilliseconds property: The frequency at which the disco group is supposed to be rerun in
+     * milliseconds.
      *
      * @param frequencyMilliseconds the frequencyMilliseconds value to set.
      * @return the DiscoGroupData object itself.
@@ -210,7 +214,8 @@ public final class DiscoGroupData {
     }
 
     /**
-     * Get the excludes property: The list of excludes used for the disco group runs, aka assets to exclude from the discovery algorithm.
+     * Get the excludes property: The list of excludes used for the disco group runs, aka assets to exclude from the
+     * discovery algorithm.
      *
      * @return the excludes value.
      */
@@ -220,7 +225,8 @@ public final class DiscoGroupData {
     }
 
     /**
-     * Set the excludes property: The list of excludes used for the disco group runs, aka assets to exclude from the discovery algorithm.
+     * Set the excludes property: The list of excludes used for the disco group runs, aka assets to exclude from the
+     * discovery algorithm.
      *
      * @param excludes the excludes value to set.
      * @return the DiscoGroupData object itself.

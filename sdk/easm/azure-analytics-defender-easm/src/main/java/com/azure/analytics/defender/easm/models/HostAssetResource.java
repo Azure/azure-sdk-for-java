@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The HostAssetResource model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = HostAssetResource.class, visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("host")
 @Immutable
 public final class HostAssetResource extends AssetResource {
@@ -23,7 +23,7 @@ public final class HostAssetResource extends AssetResource {
      */
     @Generated
     @JsonProperty(value = "asset")
-    private final HostAsset asset;
+    private HostAsset asset;
 
     /**
      * Creates an instance of HostAssetResource class.
@@ -33,7 +33,6 @@ public final class HostAssetResource extends AssetResource {
     @Generated
     @JsonCreator
     private HostAssetResource(@JsonProperty(value = "asset") HostAsset asset) {
-        setKind("host");
         this.asset = asset;
     }
 

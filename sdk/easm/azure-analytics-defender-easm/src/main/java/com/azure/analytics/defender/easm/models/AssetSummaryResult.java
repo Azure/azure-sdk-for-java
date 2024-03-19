@@ -16,21 +16,23 @@ import java.util.List;
 public final class AssetSummaryResult {
 
     /*
-     * The name of the summary response.  Depending on the request time this will either be the asset filter, risk category, or risk metric.
+     * The name of the summary response. Depending on the request time this will either be the asset filter, risk
+     * category, or risk metric.
      */
     @Generated
     @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * The description of the summary response.  Filters don't have a description.
+     * The description of the summary response. Filters don't have a description.
      */
     @Generated
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * The last time risk categories or risk metrics were captured. Set to the current time for asset filter requests, which always pull the live asset data.
+     * The last time risk categories or risk metrics were captured. Set to the current time for asset filter requests,
+     * which always pull the live asset data.
      */
     @Generated
     @JsonProperty(value = "updatedAt")
@@ -79,7 +81,8 @@ public final class AssetSummaryResult {
     private String link;
 
     /*
-     * The corresponding child entities.  For metric categories this will contain metrics.  For filters with groupBy and segmentBy this will contain facets.
+     * The corresponding child entities. For metric categories this will contain metrics. For filters with groupBy
+     * and segmentBy this will contain facets.
      */
     @Generated
     @JsonProperty(value = "children")
@@ -93,7 +96,8 @@ public final class AssetSummaryResult {
     }
 
     /**
-     * Get the displayName property: The name of the summary response.  Depending on the request time this will either be the asset filter, risk category, or risk metric.
+     * Get the displayName property: The name of the summary response. Depending on the request time this will either
+     * be the asset filter, risk category, or risk metric.
      *
      * @return the displayName value.
      */
@@ -103,7 +107,7 @@ public final class AssetSummaryResult {
     }
 
     /**
-     * Get the description property: The description of the summary response.  Filters don't have a description.
+     * Get the description property: The description of the summary response. Filters don't have a description.
      *
      * @return the description value.
      */
@@ -113,7 +117,8 @@ public final class AssetSummaryResult {
     }
 
     /**
-     * Get the updatedAt property: The last time risk categories or risk metrics were captured. Set to the current time for asset filter requests, which always pull the live asset data.
+     * Get the updatedAt property: The last time risk categories or risk metrics were captured. Set to the current time
+     * for asset filter requests, which always pull the live asset data.
      *
      * @return the updatedAt value.
      */
@@ -123,7 +128,8 @@ public final class AssetSummaryResult {
     }
 
     /**
-     * Get the metricCategory property: If the request is for a metric category, this will contain the requested unique category name.
+     * Get the metricCategory property: If the request is for a metric category, this will contain the requested unique
+     * category name.
      *
      * @return the metricCategory value.
      */
@@ -183,7 +189,8 @@ public final class AssetSummaryResult {
     }
 
     /**
-     * Get the children property: The corresponding child entities.  For metric categories this will contain metrics.  For filters with groupBy and segmentBy this will contain facets.
+     * Get the children property: The corresponding child entities. For metric categories this will contain metrics.
+     * For filters with groupBy and segmentBy this will contain facets.
      *
      * @return the children value.
      */

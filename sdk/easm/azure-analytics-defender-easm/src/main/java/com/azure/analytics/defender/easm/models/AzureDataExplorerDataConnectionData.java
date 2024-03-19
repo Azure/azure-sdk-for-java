@@ -13,11 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The AzureDataExplorerDataConnectionData model.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "kind",
-    defaultImpl = AzureDataExplorerDataConnectionData.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("azureDataExplorer")
 @Fluent
 public final class AzureDataExplorerDataConnectionData extends DataConnectionData {
@@ -27,7 +23,7 @@ public final class AzureDataExplorerDataConnectionData extends DataConnectionDat
      */
     @Generated
     @JsonProperty(value = "properties")
-    private final AzureDataExplorerDataConnectionProperties properties;
+    private AzureDataExplorerDataConnectionProperties properties;
 
     /**
      * Creates an instance of AzureDataExplorerDataConnectionData class.
@@ -38,7 +34,6 @@ public final class AzureDataExplorerDataConnectionData extends DataConnectionDat
     @JsonCreator
     public AzureDataExplorerDataConnectionData(
         @JsonProperty(value = "properties") AzureDataExplorerDataConnectionProperties properties) {
-        setKind("azureDataExplorer");
         this.properties = properties;
     }
 

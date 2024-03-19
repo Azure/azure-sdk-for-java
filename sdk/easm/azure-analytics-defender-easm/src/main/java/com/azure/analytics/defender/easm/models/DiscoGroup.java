@@ -147,7 +147,8 @@ public final class DiscoGroup {
     }
 
     /**
-     * Get the tier property: The tier for the disco group which will affect the algorithm used for the disco runs in this group.
+     * Get the tier property: The tier for the disco group which will affect the algorithm used for the disco runs in
+     * this group.
      *
      * @return the tier value.
      */
@@ -157,7 +158,8 @@ public final class DiscoGroup {
     }
 
     /**
-     * Get the frequencyMilliseconds property: The frequency at which the disco group is supposed to be rerun in milliseconds.
+     * Get the frequencyMilliseconds property: The frequency at which the disco group is supposed to be rerun in
+     * milliseconds.
      *
      * @return the frequencyMilliseconds value.
      */
@@ -187,7 +189,8 @@ public final class DiscoGroup {
     }
 
     /**
-     * Get the excludes property: The list of excludes used for the disco group runs, aka assets to exclude from the discovery algorithm.
+     * Get the excludes property: The list of excludes used for the disco group runs, aka assets to exclude from the
+     * discovery algorithm.
      *
      * @return the excludes value.
      */
@@ -197,7 +200,8 @@ public final class DiscoGroup {
     }
 
     /**
-     * Get the latestRun property: The latest run of this disco group with some limited information, null if the group has never been run.
+     * Get the latestRun property: The latest run of this disco group with some limited information, null if the group
+     * has never been run.
      *
      * @return the latestRun value.
      */

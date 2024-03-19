@@ -19,14 +19,14 @@ public final class SavedFilterData {
      */
     @Generated
     @JsonProperty(value = "filter")
-    private final String filter;
+    private String filter;
 
     /*
      * A human readable description of the saved filter.
      */
     @Generated
     @JsonProperty(value = "description")
-    private final String description;
+    private String description;
 
     /**
      * Creates an instance of SavedFilterData class.

@@ -7,7 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 
 /**
- * A inventory base model created for swagger documentation purpose.
+ * The InventoryAsset model.
  */
 @Immutable
 public class InventoryAsset {
