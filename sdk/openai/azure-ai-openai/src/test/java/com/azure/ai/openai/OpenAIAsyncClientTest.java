@@ -234,7 +234,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     .assertNext(resultEmbeddings -> {
                         assertEmbeddings(resultEmbeddings);
                         assertEquals(embeddingsOptions.getDimensions(),
-                                resultEmbeddings.getData().get(0).getEmbedding().size());
+                                resultEmbeddings.getData().get(0).getEmbeddingAsFloat().size());
                     })
                     .verifyComplete();
         });

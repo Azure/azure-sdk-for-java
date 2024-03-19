@@ -1694,9 +1694,7 @@ public final class OpenAIClientImpl {
      * {
      *     data (Required): [
      *          (Required){
-     *             embedding (Required): [
-     *                 double (Required)
-     *             ]
+     *             embedding: String (Required)
      *             index: int (Required)
      *         }
      *     ]
@@ -1755,9 +1753,7 @@ public final class OpenAIClientImpl {
      * {
      *     data (Required): [
      *          (Required){
-     *             embedding (Required): [
-     *                 double (Required)
-     *             ]
+     *             embedding: String (Required)
      *             index: int (Required)
      *         }
      *     ]

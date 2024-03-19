@@ -543,7 +543,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertFalse(data.isEmpty());
 
         for (EmbeddingItem item : data) {
-            List<Double> embedding = item.getEmbedding();
+            List<Float> embedding = item.getEmbeddingAsFloat();
             assertNotNull(embedding);
             assertFalse(embedding.isEmpty());
         }
