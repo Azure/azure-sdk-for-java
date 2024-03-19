@@ -30,7 +30,6 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -67,7 +66,7 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
                 }
             }));
         if (getTestMode() == TestMode.PLAYBACK) {
-            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
+            interceptorManager.setMatcher(new BodilessMatcher());
             clientBuilder
                 .credential(new MockTokenCredential())
                 .httpClient(interceptorManager.getPlaybackClient());

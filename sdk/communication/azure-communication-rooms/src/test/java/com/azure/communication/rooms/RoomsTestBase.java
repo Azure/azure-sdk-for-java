@@ -5,26 +5,28 @@ package com.azure.communication.rooms;
 
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
-import com.azure.communication.rooms.models.*;
+import com.azure.communication.rooms.models.CommunicationRoom;
+import com.azure.communication.rooms.models.RoomParticipant;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Locale;
-import reactor.core.publisher.Mono;
-import com.azure.core.http.HttpPipelineNextPolicy;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.Response;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class RoomsTestBase extends TestProxyTestBase {
     protected static final TestMode TEST_MODE = initializeTestMode();
@@ -92,9 +94,10 @@ public class RoomsTestBase extends TestProxyTestBase {
         }
 
         if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
+            interceptorManager.setMatcher(
                     new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
-                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))
+                        .setComparingBodies(false));
         }
 
         return builder;
@@ -106,9 +109,9 @@ public class RoomsTestBase extends TestProxyTestBase {
         }
 
         if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
-                    new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
-                            "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+            interceptorManager.setMatcher(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent",
+                    "repeatability-request-id", "x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))
+                .setComparingBodies(false));
         }
     }
 

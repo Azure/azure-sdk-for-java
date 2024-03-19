@@ -7,7 +7,6 @@ import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
-import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
@@ -58,10 +57,10 @@ public class BlobBatchTestBase extends TestProxyTestBase {
                 new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
         }
 
-        interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
+        interceptorManager.setMatcher(
             new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Content-Type"))
                 .setQueryOrderingIgnored(true)
-                .setIgnoredQueryParameters(Arrays.asList("sv"))));
+                .setIgnoredQueryParameters(Arrays.asList("sv")).setComparingBodies(false));
 
         primaryBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());

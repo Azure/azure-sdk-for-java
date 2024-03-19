@@ -45,10 +45,10 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
             .httpClient(getHttpClientOrUsePlayback(httpClient));
 
         if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+            interceptorManager.setMatcher(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64",
                     "repeatability-first-sent", "repeatability-request-id"))
-                .setComparingBodies(false)));
+                .setComparingBodies(false));
         }
 
         if (interceptorManager.isRecordMode()) {
@@ -81,9 +81,9 @@ public class CommunicationMessagesTestBase extends TestProxyTestBase {
         }
 
         if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+            interceptorManager.setMatcher(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))
-                .setComparingBodies(false)));
+                .setComparingBodies(false));
         }
 
         if (getTestMode() == TestMode.RECORD) {

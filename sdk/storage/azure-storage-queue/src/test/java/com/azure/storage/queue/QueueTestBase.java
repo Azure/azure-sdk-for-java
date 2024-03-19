@@ -47,9 +47,9 @@ public class QueueTestBase extends TestProxyTestBase {
         // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
         // in SAS tokens.
         // TODO (alzimmer): Once all Storage libraries are migrated to test proxy move this into the common parent.
-        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+        interceptorManager.setMatcher(new CustomMatcher()
             .setQueryOrderingIgnored(true)
-            .setIgnoredQueryParameters(Arrays.asList("sv"))));
+            .setIgnoredQueryParameters(Arrays.asList("sv")));
     }
 
     /**

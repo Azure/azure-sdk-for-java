@@ -46,8 +46,8 @@ public class ChatClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new CommunicationTokenCredential(generateRawToken()));
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64", "repeatability-request-id"))));
+            interceptorManager.setMatcher(new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64", "repeatability-request-id")));
             return builder;
         } else {
             builder.credential(new CommunicationTokenCredential(token));
@@ -74,8 +74,8 @@ public class ChatClientTestBase extends TestProxyTestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             builder.credential(new CommunicationTokenCredential(generateRawToken()));
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
+            interceptorManager.setMatcher(new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64")));
             return builder;
         } else {
             builder.credential(new CommunicationTokenCredential(token));
@@ -100,8 +100,8 @@ public class ChatClientTestBase extends TestProxyTestBase {
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
 
         if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
+            interceptorManager.setMatcher(new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64")));
         }
         if (getTestMode() == TestMode.RECORD) {
             builder.addPolicy(interceptorManager.getRecordPolicy());

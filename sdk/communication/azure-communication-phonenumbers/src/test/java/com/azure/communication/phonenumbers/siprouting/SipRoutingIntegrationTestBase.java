@@ -175,8 +175,8 @@ public class SipRoutingIntegrationTestBase extends TestProxyTestBase {
     }
 
     private void addTestProxyMatchers() {
-        interceptorManager.addMatchers(Arrays.asList(
-            new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha256"))));
+        interceptorManager.setMatcher(
+            new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha256")));
     }
 
     private HttpClient getHttpClient(HttpClient httpClient) {

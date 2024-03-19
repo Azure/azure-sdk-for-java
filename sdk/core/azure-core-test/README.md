@@ -284,9 +284,9 @@ There are two primary ways to keep secrets from being written into recordings:
    if (interceptorManager.isPlaybackMode()) {
        // Use a playback client when running in playback mode
        pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
-       // Add matchers only in playback mode
-       interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-           .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-client-request-id"))));
+       // Set matcher only for playback mode
+       interceptorManager.setMatcher(new CustomMatcher()
+           .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-client-request-id")));
    }
    if (!interceptorManager.isLiveMode()) {
        // Add sanitizers when running in playback or record mode

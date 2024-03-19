@@ -45,7 +45,7 @@ import com.azure.health.insights.radiologyinsights.models.TimePeriod;
  */
 
 class RadiologyInsightsClientTestBase extends TestProxyTestBase {
-    
+
     private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
 
     void testRadiologyInsightsgWithResponse(Consumer<RadiologyInsightsData> testRunner) {
@@ -64,8 +64,8 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.PLAYBACK) {
             builder.httpClient(interceptorManager.getPlaybackClient());
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id"))));
+            interceptorManager.setMatcher(new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id")));
         }
         return builder;
     }
@@ -77,7 +77,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         radiologyInsightsData.setConfiguration(modelConfiguration);
         return radiologyInsightsData;
     }
-    
+
     private static List<PatientRecord> createPatientRecords() {
         List<PatientRecord> patientRecords = new ArrayList<>();
         // Patients
@@ -87,7 +87,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         patientDetails.setSex(PatientSex.FEMALE);
 
         patientDetails.setBirthDate(LocalDate.of(1959, 11, 11));
-        
+
         patientRecord.setInfo(patientDetails);
 
         Encounter encounter = new Encounter("encounterid1");
@@ -144,12 +144,12 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         patientRecords.add(patientRecord);
         return patientRecords;
     }
-    
+
     private static PatientDocument getPatientDocument() {
         DocumentContent documentContent = new DocumentContent(DocumentContentSourceType.INLINE, "Findings: There is a total hip prosthesis.");
         return new PatientDocument(DocumentType.NOTE, "docid1", documentContent);
     }
-   
+
     private static RadiologyInsightsModelConfiguration createRadiologyInsightsModelConfig() {
         RadiologyInsightsModelConfiguration configuration = new RadiologyInsightsModelConfiguration();
         RadiologyInsightsInferenceOptions inferenceOptions = getRadiologyInsightsInferenceOptions();
@@ -160,7 +160,7 @@ class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         configuration.setIncludeEvidence(true);
         return configuration;
     }
-    
+
     private static RadiologyInsightsInferenceOptions getRadiologyInsightsInferenceOptions() {
         RadiologyInsightsInferenceOptions inferenceOptions = new RadiologyInsightsInferenceOptions();
         FollowupRecommendationOptions followupOptions = new FollowupRecommendationOptions();

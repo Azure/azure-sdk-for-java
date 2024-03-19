@@ -52,9 +52,9 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
     }
 
     private void addTestProxyMatchers() {
-        interceptorManager.addMatchers(Arrays.asList(
+        interceptorManager.setMatcher(
             new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))));
+                .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64")));
     }
 
     private void addTestProxySanitizer() {

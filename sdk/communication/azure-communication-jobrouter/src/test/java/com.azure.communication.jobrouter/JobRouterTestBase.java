@@ -127,8 +127,8 @@ class JobRouterTestBase extends TestProxyTestBase {
     }
 
     private void addMatchers() {
-        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(
-            Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
+        interceptorManager.setMatcher(new CustomMatcher().setHeadersKeyOnlyMatch(
+            Arrays.asList("x-ms-hmac-string-to-sign-base64")));
     }
 
     protected RouterQueue createQueue(JobRouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {

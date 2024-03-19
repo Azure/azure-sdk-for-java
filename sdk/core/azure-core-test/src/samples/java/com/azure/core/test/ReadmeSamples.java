@@ -76,7 +76,7 @@ public class ReadmeSamples {
             if (interceptorManager.isPlaybackMode()) {
                 // Use a playback client when running in playback mode
                 pipelineBuilder.httpClient(interceptorManager.getPlaybackClient());
-                // Add matchers only in playback mode
+                // Set matcher only for playback mode
                 interceptorManager.setMatcher(new CustomMatcher()
                     .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-client-request-id")));
             }

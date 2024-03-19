@@ -14,7 +14,6 @@ import com.azure.ai.documentintelligence.models.DocumentModelDetails;
 import com.azure.ai.documentintelligence.models.ResourceDetails;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
@@ -23,7 +22,6 @@ import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.function.Consumer;
 
 import static com.azure.ai.documentintelligence.TestUtils.INVALID_KEY;
@@ -55,6 +53,7 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new AzureKeyCredential(INVALID_KEY));
+                setMatcher();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_DOCUMENTINTELLIGENCE_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -64,6 +63,7 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
         } else {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new MockTokenCredential());
+                setMatcher();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new DefaultAzureCredentialBuilder().build());
                 builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -75,6 +75,9 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
             interceptorManager.addSanitizers(getTestProxySanitizers());
         }
         return builder;
+    }
+    private void setMatcher() {
+        interceptorManager.setMatcher(new BodilessMatcher());
     }
 
     static void validateCopyAuthorizationResult(CopyAuthorization actualResult) {

@@ -37,8 +37,8 @@ public class CancerProfilingClientTestBase extends TestProxyTestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.PLAYBACK) {
             builder.httpClient(interceptorManager.getPlaybackClient());
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id"))));
+            interceptorManager.setMatcher(new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Arrays.asList("repeatability-first-sent", "repeatability-request-id")));
         }
         return builder;
     }

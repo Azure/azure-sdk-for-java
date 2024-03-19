@@ -25,8 +25,8 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     @Override
     public void beforeTest() {
         if (getTestMode() != TestMode.LIVE) {
-            interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Collections.singletonList("Ocp-Apim-Subscription-Region"))));
+            interceptorManager.setMatcher(new CustomMatcher()
+                .setHeadersKeyOnlyMatch(Collections.singletonList("Ocp-Apim-Subscription-Region")));
         }
     }
 

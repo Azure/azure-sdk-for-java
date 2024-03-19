@@ -51,7 +51,7 @@ public class DigitalTwinsTestBase extends TestProxyTestBase {
             builder.credential(new FakeCredentials());
             // Connect to a special host when running tests in playback mode.
             builder.endpoint(PLAYBACK_ENDPOINT);
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Telemetry-Source-Time"))));
+            interceptorManager.setMatcher(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Telemetry-Source-Time")));
 
             return builder;
         }

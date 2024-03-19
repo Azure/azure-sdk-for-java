@@ -44,9 +44,9 @@ public class EmailTestBase extends TestProxyTestBase {
             .connectionString(CONNECTION_STRING)
             .httpClient(getHttpClientOrUsePlayback(httpClient));
         if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+            interceptorManager.setMatcher(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))
-                .setComparingBodies(false)));
+                .setComparingBodies(false));
         }
         if (getTestMode() == TestMode.RECORD) {
             HttpPipelinePolicy recordPolicy = interceptorManager.getRecordPolicy();

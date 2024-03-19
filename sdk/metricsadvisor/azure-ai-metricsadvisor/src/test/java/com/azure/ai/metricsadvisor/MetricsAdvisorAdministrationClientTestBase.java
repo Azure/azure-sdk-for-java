@@ -81,7 +81,7 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestPro
             } else {
                 builder.credential(new MetricsAdvisorKeyCredential("subscription_key", "api_key"));
                 // setting bodiless matcher to "exclude" matching request bodies with UUID's
-                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(), new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
+                interceptorManager.setMatcher(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key")).setComparingBodies(false));
             }
         } else {
             if (!interceptorManager.isPlaybackMode()) {
@@ -92,7 +92,7 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestPro
                     .credential(new DefaultAzureCredentialBuilder().build());
             } else {
                 builder.credential(new MockTokenCredential());
-                interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
+                interceptorManager.setMatcher(new BodilessMatcher());
             }
         }
 
