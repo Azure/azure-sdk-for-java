@@ -24,7 +24,7 @@ extends:
             value: $(Pipeline.Workspace)/artifacts
           - name: EsrpArtifacts
             value: $(Pipeline.Workspace)/packages-esrp
-          - template: /eng/common/pipelines/templates/variables.yml
+          - template: /eng/pipelines/templates/variables/image.yml
         jobs:
         - job: Signing
           pool:
