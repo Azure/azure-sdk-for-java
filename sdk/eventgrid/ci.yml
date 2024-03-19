@@ -44,6 +44,11 @@ parameters:
   displayName: 'azure-messaging-eventgrid-cloudnative-cloudevents'
   type: boolean
   default: true
+- name: release_azureresourcemanagereventgrid
+  displayName: 'azure-resourcemanager-eventgrid'
+  type: boolean
+  default: true
+
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
