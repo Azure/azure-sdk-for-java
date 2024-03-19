@@ -52,9 +52,6 @@ extends:
         break: true
       policy: M365
       credscan:
-        suppressionsFile: $(Build.SourcesDirectory)/eng/CredScanSuppression.json
-        scanFolder: $(Build.SourcesDirectory)/credscan.tsv
-        toolVersion: 2.3.12.23
-        baselineFiles: $(Build.SourcesDirectory)/eng/java.gdnbaselines
+        suppressionsFile: $(CredScanSuppressionFile)
 
     stages: ${{ parameters.stages }}

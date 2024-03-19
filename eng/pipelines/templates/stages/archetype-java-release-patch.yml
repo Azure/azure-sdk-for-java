@@ -36,6 +36,8 @@ stages:
         timeoutInMinutes: 240
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
+          - name: CredScanSuppressionFile
+            value: ''
         pool:
           name: azsdk-pool-mms-ubuntu-2004-general
           image: azsdk-pool-mms-ubuntu-2004-1espt
@@ -45,7 +47,6 @@ stages:
             deploy:
               steps:
                 - checkout: none
-                - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
 
                 - download: current
                   displayName: 'Download Artifact: ${{parameters.ArtifactName}}'

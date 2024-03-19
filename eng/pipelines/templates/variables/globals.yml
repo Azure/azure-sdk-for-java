@@ -57,3 +57,5 @@ variables:
   Codeql.SkipTaskAutoInjection: true
 
   ComponentDetection.Timeout: 1200
+
+  CredScanSuppressionFile: $(Build.SourcesDirectory)/eng/CredScanSuppression.json
