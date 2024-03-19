@@ -44,10 +44,6 @@ parameters:
   displayName: 'azure-messaging-eventgrid-cloudnative-cloudevents'
   type: boolean
   default: true
-- name: release_azureresourcemanagereventgrid
-  displayName: 'azure-resourcemanager-eventgrid'
-  type: boolean
-  default: true
 
 
 extends:
@@ -65,8 +61,3 @@ extends:
         groupId: com.azure
         safeName: azuremessagingeventgridcloudnativecloudevents
         releaseInBatch: ${{ parameters.release_azuremessagingeventgridcloudnativecloudevents }}
-      - name: azure-resourcemanager-eventgrid
-        groupId: com.azure.resourcemanager
-        safeName: azureresourcemanagereventgrid
-        releaseInBatch: ${{ parameters.release_azureresourcemanagereventgrid }}
-
