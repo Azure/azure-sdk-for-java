@@ -21,7 +21,7 @@ public final class FhirR4ObservationComponent extends FhirR4Element {
      */
     @Generated
     @JsonProperty(value = "code")
-    private FhirR4CodeableConcept code;
+    private final FhirR4CodeableConcept code;
 
     /*
      * Value as Quantity

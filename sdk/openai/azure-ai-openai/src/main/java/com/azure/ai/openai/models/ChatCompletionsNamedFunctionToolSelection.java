@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A tool selection of a specific, named function tool that will limit chat completions to using the named function.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ChatCompletionsNamedFunctionToolSelection.class,
+    visible = true)
 @JsonTypeName("function")
 @Immutable
 public final class ChatCompletionsNamedFunctionToolSelection extends ChatCompletionsNamedToolSelection {
@@ -23,7 +27,7 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
      */
     @Generated
     @JsonProperty(value = "function")
-    private ChatCompletionsFunctionToolSelection function;
+    private final ChatCompletionsFunctionToolSelection function;
 
     /**
      * Creates an instance of ChatCompletionsNamedFunctionToolSelection class.
@@ -34,6 +38,7 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
     @JsonCreator
     public ChatCompletionsNamedFunctionToolSelection(
         @JsonProperty(value = "function") ChatCompletionsFunctionToolSelection function) {
+        setType("function");
         this.function = function;
     }
 

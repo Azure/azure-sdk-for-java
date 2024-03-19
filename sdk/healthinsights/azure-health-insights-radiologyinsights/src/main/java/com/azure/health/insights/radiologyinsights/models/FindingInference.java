@@ -11,10 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Findings in a radiology report typically describe abnormalities, lesions, or other notable observations related to
- * the anatomy or pathology of the imaged area.
+ * Findings in a radiology report typically describe abnormalities, lesions, or other notable observations related to the anatomy or pathology of the imaged area.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = FindingInference.class, visible = true)
 @JsonTypeName("finding")
 @Immutable
 public final class FindingInference extends FhirR4Extendible1 {
@@ -24,7 +23,7 @@ public final class FindingInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "finding")
-    private FhirR4Observation finding;
+    private final FhirR4Observation finding;
 
     /**
      * Creates an instance of FindingInference class.
@@ -34,6 +33,7 @@ public final class FindingInference extends FhirR4Extendible1 {
     @Generated
     @JsonCreator
     private FindingInference(@JsonProperty(value = "finding") FhirR4Observation finding) {
+        setKind(RadiologyInsightsInferenceType.FINDING);
         this.finding = finding;
     }
 

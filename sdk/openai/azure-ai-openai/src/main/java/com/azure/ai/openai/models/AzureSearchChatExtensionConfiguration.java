@@ -14,7 +14,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A specific representation of configurable options for Azure Search when using it as an Azure OpenAI chat
  * extension.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureSearchChatExtensionConfiguration.class,
+    visible = true)
 @JsonTypeName("azure_search")
 @Immutable
 public final class AzureSearchChatExtensionConfiguration extends AzureChatExtensionConfiguration {
@@ -24,7 +28,7 @@ public final class AzureSearchChatExtensionConfiguration extends AzureChatExtens
      */
     @Generated
     @JsonProperty(value = "parameters")
-    private AzureSearchChatExtensionParameters parameters;
+    private final AzureSearchChatExtensionParameters parameters;
 
     /**
      * Creates an instance of AzureSearchChatExtensionConfiguration class.
@@ -35,6 +39,7 @@ public final class AzureSearchChatExtensionConfiguration extends AzureChatExtens
     @JsonCreator
     public AzureSearchChatExtensionConfiguration(
         @JsonProperty(value = "parameters") AzureSearchChatExtensionParameters parameters) {
+        setType(AzureChatExtensionType.AZURE_SEARCH);
         this.parameters = parameters;
     }
 

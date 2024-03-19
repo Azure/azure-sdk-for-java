@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The message template's text value information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = MessageTemplateText.class, visible = true)
 @JsonTypeName("text")
 @Immutable
 public final class MessageTemplateText extends MessageTemplateValue {
@@ -23,7 +23,7 @@ public final class MessageTemplateText extends MessageTemplateValue {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /**
      * Creates an instance of MessageTemplateText class.
@@ -36,6 +36,7 @@ public final class MessageTemplateText extends MessageTemplateValue {
     public MessageTemplateText(@JsonProperty(value = "name") String refValue,
         @JsonProperty(value = "text") String text) {
         super(refValue);
+        setKind(MessageTemplateValueKind.TEXT);
         this.text = text;
     }
 

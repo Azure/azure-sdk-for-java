@@ -15,7 +15,11 @@ import java.util.List;
  * Detailed information about Research Study
  * Based on [FHIR ResearchStudy](https://www.hl7.org/fhir/R4/researchstudy.html).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "resourceType",
+    defaultImpl = FhirR4ResearchStudy.class,
+    visible = true)
 @JsonTypeName("ResearchStudy")
 @Fluent
 public final class FhirR4ResearchStudy extends FhirR4DomainResource {
@@ -49,17 +53,14 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     private List<FhirR4Reference> partOf;
 
     /*
-     * active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention |
-     * completed | disapproved | in-review | temporarily-closed-to-accrual |
-     * temporarily-closed-to-accrual-and-intervention | withdrawn
+     * active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | in-review | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | withdrawn
      */
     @Generated
     @JsonProperty(value = "status")
-    private ResearchStudyStatusCodeType status;
+    private final ResearchStudyStatusCodeType status;
 
     /*
-     * treatment | prevention | diagnostic | supportive-care | screening | health-services-research | basic-science |
-     * device-feasibility
+     * treatment | prevention | diagnostic | supportive-care | screening | health-services-research | basic-science | device-feasibility
      */
     @Generated
     @JsonProperty(value = "primaryPurposeType")
@@ -157,8 +158,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     private List<FhirR4Reference> site;
 
     /*
-     * accrual-goal-met | closed-due-to-toxicity | closed-due-to-lack-of-study-progress |
-     * temporarily-closed-per-study-design
+     * accrual-goal-met | closed-due-to-toxicity | closed-due-to-lack-of-study-progress | temporarily-closed-per-study-design
      */
     @Generated
     @JsonProperty(value = "reasonStopped")
@@ -196,6 +196,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     public FhirR4ResearchStudy(@JsonProperty(value = "resourceType") String resourceType,
         @JsonProperty(value = "status") ResearchStudyStatusCodeType status) {
         super(resourceType);
+        setResourceType("ResearchStudy");
         this.status = status;
     }
 
@@ -288,9 +289,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     }
 
     /**
-     * Get the status property: active | administratively-completed | approved | closed-to-accrual |
-     * closed-to-accrual-and-intervention | completed | disapproved | in-review | temporarily-closed-to-accrual |
-     * temporarily-closed-to-accrual-and-intervention | withdrawn.
+     * Get the status property: active | administratively-completed | approved | closed-to-accrual | closed-to-accrual-and-intervention | completed | disapproved | in-review | temporarily-closed-to-accrual | temporarily-closed-to-accrual-and-intervention | withdrawn.
      *
      * @return the status value.
      */
@@ -300,8 +299,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     }
 
     /**
-     * Get the primaryPurposeType property: treatment | prevention | diagnostic | supportive-care | screening |
-     * health-services-research | basic-science | device-feasibility.
+     * Get the primaryPurposeType property: treatment | prevention | diagnostic | supportive-care | screening | health-services-research | basic-science | device-feasibility.
      *
      * @return the primaryPurposeType value.
      */
@@ -311,8 +309,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     }
 
     /**
-     * Set the primaryPurposeType property: treatment | prevention | diagnostic | supportive-care | screening |
-     * health-services-research | basic-science | device-feasibility.
+     * Set the primaryPurposeType property: treatment | prevention | diagnostic | supportive-care | screening | health-services-research | basic-science | device-feasibility.
      *
      * @param primaryPurposeType the primaryPurposeType value to set.
      * @return the FhirR4ResearchStudy object itself.
@@ -324,8 +321,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     }
 
     /**
-     * Get the phase property: n-a | early-phase-1 | phase-1 | phase-1-phase-2 | phase-2 | phase-2-phase-3 | phase-3 |
-     * phase-4.
+     * Get the phase property: n-a | early-phase-1 | phase-1 | phase-1-phase-2 | phase-2 | phase-2-phase-3 | phase-3 | phase-4.
      *
      * @return the phase value.
      */
@@ -335,8 +331,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     }
 
     /**
-     * Set the phase property: n-a | early-phase-1 | phase-1 | phase-1-phase-2 | phase-2 | phase-2-phase-3 | phase-3 |
-     * phase-4.
+     * Set the phase property: n-a | early-phase-1 | phase-1 | phase-1-phase-2 | phase-2 | phase-2-phase-3 | phase-3 | phase-4.
      *
      * @param phase the phase value to set.
      * @return the FhirR4ResearchStudy object itself.
@@ -612,8 +607,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     }
 
     /**
-     * Get the reasonStopped property: accrual-goal-met | closed-due-to-toxicity | closed-due-to-lack-of-study-progress
-     * | temporarily-closed-per-study-design.
+     * Get the reasonStopped property: accrual-goal-met | closed-due-to-toxicity | closed-due-to-lack-of-study-progress | temporarily-closed-per-study-design.
      *
      * @return the reasonStopped value.
      */
@@ -623,8 +617,7 @@ public final class FhirR4ResearchStudy extends FhirR4DomainResource {
     }
 
     /**
-     * Set the reasonStopped property: accrual-goal-met | closed-due-to-toxicity | closed-due-to-lack-of-study-progress
-     * | temporarily-closed-per-study-design.
+     * Set the reasonStopped property: accrual-goal-met | closed-due-to-toxicity | closed-due-to-lack-of-study-progress | temporarily-closed-per-study-design.
      *
      * @param reasonStopped the reasonStopped value to set.
      * @return the FhirR4ResearchStudy object itself.

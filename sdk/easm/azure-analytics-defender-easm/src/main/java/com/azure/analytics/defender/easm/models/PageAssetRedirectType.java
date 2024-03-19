@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for PageAssetRedirectType.
+ * The redirect type of a page.
  */
 public final class PageAssetRedirectType extends ExpandableStringEnum<PageAssetRedirectType> {
 

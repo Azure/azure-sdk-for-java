@@ -21,7 +21,7 @@ public final class EmbeddingItem {
      */
     @Generated
     @JsonProperty(value = "embedding")
-    private List<Double> embedding;
+    private final List<Double> embedding;
 
     /**
      * Creates an instance of EmbeddingItem class.
@@ -53,7 +53,7 @@ public final class EmbeddingItem {
      */
     @Generated
     @JsonProperty(value = "index")
-    private int promptIndex;
+    private final int promptIndex;
 
     /**
      * Get the promptIndex property: Index of the prompt to which the EmbeddingItem corresponds.

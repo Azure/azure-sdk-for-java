@@ -4,6 +4,7 @@
 package com.azure.communication.messages.models.channels;
 
 import com.azure.communication.messages.models.MessageTemplateBindings;
+import com.azure.communication.messages.models.MessageTemplateBindingsKind;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,7 +15,11 @@ import java.util.List;
 /**
  * The template bindings for WhatsApp.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = WhatsAppMessageTemplateBindings.class,
+    visible = true)
 @JsonTypeName("whatsApp")
 @Fluent
 public final class WhatsAppMessageTemplateBindings extends MessageTemplateBindings {
@@ -52,6 +57,7 @@ public final class WhatsAppMessageTemplateBindings extends MessageTemplateBindin
      */
     @Generated
     public WhatsAppMessageTemplateBindings() {
+        setKind(MessageTemplateBindingsKind.WHATS_APP);
     }
 
     /**

@@ -10,8 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A representation of the log probability information for a single content token, including a list of most likely
- * tokens if 'top_logprobs' were requested.
+ * A representation of the log probability information for a single content token, including a list of most likely tokens if 'top_logprobs' were requested.
  */
 @Immutable
 public final class ChatTokenLogProbabilityResult {
@@ -21,30 +20,28 @@ public final class ChatTokenLogProbabilityResult {
      */
     @Generated
     @JsonProperty(value = "token")
-    private String token;
+    private final String token;
 
     /*
      * The log probability of the message content token.
      */
     @Generated
     @JsonProperty(value = "logprob")
-    private double logprob;
+    private final double logprob;
 
     /*
-     * A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where
-     * characters are represented by multiple tokens and their byte representations must be combined to generate the
-     * correct text representation. Can be null if there is no bytes representation for the token.
+     * A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be null if there is no bytes representation for the token.
      */
     @Generated
     @JsonProperty(value = "bytes")
-    private List<Integer> bytes;
+    private final List<Integer> bytes;
 
     /*
      * The list of most likely tokens and their log probability information, as requested via 'top_logprobs'.
      */
     @Generated
     @JsonProperty(value = "top_logprobs")
-    private List<ChatTokenLogProbabilityInfo> topLogprobs;
+    private final List<ChatTokenLogProbabilityInfo> topLogprobs;
 
     /**
      * Creates an instance of ChatTokenLogProbabilityResult class.
@@ -86,9 +83,7 @@ public final class ChatTokenLogProbabilityResult {
     }
 
     /**
-     * Get the bytes property: A list of integers representing the UTF-8 bytes representation of the token. Useful in
-     * instances where characters are represented by multiple tokens and their byte representations must be combined to
-     * generate the correct text representation. Can be null if there is no bytes representation for the token.
+     * Get the bytes property: A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be null if there is no bytes representation for the token.
      *
      * @return the bytes value.
      */
@@ -98,8 +93,7 @@ public final class ChatTokenLogProbabilityResult {
     }
 
     /**
-     * Get the topLogprobs property: The list of most likely tokens and their log probability information, as requested
-     * via 'top_logprobs'.
+     * Get the topLogprobs property: The list of most likely tokens and their log probability information, as requested via 'top_logprobs'.
      *
      * @return the topLogprobs value.
      */

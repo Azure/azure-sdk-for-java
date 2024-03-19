@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ValidateResult model.
+ * Validate result for validate action endpoints.
  */
 @Immutable
 public final class ValidateResult {
@@ -28,8 +28,7 @@ public final class ValidateResult {
     }
 
     /**
-     * Get the error property: This is the top-level error object whose code matches the x-ms-error-code response
-     * header.
+     * Get the error property: This is the top-level error object whose code matches the x-ms-error-code response header.
      *
      * @return the error value.
      */

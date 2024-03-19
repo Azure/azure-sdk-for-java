@@ -98,8 +98,7 @@ public final class DistributionPolicyInternal {
     }
 
     /**
-     * Get the offerExpiresAfterSeconds property: Number of seconds after which any offers created under this policy
-     * will be expired.
+     * Get the offerExpiresAfterSeconds property: Number of seconds after which any offers created under this policy will be expired.
      *
      * @return the offerExpiresAfterSeconds value.
      */
@@ -109,8 +108,7 @@ public final class DistributionPolicyInternal {
     }
 
     /**
-     * Set the offerExpiresAfterSeconds property: Number of seconds after which any offers created under this policy
-     * will be expired.
+     * Set the offerExpiresAfterSeconds property: Number of seconds after which any offers created under this policy will be expired.
      *
      * @param offerExpiresAfterSeconds the offerExpiresAfterSeconds value to set.
      * @return the DistributionPolicyInternal object itself.

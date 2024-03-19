@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A structured chat content item containing plain text.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ChatMessageTextContentItem.class,
+    visible = true)
 @JsonTypeName("text")
 @Immutable
 public final class ChatMessageTextContentItem extends ChatMessageContentItem {
@@ -23,7 +27,7 @@ public final class ChatMessageTextContentItem extends ChatMessageContentItem {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /**
      * Creates an instance of ChatMessageTextContentItem class.
@@ -33,6 +37,7 @@ public final class ChatMessageTextContentItem extends ChatMessageContentItem {
     @Generated
     @JsonCreator
     public ChatMessageTextContentItem(@JsonProperty(value = "text") String text) {
+        setType("text");
         this.text = text;
     }
 

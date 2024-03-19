@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The PageAssetResource model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = PageAssetResource.class, visible = true)
 @JsonTypeName("page")
 @Immutable
 public final class PageAssetResource extends AssetResource {
@@ -23,7 +23,7 @@ public final class PageAssetResource extends AssetResource {
      */
     @Generated
     @JsonProperty(value = "asset")
-    private PageAsset asset;
+    private final PageAsset asset;
 
     /**
      * Creates an instance of PageAssetResource class.
@@ -33,6 +33,7 @@ public final class PageAssetResource extends AssetResource {
     @Generated
     @JsonCreator
     private PageAssetResource(@JsonProperty(value = "asset") PageAsset asset) {
+        setKind("page");
         this.asset = asset;
     }
 

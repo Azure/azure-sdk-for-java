@@ -20,14 +20,14 @@ public final class RouterQueueStatisticsInternal {
      */
     @Generated
     @JsonProperty(value = "queueId")
-    private String queueId;
+    private final String queueId;
 
     /*
      * Length of the queue: total number of enqueued jobs.
      */
     @Generated
     @JsonProperty(value = "length")
-    private int length;
+    private final int length;
 
     /*
      * The estimated wait time of this queue rounded up to the nearest minute, grouped by job priority.
@@ -78,8 +78,7 @@ public final class RouterQueueStatisticsInternal {
     }
 
     /**
-     * Get the estimatedWaitTimeMinutes property: The estimated wait time of this queue rounded up to the nearest
-     * minute, grouped by job priority.
+     * Get the estimatedWaitTimeMinutes property: The estimated wait time of this queue rounded up to the nearest minute, grouped by job priority.
      *
      * @return the estimatedWaitTimeMinutes value.
      */
@@ -89,8 +88,7 @@ public final class RouterQueueStatisticsInternal {
     }
 
     /**
-     * Get the longestJobWaitTimeMinutes property: The wait time of the job that has been enqueued in this queue for
-     * the longest.
+     * Get the longestJobWaitTimeMinutes property: The wait time of the job that has been enqueued in this queue for the longest.
      *
      * @return the longestJobWaitTimeMinutes value.
      */

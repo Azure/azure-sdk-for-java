@@ -5,7 +5,6 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class RunStepErrorCode extends ExpandableStringEnum<RunStepErrorCod
      * @return the corresponding RunStepErrorCode.
      */
     @Generated
-    @JsonCreator
     public static RunStepErrorCode fromString(String name) {
         return fromString(name, RunStepErrorCode.class);
     }

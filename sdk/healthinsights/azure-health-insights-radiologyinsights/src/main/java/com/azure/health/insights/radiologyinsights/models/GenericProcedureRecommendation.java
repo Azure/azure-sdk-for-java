@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Generic procedure information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = GenericProcedureRecommendation.class,
+    visible = true)
 @JsonTypeName("genericProcedureRecommendation")
 @Immutable
 public final class GenericProcedureRecommendation extends ProcedureRecommendation {
@@ -23,7 +27,7 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
      */
     @Generated
     @JsonProperty(value = "code")
-    private FhirR4CodeableConcept code;
+    private final FhirR4CodeableConcept code;
 
     /*
      * Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION (PROCEDURE) based on SNOMED CT.
@@ -40,6 +44,7 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     @Generated
     @JsonCreator
     private GenericProcedureRecommendation(@JsonProperty(value = "code") FhirR4CodeableConcept code) {
+        setKind("genericProcedureRecommendation");
         this.code = code;
     }
 
@@ -54,8 +59,7 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     }
 
     /**
-     * Get the description property: Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION
-     * (PROCEDURE) based on SNOMED CT.
+     * Get the description property: Procedure description : MANAGEMENT PROCEDURE (PROCEDURE) or CONSULTATION (PROCEDURE) based on SNOMED CT.
      *
      * @return the description value.
      */

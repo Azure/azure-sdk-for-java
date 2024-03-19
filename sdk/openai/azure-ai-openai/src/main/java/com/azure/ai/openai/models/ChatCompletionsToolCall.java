@@ -6,11 +6,11 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonGetter;
 
 /**
  * An abstract representation of a tool call that must be resolved in a subsequent request to perform the requested
@@ -27,7 +27,7 @@ public class ChatCompletionsToolCall {
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     @JsonProperty("type")
     private String type;
@@ -63,5 +63,17 @@ public class ChatCompletionsToolCall {
     public ChatCompletionsToolCall(@JsonProperty(value = "id") String id, @JsonProperty(value = "type") String type) {
         this.id = id;
         this.type = type;
+    }
+
+    /**
+     * Set the type property: The object type.
+     *
+     * @param type the type value to set.
+     * @return the ChatCompletionsToolCall object itself.
+     */
+    @Generated
+    protected ChatCompletionsToolCall setType(String type) {
+        this.type = type;
+        return this;
     }
 }

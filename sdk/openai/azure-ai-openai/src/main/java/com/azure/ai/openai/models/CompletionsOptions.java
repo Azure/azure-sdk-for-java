@@ -23,7 +23,7 @@ public final class CompletionsOptions {
      */
     @Generated
     @JsonProperty(value = "prompt")
-    private List<String> prompt;
+    private final List<String> prompt;
 
     /*
      * The maximum number of tokens to generate.
@@ -199,8 +199,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the temperature property: The sampling temperature to use that controls the apparent creativity of generated
-     * completions.
+     * Get the temperature property: The sampling temperature to use that controls the apparent creativity of generated completions.
      * Higher values will make output more random while lower values will make results more focused
      * and deterministic.
      * It is not recommended to modify temperature and top_p for the same completions request as the
@@ -214,8 +213,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the temperature property: The sampling temperature to use that controls the apparent creativity of generated
-     * completions.
+     * Set the temperature property: The sampling temperature to use that controls the apparent creativity of generated completions.
      * Higher values will make output more random while lower values will make results more focused
      * and deterministic.
      * It is not recommended to modify temperature and top_p for the same completions request as the
@@ -231,8 +229,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes
-     * the
+     * Get the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes the
      * model to consider the results of tokens with the provided probability mass. As an example, a
      * value of 0.15 will cause only the tokens comprising the top 15% of probability mass to be
      * considered.
@@ -247,8 +244,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes
-     * the
+     * Set the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes the
      * model to consider the results of tokens with the provided probability mass. As an example, a
      * value of 0.15 will cause only the tokens comprising the top 15% of probability mass to be
      * considered.
@@ -265,8 +261,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the logitBias property: A map between GPT token IDs and bias scores that influences the probability of
-     * specific tokens
+     * Get the logitBias property: A map between GPT token IDs and bias scores that influences the probability of specific tokens
      * appearing in a completions response. Token IDs are computed via external tokenizer tools, while
      * bias scores reside in the range of -100 to 100 with minimum and maximum values corresponding to
      * a full ban or exclusive selection of a token, respectively. The exact behavior of a given bias
@@ -280,8 +275,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the logitBias property: A map between GPT token IDs and bias scores that influences the probability of
-     * specific tokens
+     * Set the logitBias property: A map between GPT token IDs and bias scores that influences the probability of specific tokens
      * appearing in a completions response. Token IDs are computed via external tokenizer tools, while
      * bias scores reside in the range of -100 to 100 with minimum and maximum values corresponding to
      * a full ban or exclusive selection of a token, respectively. The exact behavior of a given bias
@@ -349,8 +343,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the logprobs property: A value that controls the emission of log probabilities for the provided number of
-     * most likely
+     * Get the logprobs property: A value that controls the emission of log probabilities for the provided number of most likely
      * tokens within a completions response.
      *
      * @return the logprobs value.
@@ -361,8 +354,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the logprobs property: A value that controls the emission of log probabilities for the provided number of
-     * most likely
+     * Set the logprobs property: A value that controls the emission of log probabilities for the provided number of most likely
      * tokens within a completions response.
      *
      * @param logprobs the logprobs value to set.
@@ -375,8 +367,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the echo property: A value specifying whether completions responses should include input prompts as prefixes
-     * to
+     * Get the echo property: A value specifying whether completions responses should include input prompts as prefixes to
      * their generated output.
      *
      * @return the echo value.
@@ -387,8 +378,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the echo property: A value specifying whether completions responses should include input prompts as prefixes
-     * to
+     * Set the echo property: A value specifying whether completions responses should include input prompts as prefixes to
      * their generated output.
      *
      * @param echo the echo value to set.
@@ -423,8 +413,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the presencePenalty property: A value that influences the probability of generated tokens appearing based on
-     * their existing
+     * Get the presencePenalty property: A value that influences the probability of generated tokens appearing based on their existing
      * presence in generated text.
      * Positive values will make tokens less likely to appear when they already exist and increase the
      * model's likelihood to output new topics.
@@ -437,8 +426,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the presencePenalty property: A value that influences the probability of generated tokens appearing based on
-     * their existing
+     * Set the presencePenalty property: A value that influences the probability of generated tokens appearing based on their existing
      * presence in generated text.
      * Positive values will make tokens less likely to appear when they already exist and increase the
      * model's likelihood to output new topics.
@@ -453,8 +441,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the frequencyPenalty property: A value that influences the probability of generated tokens appearing based
-     * on their cumulative
+     * Get the frequencyPenalty property: A value that influences the probability of generated tokens appearing based on their cumulative
      * frequency in generated text.
      * Positive values will make tokens less likely to appear as their frequency increases and
      * decrease the likelihood of the model repeating the same statements verbatim.
@@ -467,8 +454,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the frequencyPenalty property: A value that influences the probability of generated tokens appearing based
-     * on their cumulative
+     * Set the frequencyPenalty property: A value that influences the probability of generated tokens appearing based on their cumulative
      * frequency in generated text.
      * Positive values will make tokens less likely to appear as their frequency increases and
      * decrease the likelihood of the model repeating the same statements verbatim.
@@ -483,8 +469,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the bestOf property: A value that controls how many completions will be internally generated prior to
-     * response
+     * Get the bestOf property: A value that controls how many completions will be internally generated prior to response
      * formulation.
      * When used together with n, best_of controls the number of candidate completions and must be
      * greater than n.
@@ -499,8 +484,7 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the bestOf property: A value that controls how many completions will be internally generated prior to
-     * response
+     * Set the bestOf property: A value that controls how many completions will be internally generated prior to response
      * formulation.
      * When used together with n, best_of controls the number of candidate completions and must be
      * greater than n.

@@ -28,8 +28,7 @@ public final class UnassignJobOptions {
     }
 
     /**
-     * Get the suspendMatching property: If SuspendMatching is true, then a job is not queued for re-matching with a
-     * worker.
+     * Get the suspendMatching property: If SuspendMatching is true, then a job is not queued for re-matching with a worker.
      *
      * @return the suspendMatching value.
      */
@@ -39,8 +38,7 @@ public final class UnassignJobOptions {
     }
 
     /**
-     * Set the suspendMatching property: If SuspendMatching is true, then a job is not queued for re-matching with a
-     * worker.
+     * Set the suspendMatching property: If SuspendMatching is true, then a job is not queued for re-matching with a worker.
      *
      * @param suspendMatching the suspendMatching value to set.
      * @return the UnassignJobOptions object itself.

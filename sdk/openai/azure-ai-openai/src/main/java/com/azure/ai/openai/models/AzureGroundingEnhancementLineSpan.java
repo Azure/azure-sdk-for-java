@@ -20,7 +20,7 @@ public final class AzureGroundingEnhancementLineSpan {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * The character offset within the text where the span begins. This offset is defined as the position of the first
@@ -28,21 +28,21 @@ public final class AzureGroundingEnhancementLineSpan {
      */
     @Generated
     @JsonProperty(value = "offset")
-    private int offset;
+    private final int offset;
 
     /*
      * The length of the span in characters, measured in Unicode codepoints.
      */
     @Generated
     @JsonProperty(value = "length")
-    private int length;
+    private final int length;
 
     /*
      * An array of objects representing points in the polygon that encloses the detected object.
      */
     @Generated
     @JsonProperty(value = "polygon")
-    private List<AzureGroundingEnhancementCoordinatePoint> polygon;
+    private final List<AzureGroundingEnhancementCoordinatePoint> polygon;
 
     /**
      * Creates an instance of AzureGroundingEnhancementLineSpan class.
@@ -74,8 +74,7 @@ public final class AzureGroundingEnhancementLineSpan {
     }
 
     /**
-     * Get the offset property: The character offset within the text where the span begins. This offset is defined as
-     * the position of the first
+     * Get the offset property: The character offset within the text where the span begins. This offset is defined as the position of the first
      * character of the span, counting from the start of the text as Unicode codepoints.
      *
      * @return the offset value.
@@ -96,8 +95,7 @@ public final class AzureGroundingEnhancementLineSpan {
     }
 
     /**
-     * Get the polygon property: An array of objects representing points in the polygon that encloses the detected
-     * object.
+     * Get the polygon property: An array of objects representing points in the polygon that encloses the detected object.
      *
      * @return the polygon value.
      */

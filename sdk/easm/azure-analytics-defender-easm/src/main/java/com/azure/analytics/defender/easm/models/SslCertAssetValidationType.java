@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for SslCertAssetValidationType.
+ * The validation type of a Ssl certificate.
  */
 public final class SslCertAssetValidationType extends ExpandableStringEnum<SslCertAssetValidationType> {
 

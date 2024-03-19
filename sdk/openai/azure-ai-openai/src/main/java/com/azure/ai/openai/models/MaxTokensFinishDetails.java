@@ -9,11 +9,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A structured representation of a stop reason that signifies a token limit was reached before the model could
- * naturally
+ * A structured representation of a stop reason that signifies a token limit was reached before the model could naturally
  * complete.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = MaxTokensFinishDetails.class, visible = true)
 @JsonTypeName("max_tokens")
 @Immutable
 public final class MaxTokensFinishDetails extends ChatFinishDetails {
@@ -23,5 +22,6 @@ public final class MaxTokensFinishDetails extends ChatFinishDetails {
      */
     @Generated
     private MaxTokensFinishDetails() {
+        setType("max_tokens");
     }
 }

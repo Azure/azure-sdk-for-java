@@ -14,7 +14,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A request chat message containing system instructions that influence how the model will generate a chat completions
  * response.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "role",
+    defaultImpl = ChatRequestSystemMessage.class,
+    visible = true)
 @JsonTypeName("system")
 @Fluent
 public final class ChatRequestSystemMessage extends ChatRequestMessage {
@@ -24,7 +28,7 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
      */
     @Generated
     @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /*
      * An optional name for the participant.
@@ -41,6 +45,7 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     @Generated
     @JsonCreator
     public ChatRequestSystemMessage(@JsonProperty(value = "content") String content) {
+        setRole(ChatRole.SYSTEM);
         this.content = content;
     }
 

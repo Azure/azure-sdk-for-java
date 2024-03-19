@@ -16,20 +16,18 @@ import java.util.List;
 public final class RadiologyCodeWithTypes {
 
     /*
-     * The SNOMED CT code indicates whether imaging was conducted with or without contrast in the case of contrast, and
-     * in the case of views, it denotes the number of views.
+     * The SNOMED CT code indicates whether imaging was conducted with or without contrast in the case of contrast, and in the case of views, it denotes the number of views.
      */
     @Generated
     @JsonProperty(value = "code")
-    private FhirR4CodeableConcept code;
+    private final FhirR4CodeableConcept code;
 
     /*
-     * The collection of types will indicate the contrast substance used in the case of contrast and, in the case of
-     * views, it will specify the types of views, such as lateral and frontal, etc.
+     * The collection of types will indicate the contrast substance used in the case of contrast and, in the case of views, it will specify the types of views, such as lateral and frontal, etc.
      */
     @Generated
     @JsonProperty(value = "types")
-    private List<FhirR4CodeableConcept> types;
+    private final List<FhirR4CodeableConcept> types;
 
     /**
      * Creates an instance of RadiologyCodeWithTypes class.
@@ -46,8 +44,7 @@ public final class RadiologyCodeWithTypes {
     }
 
     /**
-     * Get the code property: The SNOMED CT code indicates whether imaging was conducted with or without contrast in
-     * the case of contrast, and in the case of views, it denotes the number of views.
+     * Get the code property: The SNOMED CT code indicates whether imaging was conducted with or without contrast in the case of contrast, and in the case of views, it denotes the number of views.
      *
      * @return the code value.
      */
@@ -57,8 +54,7 @@ public final class RadiologyCodeWithTypes {
     }
 
     /**
-     * Get the types property: The collection of types will indicate the contrast substance used in the case of
-     * contrast and, in the case of views, it will specify the types of views, such as lateral and frontal, etc.
+     * Get the types property: The collection of types will indicate the contrast substance used in the case of contrast and, in the case of views, it will specify the types of views, such as lateral and frontal, etc.
      *
      * @return the types value.
      */

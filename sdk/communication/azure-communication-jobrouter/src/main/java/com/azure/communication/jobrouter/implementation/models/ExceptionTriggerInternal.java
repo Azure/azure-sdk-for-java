@@ -5,7 +5,9 @@ package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -14,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "kind",
-    defaultImpl = ExceptionTriggerInternal.class)
+    defaultImpl = ExceptionTriggerInternal.class,
+    visible = true)
 @JsonTypeName("ExceptionTriggerInternal")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "queueLength", value = QueueLengthExceptionTriggerInternal.class),
@@ -29,5 +31,36 @@ public class ExceptionTriggerInternal {
      */
     @Generated
     public ExceptionTriggerInternal() {
+        this.kind = ExceptionTriggerKind.fromString("ExceptionTriggerInternal");
+    }
+
+    /*
+     * The type discriminator describing a sub-type of ExceptionTrigger.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private ExceptionTriggerKind kind;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of ExceptionTrigger.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public ExceptionTriggerKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The type discriminator describing a sub-type of ExceptionTrigger.
+     *
+     * @param kind the kind value to set.
+     * @return the ExceptionTriggerInternal object itself.
+     */
+    @Generated
+    protected ExceptionTriggerInternal setKind(ExceptionTriggerKind kind) {
+        this.kind = kind;
+        return this;
     }
 }

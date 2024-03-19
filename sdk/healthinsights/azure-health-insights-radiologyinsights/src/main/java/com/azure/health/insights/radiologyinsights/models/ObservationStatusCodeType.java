@@ -33,8 +33,7 @@ public final class ObservationStatusCodeType extends ExpandableStringEnum<Observ
     public static final ObservationStatusCodeType FINAL = fromString("final");
 
     /**
-     * Subsequent to being Final, the observation has been modified subsequent. This includes updates/new information
-     * and corrections.
+     * Subsequent to being Final, the observation has been modified subsequent.  This includes updates/new information and corrections.
      */
     @Generated
     public static final ObservationStatusCodeType AMENDED = fromString("amended");
@@ -46,8 +45,7 @@ public final class ObservationStatusCodeType extends ExpandableStringEnum<Observ
     public static final ObservationStatusCodeType CORRECTED = fromString("corrected");
 
     /**
-     * The observation is unavailable because the measurement was not started or not completed (also sometimes called
-     * "aborted").
+     * The observation is unavailable because the measurement was not started or not completed (also sometimes called "aborted").
      */
     @Generated
     public static final ObservationStatusCodeType CANCELLED = fromString("cancelled");
@@ -59,8 +57,7 @@ public final class ObservationStatusCodeType extends ExpandableStringEnum<Observ
     public static final ObservationStatusCodeType ENTERED_IN_ERROR = fromString("entered-in-error");
 
     /**
-     * The observation status is unknown. Note that "unknown" is a value of last resort and every attempt should be made
-     * to provide a meaningful value other than "unknown".
+     * The observation status is unknown.  Note that "unknown" is a value of last resort and every attempt should be made to provide a meaningful value other than "unknown".
      */
     @Generated
     public static final ObservationStatusCodeType UNKNOWN = fromString("unknown");

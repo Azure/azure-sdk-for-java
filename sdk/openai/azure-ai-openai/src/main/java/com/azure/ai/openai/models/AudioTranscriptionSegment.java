@@ -12,8 +12,7 @@ import java.util.List;
 
 /**
  * Extended information about a single segment of transcribed audio data.
- * Segments generally represent roughly 5-10 seconds of speech. Segment boundaries typically occur between words but
- * not
+ * Segments generally represent roughly 5-10 seconds of speech. Segment boundaries typically occur between words but not
  * necessarily sentences.
  */
 @Immutable
@@ -24,75 +23,74 @@ public final class AudioTranscriptionSegment {
      */
     @Generated
     @JsonProperty(value = "id")
-    private int id;
+    private final int id;
 
     /*
      * The time at which this segment started relative to the beginning of the transcribed audio.
      */
     @Generated
     @JsonProperty(value = "start")
-    private double start;
+    private final double start;
 
     /*
      * The time at which this segment ended relative to the beginning of the transcribed audio.
      */
     @Generated
     @JsonProperty(value = "end")
-    private double end;
+    private final double end;
 
     /*
      * The transcribed text that was part of this audio segment.
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * The temperature score associated with this audio segment.
      */
     @Generated
     @JsonProperty(value = "temperature")
-    private double temperature;
+    private final double temperature;
 
     /*
      * The average log probability associated with this audio segment.
      */
     @Generated
     @JsonProperty(value = "avg_logprob")
-    private double avgLogprob;
+    private final double avgLogprob;
 
     /*
      * The compression ratio of this audio segment.
      */
     @Generated
     @JsonProperty(value = "compression_ratio")
-    private double compressionRatio;
+    private final double compressionRatio;
 
     /*
      * The probability of no speech detection within this audio segment.
      */
     @Generated
     @JsonProperty(value = "no_speech_prob")
-    private double noSpeechProb;
+    private final double noSpeechProb;
 
     /*
      * The token IDs matching the transcribed text in this audio segment.
      */
     @Generated
     @JsonProperty(value = "tokens")
-    private List<Integer> tokens;
+    private final List<Integer> tokens;
 
     /*
      * The seek position associated with the processing of this audio segment.
      * Seek positions are expressed as hundredths of seconds.
-     * The model may process several segments from a single seek position, so while the seek position will never
-     * represent
+     * The model may process several segments from a single seek position, so while the seek position will never represent
      * a later time than the segment's start, the segment's start may represent a significantly later time than the
      * segment's associated seek position.
      */
     @Generated
     @JsonProperty(value = "seek")
-    private int seek;
+    private final int seek;
 
     /**
      * Creates an instance of AudioTranscriptionSegment class.
@@ -146,8 +144,7 @@ public final class AudioTranscriptionSegment {
     }
 
     /**
-     * Get the start property: The time at which this segment started relative to the beginning of the transcribed
-     * audio.
+     * Get the start property: The time at which this segment started relative to the beginning of the transcribed audio.
      *
      * @return the start value.
      */
@@ -229,8 +226,7 @@ public final class AudioTranscriptionSegment {
     /**
      * Get the seek property: The seek position associated with the processing of this audio segment.
      * Seek positions are expressed as hundredths of seconds.
-     * The model may process several segments from a single seek position, so while the seek position will never
-     * represent
+     * The model may process several segments from a single seek position, so while the seek position will never represent
      * a later time than the segment's start, the segment's start may represent a significantly later time than the
      * segment's associated seek position.
      *

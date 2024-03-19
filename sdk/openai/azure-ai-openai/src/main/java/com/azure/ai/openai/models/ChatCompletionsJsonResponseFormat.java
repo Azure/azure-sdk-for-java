@@ -11,7 +11,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A response format for Chat Completions that restricts responses to emitting valid JSON objects.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ChatCompletionsJsonResponseFormat.class,
+    visible = true)
 @JsonTypeName("json_object")
 @Immutable
 public final class ChatCompletionsJsonResponseFormat extends ChatCompletionsResponseFormat {
@@ -21,5 +25,6 @@ public final class ChatCompletionsJsonResponseFormat extends ChatCompletionsResp
      */
     @Generated
     public ChatCompletionsJsonResponseFormat() {
+        setType("json_object");
     }
 }

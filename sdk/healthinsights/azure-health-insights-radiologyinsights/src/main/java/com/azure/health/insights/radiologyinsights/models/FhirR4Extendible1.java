@@ -7,28 +7,25 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
  * An inference made by the Radiology Insights model regarding a patient.
- * - AgeMismatch
- * - SexMismatch
- * - LateralityDiscrepancy
- * - CompleteOrderDiscrepancy
- * - LimitedOrderDiscrepancy
- * - Finding
- * - CriticalResult
- * - FollowupRecommendation
- * - RadiologyProcedure
- * - FollowupCommunication.
+ *   - AgeMismatch
+ *   - SexMismatch
+ *   - LateralityDiscrepancy
+ *   - CompleteOrderDiscrepancy
+ *   - LimitedOrderDiscrepancy
+ *   - Finding
+ *   - CriticalResult
+ *   - FollowupRecommendation
+ *   - RadiologyProcedure
+ *   - FollowupCommunication.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = FhirR4Extendible1.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = FhirR4Extendible1.class, visible = true)
 @JsonTypeName("Fhir_R4_Extendible1")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ageMismatch", value = AgeMismatchInference.class),
@@ -56,6 +53,7 @@ public class FhirR4Extendible1 {
      */
     @Generated
     protected FhirR4Extendible1() {
+        this.kind = RadiologyInsightsInferenceType.fromString("Fhir_R4_Extendible1");
     }
 
     /**
@@ -66,5 +64,35 @@ public class FhirR4Extendible1 {
     @Generated
     public List<FhirR4Extension> getExtension() {
         return this.extension;
+    }
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind;
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: Inference type.
+     *
+     * @param kind the kind value to set.
+     * @return the FhirR4Extendible1 object itself.
+     */
+    @Generated
+    protected FhirR4Extendible1 setKind(RadiologyInsightsInferenceType kind) {
+        this.kind = kind;
+        return this;
     }
 }

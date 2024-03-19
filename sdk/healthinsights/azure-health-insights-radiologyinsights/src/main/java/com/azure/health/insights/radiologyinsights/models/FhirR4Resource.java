@@ -14,8 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Resource is the ancestor of DomainResource from which most resources are derived. Bundle, Parameters, and Binary
- * extend Resource directly.
+ * Resource is the ancestor of DomainResource from which most resources are derived. Bundle, Parameters, and Binary extend Resource directly.
  * Based on [FHIR Resource](https://www.hl7.org/fhir/r4/resource.html.
  */
 @Fluent
@@ -26,7 +25,7 @@ public class FhirR4Resource {
      */
     @Generated
     @JsonProperty(value = "resourceType")
-    private String resourceType;
+    private final String resourceType;
 
     /*
      * Resource Id

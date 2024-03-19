@@ -12,10 +12,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Radiology procedures are the specific imaging studies or examinations ordered for the patient, extracted from the
- * document information and text.
+ * Radiology procedures are the specific imaging studies or examinations ordered for the patient, extracted from the document information and text.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = RadiologyProcedureInference.class,
+    visible = true)
 @JsonTypeName("radiologyProcedure")
 @Immutable
 public final class RadiologyProcedureInference extends FhirR4Extendible1 {
@@ -32,14 +35,14 @@ public final class RadiologyProcedureInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "imagingProcedures")
-    private List<ImagingProcedure> imagingProcedures;
+    private final List<ImagingProcedure> imagingProcedures;
 
     /*
      * Ordered procedure information from the document information or text.
      */
     @Generated
     @JsonProperty(value = "orderedProcedure")
-    private FhirR4Extendible orderedProcedure;
+    private final FhirR4Extendible orderedProcedure;
 
     /**
      * Creates an instance of RadiologyProcedureInference class.
@@ -52,6 +55,7 @@ public final class RadiologyProcedureInference extends FhirR4Extendible1 {
     private RadiologyProcedureInference(
         @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures,
         @JsonProperty(value = "orderedProcedure") FhirR4Extendible orderedProcedure) {
+        setKind(RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE);
         this.imagingProcedures = imagingProcedures;
         this.orderedProcedure = orderedProcedure;
     }

@@ -12,10 +12,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * A complete order discrepancy is shown when one or more body parts and/or measurements that should be in the document
- * (because there is a complete order) are not present.
+ * A complete order discrepancy is shown when one or more body parts and/or measurements that should be in the document (because there is a complete order) are not present.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = CompleteOrderDiscrepancyInference.class,
+    visible = true)
 @JsonTypeName("completeOrderDiscrepancy")
 @Immutable
 public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
@@ -25,7 +28,7 @@ public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "orderType")
-    private FhirR4CodeableConcept orderType;
+    private final FhirR4CodeableConcept orderType;
 
     /*
      * List of missing body parts required by a complete order : SNOMED CT codes.
@@ -49,12 +52,12 @@ public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
     @Generated
     @JsonCreator
     private CompleteOrderDiscrepancyInference(@JsonProperty(value = "orderType") FhirR4CodeableConcept orderType) {
+        setKind(RadiologyInsightsInferenceType.COMPLETE_ORDER_DISCREPANCY);
         this.orderType = orderType;
     }
 
     /**
-     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or
-     * breast.
+     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
      *
      * @return the orderType value.
      */
@@ -74,8 +77,7 @@ public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the missingBodyPartMeasurements property: List of missing body parts that require measurement by a complete
-     * order : SNOMED CT codes.
+     * Get the missingBodyPartMeasurements property: List of missing body parts that require measurement by a complete order : SNOMED CT codes.
      *
      * @return the missingBodyPartMeasurements value.
      */

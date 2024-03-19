@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,9 +16,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "kind",
-    defaultImpl = ExceptionActionInternal.class)
+    defaultImpl = ExceptionActionInternal.class,
+    visible = true)
 @JsonTypeName("ExceptionActionInternal")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "cancel", value = CancelExceptionActionInternal.class),
@@ -38,6 +39,7 @@ public class ExceptionActionInternal {
      */
     @Generated
     public ExceptionActionInternal() {
+        this.kind = ExceptionActionKind.fromString("ExceptionActionInternal");
     }
 
     /**
@@ -59,6 +61,36 @@ public class ExceptionActionInternal {
     @Generated
     public ExceptionActionInternal setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of ExceptionAction.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private ExceptionActionKind kind;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of ExceptionAction.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public ExceptionActionKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The type discriminator describing a sub-type of ExceptionAction.
+     *
+     * @param kind the kind value to set.
+     * @return the ExceptionActionInternal object itself.
+     */
+    @Generated
+    protected ExceptionActionInternal setKind(ExceptionActionKind kind) {
+        this.kind = kind;
         return this;
     }
 }

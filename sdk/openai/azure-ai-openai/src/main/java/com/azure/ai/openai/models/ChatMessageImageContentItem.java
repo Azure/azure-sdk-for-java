@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A structured chat content item containing an image reference.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ChatMessageImageContentItem.class,
+    visible = true)
 @JsonTypeName("image_url")
 @Immutable
 public final class ChatMessageImageContentItem extends ChatMessageContentItem {
@@ -23,7 +27,7 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
      */
     @Generated
     @JsonProperty(value = "image_url")
-    private ChatMessageImageUrl imageUrl;
+    private final ChatMessageImageUrl imageUrl;
 
     /**
      * Creates an instance of ChatMessageImageContentItem class.
@@ -33,12 +37,12 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
     @Generated
     @JsonCreator
     public ChatMessageImageContentItem(@JsonProperty(value = "image_url") ChatMessageImageUrl imageUrl) {
+        setType("image_url");
         this.imageUrl = imageUrl;
     }
 
     /**
-     * Get the imageUrl property: An internet location, which must be accessible to the model,from which the image may
-     * be retrieved.
+     * Get the imageUrl property: An internet location, which must be accessible to the model,from which the image may be retrieved.
      *
      * @return the imageUrl value.
      */

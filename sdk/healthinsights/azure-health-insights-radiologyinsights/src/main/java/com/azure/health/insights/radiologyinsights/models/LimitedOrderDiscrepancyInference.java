@@ -12,10 +12,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * A limited order discrepancy occurs when there is a limited order, but all body parts and measurements that are
- * needed for a complete order are present in the document.
+ * A limited order discrepancy occurs when there is a limited order, but all body parts and measurements that are needed for a complete order are present in the document.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = LimitedOrderDiscrepancyInference.class,
+    visible = true)
 @JsonTypeName("limitedOrderDiscrepancy")
 @Immutable
 public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
@@ -25,7 +28,7 @@ public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "orderType")
-    private FhirR4CodeableConcept orderType;
+    private final FhirR4CodeableConcept orderType;
 
     /*
      * List of body parts found in the document : SNOMED CT codes.
@@ -49,12 +52,12 @@ public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
     @Generated
     @JsonCreator
     private LimitedOrderDiscrepancyInference(@JsonProperty(value = "orderType") FhirR4CodeableConcept orderType) {
+        setKind(RadiologyInsightsInferenceType.LIMITED_ORDER_DISCREPANCY);
         this.orderType = orderType;
     }
 
     /**
-     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or
-     * breast.
+     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
      *
      * @return the orderType value.
      */
@@ -74,8 +77,7 @@ public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the presentBodyPartMeasurements property: List of body parts that are measured according to the document :
-     * SNOMED CT codes.
+     * Get the presentBodyPartMeasurements property: List of body parts that are measured according to the document : SNOMED CT codes.
      *
      * @return the presentBodyPartMeasurements value.
      */

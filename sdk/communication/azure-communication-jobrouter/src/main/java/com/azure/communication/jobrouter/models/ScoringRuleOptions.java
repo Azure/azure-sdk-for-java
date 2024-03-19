@@ -22,10 +22,7 @@ public final class ScoringRuleOptions {
     private Integer batchSize;
 
     /*
-     * List of extra parameters from a job that will be sent as part of the payload to scoring rule. If not set, a
-     * job's labels (sent in the payload as `job`) and a job's worker selectors (sent in the payload as `selectors`)
-     * are added to the payload of the scoring rule by default. Note: Worker labels are always sent with scoring
-     * payload.
+     * List of extra parameters from a job that will be sent as part of the payload to scoring rule. If not set, a job's labels (sent in the payload as `job`) and a job's worker selectors (sent in the payload as `selectors`) are added to the payload of the scoring rule by default. Note: Worker labels are always sent with scoring payload.
      */
     @Generated
     @JsonProperty(value = "scoringParameters")
@@ -46,8 +43,7 @@ public final class ScoringRuleOptions {
     }
 
     /**
-     * Get the batchSize property: Set batch size when 'isBatchScoringEnabled' is set to true. Defaults to 20 if not
-     * configured.
+     * Get the batchSize property: Set batch size when 'isBatchScoringEnabled' is set to true. Defaults to 20 if not configured.
      *
      * @return the batchSize value.
      */
@@ -57,8 +53,7 @@ public final class ScoringRuleOptions {
     }
 
     /**
-     * Set the batchSize property: Set batch size when 'isBatchScoringEnabled' is set to true. Defaults to 20 if not
-     * configured.
+     * Set the batchSize property: Set batch size when 'isBatchScoringEnabled' is set to true. Defaults to 20 if not configured.
      *
      * @param batchSize the batchSize value to set.
      * @return the ScoringRuleOptions object itself.
@@ -70,10 +65,7 @@ public final class ScoringRuleOptions {
     }
 
     /**
-     * Get the scoringParameters property: List of extra parameters from a job that will be sent as part of the payload
-     * to scoring rule. If not set, a job's labels (sent in the payload as `job`) and a job's worker selectors (sent in
-     * the payload as `selectors`) are added to the payload of the scoring rule by default. Note: Worker labels are
-     * always sent with scoring payload.
+     * Get the scoringParameters property: List of extra parameters from a job that will be sent as part of the payload to scoring rule. If not set, a job's labels (sent in the payload as `job`) and a job's worker selectors (sent in the payload as `selectors`) are added to the payload of the scoring rule by default. Note: Worker labels are always sent with scoring payload.
      *
      * @return the scoringParameters value.
      */
@@ -83,10 +75,7 @@ public final class ScoringRuleOptions {
     }
 
     /**
-     * Set the scoringParameters property: List of extra parameters from a job that will be sent as part of the payload
-     * to scoring rule. If not set, a job's labels (sent in the payload as `job`) and a job's worker selectors (sent in
-     * the payload as `selectors`) are added to the payload of the scoring rule by default. Note: Worker labels are
-     * always sent with scoring payload.
+     * Set the scoringParameters property: List of extra parameters from a job that will be sent as part of the payload to scoring rule. If not set, a job's labels (sent in the payload as `job`) and a job's worker selectors (sent in the payload as `selectors`) are added to the payload of the scoring rule by default. Note: Worker labels are always sent with scoring payload.
      *
      * @param scoringParameters the scoringParameters value to set.
      * @return the ScoringRuleOptions object itself.
@@ -120,18 +109,14 @@ public final class ScoringRuleOptions {
     }
 
     /*
-     * If set to true, will score workers in batches, and the parameter name of the worker labels will be sent as
-     * `workers`. By default, set to false and the parameter name for the worker labels will be sent as `worker`. Note:
-     * If enabled, use 'batchSize' to set batch size.
+     * If set to true, will score workers in batches, and the parameter name of the worker labels will be sent as `workers`. By default, set to false and the parameter name for the worker labels will be sent as `worker`. Note: If enabled, use 'batchSize' to set batch size.
      */
     @Generated
     @JsonProperty(value = "isBatchScoringEnabled")
     private Boolean isBatchScoringEnabled;
 
     /**
-     * Get the isBatchScoringEnabled property: If set to true, will score workers in batches, and the parameter name of
-     * the worker labels will be sent as `workers`. By default, set to false and the parameter name for the worker
-     * labels will be sent as `worker`. Note: If enabled, use 'batchSize' to set batch size.
+     * Get the isBatchScoringEnabled property: If set to true, will score workers in batches, and the parameter name of the worker labels will be sent as `workers`. By default, set to false and the parameter name for the worker labels will be sent as `worker`. Note: If enabled, use 'batchSize' to set batch size.
      *
      * @return the isBatchScoringEnabled value.
      */
@@ -154,9 +139,7 @@ public final class ScoringRuleOptions {
     }
 
     /**
-     * Set the isBatchScoringEnabled property: If set to true, will score workers in batches, and the parameter name of
-     * the worker labels will be sent as `workers`. By default, set to false and the parameter name for the worker
-     * labels will be sent as `worker`. Note: If enabled, use 'batchSize' to set batch size.
+     * Set the isBatchScoringEnabled property: If set to true, will score workers in batches, and the parameter name of the worker labels will be sent as `workers`. By default, set to false and the parameter name for the worker labels will be sent as `worker`. Note: If enabled, use 'batchSize' to set batch size.
      *
      * @param isBatchScoringEnabled the isBatchScoringEnabled value to set.
      * @return the ScoringRuleOptions object itself.

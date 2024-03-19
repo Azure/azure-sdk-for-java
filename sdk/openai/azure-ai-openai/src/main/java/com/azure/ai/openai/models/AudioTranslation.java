@@ -21,7 +21,7 @@ public final class AudioTranslation {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * The label that describes which operation type generated the accompanying response data.
@@ -95,8 +95,7 @@ public final class AudioTranslation {
     }
 
     /**
-     * Get the duration property: The total duration of the audio processed to produce accompanying translation
-     * information.
+     * Get the duration property: The total duration of the audio processed to produce accompanying translation information.
      *
      * @return the duration value.
      */
@@ -109,8 +108,7 @@ public final class AudioTranslation {
     }
 
     /**
-     * Get the segments property: A collection of information about the timing, probabilities, and other detail of each
-     * processed audio segment.
+     * Get the segments property: A collection of information about the timing, probabilities, and other detail of each processed audio segment.
      *
      * @return the segments value.
      */

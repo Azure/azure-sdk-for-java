@@ -42,30 +42,17 @@ public final class MessageTemplateAsyncClient {
 
     /**
      * List all templates for given Azure Communication Services channel.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
+     *     kind: String(whatsApp) (Required)
      *     name: String (Required)
      *     language: String (Required)
      *     status: String(approved/rejected/pending/paused) (Required)
@@ -105,12 +92,14 @@ public final class MessageTemplateAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTemplates(channelId, requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux
                 .map(pagedResponse -> new PagedResponseBase<Void, MessageTemplateItem>(pagedResponse.getRequest(),
                     pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue().stream()
+                    pagedResponse.getValue()
+                        .stream()
                         .map(protocolMethodData -> protocolMethodData.toObject(MessageTemplateItem.class))
                         .collect(Collectors.toList()),
                     pagedResponse.getContinuationToken(), null));

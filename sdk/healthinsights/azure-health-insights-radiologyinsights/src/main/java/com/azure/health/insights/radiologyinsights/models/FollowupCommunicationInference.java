@@ -13,10 +13,13 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /**
- * Follow-up communication involves the exchange of important information, recommendations, or updates between
- * radiologists and other healthcare professionals involved in a patient's care.
+ * Follow-up communication involves the exchange of important information, recommendations, or updates between radiologists and other healthcare professionals involved in a patient's care.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = FollowupCommunicationInference.class,
+    visible = true)
 @JsonTypeName("followupCommunication")
 @Immutable
 public final class FollowupCommunicationInference extends FhirR4Extendible1 {
@@ -40,7 +43,7 @@ public final class FollowupCommunicationInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "wasAcknowledged")
-    private boolean wasAcknowledged;
+    private final boolean wasAcknowledged;
 
     /**
      * Creates an instance of FollowupCommunicationInference class.
@@ -50,6 +53,7 @@ public final class FollowupCommunicationInference extends FhirR4Extendible1 {
     @Generated
     @JsonCreator
     private FollowupCommunicationInference(@JsonProperty(value = "wasAcknowledged") boolean wasAcknowledged) {
+        setKind(RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION);
         this.wasAcknowledged = wasAcknowledged;
     }
 

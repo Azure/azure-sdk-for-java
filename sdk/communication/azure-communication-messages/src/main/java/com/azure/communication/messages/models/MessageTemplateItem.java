@@ -9,17 +9,14 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The message template as returned from the service.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = MessageTemplateItem.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = MessageTemplateItem.class, visible = true)
 @JsonTypeName("MessageTemplateItem")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "whatsApp", value = WhatsAppMessageTemplateItem.class) })
 @Immutable
@@ -33,19 +30,18 @@ public abstract class MessageTemplateItem {
     private String name;
 
     /*
-     * The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional
-     * two-letter country code, e.g., 'en' or 'en_US'.
+     * The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional two-letter country code, e.g., 'en' or 'en_US'.
      */
     @Generated
     @JsonProperty(value = "language")
-    private String language;
+    private final String language;
 
     /*
      * The aggregated template status.
      */
     @Generated
     @JsonProperty(value = "status")
-    private MessageTemplateStatus status;
+    private final MessageTemplateStatus status;
 
     /**
      * Creates an instance of MessageTemplateItem class.
@@ -57,6 +53,7 @@ public abstract class MessageTemplateItem {
     @JsonCreator
     protected MessageTemplateItem(@JsonProperty(value = "language") String language,
         @JsonProperty(value = "status") MessageTemplateStatus status) {
+        this.kind = CommunicationMessagesChannel.fromString("MessageTemplateItem");
         this.language = language;
         this.status = status;
     }
@@ -72,8 +69,7 @@ public abstract class MessageTemplateItem {
     }
 
     /**
-     * Get the language property: The template's language, in the ISO 639 format, consist of a two-letter language code
-     * followed by an optional two-letter country code, e.g., 'en' or 'en_US'.
+     * Get the language property: The template's language, in the ISO 639 format, consist of a two-letter language code followed by an optional two-letter country code, e.g., 'en' or 'en_US'.
      *
      * @return the language value.
      */
@@ -90,5 +86,35 @@ public abstract class MessageTemplateItem {
     @Generated
     public MessageTemplateStatus getStatus() {
         return this.status;
+    }
+
+    /*
+     * The type discriminator describing a template type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private CommunicationMessagesChannel kind;
+
+    /**
+     * Get the kind property: The type discriminator describing a template type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public CommunicationMessagesChannel getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The type discriminator describing a template type.
+     *
+     * @param kind the kind value to set.
+     * @return the MessageTemplateItem object itself.
+     */
+    @Generated
+    protected MessageTemplateItem setKind(CommunicationMessagesChannel kind) {
+        this.kind = kind;
+        return this;
     }
 }

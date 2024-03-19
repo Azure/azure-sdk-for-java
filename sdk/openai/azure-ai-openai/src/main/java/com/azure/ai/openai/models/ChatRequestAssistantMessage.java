@@ -14,7 +14,11 @@ import java.util.List;
 /**
  * A request chat message representing response or action from the assistant.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "role",
+    defaultImpl = ChatRequestAssistantMessage.class,
+    visible = true)
 @JsonTypeName("assistant")
 @Fluent
 public final class ChatRequestAssistantMessage extends ChatRequestMessage {
@@ -24,7 +28,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
      */
     @Generated
     @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /*
      * An optional name for the participant.
@@ -57,6 +61,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     @Generated
     @JsonCreator
     public ChatRequestAssistantMessage(@JsonProperty(value = "content") String content) {
+        setRole(ChatRole.ASSISTANT);
         this.content = content;
     }
 
@@ -93,8 +98,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     }
 
     /**
-     * Get the toolCalls property: The tool calls that must be resolved and have their outputs appended to subsequent
-     * input messages for the chat
+     * Get the toolCalls property: The tool calls that must be resolved and have their outputs appended to subsequent input messages for the chat
      * completions request to resolve as configured.
      *
      * @return the toolCalls value.
@@ -105,8 +109,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     }
 
     /**
-     * Set the toolCalls property: The tool calls that must be resolved and have their outputs appended to subsequent
-     * input messages for the chat
+     * Set the toolCalls property: The tool calls that must be resolved and have their outputs appended to subsequent input messages for the chat
      * completions request to resolve as configured.
      *
      * @param toolCalls the toolCalls value to set.
@@ -119,8 +122,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     }
 
     /**
-     * Get the functionCall property: The function call that must be resolved and have its output appended to
-     * subsequent input messages for the chat
+     * Get the functionCall property: The function call that must be resolved and have its output appended to subsequent input messages for the chat
      * completions request to resolve as configured.
      *
      * @return the functionCall value.
@@ -131,8 +133,7 @@ public final class ChatRequestAssistantMessage extends ChatRequestMessage {
     }
 
     /**
-     * Set the functionCall property: The function call that must be resolved and have its output appended to
-     * subsequent input messages for the chat
+     * Set the functionCall property: The function call that must be resolved and have its output appended to subsequent input messages for the chat
      * completions request to resolve as configured.
      *
      * @param functionCall the functionCall value to set.

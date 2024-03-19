@@ -43,8 +43,7 @@ public final class RouterQueueInternal {
     private String distributionPolicyId;
 
     /*
-     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values
-     * must be primitive values - number, string, boolean.
+     * A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values must be primitive values - number, string, boolean.
      */
     @Generated
     @JsonProperty(value = "labels")
@@ -123,8 +122,7 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Get the distributionPolicyId property: Id of a distribution policy that will determine how a job is distributed
-     * to workers.
+     * Get the distributionPolicyId property: Id of a distribution policy that will determine how a job is distributed to workers.
      *
      * @return the distributionPolicyId value.
      */
@@ -134,8 +132,7 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Set the distributionPolicyId property: Id of a distribution policy that will determine how a job is distributed
-     * to workers.
+     * Set the distributionPolicyId property: Id of a distribution policy that will determine how a job is distributed to workers.
      *
      * @param distributionPolicyId the distributionPolicyId value to set.
      * @return the RouterQueueInternal object itself.
@@ -147,8 +144,7 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Get the labels property: A set of key/value pairs that are identifying attributes used by the rules engines to
-     * make decisions. Values must be primitive values - number, string, boolean.
+     * Get the labels property: A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values must be primitive values - number, string, boolean.
      *
      * @return the labels value.
      */
@@ -158,8 +154,7 @@ public final class RouterQueueInternal {
     }
 
     /**
-     * Set the labels property: A set of key/value pairs that are identifying attributes used by the rules engines to
-     * make decisions. Values must be primitive values - number, string, boolean.
+     * Set the labels property: A set of key/value pairs that are identifying attributes used by the rules engines to make decisions. Values must be primitive values - number, string, boolean.
      *
      * @param labels the labels value to set.
      * @return the RouterQueueInternal object itself.

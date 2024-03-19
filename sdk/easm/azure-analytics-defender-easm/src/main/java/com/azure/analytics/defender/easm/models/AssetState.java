@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for AssetState.
+ * The state of assets.
  */
 public final class AssetState extends ExpandableStringEnum<AssetState> {
 

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A structured representation of a stop reason that signifies natural termination by the model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = StopFinishDetails.class, visible = true)
 @JsonTypeName("stop")
 @Immutable
 public final class StopFinishDetails extends ChatFinishDetails {
@@ -23,7 +23,7 @@ public final class StopFinishDetails extends ChatFinishDetails {
      */
     @Generated
     @JsonProperty(value = "stop")
-    private String stop;
+    private final String stop;
 
     /**
      * Creates an instance of StopFinishDetails class.
@@ -33,6 +33,7 @@ public final class StopFinishDetails extends ChatFinishDetails {
     @Generated
     @JsonCreator
     private StopFinishDetails(@JsonProperty(value = "stop") String stop) {
+        setType("stop");
         this.stop = stop;
     }
 

@@ -5,18 +5,16 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * An abstract representation of a structured content item within a chat message.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "type",
-    defaultImpl = ChatMessageContentItem.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = ChatMessageContentItem.class, visible = true)
 @JsonTypeName("ChatMessageContentItem")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "text", value = ChatMessageTextContentItem.class),
@@ -29,5 +27,36 @@ public class ChatMessageContentItem {
      */
     @Generated
     public ChatMessageContentItem() {
+        this.type = "ChatMessageContentItem";
+    }
+
+    /*
+     * The discriminated object type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private String type;
+
+    /**
+     * Get the type property: The discriminated object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    public String getType() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: The discriminated object type.
+     *
+     * @param type the type value to set.
+     * @return the ChatMessageContentItem object itself.
+     */
+    @Generated
+    protected ChatMessageContentItem setType(String type) {
+        this.type = type;
+        return this;
     }
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The DomainAssetResource model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = DomainAssetResource.class, visible = true)
 @JsonTypeName("domain")
 @Immutable
 public final class DomainAssetResource extends AssetResource {
@@ -23,7 +23,7 @@ public final class DomainAssetResource extends AssetResource {
      */
     @Generated
     @JsonProperty(value = "asset")
-    private DomainAsset asset;
+    private final DomainAsset asset;
 
     /**
      * Creates an instance of DomainAssetResource class.
@@ -33,6 +33,7 @@ public final class DomainAssetResource extends AssetResource {
     @Generated
     @JsonCreator
     private DomainAssetResource(@JsonProperty(value = "asset") DomainAsset asset) {
+        setKind("domain");
         this.asset = asset;
     }
 

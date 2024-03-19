@@ -15,7 +15,11 @@ import java.util.List;
  * Detailed information about observations
  * Based on [FHIR Observation](https://www.hl7.org/fhir/R4/observation.html).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "resourceType",
+    defaultImpl = FhirR4Observation.class,
+    visible = true)
 @JsonTypeName("Observation")
 @Fluent
 public final class FhirR4Observation extends FhirR4DomainResource {
@@ -32,10 +36,10 @@ public final class FhirR4Observation extends FhirR4DomainResource {
      */
     @Generated
     @JsonProperty(value = "status")
-    private ObservationStatusCodeType status;
+    private final ObservationStatusCodeType status;
 
     /*
-     * Classification of type of observation
+     * Classification of  type of observation
      */
     @Generated
     @JsonProperty(value = "category")
@@ -46,7 +50,7 @@ public final class FhirR4Observation extends FhirR4DomainResource {
      */
     @Generated
     @JsonProperty(value = "code")
-    private FhirR4CodeableConcept code;
+    private final FhirR4CodeableConcept code;
 
     /*
      * Who and/or what the observation is about
@@ -243,6 +247,7 @@ public final class FhirR4Observation extends FhirR4DomainResource {
         @JsonProperty(value = "status") ObservationStatusCodeType status,
         @JsonProperty(value = "code") FhirR4CodeableConcept code) {
         super(resourceType);
+        setResourceType("Observation");
         this.status = status;
         this.code = code;
     }
@@ -280,7 +285,7 @@ public final class FhirR4Observation extends FhirR4DomainResource {
     }
 
     /**
-     * Get the category property: Classification of type of observation.
+     * Get the category property: Classification of  type of observation.
      *
      * @return the category value.
      */
@@ -290,7 +295,7 @@ public final class FhirR4Observation extends FhirR4DomainResource {
     }
 
     /**
-     * Set the category property: Classification of type of observation.
+     * Set the category property: Classification of  type of observation.
      *
      * @param category the category value to set.
      * @return the FhirR4Observation object itself.
