@@ -122,6 +122,8 @@ public final class QueueClient {
     }
 
     /**
+     * Get the URL of the storage queue.
+     *
      * @return the URL of the storage queue.
      */
     public String getQueueUrl() {

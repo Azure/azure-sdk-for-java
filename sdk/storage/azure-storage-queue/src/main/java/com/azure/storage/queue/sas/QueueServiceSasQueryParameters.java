@@ -37,7 +37,7 @@ public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters
      */
     @Deprecated
     public QueueServiceSasQueryParameters(Map<String, String[]> queryParametersMap,
-           boolean removeSasParametersFromMap) {
+        boolean removeSasParametersFromMap) {
         super(queryParametersMap, removeSasParametersFromMap);
 
         this.identifier = getQueryParameter(queryParametersMap, Constants.UrlConstants.SAS_SIGNED_IDENTIFIER,
@@ -69,6 +69,8 @@ public final class QueueServiceSasQueryParameters extends BaseSasQueryParameters
     }
 
     /**
+     * Gets the signed identifier (only for {@link QueueServiceSasSignatureValues}) or {@code null}.
+     *
      * @return The signed identifier (only for {@link QueueServiceSasSignatureValues}) or {@code null}. Please see
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
      * for more information.

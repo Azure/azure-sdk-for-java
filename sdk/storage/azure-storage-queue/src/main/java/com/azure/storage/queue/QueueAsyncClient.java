@@ -125,6 +125,8 @@ public final class QueueAsyncClient {
     }
 
     /**
+     * Get the URL of the storage queue.
+     *
      * @return the URL of the storage queue
      */
     public String getQueueUrl() {
@@ -1211,10 +1213,10 @@ public final class QueueAsyncClient {
                                 .subscribeOn(Schedulers.boundedElastic()))
                             .subscribeOn(Schedulers.boundedElastic())
                             .then(Mono.empty());
-                        } else {
-                            return FluxUtil.monoError(LOGGER, e);
-                        }
-                    }))
+                    } else {
+                        return FluxUtil.monoError(LOGGER, e);
+                    }
+                }))
             .collectList()
             .map(peekedMessageItems -> new PagedResponseBase<>(response.getRequest(), response.getStatusCode(),
                 response.getHeaders(), peekedMessageItems, null, response.getDeserializedHeaders()));

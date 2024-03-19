@@ -91,6 +91,8 @@ public final class QueueServiceAsyncClient {
     }
 
     /**
+     * Gets the URL of the storage queue.
+     *
      * @return the URL of the storage queue
      */
     public String getQueueServiceUrl() {
