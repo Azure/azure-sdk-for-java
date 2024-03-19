@@ -37,6 +37,7 @@ import com.azure.ai.openai.models.ContentFilterResultDetailsForPrompt;
 import com.azure.ai.openai.models.ContentFilterResultsForChoice;
 import com.azure.ai.openai.models.ContentFilterResultsForPrompt;
 import com.azure.ai.openai.models.ContentFilterSeverity;
+import com.azure.ai.openai.models.EmbeddingEncodingFormat;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
@@ -173,6 +174,15 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     public abstract void testGetEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
+    public abstract void getEmbeddingsWithSmallerDimensions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void getEmbeddingsWithFloatFormat(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void getEmbeddingsWithBase64Format(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
     public abstract void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     void getCompletionsRunnerForNonAzure(BiConsumer<String, List<String>> testRunner) {
@@ -217,6 +227,26 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
         testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
+    }
+
+    void getEmbeddingWithSmallerDimensionsRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
+        testRunner.accept("text-embedding-3-large",
+                new EmbeddingsOptions(Arrays.asList("Your text string goes here")).setDimensions(20)
+        );
+    }
+
+    void getEmbeddingsWithFloatFormatRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
+        testRunner.accept("text-embedding-ada-002",
+                new EmbeddingsOptions(Arrays.asList("Your text string goes here"))
+                        .setEncodingFormat(EmbeddingEncodingFormat.FLOAT)
+        );
+    }
+
+    void getEmbeddingsWithBase64FormatRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
+        testRunner.accept("text-embedding-ada-002",
+                new EmbeddingsOptions(Arrays.asList("Your text string goes here"))
+                        .setEncodingFormat(EmbeddingEncodingFormat.BASE64)
+        );
     }
 
     void getEmbeddingRunnerForNonAzure(BiConsumer<String, EmbeddingsOptions> testRunner) {

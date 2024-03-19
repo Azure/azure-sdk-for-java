@@ -4,6 +4,11 @@
 
 ### Features Added
 
+- Added support for service API version, `2024-03-01-preview`.
+- Added two new properties to `EmbeddingOptions`:
+  - `dimensions`, which is only supported in models `text-embedding-3-*` and above.
+  - `encoding_format`, which could be value of `float` default value or `base64`.
+  
 ### Breaking Changes
 
 ### Bugs Fixed

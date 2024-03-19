@@ -21,6 +21,7 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
+import com.azure.ai.openai.models.EmbeddingEncodingFormat;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
@@ -221,6 +222,43 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             StepVerifier.create(client.getEmbeddings(deploymentId, embeddingsOptions))
                 .assertNext(resultEmbeddings -> assertEmbeddings(resultEmbeddings))
                 .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getEmbeddingsWithSmallerDimensions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getEmbeddingWithSmallerDimensionsRunner((deploymentId, embeddingsOptions) -> {
+            StepVerifier.create(client.getEmbeddings(deploymentId, embeddingsOptions))
+                    .assertNext(resultEmbeddings -> {
+                        assertEmbeddings(resultEmbeddings);
+                        assertEquals(embeddingsOptions.getDimensions(),
+                                resultEmbeddings.getData().get(0).getEmbedding().size());
+                    })
+                    .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getEmbeddingsWithFloatFormat(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getEmbeddingsWithFloatFormatRunner((deploymentId, embeddingsOptions) -> {
+            StepVerifier.create(client.getEmbeddings(deploymentId, embeddingsOptions))
+                    .assertNext(resultEmbeddings -> assertEmbeddings(resultEmbeddings))
+                    .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getEmbeddingsWithBase64Format(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getEmbeddingsWithBase64FormatRunner((deploymentId, embeddingsOptions) -> {
+            StepVerifier.create(client.getEmbeddings(deploymentId, embeddingsOptions))
+                    .assertNext(resultEmbeddings -> assertEmbeddings(resultEmbeddings))
+                    .verifyComplete();
         });
     }
 
