@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PacketCaptures. */
+/**
+ * Resource collection API of PacketCaptures.
+ */
 public interface PacketCaptures {
     /**
      * Gets information about the specified packet capture session.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -22,12 +24,12 @@ public interface PacketCaptures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified packet capture session along with {@link Response}.
      */
-    Response<PacketCapture> getWithResponse(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName, Context context);
+    Response<PacketCapture> getWithResponse(String resourceGroupName, String packetCoreControlPlaneName,
+        String packetCaptureName, Context context);
 
     /**
      * Gets information about the specified packet capture session.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -40,7 +42,7 @@ public interface PacketCaptures {
 
     /**
      * Deletes the specified packet capture.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -52,7 +54,7 @@ public interface PacketCaptures {
 
     /**
      * Deletes the specified packet capture.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -65,7 +67,7 @@ public interface PacketCaptures {
 
     /**
      * Stop a packet capture session.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -78,7 +80,7 @@ public interface PacketCaptures {
 
     /**
      * Stop a packet capture session.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param packetCaptureName The name of the packet capture session.
@@ -88,12 +90,12 @@ public interface PacketCaptures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the current status of an async operation.
      */
-    AsyncOperationStatus stop(
-        String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName, Context context);
+    AsyncOperationStatus stop(String resourceGroupName, String packetCoreControlPlaneName, String packetCaptureName,
+        Context context);
 
     /**
      * Lists all the packet capture sessions under a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -101,12 +103,12 @@ public interface PacketCaptures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for packet capture API service call as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PacketCapture> listByPacketCoreControlPlane(
-        String resourceGroupName, String packetCoreControlPlaneName);
+    PagedIterable<PacketCapture> listByPacketCoreControlPlane(String resourceGroupName,
+        String packetCoreControlPlaneName);
 
     /**
      * Lists all the packet capture sessions under a packet core control plane.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param packetCoreControlPlaneName The name of the packet core control plane.
      * @param context The context to associate with this operation.
@@ -115,12 +117,12 @@ public interface PacketCaptures {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for packet capture API service call as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PacketCapture> listByPacketCoreControlPlane(
-        String resourceGroupName, String packetCoreControlPlaneName, Context context);
+    PagedIterable<PacketCapture> listByPacketCoreControlPlane(String resourceGroupName,
+        String packetCoreControlPlaneName, Context context);
 
     /**
      * Gets information about the specified packet capture session.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,7 +133,7 @@ public interface PacketCaptures {
 
     /**
      * Gets information about the specified packet capture session.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,7 +145,7 @@ public interface PacketCaptures {
 
     /**
      * Deletes the specified packet capture.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -153,7 +155,7 @@ public interface PacketCaptures {
 
     /**
      * Deletes the specified packet capture.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,7 +166,7 @@ public interface PacketCaptures {
 
     /**
      * Begins definition for a new PacketCapture resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new PacketCapture definition.
      */

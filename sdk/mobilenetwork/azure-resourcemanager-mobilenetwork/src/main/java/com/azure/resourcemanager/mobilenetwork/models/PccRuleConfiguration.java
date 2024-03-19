@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Data flow policy rule configuration. */
+/**
+ * Data flow policy rule configuration.
+ */
 @Fluent
 public final class PccRuleConfiguration {
     /*
@@ -46,14 +48,16 @@ public final class PccRuleConfiguration {
     @JsonProperty(value = "serviceDataFlowTemplates", required = true)
     private List<ServiceDataFlowTemplate> serviceDataFlowTemplates;
 
-    /** Creates an instance of PccRuleConfiguration class. */
+    /**
+     * Creates an instance of PccRuleConfiguration class.
+     */
     public PccRuleConfiguration() {
     }
 
     /**
      * Get the ruleName property: The name of the rule. This must be unique within the parent service. You must not use
      * any of the following reserved strings - `default`, `requested` or `service`.
-     *
+     * 
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -63,7 +67,7 @@ public final class PccRuleConfiguration {
     /**
      * Set the ruleName property: The name of the rule. This must be unique within the parent service. You must not use
      * any of the following reserved strings - `default`, `requested` or `service`.
-     *
+     * 
      * @param ruleName the ruleName value to set.
      * @return the PccRuleConfiguration object itself.
      */
@@ -76,7 +80,7 @@ public final class PccRuleConfiguration {
      * Get the rulePrecedence property: A precedence value that is used to decide between data flow policy rules when
      * identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value should
      * be unique among all data flow policy rules configured in the mobile network.
-     *
+     * 
      * @return the rulePrecedence value.
      */
     public int rulePrecedence() {
@@ -87,7 +91,7 @@ public final class PccRuleConfiguration {
      * Set the rulePrecedence property: A precedence value that is used to decide between data flow policy rules when
      * identifying the QoS values to use for a particular SIM. A lower value means a higher priority. This value should
      * be unique among all data flow policy rules configured in the mobile network.
-     *
+     * 
      * @param rulePrecedence the rulePrecedence value to set.
      * @return the PccRuleConfiguration object itself.
      */
@@ -99,7 +103,7 @@ public final class PccRuleConfiguration {
     /**
      * Get the ruleQosPolicy property: The QoS policy to use for packets matching this rule. If this field is null then
      * the parent service will define the QoS settings.
-     *
+     * 
      * @return the ruleQosPolicy value.
      */
     public PccRuleQosPolicy ruleQosPolicy() {
@@ -109,7 +113,7 @@ public final class PccRuleConfiguration {
     /**
      * Set the ruleQosPolicy property: The QoS policy to use for packets matching this rule. If this field is null then
      * the parent service will define the QoS settings.
-     *
+     * 
      * @param ruleQosPolicy the ruleQosPolicy value to set.
      * @return the PccRuleConfiguration object itself.
      */
@@ -120,7 +124,7 @@ public final class PccRuleConfiguration {
 
     /**
      * Get the trafficControl property: Determines whether flows that match this data flow policy rule are permitted.
-     *
+     * 
      * @return the trafficControl value.
      */
     public TrafficControlPermission trafficControl() {
@@ -129,7 +133,7 @@ public final class PccRuleConfiguration {
 
     /**
      * Set the trafficControl property: Determines whether flows that match this data flow policy rule are permitted.
-     *
+     * 
      * @param trafficControl the trafficControl value to set.
      * @return the PccRuleConfiguration object itself.
      */
@@ -140,7 +144,7 @@ public final class PccRuleConfiguration {
 
     /**
      * Get the serviceDataFlowTemplates property: The set of data flow templates to use for this data flow policy rule.
-     *
+     * 
      * @return the serviceDataFlowTemplates value.
      */
     public List<ServiceDataFlowTemplate> serviceDataFlowTemplates() {
@@ -149,7 +153,7 @@ public final class PccRuleConfiguration {
 
     /**
      * Set the serviceDataFlowTemplates property: The set of data flow templates to use for this data flow policy rule.
-     *
+     * 
      * @param serviceDataFlowTemplates the serviceDataFlowTemplates value to set.
      * @return the PccRuleConfiguration object itself.
      */
@@ -160,23 +164,20 @@ public final class PccRuleConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property ruleName in model PccRuleConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ruleName in model PccRuleConfiguration"));
         }
         if (ruleQosPolicy() != null) {
             ruleQosPolicy().validate();
         }
         if (serviceDataFlowTemplates() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceDataFlowTemplates in model PccRuleConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property serviceDataFlowTemplates in model PccRuleConfiguration"));
         } else {
             serviceDataFlowTemplates().forEach(e -> e.validate());
         }
