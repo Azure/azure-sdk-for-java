@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Provider specific input for pairing operations. */
+/**
+ * Provider specific input for pairing operations.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -18,17 +20,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ReplicationProviderSpecificContainerMappingInput")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AContainerMappingInput.class),
-    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtContainerMappingInput.class)
-})
+    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtContainerMappingInput.class) })
 @Immutable
 public class ReplicationProviderSpecificContainerMappingInput {
-    /** Creates an instance of ReplicationProviderSpecificContainerMappingInput class. */
+    /**
+     * Creates an instance of ReplicationProviderSpecificContainerMappingInput class.
+     */
     public ReplicationProviderSpecificContainerMappingInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

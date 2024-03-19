@@ -10,17 +10,15 @@ import com.azure.resourcemanager.chaos.models.ExperimentExecutionDetailsProperti
 public final class ExperimentExecutionDetailsPropertiesRunInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExperimentExecutionDetailsPropertiesRunInformation model =
-            BinaryData
-                .fromString(
-                    "{\"steps\":[{\"stepName\":\"tdss\",\"stepId\":\"wtmwerio\",\"status\":\"pyqs\",\"branches\":[{\"branchName\":\"bnetshh\",\"branchId\":\"h\",\"status\":\"plvwiwubmwmbes\",\"actions\":[{}]}]},{\"stepName\":\"wwtppj\",\"stepId\":\"cxogaokonzm\",\"status\":\"ikvmkqzeqqk\",\"branches\":[{\"branchName\":\"zxmhhvhgu\",\"branchId\":\"odkwobd\",\"status\":\"xtibqdxbxwakbog\",\"actions\":[{},{},{}]}]},{\"stepName\":\"lkzgxhuriplbp\",\"stepId\":\"xunkbebxmubyynt\",\"status\":\"rbqtkoie\",\"branches\":[{\"branchName\":\"tgqr\",\"branchId\":\"tmuwlauwzi\",\"status\":\"bm\",\"actions\":[{},{}]}]}]}")
-                .toObject(ExperimentExecutionDetailsPropertiesRunInformation.class);
+        ExperimentExecutionDetailsPropertiesRunInformation model = BinaryData.fromString(
+            "{\"steps\":[{\"stepName\":\"efuzmuvpbttd\",\"stepId\":\"orppxebmnzbtb\",\"status\":\"pglkf\",\"branches\":[{\"branchName\":\"neuelfphsdyhtoz\",\"branchId\":\"kd\",\"status\":\"wq\",\"actions\":[{}]},{\"branchName\":\"zx\",\"branchId\":\"vithh\",\"status\":\"o\",\"actions\":[{}]},{\"branchName\":\"gbhcohfwdsj\",\"branchId\":\"aljutiiswac\",\"status\":\"gdkz\",\"actions\":[{},{},{},{}]}]},{\"stepName\":\"fvhqc\",\"stepId\":\"ilvpnppfuflrwd\",\"status\":\"dlxyjrxs\",\"branches\":[{\"branchName\":\"cnihgwqapnedgfbc\",\"branchId\":\"cvqvpkeqdcv\",\"status\":\"hvoodsotbobzd\",\"actions\":[{},{}]},{\"branchName\":\"wvnhdldwmgx\",\"branchId\":\"rslpmutwuoeg\",\"status\":\"khjwn\",\"actions\":[{},{}]}]}]}")
+            .toObject(ExperimentExecutionDetailsPropertiesRunInformation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentExecutionDetailsPropertiesRunInformation model =
-            new ExperimentExecutionDetailsPropertiesRunInformation();
+        ExperimentExecutionDetailsPropertiesRunInformation model
+            = new ExperimentExecutionDetailsPropertiesRunInformation();
         model = BinaryData.fromObject(model).toObject(ExperimentExecutionDetailsPropertiesRunInformation.class);
     }
 }

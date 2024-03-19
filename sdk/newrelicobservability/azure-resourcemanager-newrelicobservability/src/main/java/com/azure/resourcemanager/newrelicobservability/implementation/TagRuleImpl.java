@@ -79,25 +79,19 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
     }
 
     public TagRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getTagRules().createOrUpdate(resourceGroupName, monitorName,
+            ruleSetName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public TagRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .createOrUpdate(resourceGroupName, monitorName, ruleSetName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getTagRules().createOrUpdate(resourceGroupName, monitorName,
+            ruleSetName, this.innerModel(), context);
         return this;
     }
 
-    TagRuleImpl(
-        String name, com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
+    TagRuleImpl(String name,
+        com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = new TagRuleInner();
         this.serviceManager = serviceManager;
         this.ruleSetName = name;
@@ -109,52 +103,35 @@ public final class TagRuleImpl implements TagRule, TagRule.Definition, TagRule.U
     }
 
     public TagRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .updateWithResponse(resourceGroupName, monitorName, ruleSetName, updateProperties, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTagRules()
+            .updateWithResponse(resourceGroupName, monitorName, ruleSetName, updateProperties, Context.NONE).getValue();
         return this;
     }
 
     public TagRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .updateWithResponse(resourceGroupName, monitorName, ruleSetName, updateProperties, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTagRules()
+            .updateWithResponse(resourceGroupName, monitorName, ruleSetName, updateProperties, context).getValue();
         return this;
     }
 
-    TagRuleImpl(
-        TagRuleInner innerObject,
+    TagRuleImpl(TagRuleInner innerObject,
         com.azure.resourcemanager.newrelicobservability.NewRelicObservabilityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.monitorName = Utils.getValueFromIdByName(innerObject.id(), "monitors");
-        this.ruleSetName = Utils.getValueFromIdByName(innerObject.id(), "tagRules");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.monitorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "monitors");
+        this.ruleSetName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "tagRules");
     }
 
     public TagRule refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTagRules()
+            .getWithResponse(resourceGroupName, monitorName, ruleSetName, Context.NONE).getValue();
         return this;
     }
 
     public TagRule refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTagRules()
-                .getWithResponse(resourceGroupName, monitorName, ruleSetName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTagRules()
+            .getWithResponse(resourceGroupName, monitorName, ruleSetName, context).getValue();
         return this;
     }
 

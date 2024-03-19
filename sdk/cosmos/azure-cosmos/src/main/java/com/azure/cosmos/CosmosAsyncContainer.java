@@ -2775,6 +2775,20 @@ public class CosmosAsyncContainer {
                 public Mono<List<FeedRange>> getFeedRanges(CosmosAsyncContainer cosmosAsyncContainer, boolean forceRefresh) {
                     return cosmosAsyncContainer.getFeedRanges(forceRefresh);
                 }
+
+                @Override
+                public Mono<List<FeedRangeEpkImpl>> trySplitFeedRange(
+                    CosmosAsyncContainer cosmosAsyncContainer,
+                    FeedRange feedRange,
+                    int targetedCountAfterSplit) {
+
+                    return cosmosAsyncContainer.trySplitFeedRange(feedRange, targetedCountAfterSplit);
+                }
+
+                @Override
+                public String getLinkWithoutTrailingSlash(CosmosAsyncContainer cosmosAsyncContainer) {
+                    return cosmosAsyncContainer.getLinkWithoutTrailingSlash();
+                }
             });
     }
 

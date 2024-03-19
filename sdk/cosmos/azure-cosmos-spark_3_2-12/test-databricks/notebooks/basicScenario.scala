@@ -10,7 +10,10 @@ val cosmosDatabaseName = dbutils.widgets.get("cosmosDatabaseName")
 val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
   "spark.cosmos.accountKey" -> cosmosMasterKey,
   "spark.cosmos.database" -> cosmosDatabaseName,
-  "spark.cosmos.container" -> cosmosContainerName
+  "spark.cosmos.container" -> cosmosContainerName,
+  "spark.cosmos.preferredRegionsList" -> "West US 2",
+  "spark.cosmos.proactiveConnectionInitialization" -> s"$cosmosDatabaseName/$cosmosContainerName",
+  "spark.cosmos.proactiveConnectionInitializationDurationInSeconds" -> "10"
 )
 
 val cfgWithAutoSchemaInference = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
@@ -38,15 +41,33 @@ spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cos
 spark.sql(s"ALTER TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} " +
   s"SET TBLPROPERTIES('manualThroughput' = '1100')")
 
-// read database with client retrieved from cache
-val clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+// read database with client retrieved from cache on the driver
+val clientCacheItemFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
   .getCosmosClientFromCache(cfg)
+
+val clientFromCache = clientCacheItemFromCache
   .getClient
   .asInstanceOf[azure_cosmos_spark.com.azure.cosmos.CosmosAsyncClient]
 val dbResponse = clientFromCache.getDatabase(cosmosDatabaseName).read().block()
 
 assert(dbResponse.getProperties.getId.equals(cosmosDatabaseName))
-clientFromCache.close
+clientCacheItemFromCache.close
+
+
+// read database with client retrieved from cache on the executor
+val clientFromCacheFunc = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+  .getCosmosClientFuncFromCache(cfg)
+
+sc.parallelize(Seq.empty[String]).foreachPartition(x => {
+  val clientCacheItemOnExecutor = clientFromCacheFunc()
+  val clientFromCacheOnExecutor = clientCacheItemOnExecutor
+    .getClient
+    .asInstanceOf[azure_cosmos_spark.com.azure.cosmos.CosmosAsyncClient]
+  val dbResponseOnExecutor = clientFromCacheOnExecutor.getDatabase(cosmosDatabaseName).read().block()
+  println(s"DB Name retrieved '${dbResponseOnExecutor.getProperties.getId}'")
+  assert(dbResponseOnExecutor.getProperties.getId.equals(cosmosDatabaseName))
+  clientCacheItemOnExecutor.close
+})
 
 // COMMAND ----------
 

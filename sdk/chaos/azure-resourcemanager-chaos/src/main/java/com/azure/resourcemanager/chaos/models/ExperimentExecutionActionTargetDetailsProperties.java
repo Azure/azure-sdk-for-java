@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Model that represents the Experiment action target details properties model. */
+/**
+ * Model that represents the Experiment action target details properties model.
+ */
 @Immutable
 public final class ExperimentExecutionActionTargetDetailsProperties {
     /*
@@ -41,13 +43,15 @@ public final class ExperimentExecutionActionTargetDetailsProperties {
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ExperimentExecutionActionTargetDetailsError error;
 
-    /** Creates an instance of ExperimentExecutionActionTargetDetailsProperties class. */
+    /**
+     * Creates an instance of ExperimentExecutionActionTargetDetailsProperties class.
+     */
     public ExperimentExecutionActionTargetDetailsProperties() {
     }
 
     /**
      * Get the status property: The status of the execution.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -56,7 +60,7 @@ public final class ExperimentExecutionActionTargetDetailsProperties {
 
     /**
      * Get the target property: The target for the action.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -65,7 +69,7 @@ public final class ExperimentExecutionActionTargetDetailsProperties {
 
     /**
      * Get the targetFailedTime property: String that represents the failed date time.
-     *
+     * 
      * @return the targetFailedTime value.
      */
     public OffsetDateTime targetFailedTime() {
@@ -74,7 +78,7 @@ public final class ExperimentExecutionActionTargetDetailsProperties {
 
     /**
      * Get the targetCompletedTime property: String that represents the completed date time.
-     *
+     * 
      * @return the targetCompletedTime value.
      */
     public OffsetDateTime targetCompletedTime() {
@@ -83,7 +87,7 @@ public final class ExperimentExecutionActionTargetDetailsProperties {
 
     /**
      * Get the error property: The error of the action.
-     *
+     * 
      * @return the error value.
      */
     public ExperimentExecutionActionTargetDetailsError error() {
@@ -92,7 +96,7 @@ public final class ExperimentExecutionActionTargetDetailsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

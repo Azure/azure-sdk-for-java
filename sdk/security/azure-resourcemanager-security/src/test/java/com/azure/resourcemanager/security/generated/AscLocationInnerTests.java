@@ -10,16 +10,15 @@ import com.azure.resourcemanager.security.fluent.models.AscLocationInner;
 public final class AscLocationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AscLocationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":\"datasdqrhzoymibmrq\",\"id\":\"ibahwflus\",\"name\":\"dtmhrkwofyyvoqa\",\"type\":\"piexpbtgiw\"}")
-                .toObject(AscLocationInner.class);
+        AscLocationInner model = BinaryData
+            .fromString(
+                "{\"properties\":\"dataufo\",\"id\":\"ojywifsqesa\",\"name\":\"gdf\",\"type\":\"glzlhjxrifkwmrv\"}")
+            .toObject(AscLocationInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AscLocationInner model = new AscLocationInner().withProperties("datasdqrhzoymibmrq");
+        AscLocationInner model = new AscLocationInner().withProperties("dataufo");
         model = BinaryData.fromObject(model).toObject(AscLocationInner.class);
     }
 }

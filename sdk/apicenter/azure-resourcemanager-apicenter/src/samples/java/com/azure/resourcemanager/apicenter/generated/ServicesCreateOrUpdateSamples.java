@@ -4,22 +4,47 @@
 
 package com.azure.resourcemanager.apicenter.generated;
 
-/** Samples for Services CreateOrUpdate. */
+import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.apicenter.models.ServiceProperties;
+import com.azure.resourcemanager.apicenter.models.UserAssignedIdentity;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for Services CreateOrUpdate.
+ */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/apicenter/resource-manager/Microsoft.ApiCenter/preview/2023-07-01-preview/examples/Services_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/apicenter/resource-manager/Microsoft.ApiCenter/stable/2024-03-01/examples/Services_CreateOrUpdate.
+     * json
      */
     /**
-     * Sample code: Services_Create.
-     *
+     * Sample code: Services_CreateOrUpdate.
+     * 
      * @param manager Entry point to ApiCenterManager.
      */
-    public static void servicesCreate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
-        manager
-            .services()
-            .define("contoso")
-            .withRegion((String) null)
-            .withExistingResourceGroup("contoso-resources")
+    public static void servicesCreateOrUpdate(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
+        manager.services().define("contoso").withRegion("East US").withExistingResourceGroup("contoso-resources")
+            .withTags(mapOf()).withProperties(new ServiceProperties())
+            .withIdentity(new ManagedServiceIdentity()
+                .withType(ManagedServiceIdentityType.fromString("SystemAssigned, UserAssigned"))
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/contoso-resources/providers/Microsoft.ManagedIdentity/userAssignedIdentities/contoso-identity",
+                    new UserAssignedIdentity())))
             .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

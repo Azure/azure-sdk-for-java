@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configure pairing input. */
+/**
+ * Configure pairing input.
+ */
 @Fluent
 public final class CreateProtectionContainerMappingInput {
     /*
@@ -16,13 +18,15 @@ public final class CreateProtectionContainerMappingInput {
     @JsonProperty(value = "properties")
     private CreateProtectionContainerMappingInputProperties properties;
 
-    /** Creates an instance of CreateProtectionContainerMappingInput class. */
+    /**
+     * Creates an instance of CreateProtectionContainerMappingInput class.
+     */
     public CreateProtectionContainerMappingInput() {
     }
 
     /**
      * Get the properties property: Configure protection input properties.
-     *
+     * 
      * @return the properties value.
      */
     public CreateProtectionContainerMappingInputProperties properties() {
@@ -31,19 +35,19 @@ public final class CreateProtectionContainerMappingInput {
 
     /**
      * Set the properties property: Configure protection input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CreateProtectionContainerMappingInput object itself.
      */
-    public CreateProtectionContainerMappingInput withProperties(
-        CreateProtectionContainerMappingInputProperties properties) {
+    public CreateProtectionContainerMappingInput
+        withProperties(CreateProtectionContainerMappingInputProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

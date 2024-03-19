@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Firmwares. */
+/**
+ * Resource collection API of Firmwares.
+ */
 public interface Firmwares {
     /**
      * Lists all of firmwares inside a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Firmwares {
 
     /**
      * Lists all of firmwares inside a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface Firmwares {
 
     /**
      * The operation to delete a firmware.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param firmwareId The id of the firmware.
@@ -47,12 +49,12 @@ public interface Firmwares {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String firmwareId,
+        Context context);
 
     /**
      * The operation to delete a firmware.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param firmwareId The id of the firmware.
@@ -64,7 +66,7 @@ public interface Firmwares {
 
     /**
      * Get firmware.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param firmwareId The id of the firmware.
@@ -74,12 +76,12 @@ public interface Firmwares {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return firmware along with {@link Response}.
      */
-    Response<Firmware> getWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
+    Response<Firmware> getWithResponse(String resourceGroupName, String workspaceName, String firmwareId,
+        Context context);
 
     /**
      * Get firmware.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param firmwareId The id of the firmware.
@@ -92,7 +94,7 @@ public interface Firmwares {
 
     /**
      * The operation to a url for file download.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param firmwareId The id of the firmware.
@@ -102,12 +104,12 @@ public interface Firmwares {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return url data for creating or accessing a blob file along with {@link Response}.
      */
-    Response<UrlToken> generateDownloadUrlWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
+    Response<UrlToken> generateDownloadUrlWithResponse(String resourceGroupName, String workspaceName,
+        String firmwareId, Context context);
 
     /**
      * The operation to a url for file download.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param firmwareId The id of the firmware.
@@ -120,7 +122,7 @@ public interface Firmwares {
 
     /**
      * The operation to a url for tar file download.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param firmwareId The id of the firmware.
@@ -130,12 +132,12 @@ public interface Firmwares {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return url data for creating or accessing a blob file along with {@link Response}.
      */
-    Response<UrlToken> generateFilesystemDownloadUrlWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
+    Response<UrlToken> generateFilesystemDownloadUrlWithResponse(String resourceGroupName, String workspaceName,
+        String firmwareId, Context context);
 
     /**
      * The operation to a url for tar file download.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the firmware analysis workspace.
      * @param firmwareId The id of the firmware.
@@ -147,383 +149,8 @@ public interface Firmwares {
     UrlToken generateFilesystemDownloadUrl(String resourceGroupName, String workspaceName, String firmwareId);
 
     /**
-     * The operation to get a scan summary.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summary result after scanning the firmware along with {@link Response}.
-     */
-    Response<FirmwareSummary> generateSummaryWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to get a scan summary.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return summary result after scanning the firmware.
-     */
-    FirmwareSummary generateSummary(String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to list all components result for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list result for components as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<Component> listGenerateComponentList(
-        String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to list all components result for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list result for components as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<Component> listGenerateComponentList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to get component details for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return component of a firmware along with {@link Response}.
-     */
-    Response<Component> generateComponentDetailsWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to get component details for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return component of a firmware.
-     */
-    Component generateComponentDetails(String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to list all binary hardening result for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list result for binary hardening as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<BinaryHardening> listGenerateBinaryHardeningList(
-        String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to list all binary hardening result for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list result for binary hardening as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<BinaryHardening> listGenerateBinaryHardeningList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to list the binary hardening summary percentages for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binary hardening summary percentages along with {@link Response}.
-     */
-    Response<BinaryHardeningSummary> generateBinaryHardeningSummaryWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to list the binary hardening summary percentages for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binary hardening summary percentages.
-     */
-    BinaryHardeningSummary generateBinaryHardeningSummary(
-        String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to get binary hardening details for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binary hardening of a firmware along with {@link Response}.
-     */
-    Response<BinaryHardening> generateBinaryHardeningDetailsWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to get binary hardening details for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return binary hardening of a firmware.
-     */
-    BinaryHardening generateBinaryHardeningDetails(String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to list all password hashes for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return password hashes list as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<PasswordHash> listGeneratePasswordHashList(
-        String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to list all password hashes for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return password hashes list as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<PasswordHash> listGeneratePasswordHashList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to list all cve results for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list result for CVE as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<Cve> listGenerateCveList(String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to list all cve results for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list result for CVE as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<Cve> listGenerateCveList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to provide a high level summary of the CVEs reported for the firmware image.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cVE summary values along with {@link Response}.
-     */
-    Response<CveSummary> generateCveSummaryWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to provide a high level summary of the CVEs reported for the firmware image.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cVE summary values.
-     */
-    CveSummary generateCveSummary(String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to provide a high level summary of the discovered cryptographic certificates reported for the
-     * firmware image.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cryptographic certificate summary values along with {@link Response}.
-     */
-    Response<CryptoCertificateSummary> generateCryptoCertificateSummaryWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to provide a high level summary of the discovered cryptographic certificates reported for the
-     * firmware image.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cryptographic certificate summary values.
-     */
-    CryptoCertificateSummary generateCryptoCertificateSummary(
-        String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to provide a high level summary of the discovered cryptographic keys reported for the firmware
-     * image.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cryptographic key summary values along with {@link Response}.
-     */
-    Response<CryptoKeySummary> generateCryptoKeySummaryWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to provide a high level summary of the discovered cryptographic keys reported for the firmware
-     * image.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cryptographic key summary values.
-     */
-    CryptoKeySummary generateCryptoKeySummary(String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to list all crypto certificates for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return crypto certificates list as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<CryptoCertificate> listGenerateCryptoCertificateList(
-        String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to list all crypto certificates for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return crypto certificates list as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<CryptoCertificate> listGenerateCryptoCertificateList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
-     * The operation to list all crypto keys for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return crypto keys list as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<CryptoKey> listGenerateCryptoKeyList(
-        String resourceGroupName, String workspaceName, String firmwareId);
-
-    /**
-     * The operation to list all crypto keys for a firmware.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the firmware analysis workspace.
-     * @param firmwareId The id of the firmware.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return crypto keys list as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<CryptoKey> listGenerateCryptoKeyList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context);
-
-    /**
      * Get firmware.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -534,7 +161,7 @@ public interface Firmwares {
 
     /**
      * Get firmware.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -546,7 +173,7 @@ public interface Firmwares {
 
     /**
      * The operation to delete a firmware.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -556,7 +183,7 @@ public interface Firmwares {
 
     /**
      * The operation to delete a firmware.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -568,7 +195,7 @@ public interface Firmwares {
 
     /**
      * Begins definition for a new Firmware resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Firmware definition.
      */

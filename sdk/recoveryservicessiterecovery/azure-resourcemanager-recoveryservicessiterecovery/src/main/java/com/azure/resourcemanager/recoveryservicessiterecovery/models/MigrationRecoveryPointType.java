@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The recovery point type. */
+/**
+ * The recovery point type.
+ */
 public final class MigrationRecoveryPointType extends ExpandableStringEnum<MigrationRecoveryPointType> {
-    /** Static value NotSpecified for MigrationRecoveryPointType. */
+    /**
+     * Static value NotSpecified for MigrationRecoveryPointType.
+     */
     public static final MigrationRecoveryPointType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value ApplicationConsistent for MigrationRecoveryPointType. */
+    /**
+     * Static value ApplicationConsistent for MigrationRecoveryPointType.
+     */
     public static final MigrationRecoveryPointType APPLICATION_CONSISTENT = fromString("ApplicationConsistent");
 
-    /** Static value CrashConsistent for MigrationRecoveryPointType. */
+    /**
+     * Static value CrashConsistent for MigrationRecoveryPointType.
+     */
     public static final MigrationRecoveryPointType CRASH_CONSISTENT = fromString("CrashConsistent");
 
     /**
      * Creates a new instance of MigrationRecoveryPointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class MigrationRecoveryPointType extends ExpandableStringEnum<Migra
 
     /**
      * Creates or finds a MigrationRecoveryPointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationRecoveryPointType.
      */
@@ -41,7 +49,7 @@ public final class MigrationRecoveryPointType extends ExpandableStringEnum<Migra
 
     /**
      * Gets known MigrationRecoveryPointType values.
-     *
+     * 
      * @return known MigrationRecoveryPointType values.
      */
     public static Collection<MigrationRecoveryPointType> values() {

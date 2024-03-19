@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.models.SecurityTaskParameters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Security task that we recommend to do in order to strengthen security. */
+/**
+ * Security task that we recommend to do in order to strengthen security.
+ */
 @Fluent
 public final class SecurityTaskInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class SecurityTaskInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private SecurityTaskProperties innerProperties;
 
-    /** Creates an instance of SecurityTaskInner class. */
+    /**
+     * Creates an instance of SecurityTaskInner class.
+     */
     public SecurityTaskInner() {
     }
 
     /**
      * Get the innerProperties property: Describes properties of a task.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecurityTaskProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class SecurityTaskInner extends ProxyResource {
 
     /**
      * Get the state property: State of the task (Active, Resolved etc.).
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -43,7 +47,7 @@ public final class SecurityTaskInner extends ProxyResource {
 
     /**
      * Get the creationTimeUtc property: The time this task was discovered in UTC.
-     *
+     * 
      * @return the creationTimeUtc value.
      */
     public OffsetDateTime creationTimeUtc() {
@@ -53,7 +57,7 @@ public final class SecurityTaskInner extends ProxyResource {
     /**
      * Get the securityTaskParameters property: Changing set of properties, depending on the task type that is derived
      * from the name field.
-     *
+     * 
      * @return the securityTaskParameters value.
      */
     public SecurityTaskParameters securityTaskParameters() {
@@ -63,7 +67,7 @@ public final class SecurityTaskInner extends ProxyResource {
     /**
      * Set the securityTaskParameters property: Changing set of properties, depending on the task type that is derived
      * from the name field.
-     *
+     * 
      * @param securityTaskParameters the securityTaskParameters value to set.
      * @return the SecurityTaskInner object itself.
      */
@@ -77,7 +81,7 @@ public final class SecurityTaskInner extends ProxyResource {
 
     /**
      * Get the lastStateChangeTimeUtc property: The time this task's details were last changed in UTC.
-     *
+     * 
      * @return the lastStateChangeTimeUtc value.
      */
     public OffsetDateTime lastStateChangeTimeUtc() {
@@ -86,7 +90,7 @@ public final class SecurityTaskInner extends ProxyResource {
 
     /**
      * Get the subState property: Additional data on the state of the task.
-     *
+     * 
      * @return the subState value.
      */
     public String subState() {
@@ -95,7 +99,7 @@ public final class SecurityTaskInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

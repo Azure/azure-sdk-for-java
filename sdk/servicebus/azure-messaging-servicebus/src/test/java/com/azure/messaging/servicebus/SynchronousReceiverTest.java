@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
@@ -39,10 +37,6 @@ public final class SynchronousReceiverTest {
     private static final ClientLogger LOGGER = new ClientLogger(SynchronousReceiverTest.class);
     private static final ServiceBusReceiverInstrumentation NO_INSTRUMENTATION = new ServiceBusReceiverInstrumentation(null, null,
         NAMESPACE, ENTITY_PATH, null, ReceiverKind.SYNC_RECEIVER);
-    @Mock
-    private ServiceBusReceiverAsyncClient asyncClient;
-    @Captor
-    private ArgumentCaptor<ServiceBusReceivedMessage> messageCaptor;
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
@@ -63,6 +57,7 @@ public final class SynchronousReceiverTest {
     public void shouldErrorIterableStreamIfDisposed() {
         final int maxMessages = 1;
         final Duration maxWaitTime = Duration.ofMillis(500);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, 0, Duration.ZERO, false);
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
@@ -83,6 +78,7 @@ public final class SynchronousReceiverTest {
     public void shouldSubscribeToUpstreamOnlyOnce() {
         final int maxMessages = 1;
         final Duration maxWaitTime = Duration.ofMillis(250);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, 0, Duration.ZERO, false);
         final TestPublisher<ServiceBusReceivedMessage> upstream = TestPublisher.create();
 
@@ -105,8 +101,10 @@ public final class SynchronousReceiverTest {
         final int prefetch = 0; // prefetch is disabled
         final int maxMessages = 5;
         final Duration maxWaitTime = Duration.ofMillis(250);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ServiceBusReceivedMessage message0 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
+        final ArgumentCaptor<ServiceBusReceivedMessage> messageCaptor = ArgumentCaptor.forClass(ServiceBusReceivedMessage.class);
         final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);
         final Sinks.Many<ServiceBusReceivedMessage> upstream = Sinks.many().multicast().onBackpressureBuffer();
 
@@ -124,7 +122,19 @@ public final class SynchronousReceiverTest {
         Assertions.assertEquals(1, list.size());
         Assertions.assertEquals(message0, list.get(0));
 
-        upstream.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
+        final Sinks.EmitResult emitResult = upstream.tryEmitNext(message1);
+        Assertions.assertEquals(Sinks.EmitResult.OK, emitResult);
+        try {
+            // The earlier receive() call has a timer-thread to complete the receiving when 'maxWaitTime' (250ms) expires.
+            // It is possible that when test-thread signals 'message1' to drain-loop, the timer-thread is still in the
+            // drain-loop, resulting the test-thread to continue the test run concurrently with timer-thread.
+            // In such a setup, the "verify(asyncClient).release(messageCaptor.capture())" by test-thread will fail if
+            // the timer-thread is yet to call 'release'. So, the test-thread sleeps here giving some time for timer-thread
+            // to be done.
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Assertions.fail(e);
+        }
         verify(asyncClient).release(messageCaptor.capture());
         verify(asyncClient, times(1)).release(any());
         final ServiceBusReceivedMessage releasedMessage = messageCaptor.getValue();
@@ -136,6 +146,7 @@ public final class SynchronousReceiverTest {
         final int prefetch = 1; // prefetch is enabled
         final int maxMessages = 5;
         final Duration maxWaitTime = Duration.ofMillis(250);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ServiceBusReceivedMessage message0 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);
@@ -155,7 +166,19 @@ public final class SynchronousReceiverTest {
         Assertions.assertEquals(1, list.size());
         Assertions.assertEquals(message0, list.get(0));
 
-        upstream.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
+        final Sinks.EmitResult emitResult = upstream.tryEmitNext(message1);
+        Assertions.assertEquals(Sinks.EmitResult.OK, emitResult);
+        try {
+            // The earlier receive() call has a timer-thread to complete the receiving when 'maxWaitTime' (250ms) expires.
+            // It is possible that when test-thread signals 'message1' to drain-loop, the timer-thread is still in the
+            // drain-loop, resulting the test-thread to continue the test run concurrently with timer-thread.
+            // If the timer-thread calls 'release' (which it should not since prefetch is enabled) after the
+            // "verify(asyncClient, times(0)).release(any())" check by test-thread, then, the test won't catch this
+            // unexpected 'release' call. So, the test-thread sleeps here giving some time for timer-thread to be done.
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            Assertions.fail(e);
+        }
         verify(asyncClient, times(0)).release(any());
     }
 
@@ -164,6 +187,7 @@ public final class SynchronousReceiverTest {
         final int prefetch = 0;
         final int maxMessages = 2;
         final Duration maxWaitTime = Duration.ofMillis(250);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ServiceBusReceivedMessage message0 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);

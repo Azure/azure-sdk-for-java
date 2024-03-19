@@ -5,35 +5,60 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.ProxyResource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Description of a CheckAvailability resource. */
+/**
+ * Description of a CheckAvailability resource.
+ */
 @Fluent
-public final class CheckAvailabilityResultInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckAvailabilityResultInner.class);
-
+public final class CheckAvailabilityResultInner extends ProxyResource {
     /*
-     * True if the name is available and can be used to create new
-     * Namespace/NotificationHub. Otherwise false.
+     * Gets or sets true if the name is available and can be used to
+     * create new Namespace/NotificationHub. Otherwise false.
      */
     @JsonProperty(value = "isAvailiable")
     private Boolean isAvailiable;
 
     /*
-     * The sku of the created namespace
+     * Deprecated - only for compatibility.
+     */
+    @JsonProperty(value = "location")
+    private String location;
+
+    /*
+     * Deprecated - only for compatibility.
+     */
+    @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, String> tags;
+
+    /*
+     * The Sku description for a namespace
      */
     @JsonProperty(value = "sku")
     private Sku sku;
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
     /**
-     * Get the isAvailiable property: True if the name is available and can be used to create new
-     * Namespace/NotificationHub. Otherwise false.
-     *
+     * Creates an instance of CheckAvailabilityResultInner class.
+     */
+    public CheckAvailabilityResultInner() {
+    }
+
+    /**
+     * Get the isAvailiable property: Gets or sets true if the name is available and can be used to
+     * create new Namespace/NotificationHub. Otherwise false.
+     * 
      * @return the isAvailiable value.
      */
     public Boolean isAvailiable() {
@@ -41,9 +66,9 @@ public final class CheckAvailabilityResultInner extends Resource {
     }
 
     /**
-     * Set the isAvailiable property: True if the name is available and can be used to create new
-     * Namespace/NotificationHub. Otherwise false.
-     *
+     * Set the isAvailiable property: Gets or sets true if the name is available and can be used to
+     * create new Namespace/NotificationHub. Otherwise false.
+     * 
      * @param isAvailiable the isAvailiable value to set.
      * @return the CheckAvailabilityResultInner object itself.
      */
@@ -53,8 +78,48 @@ public final class CheckAvailabilityResultInner extends Resource {
     }
 
     /**
-     * Get the sku property: The sku of the created namespace.
-     *
+     * Get the location property: Deprecated - only for compatibility.
+     * 
+     * @return the location value.
+     */
+    public String location() {
+        return this.location;
+    }
+
+    /**
+     * Set the location property: Deprecated - only for compatibility.
+     * 
+     * @param location the location value to set.
+     * @return the CheckAvailabilityResultInner object itself.
+     */
+    public CheckAvailabilityResultInner withLocation(String location) {
+        this.location = location;
+        return this;
+    }
+
+    /**
+     * Get the tags property: Deprecated - only for compatibility.
+     * 
+     * @return the tags value.
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags property: Deprecated - only for compatibility.
+     * 
+     * @param tags the tags value to set.
+     * @return the CheckAvailabilityResultInner object itself.
+     */
+    public CheckAvailabilityResultInner withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the sku property: The Sku description for a namespace.
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -62,8 +127,8 @@ public final class CheckAvailabilityResultInner extends Resource {
     }
 
     /**
-     * Set the sku property: The sku of the created namespace.
-     *
+     * Set the sku property: The Sku description for a namespace.
+     * 
      * @param sku the sku value to set.
      * @return the CheckAvailabilityResultInner object itself.
      */
@@ -72,23 +137,18 @@ public final class CheckAvailabilityResultInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public CheckAvailabilityResultInner withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public CheckAvailabilityResultInner withTags(Map<String, String> tags) {
-        super.withTags(tags);
-        return this;
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VMwareCbtNicDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareCbtNicDetails model =
-            BinaryData
-                .fromString(
-                    "{\"nicId\":\"ylcvwbzmfx\",\"isPrimaryNic\":\"ymfjxl\",\"sourceIPAddress\":\"ywqnpfyd\",\"sourceIPAddressType\":\"Static\",\"sourceNetworkId\":\"cnyxbyx\",\"targetIPAddress\":\"hmqyncgaullfstyy\",\"targetIPAddressType\":\"Dynamic\",\"targetSubnetName\":\"ulmwqgmhmqmiwx\",\"testNetworkId\":\"v\",\"testSubnetName\":\"ucqfgufjnbxwbm\",\"testIPAddress\":\"ukin\",\"testIPAddressType\":\"Dynamic\",\"targetNicName\":\"gde\",\"isSelectedForMigration\":\"kzou\"}")
-                .toObject(VMwareCbtNicDetails.class);
+        VMwareCbtNicDetails model = BinaryData.fromString(
+            "{\"nicId\":\"ylcvwbzmfx\",\"isPrimaryNic\":\"ymfjxl\",\"sourceIPAddress\":\"ywqnpfyd\",\"sourceIPAddressType\":\"Static\",\"sourceNetworkId\":\"cnyxbyx\",\"targetIPAddress\":\"hmqyncgaullfstyy\",\"targetIPAddressType\":\"Dynamic\",\"targetSubnetName\":\"ulmwqgmhmqmiwx\",\"testNetworkId\":\"v\",\"testSubnetName\":\"ucqfgufjnbxwbm\",\"testIPAddress\":\"ukin\",\"testIPAddressType\":\"Dynamic\",\"targetNicName\":\"gde\",\"isSelectedForMigration\":\"kzou\"}")
+            .toObject(VMwareCbtNicDetails.class);
         Assertions.assertEquals("ymfjxl", model.isPrimaryNic());
         Assertions.assertEquals("hmqyncgaullfstyy", model.targetIpAddress());
         Assertions.assertEquals(EthernetAddressType.DYNAMIC, model.targetIpAddressType());
@@ -31,18 +29,11 @@ public final class VMwareCbtNicDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtNicDetails model =
-            new VMwareCbtNicDetails()
-                .withIsPrimaryNic("ymfjxl")
-                .withTargetIpAddress("hmqyncgaullfstyy")
-                .withTargetIpAddressType(EthernetAddressType.DYNAMIC)
-                .withTargetSubnetName("ulmwqgmhmqmiwx")
-                .withTestNetworkId("v")
-                .withTestSubnetName("ucqfgufjnbxwbm")
-                .withTestIpAddress("ukin")
-                .withTestIpAddressType(EthernetAddressType.DYNAMIC)
-                .withTargetNicName("gde")
-                .withIsSelectedForMigration("kzou");
+        VMwareCbtNicDetails model = new VMwareCbtNicDetails().withIsPrimaryNic("ymfjxl")
+            .withTargetIpAddress("hmqyncgaullfstyy").withTargetIpAddressType(EthernetAddressType.DYNAMIC)
+            .withTargetSubnetName("ulmwqgmhmqmiwx").withTestNetworkId("v").withTestSubnetName("ucqfgufjnbxwbm")
+            .withTestIpAddress("ukin").withTestIpAddressType(EthernetAddressType.DYNAMIC).withTargetNicName("gde")
+            .withIsSelectedForMigration("kzou");
         model = BinaryData.fromObject(model).toObject(VMwareCbtNicDetails.class);
         Assertions.assertEquals("ymfjxl", model.isPrimaryNic());
         Assertions.assertEquals("hmqyncgaullfstyy", model.targetIpAddress());

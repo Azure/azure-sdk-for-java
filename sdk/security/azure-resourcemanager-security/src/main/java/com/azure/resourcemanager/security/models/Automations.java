@@ -9,12 +9,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.AutomationInner;
 
-/** Resource collection API of Automations. */
+/**
+ * Resource collection API of Automations.
+ */
 public interface Automations {
     /**
      * Lists all the security automations in the specified subscription. Use the 'nextLink' property in the response to
      * get the next page of security automations for the specified subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of security automations response as paginated response with {@link PagedIterable}.
@@ -24,7 +26,7 @@ public interface Automations {
     /**
      * Lists all the security automations in the specified subscription. Use the 'nextLink' property in the response to
      * get the next page of security automations for the specified subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,9 +38,9 @@ public interface Automations {
     /**
      * Lists all the security automations in the specified resource group. Use the 'nextLink' property in the response
      * to get the next page of security automations for the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -49,9 +51,9 @@ public interface Automations {
     /**
      * Lists all the security automations in the specified resource group. Use the 'nextLink' property in the response
      * to get the next page of security automations for the specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,9 +64,9 @@ public interface Automations {
 
     /**
      * Retrieves information about the model of a security automation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param automationName The security automation name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,14 +74,14 @@ public interface Automations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the security automation resource along with {@link Response}.
      */
-    Response<Automation> getByResourceGroupWithResponse(
-        String resourceGroupName, String automationName, Context context);
+    Response<Automation> getByResourceGroupWithResponse(String resourceGroupName, String automationName,
+        Context context);
 
     /**
      * Retrieves information about the model of a security automation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param automationName The security automation name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -90,9 +92,9 @@ public interface Automations {
 
     /**
      * Deletes a security automation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param automationName The security automation name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,9 +106,9 @@ public interface Automations {
 
     /**
      * Deletes a security automation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param automationName The security automation name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -117,9 +119,9 @@ public interface Automations {
     /**
      * Validates the security automation model before create or update. Any validation errors are returned to the
      * client.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param automationName The security automation name.
      * @param automation The security automation resource.
      * @param context The context to associate with this operation.
@@ -128,15 +130,15 @@ public interface Automations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the security automation model state property bag along with {@link Response}.
      */
-    Response<AutomationValidationStatus> validateWithResponse(
-        String resourceGroupName, String automationName, AutomationInner automation, Context context);
+    Response<AutomationValidationStatus> validateWithResponse(String resourceGroupName, String automationName,
+        AutomationInner automation, Context context);
 
     /**
      * Validates the security automation model before create or update. Any validation errors are returned to the
      * client.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param automationName The security automation name.
      * @param automation The security automation resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +150,7 @@ public interface Automations {
 
     /**
      * Retrieves information about the model of a security automation.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,7 +161,7 @@ public interface Automations {
 
     /**
      * Retrieves information about the model of a security automation.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,7 +173,7 @@ public interface Automations {
 
     /**
      * Deletes a security automation.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -181,7 +183,7 @@ public interface Automations {
 
     /**
      * Deletes a security automation.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,7 +195,7 @@ public interface Automations {
 
     /**
      * Begins definition for a new Automation resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Automation definition.
      */

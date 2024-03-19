@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Disk input for update. */
+/**
+ * Disk input for update.
+ */
 @Fluent
 public final class UpdateDiskInput {
     /*
@@ -23,13 +25,15 @@ public final class UpdateDiskInput {
     @JsonProperty(value = "targetDiskName")
     private String targetDiskName;
 
-    /** Creates an instance of UpdateDiskInput class. */
+    /**
+     * Creates an instance of UpdateDiskInput class.
+     */
     public UpdateDiskInput() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -38,7 +42,7 @@ public final class UpdateDiskInput {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the UpdateDiskInput object itself.
      */
@@ -49,7 +53,7 @@ public final class UpdateDiskInput {
 
     /**
      * Get the targetDiskName property: The target disk name.
-     *
+     * 
      * @return the targetDiskName value.
      */
     public String targetDiskName() {
@@ -58,7 +62,7 @@ public final class UpdateDiskInput {
 
     /**
      * Set the targetDiskName property: The target disk name.
-     *
+     * 
      * @param targetDiskName the targetDiskName value to set.
      * @return the UpdateDiskInput object itself.
      */
@@ -69,14 +73,13 @@ public final class UpdateDiskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property diskId in model UpdateDiskInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property diskId in model UpdateDiskInput"));
         }
     }
 

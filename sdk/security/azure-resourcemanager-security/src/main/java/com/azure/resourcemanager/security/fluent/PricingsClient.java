@@ -11,74 +11,78 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.PricingInner;
 import com.azure.resourcemanager.security.fluent.models.PricingListInner;
 
-/** An instance of this class provides access to all the operations defined in PricingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PricingsClient.
+ */
 public interface PricingsClient {
     /**
-     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of pricing configurations response along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PricingListInner> listWithResponse(Context context);
-
-    /**
-     * Lists Microsoft Defender for Cloud pricing configurations in the subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of pricing configurations response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PricingListInner list();
-
-    /**
-     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
-     *
+     * Get the Defender plans pricing configurations of the selected scope (valid scopes are resource id or a
+     * subscription id). At the resource level, supported resource types are 'VirtualMachines, VMSS and ARC Machines'.
+     * 
+     * @param scopeId The scope id of the pricing. Valid scopes are: subscription (format:
+     * 'subscriptions/{subscriptionId}'), or a specific resource (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName})
+     * - Supported resources are (VirtualMachines).
      * @param pricingName name of the pricing configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription along with {@link
-     *     Response}.
+     * @return the Defender plans pricing configurations of the selected scope (valid scopes are resource id or a
+     * subscription id) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PricingInner> getWithResponse(String pricingName, Context context);
+    Response<PricingInner> getWithResponse(String scopeId, String pricingName, Context context);
 
     /**
-     * Gets a provided Microsoft Defender for Cloud pricing configuration in the subscription.
-     *
+     * Get the Defender plans pricing configurations of the selected scope (valid scopes are resource id or a
+     * subscription id). At the resource level, supported resource types are 'VirtualMachines, VMSS and ARC Machines'.
+     * 
+     * @param scopeId The scope id of the pricing. Valid scopes are: subscription (format:
+     * 'subscriptions/{subscriptionId}'), or a specific resource (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName})
+     * - Supported resources are (VirtualMachines).
      * @param pricingName name of the pricing configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a provided Microsoft Defender for Cloud pricing configuration in the subscription.
+     * @return the Defender plans pricing configurations of the selected scope (valid scopes are resource id or a
+     * subscription id).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PricingInner get(String pricingName);
+    PricingInner get(String scopeId, String pricingName);
 
     /**
-     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
-     *
+     * Updates a provided Microsoft Defender for Cloud pricing configuration in the scope. Valid scopes are:
+     * subscription id or a specific resource id (Supported resources are: 'VirtualMachines, VMSS and ARC Machines' and
+     * only for plan='VirtualMachines' and subPlan='P1').
+     * 
+     * @param scopeId The scope id of the pricing. Valid scopes are: subscription (format:
+     * 'subscriptions/{subscriptionId}'), or a specific resource (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName})
+     * - Supported resources are (VirtualMachines).
      * @param pricingName name of the pricing configuration.
      * @param pricing Pricing object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard along with {@link
-     *     Response}.
+     * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PricingInner> updateWithResponse(String pricingName, PricingInner pricing, Context context);
+    Response<PricingInner> updateWithResponse(String scopeId, String pricingName, PricingInner pricing,
+        Context context);
 
     /**
-     * Updates a provided Microsoft Defender for Cloud pricing configuration in the subscription.
-     *
+     * Updates a provided Microsoft Defender for Cloud pricing configuration in the scope. Valid scopes are:
+     * subscription id or a specific resource id (Supported resources are: 'VirtualMachines, VMSS and ARC Machines' and
+     * only for plan='VirtualMachines' and subPlan='P1').
+     * 
+     * @param scopeId The scope id of the pricing. Valid scopes are: subscription (format:
+     * 'subscriptions/{subscriptionId}'), or a specific resource (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName})
+     * - Supported resources are (VirtualMachines).
      * @param pricingName name of the pricing configuration.
      * @param pricing Pricing object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,5 +91,75 @@ public interface PricingsClient {
      * @return microsoft Defender for Cloud is provided in two pricing tiers: free and standard.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PricingInner update(String pricingName, PricingInner pricing);
+    PricingInner update(String scopeId, String pricingName, PricingInner pricing);
+
+    /**
+     * Deletes a provided Microsoft Defender for Cloud pricing configuration in a specific resource. Valid only for
+     * resource scope (Supported resources are: 'VirtualMachines, VMSS and ARC MachinesS').
+     * 
+     * @param scopeId The identifier of the resource, (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}).
+     * @param pricingName name of the pricing configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String scopeId, String pricingName, Context context);
+
+    /**
+     * Deletes a provided Microsoft Defender for Cloud pricing configuration in a specific resource. Valid only for
+     * resource scope (Supported resources are: 'VirtualMachines, VMSS and ARC MachinesS').
+     * 
+     * @param scopeId The identifier of the resource, (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}).
+     * @param pricingName name of the pricing configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String scopeId, String pricingName);
+
+    /**
+     * Lists Microsoft Defender for Cloud pricing configurations of the scopeId, that match the optional given $filter.
+     * Valid scopes are: subscription id or a specific resource id (Supported resources are: 'VirtualMachines, VMSS and
+     * ARC Machines'). Valid $filter is: 'name in ({planName1},{planName2},...)'. If $filter is not provided, the
+     * unfiltered list will be returned. If '$filter=name in (planName1,planName2)' is provided, the returned list
+     * includes the pricings set for 'planName1' and 'planName2' only.
+     * 
+     * @param scopeId The scope id of the pricing. Valid scopes are: subscription (format:
+     * 'subscriptions/{subscriptionId}'), or a specific resource (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName})
+     * - Supported resources are (VirtualMachines).
+     * @param filter OData filter. Optional.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of pricing configurations response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PricingListInner> listWithResponse(String scopeId, String filter, Context context);
+
+    /**
+     * Lists Microsoft Defender for Cloud pricing configurations of the scopeId, that match the optional given $filter.
+     * Valid scopes are: subscription id or a specific resource id (Supported resources are: 'VirtualMachines, VMSS and
+     * ARC Machines'). Valid $filter is: 'name in ({planName1},{planName2},...)'. If $filter is not provided, the
+     * unfiltered list will be returned. If '$filter=name in (planName1,planName2)' is provided, the returned list
+     * includes the pricings set for 'planName1' and 'planName2' only.
+     * 
+     * @param scopeId The scope id of the pricing. Valid scopes are: subscription (format:
+     * 'subscriptions/{subscriptionId}'), or a specific resource (format:
+     * 'subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName})
+     * - Supported resources are (VirtualMachines).
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of pricing configurations response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PricingListInner list(String scopeId);
 }

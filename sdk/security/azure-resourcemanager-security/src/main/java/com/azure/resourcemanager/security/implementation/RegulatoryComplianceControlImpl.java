@@ -13,8 +13,7 @@ public final class RegulatoryComplianceControlImpl implements RegulatoryComplian
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    RegulatoryComplianceControlImpl(
-        RegulatoryComplianceControlInner innerObject,
+    RegulatoryComplianceControlImpl(RegulatoryComplianceControlInner innerObject,
         com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -1,0 +1,30 @@
+parameters:
+  - name: Paths
+    type: object
+    default: []
+  - name: Repositories
+    type: object
+    default:
+      - Name: $(Build.Repository.Name)
+        Commitish: $(Build.SourceVersion)
+        WorkingDirectory: $(System.DefaultWorkingDirectory)
+  - name: SkipCheckoutNone
+    type: boolean
+    default: false
+
+steps:
+  - ${{ if not(parameters.SkipCheckoutNone) }}:
+      - checkout: none
+
+  - task: PowerShell@2
+    ${{ if eq(length(parameters.Repositories), 1) }}:
+      displayName: 'Sparse checkout ${{ parameters.Repositories[0].Name }}'
+    ${{ else }}:
+      displayName: 'Sparse checkout repositories'
+    inputs:
+      pwsh: true
+      filePath: eng/pipelines/scripts/Invoke-Sparse-Checkout.ps1
+      arguments: >
+        -PathsJson '${{ convertToJson(parameters.Paths) }}'
+        -RepositoriesJson '${{ convertToJson(parameters.Repositories) }}'
+      workingDirectory: $(System.DefaultWorkingDirectory)

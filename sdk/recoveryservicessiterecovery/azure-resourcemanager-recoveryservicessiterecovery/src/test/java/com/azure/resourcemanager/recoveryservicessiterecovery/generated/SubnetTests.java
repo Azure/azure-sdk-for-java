@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SubnetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Subnet model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"fhyhltrpmopjmcma\",\"friendlyName\":\"okth\",\"addressList\":[\"uaodsfcpk\",\"xodpuozmyzydagfu\"]}")
-                .toObject(Subnet.class);
+        Subnet model = BinaryData.fromString(
+            "{\"name\":\"fhyhltrpmopjmcma\",\"friendlyName\":\"okth\",\"addressList\":[\"uaodsfcpk\",\"xodpuozmyzydagfu\"]}")
+            .toObject(Subnet.class);
         Assertions.assertEquals("fhyhltrpmopjmcma", model.name());
         Assertions.assertEquals("okth", model.friendlyName());
         Assertions.assertEquals("uaodsfcpk", model.addressList().get(0));
@@ -24,11 +22,8 @@ public final class SubnetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Subnet model =
-            new Subnet()
-                .withName("fhyhltrpmopjmcma")
-                .withFriendlyName("okth")
-                .withAddressList(Arrays.asList("uaodsfcpk", "xodpuozmyzydagfu"));
+        Subnet model = new Subnet().withName("fhyhltrpmopjmcma").withFriendlyName("okth")
+            .withAddressList(Arrays.asList("uaodsfcpk", "xodpuozmyzydagfu"));
         model = BinaryData.fromObject(model).toObject(Subnet.class);
         Assertions.assertEquals("fhyhltrpmopjmcma", model.name());
         Assertions.assertEquals("okth", model.friendlyName());

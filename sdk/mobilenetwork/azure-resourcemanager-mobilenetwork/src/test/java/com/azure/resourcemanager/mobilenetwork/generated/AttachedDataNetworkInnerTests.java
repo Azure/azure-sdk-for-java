@@ -20,11 +20,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AttachedDataNetworkInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AttachedDataNetworkInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Canceled\",\"userPlaneDataInterface\":{\"name\":\"quvgjxpybczme\",\"ipv4Address\":\"tzopbsphrupidgsy\",\"ipv4Subnet\":\"ejhphoyc\",\"ipv4Gateway\":\"xaobhdxbmtqioqjz\"},\"dnsAddresses\":[\"tbmufpo\",\"noi\"],\"naptConfiguration\":{\"enabled\":\"Disabled\",\"portRange\":{\"minPort\":167840319,\"maxPort\":201473614},\"portReuseHoldTime\":{\"tcp\":1372882397,\"udp\":1472149737},\"pinholeLimits\":231072361,\"pinholeTimeouts\":{\"tcp\":1450276464,\"udp\":1792128890,\"icmp\":1864680039}},\"userEquipmentAddressPoolPrefix\":[\"c\"],\"userEquipmentStaticAddressPoolPrefix\":[\"dznrbtcqq\",\"nq\",\"lhqgnufooojy\",\"ifsqesaagdfmg\"]},\"location\":\"lhjxr\",\"tags\":{\"uajpsquc\":\"wmrvktsizntocipa\"},\"id\":\"poyfdkfogkn\",\"name\":\"gjofjd\",\"type\":\"eqsrdeupewnwreit\"}")
-                .toObject(AttachedDataNetworkInner.class);
+        AttachedDataNetworkInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Canceled\",\"userPlaneDataInterface\":{\"name\":\"quvgjxpybczme\",\"ipv4Address\":\"tzopbsphrupidgsy\",\"ipv4Subnet\":\"ejhphoyc\",\"ipv4Gateway\":\"xaobhdxbmtqioqjz\"},\"dnsAddresses\":[\"tbmufpo\",\"noi\"],\"naptConfiguration\":{\"enabled\":\"Disabled\",\"portRange\":{\"minPort\":167840319,\"maxPort\":201473614},\"portReuseHoldTime\":{\"tcp\":1372882397,\"udp\":1472149737},\"pinholeLimits\":231072361,\"pinholeTimeouts\":{\"tcp\":1450276464,\"udp\":1792128890,\"icmp\":1864680039}},\"userEquipmentAddressPoolPrefix\":[\"c\"],\"userEquipmentStaticAddressPoolPrefix\":[\"dznrbtcqq\",\"nq\",\"lhqgnufooojy\",\"ifsqesaagdfmg\"]},\"location\":\"lhjxr\",\"tags\":{\"uajpsquc\":\"wmrvktsizntocipa\"},\"id\":\"poyfdkfogkn\",\"name\":\"gjofjd\",\"type\":\"eqsrdeupewnwreit\"}")
+            .toObject(AttachedDataNetworkInner.class);
         Assertions.assertEquals("lhjxr", model.location());
         Assertions.assertEquals("wmrvktsizntocipa", model.tags().get("uajpsquc"));
         Assertions.assertEquals("quvgjxpybczme", model.userPlaneDataInterface().name());
@@ -47,27 +45,17 @@ public final class AttachedDataNetworkInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AttachedDataNetworkInner model =
-            new AttachedDataNetworkInner()
-                .withLocation("lhjxr")
-                .withTags(mapOf("uajpsquc", "wmrvktsizntocipa"))
-                .withUserPlaneDataInterface(
-                    new InterfaceProperties()
-                        .withName("quvgjxpybczme")
-                        .withIpv4Address("tzopbsphrupidgsy")
-                        .withIpv4Subnet("ejhphoyc")
-                        .withIpv4Gateway("xaobhdxbmtqioqjz"))
+        AttachedDataNetworkInner model
+            = new AttachedDataNetworkInner().withLocation("lhjxr").withTags(mapOf("uajpsquc", "wmrvktsizntocipa"))
+                .withUserPlaneDataInterface(new InterfaceProperties().withName("quvgjxpybczme")
+                    .withIpv4Address("tzopbsphrupidgsy").withIpv4Subnet("ejhphoyc").withIpv4Gateway("xaobhdxbmtqioqjz"))
                 .withDnsAddresses(Arrays.asList("tbmufpo", "noi"))
-                .withNaptConfiguration(
-                    new NaptConfiguration()
-                        .withEnabled(NaptEnabled.DISABLED)
-                        .withPortRange(new PortRange().withMinPort(167840319).withMaxPort(201473614))
-                        .withPortReuseHoldTime(new PortReuseHoldTimes().withTcp(1372882397).withUdp(1472149737))
-                        .withPinholeLimits(231072361)
-                        .withPinholeTimeouts(
-                            new PinholeTimeouts().withTcp(1450276464).withUdp(1792128890).withIcmp(1864680039)))
-                .withUserEquipmentAddressPoolPrefix(Arrays.asList("c"))
-                .withUserEquipmentStaticAddressPoolPrefix(
+                .withNaptConfiguration(new NaptConfiguration().withEnabled(NaptEnabled.DISABLED)
+                    .withPortRange(new PortRange().withMinPort(167840319).withMaxPort(201473614))
+                    .withPortReuseHoldTime(new PortReuseHoldTimes().withTcp(1372882397).withUdp(1472149737))
+                    .withPinholeLimits(231072361).withPinholeTimeouts(
+                        new PinholeTimeouts().withTcp(1450276464).withUdp(1792128890).withIcmp(1864680039)))
+                .withUserEquipmentAddressPoolPrefix(Arrays.asList("c")).withUserEquipmentStaticAddressPoolPrefix(
                     Arrays.asList("dznrbtcqq", "nq", "lhqgnufooojy", "ifsqesaagdfmg"));
         model = BinaryData.fromObject(model).toObject(AttachedDataNetworkInner.class);
         Assertions.assertEquals("lhjxr", model.location());

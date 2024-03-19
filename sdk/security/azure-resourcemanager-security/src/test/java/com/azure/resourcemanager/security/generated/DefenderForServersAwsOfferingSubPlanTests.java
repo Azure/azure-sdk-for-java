@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForServersAwsOfferingSubPlanTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForServersAwsOfferingSubPlan model =
-            BinaryData.fromString("{\"type\":\"P2\"}").toObject(DefenderForServersAwsOfferingSubPlan.class);
+        DefenderForServersAwsOfferingSubPlan model
+            = BinaryData.fromString("{\"type\":\"P2\"}").toObject(DefenderForServersAwsOfferingSubPlan.class);
         Assertions.assertEquals(SubPlan.P2, model.type());
     }
 

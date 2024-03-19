@@ -11,26 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class AppServiceInfoInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AppServiceInfoInner model =
-            BinaryData
-                .fromString(
-                    "{\"azureResourceId\":\"azjdyggd\",\"agentVersion\":\"ixhbkuofqweykhm\",\"agentStatus\":\"evfyexfwhybcib\"}")
-                .toObject(AppServiceInfoInner.class);
-        Assertions.assertEquals("azjdyggd", model.azureResourceId());
-        Assertions.assertEquals("ixhbkuofqweykhm", model.agentVersion());
-        Assertions.assertEquals("evfyexfwhybcib", model.agentStatus());
+        AppServiceInfoInner model = BinaryData.fromString(
+            "{\"azureResourceId\":\"zvddntwndeicbtwn\",\"agentVersion\":\"aoqvuh\",\"agentStatus\":\"cffcyddglmj\"}")
+            .toObject(AppServiceInfoInner.class);
+        Assertions.assertEquals("zvddntwndeicbtwn", model.azureResourceId());
+        Assertions.assertEquals("aoqvuh", model.agentVersion());
+        Assertions.assertEquals("cffcyddglmj", model.agentStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AppServiceInfoInner model =
-            new AppServiceInfoInner()
-                .withAzureResourceId("azjdyggd")
-                .withAgentVersion("ixhbkuofqweykhm")
-                .withAgentStatus("evfyexfwhybcib");
+        AppServiceInfoInner model = new AppServiceInfoInner().withAzureResourceId("zvddntwndeicbtwn")
+            .withAgentVersion("aoqvuh").withAgentStatus("cffcyddglmj");
         model = BinaryData.fromObject(model).toObject(AppServiceInfoInner.class);
-        Assertions.assertEquals("azjdyggd", model.azureResourceId());
-        Assertions.assertEquals("ixhbkuofqweykhm", model.agentVersion());
-        Assertions.assertEquals("evfyexfwhybcib", model.agentStatus());
+        Assertions.assertEquals("zvddntwndeicbtwn", model.azureResourceId());
+        Assertions.assertEquals("aoqvuh", model.agentVersion());
+        Assertions.assertEquals("cffcyddglmj", model.agentStatus());
     }
 }

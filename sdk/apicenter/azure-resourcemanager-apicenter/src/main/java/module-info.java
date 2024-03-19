@@ -4,16 +4,10 @@
 
 module com.azure.resourcemanager.apicenter {
     requires transitive com.azure.core.management;
-
     exports com.azure.resourcemanager.apicenter;
     exports com.azure.resourcemanager.apicenter.fluent;
     exports com.azure.resourcemanager.apicenter.fluent.models;
     exports com.azure.resourcemanager.apicenter.models;
-
-    opens com.azure.resourcemanager.apicenter.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.apicenter.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.apicenter.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.apicenter.models to com.azure.core, com.fasterxml.jackson.databind;
 }

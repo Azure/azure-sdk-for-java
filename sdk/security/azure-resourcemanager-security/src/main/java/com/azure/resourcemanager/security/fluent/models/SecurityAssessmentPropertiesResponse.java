@@ -13,7 +13,9 @@ import com.azure.resourcemanager.security.models.SecurityAssessmentPropertiesBas
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Describes properties of an assessment. */
+/**
+ * Describes properties of an assessment.
+ */
 @Fluent
 public final class SecurityAssessmentPropertiesResponse extends SecurityAssessmentPropertiesBase {
     /*
@@ -22,13 +24,15 @@ public final class SecurityAssessmentPropertiesResponse extends SecurityAssessme
     @JsonProperty(value = "status", required = true)
     private AssessmentStatusResponse status;
 
-    /** Creates an instance of SecurityAssessmentPropertiesResponse class. */
+    /**
+     * Creates an instance of SecurityAssessmentPropertiesResponse class.
+     */
     public SecurityAssessmentPropertiesResponse() {
     }
 
     /**
      * Get the status property: The result of the assessment.
-     *
+     * 
      * @return the status value.
      */
     public AssessmentStatusResponse status() {
@@ -37,7 +41,7 @@ public final class SecurityAssessmentPropertiesResponse extends SecurityAssessme
 
     /**
      * Set the status property: The result of the assessment.
-     *
+     * 
      * @param status the status value to set.
      * @return the SecurityAssessmentPropertiesResponse object itself.
      */
@@ -46,28 +50,36 @@ public final class SecurityAssessmentPropertiesResponse extends SecurityAssessme
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityAssessmentPropertiesResponse withResourceDetails(ResourceDetails resourceDetails) {
         super.withResourceDetails(resourceDetails);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityAssessmentPropertiesResponse withAdditionalData(Map<String, String> additionalData) {
         super.withAdditionalData(additionalData);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityAssessmentPropertiesResponse withMetadata(SecurityAssessmentMetadataProperties metadata) {
         super.withMetadata(metadata);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecurityAssessmentPropertiesResponse withPartnersData(SecurityAssessmentPartnerData partnersData) {
         super.withPartnersData(partnersData);
@@ -76,17 +88,15 @@ public final class SecurityAssessmentPropertiesResponse extends SecurityAssessme
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (status() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property status in model SecurityAssessmentPropertiesResponse"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property status in model SecurityAssessmentPropertiesResponse"));
         } else {
             status().validate();
         }

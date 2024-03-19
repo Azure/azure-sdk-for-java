@@ -121,22 +121,14 @@ public final class GovernanceRuleImpl implements GovernanceRule, GovernanceRule.
     }
 
     public GovernanceRule create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGovernanceRules()
-                .createOrUpdateWithResponse(scope, ruleId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGovernanceRules()
+            .createOrUpdateWithResponse(scope, ruleId, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public GovernanceRule create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGovernanceRules()
-                .createOrUpdateWithResponse(scope, ruleId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGovernanceRules()
+            .createOrUpdateWithResponse(scope, ruleId, this.innerModel(), context).getValue();
         return this;
     }
 
@@ -151,48 +143,36 @@ public final class GovernanceRuleImpl implements GovernanceRule, GovernanceRule.
     }
 
     public GovernanceRule apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGovernanceRules()
-                .createOrUpdateWithResponse(scope, ruleId, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGovernanceRules()
+            .createOrUpdateWithResponse(scope, ruleId, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public GovernanceRule apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getGovernanceRules()
-                .createOrUpdateWithResponse(scope, ruleId, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getGovernanceRules()
+            .createOrUpdateWithResponse(scope, ruleId, this.innerModel(), context).getValue();
         return this;
     }
 
-    GovernanceRuleImpl(
-        GovernanceRuleInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    GovernanceRuleImpl(GovernanceRuleInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.scope =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(), "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}", "scope");
-        this.ruleId =
-            Utils
-                .getValueFromIdByParameterName(
-                    innerObject.id(), "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}", "ruleId");
+        this.scope = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}", "scope");
+        this.ruleId = ResourceManagerUtils.getValueFromIdByParameterName(innerObject.id(),
+            "/{scope}/providers/Microsoft.Security/governanceRules/{ruleId}", "ruleId");
     }
 
     public GovernanceRule refresh() {
-        this.innerObject =
-            serviceManager.serviceClient().getGovernanceRules().getWithResponse(scope, ruleId, Context.NONE).getValue();
+        this.innerObject = serviceManager.serviceClient().getGovernanceRules()
+            .getWithResponse(scope, ruleId, Context.NONE).getValue();
         return this;
     }
 
     public GovernanceRule refresh(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getGovernanceRules().getWithResponse(scope, ruleId, context).getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getGovernanceRules().getWithResponse(scope, ruleId, context).getValue();
         return this;
     }
 
@@ -264,8 +244,8 @@ public final class GovernanceRuleImpl implements GovernanceRule, GovernanceRule.
         return this;
     }
 
-    public GovernanceRuleImpl withGovernanceEmailNotification(
-        GovernanceRuleEmailNotification governanceEmailNotification) {
+    public GovernanceRuleImpl
+        withGovernanceEmailNotification(GovernanceRuleEmailNotification governanceEmailNotification) {
         this.innerModel().withGovernanceEmailNotification(governanceEmailNotification);
         return this;
     }
