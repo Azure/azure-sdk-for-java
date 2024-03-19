@@ -40,6 +40,14 @@ public class JavaDocCodeSnippets {
         // END: com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.useinteractivebrowserbroker.windows
     }
 
+    public void configureCredentialForDefaultAccount() {
+        // BEGIN: com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.useinteractivebrowserbroker.defaultaccount
+        InteractiveBrowserCredential cred = new InteractiveBrowserBrokerCredentialBuilder()
+            .useDefaultBrokerAccount(true)
+            .build();
+        // END: com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.useinteractivebrowserbroker.defaultaccount
+    }
+
     private long getWindowHandle() {
         return 0;
     }
