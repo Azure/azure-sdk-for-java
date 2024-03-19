@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.mobilenetwork.generated;
 
-/** Samples for Slices Delete. */
+/**
+ * Samples for Slices Delete.
+ */
 public final class SlicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2023-09-01/examples/SliceDelete.json
+     * x-ms-original-file:
+     * issue%234969_ueinfo/specification/mobilenetwork/resource-manager/Microsoft.MobileNetwork/stable/2024-02-01/
+     * examples/SliceDelete.json
      */
     /**
      * Sample code: Delete network slice.
-     *
+     * 
      * @param manager Entry point to MobileNetworkManager.
      */
     public static void deleteNetworkSlice(com.azure.resourcemanager.mobilenetwork.MobileNetworkManager manager) {
