@@ -4,6 +4,9 @@
 module com.azure.storage.queue {
     requires transitive com.azure.storage.common;
 
+    requires com.azure.xml;
+    requires java.xml;
+
     requires com.fasterxml.jackson.dataformat.xml;
 
     exports com.azure.storage.queue;
