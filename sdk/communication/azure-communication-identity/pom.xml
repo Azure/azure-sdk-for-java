@@ -56,8 +56,7 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.identity/com.azure.communication.identity=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
-      --add-reads com.azure.communication.identity=com.azure.core.http.jdk
-      --add-reads com.azure.communication.identity=com.azure.core.http.vertx
+      --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
