@@ -7,7 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.ArrayList;
+
 import java.util.List;
 
 /**
@@ -20,9 +20,8 @@ public final class EmbeddingItem {
      * List of embeddings value for the input prompt. These represent a measurement of the
      * vector-based relatedness of the provided input.
      */
-    @Generated
     @JsonProperty(value = "embedding")
-    private List<Double> embedding;
+    private List<Float> embedding;
 
     /**
      * Creates an instance of EmbeddingItem class.
@@ -30,9 +29,8 @@ public final class EmbeddingItem {
      * @param embedding the embedding value to set.
      * @param promptIndex the promptIndex value to set.
      */
-    @Generated
     @JsonCreator
-    private EmbeddingItem(@JsonProperty(value = "embedding") List<Double> embedding,
+    private EmbeddingItem(@JsonProperty(value = "embedding") List<Float> embedding,
         @JsonProperty(value = "index") int promptIndex) {
         this.embedding = embedding;
         this.promptIndex = promptIndex;
@@ -45,9 +43,7 @@ public final class EmbeddingItem {
      * @return the embedding value.
      */
     public List<Float> getEmbedding() {
-        List<Float> floatList = new ArrayList<>();
-        this.embedding.forEach(d -> floatList.add(d.floatValue()));
-        return floatList;
+        return embedding;
     }
 
     /*
