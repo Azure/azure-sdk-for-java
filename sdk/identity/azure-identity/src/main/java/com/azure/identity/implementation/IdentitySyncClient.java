@@ -340,7 +340,7 @@ public class IdentitySyncClient extends IdentityClientBase {
         // If the broker is enabled, try to get the token for the default account by passing
         // a null account to MSAL. If that fails, show the dialog.
         MsalToken token = null;
-        if (options.isBrokerEnabled() && options.useOperatingSystemAccount()) {
+        if (options.isBrokerEnabled() && options.useDefaultBrokerAccount()) {
             try {
                 token = acquireTokenFromPublicClientSilently(request,
                     pc,

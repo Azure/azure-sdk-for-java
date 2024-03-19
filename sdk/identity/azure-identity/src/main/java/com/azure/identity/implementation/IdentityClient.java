@@ -826,7 +826,7 @@ public class IdentityClient extends IdentityClientBase {
         // If the broker is enabled, try to get the token for the default account by passing
         // a null account to MSAL. If that fails, show the dialog.
         Mono<MsalToken> token = null;
-        if (options.isBrokerEnabled() && options.useOperatingSystemAccount()) {
+        if (options.isBrokerEnabled() && options.useDefaultBrokerAccount()) {
             token = getPublicClientInstance(request).getValue().flatMap(pc ->
                 Mono.fromFuture(() ->
                         acquireTokenFromPublicClientSilently(request, pc, null, false)).
