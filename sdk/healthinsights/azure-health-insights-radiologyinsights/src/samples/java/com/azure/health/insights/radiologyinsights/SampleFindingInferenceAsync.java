@@ -134,9 +134,11 @@ public class SampleFindingInferenceAsync {
                     System.out.println("Finding Inference found");
                     FhirR4Observation finding = findingInference.getFinding();
                     List<FhirR4CodeableConcept> categoryList = finding.getCategory();
-                    for (FhirR4CodeableConcept category : categoryList) {
-                        System.out.println("   Category: ");
-                        displayCodes(category, 2);
+                    if (categoryList != null) {
+                        for (FhirR4CodeableConcept category : categoryList) {
+                            System.out.println("   Category: ");
+                            displayCodes(category, 2);
+                        }
                     }
                     System.out.println("   Code: ");
                     FhirR4CodeableConcept code = finding.getCode();
