@@ -1,5 +1,10 @@
 ## Release History
 
+### 4.28.4 (2024-03-18)
+
+#### Other Changes
+* Increased queue length of Scheduler in `BulkWriter` by using different schedulers to handle request and response to avoid `ReactorRejectedExecutionException: Scheduler unavailable` error message. - See [PR 39260](https://github.com/Azure/azure-sdk-for-java/pull/39260)
+
 ### 4.28.3 (2024-03-12)
 
 #### Other Changes
