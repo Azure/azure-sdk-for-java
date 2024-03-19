@@ -45,7 +45,6 @@ parameters:
   type: boolean
   default: true
 
-
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
