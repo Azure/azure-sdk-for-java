@@ -113,6 +113,8 @@ public final class TestConstants {
     public static final String PROPERTY_CITY = "city";
     public static final String PROPERTY_STREET = "street";
 
+    public static final String PROPERTY_BIG_DECIMAL = "amount";
+
     public static final int PAGE_SIZE_1 = 1;
     public static final int PAGE_SIZE_2 = 2;
     public static final int PAGE_SIZE_3 = 3;

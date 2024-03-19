@@ -39,6 +39,7 @@
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.domain=com.fasterxml.jackson.databind,spring.core,spring.data.commons
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.domain.inheritance=com.fasterxml.jackson.databind,spring.core,spring.data.commons
       --add-opens com.fasterxml.jackson.databind/com.fasterxml.jackson.databind=spring.core
+      --add-opens java.base/java.math=ALL-UNNAMED,spring.core
     </javaModulesSurefireArgLine>
     <azure.test.resourcegroup>azure-spring-data-cosmos-test</azure.test.resourcegroup>
     <azure.test.dbname>testdb-${maven.build.timestamp}</azure.test.dbname>
