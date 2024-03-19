@@ -8,8 +8,6 @@
   <suppress files="com.azure.storage.blob.changefeed.implementation.models.ShardCursor.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.storage.blob.changefeed.implementation.util.DownloadUtils.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.storage.blob.changefeed.implementation.util.TimeUtils.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.storage.blob.changefeed.implementation.models.BlobChangefeedEventWrapper.java" checks="JavadocPackageCheck" />
-  <suppress files="com.azure.storage.blob.changefeed.implementation.util.DownloadUtils.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.storage.blob.changefeed.implementation.models.InternalBlobChangefeedEvent.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.blob.changefeed.implementation.util.DownloadUtils.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.blob.changefeed.implementation.util.DownloadUtils.java" checks="MissingJavadocTypeCheck" />

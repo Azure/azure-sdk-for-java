@@ -7,7 +7,6 @@
   <suppress files="com.azure.storage.blob.implementation.util.BlobSasImplUtil.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.storage.blob.implementation.util.BuilderHelper.java" checks="JavadocMethodCheck" />
   <suppress files="com.azure.storage.blob.implementation.util.ModelHelper.java" checks="JavadocMethodCheck" />
-  <suppress files="com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy.java" checks="JavadocPackageCheck" />
   <suppress files="com.azure.storage.blob.implementation.AppendBlobsImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.blob.implementation.BlobsImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.storage.blob.implementation.BlockBlobsImpl.java" checks="MissingJavadocMethodCheck" />
