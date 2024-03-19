@@ -43,7 +43,7 @@ public final class EmbeddingsOptions {
      */
     @Generated
     @JsonProperty(value = "input")
-    private List<String> input;
+    private final List<String> input;
 
     /**
      * Creates an instance of EmbeddingsOptions class.

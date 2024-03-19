@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A text note which also contains information about who made the statement and when
+ * A text note which also  contains information about who made the statement and when
  * Based on [FHIR Annotation](https://www.hl7.org/fhir/R4/datatypes.html#Annotation).
  */
 @Fluent
@@ -35,7 +35,7 @@ public final class FhirR4Annotation extends FhirR4Element {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /**
      * Creates an instance of FhirR4Annotation class.

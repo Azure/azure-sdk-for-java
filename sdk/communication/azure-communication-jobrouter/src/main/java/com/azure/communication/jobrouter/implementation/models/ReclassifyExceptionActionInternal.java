@@ -13,7 +13,11 @@ import java.util.Map;
 /**
  * An action that modifies labels on a job and then reclassifies it.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = ReclassifyExceptionActionInternal.class,
+    visible = true)
 @JsonTypeName("reclassify")
 @Fluent
 public final class ReclassifyExceptionActionInternal extends ExceptionActionInternal {
@@ -26,8 +30,7 @@ public final class ReclassifyExceptionActionInternal extends ExceptionActionInte
     private String classificationPolicyId;
 
     /*
-     * Dictionary containing the labels to update (or add if not existing) in key-value pairs. Values must be
-     * primitive values - number, string, boolean.
+     * Dictionary containing the labels to update (or add if not existing) in key-value pairs.  Values must be primitive values - number, string, boolean.
      */
     @Generated
     @JsonProperty(value = "labelsToUpsert")
@@ -38,11 +41,11 @@ public final class ReclassifyExceptionActionInternal extends ExceptionActionInte
      */
     @Generated
     public ReclassifyExceptionActionInternal() {
+        setKind(ExceptionActionKind.RECLASSIFY);
     }
 
     /**
-     * Get the classificationPolicyId property: The new classification policy that will determine queue, priority and
-     * worker selectors.
+     * Get the classificationPolicyId property: The new classification policy that will determine queue, priority and worker selectors.
      *
      * @return the classificationPolicyId value.
      */
@@ -52,8 +55,7 @@ public final class ReclassifyExceptionActionInternal extends ExceptionActionInte
     }
 
     /**
-     * Set the classificationPolicyId property: The new classification policy that will determine queue, priority and
-     * worker selectors.
+     * Set the classificationPolicyId property: The new classification policy that will determine queue, priority and worker selectors.
      *
      * @param classificationPolicyId the classificationPolicyId value to set.
      * @return the ReclassifyExceptionActionInternal object itself.
@@ -65,8 +67,7 @@ public final class ReclassifyExceptionActionInternal extends ExceptionActionInte
     }
 
     /**
-     * Get the labelsToUpsert property: Dictionary containing the labels to update (or add if not existing) in
-     * key-value pairs. Values must be primitive values - number, string, boolean.
+     * Get the labelsToUpsert property: Dictionary containing the labels to update (or add if not existing) in key-value pairs.  Values must be primitive values - number, string, boolean.
      *
      * @return the labelsToUpsert value.
      */
@@ -76,8 +77,7 @@ public final class ReclassifyExceptionActionInternal extends ExceptionActionInte
     }
 
     /**
-     * Set the labelsToUpsert property: Dictionary containing the labels to update (or add if not existing) in
-     * key-value pairs. Values must be primitive values - number, string, boolean.
+     * Set the labelsToUpsert property: Dictionary containing the labels to update (or add if not existing) in key-value pairs.  Values must be primitive values - number, string, boolean.
      *
      * @param labelsToUpsert the labelsToUpsert value to set.
      * @return the ReclassifyExceptionActionInternal object itself.

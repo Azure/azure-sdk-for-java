@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The authentication options for Azure OpenAI On Your Data when using an API key.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = OnYourDataApiKeyAuthenticationOptions.class,
+    visible = true)
 @JsonTypeName("api_key")
 @Immutable
 public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthenticationOptions {
@@ -23,7 +27,7 @@ public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthe
      */
     @Generated
     @JsonProperty(value = "key")
-    private String key;
+    private final String key;
 
     /**
      * Creates an instance of OnYourDataApiKeyAuthenticationOptions class.
@@ -33,6 +37,7 @@ public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthe
     @Generated
     @JsonCreator
     public OnYourDataApiKeyAuthenticationOptions(@JsonProperty(value = "key") String key) {
+        setType(OnYourDataAuthenticationType.API_KEY);
         this.key = key;
     }
 

@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Trigger for an exception action on exceeding queue length.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = QueueLengthExceptionTriggerInternal.class,
+    visible = true)
 @JsonTypeName("queueLength")
 @Immutable
 public final class QueueLengthExceptionTriggerInternal extends ExceptionTriggerInternal {
@@ -23,7 +27,7 @@ public final class QueueLengthExceptionTriggerInternal extends ExceptionTriggerI
      */
     @Generated
     @JsonProperty(value = "threshold")
-    private int threshold;
+    private final int threshold;
 
     /**
      * Creates an instance of QueueLengthExceptionTriggerInternal class.
@@ -33,6 +37,7 @@ public final class QueueLengthExceptionTriggerInternal extends ExceptionTriggerI
     @Generated
     @JsonCreator
     public QueueLengthExceptionTriggerInternal(@JsonProperty(value = "threshold") int threshold) {
+        setKind(ExceptionTriggerKind.QUEUE_LENGTH);
         this.threshold = threshold;
     }
 

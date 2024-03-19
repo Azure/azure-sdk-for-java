@@ -14,7 +14,11 @@ import java.util.List;
 /**
  * A request to send a media notification.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = MediaNotificationContent.class,
+    visible = true)
 @JsonTypeName("image")
 @Fluent
 public final class MediaNotificationContent extends NotificationContent {
@@ -31,7 +35,7 @@ public final class MediaNotificationContent extends NotificationContent {
      */
     @Generated
     @JsonProperty(value = "mediaUri")
-    private String mediaUrl;
+    private final String mediaUrl;
 
     /**
      * Creates an instance of MediaNotificationContent class.
@@ -45,6 +49,7 @@ public final class MediaNotificationContent extends NotificationContent {
     public MediaNotificationContent(@JsonProperty(value = "channelRegistrationId") String channelRegistrationId,
         @JsonProperty(value = "to") List<String> to, @JsonProperty(value = "mediaUri") String mediaUrl) {
         super(channelRegistrationId, to);
+        setKind(CommunicationMessageKind.IMAGE);
         this.mediaUrl = mediaUrl;
     }
 
@@ -71,8 +76,7 @@ public final class MediaNotificationContent extends NotificationContent {
     }
 
     /**
-     * Get the mediaUrl property: A media url for the file. Required if the type is one of the supported media types,
-     * e.g. image.
+     * Get the mediaUrl property: A media url for the file. Required if the type is one of the supported media types, e.g. image.
      *
      * @return the mediaUrl value.
      */

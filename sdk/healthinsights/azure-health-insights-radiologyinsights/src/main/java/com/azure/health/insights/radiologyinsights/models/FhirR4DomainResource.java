@@ -18,9 +18,9 @@ import java.util.List;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
     property = "resourceType",
-    defaultImpl = FhirR4DomainResource.class)
+    defaultImpl = FhirR4DomainResource.class,
+    visible = true)
 @JsonTypeName("Fhir_R4_DomainResource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Observation", value = FhirR4Observation.class),
@@ -66,6 +66,7 @@ public class FhirR4DomainResource extends FhirR4Resource {
     @JsonCreator
     public FhirR4DomainResource(@JsonProperty(value = "resourceType") String resourceType) {
         super(resourceType);
+        setResourceType("Fhir_R4_DomainResource");
     }
 
     /**

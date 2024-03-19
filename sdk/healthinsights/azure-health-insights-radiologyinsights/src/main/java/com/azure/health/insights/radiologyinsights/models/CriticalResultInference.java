@@ -11,10 +11,13 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Critical results refer to findings of utmost importance that may require timely attention due to their potential
- * impact on patient care.
+ * Critical results refer to findings of utmost importance that may require timely attention due to their potential impact on patient care.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = CriticalResultInference.class,
+    visible = true)
 @JsonTypeName("criticalResult")
 @Immutable
 public final class CriticalResultInference extends FhirR4Extendible1 {
@@ -24,7 +27,7 @@ public final class CriticalResultInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "result")
-    private CriticalResult result;
+    private final CriticalResult result;
 
     /**
      * Creates an instance of CriticalResultInference class.
@@ -34,6 +37,7 @@ public final class CriticalResultInference extends FhirR4Extendible1 {
     @Generated
     @JsonCreator
     private CriticalResultInference(@JsonProperty(value = "result") CriticalResult result) {
+        setKind(RadiologyInsightsInferenceType.CRITICAL_RESULT);
         this.result = result;
     }
 

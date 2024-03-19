@@ -14,7 +14,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A specific representation of configurable options for Elasticsearch when using it as an Azure OpenAI chat
  * extension.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ElasticsearchChatExtensionConfiguration.class,
+    visible = true)
 @JsonTypeName("elasticsearch")
 @Immutable
 public final class ElasticsearchChatExtensionConfiguration extends AzureChatExtensionConfiguration {
@@ -24,7 +28,7 @@ public final class ElasticsearchChatExtensionConfiguration extends AzureChatExte
      */
     @Generated
     @JsonProperty(value = "parameters")
-    private ElasticsearchChatExtensionParameters parameters;
+    private final ElasticsearchChatExtensionParameters parameters;
 
     /**
      * Get the parameters property: The parameters to use when configuring Elasticsearch®.
@@ -45,6 +49,7 @@ public final class ElasticsearchChatExtensionConfiguration extends AzureChatExte
     @JsonCreator
     public ElasticsearchChatExtensionConfiguration(
         @JsonProperty(value = "parameters") ElasticsearchChatExtensionParameters parameters) {
+        setType(AzureChatExtensionType.ELASTICSEARCH);
         this.parameters = parameters;
     }
 }

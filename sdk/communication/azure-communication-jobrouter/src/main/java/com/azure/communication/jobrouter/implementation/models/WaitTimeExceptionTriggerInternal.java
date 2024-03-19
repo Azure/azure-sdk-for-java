@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Trigger for an exception action on exceeding wait time.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = WaitTimeExceptionTriggerInternal.class,
+    visible = true)
 @JsonTypeName("waitTime")
 @Immutable
 public final class WaitTimeExceptionTriggerInternal extends ExceptionTriggerInternal {
@@ -23,7 +27,7 @@ public final class WaitTimeExceptionTriggerInternal extends ExceptionTriggerInte
      */
     @Generated
     @JsonProperty(value = "thresholdSeconds")
-    private double thresholdSeconds;
+    private final double thresholdSeconds;
 
     /**
      * Creates an instance of WaitTimeExceptionTriggerInternal class.
@@ -33,6 +37,7 @@ public final class WaitTimeExceptionTriggerInternal extends ExceptionTriggerInte
     @Generated
     @JsonCreator
     public WaitTimeExceptionTriggerInternal(@JsonProperty(value = "thresholdSeconds") double thresholdSeconds) {
+        setKind(ExceptionTriggerKind.WAIT_TIME);
         this.thresholdSeconds = thresholdSeconds;
     }
 

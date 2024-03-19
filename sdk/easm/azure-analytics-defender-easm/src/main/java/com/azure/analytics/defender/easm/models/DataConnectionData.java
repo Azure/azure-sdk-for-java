@@ -7,17 +7,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The DataConnectionData model.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = DataConnectionData.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = DataConnectionData.class, visible = true)
 @JsonTypeName("DataConnectionData")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "logAnalytics", value = LogAnalyticsDataConnectionData.class),
@@ -58,6 +55,7 @@ public class DataConnectionData {
      */
     @Generated
     public DataConnectionData() {
+        this.kind = "DataConnectionData";
     }
 
     /**
@@ -145,6 +143,36 @@ public class DataConnectionData {
     @Generated
     public DataConnectionData setFrequencyOffset(Integer frequencyOffset) {
         this.frequencyOffset = frequencyOffset;
+        return this;
+    }
+
+    /*
+     * The kind of DataConnectionData
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private String kind;
+
+    /**
+     * Get the kind property: The kind of DataConnectionData.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public String getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The kind of DataConnectionData.
+     *
+     * @param kind the kind value to set.
+     * @return the DataConnectionData object itself.
+     */
+    @Generated
+    protected DataConnectionData setKind(String kind) {
+        this.kind = kind;
         return this;
     }
 }

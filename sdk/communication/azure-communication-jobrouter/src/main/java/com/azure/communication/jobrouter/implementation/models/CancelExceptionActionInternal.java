@@ -12,7 +12,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * An action that marks a job as cancelled.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = CancelExceptionActionInternal.class,
+    visible = true)
 @JsonTypeName("cancel")
 @Fluent
 public final class CancelExceptionActionInternal extends ExceptionActionInternal {
@@ -36,6 +40,7 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
      */
     @Generated
     public CancelExceptionActionInternal() {
+        setKind(ExceptionActionKind.CANCEL);
     }
 
     /**
@@ -61,8 +66,7 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
     }
 
     /**
-     * Get the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom
-     * values.
+     * Get the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom values.
      *
      * @return the dispositionCode value.
      */
@@ -72,8 +76,7 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
     }
 
     /**
-     * Set the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom
-     * values.
+     * Set the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom values.
      *
      * @param dispositionCode the dispositionCode value to set.
      * @return the CancelExceptionActionInternal object itself.

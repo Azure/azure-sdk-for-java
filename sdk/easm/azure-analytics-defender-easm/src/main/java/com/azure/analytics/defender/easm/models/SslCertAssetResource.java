@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The SslCertAssetResource model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = SslCertAssetResource.class, visible = true)
 @JsonTypeName("sslCert")
 @Immutable
 public final class SslCertAssetResource extends AssetResource {
@@ -23,7 +23,7 @@ public final class SslCertAssetResource extends AssetResource {
      */
     @Generated
     @JsonProperty(value = "asset")
-    private SslCertAsset asset;
+    private final SslCertAsset asset;
 
     /**
      * Creates an instance of SslCertAssetResource class.
@@ -33,6 +33,7 @@ public final class SslCertAssetResource extends AssetResource {
     @Generated
     @JsonCreator
     private SslCertAssetResource(@JsonProperty(value = "asset") SslCertAsset asset) {
+        setKind("sslCert");
         this.asset = asset;
     }
 

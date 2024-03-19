@@ -22,14 +22,14 @@ public final class AssetPageResult {
     private Long totalElements;
 
     /*
-     * The cursor mark to be used on the next request. Not set if using paging.
+     * The cursor mark to be used on the next request.  Not set if using paging.
      */
     @Generated
     @JsonProperty(value = "mark")
     private String mark;
 
     /*
-     * The link to access the next page of results. Not set if at the end of the result set.
+     * The link to access the next page of results.  Not set if at the end of the result set.
      */
     @Generated
     @JsonProperty(value = "nextLink")
@@ -60,7 +60,7 @@ public final class AssetPageResult {
     }
 
     /**
-     * Get the mark property: The cursor mark to be used on the next request. Not set if using paging.
+     * Get the mark property: The cursor mark to be used on the next request.  Not set if using paging.
      *
      * @return the mark value.
      */
@@ -70,8 +70,7 @@ public final class AssetPageResult {
     }
 
     /**
-     * Get the nextLink property: The link to access the next page of results. Not set if at the end of the result
-     * set.
+     * Get the nextLink property: The link to access the next page of results.  Not set if at the end of the result set.
      *
      * @return the nextLink value.
      */

@@ -11,7 +11,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The authentication options for Azure OpenAI On Your Data when using a system-assigned managed identity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = OnYourDataSystemAssignedManagedIdentityAuthenticationOptions.class,
+    visible = true)
 @JsonTypeName("system_assigned_managed_identity")
 @Immutable
 public final class OnYourDataSystemAssignedManagedIdentityAuthenticationOptions
@@ -22,5 +26,6 @@ public final class OnYourDataSystemAssignedManagedIdentityAuthenticationOptions
      */
     @Generated
     public OnYourDataSystemAssignedManagedIdentityAuthenticationOptions() {
+        setType(OnYourDataAuthenticationType.SYSTEM_ASSIGNED_MANAGED_IDENTITY);
     }
 }

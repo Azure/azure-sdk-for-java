@@ -9,8 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /**
- * A snapshot of assets captured daily for the provided metric. Asset details only contain primary properties.
- * Detailed asset data can be retrieved from the asset endpoints.
+ * A snapshot of assets captured daily for the provided metric.  Asset details only contain primary properties.  Detailed asset data can be retrieved from the asset endpoints.
  */
 @Immutable
 public final class ReportAssetSnapshotResult {

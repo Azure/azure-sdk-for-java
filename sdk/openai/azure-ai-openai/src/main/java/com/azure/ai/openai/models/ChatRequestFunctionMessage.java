@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A request chat message representing requested output from a configured function.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "role",
+    defaultImpl = ChatRequestFunctionMessage.class,
+    visible = true)
 @JsonTypeName("function")
 @Immutable
 public final class ChatRequestFunctionMessage extends ChatRequestMessage {
@@ -23,14 +27,14 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private final String name;
 
     /*
      * The output of the function as requested by the function call.
      */
     @Generated
     @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /**
      * Creates an instance of ChatRequestFunctionMessage class.
@@ -42,6 +46,7 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
     @JsonCreator
     public ChatRequestFunctionMessage(@JsonProperty(value = "name") String name,
         @JsonProperty(value = "content") String content) {
+        setRole(ChatRole.FUNCTION);
         this.name = name;
         this.content = content;
     }

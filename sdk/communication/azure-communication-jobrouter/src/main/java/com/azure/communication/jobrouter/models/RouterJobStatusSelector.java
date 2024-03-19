@@ -92,8 +92,7 @@ public final class RouterJobStatusSelector extends ExpandableStringEnum<RouterJo
     public static final RouterJobStatusSelector WAITING_FOR_ACTIVATION = fromString("waitingForActivation");
 
     /**
-     * Job is in a state of PendingClassification or Queued or Assigned or ClassificationFailed or Completed or
-     * PendingSchedule or Scheduled or ScheduleFailed or WaitingForActivation.
+     * Job is in a state of PendingClassification or Queued or Assigned or ClassificationFailed or Completed or PendingSchedule or Scheduled or ScheduleFailed or WaitingForActivation.
      */
     @Generated
     public static final RouterJobStatusSelector ACTIVE = fromString("active");

@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -15,11 +16,7 @@ import java.util.List;
 /**
  * The items in the current page of results.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = AssetResource.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = AssetResource.class, visible = true)
 @JsonTypeName("AssetResource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "as", value = AsAssetResource.class),
@@ -129,6 +126,7 @@ public class AssetResource {
      */
     @Generated
     protected AssetResource() {
+        this.kind = "AssetResource";
     }
 
     /**
@@ -222,8 +220,7 @@ public class AssetResource {
     }
 
     /**
-     * Get the wildcard property: An indicator of whether this asset represents a wildcard rollup of assets on this
-     * domain.
+     * Get the wildcard property: An indicator of whether this asset represents a wildcard rollup of assets on this domain.
      *
      * @return the wildcard value.
      */
@@ -243,8 +240,7 @@ public class AssetResource {
     }
 
     /**
-     * Get the auditTrail property: The history of how this asset was pulled into the workspace through the discovery
-     * process.
+     * Get the auditTrail property: The history of how this asset was pulled into the workspace through the discovery process.
      *
      * @return the auditTrail value.
      */
@@ -261,5 +257,35 @@ public class AssetResource {
     @Generated
     public String getReason() {
         return this.reason;
+    }
+
+    /*
+     * The kind of AssetResource
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private String kind;
+
+    /**
+     * Get the kind property: The kind of AssetResource.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public String getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The kind of AssetResource.
+     *
+     * @param kind the kind value to set.
+     * @return the AssetResource object itself.
+     */
+    @Generated
+    protected AssetResource setKind(String kind) {
+        this.kind = kind;
+        return this;
     }
 }

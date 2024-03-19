@@ -21,8 +21,7 @@ public final class CancelJobOptionsInternal {
     private String note;
 
     /*
-     * Indicates the outcome of a job, populate this field with your own custom values. If not provided, default value
-     * of "Cancelled" is set.
+     * Indicates the outcome of a job, populate this field with your own custom values. If not provided, default value of "Cancelled" is set.
      */
     @Generated
     @JsonProperty(value = "dispositionCode")
@@ -58,8 +57,7 @@ public final class CancelJobOptionsInternal {
     }
 
     /**
-     * Get the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom
-     * values. If not provided, default value of "Cancelled" is set.
+     * Get the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom values. If not provided, default value of "Cancelled" is set.
      *
      * @return the dispositionCode value.
      */
@@ -69,8 +67,7 @@ public final class CancelJobOptionsInternal {
     }
 
     /**
-     * Set the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom
-     * values. If not provided, default value of "Cancelled" is set.
+     * Set the dispositionCode property: Indicates the outcome of a job, populate this field with your own custom values. If not provided, default value of "Cancelled" is set.
      *
      * @param dispositionCode the dispositionCode value to set.
      * @return the CancelJobOptionsInternal object itself.

@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The message template's quick action value information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = MessageTemplateQuickAction.class,
+    visible = true)
 @JsonTypeName("quickAction")
 @Fluent
 public final class MessageTemplateQuickAction extends MessageTemplateValue {
@@ -41,6 +45,7 @@ public final class MessageTemplateQuickAction extends MessageTemplateValue {
     @JsonCreator
     public MessageTemplateQuickAction(@JsonProperty(value = "name") String refValue) {
         super(refValue);
+        setKind(MessageTemplateValueKind.QUICK_ACTION);
     }
 
     /**

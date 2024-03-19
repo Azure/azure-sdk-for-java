@@ -20,14 +20,14 @@ public final class WorkerWeightedAllocationInternal {
      */
     @Generated
     @JsonProperty(value = "weight")
-    private double weight;
+    private final double weight;
 
     /*
      * A collection of worker selectors that will be applied if this allocation is selected.
      */
     @Generated
     @JsonProperty(value = "workerSelectors")
-    private List<RouterWorkerSelectorInternal> workerSelectors;
+    private final List<RouterWorkerSelectorInternal> workerSelectors;
 
     /**
      * Creates an instance of WorkerWeightedAllocationInternal class.
@@ -54,8 +54,7 @@ public final class WorkerWeightedAllocationInternal {
     }
 
     /**
-     * Get the workerSelectors property: A collection of worker selectors that will be applied if this allocation is
-     * selected.
+     * Get the workerSelectors property: A collection of worker selectors that will be applied if this allocation is selected.
      *
      * @return the workerSelectors value.
      */

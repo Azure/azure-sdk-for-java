@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.communication.jobrouter.models.LabelOperator;
+import com.azure.communication.jobrouter.models.QueueSelectorAttachmentKind;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -14,7 +15,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Attaches a queue selector where the value is passed through from a job's label with the same key.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = PassThroughQueueSelectorAttachmentInternal.class,
+    visible = true)
 @JsonTypeName("passThrough")
 @Immutable
 public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelectorAttachmentInternal {
@@ -24,14 +29,14 @@ public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelec
      */
     @Generated
     @JsonProperty(value = "key")
-    private String key;
+    private final String key;
 
     /*
      * Describes how the value of the label is compared to the value pass through.
      */
     @Generated
     @JsonProperty(value = "labelOperator")
-    private LabelOperator labelOperator;
+    private final LabelOperator labelOperator;
 
     /**
      * Creates an instance of PassThroughQueueSelectorAttachmentInternal class.
@@ -43,6 +48,7 @@ public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelec
     @JsonCreator
     public PassThroughQueueSelectorAttachmentInternal(@JsonProperty(value = "key") String key,
         @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
+        setKind(QueueSelectorAttachmentKind.PASS_THROUGH);
         this.key = key;
         this.labelOperator = labelOperator;
     }

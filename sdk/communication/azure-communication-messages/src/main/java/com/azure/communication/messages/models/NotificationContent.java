@@ -8,6 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,11 +16,7 @@ import java.util.List;
 /**
  * Details of the message to send.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = NotificationContent.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = NotificationContent.class, visible = true)
 @JsonTypeName("NotificationContent")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "text", value = TextNotificationContent.class),
@@ -33,14 +30,14 @@ public abstract class NotificationContent {
      */
     @Generated
     @JsonProperty(value = "channelRegistrationId")
-    private String channelRegistrationId;
+    private final String channelRegistrationId;
 
     /*
      * The native external platform user identifiers of the recipient.
      */
     @Generated
     @JsonProperty(value = "to")
-    private List<String> to;
+    private final List<String> to;
 
     /**
      * Creates an instance of NotificationContent class.
@@ -52,6 +49,7 @@ public abstract class NotificationContent {
     @JsonCreator
     protected NotificationContent(@JsonProperty(value = "channelRegistrationId") String channelRegistrationId,
         @JsonProperty(value = "to") List<String> to) {
+        this.kind = CommunicationMessageKind.fromString("NotificationContent");
         this.channelRegistrationId = channelRegistrationId;
         this.to = to;
     }
@@ -74,5 +72,35 @@ public abstract class NotificationContent {
     @Generated
     public List<String> getTo() {
         return this.to;
+    }
+
+    /*
+     * The type discriminator describing a notification type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private CommunicationMessageKind kind;
+
+    /**
+     * Get the kind property: The type discriminator describing a notification type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public CommunicationMessageKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The type discriminator describing a notification type.
+     *
+     * @param kind the kind value to set.
+     * @return the NotificationContent object itself.
+     */
+    @Generated
+    protected NotificationContent setKind(CommunicationMessageKind kind) {
+        this.kind = kind;
+        return this;
     }
 }

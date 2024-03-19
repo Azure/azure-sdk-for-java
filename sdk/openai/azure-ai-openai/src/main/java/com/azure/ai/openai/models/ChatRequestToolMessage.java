@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A request chat message representing requested output from a configured tool.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "role", defaultImpl = ChatRequestToolMessage.class, visible = true)
 @JsonTypeName("tool")
 @Immutable
 public final class ChatRequestToolMessage extends ChatRequestMessage {
@@ -23,14 +23,14 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
      */
     @Generated
     @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /*
      * The ID of the tool call resolved by the provided content.
      */
     @Generated
     @JsonProperty(value = "tool_call_id")
-    private String toolCallId;
+    private final String toolCallId;
 
     /**
      * Creates an instance of ChatRequestToolMessage class.
@@ -42,6 +42,7 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     @JsonCreator
     public ChatRequestToolMessage(@JsonProperty(value = "content") String content,
         @JsonProperty(value = "tool_call_id") String toolCallId) {
+        setRole(ChatRole.TOOL);
         this.content = content;
         this.toolCallId = toolCallId;
     }

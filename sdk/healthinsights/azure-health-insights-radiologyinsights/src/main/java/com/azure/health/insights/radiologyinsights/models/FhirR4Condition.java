@@ -15,7 +15,11 @@ import java.util.List;
  * Detailed information about conditions, problems or diagnoses
  * Based on [FHIR Condition](https://www.hl7.org/fhir/R4/condition.html).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "resourceType",
+    defaultImpl = FhirR4Condition.class,
+    visible = true)
 @JsonTypeName("Condition")
 @Fluent
 public final class FhirR4Condition extends FhirR4DomainResource {
@@ -77,35 +81,35 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     private FhirR4Reference encounter;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetDateTime")
     private String onsetDateTime;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetAge")
     private FhirR4Quantity onsetAge;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetPeriod")
     private FhirR4Period onsetPeriod;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetRange")
     private FhirR4Range onsetRange;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
     @JsonProperty(value = "onsetString")
@@ -176,6 +180,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     @JsonCreator
     public FhirR4Condition(@JsonProperty(value = "resourceType") String resourceType) {
         super(resourceType);
+        setResourceType("Condition");
     }
 
     /**
@@ -223,8 +228,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the verificationStatus property: unconfirmed | provisional | differential | confirmed | refuted |
-     * entered-in-error.
+     * Get the verificationStatus property: unconfirmed | provisional | differential | confirmed | refuted | entered-in-error.
      *
      * @return the verificationStatus value.
      */
@@ -234,8 +238,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the verificationStatus property: unconfirmed | provisional | differential | confirmed | refuted |
-     * entered-in-error.
+     * Set the verificationStatus property: unconfirmed | provisional | differential | confirmed | refuted | entered-in-error.
      *
      * @param verificationStatus the verificationStatus value to set.
      * @return the FhirR4Condition object itself.
@@ -357,7 +360,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the onsetDateTime property: Estimated or actual date, date-time, or age.
+     * Get the onsetDateTime property: Estimated or actual date,  date-time, or age.
      *
      * @return the onsetDateTime value.
      */
@@ -367,7 +370,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the onsetDateTime property: Estimated or actual date, date-time, or age.
+     * Set the onsetDateTime property: Estimated or actual date,  date-time, or age.
      *
      * @param onsetDateTime the onsetDateTime value to set.
      * @return the FhirR4Condition object itself.
@@ -379,7 +382,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the onsetAge property: Estimated or actual date, date-time, or age.
+     * Get the onsetAge property: Estimated or actual date,  date-time, or age.
      *
      * @return the onsetAge value.
      */
@@ -389,7 +392,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the onsetAge property: Estimated or actual date, date-time, or age.
+     * Set the onsetAge property: Estimated or actual date,  date-time, or age.
      *
      * @param onsetAge the onsetAge value to set.
      * @return the FhirR4Condition object itself.
@@ -401,7 +404,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the onsetPeriod property: Estimated or actual date, date-time, or age.
+     * Get the onsetPeriod property: Estimated or actual date,  date-time, or age.
      *
      * @return the onsetPeriod value.
      */
@@ -411,7 +414,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the onsetPeriod property: Estimated or actual date, date-time, or age.
+     * Set the onsetPeriod property: Estimated or actual date,  date-time, or age.
      *
      * @param onsetPeriod the onsetPeriod value to set.
      * @return the FhirR4Condition object itself.
@@ -423,7 +426,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the onsetRange property: Estimated or actual date, date-time, or age.
+     * Get the onsetRange property: Estimated or actual date,  date-time, or age.
      *
      * @return the onsetRange value.
      */
@@ -433,7 +436,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the onsetRange property: Estimated or actual date, date-time, or age.
+     * Set the onsetRange property: Estimated or actual date,  date-time, or age.
      *
      * @param onsetRange the onsetRange value to set.
      * @return the FhirR4Condition object itself.
@@ -445,7 +448,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the onsetString property: Estimated or actual date, date-time, or age.
+     * Get the onsetString property: Estimated or actual date,  date-time, or age.
      *
      * @return the onsetString value.
      */
@@ -455,7 +458,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the onsetString property: Estimated or actual date, date-time, or age.
+     * Set the onsetString property: Estimated or actual date,  date-time, or age.
      *
      * @param onsetString the onsetString value to set.
      * @return the FhirR4Condition object itself.

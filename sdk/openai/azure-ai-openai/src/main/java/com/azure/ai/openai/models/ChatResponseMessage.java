@@ -20,14 +20,14 @@ public final class ChatResponseMessage {
      */
     @Generated
     @JsonProperty(value = "role")
-    private ChatRole role;
+    private final ChatRole role;
 
     /*
      * The content of the message.
      */
     @Generated
     @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /*
      * The tool calls that must be resolved and have their outputs appended to subsequent input messages for the chat
@@ -88,8 +88,7 @@ public final class ChatResponseMessage {
     }
 
     /**
-     * Get the toolCalls property: The tool calls that must be resolved and have their outputs appended to subsequent
-     * input messages for the chat
+     * Get the toolCalls property: The tool calls that must be resolved and have their outputs appended to subsequent input messages for the chat
      * completions request to resolve as configured.
      *
      * @return the toolCalls value.
@@ -100,8 +99,7 @@ public final class ChatResponseMessage {
     }
 
     /**
-     * Get the functionCall property: The function call that must be resolved and have its output appended to
-     * subsequent input messages for the chat
+     * Get the functionCall property: The function call that must be resolved and have its output appended to subsequent input messages for the chat
      * completions request to resolve as configured.
      *
      * @return the functionCall value.
@@ -112,8 +110,7 @@ public final class ChatResponseMessage {
     }
 
     /**
-     * Get the context property: If Azure OpenAI chat extensions are configured, this array represents the incremental
-     * steps performed by those
+     * Get the context property: If Azure OpenAI chat extensions are configured, this array represents the incremental steps performed by those
      * extensions while processing the chat completions request.
      *
      * @return the context value.

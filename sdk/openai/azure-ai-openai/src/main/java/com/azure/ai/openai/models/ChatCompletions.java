@@ -25,7 +25,7 @@ public final class ChatCompletions {
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * The collection of completions choices associated with this completions response.
@@ -34,14 +34,14 @@ public final class ChatCompletions {
      */
     @Generated
     @JsonProperty(value = "choices")
-    private List<ChatChoice> choices;
+    private final List<ChatChoice> choices;
 
     /*
      * Usage information for tokens processed and generated as part of this completions operation.
      */
     @Generated
     @JsonProperty(value = "usage")
-    private CompletionsUsage usage;
+    private final CompletionsUsage usage;
 
     /**
      * Get the id property: A unique identifier associated with this chat completions response.
@@ -66,8 +66,7 @@ public final class ChatCompletions {
     }
 
     /**
-     * Get the usage property: Usage information for tokens processed and generated as part of this completions
-     * operation.
+     * Get the usage property: Usage information for tokens processed and generated as part of this completions operation.
      *
      * @return the usage value.
      */
@@ -82,11 +81,10 @@ public final class ChatCompletions {
      */
     @Generated
     @JsonProperty(value = "created")
-    private long createdAt;
+    private final long createdAt;
 
     /**
-     * Get the createdAt property: The first timestamp associated with generation activity for this completions
-     * response,
+     * Get the createdAt property: The first timestamp associated with generation activity for this completions response,
      * represented as seconds since the beginning of the Unix epoch of 00:00 on 1 Jan 1970.
      *
      * @return the createdAt value.
@@ -129,8 +127,7 @@ public final class ChatCompletions {
     }
 
     /*
-     * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made
-     * that
+     * Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that
      * might impact determinism.
      */
     @Generated
@@ -138,8 +135,7 @@ public final class ChatCompletions {
     private String systemFingerprint;
 
     /**
-     * Get the systemFingerprint property: Can be used in conjunction with the `seed` request parameter to understand
-     * when backend changes have been made that
+     * Get the systemFingerprint property: Can be used in conjunction with the `seed` request parameter to understand when backend changes have been made that
      * might impact determinism.
      *
      * @return the systemFingerprint value.

@@ -11,11 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A notification for a sex mismatch is displayed when the gender, personal pronouns, gender-related body parts, or
- * gender-related procedures mentioned in a patient's clinical document are either inconsistent or do not match the
- * gender specified in the patient information.
+ * A notification for a sex mismatch is displayed when the gender, personal pronouns, gender-related body parts, or gender-related procedures mentioned in a patient's clinical document are either inconsistent or do not match the gender specified in the patient information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = SexMismatchInference.class, visible = true)
 @JsonTypeName("sexMismatch")
 @Immutable
 public final class SexMismatchInference extends FhirR4Extendible1 {
@@ -25,7 +23,7 @@ public final class SexMismatchInference extends FhirR4Extendible1 {
      */
     @Generated
     @JsonProperty(value = "sexIndication")
-    private FhirR4CodeableConcept sexIndication;
+    private final FhirR4CodeableConcept sexIndication;
 
     /**
      * Creates an instance of SexMismatchInference class.
@@ -35,6 +33,7 @@ public final class SexMismatchInference extends FhirR4Extendible1 {
     @Generated
     @JsonCreator
     private SexMismatchInference(@JsonProperty(value = "sexIndication") FhirR4CodeableConcept sexIndication) {
+        setKind(RadiologyInsightsInferenceType.SEX_MISMATCH);
         this.sexIndication = sexIndication;
     }
 

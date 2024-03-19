@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The definition information for a chat completions function tool that can call a function in response to a tool call.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = ChatCompletionsFunctionToolDefinition.class,
+    visible = true)
 @JsonTypeName("function")
 @Immutable
 public final class ChatCompletionsFunctionToolDefinition extends ChatCompletionsToolDefinition {
@@ -23,7 +27,7 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
      */
     @Generated
     @JsonProperty(value = "function")
-    private FunctionDefinition function;
+    private final FunctionDefinition function;
 
     /**
      * Creates an instance of ChatCompletionsFunctionToolDefinition class.
@@ -33,6 +37,7 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
     @Generated
     @JsonCreator
     public ChatCompletionsFunctionToolDefinition(@JsonProperty(value = "function") FunctionDefinition function) {
+        setType("function");
         this.function = function;
     }
 

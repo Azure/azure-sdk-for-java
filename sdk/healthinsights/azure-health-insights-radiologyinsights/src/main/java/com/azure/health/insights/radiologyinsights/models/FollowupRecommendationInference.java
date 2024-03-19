@@ -12,10 +12,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
- * Follow-up recommendations offer guidance to healthcare providers on managing and monitoring patients based on the
- * findings of imaging studies.
+ * Follow-up recommendations offer guidance to healthcare providers on managing and monitoring patients based on the findings of imaging studies.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = FollowupRecommendationInference.class,
+    visible = true)
 @JsonTypeName("followupRecommendation")
 @Immutable
 public final class FollowupRecommendationInference extends FhirR4Extendible1 {
@@ -42,43 +45,39 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     private List<FhirR4Extendible2> findings;
 
     /*
-     * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional
-     * statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
+     * The conditional value indicates whether or not the sentence containing the recommendation includes a conditional statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
      */
     @Generated
     @JsonProperty(value = "isConditional")
-    private boolean isConditional;
+    private final boolean isConditional;
 
     /*
-     * The option value indicates whether or not the sentence containing the recommendation includes an optional
-     * statement. Keywords for optional statements include 'recommend', 'consider', and so on.
+     * The option value indicates whether or not the sentence containing the recommendation includes an optional statement. Keywords for optional statements include 'recommend', 'consider', and so on.
      */
     @Generated
     @JsonProperty(value = "isOption")
-    private boolean isOption;
+    private final boolean isOption;
 
     /*
-     * The guideline value indicates whether or not the recommendation is part of a guideline section that compiles all
-     * recommendations applicable to various findings.
+     * The guideline value indicates whether or not the recommendation is part of a guideline section that compiles all recommendations applicable to various findings.
      */
     @Generated
     @JsonProperty(value = "isGuideline")
-    private boolean isGuideline;
+    private final boolean isGuideline;
 
     /*
-     * Hedging refers to ambiguous, vague or imprecise language within the sentence of the recommendation. Keywords for
-     * hedging are 'can be','may be',and so on.
+     * Hedging refers to ambiguous, vague or imprecise language within the sentence of the recommendation. Keywords for hedging are 'can be','may be',and so on.
      */
     @Generated
     @JsonProperty(value = "isHedging")
-    private boolean isHedging;
+    private final boolean isHedging;
 
     /*
      * The procedure recommendation can be a generic procedure or an imaging procedure.
      */
     @Generated
     @JsonProperty(value = "recommendedProcedure")
-    private ProcedureRecommendation recommendedProcedure;
+    private final ProcedureRecommendation recommendedProcedure;
 
     /**
      * Creates an instance of FollowupRecommendationInference class.
@@ -95,6 +94,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
         @JsonProperty(value = "isOption") boolean isOption, @JsonProperty(value = "isGuideline") boolean isGuideline,
         @JsonProperty(value = "isHedging") boolean isHedging,
         @JsonProperty(value = "recommendedProcedure") ProcedureRecommendation recommendedProcedure) {
+        setKind(RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION);
         this.isConditional = isConditional;
         this.isOption = isOption;
         this.isGuideline = isGuideline;
@@ -103,8 +103,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at
-     * a specific point in time.
+     * Get the effectiveDateTime property: Date and time are displayed when the procedure is recommended to be done at a specific point in time.
      *
      * @return the effectiveDateTime value.
      */
@@ -114,8 +113,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the effectivePeriod property: The period is shown if a specific period is mentioned, with a start and end
-     * date-time.
+     * Get the effectivePeriod property: The period is shown if a specific period is mentioned, with a start and end date-time.
      *
      * @return the effectivePeriod value.
      */
@@ -135,9 +133,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isConditional property: The conditional value indicates whether or not the sentence containing the
-     * recommendation includes a conditional statement. Keywords for conditional statements include 'if', 'when',
-     * 'unless', and so on.
+     * Get the isConditional property: The conditional value indicates whether or not the sentence containing the recommendation includes a conditional statement. Keywords for conditional statements include 'if', 'when', 'unless', and so on.
      *
      * @return the isConditional value.
      */
@@ -147,8 +143,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isOption property: The option value indicates whether or not the sentence containing the recommendation
-     * includes an optional statement. Keywords for optional statements include 'recommend', 'consider', and so on.
+     * Get the isOption property: The option value indicates whether or not the sentence containing the recommendation includes an optional statement. Keywords for optional statements include 'recommend', 'consider', and so on.
      *
      * @return the isOption value.
      */
@@ -158,8 +153,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isGuideline property: The guideline value indicates whether or not the recommendation is part of a
-     * guideline section that compiles all recommendations applicable to various findings.
+     * Get the isGuideline property: The guideline value indicates whether or not the recommendation is part of a guideline section that compiles all recommendations applicable to various findings.
      *
      * @return the isGuideline value.
      */
@@ -169,8 +163,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the isHedging property: Hedging refers to ambiguous, vague or imprecise language within the sentence of the
-     * recommendation. Keywords for hedging are 'can be','may be',and so on.
+     * Get the isHedging property: Hedging refers to ambiguous, vague or imprecise language within the sentence of the recommendation. Keywords for hedging are 'can be','may be',and so on.
      *
      * @return the isHedging value.
      */
@@ -180,8 +173,7 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the recommendedProcedure property: The procedure recommendation can be a generic procedure or an imaging
-     * procedure.
+     * Get the recommendedProcedure property: The procedure recommendation can be a generic procedure or an imaging procedure.
      *
      * @return the recommendedProcedure value.
      */

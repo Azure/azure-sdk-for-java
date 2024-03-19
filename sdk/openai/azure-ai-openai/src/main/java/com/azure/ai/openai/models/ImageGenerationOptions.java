@@ -19,7 +19,7 @@ public final class ImageGenerationOptions {
      */
     @Generated
     @JsonProperty(value = "prompt")
-    private String prompt;
+    private final String prompt;
 
     /*
      * The number of images to generate.
@@ -120,8 +120,7 @@ public final class ImageGenerationOptions {
     }
 
     /**
-     * Get the user property: A unique identifier representing your end-user, which can help to monitor and detect
-     * abuse.
+     * Get the user property: A unique identifier representing your end-user, which can help to monitor and detect abuse.
      *
      * @return the user value.
      */
@@ -131,8 +130,7 @@ public final class ImageGenerationOptions {
     }
 
     /**
-     * Set the user property: A unique identifier representing your end-user, which can help to monitor and detect
-     * abuse.
+     * Set the user property: A unique identifier representing your end-user, which can help to monitor and detect abuse.
      *
      * @param user the user value to set.
      * @return the ImageGenerationOptions object itself.
@@ -173,8 +171,7 @@ public final class ImageGenerationOptions {
     }
 
     /*
-     * The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2
-     * will be
+     * The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2 will be
      * inferred as a default.
      */
     @Generated
@@ -198,8 +195,7 @@ public final class ImageGenerationOptions {
     private ImageGenerationStyle style;
 
     /**
-     * Get the model property: The model name or Azure OpenAI model deployment name to use for image generation. If not
-     * specified, dall-e-2 will be
+     * Get the model property: The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2 will be
      * inferred as a default.
      *
      * @return the model value.
@@ -210,8 +206,7 @@ public final class ImageGenerationOptions {
     }
 
     /**
-     * Set the model property: The model name or Azure OpenAI model deployment name to use for image generation. If not
-     * specified, dall-e-2 will be
+     * Set the model property: The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2 will be
      * inferred as a default.
      *
      * @param model the model value to set.

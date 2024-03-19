@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter.implementation.models;
 
 import com.azure.communication.jobrouter.models.ExpressionRouterRuleLanguage;
+import com.azure.communication.jobrouter.models.RouterRuleKind;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
@@ -14,7 +15,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * A rule providing inline expression rules.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = ExpressionRouterRuleInternal.class,
+    visible = true)
 @JsonTypeName("expression")
 @Fluent
 public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
@@ -31,7 +36,7 @@ public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
      */
     @Generated
     @JsonProperty(value = "expression")
-    private String expression;
+    private final String expression;
 
     /**
      * Creates an instance of ExpressionRouterRuleInternal class.
@@ -41,6 +46,7 @@ public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
     @Generated
     @JsonCreator
     public ExpressionRouterRuleInternal(@JsonProperty(value = "expression") String expression) {
+        setKind(RouterRuleKind.EXPRESSION);
         this.expression = expression;
     }
 

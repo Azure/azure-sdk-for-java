@@ -8,8 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * OAuth2.0 Credentials used to Contoso's Authorization server. Reference:
- * https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/.
+ * OAuth2.0 Credentials used to Contoso's Authorization server. Reference: https://www.oauth.com/oauth2-servers/access-tokens/client-credentials/.
  */
 @Fluent
 public final class OAuth2WebhookClientCredential {

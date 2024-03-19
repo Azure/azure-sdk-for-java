@@ -19,14 +19,14 @@ public final class ContentFilterBlocklistIdResult {
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * A value indicating whether or not the content has been filtered.
      */
     @Generated
     @JsonProperty(value = "filtered")
-    private boolean filtered;
+    private final boolean filtered;
 
     /**
      * Creates an instance of ContentFilterBlocklistIdResult class.

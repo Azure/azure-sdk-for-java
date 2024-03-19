@@ -4,6 +4,7 @@
 package com.azure.ai.contentsafety;
 
 import com.azure.ai.contentsafety.implementation.BlocklistClientImpl;
+import com.azure.ai.contentsafety.implementation.JsonMergePatchHelper;
 import com.azure.ai.contentsafety.models.AddOrUpdateTextBlocklistItemsOptions;
 import com.azure.ai.contentsafety.models.AddOrUpdateTextBlocklistItemsResult;
 import com.azure.ai.contentsafety.models.RemoveTextBlocklistItemsOptions;
@@ -50,11 +51,8 @@ public final class BlocklistAsyncClient {
     /**
      * Add or update BlocklistItems To Text Blocklist
      *
-     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one
-     * request.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one request.
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     blocklistItems (Required): [
@@ -66,9 +64,7 @@ public final class BlocklistAsyncClient {
      *     ]
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     blocklistItems (Required): [
@@ -88,8 +84,7 @@ public final class BlocklistAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the response of adding blocklistItems to the text blocklist along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return the response of adding blocklistItems to the text blocklist along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -102,18 +97,14 @@ public final class BlocklistAsyncClient {
      * Create Or Update Text Blocklist
      *
      * Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
      *     description: String (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
@@ -134,8 +125,6 @@ public final class BlocklistAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateTextBlocklistWithResponse(String name, BinaryData options,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'createOrUpdateTextBlocklist' is
-        // 'application/merge-patch+json' and stream-style-serialization is not enabled
         return this.serviceClient.createOrUpdateTextBlocklistWithResponseAsync(name, options, requestOptions);
     }
 
@@ -162,9 +151,7 @@ public final class BlocklistAsyncClient {
      * Get Text Blocklist By blocklistName
      *
      * Returns text blocklist details.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
@@ -190,9 +177,7 @@ public final class BlocklistAsyncClient {
      * Get BlocklistItem By blocklistName And blocklistItemId
      *
      * Get blocklistItem by blocklistName and blocklistItemId from a text blocklist.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     blocklistItemId: String (Required)
@@ -208,8 +193,7 @@ public final class BlocklistAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist along with {@link Response} on
-     * successful completion of {@link Mono}.
+     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -222,40 +206,16 @@ public final class BlocklistAsyncClient {
      * Get All BlocklistItems By blocklistName
      *
      * Get all blocklistItems in a text blocklist.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to return.</td>
-     * </tr>
-     * <tr>
-     * <td>skip</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The number of result items to skip.</td>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of result items per page.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>top</td><td>Integer</td><td>No</td><td>The number of result items to return.</td></tr>
+     *     <tr><td>skip</td><td>Integer</td><td>No</td><td>The number of result items to skip.</td></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>The maximum number of result items per page.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     blocklistItemId: String (Required)
@@ -282,9 +242,7 @@ public final class BlocklistAsyncClient {
      * Get All Text Blocklists
      *
      * Get all text blocklists details.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     blocklistName: String (Required)
@@ -309,9 +267,7 @@ public final class BlocklistAsyncClient {
      * Remove BlocklistItems From Text Blocklist
      *
      * Remove blocklistItems from a text blocklist. You can remove at most 100 BlocklistItems in one request.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     blocklistItemIds (Required): [
@@ -339,8 +295,7 @@ public final class BlocklistAsyncClient {
     /**
      * Add or update BlocklistItems To Text Blocklist
      *
-     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one
-     * request.
+     * Add or update blocklistItems to a text blocklist. You can add or update at most 100 blocklistItems in one request.
      *
      * @param name Text blocklist name.
      * @param options Options for adding or updating blocklist items.
@@ -421,8 +376,7 @@ public final class BlocklistAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist on successful completion of
-     * {@link Mono}.
+     * @return blocklistItem by blocklistName and blocklistItemId from a text blocklist on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -462,11 +416,13 @@ public final class BlocklistAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(name, requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, TextBlocklistItem>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(TextBlocklistItem.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -494,11 +450,13 @@ public final class BlocklistAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklistItems(name, requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, TextBlocklistItem>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(TextBlocklistItem.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -524,11 +482,13 @@ public final class BlocklistAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listTextBlocklists(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, TextBlocklist>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(TextBlocklist.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -557,5 +517,33 @@ public final class BlocklistAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         return removeBlocklistItemsWithResponse(name, BinaryData.fromObject(options), requestOptions)
             .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Create Or Update Text Blocklist
+     *
+     * Updates a text blocklist. If the blocklistName does not exist, a new blocklist will be created.
+     *
+     * @param name Text blocklist name.
+     * @param options The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return text Blocklist on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TextBlocklist> createOrUpdateTextBlocklist(String name, TextBlocklist options) {
+        // Generated convenience method for createOrUpdateTextBlocklistWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getTextBlocklistAccessor().prepareModelForJsonMergePatch(options, true);
+        BinaryData optionsInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(options).toBytes());
+        JsonMergePatchHelper.getTextBlocklistAccessor().prepareModelForJsonMergePatch(options, false);
+        return createOrUpdateTextBlocklistWithResponse(name, optionsInBinaryData, requestOptions)
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(TextBlocklist.class));
     }
 }

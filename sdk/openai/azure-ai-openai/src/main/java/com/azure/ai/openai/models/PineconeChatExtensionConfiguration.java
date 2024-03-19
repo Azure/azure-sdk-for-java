@@ -14,7 +14,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A specific representation of configurable options for Pinecone when using it as an Azure OpenAI chat
  * extension.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = PineconeChatExtensionConfiguration.class,
+    visible = true)
 @JsonTypeName("pinecone")
 @Immutable
 public final class PineconeChatExtensionConfiguration extends AzureChatExtensionConfiguration {
@@ -24,7 +28,7 @@ public final class PineconeChatExtensionConfiguration extends AzureChatExtension
      */
     @Generated
     @JsonProperty(value = "parameters")
-    private PineconeChatExtensionParameters parameters;
+    private final PineconeChatExtensionParameters parameters;
 
     /**
      * Get the parameters property: The parameters to use when configuring Azure OpenAI chat extensions.
@@ -45,6 +49,7 @@ public final class PineconeChatExtensionConfiguration extends AzureChatExtension
     @JsonCreator
     public PineconeChatExtensionConfiguration(
         @JsonProperty(value = "parameters") PineconeChatExtensionParameters parameters) {
+        setType(AzureChatExtensionType.PINECONE);
         this.parameters = parameters;
     }
 }

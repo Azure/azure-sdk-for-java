@@ -66,8 +66,7 @@ public final class RelationshipsImpl {
     }
 
     /**
-     * The interface defining all the services for DataMapClientRelationships to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for DataMapClientRelationships to be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}/datamap/api")
     @ServiceInterface(name = "DataMapClientRelatio")
@@ -151,9 +150,7 @@ public final class RelationshipsImpl {
 
     /**
      * Create a new relationship between entities.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -181,9 +178,7 @@ public final class RelationshipsImpl {
      *     version: Long (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -230,9 +225,7 @@ public final class RelationshipsImpl {
 
     /**
      * Create a new relationship between entities.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -260,9 +253,7 @@ public final class RelationshipsImpl {
      *     version: Long (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -307,9 +298,7 @@ public final class RelationshipsImpl {
 
     /**
      * Update an existing relationship between entities.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -337,9 +326,7 @@ public final class RelationshipsImpl {
      *     version: Long (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -386,9 +373,7 @@ public final class RelationshipsImpl {
 
     /**
      * Update an existing relationship between entities.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -416,9 +401,7 @@ public final class RelationshipsImpl {
      *     version: Long (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     attributes (Optional): {
@@ -463,28 +446,14 @@ public final class RelationshipsImpl {
 
     /**
      * Get relationship information between entities by its GUID.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>extendedInfo</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Limits whether includes extended information.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>extendedInfo</td><td>Boolean</td><td>No</td><td>Limits whether includes extended information.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
@@ -575,8 +544,7 @@ public final class RelationshipsImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return relationship information between entities by its GUID along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return relationship information between entities by its GUID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponseAsync(String guid, RequestOptions requestOptions) {
@@ -587,28 +555,14 @@ public final class RelationshipsImpl {
 
     /**
      * Get relationship information between entities by its GUID.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>extendedInfo</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>Limits whether includes extended information.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>extendedInfo</td><td>Boolean</td><td>No</td><td>Limits whether includes extended information.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     referredEntities (Optional): {

@@ -9,16 +9,14 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters to use when configuring Elasticsearch® as an Azure OpenAI chat extension. The supported authentication
- * types are KeyAndKeyId and EncodedAPIKey.
+ * Parameters to use when configuring Elasticsearch® as an Azure OpenAI chat extension. The supported authentication types are KeyAndKeyId and EncodedAPIKey.
  */
 @Fluent
 public final class ElasticsearchChatExtensionParameters {
 
     /*
      * The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation
-     * of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
@@ -42,17 +40,14 @@ public final class ElasticsearchChatExtensionParameters {
     private Boolean inScope;
 
     /*
-     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the
-     * precision but lower recall of the answer.
+     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
      */
     @Generated
     @JsonProperty(value = "strictness")
     private Integer strictness;
 
     /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a
-     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
-     * limit for it, and it counts against the overall token limit.
+     * Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      */
     @Generated
     @JsonProperty(value = "role_information")
@@ -63,14 +58,14 @@ public final class ElasticsearchChatExtensionParameters {
      */
     @Generated
     @JsonProperty(value = "endpoint")
-    private String endpoint;
+    private final String endpoint;
 
     /*
      * The index name of Elasticsearch®.
      */
     @Generated
     @JsonProperty(value = "index_name")
-    private String indexName;
+    private final String indexName;
 
     /*
      * The index field mapping options of Elasticsearch®.
@@ -109,8 +104,7 @@ public final class ElasticsearchChatExtensionParameters {
 
     /**
      * Get the authentication property: The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation
-     * of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
@@ -124,8 +118,7 @@ public final class ElasticsearchChatExtensionParameters {
 
     /**
      * Set the authentication property: The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation
-     * of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
@@ -184,8 +177,7 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Get the strictness property: The configured strictness of the search relevance filtering. The higher of
-     * strictness, the higher of the precision but lower recall of the answer.
+     * Get the strictness property: The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
      *
      * @return the strictness value.
      */
@@ -195,8 +187,7 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Set the strictness property: The configured strictness of the search relevance filtering. The higher of
-     * strictness, the higher of the precision but lower recall of the answer.
+     * Set the strictness property: The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
      *
      * @param strictness the strictness value to set.
      * @return the ElasticsearchChatExtensionParameters object itself.
@@ -208,9 +199,7 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Get the roleInformation property: Give the model instructions about how it should behave and any context it
-     * should reference when generating a response. You can describe the assistant's personality and tell it how to
-     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
+     * Get the roleInformation property: Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      *
      * @return the roleInformation value.
      */
@@ -220,9 +209,7 @@ public final class ElasticsearchChatExtensionParameters {
     }
 
     /**
-     * Set the roleInformation property: Give the model instructions about how it should behave and any context it
-     * should reference when generating a response. You can describe the assistant's personality and tell it how to
-     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
+     * Set the roleInformation property: Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      *
      * @param roleInformation the roleInformation value to set.
      * @return the ElasticsearchChatExtensionParameters object itself.

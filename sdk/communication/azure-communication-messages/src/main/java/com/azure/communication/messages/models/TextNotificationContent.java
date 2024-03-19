@@ -14,7 +14,11 @@ import java.util.List;
 /**
  * A request to send a text notification.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = TextNotificationContent.class,
+    visible = true)
 @JsonTypeName("text")
 @Immutable
 public final class TextNotificationContent extends NotificationContent {
@@ -24,7 +28,7 @@ public final class TextNotificationContent extends NotificationContent {
      */
     @Generated
     @JsonProperty(value = "content")
-    private String content;
+    private final String content;
 
     /**
      * Creates an instance of TextNotificationContent class.
@@ -38,6 +42,7 @@ public final class TextNotificationContent extends NotificationContent {
     public TextNotificationContent(@JsonProperty(value = "channelRegistrationId") String channelRegistrationId,
         @JsonProperty(value = "to") List<String> to, @JsonProperty(value = "content") String content) {
         super(channelRegistrationId, to);
+        setKind(CommunicationMessageKind.TEXT);
         this.content = content;
     }
 

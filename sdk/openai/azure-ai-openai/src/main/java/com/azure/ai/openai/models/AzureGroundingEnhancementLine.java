@@ -20,14 +20,14 @@ public final class AzureGroundingEnhancementLine {
      */
     @Generated
     @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /*
      * An array of spans that represent detected objects and its bounding box information.
      */
     @Generated
     @JsonProperty(value = "spans")
-    private List<AzureGroundingEnhancementLineSpan> spans;
+    private final List<AzureGroundingEnhancementLineSpan> spans;
 
     /**
      * Creates an instance of AzureGroundingEnhancementLine class.

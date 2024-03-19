@@ -13,7 +13,11 @@ import java.util.List;
 /**
  * An action that manually reclassifies a job by providing the queue, priority and worker selectors.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = ManualReclassifyExceptionActionInternal.class,
+    visible = true)
 @JsonTypeName("manualReclassify")
 @Fluent
 public final class ManualReclassifyExceptionActionInternal extends ExceptionActionInternal {
@@ -44,6 +48,7 @@ public final class ManualReclassifyExceptionActionInternal extends ExceptionActi
      */
     @Generated
     public ManualReclassifyExceptionActionInternal() {
+        setKind(ExceptionActionKind.MANUAL_RECLASSIFY);
     }
 
     /**

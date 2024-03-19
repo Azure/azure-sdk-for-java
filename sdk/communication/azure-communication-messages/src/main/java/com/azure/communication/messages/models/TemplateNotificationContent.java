@@ -14,7 +14,11 @@ import java.util.List;
 /**
  * A request to send a template notification.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = TemplateNotificationContent.class,
+    visible = true)
 @JsonTypeName("template")
 @Immutable
 public final class TemplateNotificationContent extends NotificationContent {
@@ -24,7 +28,7 @@ public final class TemplateNotificationContent extends NotificationContent {
      */
     @Generated
     @JsonProperty(value = "template")
-    private MessageTemplate template;
+    private final MessageTemplate template;
 
     /**
      * Creates an instance of TemplateNotificationContent class.
@@ -38,6 +42,7 @@ public final class TemplateNotificationContent extends NotificationContent {
     public TemplateNotificationContent(@JsonProperty(value = "channelRegistrationId") String channelRegistrationId,
         @JsonProperty(value = "to") List<String> to, @JsonProperty(value = "template") MessageTemplate template) {
         super(channelRegistrationId, to);
+        setKind(CommunicationMessageKind.TEMPLATE);
         this.template = template;
     }
 

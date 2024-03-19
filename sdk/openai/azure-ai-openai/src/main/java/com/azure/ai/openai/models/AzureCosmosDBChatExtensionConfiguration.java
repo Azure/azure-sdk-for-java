@@ -14,7 +14,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A specific representation of configurable options for Azure Cosmos DB when using it as an Azure OpenAI chat
  * extension.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = AzureCosmosDBChatExtensionConfiguration.class,
+    visible = true)
 @JsonTypeName("azure_cosmos_db")
 @Immutable
 public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExtensionConfiguration {
@@ -24,7 +28,7 @@ public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExte
      */
     @Generated
     @JsonProperty(value = "parameters")
-    private AzureCosmosDBChatExtensionParameters parameters;
+    private final AzureCosmosDBChatExtensionParameters parameters;
 
     /**
      * Get the parameters property: The parameters to use when configuring Azure OpenAI CosmosDB chat extensions.
@@ -45,6 +49,7 @@ public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExte
     @JsonCreator
     public AzureCosmosDBChatExtensionConfiguration(
         @JsonProperty(value = "parameters") AzureCosmosDBChatExtensionParameters parameters) {
+        setType(AzureChatExtensionType.AZURE_COSMOS_DB);
         this.parameters = parameters;
     }
 }

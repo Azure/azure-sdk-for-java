@@ -9,8 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A request body used to retrieve summary asset information. One and only one collection of summary identifiers must
- * be provided: filters, metrics, or metricCategories.
+ * A request body used to retrieve summary asset information. One and only one collection of summary identifiers must be provided: filters, metrics, or metricCategories.
  */
 @Fluent
 public final class ReportAssetSummaryRequest {
@@ -37,16 +36,14 @@ public final class ReportAssetSummaryRequest {
     private List<String> filters;
 
     /*
-     * A parameter to group the assets by (first level facet field), only used when the chosen summary identifier is
-     * filters.
+     * A parameter to group the assets by (first level facet field), only used when the chosen summary identifier is filters.
      */
     @Generated
     @JsonProperty(value = "groupBy")
     private String groupBy;
 
     /*
-     * A parameter to segment the assets by (second level facet field), only used when the chosen summary identifier is
-     * filters.
+     * A parameter to segment the assets by (second level facet field), only used when the chosen summary identifier is filters.
      */
     @Generated
     @JsonProperty(value = "segmentBy")
@@ -133,8 +130,7 @@ public final class ReportAssetSummaryRequest {
     }
 
     /**
-     * Get the groupBy property: A parameter to group the assets by (first level facet field), only used when the
-     * chosen summary identifier is filters.
+     * Get the groupBy property: A parameter to group the assets by (first level facet field), only used when the chosen summary identifier is filters.
      *
      * @return the groupBy value.
      */
@@ -144,8 +140,7 @@ public final class ReportAssetSummaryRequest {
     }
 
     /**
-     * Set the groupBy property: A parameter to group the assets by (first level facet field), only used when the
-     * chosen summary identifier is filters.
+     * Set the groupBy property: A parameter to group the assets by (first level facet field), only used when the chosen summary identifier is filters.
      *
      * @param groupBy the groupBy value to set.
      * @return the ReportAssetSummaryRequest object itself.
@@ -157,8 +152,7 @@ public final class ReportAssetSummaryRequest {
     }
 
     /**
-     * Get the segmentBy property: A parameter to segment the assets by (second level facet field), only used when the
-     * chosen summary identifier is filters.
+     * Get the segmentBy property: A parameter to segment the assets by (second level facet field), only used when the chosen summary identifier is filters.
      *
      * @return the segmentBy value.
      */
@@ -168,8 +162,7 @@ public final class ReportAssetSummaryRequest {
     }
 
     /**
-     * Set the segmentBy property: A parameter to segment the assets by (second level facet field), only used when the
-     * chosen summary identifier is filters.
+     * Set the segmentBy property: A parameter to segment the assets by (second level facet field), only used when the chosen summary identifier is filters.
      *
      * @param segmentBy the segmentBy value to set.
      * @return the ReportAssetSummaryRequest object itself.

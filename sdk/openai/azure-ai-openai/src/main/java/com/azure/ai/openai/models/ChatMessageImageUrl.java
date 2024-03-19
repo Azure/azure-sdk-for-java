@@ -19,7 +19,7 @@ public final class ChatMessageImageUrl {
      */
     @Generated
     @JsonProperty(value = "url")
-    private String url;
+    private final String url;
 
     /**
      * Creates an instance of ChatMessageImageUrl class.
@@ -51,8 +51,7 @@ public final class ChatMessageImageUrl {
     private ChatMessageImageDetailLevel detail;
 
     /**
-     * Get the detail property: The evaluation quality setting to use, which controls relative prioritization of speed,
-     * token consumption, and
+     * Get the detail property: The evaluation quality setting to use, which controls relative prioritization of speed, token consumption, and
      * accuracy.
      *
      * @return the detail value.
@@ -63,8 +62,7 @@ public final class ChatMessageImageUrl {
     }
 
     /**
-     * Set the detail property: The evaluation quality setting to use, which controls relative prioritization of speed,
-     * token consumption, and
+     * Set the detail property: The evaluation quality setting to use, which controls relative prioritization of speed, token consumption, and
      * accuracy.
      *
      * @param detail the detail value to set.

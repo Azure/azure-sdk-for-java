@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The IpBlockAssetResource model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = IpBlockAssetResource.class, visible = true)
 @JsonTypeName("ipBlock")
 @Immutable
 public final class IpBlockAssetResource extends AssetResource {
@@ -23,7 +23,7 @@ public final class IpBlockAssetResource extends AssetResource {
      */
     @Generated
     @JsonProperty(value = "asset")
-    private IpBlockAsset asset;
+    private final IpBlockAsset asset;
 
     /**
      * Creates an instance of IpBlockAssetResource class.
@@ -33,6 +33,7 @@ public final class IpBlockAssetResource extends AssetResource {
     @Generated
     @JsonCreator
     private IpBlockAssetResource(@JsonProperty(value = "asset") IpBlockAsset asset) {
+        setKind("ipBlock");
         this.asset = asset;
     }
 

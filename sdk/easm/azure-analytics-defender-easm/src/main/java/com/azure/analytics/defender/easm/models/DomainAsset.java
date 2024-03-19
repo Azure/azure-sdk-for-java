@@ -13,7 +13,7 @@ import java.util.List;
  * The DomainAsset model.
  */
 @Immutable
-public final class DomainAsset extends InventoryAsset {
+public final class DomainAsset {
 
     /*
      * The domain property.

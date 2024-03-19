@@ -20,7 +20,7 @@ public final class PatientRecord {
      */
     @Generated
     @JsonProperty(value = "id")
-    private String id;
+    private final String id;
 
     /*
      * Patient structured information, including demographics and known structured clinical information.
@@ -55,8 +55,7 @@ public final class PatientRecord {
     }
 
     /**
-     * Get the id property: A given identifier for the patient. Has to be unique across all patients in a single
-     * request.
+     * Get the id property: A given identifier for the patient. Has to be unique across all patients in a single request.
      *
      * @return the id value.
      */
@@ -66,8 +65,7 @@ public final class PatientRecord {
     }
 
     /**
-     * Get the info property: Patient structured information, including demographics and known structured clinical
-     * information.
+     * Get the info property: Patient structured information, including demographics and known structured clinical information.
      *
      * @return the info value.
      */
@@ -77,8 +75,7 @@ public final class PatientRecord {
     }
 
     /**
-     * Set the info property: Patient structured information, including demographics and known structured clinical
-     * information.
+     * Set the info property: Patient structured information, including demographics and known structured clinical information.
      *
      * @param info the info value to set.
      * @return the PatientRecord object itself.

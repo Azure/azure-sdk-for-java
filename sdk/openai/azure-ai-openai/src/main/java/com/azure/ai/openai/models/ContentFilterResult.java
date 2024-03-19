@@ -19,14 +19,14 @@ public final class ContentFilterResult {
      */
     @Generated
     @JsonProperty(value = "severity")
-    private ContentFilterSeverity severity;
+    private final ContentFilterSeverity severity;
 
     /*
      * A value indicating whether or not the content has been filtered.
      */
     @Generated
     @JsonProperty(value = "filtered")
-    private boolean filtered;
+    private final boolean filtered;
 
     /**
      * Creates an instance of ContentFilterResult class.

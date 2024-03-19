@@ -14,7 +14,11 @@ import java.util.List;
 /**
  * Imaging procedures.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = ImagingProcedureRecommendation.class,
+    visible = true)
 @JsonTypeName("imagingProcedureRecommendation")
 @Immutable
 public final class ImagingProcedureRecommendation extends ProcedureRecommendation {
@@ -31,7 +35,7 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
      */
     @Generated
     @JsonProperty(value = "imagingProcedures")
-    private List<ImagingProcedure> imagingProcedures;
+    private final List<ImagingProcedure> imagingProcedures;
 
     /**
      * Creates an instance of ImagingProcedureRecommendation class.
@@ -42,6 +46,7 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     @JsonCreator
     private ImagingProcedureRecommendation(
         @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures) {
+        setKind("imagingProcedureRecommendation");
         this.imagingProcedures = imagingProcedures;
     }
 

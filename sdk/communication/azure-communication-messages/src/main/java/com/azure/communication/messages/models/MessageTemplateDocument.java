@@ -13,7 +13,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The message template's document value information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "kind",
+    defaultImpl = MessageTemplateDocument.class,
+    visible = true)
 @JsonTypeName("document")
 @Fluent
 public final class MessageTemplateDocument extends MessageTemplateValue {
@@ -23,7 +27,7 @@ public final class MessageTemplateDocument extends MessageTemplateValue {
      */
     @Generated
     @JsonProperty(value = "url")
-    private String url;
+    private final String url;
 
     /*
      * The [optional] caption of the media object.
@@ -50,6 +54,7 @@ public final class MessageTemplateDocument extends MessageTemplateValue {
     public MessageTemplateDocument(@JsonProperty(value = "name") String refValue,
         @JsonProperty(value = "url") String url) {
         super(refValue);
+        setKind(MessageTemplateValueKind.DOCUMENT);
         this.url = url;
     }
 

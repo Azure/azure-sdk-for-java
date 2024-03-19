@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -14,11 +15,7 @@ import java.time.OffsetDateTime;
 /**
  * The DataConnection model.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    include = JsonTypeInfo.As.PROPERTY,
-    property = "kind",
-    defaultImpl = DataConnection.class)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "kind", defaultImpl = DataConnection.class, visible = true)
 @JsonTypeName("DataConnection")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "logAnalytics", value = LogAnalyticsDataConnection.class),
@@ -108,6 +105,7 @@ public class DataConnection {
      */
     @Generated
     protected DataConnection() {
+        this.kind = "DataConnection";
     }
 
     /**
@@ -218,5 +216,35 @@ public class DataConnection {
     @Generated
     public String getInactiveMessage() {
         return this.inactiveMessage;
+    }
+
+    /*
+     * The kind of DataConnection
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private String kind;
+
+    /**
+     * Get the kind property: The kind of DataConnection.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    public String getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The kind of DataConnection.
+     *
+     * @param kind the kind value to set.
+     * @return the DataConnection object itself.
+     */
+    @Generated
+    protected DataConnection setKind(String kind) {
+        this.kind = kind;
+        return this;
     }
 }
