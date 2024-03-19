@@ -6,12 +6,13 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Duration;
 import java.time.Instant;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -69,7 +70,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                     this.globalEndpointManager.getApplicableReadEndpoints(request.requestContext.getExcludeRegions()) :
                     this.globalEndpointManager.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
 
-                isFailoverPossible.set(partitionKeyRangeFailoverInfoAsVal.tryMoveNextLocation(applicableEndpoints, failedLocation, request.isReadOnlyRequest()));
+                isFailoverPossible.set(partitionKeyRangeFailoverInfoAsVal.areLocationsAvailableForPartitionKeyRange(
+                    this,
+                    applicableEndpoints,
+                    request.isReadOnlyRequest()));
             }
 
             return partitionKeyRangeFailoverInfoAsVal;
@@ -77,11 +81,13 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
 
         // set to true if and only if failure threshold exceeded for the region
         // and if failover is possible
-        // a failover is only possible when there are available regions left to failover to
+        // a failover is only possible when there are available regions left to fail over to
         if (isFailoverPossible.get()) {
+            this.updateStaleLocationInfo(request);
             return true;
         }
 
+        // no regions to fail over to
         this.partitionKeyRangeToFailoverInfo.remove(partitionKeyRange);
         return false;
     }
@@ -126,54 +132,91 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
     }
 
     @Override
-    public boolean tryMarkPartitionKeyRangeAsAvailable(RxDocumentServiceRequest request) {
-        return false;
+    public boolean isRegionAvailableForPartitionKeyRange(RxDocumentServiceRequest request) {
+
+        if (request == null) {
+            throw new IllegalArgumentException("request cannot be null!");
+        }
+
+        if (request.requestContext == null) {
+
+            if (logger.isDebugEnabled()) {
+                logger.warn("requestContext is null!");
+            }
+
+            return false;
+        }
+
+        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+
+        if (partitionKeyRange == null) {
+            throw new IllegalStateException("requestContext.resolvedPartitionKeyRange cannot be null!");
+        }
+
+        URI locationWithUndeterminedAvailability = request.requestContext.locationEndpointToRoute;
+
+        if (locationWithUndeterminedAvailability == null) {
+            throw new IllegalStateException("requestContext.locationEndpointToRoute cannot be null!");
+        }
+
+        if (this.partitionKeyRangeToFailoverInfo.containsKey(partitionKeyRange)) {
+
+            // is it possible for this instance to go stale?
+            PartitionLevelFailoverInfo partitionLevelFailoverInfo = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRange);
+
+            if (partitionLevelFailoverInfo.partitionLevelFailureMetadata.containsKey(locationWithUndeterminedAvailability)) {
+
+                LocationLevelFailureMetadata locationLevelFailureMetadata
+                    = partitionLevelFailoverInfo.partitionLevelFailureMetadata.get(locationWithUndeterminedAvailability);
+
+                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionKeyRangeUnavailabilityStatus.FreshUnavailable) {
+                    return false;
+                }
+            }
+
+            // there is no locationLevelFailureMetadata for locationWithUndeterminedAvailability
+            // [or] locationWithUndeterminedAvailability is still available / is stale unavailable
+            return true;
+        }
+
+        // there is no partitionLevelFailoverInfo for partitionKeyRange
+        return true;
     }
 
-    @Override
-    public boolean tryAddPartitionKeyRangeLevelOverride(RxDocumentServiceRequest request) {
+    public void updateStaleLocationInfo(RxDocumentServiceRequest request) {
+        Mono.delay(Duration.ofSeconds(60))
+            .flatMap(ignore -> {
+                Map<PartitionKeyRange, PartitionLevelFailoverInfo> partitionKeyRangeToFailoverInfo
+                    = this.partitionKeyRangeToFailoverInfo;
 
-        return true;
+                if (request.requestContext == null) {
+                    return Mono.empty();
+                }
 
-//        if (request == null) {
-//            throw new IllegalArgumentException("request cannot be null!");
-//        }
-//
-//        if (request.requestContext == null) {
-//
-//            if (logger.isDebugEnabled()) {
-//                logger.warn("requestContext is null!");
-//            }
-//
-//            return false;
-//        }
-//
-//        PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
-//
-//        if (partitionKeyRange == null) {
-//            return false;
-//        }
-//
-//        if (this.partitionKeyRangeToFailoverInfo.containsKey(partitionKeyRange)) {
-//
-//            // is it possible for this instance to go stale?
-//            PartitionLevelFailoverInfo partitionLevelFailoverInfo = this.partitionKeyRangeToFailoverInfo.get(partitionKeyRange);
-//
-//            // it could be possible that this currentLocationSnapshot is stale since the ConcurrentHashMap.get
-//            // thread won over ConcurrentHashMap.compute (can mark a location as failed), in that case, the request
-//            // could hit possible unavailability issues again
-//            URI currentLocationSnapshot = partitionLevelFailoverInfo.current;
-//
-//            if (logger.isDebugEnabled()) {
-//                logger.debug("Moving request to location : {}", currentLocationSnapshot.getPath());
-//            }
-//
-//            request.requestContext.routeToLocation(currentLocationSnapshot);
-//
-//            return true;
-//        }
-//
-//        return false;
+                PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
+
+                if (partitionKeyRange == null) {
+                    return Mono.empty();
+                }
+
+                URI unavailableLocation = request.requestContext.locationEndpointToRoute;
+
+                if (unavailableLocation == null) {
+                    return Mono.empty();
+                }
+
+                if (partitionKeyRangeToFailoverInfo.containsKey(partitionKeyRange)) {
+                    PartitionLevelFailoverInfo partitionLevelFailoverInfo
+                        = partitionKeyRangeToFailoverInfo.get(partitionKeyRange);
+                    LocationLevelFailureMetadata locationLevelFailureMetadata
+                        = partitionLevelFailoverInfo.partitionLevelFailureMetadata.get(unavailableLocation);
+
+                    locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.set(PartitionKeyRangeUnavailabilityStatus.StaleUnavailable);
+                }
+
+                return Mono.empty();
+            }).subscribeOn(CosmosSchedulers.COSMOS_PARALLEL)
+            .subscribe();
     }
 
     // what is the point of an inner class?
@@ -184,10 +227,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
     //  4. failure type
     static class PartitionLevelFailoverInfo {
 
-        private final ConcurrentHashMap<URI, PartitionLevelFailureMetadata> partitionLevelFailureMetadata;
-        private final Set<FailedLocation> failedLocations = ConcurrentHashMap.newKeySet();
+        private final ConcurrentHashMap<URI, LocationLevelFailureMetadata> partitionLevelFailureMetadata;
         // points to the current location a request will be routed to
-        private URI current;
 
         PartitionLevelFailoverInfo() {
             this.partitionLevelFailureMetadata = new ConcurrentHashMap<>();
@@ -201,29 +242,29 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
 
             AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
 
-            this.partitionLevelFailureMetadata.compute(failedLocation, (locationAsKey, partitionLevelFailureMetadataAsVal) -> {
+            this.partitionLevelFailureMetadata.compute(failedLocation, (locationAsKey, locationLevelFailureMetadataAsVal) -> {
 
-                if (partitionLevelFailureMetadataAsVal == null) {
-                    partitionLevelFailureMetadataAsVal = new PartitionLevelFailureMetadata();
+                if (locationLevelFailureMetadataAsVal == null) {
+                    locationLevelFailureMetadataAsVal = new LocationLevelFailureMetadata();
                 }
 
                 // todo : make threshold for marking a location as failed more comprehensive
 
                 if (isReadRequest) {
-                    if (partitionLevelFailureMetadataAsVal.consecutiveFailureCountForReads.incrementAndGet() > 5) {
-                        partitionLevelFailureMetadataAsVal.unavailableForReadsSince.set(Instant.now());
-                        this.current = failedLocation;
+                    if (locationLevelFailureMetadataAsVal.consecutiveFailureCountForReads.incrementAndGet() > 5) {
+                        locationLevelFailureMetadataAsVal.unavailableForReadsSince.set(Instant.now());
+                        locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.set(PartitionKeyRangeUnavailabilityStatus.FreshUnavailable);
                         isFailureThresholdBreached.set(true);
                     }
                 } else {
-                    if (partitionLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.incrementAndGet() > 5) {
-                        partitionLevelFailureMetadataAsVal.unavailableForWritesSince.set(Instant.now());
-                        this.current = failedLocation;
+                    if (locationLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.incrementAndGet() > 5) {
+                        locationLevelFailureMetadataAsVal.unavailableForWritesSince.set(Instant.now());
+                        locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.set(PartitionKeyRangeUnavailabilityStatus.FreshUnavailable);
                         isFailureThresholdBreached.set(true);
                     }
                 }
 
-                return partitionLevelFailureMetadataAsVal;
+                return locationLevelFailureMetadataAsVal;
             });
 
             return isFailureThresholdBreached.get();
@@ -231,70 +272,120 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
 
         // bookmark success
         public void bookmarkSuccess(URI succeededLocation, boolean isReadRequest) {
-            this.partitionLevelFailureMetadata.compute(succeededLocation, (locationAsKey, partitionLevelFailureMetadataAsVal) -> {
+            this.partitionLevelFailureMetadata.compute(succeededLocation, (locationAsKey, locationLevelFailureMetadataAsVal) -> {
 
-                if (partitionLevelFailureMetadataAsVal == null) {
-                    return new PartitionLevelFailureMetadata();
+                if (locationLevelFailureMetadataAsVal == null) {
+                    return new LocationLevelFailureMetadata();
                 }
 
                 if (isReadRequest) {
-                    if (partitionLevelFailureMetadataAsVal.consecutiveFailureCountForReads.get() > 1) {
-                        partitionLevelFailureMetadataAsVal.consecutiveFailureCountForReads.decrementAndGet();
+                    if (locationLevelFailureMetadataAsVal.consecutiveFailureCountForReads.get() > 1) {
+                        switch (locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.get()) {
+                            case StaleUnavailable:
+                                locationLevelFailureMetadataAsVal = new LocationLevelFailureMetadata();
+                            case Available:
+                                locationLevelFailureMetadataAsVal.consecutiveFailureCountForReads.decrementAndGet();
+                        }
                     }
                 } else {
-                    if (partitionLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.get() > 1) {
-                        partitionLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.decrementAndGet();
-                    }
+                    if (locationLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.get() > 1) {
+                        switch (locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.get()) {
+                            case StaleUnavailable:
+                                locationLevelFailureMetadataAsVal = new LocationLevelFailureMetadata();
+                            case Available:
+                                locationLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.decrementAndGet();
+                        }                    }
                 }
 
-                return partitionLevelFailureMetadataAsVal;
+                return locationLevelFailureMetadataAsVal;
             });
         }
 
         // method purpose - choose the next possible region for this partition
         // 1. if current == failedLocation - try using a different location
         //      a) iterate through the list of read / write locations
-        //      b) if location in iteration loop not part of failedLocations, then assign location to current
+        //      b) if location in iteration loop not part of locationUnavailabilityInfos, then assign location to current
         // 2. if current != failedLocation - a different thread has updated it
         // 3.
-        public boolean tryMoveNextLocation(List<URI> locations, URI failedLocation, boolean isReadRequest) {
-            for (URI location : locations) {
-                if (failedLocation == this.current) {
-                    continue;
+        public boolean areLocationsAvailableForPartitionKeyRange(
+            GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker,
+            List<URI> availableLocationsAtAccountLevel,
+            boolean isReadRequest) {
+
+            for (URI availableLocation : availableLocationsAtAccountLevel) {
+                if (!this.partitionLevelFailureMetadata.containsKey(availableLocation)) {
+                    return true;
+                } else {
+                    LocationLevelFailureMetadata locationLevelFailureMetadata = this.partitionLevelFailureMetadata.get(availableLocation);
+
+                    if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionKeyRangeUnavailabilityStatus.Available) {
+                        return true;
+                    }
                 }
+            }
 
-                // failedLocation != current
-                if (!this.failedLocations.contains(failedLocation)) {
+            Instant mostStaleUnavailableTimeAcrossRegions = Instant.MAX;
+            LocationLevelFailureMetadata locationLevelFailureMetadataForMostStaleLocation = null;
 
-                    this.failedLocations.add(new FailedLocation(failedLocation, isReadRequest));
-                    this.current = location;
+            // find region with most 'stale' unavailability
+            for (Map.Entry<URI, LocationLevelFailureMetadata> uriToLocationLevelFailureMetadata : this.partitionLevelFailureMetadata.entrySet()) {
+                URI unavailableLocation = uriToLocationLevelFailureMetadata.getKey();
+                LocationLevelFailureMetadata locationLevelFailureMetadata = uriToLocationLevelFailureMetadata.getValue();
 
+                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionKeyRangeUnavailabilityStatus.Available) {
                     return true;
                 }
+
+                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionKeyRangeUnavailabilityStatus.StaleUnavailable) {
+                    return true;
+                }
+
+                if (isReadRequest) {
+
+                    Instant unavailableSince = locationLevelFailureMetadata.unavailableForReadsSince.get();
+
+                    if (mostStaleUnavailableTimeAcrossRegions.isAfter(unavailableSince)) {
+                        mostStaleUnavailableTimeAcrossRegions = unavailableSince;
+                        locationLevelFailureMetadataForMostStaleLocation = locationLevelFailureMetadata;
+                    }
+                } else {
+
+                    Instant unavailableSince = locationLevelFailureMetadata.unavailableForWritesSince.get();
+
+                    if (mostStaleUnavailableTimeAcrossRegions.isAfter(locationLevelFailureMetadata.unavailableForWritesSince.get())) {
+                        mostStaleUnavailableTimeAcrossRegions = unavailableSince;
+                        locationLevelFailureMetadataForMostStaleLocation = locationLevelFailureMetadata;
+                    }
+                }
+            }
+
+            if (locationLevelFailureMetadataForMostStaleLocation != null) {
+                locationLevelFailureMetadataForMostStaleLocation.partitionKeyRangeUnavailabilityStatus.set(PartitionKeyRangeUnavailabilityStatus.StaleUnavailable);
+                return true;
             }
 
             return false;
         }
-
-        public boolean tryMarkLocationAsAvailable(URI previouslyFailedLocation) {
-            return false;
-        }
     }
 
-    static class PartitionLevelFailureMetadata {
+    private static class LocationLevelFailureMetadata {
         private final AtomicInteger consecutiveFailureCountForWrites = new AtomicInteger();
         private final AtomicInteger consecutiveFailureCountForReads = new AtomicInteger();
         private final AtomicReference<Instant> unavailableForWritesSince = new AtomicReference<>(Instant.MIN);
         private final AtomicReference<Instant> unavailableForReadsSince = new AtomicReference<>(Instant.MIN);
+        private final AtomicReference<PartitionKeyRangeUnavailabilityStatus> partitionKeyRangeUnavailabilityStatus = new AtomicReference<>(PartitionKeyRangeUnavailabilityStatus.Available);
+
     }
 
-    static class FailedLocation {
-        private final URI location;
-        private final boolean isRead;
+    enum PartitionKeyRangeUnavailabilityStatus {
+        Available(100),
+        FreshUnavailable(200),
+        StaleUnavailable(300);
 
-        FailedLocation(URI location, boolean isRead) {
-            this.location = location;
-            this.isRead = isRead;
+        private int priority;
+
+        PartitionKeyRangeUnavailabilityStatus(int priority) {
+            this.priority = priority;
         }
     }
 }

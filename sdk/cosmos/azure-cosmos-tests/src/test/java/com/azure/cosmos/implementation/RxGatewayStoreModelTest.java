@@ -79,6 +79,8 @@ public class RxGatewayStoreModelTest {
         QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        IGlobalPartitionEndpointManager globalPartitionEndpointManager = Mockito.mock(IGlobalPartitionEndpointManager.class);
+
         Mockito.doReturn(new URI("https://localhost"))
                 .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -95,7 +97,8 @@ public class RxGatewayStoreModelTest {
                 userAgentContainer,
                 globalEndpointManager,
                 httpClient,
-            null);
+            null,
+            globalPartitionEndpointManager);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
@@ -121,6 +124,7 @@ public class RxGatewayStoreModelTest {
         QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        IGlobalPartitionEndpointManager globalPartitionEndpointManager = Mockito.mock(IGlobalPartitionEndpointManager.class);
         Mockito.doReturn(new URI("https://localhost"))
                .when(globalEndpointManager).resolveServiceEndpoint(any());
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -137,7 +141,8 @@ public class RxGatewayStoreModelTest {
             userAgentContainer,
             globalEndpointManager,
             httpClient,
-            null);
+            null,
+            globalPartitionEndpointManager);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
@@ -173,6 +178,8 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(any());
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        IGlobalPartitionEndpointManager globalPartitionEndpointManager = Mockito.mock(IGlobalPartitionEndpointManager.class);
+
         Mockito.doReturn(new URI("https://localhost"))
             .when(globalEndpointManager).resolveServiceEndpoint(any());
 
@@ -192,7 +199,8 @@ public class RxGatewayStoreModelTest {
             new UserAgentContainer(),
             globalEndpointManager,
             httpClient,
-            apiType);
+            apiType,
+            globalPartitionEndpointManager);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
         httpClient = ReflectionUtils.getHttpClient(storeModel);
@@ -242,6 +250,8 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(any());
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+        IGlobalPartitionEndpointManager globalPartitionEndpointManager = Mockito.mock(IGlobalPartitionEndpointManager.class);
+
         Mockito.doReturn(new URI("https://localhost"))
             .when(globalEndpointManager).resolveServiceEndpoint(any());
 
@@ -257,7 +267,8 @@ public class RxGatewayStoreModelTest {
             new UserAgentContainer(),
             globalEndpointManager,
             httpClient,
-            apiType);
+            apiType,
+            globalPartitionEndpointManager);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             clientContext,

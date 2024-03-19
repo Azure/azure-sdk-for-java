@@ -61,6 +61,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     private final HttpClient httpClient;
     private final QueryCompatibilityMode queryCompatibilityMode;
     private final GlobalEndpointManager globalEndpointManager;
+    private final IGlobalPartitionEndpointManager globalPartitionEndpointManager;
     private ConsistencyLevel defaultConsistencyLevel;
     private ISessionContainer sessionContainer;
     private ThroughputControlStore throughputControlStore;
@@ -78,7 +79,8 @@ public class RxGatewayStoreModel implements RxStoreModel {
         UserAgentContainer userAgentContainer,
         GlobalEndpointManager globalEndpointManager,
         HttpClient httpClient,
-        ApiType apiType) {
+        ApiType apiType,
+        IGlobalPartitionEndpointManager globalPartitionEndpointManager) {
         this.clientContext = clientContext;
         this.defaultHeaders = new HashMap<>();
         this.defaultHeaders.put(HttpConstants.HttpHeaders.CACHE_CONTROL,
@@ -110,6 +112,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
         this.httpClient = httpClient;
         this.sessionContainer = sessionContainer;
+        this.globalPartitionEndpointManager = globalPartitionEndpointManager;
     }
 
     public RxGatewayStoreModel(RxGatewayStoreModel inner) {
@@ -121,6 +124,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
         this.httpClient = inner.httpClient;
         this.sessionContainer = inner.sessionContainer;
+        this.globalPartitionEndpointManager = inner.globalPartitionEndpointManager;
     }
 
     void setGatewayServiceConfigurationReader(GatewayServiceConfigurationReader gatewayServiceConfigurationReader) {
@@ -539,7 +543,12 @@ public class RxGatewayStoreModel implements RxStoreModel {
     }
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
-        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
+
+        if (this.globalPartitionEndpointManager.isRegionAvailableForPartitionKeyRange(request)) {
+            return Mono.error(new ServiceUnavailableException("PkRange is unavailable at region", null, request.requestContext.locationEndpointToRoute, HttpConstants.SubStatusCodes.UNKNOWN));
+        }
+
+        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single().doOnSuccess(ignore -> this.globalPartitionEndpointManager.tryBookmarkPartitionKeyRangeSuccess(request));
 
         MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(this.globalEndpointManager);
         metadataRequestRetryPolicy.onBeforeSendRequest(request);
@@ -724,6 +733,9 @@ public class RxGatewayStoreModel implements RxStoreModel {
                             PartitionKeyRange range =
                                 collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId);
                             request.requestContext.resolvedPartitionKeyRange = range;
+
+                            this.globalPartitionEndpointManager.isRegionAvailableForPartitionKeyRange(request);
+
                             if (request.requestContext.resolvedPartitionKeyRange == null) {
                                 SessionTokenHelper.setPartitionLocalSessionToken(request, partitionKeyRangeId,
                                     sessionContainer);
@@ -738,6 +750,9 @@ public class RxGatewayStoreModel implements RxStoreModel {
                             PartitionKeyRange range =
                                 collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
                             request.requestContext.resolvedPartitionKeyRange = range;
+
+                            this.globalPartitionEndpointManager.isRegionAvailableForPartitionKeyRange(request);
+
                             SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
                         } else {
                             //Apply the ambient session.

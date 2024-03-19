@@ -596,7 +596,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.userAgentContainer,
                 this.globalEndpointManager,
                 this.reactorHttpClient,
-                this.apiType);
+                this.apiType,
+                this.globalPartitionEndpointManager);
             this.globalEndpointManager.init();
             this.initializeGatewayConfigurationReader();
 
@@ -725,7 +726,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                              UserAgentContainer userAgentContainer,
                                              GlobalEndpointManager globalEndpointManager,
                                              HttpClient httpClient,
-                                             ApiType apiType) {
+                                             ApiType apiType,
+                                             IGlobalPartitionEndpointManager globalPartitionEndpointManager) {
         return new RxGatewayStoreModel(
                 this,
                 sessionContainer,
@@ -734,7 +736,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 userAgentContainer,
                 globalEndpointManager,
                 httpClient,
-                apiType);
+                apiType,
+                globalPartitionEndpointManager);
     }
 
     private HttpClient httpClient() {

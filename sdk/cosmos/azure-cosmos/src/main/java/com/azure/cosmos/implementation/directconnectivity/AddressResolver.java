@@ -22,6 +22,7 @@ import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceId;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.ServiceUnavailableException;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
@@ -87,8 +88,8 @@ public class AddressResolver implements IAddressResolver {
             request.requestContext.resolvedPartitionKeyRange = result.TargetPartitionKeyRange;
 
             // TODO: use GlobalPartitionEndpointManager to add a partition-level request override
-            if (!this.globalPartitionEndpointManager.tryAddPartitionKeyRangeLevelOverride(request)) {
-                return this.resolveAsync(request, forceRefreshPartitionAddresses);
+            if (this.globalPartitionEndpointManager.isRegionAvailableForPartitionKeyRange(request)) {
+                return Mono.error(new ServiceUnavailableException("PkRange is unavailable at region", null, request.requestContext.locationEndpointToRoute, HttpConstants.SubStatusCodes.UNKNOWN));
             }
 
             return Mono.just(result.Addresses);
