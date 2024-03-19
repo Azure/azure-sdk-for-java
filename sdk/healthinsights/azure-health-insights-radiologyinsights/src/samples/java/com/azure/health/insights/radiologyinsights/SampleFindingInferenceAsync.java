@@ -113,6 +113,9 @@ public class SampleFindingInferenceAsync {
             latch.countDown();
         }).subscribe(result -> {
             displayFindings(result);
+        }, error -> {
+            System.err.println(error.getMessage());
+            error.printStackTrace();
         });
 
         latch.await();
