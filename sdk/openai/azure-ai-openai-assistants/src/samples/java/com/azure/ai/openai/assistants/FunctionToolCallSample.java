@@ -26,9 +26,10 @@ import com.azure.core.credential.KeyCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -176,13 +177,24 @@ public class FunctionToolCallSample {
      * Convenience class defining the parameters for the getUserFavoriteCity method.
      * This is used for the sole purpose of obtaining a JSON representation of the parameters.
      */
-    private static class UserFavoriteCityParameters {
+    private static class UserFavoriteCityParameters implements JsonSerializable<UserFavoriteCityParameters> {
 
-        @JsonProperty("type")
         private String type = "object";
 
-        @JsonProperty("properties")
-        private Map<String, Object> properties = new HashMap<>();
+        private Map<String, JsonSerializable<?>> properties = new HashMap<>();
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeStartObject("properties");
+            for (Map.Entry<String, JsonSerializable<?>> entry : this.properties.entrySet()) {
+                jsonWriter.writeFieldName(entry.getKey());
+                entry.getValue().toJson(jsonWriter);
+            }
+            jsonWriter.writeEndObject();
+            return jsonWriter.writeEndObject();
+        }
     }
     // endregion
 
@@ -213,21 +225,29 @@ public class FunctionToolCallSample {
      * Convenience class defining the parameters for the getCityNickname method.
      * This is used for the sole purpose of obtaining a JSON representation of the parameters.
      */
-    private static class CityNicknameParameters {
+    private static class CityNicknameParameters implements JsonSerializable<CityNicknameParameters> {
 
-        @JsonProperty("type")
         private String type = "object";
 
-        @JsonProperty("required")
         private List<String> required = Arrays.asList("location");
 
-        @JsonProperty("properties")
         private Map<String, StringParameter> properties;
 
         CityNicknameParameters() {
             this.properties = new HashMap<>();
 
             this.properties.put("location", new StringParameter("The city and state, e.g. San Francisco, CA"));
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeArrayField("required", this.required, (writer, s) -> writer.writeString(s));
+            jsonWriter.writeStartObject();
+
+            jsonWriter.writeEndObject();
+            return jsonWriter.writeEndObject();
         }
     }
     // endregion
@@ -260,21 +280,33 @@ public class FunctionToolCallSample {
      * Convenience class defining the parameters for the getWeatherAtLocation method.
      * This is used for the sole purpose of obtaining a JSON representation of the parameters.
      */
-    private static class WeatherAtLocationParameters {
-        @JsonProperty("type")
-        private String type = "object";
+    private static class WeatherAtLocationParameters implements JsonSerializable<WeatherAtLocationParameters> {
 
-        @JsonProperty("required")
-        private List<String> required = Arrays.asList("location");
+        private final String type = "object";
 
-        @JsonProperty("properties")
-        private Map<String, Object> properties;
+        private final List<String> required = Arrays.asList("location");
+
+        private final Map<String, JsonSerializable<?>> properties;
 
         WeatherAtLocationParameters() {
             this.properties = new HashMap<>();
 
             this.properties.put("location", new StringParameter("The city and state, e.g. San Francisco, CA"));
             this.properties.put("unit", new EnumParameter());
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeArrayField("required", this.required, (writer, s) -> writer.writeString(s));
+            jsonWriter.writeStartObject("properties");
+            for (Map.Entry<String, JsonSerializable<?>> entry : this.properties.entrySet()) {
+                jsonWriter.writeFieldName(entry.getKey());
+                entry.getValue().toJson(jsonWriter);
+            }
+            jsonWriter.writeEndObject();
+            return jsonWriter.writeEndObject();
         }
     }
     // endregion
@@ -283,29 +315,41 @@ public class FunctionToolCallSample {
     /**
      * Function Tool call definition helper class for String parameters
      */
-    private static class StringParameter {
-        @JsonProperty(value = "type")
-        private String type = "string";
+    private static class StringParameter implements JsonSerializable<StringParameter> {
 
-        @JsonProperty(value = "description")
-        private String description;
+        private final String type = "string";
 
-        @JsonCreator
+        private final String description;
+
         StringParameter(String description) {
             this.description = description;
+        }
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeStringField("description", this.description);
+            return jsonWriter.writeEndObject();
         }
     }
 
     /**
      * Function Tool call definition helper class for enum parameters
      */
-    private static class EnumParameter {
+    private static class EnumParameter implements JsonSerializable<EnumParameter> {
 
-        @JsonProperty(value = "type")
-        private String type = "string";
+        private final String type = "string";
 
-        @JsonProperty(value = "enum")
-        private List<String> enumvalues = Arrays.asList("c", "f");
+        private final List<String> enumValues = Arrays.asList("c", "f");
+
+        @Override
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject();
+            jsonWriter.writeStringField("type", this.type);
+            jsonWriter.writeArrayField("enum", this.enumValues, (writer, s) -> writer.writeString(s));
+            return jsonWriter.writeEndObject();
+        }
     }
     // endregion
 }

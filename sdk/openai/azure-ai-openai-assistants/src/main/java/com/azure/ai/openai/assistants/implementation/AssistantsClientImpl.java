@@ -810,6 +810,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -834,6 +835,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -875,6 +877,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -899,6 +902,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -988,6 +992,7 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             file_ids (Required): [
@@ -1081,6 +1086,7 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             file_ids (Required): [
@@ -1126,6 +1132,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -1169,6 +1176,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -1207,6 +1215,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -1231,6 +1240,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -1273,6 +1283,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Optional): [
@@ -1297,6 +1308,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -2093,6 +2105,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2153,6 +2166,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2242,6 +2256,7 @@ public final class AssistantsClientImpl {
      *             role: String(user/assistant) (Required)
      *             content (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             assistant_id: String (Optional)
@@ -2336,6 +2351,7 @@ public final class AssistantsClientImpl {
      *             role: String(user/assistant) (Required)
      *             content (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             assistant_id: String (Optional)
@@ -2382,6 +2398,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2427,6 +2444,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2480,6 +2498,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2536,6 +2555,7 @@ public final class AssistantsClientImpl {
      *     role: String(user/assistant) (Required)
      *     content (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     assistant_id: String (Optional)
@@ -2810,6 +2830,7 @@ public final class AssistantsClientImpl {
      *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -2828,6 +2849,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -2837,6 +2859,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -2885,6 +2908,7 @@ public final class AssistantsClientImpl {
      *     additional_instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -2903,6 +2927,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -2912,6 +2937,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3005,6 +3031,7 @@ public final class AssistantsClientImpl {
      *             assistant_id: String (Required)
      *             status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *             required_action (Optional): {
+     *                 type: String (Optional)
      *             }
      *             last_error (Required): {
      *                 code: String (Required)
@@ -3014,6 +3041,7 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             file_ids (Required): [
@@ -3111,6 +3139,7 @@ public final class AssistantsClientImpl {
      *             assistant_id: String (Required)
      *             status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *             required_action (Optional): {
+     *                 type: String (Optional)
      *             }
      *             last_error (Required): {
      *                 code: String (Required)
@@ -3120,6 +3149,7 @@ public final class AssistantsClientImpl {
      *             instructions: String (Required)
      *             tools (Required): [
      *                  (Required){
+     *                     type: String (Optional)
      *                 }
      *             ]
      *             file_ids (Required): [
@@ -3169,6 +3199,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3178,6 +3209,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3226,6 +3258,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3235,6 +3268,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3290,6 +3324,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3299,6 +3334,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3358,6 +3394,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3367,6 +3404,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3429,6 +3467,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3438,6 +3477,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3501,6 +3541,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3510,6 +3551,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3558,6 +3600,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3567,6 +3610,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3615,6 +3659,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3624,6 +3669,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3685,6 +3731,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -3703,6 +3750,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3712,6 +3760,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3775,6 +3824,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Optional)
      *     tools (Optional): [
      *          (Optional){
+     *             type: String (Optional)
      *         }
      *     ]
      *     metadata (Optional): {
@@ -3793,6 +3843,7 @@ public final class AssistantsClientImpl {
      *     assistant_id: String (Required)
      *     status: String(queued/in_progress/requires_action/cancelling/cancelled/failed/completed/expired) (Required)
      *     required_action (Optional): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String (Required)
@@ -3802,6 +3853,7 @@ public final class AssistantsClientImpl {
      *     instructions: String (Required)
      *     tools (Required): [
      *          (Required){
+     *             type: String (Optional)
      *         }
      *     ]
      *     file_ids (Required): [
@@ -3850,6 +3902,7 @@ public final class AssistantsClientImpl {
      *     run_id: String (Required)
      *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *     step_details (Required): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String(server_error/rate_limit_exceeded) (Required)
@@ -3899,6 +3952,7 @@ public final class AssistantsClientImpl {
      *     run_id: String (Required)
      *     status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *     step_details (Required): {
+     *         type: String (Optional)
      *     }
      *     last_error (Required): {
      *         code: String(server_error/rate_limit_exceeded) (Required)
@@ -3994,6 +4048,7 @@ public final class AssistantsClientImpl {
      *             run_id: String (Required)
      *             status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *             step_details (Required): {
+     *                 type: String (Optional)
      *             }
      *             last_error (Required): {
      *                 code: String(server_error/rate_limit_exceeded) (Required)
@@ -4094,6 +4149,7 @@ public final class AssistantsClientImpl {
      *             run_id: String (Required)
      *             status: String(in_progress/cancelled/failed/completed/expired) (Required)
      *             step_details (Required): {
+     *                 type: String (Optional)
      *             }
      *             last_error (Required): {
      *                 code: String(server_error/rate_limit_exceeded) (Required)
