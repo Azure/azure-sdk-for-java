@@ -434,6 +434,8 @@ stages:
                 Commitish: $(Build.SourceVersion)
                 WorkingDirectory: $(Pipeline.Workspace)/azure-sdk-for-java
 
+        - template: /eng/pipelines/templates/steps/download-credscan-suppressions.yml
+
         - download: current
           displayName: 'Download Artifact: ${{parameters.ArtifactName}}-signed'
           artifact: ${{parameters.ArtifactName}}-signed
