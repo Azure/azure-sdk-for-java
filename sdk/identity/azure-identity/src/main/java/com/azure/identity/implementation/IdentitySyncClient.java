@@ -337,12 +337,20 @@ public class IdentitySyncClient extends IdentityClientBase {
         }
         PublicClientApplication pc = getPublicClientInstance(request).getValue();
 
+        // If the broker is enabled, try to get the token for the default account by passing
+        // a null account to MSAL. If that fails, show the dialog.
+        MsalToken token = null;
         if (options.isBrokerEnabled() && options.useOperatingSystemAccount()) {
-            return acquireTokenFromPublicClientSilently(request,
-                pc,
-                null,
-                false);
-        } else {
+            try {
+                token = acquireTokenFromPublicClientSilently(request,
+                    pc,
+                    null,
+                    false);
+            } catch (Exception e) {
+                // Ignore the exception and proceed with interactive authentication.
+            }
+        }
+        if (token == null) {
             InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
                 buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
@@ -353,6 +361,7 @@ public class IdentitySyncClient extends IdentityClientBase {
                     "Failed to acquire token with Interactive Browser Authentication.", null, e));
             }
         }
+        return token;
     }
 
     /**

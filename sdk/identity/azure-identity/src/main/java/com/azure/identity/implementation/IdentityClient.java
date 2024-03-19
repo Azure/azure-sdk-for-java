@@ -823,13 +823,18 @@ public class IdentityClient extends IdentityClientBase {
             return Mono.error(LOGGER.logExceptionAsError(new RuntimeException(e)));
         }
 
+        // If the broker is enabled, try to get the token for the default account by passing
+        // a null account to MSAL. If that fails, show the dialog.
+        Mono<MsalToken> token = null;
         if (options.isBrokerEnabled() && options.useOperatingSystemAccount()) {
-            return getPublicClientInstance(request).getValue().flatMap(pc ->
+            token = getPublicClientInstance(request).getValue().flatMap(pc ->
                 Mono.fromFuture(() ->
-                    acquireTokenFromPublicClientSilently(request, pc, null, false)).
+                        acquireTokenFromPublicClientSilently(request, pc, null, false)).
+                    // if something bad happened we fall back.
+                    onErrorResume(t -> Mono.empty()).
                     map(MsalToken::new));
-        } else {
-
+        }
+        if (token == null || token.hasElement().block() == Boolean.FALSE) {
             InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
                 buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
@@ -841,6 +846,7 @@ public class IdentityClient extends IdentityClientBase {
             return acquireToken.onErrorMap(t -> new ClientAuthenticationException(
                 "Failed to acquire token with Interactive Browser Authentication.", null, t)).map(MsalToken::new);
         }
+        return token;
     }
 
     /**
