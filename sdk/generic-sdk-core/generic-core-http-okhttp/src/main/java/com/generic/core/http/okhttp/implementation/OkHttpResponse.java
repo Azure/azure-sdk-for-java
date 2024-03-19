@@ -15,6 +15,7 @@ import okhttp3.ResponseBody;
  */
 public class OkHttpResponse extends HttpResponse<BinaryData> {
     private final ResponseBody responseBody;
+    private BinaryData body;
 
     public OkHttpResponse(okhttp3.Response response, HttpRequest request, boolean eagerlyConvertHeaders,
                           byte[] bodyBytes) {
@@ -23,19 +24,21 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
             eagerlyConvertHeaders
                 ? fromOkHttpHeaders(response.headers())
                 : new OkHttpToCoreHttpHeadersWrapper(response.headers()),
-            bodyBytes == null
-                ? response.body() == null
-                    ? null
-                    : response.body().contentLength() == 0
-                        ? null
-                        : BinaryData.fromStream(response.body().byteStream())
-                : BinaryData.fromBytes(bodyBytes));
+            null);
         // innerResponse.body() getter will not return null for server returned responses.
         // It can be null:
         // [a]. if response is built manually with null body (e.g. for mocking)
         // [b]. for the cases described here
         // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
         this.responseBody = response.body();
+
+        if (bodyBytes == null) {
+            if (responseBody != null && responseBody.contentLength() != 0) {
+                this.body = BinaryData.fromStream(responseBody.byteStream());
+            }
+        } else {
+            this.body = BinaryData.fromBytes(bodyBytes);
+        }
     }
 
     /**
@@ -65,6 +68,24 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
             httpHeaders.add(HeaderName.fromString(nameValuePair.getFirst()), nameValuePair.getSecond()));
 
         return httpHeaders;
+    }
+
+    /**
+     * Gets the {@link BinaryData} that represents the body of the response.
+     *
+     * @return The {@link BinaryData} containing the response body.
+     */
+    @Override
+    public BinaryData getBody() {
+        if (body == null) {
+            if (super.getValue() == null) {
+                body = super.getBody();
+            } else {
+                body = super.getValue();
+            }
+        }
+
+        return body;
     }
 
     @Override

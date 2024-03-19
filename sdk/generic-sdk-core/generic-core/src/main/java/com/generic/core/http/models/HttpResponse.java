@@ -67,7 +67,11 @@ public class HttpResponse<T> implements Response<T> {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
-        this.value = value;
+
+        if (value != null) {
+            this.value = value;
+            this.isValueDeserialized = true;
+        }
     }
 
     /**
@@ -106,7 +110,7 @@ public class HttpResponse<T> implements Response<T> {
     public T getValue() {
         if (!isValueDeserialized && bodyDeserializer != null) {
             // Deserialize the value
-            value = (T) bodyDeserializer.apply(body);
+            value = (T) bodyDeserializer.apply(getBody());
 
             this.isValueDeserialized = true;
         }
