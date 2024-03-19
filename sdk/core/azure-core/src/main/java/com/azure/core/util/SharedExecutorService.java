@@ -5,6 +5,7 @@ package com.azure.core.util;
 
 import com.azure.core.implementation.ReflectionUtils;
 import com.azure.core.implementation.ReflectiveInvoker;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.Collection;
@@ -31,6 +32,8 @@ import java.util.concurrent.atomic.AtomicReference;
  * This executor service may be created by using its constructor, but it is recommended to use the shared instance.
  */
 public final class SharedExecutorService implements ExecutorService {
+    private static final ClientLogger LOGGER = new ClientLogger(SharedExecutorService.class);
+
     private static final AtomicReference<SharedExecutorService> INSTANCE = new AtomicReference<>();
 
     // Shared thread counter for all instances of SharedExecutorService created using the empty factory method.
@@ -143,7 +146,8 @@ public final class SharedExecutorService implements ExecutorService {
     @Override
     public void shutdown() {
         // This doesn't do anything as this is meant to be shared and shouldn't be shut down by one consumer.
-        throw new UnsupportedOperationException("This executor service is shared and cannot be shut down.");
+        throw LOGGER.logThrowableAsError(
+            new UnsupportedOperationException("This executor service is shared and cannot be shut down."));
     }
 
     /**
@@ -155,7 +159,8 @@ public final class SharedExecutorService implements ExecutorService {
      */
     @Override
     public List<Runnable> shutdownNow() {
-        throw new UnsupportedOperationException("This executor service is shared and cannot be shut down.");
+        throw LOGGER.logThrowableAsError(
+            new UnsupportedOperationException("This executor service is shared and cannot be shut down."));
     }
 
     @Override
