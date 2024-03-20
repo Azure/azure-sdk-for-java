@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appcontainers.fluent.models.AvailableWorkloadPr
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of available workload profiles in the location. */
+/**
+ * Collection of available workload profiles in the location.
+ */
 @Fluent
 public final class AvailableWorkloadProfilesCollection {
     /*
@@ -25,13 +27,15 @@ public final class AvailableWorkloadProfilesCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AvailableWorkloadProfilesCollection class. */
+    /**
+     * Creates an instance of AvailableWorkloadProfilesCollection class.
+     */
     public AvailableWorkloadProfilesCollection() {
     }
 
     /**
      * Get the value property: Collection of workload profiles.
-     *
+     * 
      * @return the value value.
      */
     public List<AvailableWorkloadProfileInner> value() {
@@ -40,7 +44,7 @@ public final class AvailableWorkloadProfilesCollection {
 
     /**
      * Set the value property: Collection of workload profiles.
-     *
+     * 
      * @param value the value value to set.
      * @return the AvailableWorkloadProfilesCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class AvailableWorkloadProfilesCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class AvailableWorkloadProfilesCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model AvailableWorkloadProfilesCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model AvailableWorkloadProfilesCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

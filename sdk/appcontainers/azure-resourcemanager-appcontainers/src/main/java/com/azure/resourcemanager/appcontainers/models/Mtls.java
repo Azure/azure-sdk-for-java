@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration properties for mutual TLS authentication. */
+/**
+ * Configuration properties for mutual TLS authentication.
+ */
 @Fluent
 public final class Mtls {
     /*
@@ -16,13 +18,15 @@ public final class Mtls {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of Mtls class. */
+    /**
+     * Creates an instance of Mtls class.
+     */
     public Mtls() {
     }
 
     /**
      * Get the enabled property: Boolean indicating whether the mutual TLS authentication is enabled.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -31,7 +35,7 @@ public final class Mtls {
 
     /**
      * Set the enabled property: Boolean indicating whether the mutual TLS authentication is enabled.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the Mtls object itself.
      */
@@ -42,7 +46,7 @@ public final class Mtls {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

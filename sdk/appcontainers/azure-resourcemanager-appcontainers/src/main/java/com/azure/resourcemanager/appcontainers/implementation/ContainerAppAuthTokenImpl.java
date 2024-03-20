@@ -16,8 +16,7 @@ public final class ContainerAppAuthTokenImpl implements ContainerAppAuthToken {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    ContainerAppAuthTokenImpl(
-        ContainerAppAuthTokenInner innerObject,
+    ContainerAppAuthTokenImpl(ContainerAppAuthTokenInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
