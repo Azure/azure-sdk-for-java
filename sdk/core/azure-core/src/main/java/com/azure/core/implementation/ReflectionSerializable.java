@@ -58,16 +58,22 @@ public final class ReflectionSerializable {
         try {
             xmlSerializable = Class.forName("com.azure.xml.XmlSerializable");
             xmlReader = Class.forName("com.azure.xml.XmlReader");
-
-            Class<?> xmlProviders = Class.forName("com.azure.xml.XmlProviders");
-
-            xmlReaderCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
-                xmlProviders.getDeclaredMethod("createReader", byte[].class));
-
-            xmlWriterCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
-                xmlProviders.getDeclaredMethod("createWriter", OutputStream.class));
-
             Class<?> xmlWriter = Class.forName("com.azure.xml.XmlWriter");
+
+            try {
+                Class<?> xmlProviders = Class.forName("com.azure.xml.XmlProviders");
+
+                xmlReaderCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
+                    xmlProviders.getDeclaredMethod("createReader", byte[].class));
+
+                xmlWriterCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
+                    xmlProviders.getDeclaredMethod("createWriter", OutputStream.class));
+            } catch (LinkageError | ReflectiveOperationException ex) {
+                xmlReaderCreator = ReflectionUtils.getMethodInvoker(xmlReader,
+                    xmlReader.getDeclaredMethod("fromBytes", byte[].class));
+                xmlWriterCreator = ReflectionUtils.getMethodInvoker(xmlWriter,
+                    xmlWriter.getDeclaredMethod("toStream", OutputStream.class));
+            }
 
             xmlWriterWriteStartDocument
                 = ReflectionUtils.getMethodInvoker(xmlWriter, xmlWriter.getDeclaredMethod("writeStartDocument"));
