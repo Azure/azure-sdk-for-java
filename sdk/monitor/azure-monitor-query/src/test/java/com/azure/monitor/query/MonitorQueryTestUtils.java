@@ -15,14 +15,11 @@ public final class MonitorQueryTestUtils {
     private static final String LOG_WORKSPACE_ID = Configuration.getGlobalConfiguration()
         .get("AZURE_MONITOR_LOGS_WORKSPACE_ID");
 
-    private static final String ADDITIONAL_LOG_WORKSPACE_ID = Configuration.getGlobalConfiguration()
-        .get("AZURE_MONITOR_LOGS_ADDITIONAL_WORKSPACE_ID");
-
     private static final String LOG_RESOURCE_ID = Configuration.getGlobalConfiguration()
         .get("AZURE_MONITOR_LOGS_RESOURCE_ID");
 
     private static final String METRIC_RESOURCE_URI = Configuration.getGlobalConfiguration()
-        .get("AZURE_MONITOR_METRICS_RESOURCE_URI_1");
+        .get("AZURE_MONITOR_METRICS_RESOURCE_URI");
 
 
     public static final String QUERY_STRING = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
@@ -41,33 +38,25 @@ public final class MonitorQueryTestUtils {
 
     public static String getLogWorkspaceId(boolean isPlaybackMode) {
         if (isPlaybackMode) {
-            return "f87c198a-4353-4612-ae3c-9fe34076b771";
+            return "d2d0e126-fa1e-4b0a-b647-250cdd471e68";
         } else {
             return LOG_WORKSPACE_ID;
         }
     }
 
-    public static String getAdditionalLogWorkspaceId(boolean isPlaybackMode) {
-        if (isPlaybackMode) {
-            return "e9512cff-dd93-4a96-8583-e614eacda4fd";
-        } else {
-            return ADDITIONAL_LOG_WORKSPACE_ID;
-        }
-    }
-
     public static String getLogResourceId(boolean isPlaybackMode) {
         if (isPlaybackMode) {
-            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-marchtest7/providers/Microsoft.OperationalInsights/workspaces/marchtest7-azmonitorlogsws";
+            return "subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage";
         } else {
-            return LOG_RESOURCE_ID.substring(LOG_RESOURCE_ID.indexOf("/subscriptions"));
+            return LOG_RESOURCE_ID;
         }
     }
 
     public static String getMetricResourceUri(boolean isPlaybackMode) {
         if (isPlaybackMode) {
-            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-marchtest7/providers/Microsoft.Eventhub/Namespaces/eventhubmarchtest7";
+            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-jairmyree-test/providers/Microsoft.EventHub/namespaces/eventhubt9a76fe3bdd7263f8";
         } else {
-            return METRIC_RESOURCE_URI.substring(METRIC_RESOURCE_URI.indexOf("/subscriptions"));
+            return METRIC_RESOURCE_URI;
         }
     }
 

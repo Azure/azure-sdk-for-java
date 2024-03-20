@@ -9,9 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Error details.
- */
+/** Error details. */
 @Fluent
 public final class ErrorDetail {
     /*
@@ -52,20 +50,21 @@ public final class ErrorDetail {
 
     /**
      * Creates an instance of ErrorDetail class.
-     * 
+     *
      * @param code the code value to set.
      * @param message the message value to set.
      */
     @JsonCreator
-    public ErrorDetail(@JsonProperty(value = "code", required = true) String code,
-        @JsonProperty(value = "message", required = true) String message) {
+    public ErrorDetail(
+            @JsonProperty(value = "code", required = true) String code,
+            @JsonProperty(value = "message", required = true) String message) {
         this.code = code;
         this.message = message;
     }
 
     /**
      * Get the code property: The error's code.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -74,7 +73,7 @@ public final class ErrorDetail {
 
     /**
      * Get the message property: A human readable error message.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -83,7 +82,7 @@ public final class ErrorDetail {
 
     /**
      * Get the target property: Indicates which property in the request is responsible for the error.
-     * 
+     *
      * @return the target value.
      */
     public String getTarget() {
@@ -92,7 +91,7 @@ public final class ErrorDetail {
 
     /**
      * Set the target property: Indicates which property in the request is responsible for the error.
-     * 
+     *
      * @param target the target value to set.
      * @return the ErrorDetail object itself.
      */
@@ -103,7 +102,7 @@ public final class ErrorDetail {
 
     /**
      * Get the value property: Indicates which value in 'target' is responsible for the error.
-     * 
+     *
      * @return the value value.
      */
     public String getValue() {
@@ -112,7 +111,7 @@ public final class ErrorDetail {
 
     /**
      * Set the value property: Indicates which value in 'target' is responsible for the error.
-     * 
+     *
      * @param value the value value to set.
      * @return the ErrorDetail object itself.
      */
@@ -123,7 +122,7 @@ public final class ErrorDetail {
 
     /**
      * Get the resources property: Indicates resources which were responsible for the error.
-     * 
+     *
      * @return the resources value.
      */
     public List<String> getResources() {
@@ -132,7 +131,7 @@ public final class ErrorDetail {
 
     /**
      * Set the resources property: Indicates resources which were responsible for the error.
-     * 
+     *
      * @param resources the resources value to set.
      * @return the ErrorDetail object itself.
      */
@@ -143,7 +142,7 @@ public final class ErrorDetail {
 
     /**
      * Get the additionalProperties property: Additional properties that can be provided on the error details object.
-     * 
+     *
      * @return the additionalProperties value.
      */
     public Object getAdditionalProperties() {
@@ -152,12 +151,26 @@ public final class ErrorDetail {
 
     /**
      * Set the additionalProperties property: Additional properties that can be provided on the error details object.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the ErrorDetail object itself.
      */
     public ErrorDetail setAdditionalProperties(Object additionalProperties) {
         this.additionalProperties = additionalProperties;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getCode() == null) {
+            throw new IllegalArgumentException("Missing required property code in model ErrorDetail");
+        }
+        if (getMessage() == null) {
+            throw new IllegalArgumentException("Missing required property message in model ErrorDetail");
+        }
     }
 }

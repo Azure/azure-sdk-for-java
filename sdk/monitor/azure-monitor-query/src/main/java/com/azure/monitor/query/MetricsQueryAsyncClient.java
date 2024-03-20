@@ -176,7 +176,7 @@ public final class MetricsQueryAsyncClient {
                 .getMetrics()
                 .listWithResponseAsync(resourceUri, timespan, options.getGranularity(),
                         String.join(",", metricsNames), aggregation, options.getTop(), options.getOrderBy(),
-                        options.getFilter(), ResultType.DATA, options.getMetricNamespace(), null, null, null, context)
+                        options.getFilter(), ResultType.DATA, options.getMetricNamespace(), context)
                 .map(response -> convertToMetricsQueryResult(response))
                 .onErrorMap(ErrorResponseException.class, ex -> {
                     return new HttpResponseException(ex.getMessage(), ex.getResponse(),

@@ -4,57 +4,30 @@
 
 package com.azure.monitor.query.implementation.metricsdefinitions.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
-/**
- * Error Response
- * 
- * Common error response for all Azure Resource Manager APIs to return error details for failed operations. (This also
- * follows the OData error response format.).
- */
-@Immutable
+/** Describes the format of Error response. */
+@Fluent
 public final class ErrorResponse {
     /*
-     * The error code.
+     * Error code
      */
-    @JsonProperty(value = "code", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "code")
     private String code;
 
     /*
-     * The error message.
+     * Error message indicating why the operation failed.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "message")
     private String message;
 
-    /*
-     * The error target.
-     */
-    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
-    private String target;
-
-    /*
-     * The error details.
-     */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ErrorResponse> details;
-
-    /*
-     * The error additional info.
-     */
-    @JsonProperty(value = "additionalInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ErrorAdditionalInfo> additionalInfo;
+    /** Creates an instance of ErrorResponse class. */
+    public ErrorResponse() {}
 
     /**
-     * Creates an instance of ErrorResponse class.
-     */
-    public ErrorResponse() {
-    }
-
-    /**
-     * Get the code property: The error code.
-     * 
+     * Get the code property: Error code.
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -62,8 +35,19 @@ public final class ErrorResponse {
     }
 
     /**
-     * Get the message property: The error message.
-     * 
+     * Set the code property: Error code.
+     *
+     * @param code the code value to set.
+     * @return the ErrorResponse object itself.
+     */
+    public ErrorResponse setCode(String code) {
+        this.code = code;
+        return this;
+    }
+
+    /**
+     * Get the message property: Error message indicating why the operation failed.
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -71,29 +55,20 @@ public final class ErrorResponse {
     }
 
     /**
-     * Get the target property: The error target.
-     * 
-     * @return the target value.
+     * Set the message property: Error message indicating why the operation failed.
+     *
+     * @param message the message value to set.
+     * @return the ErrorResponse object itself.
      */
-    public String getTarget() {
-        return this.target;
+    public ErrorResponse setMessage(String message) {
+        this.message = message;
+        return this;
     }
 
     /**
-     * Get the details property: The error details.
-     * 
-     * @return the details value.
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    public List<ErrorResponse> getDetails() {
-        return this.details;
-    }
-
-    /**
-     * Get the additionalInfo property: The error additional info.
-     * 
-     * @return the additionalInfo value.
-     */
-    public List<ErrorAdditionalInfo> getAdditionalInfo() {
-        return this.additionalInfo;
-    }
+    public void validate() {}
 }
