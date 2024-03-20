@@ -111,6 +111,9 @@ public class SampleRadiologyProcedureInferenceAsync {
             latch.countDown();
         }).subscribe(result -> {
             displayRadiologyProcedures(result);
+        }, error -> {
+            System.err.println(error.getMessage());
+            error.printStackTrace();
         });
 
         latch.await();

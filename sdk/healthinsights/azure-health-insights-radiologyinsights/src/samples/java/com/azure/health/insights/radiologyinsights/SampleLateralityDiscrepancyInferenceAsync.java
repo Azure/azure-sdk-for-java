@@ -96,6 +96,9 @@ public class SampleLateralityDiscrepancyInferenceAsync {
             latch.countDown();
         }).subscribe(result -> {
             displayLateralityDiscrepancies(result);
+        }, error -> {
+            System.err.println(error.getMessage());
+            error.printStackTrace();
         });
 
         latch.await();
