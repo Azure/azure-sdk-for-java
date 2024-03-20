@@ -1,5 +1,15 @@
 # Release History
 
+## 1.19.2 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.18.1` to version `5.19.0-beta.1`.
+- Upgraded `azure-storage-blob` from `12.25.1` to version `12.25.2`.
+
+
 ## 1.19.1 (2024-02-16)
 
 ### Other Changes
