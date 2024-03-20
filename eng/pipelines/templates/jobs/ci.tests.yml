@@ -153,3 +153,7 @@ jobs:
       # Shut down proxy to prevent file locks on the log file for auto-injected credscan
       # steps on windows
       - template: /eng/common/testproxy/test-proxy-tool-shutdown.yml
+
+      - template: /eng/common/pipelines/templates/steps/credscan.yml
+        parameters:
+          BaselineFilePath: $(Build.SourcesDirectory)\eng\java.gdnbaselines
