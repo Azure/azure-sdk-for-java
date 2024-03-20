@@ -84,6 +84,10 @@ extends:
               ShouldPublish: ${{ parameters.ShouldPublish }}
               StageOnly: false
 
+          - pwsh: |
+              Get-ChildItem -R -Path $(EsrpArtifacts)
+            displayName: Dump contents of ESRP Artifacts
+
           - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
             parameters:
               ArtifactName: packages-esrp-$(System.JobAttempt)
