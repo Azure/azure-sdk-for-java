@@ -12,23 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class EffectiveNetworkSecurityGroupsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EffectiveNetworkSecurityGroups model =
-            BinaryData
-                .fromString(
-                    "{\"networkInterface\":\"aeranokqgukkjqnv\",\"networkSecurityGroups\":[\"ylaxxulcdi\",\"dosfjbjsvgjrw\"]}")
-                .toObject(EffectiveNetworkSecurityGroups.class);
-        Assertions.assertEquals("aeranokqgukkjqnv", model.networkInterface());
-        Assertions.assertEquals("ylaxxulcdi", model.networkSecurityGroups().get(0));
+        EffectiveNetworkSecurityGroups model = BinaryData
+            .fromString(
+                "{\"networkInterface\":\"yehqbeivdlhydwb\",\"networkSecurityGroups\":[\"grlpuny\",\"jlkesmmpath\"]}")
+            .toObject(EffectiveNetworkSecurityGroups.class);
+        Assertions.assertEquals("yehqbeivdlhydwb", model.networkInterface());
+        Assertions.assertEquals("grlpuny", model.networkSecurityGroups().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EffectiveNetworkSecurityGroups model =
-            new EffectiveNetworkSecurityGroups()
-                .withNetworkInterface("aeranokqgukkjqnv")
-                .withNetworkSecurityGroups(Arrays.asList("ylaxxulcdi", "dosfjbjsvgjrw"));
+        EffectiveNetworkSecurityGroups model = new EffectiveNetworkSecurityGroups()
+            .withNetworkInterface("yehqbeivdlhydwb").withNetworkSecurityGroups(Arrays.asList("grlpuny", "jlkesmmpath"));
         model = BinaryData.fromObject(model).toObject(EffectiveNetworkSecurityGroups.class);
-        Assertions.assertEquals("aeranokqgukkjqnv", model.networkInterface());
-        Assertions.assertEquals("ylaxxulcdi", model.networkSecurityGroups().get(0));
+        Assertions.assertEquals("yehqbeivdlhydwb", model.networkInterface());
+        Assertions.assertEquals("grlpuny", model.networkSecurityGroups().get(0));
     }
 }

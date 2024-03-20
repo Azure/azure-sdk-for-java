@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource requests of the API portal. */
+/**
+ * Resource requests of the API portal.
+ */
 @Immutable
 public final class ApiPortalResourceRequests {
     /*
@@ -23,8 +25,14 @@ public final class ApiPortalResourceRequests {
     private String memory;
 
     /**
+     * Creates an instance of ApiPortalResourceRequests class.
+     */
+    public ApiPortalResourceRequests() {
+    }
+
+    /**
      * Get the cpu property: Cpu allocated to each API portal instance.
-     *
+     * 
      * @return the cpu value.
      */
     public String cpu() {
@@ -33,7 +41,7 @@ public final class ApiPortalResourceRequests {
 
     /**
      * Get the memory property: Memory allocated to each API portal instance.
-     *
+     * 
      * @return the memory value.
      */
     public String memory() {
@@ -42,7 +50,7 @@ public final class ApiPortalResourceRequests {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

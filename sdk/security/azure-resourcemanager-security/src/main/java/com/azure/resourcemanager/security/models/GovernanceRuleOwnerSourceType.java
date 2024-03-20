@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The owner type for the governance rule owner source. */
+/**
+ * The owner type for the governance rule owner source.
+ */
 public final class GovernanceRuleOwnerSourceType extends ExpandableStringEnum<GovernanceRuleOwnerSourceType> {
-    /** Static value ByTag for GovernanceRuleOwnerSourceType. */
+    /**
+     * Static value ByTag for GovernanceRuleOwnerSourceType.
+     */
     public static final GovernanceRuleOwnerSourceType BY_TAG = fromString("ByTag");
 
-    /** Static value Manually for GovernanceRuleOwnerSourceType. */
+    /**
+     * Static value Manually for GovernanceRuleOwnerSourceType.
+     */
     public static final GovernanceRuleOwnerSourceType MANUALLY = fromString("Manually");
 
     /**
      * Creates a new instance of GovernanceRuleOwnerSourceType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class GovernanceRuleOwnerSourceType extends ExpandableStringEnum<Go
 
     /**
      * Creates or finds a GovernanceRuleOwnerSourceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GovernanceRuleOwnerSourceType.
      */
@@ -38,7 +44,7 @@ public final class GovernanceRuleOwnerSourceType extends ExpandableStringEnum<Go
 
     /**
      * Gets known GovernanceRuleOwnerSourceType values.
-     *
+     * 
      * @return known GovernanceRuleOwnerSourceType values.
      */
     public static Collection<GovernanceRuleOwnerSourceType> values() {

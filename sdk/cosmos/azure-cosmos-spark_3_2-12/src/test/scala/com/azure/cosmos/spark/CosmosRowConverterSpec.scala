@@ -1490,6 +1490,26 @@ class CosmosRowConverterSpec extends UnitSpec with BasicLoggingTrait {
     rowWithMap.getString(1) shouldEqual colVal2
   }
 
+  "nested in ObjectNode" should "translate to StringType correctly when requested" in {
+    val colName1 = "testCol1"
+    val colName2 = "testCol2"
+    val colVal1 = "testVal1"
+    val colVal2 = "testVal2"
+
+    val objectNode: ObjectNode = objectMapper.createObjectNode()
+    val nestedObjectNode: ObjectNode = objectNode.putObject(colName1)
+    nestedObjectNode.put(colName1, colVal1)
+    objectNode.put(colName2, colVal2)
+
+    // with struct
+    val schema = StructType(Seq(StructField(colName1, StringType),
+      StructField(colName2, StringType)))
+    val row = defaultRowConverter.fromObjectNodeToRow(schema, objectNode, SchemaConversionModes.Relaxed)
+    val nestedAsJsonText = row.getString(0)
+    nestedAsJsonText shouldEqual nestedObjectNode.toString
+    row.getString(1) shouldEqual colVal2
+  }
+
   "raw in ObjectNode" should "translate to Row" in {
     val colName1 = "testCol1"
     val colVal1 = "testVal1"

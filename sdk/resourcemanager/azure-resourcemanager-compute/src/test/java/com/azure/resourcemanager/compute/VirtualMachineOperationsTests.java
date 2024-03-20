@@ -1742,6 +1742,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
         Assertions.assertTrue(vm.networkInterfaceIds().stream().allMatch(nicId -> DeleteOptions.DELETE.equals(vm.networkInterfaceDeleteOptions(nicId))));
         Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
+
+        // update all to DETACH
+        vm.update()
+            .withDataDisksDeleteOptions(DeleteOptions.DETACH)
+            .withNetworkInterfacesDeleteOptions(DeleteOptions.DETACH)
+            .apply();
+
+        Assertions.assertTrue(vm.networkInterfaceIds().stream().allMatch(nicId -> DeleteOptions.DETACH.equals(vm.networkInterfaceDeleteOptions(nicId))));
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DETACH.equals(disk.deleteOptions())));
     }
 
     @Test
@@ -1847,6 +1856,86 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
         Assertions.assertEquals(vmssCapacity, vmPaged.stream().count());
         Assertions.assertEquals(2, pageCount);
+    }
+
+    @Test
+    public void canCreateVMWithEncryptionAtHost() {
+        VirtualMachine vm = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .withEncryptionAtHost()
+            .create();
+
+        Assertions.assertNotNull(vm.innerModel().securityProfile());
+        Assertions.assertTrue(vm.isEncryptionAtHost());
+    }
+
+    @Test
+    public void canUpdateVMWithEncryptionAtHost() {
+        VirtualMachine vm = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .create();
+
+        vm.deallocate();
+        vm.update().withEncryptionAtHost().apply();
+
+        Assertions.assertNotNull(vm.innerModel().securityProfile());
+        Assertions.assertTrue(vm.isEncryptionAtHost());
+    }
+
+    @Test
+    public void canUpdateVMWithoutEncryptionAtHost() {
+        VirtualMachine vm = computeManager
+            .virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withUnmanagedDisks()
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withOSDiskCaching(CachingTypes.READ_WRITE)
+            .withOSDiskName("javatest")
+            .withLicenseType("Windows_Server")
+            .withEncryptionAtHost()
+            .create();
+
+        vm.deallocate();
+        vm.update().withoutEncryptionAtHost().apply();
+
+        Assertions.assertNotNull(vm.innerModel().securityProfile());
+        Assertions.assertFalse(vm.isEncryptionAtHost());
     }
 
     // *********************************** helper methods ***********************************

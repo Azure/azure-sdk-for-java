@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.storage
 
-import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.microsoft.aad.adal4j.AuthenticationContext
 import com.microsoft.aad.adal4j.ClientCredential
 import com.microsoft.azure.storage.blob.*
@@ -603,8 +602,8 @@ class APISpec extends Specification {
                 StorageURL.createPipeline(new TokenCredentials(token)))
     }
 
-    def getTestMode(){
-        String testMode =  System.getenv("AZURE_TEST_MODE")
+    static def getTestMode(){
+        def testMode =  System.getenv("AZURE_TEST_MODE")
         if(testMode == null){
             testMode =  "PLAYBACK"
         }

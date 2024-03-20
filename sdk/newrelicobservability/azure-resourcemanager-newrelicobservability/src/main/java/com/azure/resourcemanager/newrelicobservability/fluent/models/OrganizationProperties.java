@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.newrelicobservability.models.BillingSource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of Organizations. */
+/**
+ * Details of Organizations.
+ */
 @Fluent
 public final class OrganizationProperties {
     /*
@@ -29,13 +31,15 @@ public final class OrganizationProperties {
     @JsonProperty(value = "billingSource")
     private BillingSource billingSource;
 
-    /** Creates an instance of OrganizationProperties class. */
+    /**
+     * Creates an instance of OrganizationProperties class.
+     */
     public OrganizationProperties() {
     }
 
     /**
      * Get the organizationId property: organization id.
-     *
+     * 
      * @return the organizationId value.
      */
     public String organizationId() {
@@ -44,7 +48,7 @@ public final class OrganizationProperties {
 
     /**
      * Set the organizationId property: organization id.
-     *
+     * 
      * @param organizationId the organizationId value to set.
      * @return the OrganizationProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class OrganizationProperties {
 
     /**
      * Get the organizationName property: organization name.
-     *
+     * 
      * @return the organizationName value.
      */
     public String organizationName() {
@@ -64,7 +68,7 @@ public final class OrganizationProperties {
 
     /**
      * Set the organizationName property: organization name.
-     *
+     * 
      * @param organizationName the organizationName value to set.
      * @return the OrganizationProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class OrganizationProperties {
 
     /**
      * Get the billingSource property: Billing source.
-     *
+     * 
      * @return the billingSource value.
      */
     public BillingSource billingSource() {
@@ -84,7 +88,7 @@ public final class OrganizationProperties {
 
     /**
      * Set the billingSource property: Billing source.
-     *
+     * 
      * @param billingSource the billingSource value to set.
      * @return the OrganizationProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class OrganizationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

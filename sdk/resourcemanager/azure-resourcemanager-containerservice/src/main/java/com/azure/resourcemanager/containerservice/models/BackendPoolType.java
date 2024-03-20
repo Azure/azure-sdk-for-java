@@ -24,7 +24,7 @@ public final class BackendPoolType extends ExpandableStringEnum<BackendPoolType>
 
     /**
      * Creates a new instance of BackendPoolType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +33,7 @@ public final class BackendPoolType extends ExpandableStringEnum<BackendPoolType>
 
     /**
      * Creates or finds a BackendPoolType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackendPoolType.
      */
@@ -44,7 +44,7 @@ public final class BackendPoolType extends ExpandableStringEnum<BackendPoolType>
 
     /**
      * Gets known BackendPoolType values.
-     *
+     * 
      * @return known BackendPoolType values.
      */
     public static Collection<BackendPoolType> values() {

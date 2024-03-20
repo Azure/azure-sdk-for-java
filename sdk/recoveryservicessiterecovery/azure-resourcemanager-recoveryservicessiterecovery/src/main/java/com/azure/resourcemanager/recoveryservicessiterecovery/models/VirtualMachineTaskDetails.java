@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** This class represents the virtual machine task details. */
+/**
+ * This class represents the virtual machine task details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("VirtualMachineTaskDetails")
 @Fluent
@@ -26,13 +28,15 @@ public final class VirtualMachineTaskDetails extends JobTaskDetails {
     @JsonProperty(value = "skippedReasonString")
     private String skippedReasonString;
 
-    /** Creates an instance of VirtualMachineTaskDetails class. */
+    /**
+     * Creates an instance of VirtualMachineTaskDetails class.
+     */
     public VirtualMachineTaskDetails() {
     }
 
     /**
      * Get the skippedReason property: The skipped reason.
-     *
+     * 
      * @return the skippedReason value.
      */
     public String skippedReason() {
@@ -41,7 +45,7 @@ public final class VirtualMachineTaskDetails extends JobTaskDetails {
 
     /**
      * Set the skippedReason property: The skipped reason.
-     *
+     * 
      * @param skippedReason the skippedReason value to set.
      * @return the VirtualMachineTaskDetails object itself.
      */
@@ -52,7 +56,7 @@ public final class VirtualMachineTaskDetails extends JobTaskDetails {
 
     /**
      * Get the skippedReasonString property: The skipped reason string.
-     *
+     * 
      * @return the skippedReasonString value.
      */
     public String skippedReasonString() {
@@ -61,7 +65,7 @@ public final class VirtualMachineTaskDetails extends JobTaskDetails {
 
     /**
      * Set the skippedReasonString property: The skipped reason string.
-     *
+     * 
      * @param skippedReasonString the skippedReasonString value to set.
      * @return the VirtualMachineTaskDetails object itself.
      */
@@ -70,7 +74,9 @@ public final class VirtualMachineTaskDetails extends JobTaskDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineTaskDetails withJobTask(JobEntity jobTask) {
         super.withJobTask(jobTask);
@@ -79,7 +85,7 @@ public final class VirtualMachineTaskDetails extends JobTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

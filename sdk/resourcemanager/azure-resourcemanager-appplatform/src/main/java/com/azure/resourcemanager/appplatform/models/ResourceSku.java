@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes an available Azure Spring Apps SKU. */
+/**
+ * Describes an available Azure Spring Apps SKU.
+ */
 @Fluent
 public final class ResourceSku {
     /*
@@ -42,8 +44,7 @@ public final class ResourceSku {
     private List<String> locations;
 
     /*
-     * Gets a list of locations and availability zones in those locations where
-     * the SKU is available.
+     * Gets a list of locations and availability zones in those locations where the SKU is available.
      */
     @JsonProperty(value = "locationInfo")
     private List<ResourceSkuLocationInfo> locationInfo;
@@ -56,8 +57,14 @@ public final class ResourceSku {
     private List<ResourceSkuRestrictions> restrictions;
 
     /**
+     * Creates an instance of ResourceSku class.
+     */
+    public ResourceSku() {
+    }
+
+    /**
      * Get the resourceType property: Gets the type of resource the SKU applies to.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -66,7 +73,7 @@ public final class ResourceSku {
 
     /**
      * Set the resourceType property: Gets the type of resource the SKU applies to.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the ResourceSku object itself.
      */
@@ -77,7 +84,7 @@ public final class ResourceSku {
 
     /**
      * Get the name property: Gets the name of SKU.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -86,7 +93,7 @@ public final class ResourceSku {
 
     /**
      * Set the name property: Gets the name of SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceSku object itself.
      */
@@ -97,7 +104,7 @@ public final class ResourceSku {
 
     /**
      * Get the tier property: Gets the tier of SKU.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -106,7 +113,7 @@ public final class ResourceSku {
 
     /**
      * Set the tier property: Gets the tier of SKU.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the ResourceSku object itself.
      */
@@ -117,7 +124,7 @@ public final class ResourceSku {
 
     /**
      * Get the capacity property: Gets the capacity of SKU.
-     *
+     * 
      * @return the capacity value.
      */
     public SkuCapacity capacity() {
@@ -126,7 +133,7 @@ public final class ResourceSku {
 
     /**
      * Set the capacity property: Gets the capacity of SKU.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the ResourceSku object itself.
      */
@@ -137,7 +144,7 @@ public final class ResourceSku {
 
     /**
      * Get the locations property: Gets the set of locations that the SKU is available.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -146,7 +153,7 @@ public final class ResourceSku {
 
     /**
      * Set the locations property: Gets the set of locations that the SKU is available.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the ResourceSku object itself.
      */
@@ -158,7 +165,7 @@ public final class ResourceSku {
     /**
      * Get the locationInfo property: Gets a list of locations and availability zones in those locations where the SKU
      * is available.
-     *
+     * 
      * @return the locationInfo value.
      */
     public List<ResourceSkuLocationInfo> locationInfo() {
@@ -168,7 +175,7 @@ public final class ResourceSku {
     /**
      * Set the locationInfo property: Gets a list of locations and availability zones in those locations where the SKU
      * is available.
-     *
+     * 
      * @param locationInfo the locationInfo value to set.
      * @return the ResourceSku object itself.
      */
@@ -178,9 +185,9 @@ public final class ResourceSku {
     }
 
     /**
-     * Get the restrictions property: Gets the restrictions because of which SKU cannot be used. This is empty if there
-     * are no restrictions.
-     *
+     * Get the restrictions property: Gets the restrictions because of which SKU cannot be used. This is
+     * empty if there are no restrictions.
+     * 
      * @return the restrictions value.
      */
     public List<ResourceSkuRestrictions> restrictions() {
@@ -188,9 +195,9 @@ public final class ResourceSku {
     }
 
     /**
-     * Set the restrictions property: Gets the restrictions because of which SKU cannot be used. This is empty if there
-     * are no restrictions.
-     *
+     * Set the restrictions property: Gets the restrictions because of which SKU cannot be used. This is
+     * empty if there are no restrictions.
+     * 
      * @param restrictions the restrictions value to set.
      * @return the ResourceSku object itself.
      */
@@ -201,7 +208,7 @@ public final class ResourceSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

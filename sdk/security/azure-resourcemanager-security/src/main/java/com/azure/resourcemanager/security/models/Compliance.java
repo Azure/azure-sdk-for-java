@@ -8,32 +8,34 @@ import com.azure.resourcemanager.security.fluent.models.ComplianceInner;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An immutable client-side representation of Compliance. */
+/**
+ * An immutable client-side representation of Compliance.
+ */
 public interface Compliance {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the assessmentTimestampUtcDate property: The timestamp when the Compliance calculation was conducted.
-     *
+     * 
      * @return the assessmentTimestampUtcDate value.
      */
     OffsetDateTime assessmentTimestampUtcDate();
@@ -41,21 +43,21 @@ public interface Compliance {
     /**
      * Gets the resourceCount property: The resource count of the given subscription for which the Compliance
      * calculation was conducted (needed for Management Group Compliance calculation).
-     *
+     * 
      * @return the resourceCount value.
      */
     Integer resourceCount();
 
     /**
      * Gets the assessmentResult property: An array of segment, which is the actually the compliance assessment.
-     *
+     * 
      * @return the assessmentResult value.
      */
     List<ComplianceSegment> assessmentResult();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.ComplianceInner object.
-     *
+     * 
      * @return the inner object.
      */
     ComplianceInner innerModel();

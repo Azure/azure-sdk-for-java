@@ -14,18 +14,18 @@ public final class VmSkuProfileInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmSkuProfileInner model = BinaryData.fromString(
-            "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"hniskxfbkpyc\"},\"properties\":{\"provisioningState\":\"Updating\",\"values\":[{\"resourceType\":\"hjdauwhvylwz\",\"capabilities\":[{\"name\":\"xujznbmpowu\",\"value\":\"rzqlveu\"},{\"name\":\"upjm\",\"value\":\"fxobbcsws\"},{\"name\":\"jriplrbpbewtghf\",\"value\":\"lcgwxzvlvqh\"}],\"name\":\"begibtnmxiebwwa\",\"tier\":\"ayqcgw\",\"size\":\"zjuzgwyz\"},{\"resourceType\":\"txon\",\"capabilities\":[{\"name\":\"avjcbpwx\",\"value\":\"srknftguv\"}],\"name\":\"uhprwmdyvxqt\",\"tier\":\"riwwroy\",\"size\":\"exrmcqibycnojvk\"},{\"resourceType\":\"e\",\"capabilities\":[{\"name\":\"zvahapjy\",\"value\":\"pvgqzcjrvxdjzlm\"},{\"name\":\"xkvugfhzov\",\"value\":\"jvzunluthnnp\"},{\"name\":\"xipeilpjzuaejx\",\"value\":\"ltskzbbtd\"},{\"name\":\"mv\",\"value\":\"kgpwoz\"}],\"name\":\"kfpbs\",\"tier\":\"ofd\",\"size\":\"uusdttouwa\"},{\"resourceType\":\"ekqvkeln\",\"capabilities\":[{\"name\":\"xwyjsflhhc\",\"value\":\"lnjixisxya\"},{\"name\":\"oyaqcslyjpkiid\",\"value\":\"exznelixhnr\"},{\"name\":\"folhbnxknal\",\"value\":\"lp\"}],\"name\":\"gdtpnapnyiro\",\"tier\":\"hpigv\",\"size\":\"ylgqgitxmedjvcsl\"}]},\"id\":\"qwwncw\",\"name\":\"zhxgktrmgucn\",\"type\":\"pkteo\"}")
+            "{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"tldwkyzxuutk\"},\"properties\":{\"provisioningState\":\"Upgrading\",\"values\":[{\"resourceType\":\"vlxotogtwrupqsx\",\"capabilities\":[{\"name\":\"cykvceo\",\"value\":\"ilovnot\"},{\"name\":\"jfcn\",\"value\":\"k\"},{\"name\":\"x\",\"value\":\"bttk\"},{\"name\":\"ywpnvjt\",\"value\":\"nermcl\"}],\"name\":\"lphox\",\"tier\":\"crpab\",\"size\":\"epsbjtazqu\"},{\"resourceType\":\"ywpmueefjzwfqkq\",\"capabilities\":[{\"name\":\"suyonobglaocq\",\"value\":\"ccm\"}],\"name\":\"udxytlmoyrx\",\"tier\":\"fudwpznt\",\"size\":\"dzhlrq\"},{\"resourceType\":\"hckfrlhrx\",\"capabilities\":[{\"name\":\"vpycanuzbp\",\"value\":\"afkuwb\"}],\"name\":\"nwbmeh\",\"tier\":\"eyvjusrtslhspkde\",\"size\":\"aofmxagkvtme\"},{\"resourceType\":\"qkrhahvljua\",\"capabilities\":[{\"name\":\"hcdhmdual\",\"value\":\"xqpvfadmw\"},{\"name\":\"crgvxpvgom\",\"value\":\"fmisg\"},{\"name\":\"nbbelda\",\"value\":\"zbaliourqha\"}],\"name\":\"uhashsfwx\",\"tier\":\"owzxcu\",\"size\":\"cjooxdjebwpucwwf\"}]},\"id\":\"vbvmeu\",\"name\":\"civyhzceuo\",\"type\":\"gjrwjueiotwmcdyt\"}")
             .toObject(VmSkuProfileInner.class);
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.extendedLocation().type());
-        Assertions.assertEquals("hniskxfbkpyc", model.extendedLocation().name());
+        Assertions.assertEquals("tldwkyzxuutk", model.extendedLocation().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VmSkuProfileInner model = new VmSkuProfileInner().withExtendedLocation(
-            new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("hniskxfbkpyc"));
+            new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("tldwkyzxuutk"));
         model = BinaryData.fromObject(model).toObject(VmSkuProfileInner.class);
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.extendedLocation().type());
-        Assertions.assertEquals("hniskxfbkpyc", model.extendedLocation().name());
+        Assertions.assertEquals("tldwkyzxuutk", model.extendedLocation().name());
     }
 }

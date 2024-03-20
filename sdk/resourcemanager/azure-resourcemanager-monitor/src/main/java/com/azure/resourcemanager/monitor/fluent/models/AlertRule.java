@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** An alert rule. */
+/**
+ * An alert rule.
+ */
 @Fluent
 public final class AlertRule {
     /*
@@ -64,13 +66,15 @@ public final class AlertRule {
     @JsonProperty(value = "lastUpdatedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedTime;
 
-    /** Creates an instance of AlertRule class. */
+    /**
+     * Creates an instance of AlertRule class.
+     */
     public AlertRule() {
     }
 
     /**
      * Get the name property: the name of the alert rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -79,7 +83,7 @@ public final class AlertRule {
 
     /**
      * Set the name property: the name of the alert rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the AlertRule object itself.
      */
@@ -90,7 +94,7 @@ public final class AlertRule {
 
     /**
      * Get the description property: the description of the alert rule that will be included in the alert email.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -99,7 +103,7 @@ public final class AlertRule {
 
     /**
      * Set the description property: the description of the alert rule that will be included in the alert email.
-     *
+     * 
      * @param description the description value to set.
      * @return the AlertRule object itself.
      */
@@ -110,7 +114,7 @@ public final class AlertRule {
 
     /**
      * Get the provisioningState property: the provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -119,7 +123,7 @@ public final class AlertRule {
 
     /**
      * Set the provisioningState property: the provisioning state.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the AlertRule object itself.
      */
@@ -130,7 +134,7 @@ public final class AlertRule {
 
     /**
      * Get the isEnabled property: the flag that indicates whether the alert rule is enabled.
-     *
+     * 
      * @return the isEnabled value.
      */
     public boolean isEnabled() {
@@ -139,7 +143,7 @@ public final class AlertRule {
 
     /**
      * Set the isEnabled property: the flag that indicates whether the alert rule is enabled.
-     *
+     * 
      * @param isEnabled the isEnabled value to set.
      * @return the AlertRule object itself.
      */
@@ -150,7 +154,7 @@ public final class AlertRule {
 
     /**
      * Get the condition property: the condition that results in the alert rule being activated.
-     *
+     * 
      * @return the condition value.
      */
     public RuleCondition condition() {
@@ -159,7 +163,7 @@ public final class AlertRule {
 
     /**
      * Set the condition property: the condition that results in the alert rule being activated.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the AlertRule object itself.
      */
@@ -169,9 +173,9 @@ public final class AlertRule {
     }
 
     /**
-     * Get the action property: action that is performed when the alert rule becomes active, and when an alert condition
-     * is resolved.
-     *
+     * Get the action property: action that is performed when the alert rule becomes active, and when an alert
+     * condition is resolved.
+     * 
      * @return the action value.
      */
     public RuleAction action() {
@@ -179,9 +183,9 @@ public final class AlertRule {
     }
 
     /**
-     * Set the action property: action that is performed when the alert rule becomes active, and when an alert condition
-     * is resolved.
-     *
+     * Set the action property: action that is performed when the alert rule becomes active, and when an alert
+     * condition is resolved.
+     * 
      * @param action the action value to set.
      * @return the AlertRule object itself.
      */
@@ -191,9 +195,9 @@ public final class AlertRule {
     }
 
     /**
-     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
-     *
+     * Get the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
+     * 
      * @return the actions value.
      */
     public List<RuleAction> actions() {
@@ -201,9 +205,9 @@ public final class AlertRule {
     }
 
     /**
-     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when an
-     * alert condition is resolved.
-     *
+     * Set the actions property: the array of actions that are performed when the alert rule becomes active, and when
+     * an alert condition is resolved.
+     * 
      * @param actions the actions value to set.
      * @return the AlertRule object itself.
      */
@@ -214,7 +218,7 @@ public final class AlertRule {
 
     /**
      * Get the lastUpdatedTime property: Last time the rule was updated in ISO8601 format.
-     *
+     * 
      * @return the lastUpdatedTime value.
      */
     public OffsetDateTime lastUpdatedTime() {
@@ -223,7 +227,7 @@ public final class AlertRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -232,9 +236,8 @@ public final class AlertRule {
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model AlertRule"));
         }
         if (condition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property condition in model AlertRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property condition in model AlertRule"));
         } else {
             condition().validate();
         }

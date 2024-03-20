@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmPr
 public final class InMageRcmProtectionContainerMappingDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmProtectionContainerMappingDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"InMageRcm\",\"enableAgentAutoUpgrade\":\"bgacnr\"}")
+        InMageRcmProtectionContainerMappingDetails model
+            = BinaryData.fromString("{\"instanceType\":\"InMageRcm\",\"enableAgentAutoUpgrade\":\"bgacnr\"}")
                 .toObject(InMageRcmProtectionContainerMappingDetails.class);
     }
 

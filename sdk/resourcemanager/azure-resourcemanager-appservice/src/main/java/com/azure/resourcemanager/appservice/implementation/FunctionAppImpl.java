@@ -59,10 +59,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /** The implementation for FunctionApp. */
@@ -414,7 +416,17 @@ class FunctionAppImpl
     @Override
     public FunctionAppImpl withPrivateRegistryImage(String imageAndTag, String serverUrl) {
         ensureLinuxPlan();
-        return super.withPrivateRegistryImage(imageAndTag, serverUrl);
+        super.withPrivateRegistryImage(imageAndTag, serverUrl);
+        if (isFunctionAppOnACA()) {
+            try {
+                URL url = new URL(serverUrl);
+                // remove URL protocol, as ACA don't allow that
+                withAppSetting(SETTING_REGISTRY_SERVER, url.getAuthority() + url.getFile());
+            } catch (MalformedURLException e) {
+                // NO-OP, server url is not in URL format
+            }
+        }
+        return this;
     }
 
     @Override
@@ -645,6 +657,15 @@ class FunctionAppImpl
             siteConfigInner.withLinuxFxVersion(this.siteConfig.linuxFxVersion());
             siteConfigInner.withMinimumElasticInstanceCount(this.siteConfig.minimumElasticInstanceCount());
             siteConfigInner.withFunctionAppScaleLimit(this.siteConfig.functionAppScaleLimit());
+            siteConfigInner.withAppSettings(this.siteConfig.appSettings() == null ? new ArrayList<>() : this.siteConfig.appSettings());
+            if (!appSettingsToAdd.isEmpty() || !appSettingsToRemove.isEmpty()) {
+                for (String settingToRemove : appSettingsToRemove) {
+                    siteConfigInner.appSettings().removeIf(kvPair -> Objects.equals(settingToRemove, kvPair.name()));
+                }
+                for (Map.Entry<String, String> entry : appSettingsToAdd.entrySet()) {
+                    siteConfigInner.appSettings().add(new NameValuePair().withName(entry.getKey()).withValue(entry.getValue()));
+                }
+            }
             this.innerModel().withSiteConfig(siteConfigInner);
         }
     }
@@ -678,6 +699,9 @@ class FunctionAppImpl
         this.innerModel().withManagedEnvironmentId(managedEnvironmentId);
         if (!CoreUtils.isNullOrEmpty(managedEnvironmentId)) {
             this.innerModel().withKind("functionapp,linux,container,azurecontainerapps");
+            if (this.siteConfig == null) {
+                this.siteConfig = new SiteConfigResourceInner().withAppSettings(new ArrayList<>());
+            }
         }
         return this;
     }

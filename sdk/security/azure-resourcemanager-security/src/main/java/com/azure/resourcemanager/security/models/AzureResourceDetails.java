@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Details of the Azure resource that was assessed. */
+/**
+ * Details of the Azure resource that was assessed.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "source")
 @JsonTypeName("Azure")
 @Immutable
@@ -20,13 +22,15 @@ public final class AzureResourceDetails extends ResourceDetails {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
-    /** Creates an instance of AzureResourceDetails class. */
+    /**
+     * Creates an instance of AzureResourceDetails class.
+     */
     public AzureResourceDetails() {
     }
 
     /**
      * Get the id property: Azure resource Id of the assessed resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -35,7 +39,7 @@ public final class AzureResourceDetails extends ResourceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

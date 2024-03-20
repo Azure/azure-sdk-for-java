@@ -13,34 +13,27 @@ import org.junit.jupiter.api.Assertions;
 public final class CommunicationsListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommunicationsListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"inbound\",\"sender\":\"btdhxujznbm\",\"subject\":\"ow\",\"body\":\"wpr\",\"createdDate\":\"2021-01-10T20:10:28Z\"},\"id\":\"veual\",\"name\":\"pjmkhfxobbc\",\"type\":\"wsrtjriplrbpbe\"},{\"properties\":{\"communicationType\":\"web\",\"communicationDirection\":\"outbound\",\"sender\":\"lcgwxzvlvqh\",\"subject\":\"kbegibt\",\"body\":\"mxiebw\",\"createdDate\":\"2021-08-25T02:24:40Z\"},\"id\":\"oayqc\",\"name\":\"wrtz\",\"type\":\"uzgwyzmhtx\"}],\"nextLink\":\"gmtsavjcbpwxqpsr\"}")
-                .toObject(CommunicationsListResult.class);
-        Assertions.assertEquals("btdhxujznbm", model.value().get(0).sender());
-        Assertions.assertEquals("ow", model.value().get(0).subject());
-        Assertions.assertEquals("wpr", model.value().get(0).body());
-        Assertions.assertEquals("gmtsavjcbpwxqpsr", model.nextLink());
+        CommunicationsListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"dagxtibqd\",\"subject\":\"bxwakbog\",\"body\":\"xndlkzgxhu\",\"createdDate\":\"2021-03-23T13:44:10Z\"},\"id\":\"lbpodxunk\",\"name\":\"ebxmubyynt\",\"type\":\"lrb\"},{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"outbound\",\"sender\":\"seotgqrllt\",\"subject\":\"u\",\"body\":\"lauwzizxbmpgcjef\",\"createdDate\":\"2021-09-15T06:09:09Z\"},\"id\":\"uvpb\",\"name\":\"tdum\",\"type\":\"rp\"},{\"properties\":{\"communicationType\":\"phone\",\"communicationDirection\":\"inbound\",\"sender\":\"btbhjpglkfgohd\",\"subject\":\"euel\",\"body\":\"phsdyhto\",\"createdDate\":\"2021-12-10T07:50:41Z\"},\"id\":\"kd\",\"name\":\"wwquuvxzxclvithh\",\"type\":\"zonosgg\"}],\"nextLink\":\"c\"}")
+            .toObject(CommunicationsListResult.class);
+        Assertions.assertEquals("dagxtibqd", model.value().get(0).sender());
+        Assertions.assertEquals("bxwakbog", model.value().get(0).subject());
+        Assertions.assertEquals("xndlkzgxhu", model.value().get(0).body());
+        Assertions.assertEquals("c", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommunicationsListResult model =
-            new CommunicationsListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CommunicationDetailsInner().withSender("btdhxujznbm").withSubject("ow").withBody("wpr"),
-                            new CommunicationDetailsInner()
-                                .withSender("lcgwxzvlvqh")
-                                .withSubject("kbegibt")
-                                .withBody("mxiebw")))
-                .withNextLink("gmtsavjcbpwxqpsr");
+        CommunicationsListResult model = new CommunicationsListResult()
+            .withValue(Arrays.asList(
+                new CommunicationDetailsInner().withSender("dagxtibqd").withSubject("bxwakbog").withBody("xndlkzgxhu"),
+                new CommunicationDetailsInner().withSender("seotgqrllt").withSubject("u").withBody("lauwzizxbmpgcjef"),
+                new CommunicationDetailsInner().withSender("btbhjpglkfgohd").withSubject("euel").withBody("phsdyhto")))
+            .withNextLink("c");
         model = BinaryData.fromObject(model).toObject(CommunicationsListResult.class);
-        Assertions.assertEquals("btdhxujznbm", model.value().get(0).sender());
-        Assertions.assertEquals("ow", model.value().get(0).subject());
-        Assertions.assertEquals("wpr", model.value().get(0).body());
-        Assertions.assertEquals("gmtsavjcbpwxqpsr", model.nextLink());
+        Assertions.assertEquals("dagxtibqd", model.value().get(0).sender());
+        Assertions.assertEquals("bxwakbog", model.value().get(0).subject());
+        Assertions.assertEquals("xndlkzgxhu", model.value().get(0).body());
+        Assertions.assertEquals("c", model.nextLink());
     }
 }

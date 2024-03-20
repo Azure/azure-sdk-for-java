@@ -30,7 +30,7 @@ public final class IntegrationRuntimesStartMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"name\":\"pkjyo\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"wcxedkkd\",\"state\":\"Offline\",\"\":{\"piqeisjboghjdih\":\"datasrehgyfif\"}}}";
+            = "{\"name\":\"ato\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"yrfspmc\",\"state\":\"AccessDenied\",\"\":{\"tynhulefltub\":\"dataisypkif\"}}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -47,8 +47,8 @@ public final class IntegrationRuntimesStartMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        IntegrationRuntimeStatusResponse response
-            = manager.integrationRuntimes().start("jubjqjxobmv", "jtzatr", "arneug", com.azure.core.util.Context.NONE);
+        IntegrationRuntimeStatusResponse response = manager.integrationRuntimes().start("heamxidjdptruie", "rauy",
+            "hugwau", com.azure.core.util.Context.NONE);
 
     }
 }

@@ -345,7 +345,7 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
     @Override
     public String toString() {
-        return RntbdObjectMapper.toString(this);
+        return RntbdObjectMapper.toJson(this);
     }
 
     // endregion
@@ -371,6 +371,8 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             final SerializerProvider provider) throws IOException {
 
             generator.writeStartObject();
+
+            generator.writeObjectFieldStart(RntbdRequestRecord.class.getSimpleName());
             generator.writeObjectField("args", value.args());
             generator.writeNumberField("requestLength", value.requestLength());
             generator.writeNumberField("responseLength", value.responseLength());
@@ -401,7 +403,6 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
                     generator.writeObjectFieldStart("error");
                     generator.writeStringField("type", exception.getClass().getName());
-                    generator.writeObjectField("value", exception);
                     generator.writeEndObject();
                 }
             }
@@ -409,6 +410,8 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
             generator.writeEndObject();
 
             generator.writeObjectField("timeline", value.takeTimelineSnapshot());
+            generator.writeEndObject();
+
             generator.writeEndObject();
         }
     }

@@ -6,17 +6,20 @@ package com.azure.resourcemanager.security.implementation;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.SecurityContactInner;
+import com.azure.resourcemanager.security.models.NotificationsSource;
 import com.azure.resourcemanager.security.models.SecurityContact;
-import com.azure.resourcemanager.security.models.SecurityContactPropertiesAlertNotifications;
+import com.azure.resourcemanager.security.models.SecurityContactName;
 import com.azure.resourcemanager.security.models.SecurityContactPropertiesNotificationsByRole;
+import java.util.Collections;
+import java.util.List;
 
 public final class SecurityContactImpl implements SecurityContact, SecurityContact.Definition {
     private SecurityContactInner innerObject;
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    SecurityContactImpl(
-        SecurityContactInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    SecurityContactImpl(SecurityContactInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -41,8 +44,17 @@ public final class SecurityContactImpl implements SecurityContact, SecurityConta
         return this.innerModel().phone();
     }
 
-    public SecurityContactPropertiesAlertNotifications alertNotifications() {
-        return this.innerModel().alertNotifications();
+    public Boolean isEnabled() {
+        return this.innerModel().isEnabled();
+    }
+
+    public List<NotificationsSource> notificationsSources() {
+        List<NotificationsSource> inner = this.innerModel().notificationsSources();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public SecurityContactPropertiesNotificationsByRole notificationsByRole() {
@@ -57,51 +69,35 @@ public final class SecurityContactImpl implements SecurityContact, SecurityConta
         return this.serviceManager;
     }
 
-    private String securityContactName;
+    private SecurityContactName securityContactName;
 
     public SecurityContact create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecurityContacts()
-                .createWithResponse(securityContactName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSecurityContacts()
+            .createWithResponse(securityContactName, this.innerModel(), Context.NONE).getValue();
         return this;
     }
 
     public SecurityContact create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecurityContacts()
-                .createWithResponse(securityContactName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSecurityContacts()
+            .createWithResponse(securityContactName, this.innerModel(), context).getValue();
         return this;
     }
 
-    SecurityContactImpl(String name, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    SecurityContactImpl(SecurityContactName name, com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = new SecurityContactInner();
         this.serviceManager = serviceManager;
         this.securityContactName = name;
     }
 
     public SecurityContact refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecurityContacts()
-                .getWithResponse(securityContactName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSecurityContacts()
+            .getWithResponse(securityContactName, Context.NONE).getValue();
         return this;
     }
 
     public SecurityContact refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSecurityContacts()
-                .getWithResponse(securityContactName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSecurityContacts()
+            .getWithResponse(securityContactName, context).getValue();
         return this;
     }
 
@@ -115,13 +111,18 @@ public final class SecurityContactImpl implements SecurityContact, SecurityConta
         return this;
     }
 
-    public SecurityContactImpl withAlertNotifications(SecurityContactPropertiesAlertNotifications alertNotifications) {
-        this.innerModel().withAlertNotifications(alertNotifications);
+    public SecurityContactImpl withIsEnabled(Boolean isEnabled) {
+        this.innerModel().withIsEnabled(isEnabled);
         return this;
     }
 
-    public SecurityContactImpl withNotificationsByRole(
-        SecurityContactPropertiesNotificationsByRole notificationsByRole) {
+    public SecurityContactImpl withNotificationsSources(List<NotificationsSource> notificationsSources) {
+        this.innerModel().withNotificationsSources(notificationsSources);
+        return this;
+    }
+
+    public SecurityContactImpl
+        withNotificationsByRole(SecurityContactPropertiesNotificationsByRole notificationsByRole) {
         this.innerModel().withNotificationsByRole(notificationsByRole);
         return this;
     }

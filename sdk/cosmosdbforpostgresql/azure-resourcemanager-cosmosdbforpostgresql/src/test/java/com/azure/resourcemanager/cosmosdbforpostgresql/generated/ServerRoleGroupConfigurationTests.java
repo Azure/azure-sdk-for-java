@@ -12,21 +12,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerRoleGroupConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerRoleGroupConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"role\":\"Worker\",\"value\":\"imexgstxgcpodgma\",\"defaultValue\":\"r\",\"source\":\"djwzrlov\"}")
-                .toObject(ServerRoleGroupConfiguration.class);
-        Assertions.assertEquals(ServerRole.WORKER, model.role());
-        Assertions.assertEquals("imexgstxgcpodgma", model.value());
+        ServerRoleGroupConfiguration model = BinaryData.fromString(
+            "{\"role\":\"Coordinator\",\"value\":\"oaeupfhyhltrpmo\",\"defaultValue\":\"mcmatuokthfuiu\",\"source\":\"dsfcpkvxodpuoz\"}")
+            .toObject(ServerRoleGroupConfiguration.class);
+        Assertions.assertEquals(ServerRole.COORDINATOR, model.role());
+        Assertions.assertEquals("oaeupfhyhltrpmo", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerRoleGroupConfiguration model =
-            new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("imexgstxgcpodgma");
+        ServerRoleGroupConfiguration model
+            = new ServerRoleGroupConfiguration().withRole(ServerRole.COORDINATOR).withValue("oaeupfhyhltrpmo");
         model = BinaryData.fromObject(model).toObject(ServerRoleGroupConfiguration.class);
-        Assertions.assertEquals(ServerRole.WORKER, model.role());
-        Assertions.assertEquals("imexgstxgcpodgma", model.value());
+        Assertions.assertEquals(ServerRole.COORDINATOR, model.role());
+        Assertions.assertEquals("oaeupfhyhltrpmo", model.value());
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.directconnectivity.ChannelAcquisitionException;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint.Config;
 import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionCloseEvent;
 import com.azure.cosmos.implementation.faultinjection.RntbdFaultInjectionConnectionResetEvent;
@@ -36,6 +37,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.SocketAddress;
 import java.nio.channels.ClosedChannelException;
 import java.time.Duration;
@@ -120,25 +122,25 @@ import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 public final class RntbdClientChannelPool implements ChannelPool {
 
     // TODO: moderakh setup proper retry in higher stack for the exceptions here
-    private static final TimeoutException ACQUISITION_TIMEOUT = ThrowableUtil.unknownStackTrace(
-        new TimeoutException("acquisition took longer than the configured maximum time"),
+    private static final ChannelAcquisitionException ACQUISITION_TIMEOUT = ThrowableUtil.unknownStackTrace(
+        new ChannelAcquisitionException("acquisition took longer than the configured maximum time"),
         RntbdClientChannelPool.class, "<init>");
 
     private static final ClosedChannelException CHANNEL_CLOSED_ON_ACQUIRE = ThrowableUtil.unknownStackTrace(
         new ClosedChannelException(), RntbdClientChannelPool.class, "acquire");
 
-    private static final IllegalStateException POOL_CLOSED_ON_ACQUIRE = ThrowableUtil.unknownStackTrace(
+    private static final ChannelAcquisitionException POOL_CLOSED_ON_ACQUIRE = ThrowableUtil.unknownStackTrace(
         new ChannelAcquisitionException("service endpoint was closed while acquiring a channel"),
         RntbdClientChannelPool.class, "acquire");
 
-    private static final IllegalStateException POOL_CLOSED_ON_RELEASE = ThrowableUtil.unknownStackTrace(
+    private static final ChannelAcquisitionException POOL_CLOSED_ON_RELEASE = ThrowableUtil.unknownStackTrace(
         new ChannelAcquisitionException("service endpoint was closed while releasing a channel"),
         RntbdClientChannelPool.class, "release");
 
     private static final AttributeKey<RntbdClientChannelPool> POOL_KEY = AttributeKey.newInstance(
         RntbdClientChannelPool.class.getName());
 
-    private static final IllegalStateException TOO_MANY_PENDING_ACQUISITIONS = ThrowableUtil.unknownStackTrace(
+    private static final ChannelAcquisitionException TOO_MANY_PENDING_ACQUISITIONS = ThrowableUtil.unknownStackTrace(
         new ChannelAcquisitionException("too many outstanding acquire operations"),
         RntbdClientChannelPool.class, "acquire");
 
@@ -1462,7 +1464,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 this.poolHandler.channelReleased(channel);
                 promise.setSuccess(null);
             } else {
-                final IllegalStateException error = new ChannelAcquisitionException(lenientFormat(
+                final ChannelAcquisitionException error = new ChannelAcquisitionException(lenientFormat(
                     "cannot offer channel back to pool because the pool is at capacity (%s)\n  %s\n  %s",
                     this.maxChannels,
                     this,
@@ -1789,20 +1791,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
             generator.writeNumberField("requestQueueLength", value.requestQueueLength());
             generator.writeEndObject();
             generator.writeEndObject();
-        }
-    }
-
-    private static class ChannelAcquisitionException extends IllegalStateException {
-
-        private static final long serialVersionUID = -6011782222645074949L;
-
-        public ChannelAcquisitionException(String message) {
-            super(message);
-        }
-
-        @Override
-        public synchronized Throwable fillInStackTrace() {
-            return this;
         }
     }
 

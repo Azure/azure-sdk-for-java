@@ -5,6 +5,7 @@ package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -16,7 +17,19 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a geometric line.
+ * <p>Represents a geometric line string.</p>
+ *
+ * <p>This class encapsulates a list of {@link GeoPosition} instances that form a line string. A line string is a
+ * curve with linear interpolation between points.</p>
+ *
+ * <p>This class is useful when you want to work with a line string in a geographic context. For example, you can use
+ * it to represent a route on a map or the shape of a geographic feature.</p>
+ *
+ * <p>Note: A line string requires at least 2 coordinates.</p>
+ *
+ * @see GeoPosition
+ * @see GeoObject
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoLineString extends GeoObject {
@@ -40,7 +53,8 @@ public final class GeoLineString extends GeoObject {
      * @param customProperties Additional properties of the geometric line.
      * @throws NullPointerException If {@code positions} is {@code null}.
      */
-    public GeoLineString(List<GeoPosition> positions, GeoBoundingBox boundingBox, Map<String, Object> customProperties) {
+    public GeoLineString(List<GeoPosition> positions, GeoBoundingBox boundingBox,
+        Map<String, Object> customProperties) {
         super(boundingBox, customProperties);
 
         Objects.requireNonNull(positions, "'positions' cannot be null.");

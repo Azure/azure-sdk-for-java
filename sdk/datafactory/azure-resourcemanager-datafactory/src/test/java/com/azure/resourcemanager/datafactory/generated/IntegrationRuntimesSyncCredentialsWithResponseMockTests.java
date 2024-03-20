@@ -45,7 +45,7 @@ public final class IntegrationRuntimesSyncCredentialsWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.integrationRuntimes().syncCredentialsWithResponse("flil", "mptvm", "noug",
+        manager.integrationRuntimes().syncCredentialsWithResponse("gmcuqjouk", "mv", "qismvo",
             com.azure.core.util.Context.NONE);
 
     }

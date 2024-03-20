@@ -13,8 +13,8 @@ public final class SecurityOperatorImpl implements SecurityOperator {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    SecurityOperatorImpl(
-        SecurityOperatorInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    SecurityOperatorImpl(SecurityOperatorInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

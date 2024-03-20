@@ -36,7 +36,7 @@ public final class ManagedClusterSecurityProfileDefender {
      * Get the logAnalyticsWorkspaceResourceId property: Resource ID of the Log Analytics workspace to be associated
      * with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid
      * workspace resource ID. When Microsoft Defender is disabled, leave the field empty.
-     *
+     * 
      * @return the logAnalyticsWorkspaceResourceId value.
      */
     public String logAnalyticsWorkspaceResourceId() {
@@ -47,7 +47,7 @@ public final class ManagedClusterSecurityProfileDefender {
      * Set the logAnalyticsWorkspaceResourceId property: Resource ID of the Log Analytics workspace to be associated
      * with Microsoft Defender. When Microsoft Defender is enabled, this field is required and must be a valid
      * workspace resource ID. When Microsoft Defender is disabled, leave the field empty.
-     *
+     * 
      * @param logAnalyticsWorkspaceResourceId the logAnalyticsWorkspaceResourceId value to set.
      * @return the ManagedClusterSecurityProfileDefender object itself.
      */
@@ -60,7 +60,7 @@ public final class ManagedClusterSecurityProfileDefender {
     /**
      * Get the securityMonitoring property: Microsoft Defender threat detection for Cloud settings for the security
      * profile.
-     *
+     * 
      * @return the securityMonitoring value.
      */
     public ManagedClusterSecurityProfileDefenderSecurityMonitoring securityMonitoring() {
@@ -70,7 +70,7 @@ public final class ManagedClusterSecurityProfileDefender {
     /**
      * Set the securityMonitoring property: Microsoft Defender threat detection for Cloud settings for the security
      * profile.
-     *
+     * 
      * @param securityMonitoring the securityMonitoring value to set.
      * @return the ManagedClusterSecurityProfileDefender object itself.
      */
@@ -82,7 +82,7 @@ public final class ManagedClusterSecurityProfileDefender {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

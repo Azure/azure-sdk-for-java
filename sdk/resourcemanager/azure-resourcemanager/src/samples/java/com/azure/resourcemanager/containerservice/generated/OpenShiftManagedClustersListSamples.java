@@ -15,7 +15,7 @@ public final class OpenShiftManagedClustersListSamples {
      */
     /**
      * Sample code: List Managed Clusters.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listManagedClusters(com.azure.resourcemanager.AzureResourceManager azure) {

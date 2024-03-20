@@ -18,6 +18,8 @@ import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
+import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -144,8 +146,10 @@ public class ReadmeSamples {
     }
 
     // BEGIN: readme-sample-hotelclass
-    public class Hotel {
+    public static class Hotel {
+        @SimpleField(isKey = true, isFilterable = true, isSortable = true)
         private String id;
+        @SearchableField(isFilterable = true, isSortable = true)
         private String name;
 
         public String getId() {

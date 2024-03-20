@@ -12,20 +12,16 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.CreateProte
 public final class CreateProtectionIntentInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateProtectionIntentInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"CreateProtectionIntentProviderSpecificDetails\"}}}")
-                .toObject(CreateProtectionIntentInput.class);
+        CreateProtectionIntentInput model = BinaryData.fromString(
+            "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"CreateProtectionIntentProviderSpecificDetails\"}}}")
+            .toObject(CreateProtectionIntentInput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateProtectionIntentInput model =
-            new CreateProtectionIntentInput()
-                .withProperties(
-                    new CreateProtectionIntentProperties()
-                        .withProviderSpecificDetails(new CreateProtectionIntentProviderSpecificDetails()));
+        CreateProtectionIntentInput model
+            = new CreateProtectionIntentInput().withProperties(new CreateProtectionIntentProperties()
+                .withProviderSpecificDetails(new CreateProtectionIntentProviderSpecificDetails()));
         model = BinaryData.fromObject(model).toObject(CreateProtectionIntentInput.class);
     }
 }

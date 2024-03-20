@@ -5,36 +5,46 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The object that represents the operation. */
+/**
+ * The object that represents the operation.
+ */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
-     * Service provider: Microsoft.NotificationHubs
+     * Gets service provider: Microsoft.NotificationHubs
      */
     @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
-     * Resource on which the operation is performed: Invoice, etc.
+     * Gets resource on which the operation is performed: Invoice, etc.
      */
     @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
-     * Operation type: Read, write, delete, etc.
+     * Gets operation type: Read, write, delete, etc.
      */
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
+    /*
+     * Human-friendly operation description.
+     */
+    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
+    private String description;
+
     /**
-     * Get the provider property: Service provider: Microsoft.NotificationHubs.
-     *
+     * Creates an instance of OperationDisplay class.
+     */
+    public OperationDisplay() {
+    }
+
+    /**
+     * Get the provider property: Gets service provider: Microsoft.NotificationHubs.
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -42,8 +52,8 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the resource property: Resource on which the operation is performed: Invoice, etc.
-     *
+     * Get the resource property: Gets resource on which the operation is performed: Invoice, etc.
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -51,8 +61,8 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the operation property: Operation type: Read, write, delete, etc.
-     *
+     * Get the operation property: Gets operation type: Read, write, delete, etc.
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -60,8 +70,17 @@ public final class OperationDisplay {
     }
 
     /**
+     * Get the description property: Human-friendly operation description.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

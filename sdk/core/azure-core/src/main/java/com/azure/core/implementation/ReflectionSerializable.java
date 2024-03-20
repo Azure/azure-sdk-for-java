@@ -13,6 +13,8 @@ import com.azure.json.JsonWriter;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -56,22 +58,28 @@ public final class ReflectionSerializable {
         try {
             xmlSerializable = Class.forName("com.azure.xml.XmlSerializable");
             xmlReader = Class.forName("com.azure.xml.XmlReader");
-
-            Class<?> xmlProviders = Class.forName("com.azure.xml.XmlProviders");
-
-            xmlReaderCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
-                xmlProviders.getDeclaredMethod("createReader", byte[].class));
-
-            xmlWriterCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
-                xmlProviders.getDeclaredMethod("createWriter", OutputStream.class));
-
             Class<?> xmlWriter = Class.forName("com.azure.xml.XmlWriter");
 
-            xmlWriterWriteStartDocument = ReflectionUtils.getMethodInvoker(xmlWriter,
-                xmlWriter.getDeclaredMethod("writeStartDocument"));
+            try {
+                Class<?> xmlProviders = Class.forName("com.azure.xml.XmlProviders");
 
-            xmlWriterWriteXmlSerializable = ReflectionUtils.getMethodInvoker(xmlWriter,
-                xmlWriter.getDeclaredMethod("writeXml", xmlSerializable));
+                xmlReaderCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
+                    xmlProviders.getDeclaredMethod("createReader", byte[].class));
+
+                xmlWriterCreator = ReflectionUtils.getMethodInvoker(xmlProviders,
+                    xmlProviders.getDeclaredMethod("createWriter", OutputStream.class));
+            } catch (LinkageError | ReflectiveOperationException ex) {
+                xmlReaderCreator = ReflectionUtils.getMethodInvoker(xmlReader,
+                    xmlReader.getDeclaredMethod("fromBytes", byte[].class));
+                xmlWriterCreator = ReflectionUtils.getMethodInvoker(xmlWriter,
+                    xmlWriter.getDeclaredMethod("toStream", OutputStream.class));
+            }
+
+            xmlWriterWriteStartDocument
+                = ReflectionUtils.getMethodInvoker(xmlWriter, xmlWriter.getDeclaredMethod("writeStartDocument"));
+
+            xmlWriterWriteXmlSerializable
+                = ReflectionUtils.getMethodInvoker(xmlWriter, xmlWriter.getDeclaredMethod("writeXml", xmlSerializable));
 
             xmlWriterFlush = ReflectionUtils.getMethodInvoker(xmlWriter, xmlWriter.getDeclaredMethod("flush"));
 
@@ -105,7 +113,30 @@ public final class ReflectionSerializable {
      * @return Whether {@code bodyContentClass} can be used as {@code JsonSerializable}.
      */
     public static boolean supportsJsonSerializable(Class<?> bodyContentClass) {
-        return JsonSerializable.class.isAssignableFrom(bodyContentClass);
+        if (!JsonSerializable.class.isAssignableFrom(bodyContentClass)) {
+            return false;
+        }
+
+        boolean hasFromJson = false;
+        boolean hasToJson = false;
+        for (Method method : bodyContentClass.getDeclaredMethods()) {
+            if (method.getName().equals("fromJson")
+                && (method.getModifiers() & Modifier.STATIC) != 0
+                && method.getParameterCount() == 1
+                && method.getParameterTypes()[0].equals(JsonReader.class)) {
+                hasFromJson = true;
+            } else if (method.getName().equals("toJson")
+                && method.getParameterCount() == 1
+                && method.getParameterTypes()[0].equals(JsonWriter.class)) {
+                hasToJson = true;
+            }
+
+            if (hasFromJson && hasToJson) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -145,7 +176,7 @@ public final class ReflectionSerializable {
     private static <T> T serializeJsonSerializableWithReturn(JsonSerializable<?> jsonSerializable,
         Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-             JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
             jsonWriter.writeJson(jsonSerializable).flush();
 
             return returner.apply(outputStream);
@@ -249,11 +280,11 @@ public final class ReflectionSerializable {
     private static <T> T serializeXmlSerializableWithReturn(Object xmlSerializable,
         Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-             AutoCloseable xmlWriter
-                 = callXmlInvoker(AutoCloseable.class, () -> XML_WRITER_CREATOR.invokeStatic(outputStream))) {
+            AutoCloseable xmlWriter
+                = callXmlInvoker(AutoCloseable.class, () -> XML_WRITER_CREATOR.invokeStatic(outputStream))) {
             callXmlInvoker(Object.class, () -> XML_WRITER_WRITE_XML_START_DOCUMENT.invokeWithArguments(xmlWriter));
-            callXmlInvoker(Object.class, () -> XML_WRITER_WRITE_XML_SERIALIZABLE.invokeWithArguments(xmlWriter,
-                xmlSerializable));
+            callXmlInvoker(Object.class,
+                () -> XML_WRITER_WRITE_XML_SERIALIZABLE.invokeWithArguments(xmlWriter, xmlSerializable));
             callXmlInvoker(Object.class, () -> XML_WRITER_FLUSH.invokeWithArguments(xmlWriter));
 
             return returner.apply(outputStream);
@@ -274,10 +305,10 @@ public final class ReflectionSerializable {
     public static void serializeXmlSerializableIntoOutputStream(Object xmlSerializable, OutputStream outputStream)
         throws IOException {
         try (AutoCloseable xmlWriter
-                 = callXmlInvoker(AutoCloseable.class, () -> XML_WRITER_CREATOR.invokeStatic(outputStream))) {
+            = callXmlInvoker(AutoCloseable.class, () -> XML_WRITER_CREATOR.invokeStatic(outputStream))) {
             callXmlInvoker(Object.class, () -> XML_WRITER_WRITE_XML_START_DOCUMENT.invokeWithArguments(xmlWriter));
-            callXmlInvoker(Object.class, () -> XML_WRITER_WRITE_XML_SERIALIZABLE.invokeWithArguments(xmlWriter,
-                xmlSerializable));
+            callXmlInvoker(Object.class,
+                () -> XML_WRITER_WRITE_XML_SERIALIZABLE.invokeWithArguments(xmlWriter, xmlSerializable));
             callXmlInvoker(Object.class, () -> XML_WRITER_FLUSH.invokeWithArguments(xmlWriter));
         } catch (IOException ex) {
             throw ex;
@@ -315,9 +346,9 @@ public final class ReflectionSerializable {
         });
 
         try (AutoCloseable xmlReader
-                 = callXmlInvoker(AutoCloseable.class, () -> XML_READER_CREATOR.invokeStatic((Object) xml))) {
+            = callXmlInvoker(AutoCloseable.class, () -> XML_READER_CREATOR.invokeStatic((Object) xml))) {
             return readXml.invokeStatic(xmlReader);
-        }  catch (Throwable e) {
+        } catch (Throwable e) {
             if (e instanceof IOException) {
                 throw (IOException) e;
             } else if (e instanceof Exception) {

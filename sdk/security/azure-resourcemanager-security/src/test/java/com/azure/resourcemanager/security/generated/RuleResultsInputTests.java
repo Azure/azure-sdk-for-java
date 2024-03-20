@@ -12,22 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class RuleResultsInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RuleResultsInput model =
-            BinaryData
-                .fromString("{\"latestScan\":false,\"results\":[[\"gvxvatv\",\"rkdlb\",\"bqxvhcsyhzlwxae\"]]}")
-                .toObject(RuleResultsInput.class);
-        Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("gvxvatv", model.results().get(0).get(0));
+        RuleResultsInput model = BinaryData.fromString(
+            "{\"latestScan\":true,\"results\":[[\"rhubskhud\"],[\"oookkqfq\"],[\"vleo\",\"fmluiqtqzfavyvn\",\"qybaryeua\",\"jkqa\"],[\"gzslesjcbhernnti\",\"w\"]]}")
+            .toObject(RuleResultsInput.class);
+        Assertions.assertEquals(true, model.latestScan());
+        Assertions.assertEquals("rhubskhud", model.results().get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuleResultsInput model =
-            new RuleResultsInput()
-                .withLatestScan(false)
-                .withResults(Arrays.asList(Arrays.asList("gvxvatv", "rkdlb", "bqxvhcsyhzlwxae")));
+        RuleResultsInput model = new RuleResultsInput().withLatestScan(true)
+            .withResults(Arrays.asList(Arrays.asList("rhubskhud"), Arrays.asList("oookkqfq"),
+                Arrays.asList("vleo", "fmluiqtqzfavyvn", "qybaryeua", "jkqa"), Arrays.asList("gzslesjcbhernnti", "w")));
         model = BinaryData.fromObject(model).toObject(RuleResultsInput.class);
-        Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("gvxvatv", model.results().get(0).get(0));
+        Assertions.assertEquals(true, model.latestScan());
+        Assertions.assertEquals("rhubskhud", model.results().get(0).get(0));
     }
 }

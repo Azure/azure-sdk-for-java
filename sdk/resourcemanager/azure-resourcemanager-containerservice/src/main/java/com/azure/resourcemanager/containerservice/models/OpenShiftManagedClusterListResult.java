@@ -34,7 +34,7 @@ public final class OpenShiftManagedClusterListResult {
 
     /**
      * Get the value property: The list of OpenShift managed clusters.
-     *
+     * 
      * @return the value value.
      */
     public List<OpenShiftManagedClusterInner> value() {
@@ -43,7 +43,7 @@ public final class OpenShiftManagedClusterListResult {
 
     /**
      * Set the value property: The list of OpenShift managed clusters.
-     *
+     * 
      * @param value the value value to set.
      * @return the OpenShiftManagedClusterListResult object itself.
      */
@@ -54,7 +54,7 @@ public final class OpenShiftManagedClusterListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of OpenShift managed cluster results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +63,7 @@ public final class OpenShiftManagedClusterListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -87,7 +87,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.10.4</version>
+    <version>1.11.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -109,7 +109,7 @@ MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
 ```
 
 ```java readme-sample-createMetricsBatchQueryClient
-MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBuilder()
+MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("{endpoint}")
     .buildClient();
@@ -130,7 +130,7 @@ MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder(
 ```
 
 ```java readme-sample-createMetricsBatchQueryAsyncClient
-MetricsBatchQueryAsyncClient metricsBatchQueryAsyncClient = new MetricsBatchQueryClientBuilder()
+MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("{endpoint}")
     .buildAsyncClient();
@@ -534,17 +534,17 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
 #### Handle metrics batch query response
 
 ```java readme-sample-metricsquerybatch
-MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBuilder()
+MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("{endpoint}")
     .buildClient();
 
-MetricsBatchQueryResult metricsBatchQueryResult = metricsBatchQueryClient.queryBatch(
+MetricsQueryResourcesResult metricsQueryResourcesResult = metricsBatchQueryClient.queryResources(
     Arrays.asList("{resourceId1}", "{resourceId2}"),
     Arrays.asList("{metric1}", "{metric2}"),
     "{metricNamespace}");
 
-for (MetricsQueryResult metricsQueryResult : metricsBatchQueryResult.getMetricsQueryResults()) {
+for (MetricsQueryResult metricsQueryResult : metricsQueryResourcesResult.getMetricsQueryResults()) {
     // Each MetricsQueryResult corresponds to one of the resourceIds in the batch request.
     List<MetricResult> metrics = metricsQueryResult.getMetrics();
     metrics.forEach(metric -> {

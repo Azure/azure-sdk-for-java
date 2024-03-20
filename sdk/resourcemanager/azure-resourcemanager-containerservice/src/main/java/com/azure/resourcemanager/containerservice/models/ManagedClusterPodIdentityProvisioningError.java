@@ -26,7 +26,7 @@ public final class ManagedClusterPodIdentityProvisioningError {
 
     /**
      * Get the error property: Details about the error.
-     *
+     * 
      * @return the error value.
      */
     public ManagedClusterPodIdentityProvisioningErrorBody error() {
@@ -35,7 +35,7 @@ public final class ManagedClusterPodIdentityProvisioningError {
 
     /**
      * Set the error property: Details about the error.
-     *
+     * 
      * @param error the error value to set.
      * @return the ManagedClusterPodIdentityProvisioningError object itself.
      */
@@ -46,7 +46,7 @@ public final class ManagedClusterPodIdentityProvisioningError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

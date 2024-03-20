@@ -45,7 +45,7 @@ public final class DelegatedResource {
 
     /**
      * Get the resourceId property: The ARM resource id of the delegated resource - internal use only.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -54,7 +54,7 @@ public final class DelegatedResource {
 
     /**
      * Set the resourceId property: The ARM resource id of the delegated resource - internal use only.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the DelegatedResource object itself.
      */
@@ -65,7 +65,7 @@ public final class DelegatedResource {
 
     /**
      * Get the tenantId property: The tenant id of the delegated resource - internal use only.
-     *
+     * 
      * @return the tenantId value.
      */
     public UUID tenantId() {
@@ -74,7 +74,7 @@ public final class DelegatedResource {
 
     /**
      * Set the tenantId property: The tenant id of the delegated resource - internal use only.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the DelegatedResource object itself.
      */
@@ -85,7 +85,7 @@ public final class DelegatedResource {
 
     /**
      * Get the referralResource property: The delegation id of the referral delegation (optional) - internal use only.
-     *
+     * 
      * @return the referralResource value.
      */
     public String referralResource() {
@@ -94,7 +94,7 @@ public final class DelegatedResource {
 
     /**
      * Set the referralResource property: The delegation id of the referral delegation (optional) - internal use only.
-     *
+     * 
      * @param referralResource the referralResource value to set.
      * @return the DelegatedResource object itself.
      */
@@ -105,7 +105,7 @@ public final class DelegatedResource {
 
     /**
      * Get the location property: The source resource location - internal use only.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -114,7 +114,7 @@ public final class DelegatedResource {
 
     /**
      * Set the location property: The source resource location - internal use only.
-     *
+     * 
      * @param location the location value to set.
      * @return the DelegatedResource object itself.
      */
@@ -125,7 +125,7 @@ public final class DelegatedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

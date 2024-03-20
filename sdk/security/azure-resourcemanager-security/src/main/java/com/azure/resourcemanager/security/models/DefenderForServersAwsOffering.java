@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The Defender for Servers AWS offering. */
+/**
+ * The Defender for Servers AWS offering.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "offeringType")
 @JsonTypeName("DefenderForServersAws")
 @Fluent
@@ -50,13 +52,15 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
     @JsonProperty(value = "vmScanners")
     private DefenderForServersAwsOfferingVmScanners vmScanners;
 
-    /** Creates an instance of DefenderForServersAwsOffering class. */
+    /**
+     * Creates an instance of DefenderForServersAwsOffering class.
+     */
     public DefenderForServersAwsOffering() {
     }
 
     /**
      * Get the defenderForServers property: The Defender for servers connection configuration.
-     *
+     * 
      * @return the defenderForServers value.
      */
     public DefenderForServersAwsOfferingDefenderForServers defenderForServers() {
@@ -65,19 +69,19 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
 
     /**
      * Set the defenderForServers property: The Defender for servers connection configuration.
-     *
+     * 
      * @param defenderForServers the defenderForServers value to set.
      * @return the DefenderForServersAwsOffering object itself.
      */
-    public DefenderForServersAwsOffering withDefenderForServers(
-        DefenderForServersAwsOfferingDefenderForServers defenderForServers) {
+    public DefenderForServersAwsOffering
+        withDefenderForServers(DefenderForServersAwsOfferingDefenderForServers defenderForServers) {
         this.defenderForServers = defenderForServers;
         return this;
     }
 
     /**
      * Get the arcAutoProvisioning property: The ARC autoprovisioning configuration.
-     *
+     * 
      * @return the arcAutoProvisioning value.
      */
     public DefenderForServersAwsOfferingArcAutoProvisioning arcAutoProvisioning() {
@@ -86,19 +90,19 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
 
     /**
      * Set the arcAutoProvisioning property: The ARC autoprovisioning configuration.
-     *
+     * 
      * @param arcAutoProvisioning the arcAutoProvisioning value to set.
      * @return the DefenderForServersAwsOffering object itself.
      */
-    public DefenderForServersAwsOffering withArcAutoProvisioning(
-        DefenderForServersAwsOfferingArcAutoProvisioning arcAutoProvisioning) {
+    public DefenderForServersAwsOffering
+        withArcAutoProvisioning(DefenderForServersAwsOfferingArcAutoProvisioning arcAutoProvisioning) {
         this.arcAutoProvisioning = arcAutoProvisioning;
         return this;
     }
 
     /**
      * Get the vaAutoProvisioning property: The Vulnerability Assessment autoprovisioning configuration.
-     *
+     * 
      * @return the vaAutoProvisioning value.
      */
     public DefenderForServersAwsOfferingVaAutoProvisioning vaAutoProvisioning() {
@@ -107,19 +111,19 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
 
     /**
      * Set the vaAutoProvisioning property: The Vulnerability Assessment autoprovisioning configuration.
-     *
+     * 
      * @param vaAutoProvisioning the vaAutoProvisioning value to set.
      * @return the DefenderForServersAwsOffering object itself.
      */
-    public DefenderForServersAwsOffering withVaAutoProvisioning(
-        DefenderForServersAwsOfferingVaAutoProvisioning vaAutoProvisioning) {
+    public DefenderForServersAwsOffering
+        withVaAutoProvisioning(DefenderForServersAwsOfferingVaAutoProvisioning vaAutoProvisioning) {
         this.vaAutoProvisioning = vaAutoProvisioning;
         return this;
     }
 
     /**
      * Get the mdeAutoProvisioning property: The Microsoft Defender for Endpoint autoprovisioning configuration.
-     *
+     * 
      * @return the mdeAutoProvisioning value.
      */
     public DefenderForServersAwsOfferingMdeAutoProvisioning mdeAutoProvisioning() {
@@ -128,19 +132,19 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
 
     /**
      * Set the mdeAutoProvisioning property: The Microsoft Defender for Endpoint autoprovisioning configuration.
-     *
+     * 
      * @param mdeAutoProvisioning the mdeAutoProvisioning value to set.
      * @return the DefenderForServersAwsOffering object itself.
      */
-    public DefenderForServersAwsOffering withMdeAutoProvisioning(
-        DefenderForServersAwsOfferingMdeAutoProvisioning mdeAutoProvisioning) {
+    public DefenderForServersAwsOffering
+        withMdeAutoProvisioning(DefenderForServersAwsOfferingMdeAutoProvisioning mdeAutoProvisioning) {
         this.mdeAutoProvisioning = mdeAutoProvisioning;
         return this;
     }
 
     /**
      * Get the subPlan property: configuration for the servers offering subPlan.
-     *
+     * 
      * @return the subPlan value.
      */
     public DefenderForServersAwsOfferingSubPlan subPlan() {
@@ -149,7 +153,7 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
 
     /**
      * Set the subPlan property: configuration for the servers offering subPlan.
-     *
+     * 
      * @param subPlan the subPlan value to set.
      * @return the DefenderForServersAwsOffering object itself.
      */
@@ -160,7 +164,7 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
 
     /**
      * Get the vmScanners property: The Microsoft Defender for Server VM scanning configuration.
-     *
+     * 
      * @return the vmScanners value.
      */
     public DefenderForServersAwsOfferingVmScanners vmScanners() {
@@ -169,7 +173,7 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
 
     /**
      * Set the vmScanners property: The Microsoft Defender for Server VM scanning configuration.
-     *
+     * 
      * @param vmScanners the vmScanners value to set.
      * @return the DefenderForServersAwsOffering object itself.
      */
@@ -180,7 +184,7 @@ public final class DefenderForServersAwsOffering extends CloudOffering {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

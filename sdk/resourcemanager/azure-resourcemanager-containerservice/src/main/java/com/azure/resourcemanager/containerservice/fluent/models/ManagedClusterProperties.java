@@ -16,6 +16,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
@@ -58,7 +59,7 @@ public final class ManagedClusterProperties {
 
     /*
      * The version of Kubernetes specified by the user.
-     *
+     * 
      * Both patch version <major.minor.patch> (e.g. 1.20.13) and <major.minor> (e.g. 1.20) are supported. When
      * <major.minor> is specified, the latest supported GA patch version is chosen automatically. Updating the cluster
      * with the same <major.minor> once it has been created (e.g. 1.14.x -> 1.14) will not trigger an upgrade, even if
@@ -72,7 +73,7 @@ public final class ManagedClusterProperties {
 
     /*
      * The version of Kubernetes the Managed Cluster is running.
-     *
+     * 
      * If kubernetesVersion was a fully specified version <major.minor.patch>, this field will be exactly equal to it.
      * If kubernetesVersion was <major.minor>, this field will contain the full <major.minor.patch> version being used.
      */
@@ -81,7 +82,7 @@ public final class ManagedClusterProperties {
 
     /*
      * The DNS prefix of the Managed Cluster.
-     *
+     * 
      * This cannot be updated once the Managed Cluster has been created.
      */
     @JsonProperty(value = "dnsPrefix")
@@ -89,7 +90,7 @@ public final class ManagedClusterProperties {
 
     /*
      * The FQDN subdomain of the private cluster with custom private dns zone.
-     *
+     * 
      * This cannot be updated once the Managed Cluster has been created.
      */
     @JsonProperty(value = "fqdnSubdomain")
@@ -110,7 +111,7 @@ public final class ManagedClusterProperties {
     /*
      * The special FQDN used by the Azure Portal to access the Managed Cluster. This FQDN is for use only by the Azure
      * Portal and should not be used by other clients.
-     *
+     * 
      * The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses,
      * which Kubernetes APIServer doesn't handle by default. This special FQDN supports CORS, allowing the Azure Portal
      * to function properly.
@@ -151,7 +152,7 @@ public final class ManagedClusterProperties {
 
     /*
      * The pod identity profile of the Managed Cluster.
-     *
+     * 
      * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on
      * AAD pod identity integration.
      */
@@ -198,7 +199,7 @@ public final class ManagedClusterProperties {
 
     /*
      * AADProfile specifies attributes for Azure Active Directory integration.
-     *
+     * 
      * The Azure Active Directory configuration.
      */
     @JsonProperty(value = "aadProfile")
@@ -230,7 +231,7 @@ public final class ManagedClusterProperties {
 
     /*
      * The Resource ID of the disk encryption set to use for enabling encryption at rest.
-     *
+     * 
      * This is of the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/
      * diskEncryptionSets/{encryptionSetName}'
@@ -253,7 +254,7 @@ public final class ManagedClusterProperties {
 
     /*
      * If local accounts should be disabled on the Managed Cluster.
-     *
+     * 
      * If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed
      * Clusters that are AAD enabled. For more details see [disable local
      * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
@@ -280,8 +281,14 @@ public final class ManagedClusterProperties {
     private ManagedClusterStorageProfile storageProfile;
 
     /*
+     * Ingress profile for the managed cluster.
+     */
+    @JsonProperty(value = "ingressProfile")
+    private ManagedClusterIngressProfile ingressProfile;
+
+    /*
      * PublicNetworkAccess of the managedCluster
-     *
+     * 
      * Allow or deny public network access for AKS
      */
     @JsonProperty(value = "publicNetworkAccess")
@@ -320,7 +327,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the provisioningState property: The current provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -329,7 +336,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the powerState property: The Power State of the cluster.
-     *
+     * 
      * @return the powerState value.
      */
     public PowerState powerState() {
@@ -338,7 +345,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the maxAgentPools property: The max number of agent pools for the managed cluster.
-     *
+     * 
      * @return the maxAgentPools value.
      */
     public Integer maxAgentPools() {
@@ -347,7 +354,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the kubernetesVersion property: The version of Kubernetes specified by the user.
-     *
+     * 
      * Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
      * When &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating
      * the cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger
@@ -356,7 +363,7 @@ public final class ManagedClusterProperties {
      * example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is
      * not allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more
      * details.
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -365,7 +372,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the kubernetesVersion property: The version of Kubernetes specified by the user.
-     *
+     * 
      * Both patch version &lt;major.minor.patch&gt; (e.g. 1.20.13) and &lt;major.minor&gt; (e.g. 1.20) are supported.
      * When &lt;major.minor&gt; is specified, the latest supported GA patch version is chosen automatically. Updating
      * the cluster with the same &lt;major.minor&gt; once it has been created (e.g. 1.14.x -&gt; 1.14) will not trigger
@@ -374,7 +381,7 @@ public final class ManagedClusterProperties {
      * example, upgrades between 1.14.x -&gt; 1.15.x or 1.15.x -&gt; 1.16.x are allowed, however 1.14.x -&gt; 1.16.x is
      * not allowed. See [upgrading an AKS cluster](https://docs.microsoft.com/azure/aks/upgrade-cluster) for more
      * details.
-     *
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -385,11 +392,11 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the currentKubernetesVersion property: The version of Kubernetes the Managed Cluster is running.
-     *
+     * 
      * If kubernetesVersion was a fully specified version &lt;major.minor.patch&gt;, this field will be exactly equal
      * to it. If kubernetesVersion was &lt;major.minor&gt;, this field will contain the full &lt;major.minor.patch&gt;
      * version being used.
-     *
+     * 
      * @return the currentKubernetesVersion value.
      */
     public String currentKubernetesVersion() {
@@ -398,9 +405,9 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the dnsPrefix property: The DNS prefix of the Managed Cluster.
-     *
+     * 
      * This cannot be updated once the Managed Cluster has been created.
-     *
+     * 
      * @return the dnsPrefix value.
      */
     public String dnsPrefix() {
@@ -409,9 +416,9 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the dnsPrefix property: The DNS prefix of the Managed Cluster.
-     *
+     * 
      * This cannot be updated once the Managed Cluster has been created.
-     *
+     * 
      * @param dnsPrefix the dnsPrefix value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -422,9 +429,9 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the fqdnSubdomain property: The FQDN subdomain of the private cluster with custom private dns zone.
-     *
+     * 
      * This cannot be updated once the Managed Cluster has been created.
-     *
+     * 
      * @return the fqdnSubdomain value.
      */
     public String fqdnSubdomain() {
@@ -433,9 +440,9 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the fqdnSubdomain property: The FQDN subdomain of the private cluster with custom private dns zone.
-     *
+     * 
      * This cannot be updated once the Managed Cluster has been created.
-     *
+     * 
      * @param fqdnSubdomain the fqdnSubdomain value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -446,7 +453,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the fqdn property: The FQDN of the master pool.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -455,7 +462,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the privateFqdn property: The FQDN of private cluster.
-     *
+     * 
      * @return the privateFqdn value.
      */
     public String privateFqdn() {
@@ -465,11 +472,11 @@ public final class ManagedClusterProperties {
     /**
      * Get the azurePortalFqdn property: The special FQDN used by the Azure Portal to access the Managed Cluster. This
      * FQDN is for use only by the Azure Portal and should not be used by other clients.
-     *
+     * 
      * The Azure Portal requires certain Cross-Origin Resource Sharing (CORS) headers to be sent in some responses,
      * which Kubernetes APIServer doesn't handle by default. This special FQDN supports CORS, allowing the Azure Portal
      * to function properly.
-     *
+     * 
      * @return the azurePortalFqdn value.
      */
     public String azurePortalFqdn() {
@@ -478,7 +485,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the agentPoolProfiles property: The agent pool properties.
-     *
+     * 
      * @return the agentPoolProfiles value.
      */
     public List<ManagedClusterAgentPoolProfile> agentPoolProfiles() {
@@ -487,7 +494,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the agentPoolProfiles property: The agent pool properties.
-     *
+     * 
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -498,7 +505,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the linuxProfile property: The profile for Linux VMs in the Managed Cluster.
-     *
+     * 
      * @return the linuxProfile value.
      */
     public ContainerServiceLinuxProfile linuxProfile() {
@@ -507,7 +514,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the linuxProfile property: The profile for Linux VMs in the Managed Cluster.
-     *
+     * 
      * @param linuxProfile the linuxProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -518,7 +525,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the windowsProfile property: The profile for Windows VMs in the Managed Cluster.
-     *
+     * 
      * @return the windowsProfile value.
      */
     public ManagedClusterWindowsProfile windowsProfile() {
@@ -527,7 +534,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the windowsProfile property: The profile for Windows VMs in the Managed Cluster.
-     *
+     * 
      * @param windowsProfile the windowsProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -539,7 +546,7 @@ public final class ManagedClusterProperties {
     /**
      * Get the servicePrincipalProfile property: Information about a service principal identity for the cluster to use
      * for manipulating Azure APIs.
-     *
+     * 
      * @return the servicePrincipalProfile value.
      */
     public ManagedClusterServicePrincipalProfile servicePrincipalProfile() {
@@ -549,7 +556,7 @@ public final class ManagedClusterProperties {
     /**
      * Set the servicePrincipalProfile property: Information about a service principal identity for the cluster to use
      * for manipulating Azure APIs.
-     *
+     * 
      * @param servicePrincipalProfile the servicePrincipalProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -561,7 +568,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the addonProfiles property: The profile of managed cluster add-on.
-     *
+     * 
      * @return the addonProfiles value.
      */
     public Map<String, ManagedClusterAddonProfile> addonProfiles() {
@@ -570,7 +577,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the addonProfiles property: The profile of managed cluster add-on.
-     *
+     * 
      * @param addonProfiles the addonProfiles value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -581,10 +588,10 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the podIdentityProfile property: The pod identity profile of the Managed Cluster.
-     *
+     * 
      * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on
      * AAD pod identity integration.
-     *
+     * 
      * @return the podIdentityProfile value.
      */
     public ManagedClusterPodIdentityProfile podIdentityProfile() {
@@ -593,10 +600,10 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the podIdentityProfile property: The pod identity profile of the Managed Cluster.
-     *
+     * 
      * See [use AAD pod identity](https://docs.microsoft.com/azure/aks/use-azure-ad-pod-identity) for more details on
      * AAD pod identity integration.
-     *
+     * 
      * @param podIdentityProfile the podIdentityProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -607,7 +614,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the oidcIssuerProfile property: The OIDC issuer profile of the Managed Cluster.
-     *
+     * 
      * @return the oidcIssuerProfile value.
      */
     public ManagedClusterOidcIssuerProfile oidcIssuerProfile() {
@@ -616,7 +623,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the oidcIssuerProfile property: The OIDC issuer profile of the Managed Cluster.
-     *
+     * 
      * @param oidcIssuerProfile the oidcIssuerProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -627,7 +634,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the nodeResourceGroup property: The name of the resource group containing agent pool nodes.
-     *
+     * 
      * @return the nodeResourceGroup value.
      */
     public String nodeResourceGroup() {
@@ -636,7 +643,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the nodeResourceGroup property: The name of the resource group containing agent pool nodes.
-     *
+     * 
      * @param nodeResourceGroup the nodeResourceGroup value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -647,7 +654,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the enableRbac property: Whether to enable Kubernetes Role-Based Access Control.
-     *
+     * 
      * @return the enableRbac value.
      */
     public Boolean enableRbac() {
@@ -656,7 +663,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the enableRbac property: Whether to enable Kubernetes Role-Based Access Control.
-     *
+     * 
      * @param enableRbac the enableRbac value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -668,7 +675,7 @@ public final class ManagedClusterProperties {
     /**
      * Get the supportPlan property: The support plan for the Managed Cluster. If unspecified, the default is
      * 'KubernetesOfficial'.
-     *
+     * 
      * @return the supportPlan value.
      */
     public KubernetesSupportPlan supportPlan() {
@@ -678,7 +685,7 @@ public final class ManagedClusterProperties {
     /**
      * Set the supportPlan property: The support plan for the Managed Cluster. If unspecified, the default is
      * 'KubernetesOfficial'.
-     *
+     * 
      * @param supportPlan the supportPlan value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -691,7 +698,7 @@ public final class ManagedClusterProperties {
      * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
      * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn
      * more at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     *
+     * 
      * @return the enablePodSecurityPolicy value.
      */
     public Boolean enablePodSecurityPolicy() {
@@ -702,7 +709,7 @@ public final class ManagedClusterProperties {
      * Set the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
      * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn
      * more at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
-     *
+     * 
      * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -713,7 +720,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the networkProfile property: The network configuration profile.
-     *
+     * 
      * @return the networkProfile value.
      */
     public ContainerServiceNetworkProfile networkProfile() {
@@ -722,7 +729,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the networkProfile property: The network configuration profile.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -733,9 +740,9 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the aadProfile property: AADProfile specifies attributes for Azure Active Directory integration.
-     *
+     * 
      * The Azure Active Directory configuration.
-     *
+     * 
      * @return the aadProfile value.
      */
     public ManagedClusterAadProfile aadProfile() {
@@ -744,9 +751,9 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the aadProfile property: AADProfile specifies attributes for Azure Active Directory integration.
-     *
+     * 
      * The Azure Active Directory configuration.
-     *
+     * 
      * @param aadProfile the aadProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -757,7 +764,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the autoUpgradeProfile property: The auto upgrade configuration.
-     *
+     * 
      * @return the autoUpgradeProfile value.
      */
     public ManagedClusterAutoUpgradeProfile autoUpgradeProfile() {
@@ -766,7 +773,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the autoUpgradeProfile property: The auto upgrade configuration.
-     *
+     * 
      * @param autoUpgradeProfile the autoUpgradeProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -777,7 +784,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the upgradeSettings property: Settings for upgrading a cluster.
-     *
+     * 
      * @return the upgradeSettings value.
      */
     public ClusterUpgradeSettings upgradeSettings() {
@@ -786,7 +793,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the upgradeSettings property: Settings for upgrading a cluster.
-     *
+     * 
      * @param upgradeSettings the upgradeSettings value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -797,7 +804,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the autoScalerProfile property: Parameters to be applied to the cluster-autoscaler when enabled.
-     *
+     * 
      * @return the autoScalerProfile value.
      */
     public ManagedClusterPropertiesAutoScalerProfile autoScalerProfile() {
@@ -806,7 +813,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the autoScalerProfile property: Parameters to be applied to the cluster-autoscaler when enabled.
-     *
+     * 
      * @param autoScalerProfile the autoScalerProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -817,7 +824,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the apiServerAccessProfile property: The access profile for managed cluster API server.
-     *
+     * 
      * @return the apiServerAccessProfile value.
      */
     public ManagedClusterApiServerAccessProfile apiServerAccessProfile() {
@@ -826,7 +833,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the apiServerAccessProfile property: The access profile for managed cluster API server.
-     *
+     * 
      * @param apiServerAccessProfile the apiServerAccessProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -839,10 +846,10 @@ public final class ManagedClusterProperties {
     /**
      * Get the diskEncryptionSetId property: The Resource ID of the disk encryption set to use for enabling encryption
      * at rest.
-     *
+     * 
      * This is of the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -852,10 +859,10 @@ public final class ManagedClusterProperties {
     /**
      * Set the diskEncryptionSetId property: The Resource ID of the disk encryption set to use for enabling encryption
      * at rest.
-     *
+     * 
      * This is of the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/diskEncryptionSets/{encryptionSetName}'.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -866,7 +873,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the identityProfile property: Identities associated with the cluster.
-     *
+     * 
      * @return the identityProfile value.
      */
     public Map<String, UserAssignedIdentity> identityProfile() {
@@ -875,7 +882,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the identityProfile property: Identities associated with the cluster.
-     *
+     * 
      * @param identityProfile the identityProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -886,7 +893,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the privateLinkResources property: Private link resources associated with the cluster.
-     *
+     * 
      * @return the privateLinkResources value.
      */
     public List<PrivateLinkResourceInner> privateLinkResources() {
@@ -895,7 +902,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the privateLinkResources property: Private link resources associated with the cluster.
-     *
+     * 
      * @param privateLinkResources the privateLinkResources value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -906,11 +913,11 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the disableLocalAccounts property: If local accounts should be disabled on the Managed Cluster.
-     *
+     * 
      * If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed
      * Clusters that are AAD enabled. For more details see [disable local
      * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
-     *
+     * 
      * @return the disableLocalAccounts value.
      */
     public Boolean disableLocalAccounts() {
@@ -919,11 +926,11 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the disableLocalAccounts property: If local accounts should be disabled on the Managed Cluster.
-     *
+     * 
      * If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed
      * Clusters that are AAD enabled. For more details see [disable local
      * accounts](https://docs.microsoft.com/azure/aks/managed-aad#disable-local-accounts-preview).
-     *
+     * 
      * @param disableLocalAccounts the disableLocalAccounts value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -934,7 +941,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the httpProxyConfig property: Configurations for provisioning the cluster with HTTP proxy servers.
-     *
+     * 
      * @return the httpProxyConfig value.
      */
     public ManagedClusterHttpProxyConfig httpProxyConfig() {
@@ -943,7 +950,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the httpProxyConfig property: Configurations for provisioning the cluster with HTTP proxy servers.
-     *
+     * 
      * @param httpProxyConfig the httpProxyConfig value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -954,7 +961,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the securityProfile property: Security profile for the managed cluster.
-     *
+     * 
      * @return the securityProfile value.
      */
     public ManagedClusterSecurityProfile securityProfile() {
@@ -963,7 +970,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the securityProfile property: Security profile for the managed cluster.
-     *
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -974,7 +981,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the storageProfile property: Storage profile for the managed cluster.
-     *
+     * 
      * @return the storageProfile value.
      */
     public ManagedClusterStorageProfile storageProfile() {
@@ -983,7 +990,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the storageProfile property: Storage profile for the managed cluster.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -993,10 +1000,30 @@ public final class ManagedClusterProperties {
     }
 
     /**
+     * Get the ingressProfile property: Ingress profile for the managed cluster.
+     * 
+     * @return the ingressProfile value.
+     */
+    public ManagedClusterIngressProfile ingressProfile() {
+        return this.ingressProfile;
+    }
+
+    /**
+     * Set the ingressProfile property: Ingress profile for the managed cluster.
+     * 
+     * @param ingressProfile the ingressProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withIngressProfile(ManagedClusterIngressProfile ingressProfile) {
+        this.ingressProfile = ingressProfile;
+        return this;
+    }
+
+    /**
      * Get the publicNetworkAccess property: PublicNetworkAccess of the managedCluster
-     *
+     * 
      * Allow or deny public network access for AKS.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -1005,9 +1032,9 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the publicNetworkAccess property: PublicNetworkAccess of the managedCluster
-     *
+     * 
      * Allow or deny public network access for AKS.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -1018,7 +1045,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the workloadAutoScalerProfile property: Workload Auto-scaler profile for the managed cluster.
-     *
+     * 
      * @return the workloadAutoScalerProfile value.
      */
     public ManagedClusterWorkloadAutoScalerProfile workloadAutoScalerProfile() {
@@ -1027,7 +1054,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the workloadAutoScalerProfile property: Workload Auto-scaler profile for the managed cluster.
-     *
+     * 
      * @param workloadAutoScalerProfile the workloadAutoScalerProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -1039,7 +1066,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
-     *
+     * 
      * @return the azureMonitorProfile value.
      */
     public ManagedClusterAzureMonitorProfile azureMonitorProfile() {
@@ -1048,7 +1075,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
-     *
+     * 
      * @param azureMonitorProfile the azureMonitorProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -1059,7 +1086,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the serviceMeshProfile property: Service mesh profile for a managed cluster.
-     *
+     * 
      * @return the serviceMeshProfile value.
      */
     public ServiceMeshProfile serviceMeshProfile() {
@@ -1068,7 +1095,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the serviceMeshProfile property: Service mesh profile for a managed cluster.
-     *
+     * 
      * @param serviceMeshProfile the serviceMeshProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -1080,7 +1107,7 @@ public final class ManagedClusterProperties {
     /**
      * Get the resourceUid property: The resourceUID uniquely identifies ManagedClusters that reuse ARM ResourceIds
      * (i.e: create, delete, create sequence).
-     *
+     * 
      * @return the resourceUid value.
      */
     public String resourceUid() {
@@ -1089,7 +1116,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -1157,6 +1184,9 @@ public final class ManagedClusterProperties {
         }
         if (storageProfile() != null) {
             storageProfile().validate();
+        }
+        if (ingressProfile() != null) {
+            ingressProfile().validate();
         }
         if (workloadAutoScalerProfile() != null) {
             workloadAutoScalerProfile().validate();

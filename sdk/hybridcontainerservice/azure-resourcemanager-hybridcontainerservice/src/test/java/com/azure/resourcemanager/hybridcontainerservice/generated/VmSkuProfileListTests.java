@@ -16,29 +16,22 @@ public final class VmSkuProfileListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VmSkuProfileList model = BinaryData.fromString(
-            "{\"value\":[{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"ubcgjbirxb\"},\"properties\":{\"provisioningState\":\"InProgress\",\"values\":[{\"resourceType\":\"jfdtwssotftpvj\",\"capabilities\":[{},{},{},{}],\"name\":\"ilzznfqqnvwp\",\"tier\":\"taruoujmkcj\",\"size\":\"qytjrybnwjewgd\"},{\"resourceType\":\"ervnaenqpehi\",\"capabilities\":[{},{}],\"name\":\"gmifthnzd\",\"tier\":\"sl\",\"size\":\"ayqigynduhav\"},{\"resourceType\":\"lkthu\",\"capabilities\":[{},{}],\"name\":\"lbg\",\"tier\":\"duiertgcc\",\"size\":\"vaolpsslqlf\"},{\"resourceType\":\"dnbbglzps\",\"capabilities\":[{},{},{},{}],\"name\":\"mcwyhzdxssadb\",\"tier\":\"nvdfznuda\",\"size\":\"vxzbncb\"}]},\"id\":\"lpstdbhhxsrzdz\",\"name\":\"cers\",\"type\":\"dntnevf\"},{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"gtdsslswt\"},\"properties\":{\"provisioningState\":\"Upgrading\",\"values\":[{\"resourceType\":\"zpyqsemwab\",\"capabilities\":[{},{},{}],\"name\":\"hhszh\",\"tier\":\"plvwiwubmwmbes\",\"size\":\"nkww\"}]},\"id\":\"pjflcxogao\",\"name\":\"onz\",\"type\":\"nsikvmkqzeqqkdl\"},{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"hhvh\"},\"properties\":{\"provisioningState\":\"Creating\",\"values\":[{\"resourceType\":\"wobdagxtibqdx\",\"capabilities\":[{},{},{}],\"name\":\"kbogqxndlkzgx\",\"tier\":\"ripl\",\"size\":\"odxun\"},{\"resourceType\":\"ebxmubyynt\",\"capabilities\":[{},{}],\"name\":\"qtkoievs\",\"tier\":\"tgqr\",\"size\":\"tmuwlauwzi\"},{\"resourceType\":\"bm\",\"capabilities\":[{},{}],\"name\":\"efuzmuvpbttd\",\"tier\":\"orppxebmnzbtb\",\"size\":\"pglkf\"}]},\"id\":\"hdneuelfph\",\"name\":\"dyhtozfikdowwquu\",\"type\":\"xzxcl\"},{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"qzonosggbhcohf\"},\"properties\":{\"provisioningState\":\"Accepted\",\"values\":[{\"resourceType\":\"ljuti\",\"capabilities\":[{}],\"name\":\"cffgdkzzewk\",\"tier\":\"hqcrailvpnpp\",\"size\":\"flrwd\"}]},\"id\":\"dlxyjrxs\",\"name\":\"gafcnihgwqapnedg\",\"type\":\"bcvkcvqvpkeq\"}],\"nextLink\":\"vdrhvoo\"}")
+            "{\"value\":[{\"extendedLocation\":{\"type\":\"CustomLocation\",\"name\":\"ovawjvzunlu\"},\"properties\":{\"provisioningState\":\"Upgrading\",\"values\":[{\"resourceType\":\"xipeilpjzuaejx\",\"capabilities\":[{},{},{}],\"name\":\"skzbb\",\"tier\":\"zumveekgpwo\",\"size\":\"hkfpbs\"},{\"resourceType\":\"ofd\",\"capabilities\":[{},{},{}],\"name\":\"sd\",\"tier\":\"ouwaboekqvkeln\",\"size\":\"vbxwyjsflhh\"}]},\"id\":\"aln\",\"name\":\"ixisxyawjoy\",\"type\":\"qcslyjpkiid\"}],\"nextLink\":\"exznelixhnr\"}")
             .toObject(VmSkuProfileList.class);
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("ubcgjbirxb", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("vdrhvoo", model.nextLink());
+        Assertions.assertEquals("ovawjvzunlu", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("exznelixhnr", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VmSkuProfileList model = new VmSkuProfileList()
-            .withValue(Arrays.asList(
-                new VmSkuProfileInner().withExtendedLocation(
-                    new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("ubcgjbirxb")),
-                new VmSkuProfileInner().withExtendedLocation(
-                    new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("gtdsslswt")),
-                new VmSkuProfileInner().withExtendedLocation(
-                    new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("hhvh")),
-                new VmSkuProfileInner().withExtendedLocation(
-                    new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("qzonosggbhcohf"))))
-            .withNextLink("vdrhvoo");
+            .withValue(Arrays.asList(new VmSkuProfileInner().withExtendedLocation(
+                new ExtendedLocation().withType(ExtendedLocationTypes.CUSTOM_LOCATION).withName("ovawjvzunlu"))))
+            .withNextLink("exznelixhnr");
         model = BinaryData.fromObject(model).toObject(VmSkuProfileList.class);
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("ubcgjbirxb", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("vdrhvoo", model.nextLink());
+        Assertions.assertEquals("ovawjvzunlu", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("exznelixhnr", model.nextLink());
     }
 }

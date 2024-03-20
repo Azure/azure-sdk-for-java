@@ -32,41 +32,30 @@ public final class AccountsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"dashboardUri\":\"qxhocdgeablgphut\",\"regionalAffinity\":\"Enabled\",\"scalableExecution\":\"Disabled\",\"reporting\":\"Disabled\",\"provisioningState\":\"Succeeded\"},\"location\":\"yiftyhxhuro\",\"tags\":{\"cukjf\":\"yxolniwp\",\"lryplwckbasyy\":\"giawx\",\"jkot\":\"nddhsgcbacph\"},\"id\":\"nqgoulzndli\",\"name\":\"wyqkgfgibm\",\"type\":\"dgak\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"dashboardUri\":\"qxhocdgeablgphut\",\"regionalAffinity\":\"Enabled\",\"scalableExecution\":\"Disabled\",\"reporting\":\"Disabled\",\"provisioningState\":\"Succeeded\"},\"location\":\"yiftyhxhuro\",\"tags\":{\"cukjf\":\"yxolniwp\",\"lryplwckbasyy\":\"giawx\",\"jkot\":\"nddhsgcbacph\"},\"id\":\"nqgoulzndli\",\"name\":\"wyqkgfgibm\",\"type\":\"dgak\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        PlaywrightTestingManager manager =
-            PlaywrightTestingManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        PlaywrightTestingManager manager = PlaywrightTestingManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Account> response = manager.accounts().list(com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("yiftyhxhuro", response.iterator().next().location());
         Assertions.assertEquals("yxolniwp", response.iterator().next().tags().get("cukjf"));
-        Assertions.assertEquals(EnablementStatus.ENABLED, response.iterator().next().regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.DISABLED, response.iterator().next().scalableExecution());
-        Assertions.assertEquals(EnablementStatus.DISABLED, response.iterator().next().reporting());
+        Assertions.assertEquals(EnablementStatus.ENABLED, response.iterator().next().properties().regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.DISABLED, response.iterator().next().properties().scalableExecution());
+        Assertions.assertEquals(EnablementStatus.DISABLED, response.iterator().next().properties().reporting());
     }
 }

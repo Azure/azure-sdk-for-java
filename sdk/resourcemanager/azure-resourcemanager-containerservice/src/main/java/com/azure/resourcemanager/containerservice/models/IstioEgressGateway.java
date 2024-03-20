@@ -35,7 +35,7 @@ public final class IstioEgressGateway {
 
     /**
      * Get the enabled property: Whether to enable the egress gateway.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -44,7 +44,7 @@ public final class IstioEgressGateway {
 
     /**
      * Set the enabled property: Whether to enable the egress gateway.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the IstioEgressGateway object itself.
      */
@@ -55,7 +55,7 @@ public final class IstioEgressGateway {
 
     /**
      * Get the nodeSelector property: NodeSelector for scheduling the egress gateway.
-     *
+     * 
      * @return the nodeSelector value.
      */
     public Map<String, String> nodeSelector() {
@@ -64,7 +64,7 @@ public final class IstioEgressGateway {
 
     /**
      * Set the nodeSelector property: NodeSelector for scheduling the egress gateway.
-     *
+     * 
      * @param nodeSelector the nodeSelector value to set.
      * @return the IstioEgressGateway object itself.
      */
@@ -75,7 +75,7 @@ public final class IstioEgressGateway {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,12 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Whether a particular kubernetes version's variant (CBLMariner, Windows, Windows2022) is ready or not.
+ * Indicates whether the kubernetes version image is ready or not.
  */
 @Fluent
 public final class KubernetesVersionReadiness {
     /*
-     * The particular KubernetesVersion's Image's OS Type (Linux, Windows)
+     * The particular KubernetesVersion Image OS Type (Linux, Windows)
      */
     @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OsType osType;
@@ -26,13 +26,13 @@ public final class KubernetesVersionReadiness {
     private Ossku osSku;
 
     /*
-     * Whether or not the given image is ready
+     * Whether the kubernetes version image is ready or not
      */
     @JsonProperty(value = "ready", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean ready;
 
     /*
-     * If image is not ready, the error message for version not being ready
+     * The error message for version not being ready
      */
     @JsonProperty(value = "errorMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String errorMessage;
@@ -44,7 +44,7 @@ public final class KubernetesVersionReadiness {
     }
 
     /**
-     * Get the osType property: The particular KubernetesVersion's Image's OS Type (Linux, Windows).
+     * Get the osType property: The particular KubernetesVersion Image OS Type (Linux, Windows).
      * 
      * @return the osType value.
      */
@@ -75,7 +75,7 @@ public final class KubernetesVersionReadiness {
     }
 
     /**
-     * Get the ready property: Whether or not the given image is ready.
+     * Get the ready property: Whether the kubernetes version image is ready or not.
      * 
      * @return the ready value.
      */
@@ -84,7 +84,7 @@ public final class KubernetesVersionReadiness {
     }
 
     /**
-     * Get the errorMessage property: If image is not ready, the error message for version not being ready.
+     * Get the errorMessage property: The error message for version not being ready.
      * 
      * @return the errorMessage value.
      */

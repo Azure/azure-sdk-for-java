@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.WorkspaceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Firmware analysis workspace. */
+/**
+ * Firmware analysis workspace.
+ */
 @Immutable
 public final class WorkspaceUpdateDefinition {
     /*
@@ -17,13 +19,15 @@ public final class WorkspaceUpdateDefinition {
     @JsonProperty(value = "properties")
     private WorkspaceProperties innerProperties;
 
-    /** Creates an instance of WorkspaceUpdateDefinition class. */
+    /**
+     * Creates an instance of WorkspaceUpdateDefinition class.
+     */
     public WorkspaceUpdateDefinition() {
     }
 
     /**
      * Get the innerProperties property: The editable workspace properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkspaceProperties innerProperties() {
@@ -32,7 +36,7 @@ public final class WorkspaceUpdateDefinition {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -41,7 +45,7 @@ public final class WorkspaceUpdateDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

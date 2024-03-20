@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class RegulatoryComplianceStandardInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegulatoryComplianceStandardInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"state\":\"Skipped\",\"passedControls\":738746300,\"failedControls\":638872994,\"skippedControls\":110101001,\"unsupportedControls\":174588693},\"id\":\"ib\",\"name\":\"rcgp\",\"type\":\"kpzi\"}")
-                .toObject(RegulatoryComplianceStandardInner.class);
-        Assertions.assertEquals(State.SKIPPED, model.state());
+        RegulatoryComplianceStandardInner model = BinaryData.fromString(
+            "{\"properties\":{\"state\":\"Unsupported\",\"passedControls\":1319718925,\"failedControls\":1632551729,\"skippedControls\":584568005,\"unsupportedControls\":204366319},\"id\":\"m\",\"name\":\"sikvmkqzeqqkdlt\",\"type\":\"zxmhhvhgu\"}")
+            .toObject(RegulatoryComplianceStandardInner.class);
+        Assertions.assertEquals(State.UNSUPPORTED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegulatoryComplianceStandardInner model = new RegulatoryComplianceStandardInner().withState(State.SKIPPED);
+        RegulatoryComplianceStandardInner model = new RegulatoryComplianceStandardInner().withState(State.UNSUPPORTED);
         model = BinaryData.fromObject(model).toObject(RegulatoryComplianceStandardInner.class);
-        Assertions.assertEquals(State.SKIPPED, model.state());
+        Assertions.assertEquals(State.UNSUPPORTED, model.state());
     }
 }

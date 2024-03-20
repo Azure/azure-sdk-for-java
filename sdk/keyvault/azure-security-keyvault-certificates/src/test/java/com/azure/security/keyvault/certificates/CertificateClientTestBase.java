@@ -509,26 +509,6 @@ public abstract class CertificateClientTestBase extends TestProxyTestBase {
             .setPassword("fakePasswordPlaceholder");
     }
 
-    static String toHexString(byte[] x5t) {
-        if (x5t == null) {
-            return "";
-        }
-
-        StringBuilder hexString = new StringBuilder();
-
-        for (byte b : x5t) {
-            String hex = Integer.toHexString(0xFF & b);
-
-            if (hex.length() == 1) {
-                hexString.append('0');
-            }
-
-            hexString.append(hex);
-        }
-
-        return hexString.toString().replace("-", "");
-    }
-
     X509Certificate loadCerToX509Certificate(byte[] certificate) throws CertificateException, IOException {
         assertNotNull(certificate);
 

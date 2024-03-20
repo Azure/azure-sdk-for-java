@@ -36,7 +36,7 @@ class EventHubClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     EventHubProperties getProperties() {
-        return client.getProperties().block(retry.getTryTimeout());
+        return client.getProperties().block();
     }
 
     /**
@@ -58,7 +58,7 @@ class EventHubClient implements Closeable {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PartitionProperties getPartitionProperties(String partitionId) {
-        return client.getPartitionProperties(partitionId).block(retry.getTryTimeout());
+        return client.getPartitionProperties(partitionId).block();
     }
 
     /**

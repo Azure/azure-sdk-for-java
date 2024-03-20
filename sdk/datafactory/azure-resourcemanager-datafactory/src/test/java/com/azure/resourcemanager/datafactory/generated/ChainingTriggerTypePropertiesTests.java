@@ -13,24 +13,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ChainingTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ChainingTriggerTypeProperties model = BinaryData.fromString(
-            "{\"dependsOn\":[{\"referenceName\":\"togm\",\"name\":\"lw\"},{\"referenceName\":\"zvni\",\"name\":\"npkcwwp\"},{\"referenceName\":\"kabj\",\"name\":\"ahngaczg\"}],\"runDimension\":\"f\"}")
+        ChainingTriggerTypeProperties model = BinaryData
+            .fromString(
+                "{\"dependsOn\":[{\"referenceName\":\"twd\",\"name\":\"tpxwgttpxb\"}],\"runDimension\":\"ihzxxnd\"}")
             .toObject(ChainingTriggerTypeProperties.class);
-        Assertions.assertEquals("togm", model.dependsOn().get(0).referenceName());
-        Assertions.assertEquals("lw", model.dependsOn().get(0).name());
-        Assertions.assertEquals("f", model.runDimension());
+        Assertions.assertEquals("twd", model.dependsOn().get(0).referenceName());
+        Assertions.assertEquals("tpxwgttpxb", model.dependsOn().get(0).name());
+        Assertions.assertEquals("ihzxxnd", model.runDimension());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ChainingTriggerTypeProperties model = new ChainingTriggerTypeProperties()
-            .withDependsOn(Arrays.asList(new PipelineReference().withReferenceName("togm").withName("lw"),
-                new PipelineReference().withReferenceName("zvni").withName("npkcwwp"),
-                new PipelineReference().withReferenceName("kabj").withName("ahngaczg")))
-            .withRunDimension("f");
+            .withDependsOn(Arrays.asList(new PipelineReference().withReferenceName("twd").withName("tpxwgttpxb")))
+            .withRunDimension("ihzxxnd");
         model = BinaryData.fromObject(model).toObject(ChainingTriggerTypeProperties.class);
-        Assertions.assertEquals("togm", model.dependsOn().get(0).referenceName());
-        Assertions.assertEquals("lw", model.dependsOn().get(0).name());
-        Assertions.assertEquals("f", model.runDimension());
+        Assertions.assertEquals("twd", model.dependsOn().get(0).referenceName());
+        Assertions.assertEquals("tpxwgttpxb", model.dependsOn().get(0).name());
+        Assertions.assertEquals("ihzxxnd", model.runDimension());
     }
 }

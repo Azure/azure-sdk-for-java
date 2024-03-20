@@ -10,9 +10,8 @@ import com.azure.resourcemanager.security.models.AwsOrganizationalData;
 public final class AwsOrganizationalDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AwsOrganizationalData model =
-            BinaryData
-                .fromString("{\"organizationMembershipType\":\"AwsOrganizationalData\"}")
+        AwsOrganizationalData model
+            = BinaryData.fromString("{\"organizationMembershipType\":\"AwsOrganizationalData\"}")
                 .toObject(AwsOrganizationalData.class);
     }
 

@@ -29,7 +29,7 @@ public final class TriggersGetEventSubscriptionStatusWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"triggerName\":\"lqioqtafmbxtncxb\",\"status\":\"Unknown\"}";
+        String responseStr = "{\"triggerName\":\"oqgutr\",\"status\":\"Enabled\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -47,7 +47,7 @@ public final class TriggersGetEventSubscriptionStatusWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         TriggerSubscriptionOperationStatus response
-            = manager.triggers().getEventSubscriptionStatusWithResponse("wievjndvaf", "cvn", "yxlcgycvcspcfx",
+            = manager.triggers().getEventSubscriptionStatusWithResponse("cmmpjdrhxf", "swyafdlf", "yirjbfwrqivi",
                 com.azure.core.util.Context.NONE).getValue();
 
     }

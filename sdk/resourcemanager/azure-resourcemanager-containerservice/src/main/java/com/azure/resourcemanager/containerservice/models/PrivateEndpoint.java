@@ -26,7 +26,7 @@ public final class PrivateEndpoint {
 
     /**
      * Get the id property: The resource ID of the private endpoint.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -35,7 +35,7 @@ public final class PrivateEndpoint {
 
     /**
      * Set the id property: The resource ID of the private endpoint.
-     *
+     * 
      * @param id the id value to set.
      * @return the PrivateEndpoint object itself.
      */
@@ -46,7 +46,7 @@ public final class PrivateEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

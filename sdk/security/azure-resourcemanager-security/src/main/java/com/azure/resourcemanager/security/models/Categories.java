@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The categories of resource that is at risk when the assessment is unhealthy. */
+/**
+ * The categories of resource that is at risk when the assessment is unhealthy.
+ */
 public final class Categories extends ExpandableStringEnum<Categories> {
-    /** Static value Compute for Categories. */
+    /**
+     * Static value Compute for Categories.
+     */
     public static final Categories COMPUTE = fromString("Compute");
 
-    /** Static value Networking for Categories. */
+    /**
+     * Static value Networking for Categories.
+     */
     public static final Categories NETWORKING = fromString("Networking");
 
-    /** Static value Data for Categories. */
+    /**
+     * Static value Data for Categories.
+     */
     public static final Categories DATA = fromString("Data");
 
-    /** Static value IdentityAndAccess for Categories. */
+    /**
+     * Static value IdentityAndAccess for Categories.
+     */
     public static final Categories IDENTITY_AND_ACCESS = fromString("IdentityAndAccess");
 
-    /** Static value IoT for Categories. */
+    /**
+     * Static value IoT for Categories.
+     */
     public static final Categories IOT = fromString("IoT");
 
     /**
      * Creates a new instance of Categories value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class Categories extends ExpandableStringEnum<Categories> {
 
     /**
      * Creates or finds a Categories from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Categories.
      */
@@ -47,7 +59,7 @@ public final class Categories extends ExpandableStringEnum<Categories> {
 
     /**
      * Gets known Categories values.
-     *
+     * 
      * @return known Categories values.
      */
     public static Collection<Categories> values() {

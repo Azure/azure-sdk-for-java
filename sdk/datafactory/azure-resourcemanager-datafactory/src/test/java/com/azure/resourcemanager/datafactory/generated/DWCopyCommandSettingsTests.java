@@ -16,20 +16,19 @@ public final class DWCopyCommandSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DWCopyCommandSettings model = BinaryData.fromString(
-            "{\"defaultValues\":[{\"columnName\":\"databwsftytpjmufd\",\"defaultValue\":\"datahqlzantahuykxsjy\"}],\"additionalOptions\":{\"mpfeyjvlzqs\":\"xmoadwiqn\"}}")
+            "{\"defaultValues\":[{\"columnName\":\"datagows\",\"defaultValue\":\"dataguap\"}],\"additionalOptions\":{\"byfacexp\":\"hh\",\"pkqiqs\":\"pqykicesqpvmoxil\"}}")
             .toObject(DWCopyCommandSettings.class);
-        Assertions.assertEquals("xmoadwiqn", model.additionalOptions().get("mpfeyjvlzqs"));
+        Assertions.assertEquals("hh", model.additionalOptions().get("byfacexp"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DWCopyCommandSettings model
-            = new DWCopyCommandSettings()
-                .withDefaultValues(Arrays.asList(new DWCopyCommandDefaultValue().withColumnName("databwsftytpjmufd")
-                    .withDefaultValue("datahqlzantahuykxsjy")))
-                .withAdditionalOptions(mapOf("mpfeyjvlzqs", "xmoadwiqn"));
+        DWCopyCommandSettings model = new DWCopyCommandSettings()
+            .withDefaultValues(
+                Arrays.asList(new DWCopyCommandDefaultValue().withColumnName("datagows").withDefaultValue("dataguap")))
+            .withAdditionalOptions(mapOf("byfacexp", "hh", "pkqiqs", "pqykicesqpvmoxil"));
         model = BinaryData.fromObject(model).toObject(DWCopyCommandSettings.class);
-        Assertions.assertEquals("xmoadwiqn", model.additionalOptions().get("mpfeyjvlzqs"));
+        Assertions.assertEquals("hh", model.additionalOptions().get("byfacexp"));
     }
 
     // Use "Map.of" if available

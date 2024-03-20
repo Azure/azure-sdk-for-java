@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.BuildServiceAgentPoolProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The build service agent pool resource. */
+/**
+ * The build service agent pool resource.
+ */
 @Fluent
 public final class BuildServiceAgentPoolResourceInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class BuildServiceAgentPoolResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of BuildServiceAgentPoolResourceInner class.
+     */
+    public BuildServiceAgentPoolResourceInner() {
+    }
+
+    /**
      * Get the properties property: build service agent pool properties.
-     *
+     * 
      * @return the properties value.
      */
     public BuildServiceAgentPoolProperties properties() {
@@ -36,7 +44,7 @@ public final class BuildServiceAgentPoolResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: build service agent pool properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BuildServiceAgentPoolResourceInner object itself.
      */
@@ -47,7 +55,7 @@ public final class BuildServiceAgentPoolResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class BuildServiceAgentPoolResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

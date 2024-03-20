@@ -14,42 +14,32 @@ import org.junit.jupiter.api.Assertions;
 public final class DefenderForDatabasesGcpOfferingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DefenderForDatabasesGcpOffering model =
-            BinaryData
-                .fromString(
-                    "{\"offeringType\":\"DefenderForDatabasesGcp\",\"arcAutoProvisioning\":{\"enabled\":true,\"configuration\":{\"proxy\":\"fv\",\"privateLinkScope\":\"vqkxiuxqggvq\"}},\"defenderForDatabasesArcAutoProvisioning\":{\"serviceAccountEmailAddress\":\"yhlwcjsqg\",\"workloadIdentityProviderId\":\"hffbxrq\"},\"description\":\"ijpeuql\"}")
-                .toObject(DefenderForDatabasesGcpOffering.class);
+        DefenderForDatabasesGcpOffering model = BinaryData.fromString(
+            "{\"offeringType\":\"DefenderForDatabasesGcp\",\"arcAutoProvisioning\":{\"enabled\":true,\"configuration\":{\"proxy\":\"x\",\"privateLinkScope\":\"esdfedsb\"}},\"defenderForDatabasesArcAutoProvisioning\":{\"serviceAccountEmailAddress\":\"ncoinmphymc\",\"workloadIdentityProviderId\":\"dklt\"},\"description\":\"hqnufbxwei\"}")
+            .toObject(DefenderForDatabasesGcpOffering.class);
         Assertions.assertEquals(true, model.arcAutoProvisioning().enabled());
-        Assertions.assertEquals("fv", model.arcAutoProvisioning().configuration().proxy());
-        Assertions.assertEquals("vqkxiuxqggvq", model.arcAutoProvisioning().configuration().privateLinkScope());
-        Assertions
-            .assertEquals("yhlwcjsqg", model.defenderForDatabasesArcAutoProvisioning().serviceAccountEmailAddress());
-        Assertions
-            .assertEquals("hffbxrq", model.defenderForDatabasesArcAutoProvisioning().workloadIdentityProviderId());
+        Assertions.assertEquals("x", model.arcAutoProvisioning().configuration().proxy());
+        Assertions.assertEquals("esdfedsb", model.arcAutoProvisioning().configuration().privateLinkScope());
+        Assertions.assertEquals("ncoinmphymc",
+            model.defenderForDatabasesArcAutoProvisioning().serviceAccountEmailAddress());
+        Assertions.assertEquals("dklt", model.defenderForDatabasesArcAutoProvisioning().workloadIdentityProviderId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DefenderForDatabasesGcpOffering model =
-            new DefenderForDatabasesGcpOffering()
-                .withArcAutoProvisioning(
-                    new DefenderForDatabasesGcpOfferingArcAutoProvisioning()
-                        .withEnabled(true)
-                        .withConfiguration(
-                            new DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration()
-                                .withProxy("fv")
-                                .withPrivateLinkScope("vqkxiuxqggvq")))
-                .withDefenderForDatabasesArcAutoProvisioning(
-                    new DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning()
-                        .withServiceAccountEmailAddress("yhlwcjsqg")
-                        .withWorkloadIdentityProviderId("hffbxrq"));
+        DefenderForDatabasesGcpOffering model = new DefenderForDatabasesGcpOffering()
+            .withArcAutoProvisioning(new DefenderForDatabasesGcpOfferingArcAutoProvisioning().withEnabled(true)
+                .withConfiguration(new DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration().withProxy("x")
+                    .withPrivateLinkScope("esdfedsb")))
+            .withDefenderForDatabasesArcAutoProvisioning(
+                new DefenderForDatabasesGcpOfferingDefenderForDatabasesArcAutoProvisioning()
+                    .withServiceAccountEmailAddress("ncoinmphymc").withWorkloadIdentityProviderId("dklt"));
         model = BinaryData.fromObject(model).toObject(DefenderForDatabasesGcpOffering.class);
         Assertions.assertEquals(true, model.arcAutoProvisioning().enabled());
-        Assertions.assertEquals("fv", model.arcAutoProvisioning().configuration().proxy());
-        Assertions.assertEquals("vqkxiuxqggvq", model.arcAutoProvisioning().configuration().privateLinkScope());
-        Assertions
-            .assertEquals("yhlwcjsqg", model.defenderForDatabasesArcAutoProvisioning().serviceAccountEmailAddress());
-        Assertions
-            .assertEquals("hffbxrq", model.defenderForDatabasesArcAutoProvisioning().workloadIdentityProviderId());
+        Assertions.assertEquals("x", model.arcAutoProvisioning().configuration().proxy());
+        Assertions.assertEquals("esdfedsb", model.arcAutoProvisioning().configuration().privateLinkScope());
+        Assertions.assertEquals("ncoinmphymc",
+            model.defenderForDatabasesArcAutoProvisioning().serviceAccountEmailAddress());
+        Assertions.assertEquals("dklt", model.defenderForDatabasesArcAutoProvisioning().workloadIdentityProviderId());
     }
 }

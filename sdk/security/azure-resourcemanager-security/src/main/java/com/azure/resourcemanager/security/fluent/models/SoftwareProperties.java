@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.security.models.EndOfSupportStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Software Inventory resource properties. */
+/**
+ * Software Inventory resource properties.
+ */
 @Fluent
 public final class SoftwareProperties {
     /*
@@ -65,13 +67,15 @@ public final class SoftwareProperties {
     @JsonProperty(value = "firstSeenAt")
     private String firstSeenAt;
 
-    /** Creates an instance of SoftwareProperties class. */
+    /**
+     * Creates an instance of SoftwareProperties class.
+     */
     public SoftwareProperties() {
     }
 
     /**
      * Get the deviceId property: Unique identifier for the virtual machine in the service.
-     *
+     * 
      * @return the deviceId value.
      */
     public String deviceId() {
@@ -80,7 +84,7 @@ public final class SoftwareProperties {
 
     /**
      * Set the deviceId property: Unique identifier for the virtual machine in the service.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the SoftwareProperties object itself.
      */
@@ -91,7 +95,7 @@ public final class SoftwareProperties {
 
     /**
      * Get the osPlatform property: Platform of the operating system running on the device.
-     *
+     * 
      * @return the osPlatform value.
      */
     public String osPlatform() {
@@ -100,7 +104,7 @@ public final class SoftwareProperties {
 
     /**
      * Set the osPlatform property: Platform of the operating system running on the device.
-     *
+     * 
      * @param osPlatform the osPlatform value to set.
      * @return the SoftwareProperties object itself.
      */
@@ -111,7 +115,7 @@ public final class SoftwareProperties {
 
     /**
      * Get the vendor property: Name of the software vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -120,7 +124,7 @@ public final class SoftwareProperties {
 
     /**
      * Set the vendor property: Name of the software vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the SoftwareProperties object itself.
      */
@@ -131,7 +135,7 @@ public final class SoftwareProperties {
 
     /**
      * Get the softwareName property: Name of the software product.
-     *
+     * 
      * @return the softwareName value.
      */
     public String softwareName() {
@@ -140,7 +144,7 @@ public final class SoftwareProperties {
 
     /**
      * Set the softwareName property: Name of the software product.
-     *
+     * 
      * @param softwareName the softwareName value to set.
      * @return the SoftwareProperties object itself.
      */
@@ -151,7 +155,7 @@ public final class SoftwareProperties {
 
     /**
      * Get the version property: Version number of the software product.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -160,7 +164,7 @@ public final class SoftwareProperties {
 
     /**
      * Set the version property: Version number of the software product.
-     *
+     * 
      * @param version the version value to set.
      * @return the SoftwareProperties object itself.
      */
@@ -171,7 +175,7 @@ public final class SoftwareProperties {
 
     /**
      * Get the endOfSupportStatus property: End of support status.
-     *
+     * 
      * @return the endOfSupportStatus value.
      */
     public EndOfSupportStatus endOfSupportStatus() {
@@ -180,7 +184,7 @@ public final class SoftwareProperties {
 
     /**
      * Set the endOfSupportStatus property: End of support status.
-     *
+     * 
      * @param endOfSupportStatus the endOfSupportStatus value to set.
      * @return the SoftwareProperties object itself.
      */
@@ -191,7 +195,7 @@ public final class SoftwareProperties {
 
     /**
      * Get the endOfSupportDate property: The end of support date in case the product is upcoming end of support.
-     *
+     * 
      * @return the endOfSupportDate value.
      */
     public String endOfSupportDate() {
@@ -200,7 +204,7 @@ public final class SoftwareProperties {
 
     /**
      * Set the endOfSupportDate property: The end of support date in case the product is upcoming end of support.
-     *
+     * 
      * @param endOfSupportDate the endOfSupportDate value to set.
      * @return the SoftwareProperties object itself.
      */
@@ -211,7 +215,7 @@ public final class SoftwareProperties {
 
     /**
      * Get the numberOfKnownVulnerabilities property: Number of weaknesses.
-     *
+     * 
      * @return the numberOfKnownVulnerabilities value.
      */
     public Integer numberOfKnownVulnerabilities() {
@@ -220,7 +224,7 @@ public final class SoftwareProperties {
 
     /**
      * Set the numberOfKnownVulnerabilities property: Number of weaknesses.
-     *
+     * 
      * @param numberOfKnownVulnerabilities the numberOfKnownVulnerabilities value to set.
      * @return the SoftwareProperties object itself.
      */
@@ -231,7 +235,7 @@ public final class SoftwareProperties {
 
     /**
      * Get the firstSeenAt property: First time that the software was seen in the device.
-     *
+     * 
      * @return the firstSeenAt value.
      */
     public String firstSeenAt() {
@@ -240,7 +244,7 @@ public final class SoftwareProperties {
 
     /**
      * Set the firstSeenAt property: First time that the software was seen in the device.
-     *
+     * 
      * @param firstSeenAt the firstSeenAt value to set.
      * @return the SoftwareProperties object itself.
      */
@@ -251,7 +255,7 @@ public final class SoftwareProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

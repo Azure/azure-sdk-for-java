@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The identity of a resource. */
+/**
+ * The identity of a resource.
+ */
 @Fluent
 public final class ResourceIdentity {
     /*
@@ -22,7 +24,8 @@ public final class ResourceIdentity {
     /*
      * The list of user identities associated with the Experiment. The user identity dictionary key references will be
      * ARM resource ids in the form:
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/
+     * userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -40,13 +43,15 @@ public final class ResourceIdentity {
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of ResourceIdentity class. */
+    /**
+     * Creates an instance of ResourceIdentity class.
+     */
     public ResourceIdentity() {
     }
 
     /**
      * Get the type property: String of the resource identity type.
-     *
+     * 
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -55,7 +60,7 @@ public final class ResourceIdentity {
 
     /**
      * Set the type property: String of the resource identity type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ResourceIdentity object itself.
      */
@@ -68,7 +73,7 @@ public final class ResourceIdentity {
      * Get the userAssignedIdentities property: The list of user identities associated with the Experiment. The user
      * identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserAssignedIdentity> userAssignedIdentities() {
@@ -79,7 +84,7 @@ public final class ResourceIdentity {
      * Set the userAssignedIdentities property: The list of user identities associated with the Experiment. The user
      * identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ResourceIdentity object itself.
      */
@@ -90,7 +95,7 @@ public final class ResourceIdentity {
 
     /**
      * Get the principalId property: GUID that represents the principal ID of this resource identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -99,7 +104,7 @@ public final class ResourceIdentity {
 
     /**
      * Get the tenantId property: GUID that represents the tenant ID of this resource identity.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -108,24 +113,20 @@ public final class ResourceIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ResourceIdentity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model ResourceIdentity"));
         }
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
