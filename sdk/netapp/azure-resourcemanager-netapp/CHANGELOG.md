@@ -8,8 +8,7 @@
 
 #### `models.VolumeGroupMetadata` was modified
 
-* `withDeploymentSpecId(java.lang.String)` was removed
-* `deploymentSpecId()` was removed
+* Removed `deploymentSpecId` property as it's non-functional in service backend.
 
 ## 1.1.0-beta.1 (2023-12-19)
 
