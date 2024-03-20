@@ -51,8 +51,10 @@ public final class Providers<TProvider, TInstance> {
             defaultProviderName = defaultProvider.getClass().getName();
             availableProviders.put(defaultProviderName, defaultProvider);
 
-            LOGGER.atVerbose().log(() -> String.format("Using {%s} as the default {%s}.",
-                defaultProviderName, providerClass.getName()));
+            LOGGER.atVerbose()
+                .addKeyValue("providerName", defaultProviderName)
+                .addKeyValue("providerClass", providerClass.getName())
+                .log("Found provider.");
         } else {
             defaultProvider = null;
             defaultProviderName = null;
@@ -63,8 +65,9 @@ public final class Providers<TProvider, TInstance> {
             String additionalProviderName = additionalProvider.getClass().getName();
 
             availableProviders.put(additionalProviderName, additionalProvider);
-            LOGGER.atVerbose().log(() -> String.format("Additional provider found on the classpath: {%s}",
-                additionalProviderName));
+            LOGGER.atVerbose()
+                .addKeyValue("providerName", additionalProviderName)
+                .log("Additional provider found on the classpath");
         }
 
         defaultImplementation = defaultImplementationName;

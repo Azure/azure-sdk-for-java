@@ -214,8 +214,8 @@ class DefaultHttpClient implements HttpClient {
             if (listener != null) {
                 processTextEventStream(httpRequest, connection, listener);
             } else {
-                LOGGER.atInfo().log(() -> "No listener attached to the server sent "
-                    + "event http request. Treating response as regular response.");
+                LOGGER.atInfo().log("No listener attached to the server sent event http request. Treating response as "
+                    + "regular response.");
             }
         } else {
             HttpRequestMetadata metadata = httpRequest.getMetadata();

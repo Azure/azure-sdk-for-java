@@ -4,10 +4,11 @@
 package com.azure.sdk.template.stress.util;
 
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.sdk.template.stress.StressOptions;
+import com.generic.core.util.ClientLogger;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -32,9 +33,9 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import io.opentelemetry.sdk.trace.samplers.Sampler;
 import io.opentelemetry.sdk.trace.samplers.SamplingResult;
 import reactor.core.Exceptions;
-import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.UncheckedIOException;
 import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
@@ -53,31 +54,27 @@ public class TelemetryHelper {
     private static final AttributeKey<String> SCENARIO_NAME_ATTRIBUTE = AttributeKey.stringKey("scenario_name");
     private static final AttributeKey<String> ERROR_TYPE_ATTRIBUTE = AttributeKey.stringKey("error.type");
     private static final AttributeKey<Boolean> SAMPLE_IN_ATTRIBUTE = AttributeKey.booleanKey("sample.in");
-    private final String scenarioName;
-    private final Meter meter;
-    private final DoubleHistogram runDuration;
     private final Attributes commonAttributes;
     private final Attributes canceledAttributes;
 
+    private final String scenarioName;
+    private final Meter meter;
+    private final DoubleHistogram runDuration;
     static {
         // enables micrometer metrics from Reactor schedulers allowing to monitor thread pool usage and starvation
         Schedulers.enableMetrics();
     }
 
-    /**
-     * Creates an instance of telemetry helper.
-     * @param scenarioClass the scenario class
-     */
     public TelemetryHelper(Class<?> scenarioClass) {
         this.scenarioName = scenarioClass.getName();
+        this.commonAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName);
+        this.canceledAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
         this.tracer = GlobalOpenTelemetry.getTracer(scenarioName);
         this.meter = GlobalOpenTelemetry.getMeter(scenarioName);
         this.logger = new ClientLogger(scenarioName);
         this.runDuration = meter.histogramBuilder("test.run.duration")
             .setUnit("s")
             .build();
-        this.commonAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName);
-        this.canceledAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, "cancelled");
     }
 
     /**
@@ -144,28 +141,9 @@ public class TelemetryHelper {
         }
     }
 
-    /**
-     * Instruments a Mono: records mono duration along with the status (success, error, cancellation),
-     * @param runAsync the mono to instrument
-     * @return the instrumented mono
-     */
-    @SuppressWarnings("try")
-    public Mono<Void> instrumentRunAsync(Mono<Void> runAsync) {
-        return Mono.defer(() -> {
-            Instant start = Instant.now();
-            Span span = tracer.spanBuilder("runAsync").startSpan();
-            try (Scope s = span.makeCurrent()) {
-                return runAsync.doOnError(e -> trackFailure(start, e, span))
-                    .doOnCancel(() -> trackCancellation(start, span))
-                    .doOnSuccess(v -> trackSuccess(start, span))
-                    .contextWrite(reactor.util.context.Context.of(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current()));
-            }
-        });
-    }
-
     private void trackSuccess(Instant start, Span span) {
         logger.atInfo()
-            .log("run ended");
+            .log(() -> "run ended");
 
         runDuration.record(getDuration(start), commonAttributes);
         span.end();
@@ -174,7 +152,7 @@ public class TelemetryHelper {
     private void trackCancellation(Instant start, Span span) {
         logger.atWarning()
             .addKeyValue("error.type", "cancelled")
-            .log("run ended");
+            .log(() -> "run ended");
 
         runDuration.record(getDuration(start), canceledAttributes);
         span.setAttribute(ERROR_TYPE_ATTRIBUTE, "cancelled");
@@ -184,6 +162,9 @@ public class TelemetryHelper {
 
     private void trackFailure(Instant start, Throwable e, Span span) {
         Throwable unwrapped = Exceptions.unwrap(e);
+        if (unwrapped instanceof UncheckedIOException) {
+            unwrapped = unwrapped.getCause();
+        }
 
         span.recordException(unwrapped);
         span.setStatus(StatusCode.ERROR, unwrapped.getMessage());
@@ -191,10 +172,10 @@ public class TelemetryHelper {
         String errorType = unwrapped.getClass().getName();
         logger.atError()
             .addKeyValue("error.type", errorType)
-            .log("run ended", unwrapped);
+            .log(() -> "run ended", unwrapped);
 
         Attributes attributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, errorType);
-        runDuration.record(getDuration(start), attributes);
+        runDuration.record(getDuration(start), canceledAttributes, io.opentelemetry.context.Context.current().with(span));
         span.end();
     }
 
@@ -251,7 +232,6 @@ public class TelemetryHelper {
         after.setAttribute(AttributeKey.longKey("durationMs"), Instant.now().toEpochMilli() - startTime.toEpochMilli());
         after.end();
     }
-
 
     private Span startSampledInSpan(String name) {
         return tracer.spanBuilder(name)

@@ -4,7 +4,7 @@
 package com.generic.core.http.models;
 
 import com.generic.core.http.Response;
-import com.generic.core.http.policy.RequestRetryCondition;
+import com.generic.core.http.policy.HttpRequestRetryCondition;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
@@ -22,7 +22,7 @@ public final class HttpRetryOptions {
     private final Duration baseDelay;
     private final Duration maxDelay;
     private final Duration fixedDelay;
-    private Predicate<RequestRetryCondition> shouldRetryCondition;
+    private Predicate<HttpRequestRetryCondition> shouldRetryCondition;
     private Function<Headers, Duration> delayFromHeaders;
 
     /**
@@ -38,7 +38,7 @@ public final class HttpRetryOptions {
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
         if (maxRetries < 0) {
             LOGGER.atVerbose()
-                .log(() -> "Max retries cannot be less than 0. Using 3 retries as the maximum.");
+                .log("Max retries cannot be less than 0. Using 3 retries as the maximum.");
             maxRetries = 3;
         }
         this.baseDelay = baseDelay;
@@ -58,7 +58,7 @@ public final class HttpRetryOptions {
         Objects.requireNonNull(fixedDelay, "'fixedDelay' cannot be null.");
         if (maxRetries < 0) {
             LOGGER.atVerbose()
-                .log(() -> "Max retries cannot be less than 0. Using 3 retries as the maximum.");
+                .log("Max retries cannot be less than 0. Using 3 retries as the maximum.");
             maxRetries = 3;
         }
         this.maxRetries = maxRetries;
@@ -107,7 +107,7 @@ public final class HttpRetryOptions {
      *
      * @return The predicate that determines if a retry should be attempted.
      */
-    public Predicate<RequestRetryCondition> getShouldRetryCondition() {
+    public Predicate<HttpRequestRetryCondition> getShouldRetryCondition() {
         return shouldRetryCondition;
     }
 
@@ -121,7 +121,7 @@ public final class HttpRetryOptions {
      * {@link Response}.
      * @return The updated {@link HttpRetryOptions} object.
      */
-    public HttpRetryOptions setShouldRetryCondition(Predicate<RequestRetryCondition> shouldRetryCondition) {
+    public HttpRetryOptions setShouldRetryCondition(Predicate<HttpRequestRetryCondition> shouldRetryCondition) {
         this.shouldRetryCondition = shouldRetryCondition;
         return this;
     }
