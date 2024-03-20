@@ -222,7 +222,7 @@ class DefaultHttpClient implements HttpClient {
 
             if (metadata != null && metadata.getResponseBodyHandling() != null) {
                 switch (metadata.getResponseBodyHandling()) {
-                    case NO_BUFFER:
+                    case STREAM:
                         setResponseBodySupplier(httpResponse, connection);
 
                         break;

@@ -52,8 +52,7 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
-import static com.generic.core.http.models.ResponseBodyHandling.DESERIALIZE;
-import static com.generic.core.http.models.ResponseBodyHandling.NO_BUFFER;
+import static com.generic.core.http.models.ResponseBodyHandling.STREAM;
 import static com.generic.core.implementation.http.ContentType.APPLICATION_JSON;
 import static com.generic.core.implementation.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -740,15 +739,15 @@ public class SwaggerMethodParserTests {
             Arguments.of(MappedByteBuffer.class, BUFFER),
 
             // Both InputSteam and subtypes shouldn't be decodable.
-            Arguments.of(InputStream.class, BUFFER),
-            Arguments.of(FileInputStream.class, BUFFER),
+            Arguments.of(InputStream.class, STREAM),
+            Arguments.of(FileInputStream.class, STREAM),
 
-            Arguments.of(void.class, NO_BUFFER),
-            Arguments.of(Void.class, NO_BUFFER),
-            Arguments.of(Void.TYPE, NO_BUFFER),
+            Arguments.of(void.class, BUFFER),
+            Arguments.of(Void.class, BUFFER),
+            Arguments.of(Void.TYPE, BUFFER),
 
             // Other POJO types are decodable.
-            Arguments.of(SimpleClass.class, DESERIALIZE),
+            Arguments.of(SimpleClass.class, BUFFER),
 
             // In addition to the direct types, reactive and Response generic types should be handled.
 
@@ -758,16 +757,16 @@ public class SwaggerMethodParserTests {
             Arguments.of(createParameterizedResponse(byte[].class), BUFFER),
             Arguments.of(createParameterizedResponse(ByteBuffer.class), BUFFER),
             Arguments.of(createParameterizedResponse(MappedByteBuffer.class), BUFFER),
-            Arguments.of(createParameterizedResponse(InputStream.class), BUFFER),
-            Arguments.of(createParameterizedResponse(FileInputStream.class), BUFFER),
-            Arguments.of(createParameterizedResponse(void.class), NO_BUFFER),
-            Arguments.of(createParameterizedResponse(Void.class), NO_BUFFER),
-            Arguments.of(createParameterizedResponse(Void.TYPE), NO_BUFFER),
-            Arguments.of(createParameterizedResponse(SimpleClass.class), DESERIALIZE),
+            Arguments.of(createParameterizedResponse(InputStream.class), STREAM),
+            Arguments.of(createParameterizedResponse(FileInputStream.class), STREAM),
+            Arguments.of(createParameterizedResponse(void.class), BUFFER),
+            Arguments.of(createParameterizedResponse(Void.class), BUFFER),
+            Arguments.of(createParameterizedResponse(Void.TYPE), BUFFER),
+            Arguments.of(createParameterizedResponse(SimpleClass.class), BUFFER),
 
             // Custom implementations of Response.
-            Arguments.of(VoidResponse.class, NO_BUFFER),
-            Arguments.of(StringResponse.class, DESERIALIZE)
+            Arguments.of(VoidResponse.class, BUFFER),
+            Arguments.of(StringResponse.class, BUFFER)
         );
     }
 
