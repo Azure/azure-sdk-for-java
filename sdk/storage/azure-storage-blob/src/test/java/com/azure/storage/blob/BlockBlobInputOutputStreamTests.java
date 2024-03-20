@@ -14,10 +14,10 @@ import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -64,7 +64,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void uploadDownload() throws IOException {
         int length = 6 * Constants.MB;
@@ -83,7 +83,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("uploadDownloadBlockSizeSupplier")
     public void uploadDownloadBlockSize(Integer blockSize, int numChunks, int[] sizes) throws IOException {
@@ -131,7 +131,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("blobRangeSupplier")
     public void blobRange(Integer start, Long count) throws IOException {
@@ -173,7 +173,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @LiveOnly
+    @EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
     @Test
     public void getPropertiesBefore() throws IOException {
         int length = 6 * Constants.MB;
@@ -277,7 +277,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void inputStreamConsistentReadControlETagUserProvidesVersionClientChoosesETag() {
         int length = Constants.KB;
@@ -320,7 +320,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
             () -> inputStream.read(new byte[600])); // Read enough to exceed the initial download
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void inputStreamConsistentReadControlVersionClientChoosesVersion() {
         int length = Constants.KB;
@@ -339,7 +339,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void inputStreamConsistentReadControlVersionUserProvidesVersion() throws IOException {
         int length = Constants.KB;
@@ -361,7 +361,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void inputStreamConsistentReadControlVersionUserProvidesVersionAndETag() throws IOException {
         int length = Constants.KB;
@@ -383,7 +383,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @Test
     public void inputStreamConsistentReadControlVersionUserProvidesETagClientChoosesVersion() throws IOException {
         int length = Constants.KB;
@@ -405,7 +405,7 @@ public class BlockBlobInputOutputStreamTests extends BlobTestBase {
         TestUtils.assertArraysEqual(randomBytes, convertInputStreamToByteArray(inputStream));
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("inputStreamConsistentReadControlValidStatesSupplier")
     public void inputStreamConsistentReadControlValidStates(boolean useETag, boolean useVersionId,

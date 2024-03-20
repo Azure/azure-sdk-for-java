@@ -1,20 +1,16 @@
 # Release History
 
-## 12.26.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-- When creating a `BlobClient` via `BlobContainerClient.getBlobClient(String blobName)` or 
-`BlobServiceClient.getBlobClient(String blobName)`, the blob name will be stored exactly as passed in and will not be 
-URL-encoded. For example, if blob name is "test%25test" and is created by calling 
-`BlobContainerClient.getBlobClient("test%25test")` or `BlobClient.getBlobName("test%25test")`, 
-`BlobClient.getBlobName()` will return "test%25test" and the blob's url will result in 
-“https://account.blob.core.windows.net/container/test%25%25test”.
-
-### Bugs Fixed
+## 12.25.2 (2024-02-22)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-storage-common` from `12.24.1` to version `12.24.2`.
+- Upgraded `azure-storage-internal-avro` from `12.10.1` to version `12.11.0-beta.1`.
+
 
 ## 12.25.1 (2023-12-04)
 
@@ -26,6 +22,7 @@ URL-encoded. For example, if blob name is "test%25test" and is created by callin
 - Upgraded `azure-storage-internal-avro` from `12.10.0` to version `12.10.1`.
 - Upgraded `azure-storage-common` from `12.24.0` to version `12.24.1`.
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+
 
 ## 12.25.0 (2023-11-08)
 
