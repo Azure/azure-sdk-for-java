@@ -7,6 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProcessorFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.servicebus.config.ServiceBusProducerFactoryCustomizer;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
@@ -77,6 +78,8 @@ public class ServiceBusMessageChannelBinder extends
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageChannelBinder.class);
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
     private static final String EXCEPTION_MESSAGE = "exception-message";
+    static final String DEFAULT_CONSUMER_ENTITY_TYPE = "spring.cloud.stream.servicebus.default.consumer.entity-type";
+    static final String DEFAULT_PRODUCER_ENTITY_TYPE = "spring.cloud.stream.servicebus.default.producer.entity-type";
 
     private ServiceBusExtendedBindingProperties bindingProperties = new ServiceBusExtendedBindingProperties();
     private NamespaceProperties namespaceProperties;
@@ -236,12 +239,22 @@ public class ServiceBusMessageChannelBinder extends
 
     @Override
     public ServiceBusConsumerProperties getExtendedConsumerProperties(String channelName) {
-        return this.bindingProperties.getExtendedConsumerProperties(channelName);
+        String type = super.getApplicationContext().getEnvironment().getProperty(DEFAULT_CONSUMER_ENTITY_TYPE);
+        ServiceBusConsumerProperties extendedConsumerProperties = this.bindingProperties.getExtendedConsumerProperties(channelName);
+        if (type != null && extendedConsumerProperties.getEntityType() == null) {
+            extendedConsumerProperties.setEntityType(ServiceBusEntityType.valueOf(type.toUpperCase()));
+        }
+        return extendedConsumerProperties;
     }
 
     @Override
     public ServiceBusProducerProperties getExtendedProducerProperties(String channelName) {
-        return this.bindingProperties.getExtendedProducerProperties(channelName);
+        String type = super.getApplicationContext().getEnvironment().getProperty(DEFAULT_PRODUCER_ENTITY_TYPE);
+        ServiceBusProducerProperties extendedProducerProperties = this.bindingProperties.getExtendedProducerProperties(channelName);
+        if (type != null && extendedProducerProperties.getEntityType() == null) {
+            extendedProducerProperties.setEntityType(ServiceBusEntityType.valueOf(type.toUpperCase()));
+        }
+        return extendedProducerProperties;
     }
 
     @Override

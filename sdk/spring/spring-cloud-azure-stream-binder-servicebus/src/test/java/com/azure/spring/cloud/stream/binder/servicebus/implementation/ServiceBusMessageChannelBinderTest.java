@@ -6,6 +6,7 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusConsumerProperties;
+import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.core.implementation.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.messaging.servicebus.core.properties.ServiceBusContainerProperties;
@@ -28,10 +29,13 @@ import org.springframework.test.util.ReflectionTestUtils;
 import java.time.Duration;
 import java.util.HashMap;
 
+import static com.azure.spring.cloud.stream.binder.servicebus.implementation.ServiceBusMessageChannelBinder.DEFAULT_CONSUMER_ENTITY_TYPE;
+import static com.azure.spring.cloud.stream.binder.servicebus.implementation.ServiceBusMessageChannelBinder.DEFAULT_PRODUCER_ENTITY_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.springframework.test.context.support.TestPropertySourceUtils.addInlinedPropertiesToEnvironment;
 
 class ServiceBusMessageChannelBinderTest {
 
@@ -44,6 +48,7 @@ class ServiceBusMessageChannelBinderTest {
     private ExtendedConsumerProperties<ServiceBusConsumerProperties> consumerProperties;
 
     private final ServiceBusConsumerProperties serviceBusConsumerProperties = new ServiceBusConsumerProperties();
+    private final ServiceBusProducerProperties serviceBusProducerProperties = new ServiceBusProducerProperties();
 
     private final ServiceBusMessageChannelTestBinder binder = new ServiceBusMessageChannelTestBinder(
         BinderHeaders.STANDARD_HEADERS, new ServiceBusChannelProvisioner());
@@ -118,17 +123,53 @@ class ServiceBusMessageChannelBinderTest {
 
     }
 
+    @Test
+    void testDefaultProducerEntityType() {
+        GenericApplicationContext context = new GenericApplicationContext();
+
+        binder.setApplicationContext(context);
+        assertThat(binder.getExtendedProducerProperties(ENTITY_NAME).getEntityType()).isEqualTo(null);
+
+        addInlinedPropertiesToEnvironment(context, DEFAULT_PRODUCER_ENTITY_TYPE + "=queue");
+        binder.setApplicationContext(context);
+        prepareProducerPropertiesWithoutEntityType();
+        assertThat(binder.getExtendedProducerProperties(ENTITY_NAME).getEntityType()).isEqualTo(ServiceBusEntityType.QUEUE);
+
+        prepareProducerProperties();
+        assertThat(binder.getExtendedProducerProperties(ENTITY_NAME).getEntityType()).isEqualTo(ServiceBusEntityType.TOPIC);
+    }
+
+    @Test
+    void testDefaultConsumerEntityType() {
+        GenericApplicationContext context = new GenericApplicationContext();
+
+        binder.setApplicationContext(context);
+        assertThat(binder.getExtendedConsumerProperties(ENTITY_NAME).getEntityType()).isEqualTo(null);
+
+        addInlinedPropertiesToEnvironment(context, DEFAULT_CONSUMER_ENTITY_TYPE + "=queue");
+        binder.setApplicationContext(context);
+        prepareConsumerPropertiesWithoutEntityType();
+        assertThat(binder.getExtendedConsumerProperties(ENTITY_NAME).getEntityType()).isEqualTo(ServiceBusEntityType.QUEUE);
+
+        prepareConsumerProperties();
+        assertThat(binder.getExtendedConsumerProperties(ENTITY_NAME).getEntityType()).isEqualTo(ServiceBusEntityType.TOPIC);
+    }
+
     private void prepareConsumerProperties() {
+        prepareConsumerPropertiesWithoutEntityType();
+        serviceBusConsumerProperties.setEntityType(ServiceBusEntityType.TOPIC);
+    }
+
+    private void prepareConsumerPropertiesWithoutEntityType() {
         serviceBusConsumerProperties.setEntityName(ENTITY_NAME);
         serviceBusConsumerProperties.setSubscriptionName(GROUP);
-        serviceBusConsumerProperties.setEntityType(ServiceBusEntityType.TOPIC);
         serviceBusConsumerProperties.setNamespace(NAMESPACE_NAME);
         serviceBusConsumerProperties.getRetry().setTryTimeout(Duration.ofMinutes(5));
         serviceBusConsumerProperties.setAutoComplete(false);
         ServiceBusBindingProperties bindingProperties = new ServiceBusBindingProperties();
         bindingProperties.setConsumer(serviceBusConsumerProperties);
 
-        extendedBindingProperties.setBindings(new HashMap<String, ServiceBusBindingProperties>() {
+        extendedBindingProperties.setBindings(new HashMap<>() {
             {
                 put(ENTITY_NAME, bindingProperties);
             }
@@ -137,5 +178,24 @@ class ServiceBusMessageChannelBinderTest {
 
         consumerProperties = new ExtendedConsumerProperties<>(serviceBusConsumerProperties);
         consumerProperties.setHeaderMode(HeaderMode.embeddedHeaders);
+    }
+
+    private void prepareProducerProperties() {
+        prepareProducerPropertiesWithoutEntityType();
+        serviceBusProducerProperties.setEntityType(ServiceBusEntityType.TOPIC);
+    }
+
+    private void prepareProducerPropertiesWithoutEntityType() {
+        serviceBusProducerProperties.setEntityName(ENTITY_NAME);
+        serviceBusProducerProperties.setNamespace(NAMESPACE_NAME);
+        ServiceBusBindingProperties bindingProperties = new ServiceBusBindingProperties();
+        bindingProperties.setProducer(serviceBusProducerProperties);
+
+        extendedBindingProperties.setBindings(new HashMap<>() {
+            {
+                put(ENTITY_NAME, bindingProperties);
+            }
+        });
+        binder.setBindingProperties(extendedBindingProperties);
     }
 }
