@@ -59,7 +59,7 @@ extends:
         toolVersion: 2.3.12.23
         baselineFiles: $(Build.SourcesDirectory)/eng/java.gdnbaselines
         batchSize: 20
-      componentGovernance:
-        cg_ignoreDirectories: '.assets'
+      componentgovernance:
+        ignoreDirectories: '.assets'
 
     stages: ${{ parameters.stages }}
