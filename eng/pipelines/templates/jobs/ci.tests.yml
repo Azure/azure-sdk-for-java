@@ -160,4 +160,4 @@ jobs:
         inputs:
           toolVersion: 2.3.12.23
           scanFolder: $(Build.SourcesDirectory)
-          suppressionsFile: $(Build.SourcesDirectory)\eng\CredScanSuppression.json
+          suppressionsFile: $(Build.SourcesDirectory)/eng/CredScanSuppression.json
