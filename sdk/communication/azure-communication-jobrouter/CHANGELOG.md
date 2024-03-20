@@ -1,27 +1,14 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-#### RouterWorker && CreateWorkerOptions
-- Added `MaxConcurrentOffers`
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.1.1 (2024-02-13)
+## 1.1.1 (2024-02-22)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-communication-common` to `1.3.0`
-- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 - Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-communication-common` from `1.2.15` to version `1.3.0`.
+
 
 ## 1.1.0 (2024-01-04)
 

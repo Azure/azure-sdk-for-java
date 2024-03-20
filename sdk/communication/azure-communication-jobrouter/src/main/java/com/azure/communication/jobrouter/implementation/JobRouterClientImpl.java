@@ -2373,7 +2373,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * <p>
@@ -2420,7 +2419,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * 
@@ -2513,7 +2511,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * <p>
@@ -2560,7 +2557,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * 
@@ -2628,7 +2624,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * 
@@ -2693,7 +2688,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * 
@@ -2839,7 +2833,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * 
@@ -2952,7 +2945,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * 
@@ -3083,7 +3075,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * 
@@ -3194,7 +3185,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * 
@@ -3442,7 +3432,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * 
@@ -3516,7 +3505,6 @@ public final class JobRouterClientImpl {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * 
