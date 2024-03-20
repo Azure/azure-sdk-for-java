@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported disabling public network access in `Vault` via `disablePublicNetworkAccess()`, for private link feature.
 
 ## 2.36.0 (2024-02-29)
 
