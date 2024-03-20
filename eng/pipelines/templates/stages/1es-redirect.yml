@@ -23,6 +23,8 @@ extends:
   ${{ else }}:
     template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
+    featureFlags:
+      EnableClamd: true
     settings:
       skipBuildTagsForGitHubPullRequests: true
     sdl:
@@ -57,5 +59,7 @@ extends:
         toolVersion: 2.3.12.23
         baselineFiles: $(Build.SourcesDirectory)/eng/java.gdnbaselines
         batchSize: 20
+      componentGovernance:
+        cg_ignoreDirectories: '.assets'
 
     stages: ${{ parameters.stages }}
