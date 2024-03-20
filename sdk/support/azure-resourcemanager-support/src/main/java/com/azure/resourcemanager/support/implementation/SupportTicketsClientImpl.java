@@ -42,22 +42,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SupportTicketsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SupportTicketsClient.
+ */
 public final class SupportTicketsClientImpl implements SupportTicketsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SupportTicketsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftSupportImpl client;
 
     /**
      * Initializes an instance of SupportTicketsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SupportTicketsClientImpl(MicrosoftSupportImpl client) {
-        this.service =
-            RestProxy.create(SupportTicketsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SupportTicketsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,180 +74,137 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftSupportSupp")
     public interface SupportTicketsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Support/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityInput checkNameAvailabilityInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SupportTicketsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$filter") String filter,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SupportTicketsListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("$top") Integer top, @QueryParam("$filter") String filter,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SupportTicketDetailsInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SupportTicketDetailsInner>> get(@HostParam("$host") String endpoint,
             @PathParam("supportTicketName") String supportTicketName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SupportTicketDetailsInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SupportTicketDetailsInner>> update(@HostParam("$host") String endpoint,
             @PathParam("supportTicketName") String supportTicketName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") UpdateSupportTicket updateSupportTicket,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Support/supportTickets/{supportTicketName}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("supportTicketName") String supportTicketName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SupportTicketDetailsInner createSupportTicketParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SupportTicketsListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for
      * support ticket creation for the selected subscription.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    private Mono<Response<CheckNameAvailabilityOutputInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityInput is required and cannot be null."));
         } else {
             checkNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            checkNameAvailabilityInput,
-                            accept,
-                            context))
+                context -> service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), checkNameAvailabilityInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for
      * support ticket creation for the selected subscription.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of check name availability API along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return output of check name availability API along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityOutputInner>> checkNameAvailabilityWithResponseAsync(
-        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
+    private Mono<Response<CheckNameAvailabilityOutputInner>>
+        checkNameAvailabilityWithResponseAsync(CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (checkNameAvailabilityInput == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter checkNameAvailabilityInput is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter checkNameAvailabilityInput is required and cannot be null."));
         } else {
             checkNameAvailabilityInput.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                checkNameAvailabilityInput,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), checkNameAvailabilityInput, accept, context);
     }
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for
      * support ticket creation for the selected subscription.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -249,8 +212,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameAvailabilityOutputInner> checkNameAvailabilityAsync(
-        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    private Mono<CheckNameAvailabilityOutputInner>
+        checkNameAvailabilityAsync(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityInput)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -258,7 +221,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for
      * support ticket creation for the selected subscription.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -267,15 +230,15 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityOutputInner> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
+    public Response<CheckNameAvailabilityOutputInner>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityInput checkNameAvailabilityInput, Context context) {
         return checkNameAvailabilityWithResponseAsync(checkNameAvailabilityInput, context).block();
     }
 
     /**
      * Check the availability of a resource name. This API should be used to check the uniqueness of the name for
      * support ticket creation for the selected subscription.
-     *
+     * 
      * @param checkNameAvailabilityInput Input to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -283,8 +246,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityOutputInner checkNameAvailability(
-        CheckNameAvailabilityInput checkNameAvailabilityInput) {
+    public CheckNameAvailabilityOutputInner
+        checkNameAvailability(CheckNameAvailabilityInput checkNameAvailabilityInput) {
         return checkNameAvailabilityWithResponse(checkNameAvailabilityInput, Context.NONE).getValue();
     }
 
@@ -294,55 +257,35 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * result with _nextLink_, using which you can retrieve the next set of support tickets.
      * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
      * created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param top The number of values to return in the collection. Default is 25 and max is 100.
      * @param filter The filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
-     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
-     *     _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
-     *     supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters,
-     *     combine them using the logical 'AND'.
+     * more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
+     * _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
+     * supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters, combine
+     * them using the logical 'AND'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a collection of SupportTicket resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SupportTicketDetailsInner>> listSinglePageAsync(Integer top, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            top,
-                            filter,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<SupportTicketDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), top, filter,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<SupportTicketDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -352,55 +295,38 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * result with _nextLink_, using which you can retrieve the next set of support tickets.
      * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
      * created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param top The number of values to return in the collection. Default is 25 and max is 100.
      * @param filter The filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
-     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
-     *     _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
-     *     supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters,
-     *     combine them using the logical 'AND'.
+     * more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
+     * _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
+     * supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters, combine
+     * them using the logical 'AND'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a collection of SupportTicket resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SupportTicketDetailsInner>> listSinglePageAsync(
-        Integer top, String filter, Context context) {
+    private Mono<PagedResponse<SupportTicketDetailsInner>> listSinglePageAsync(Integer top, String filter,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                top,
-                filter,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), top, filter, this.client.getSubscriptionId(), this.client.getApiVersion(),
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -409,18 +335,18 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * result with _nextLink_, using which you can retrieve the next set of support tickets.
      * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
      * created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param top The number of values to return in the collection. Default is 25 and max is 100.
      * @param filter The filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
-     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
-     *     _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
-     *     supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters,
-     *     combine them using the logical 'AND'.
+     * more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
+     * _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
+     * supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters, combine
+     * them using the logical 'AND'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
-     *     PagedFlux}.
+     * @return object that represents a collection of SupportTicket resources as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SupportTicketDetailsInner> listAsync(Integer top, String filter) {
@@ -433,11 +359,11 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * result with _nextLink_, using which you can retrieve the next set of support tickets.
      * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
      * created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
-     *     PagedFlux}.
+     * @return object that represents a collection of SupportTicket resources as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SupportTicketDetailsInner> listAsync() {
@@ -452,24 +378,24 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * result with _nextLink_, using which you can retrieve the next set of support tickets.
      * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
      * created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param top The number of values to return in the collection. Default is 25 and max is 100.
      * @param filter The filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
-     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
-     *     _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
-     *     supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters,
-     *     combine them using the logical 'AND'.
+     * more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
+     * _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
+     * supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters, combine
+     * them using the logical 'AND'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
-     *     PagedFlux}.
+     * @return object that represents a collection of SupportTicket resources as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SupportTicketDetailsInner> listAsync(Integer top, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top, filter, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(top, filter, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
@@ -478,11 +404,11 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * result with _nextLink_, using which you can retrieve the next set of support tickets.
      * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
      * created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return object that represents a collection of SupportTicket resources as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupportTicketDetailsInner> list() {
@@ -497,19 +423,19 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * result with _nextLink_, using which you can retrieve the next set of support tickets.
      * &lt;br/&gt;&lt;br/&gt;Support ticket data is available for 18 months after ticket creation. If a ticket was
      * created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param top The number of values to return in the collection. Default is 25 and max is 100.
      * @param filter The filter to apply on the operation. We support 'odata v4.0' filter semantics. [Learn
-     *     more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
-     *     _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
-     *     supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters,
-     *     combine them using the logical 'AND'.
+     * more](https://docs.microsoft.com/odata/concepts/queryoptions-overview). _Status_, _ServiceId_, and
+     * _ProblemClassificationId_ filters can only be used with Equals ('eq') operator. For _CreatedDate_ filter, the
+     * supported operators are Greater Than ('gt') and Greater Than or Equals ('ge'). When using both filters, combine
+     * them using the logical 'AND'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that represents a collection of SupportTicket resources as paginated response with {@link
-     *     PagedIterable}.
+     * @return object that represents a collection of SupportTicket resources as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupportTicketDetailsInner> list(Integer top, String filter, Context context) {
@@ -519,93 +445,71 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     /**
      * Get ticket details for an Azure subscription. Support ticket data is available for 18 months after ticket
      * creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ticket details for an Azure subscription along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return ticket details for an Azure subscription along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SupportTicketDetailsInner>> getWithResponseAsync(String supportTicketName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            supportTicketName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), supportTicketName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get ticket details for an Azure subscription. Support ticket data is available for 18 months after ticket
      * creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ticket details for an Azure subscription along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return ticket details for an Azure subscription along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SupportTicketDetailsInner>> getWithResponseAsync(String supportTicketName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                supportTicketName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), supportTicketName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get ticket details for an Azure subscription. Support ticket data is available for 18 months after ticket
      * creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -620,7 +524,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     /**
      * Get ticket details for an Azure subscription. Support ticket data is available for 18 months after ticket
      * creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -636,7 +540,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     /**
      * Get ticket details for an Azure subscription. Support ticket data is available for 18 months after ticket
      * creation. If a ticket was created more than 18 months ago, a request for data might cause an error.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -653,33 +557,29 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * information in the support ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support
      * ticket is actively being worked upon by an Azure support engineer. In such a case, contact your support engineer
      * to request severity update by adding a new communication using the Communications API.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents SupportTicketDetails resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SupportTicketDetailsInner>> updateWithResponseAsync(
-        String supportTicketName, UpdateSupportTicket updateSupportTicket) {
+    private Mono<Response<SupportTicketDetailsInner>> updateWithResponseAsync(String supportTicketName,
+        UpdateSupportTicket updateSupportTicket) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (updateSupportTicket == null) {
             return Mono
@@ -689,17 +589,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            supportTicketName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            updateSupportTicket,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), supportTicketName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), updateSupportTicket, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -708,7 +599,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * information in the support ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support
      * ticket is actively being worked upon by an Azure support engineer. In such a case, contact your support engineer
      * to request severity update by adding a new communication using the Communications API.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.
      * @param context The context to associate with this operation.
@@ -716,26 +607,22 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents SupportTicketDetails resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SupportTicketDetailsInner>> updateWithResponseAsync(
-        String supportTicketName, UpdateSupportTicket updateSupportTicket, Context context) {
+    private Mono<Response<SupportTicketDetailsInner>> updateWithResponseAsync(String supportTicketName,
+        UpdateSupportTicket updateSupportTicket, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (updateSupportTicket == null) {
             return Mono
@@ -745,15 +632,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                supportTicketName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                updateSupportTicket,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), supportTicketName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), updateSupportTicket, accept, context);
     }
 
     /**
@@ -761,7 +641,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * information in the support ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support
      * ticket is actively being worked upon by an Azure support engineer. In such a case, contact your support engineer
      * to request severity update by adding a new communication using the Communications API.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -770,8 +650,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @return object that represents SupportTicketDetails resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SupportTicketDetailsInner> updateAsync(
-        String supportTicketName, UpdateSupportTicket updateSupportTicket) {
+    private Mono<SupportTicketDetailsInner> updateAsync(String supportTicketName,
+        UpdateSupportTicket updateSupportTicket) {
         return updateWithResponseAsync(supportTicketName, updateSupportTicket)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -781,7 +661,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * information in the support ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support
      * ticket is actively being worked upon by an Azure support engineer. In such a case, contact your support engineer
      * to request severity update by adding a new communication using the Communications API.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.
      * @param context The context to associate with this operation.
@@ -791,8 +671,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @return object that represents SupportTicketDetails resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SupportTicketDetailsInner> updateWithResponse(
-        String supportTicketName, UpdateSupportTicket updateSupportTicket, Context context) {
+    public Response<SupportTicketDetailsInner> updateWithResponse(String supportTicketName,
+        UpdateSupportTicket updateSupportTicket, Context context) {
         return updateWithResponseAsync(supportTicketName, updateSupportTicket, context).block();
     }
 
@@ -801,7 +681,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * information in the support ticket.&lt;br/&gt;&lt;br/&gt;Note: The severity levels cannot be changed if a support
      * ticket is actively being worked upon by an Azure support engineer. In such a case, contact your support engineer
      * to request severity update by adding a new communication using the Communications API.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param updateSupportTicket UpdateSupportTicket object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -832,55 +712,41 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * The primary token will be from the tenant for whom a support ticket is being raised against the subscription,
      * i.e. Cloud solution provider (CSP) customer tenant. The auxiliary token will be from the Cloud solution provider
      * (CSP) partner tenant.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents SupportTicketDetails resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String supportTicketName,
+        SupportTicketDetailsInner createSupportTicketParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (createSupportTicketParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createSupportTicketParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter createSupportTicketParameters is required and cannot be null."));
         } else {
             createSupportTicketParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            supportTicketName,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            createSupportTicketParameters,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), supportTicketName, this.client.getSubscriptionId(),
+                    this.client.getApiVersion(), createSupportTicketParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -902,7 +768,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * The primary token will be from the tenant for whom a support ticket is being raised against the subscription,
      * i.e. Cloud solution provider (CSP) customer tenant. The auxiliary token will be from the Cloud solution provider
      * (CSP) partner tenant.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @param context The context to associate with this operation.
@@ -910,46 +776,33 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents SupportTicketDetails resource along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String supportTicketName,
+        SupportTicketDetailsInner createSupportTicketParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (supportTicketName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter supportTicketName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (createSupportTicketParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter createSupportTicketParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter createSupportTicketParameters is required and cannot be null."));
         } else {
             createSupportTicketParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                supportTicketName,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                createSupportTicketParameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), supportTicketName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), createSupportTicketParameters, accept, context);
     }
 
     /**
@@ -970,7 +823,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * The primary token will be from the tenant for whom a support ticket is being raised against the subscription,
      * i.e. Cloud solution provider (CSP) customer tenant. The auxiliary token will be from the Cloud solution provider
      * (CSP) partner tenant.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -979,18 +832,13 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @return the {@link PollerFlux} for polling of object that represents SupportTicketDetails resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SupportTicketDetailsInner>, SupportTicketDetailsInner> beginCreateAsync(
-        String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(supportTicketName, createSupportTicketParameters);
-        return this
-            .client
-            .<SupportTicketDetailsInner, SupportTicketDetailsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SupportTicketDetailsInner.class,
-                SupportTicketDetailsInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<SupportTicketDetailsInner>, SupportTicketDetailsInner>
+        beginCreateAsync(String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(supportTicketName, createSupportTicketParameters);
+        return this.client.<SupportTicketDetailsInner, SupportTicketDetailsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SupportTicketDetailsInner.class, SupportTicketDetailsInner.class,
+            this.client.getContext());
     }
 
     /**
@@ -1011,7 +859,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * The primary token will be from the tenant for whom a support ticket is being raised against the subscription,
      * i.e. Cloud solution provider (CSP) customer tenant. The auxiliary token will be from the Cloud solution provider
      * (CSP) partner tenant.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @param context The context to associate with this operation.
@@ -1024,16 +872,10 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
     private PollerFlux<PollResult<SupportTicketDetailsInner>, SupportTicketDetailsInner> beginCreateAsync(
         String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(supportTicketName, createSupportTicketParameters, context);
-        return this
-            .client
-            .<SupportTicketDetailsInner, SupportTicketDetailsInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SupportTicketDetailsInner.class,
-                SupportTicketDetailsInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(supportTicketName, createSupportTicketParameters, context);
+        return this.client.<SupportTicketDetailsInner, SupportTicketDetailsInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SupportTicketDetailsInner.class, SupportTicketDetailsInner.class, context);
     }
 
     /**
@@ -1054,7 +896,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * The primary token will be from the tenant for whom a support ticket is being raised against the subscription,
      * i.e. Cloud solution provider (CSP) customer tenant. The auxiliary token will be from the Cloud solution provider
      * (CSP) partner tenant.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1063,8 +905,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @return the {@link SyncPoller} for polling of object that represents SupportTicketDetails resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SupportTicketDetailsInner>, SupportTicketDetailsInner> beginCreate(
-        String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters) {
+    public SyncPoller<PollResult<SupportTicketDetailsInner>, SupportTicketDetailsInner>
+        beginCreate(String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters) {
         return this.beginCreateAsync(supportTicketName, createSupportTicketParameters).getSyncPoller();
     }
 
@@ -1086,7 +928,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * The primary token will be from the tenant for whom a support ticket is being raised against the subscription,
      * i.e. Cloud solution provider (CSP) customer tenant. The auxiliary token will be from the Cloud solution provider
      * (CSP) partner tenant.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @param context The context to associate with this operation.
@@ -1119,7 +961,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * The primary token will be from the tenant for whom a support ticket is being raised against the subscription,
      * i.e. Cloud solution provider (CSP) customer tenant. The auxiliary token will be from the Cloud solution provider
      * (CSP) partner tenant.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1128,10 +970,9 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @return object that represents SupportTicketDetails resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SupportTicketDetailsInner> createAsync(
-        String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters) {
-        return beginCreateAsync(supportTicketName, createSupportTicketParameters)
-            .last()
+    private Mono<SupportTicketDetailsInner> createAsync(String supportTicketName,
+        SupportTicketDetailsInner createSupportTicketParameters) {
+        return beginCreateAsync(supportTicketName, createSupportTicketParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1153,7 +994,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * The primary token will be from the tenant for whom a support ticket is being raised against the subscription,
      * i.e. Cloud solution provider (CSP) customer tenant. The auxiliary token will be from the Cloud solution provider
      * (CSP) partner tenant.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @param context The context to associate with this operation.
@@ -1163,10 +1004,9 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @return object that represents SupportTicketDetails resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SupportTicketDetailsInner> createAsync(
-        String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters, Context context) {
-        return beginCreateAsync(supportTicketName, createSupportTicketParameters, context)
-            .last()
+    private Mono<SupportTicketDetailsInner> createAsync(String supportTicketName,
+        SupportTicketDetailsInner createSupportTicketParameters, Context context) {
+        return beginCreateAsync(supportTicketName, createSupportTicketParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1188,7 +1028,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * The primary token will be from the tenant for whom a support ticket is being raised against the subscription,
      * i.e. Cloud solution provider (CSP) customer tenant. The auxiliary token will be from the Cloud solution provider
      * (CSP) partner tenant.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1197,8 +1037,8 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @return object that represents SupportTicketDetails resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SupportTicketDetailsInner create(
-        String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters) {
+    public SupportTicketDetailsInner create(String supportTicketName,
+        SupportTicketDetailsInner createSupportTicketParameters) {
         return createAsync(supportTicketName, createSupportTicketParameters).block();
     }
 
@@ -1220,7 +1060,7 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * The primary token will be from the tenant for whom a support ticket is being raised against the subscription,
      * i.e. Cloud solution provider (CSP) customer tenant. The auxiliary token will be from the Cloud solution provider
      * (CSP) partner tenant.
-     *
+     * 
      * @param supportTicketName Support ticket name.
      * @param createSupportTicketParameters Support ticket request payload.
      * @param context The context to associate with this operation.
@@ -1230,21 +1070,22 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
      * @return object that represents SupportTicketDetails resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SupportTicketDetailsInner create(
-        String supportTicketName, SupportTicketDetailsInner createSupportTicketParameters, Context context) {
+    public SupportTicketDetailsInner create(String supportTicketName,
+        SupportTicketDetailsInner createSupportTicketParameters, Context context) {
         return createAsync(supportTicketName, createSupportTicketParameters, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a collection of SupportTicket resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SupportTicketDetailsInner>> listNextSinglePageAsync(String nextLink) {
@@ -1252,37 +1093,28 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SupportTicketDetailsInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SupportTicketDetailsInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that represents a collection of SupportTicket resources along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SupportTicketDetailsInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -1290,23 +1122,13 @@ public final class SupportTicketsClientImpl implements SupportTicketsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
