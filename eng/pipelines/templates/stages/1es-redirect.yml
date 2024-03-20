@@ -39,7 +39,7 @@ extends:
       binskim:
         # Exclude imported azure-sdk-build-tools gpg/azcopy binaries
         # See https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1378/Glob-Format
-        analyzeTargetGlob: +:file|**/*.jar;+:file|**/*.exe;-:f|**/tools/gpg/**/*.dll;-:f|**/tools/gpg/**/*.exe;-:f|**/tools/azcopy/**/*.exe;-:f|**/tools/azcopy/**/*.dll
+        analyzeTargetGlob: +:file|**/*.jar;+:file|**\*.jar;+:file|**/*.exe;-:f|**/tools/gpg/**/*.dll;-:f|**/tools/gpg/**/*.exe;-:f|**/tools/azcopy/**/*.exe;-:f|**/tools/azcopy/**/*.dll
       eslint:
         enabled: false
         justificationForDisabling: 'ESLint injected task has failures because it uses an old version of mkdirp. We should not fail for tools not controlled by the repo. See: https://dev.azure.com/azure-sdk/internal/_build/results?buildId=3499746'
