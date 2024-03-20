@@ -5,42 +5,36 @@
 package com.azure.data.schemaregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Error response returned from Azure Schema Registry service.
- */
+/** Error response returned from Azure Schema Registry service. */
 @Fluent
-public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
+public final class ErrorDetail {
     /*
      * Server-defined error code.
      */
+    @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
      * Brief description of error.
      */
+    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
      * Error message details to help user understand/debug failure.
      */
+    @JsonProperty(value = "details")
     private List<ErrorDetail> details;
 
-    /**
-     * Creates an instance of ErrorDetail class.
-     */
-    public ErrorDetail() {
-    }
+    /** Creates an instance of ErrorDetail class. */
+    public ErrorDetail() {}
 
     /**
      * Get the code property: Server-defined error code.
-     * 
+     *
      * @return the code value.
      */
     public String getCode() {
@@ -49,7 +43,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
 
     /**
      * Set the code property: Server-defined error code.
-     * 
+     *
      * @param code the code value to set.
      * @return the ErrorDetail object itself.
      */
@@ -60,7 +54,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
 
     /**
      * Get the message property: Brief description of error.
-     * 
+     *
      * @return the message value.
      */
     public String getMessage() {
@@ -69,7 +63,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
 
     /**
      * Set the message property: Brief description of error.
-     * 
+     *
      * @param message the message value to set.
      * @return the ErrorDetail object itself.
      */
@@ -80,7 +74,7 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
 
     /**
      * Get the details property: Error message details to help user understand/debug failure.
-     * 
+     *
      * @return the details value.
      */
     public List<ErrorDetail> getDetails() {
@@ -89,53 +83,12 @@ public final class ErrorDetail implements JsonSerializable<ErrorDetail> {
 
     /**
      * Set the details property: Error message details to help user understand/debug failure.
-     * 
+     *
      * @param details the details value to set.
      * @return the ErrorDetail object itself.
      */
     public ErrorDetail setDetails(List<ErrorDetail> details) {
         this.details = details;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", this.code);
-        jsonWriter.writeStringField("message", this.message);
-        jsonWriter.writeArrayField("details", this.details, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ErrorDetail from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ErrorDetail if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ErrorDetail.
-     */
-    public static ErrorDetail fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ErrorDetail deserializedErrorDetail = new ErrorDetail();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("code".equals(fieldName)) {
-                    deserializedErrorDetail.code = reader.getString();
-                } else if ("message".equals(fieldName)) {
-                    deserializedErrorDetail.message = reader.getString();
-                } else if ("details".equals(fieldName)) {
-                    List<ErrorDetail> details = reader.readArray(reader1 -> ErrorDetail.fromJson(reader1));
-                    deserializedErrorDetail.details = details;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedErrorDetail;
-        });
     }
 }
