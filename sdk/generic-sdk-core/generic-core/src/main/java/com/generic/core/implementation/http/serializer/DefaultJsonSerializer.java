@@ -3,8 +3,8 @@
 
 package com.generic.core.implementation.http.serializer;
 
+import com.generic.core.implementation.TypeUtil;
 import com.generic.core.util.ClientLogger;
-import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.JsonSerializer;
 import com.generic.json.JsonProviders;
 import com.generic.json.JsonReader;
@@ -17,6 +17,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 
 /**
  * Default implementation of the {@link JsonSerializer}.
@@ -27,10 +28,10 @@ public class DefaultJsonSerializer implements JsonSerializer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserializeFromBytes(byte[] bytes, TypeReference<T> typeReference) {
+    public <T> T deserializeFromBytes(byte[] bytes, Type type) {
         try (JsonReader jsonReader = JsonProviders.createReader(bytes)) {
-            if (JsonSerializable.class.isAssignableFrom(typeReference.getJavaClass())) {
-                Class<T> clazz = typeReference.getJavaClass();
+            if (type instanceof Class<?> && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
+                Class<T> clazz = (Class<T>) type;
 
                 return (T) clazz.getMethod("fromJson", JsonReader.class).invoke(null, jsonReader);
             } else {
@@ -45,10 +46,10 @@ public class DefaultJsonSerializer implements JsonSerializer {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference) {
+    public <T> T deserializeFromStream(InputStream stream, Type type) {
         try (JsonReader jsonReader = JsonProviders.createReader(stream)) {
-            if (JsonSerializable.class.isAssignableFrom(typeReference.getJavaClass())) {
-                Class<T> clazz = typeReference.getJavaClass();
+            if (type instanceof Class<?> && JsonSerializable.class.isAssignableFrom(TypeUtil.getRawClass(type))) {
+                Class<T> clazz = (Class<T>) type;
 
                 return (T) clazz.getMethod("fromJson", JsonReader.class).invoke(null, jsonReader);
             } else {

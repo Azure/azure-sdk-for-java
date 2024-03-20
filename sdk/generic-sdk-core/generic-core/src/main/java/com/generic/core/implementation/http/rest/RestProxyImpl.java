@@ -19,7 +19,6 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
-import java.util.EnumSet;
 import java.util.function.Consumer;
 
 import static com.generic.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
@@ -52,8 +51,8 @@ public class RestProxyImpl extends RestProxyBase {
 
     @SuppressWarnings({"try", "unused"})
     @Override
-    public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
-                         Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request) {
+    public Object invoke(Object proxy, Method method, RequestOptions options, Consumer<HttpRequest> requestCallback,
+                         SwaggerMethodParser methodParser, HttpRequest request) {
         // If there is 'RequestOptions' apply its request callback operations before validating the body.
         // This is because the callbacks may mutate the request body.
         if (options != null && requestCallback != null) {
@@ -66,7 +65,7 @@ public class RestProxyImpl extends RestProxyBase {
 
         final Response<?> response = send(request);
 
-        return handleRestReturnType(response, methodParser, methodParser.getReturnType(), options, errorOptions);
+        return handleRestReturnType(response, methodParser, methodParser.getReturnType());
     }
 
     /**
@@ -82,14 +81,11 @@ public class RestProxyImpl extends RestProxyBase {
      *
      * @return The decodedResponse.
      */
-    private Response<?> ensureExpectedStatus(Response<?> response, SwaggerMethodParser methodParser,
-                                             RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
+    private Response<?> ensureExpectedStatus(Response<?> response, SwaggerMethodParser methodParser) {
         int responseStatusCode = response.getStatusCode();
 
         // If the response was success or configured to not return an error status when the request fails, return it.
-        if (methodParser.isExpectedResponseStatusCode(responseStatusCode)
-            || (options != null && errorOptions.contains(ErrorOptions.NO_THROW))) {
-
+        if (methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
             return response;
         }
 
@@ -186,9 +182,8 @@ public class RestProxyImpl extends RestProxyBase {
      *
      * @return The deserialized result.
      */
-    private Object handleRestReturnType(Response<?> response, SwaggerMethodParser methodParser, Type returnType,
-                                        RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
-        final Response<?> expectedResponse = ensureExpectedStatus(response, methodParser, options, errorOptions);
+    private Object handleRestReturnType(Response<?> response, SwaggerMethodParser methodParser, Type returnType) {
+        final Response<?> expectedResponse = ensureExpectedStatus(response, methodParser);
         final Object result;
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {

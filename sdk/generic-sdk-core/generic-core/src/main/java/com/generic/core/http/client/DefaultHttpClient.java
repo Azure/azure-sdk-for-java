@@ -211,7 +211,7 @@ class DefaultHttpClient implements HttpClient {
                 if (listener != null) {
                     processTextEventStream(httpRequest, connection, listener);
                 } else {
-                    LOGGER.atInfo().log(() -> "No listener attached to the server sent "
+                    LOGGER.atInfo().log("No listener attached to the server sent "
                         + "event http request. Treating response as regular response.");
                 }
 
@@ -507,7 +507,7 @@ class DefaultHttpClient implements HttpClient {
 
             if (httpRequest.getHeaders().getSize() > 0) {
                 for (Header header : httpRequest.getHeaders()) {
-                    header.getValuesList()
+                    header.getValues()
                         .forEach(value -> request.append(header.getName()).append(':').append(value).append("\r\n"));
                 }
             }

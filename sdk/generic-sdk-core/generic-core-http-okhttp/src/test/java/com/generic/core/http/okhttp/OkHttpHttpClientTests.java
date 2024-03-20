@@ -162,7 +162,7 @@ public class OkHttpHttpClientTests {
         Header multiValueHeader = responseHeaders.get(multiValueHeaderName);
 
         assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
-        assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValuesList());
+        assertLinesMatch(multiValueHeaderValue, multiValueHeader.getValues());
     }
 
     static URL url(LocalTestServer server, String path) {

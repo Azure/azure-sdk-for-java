@@ -12,8 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.helpers.NOPLogger;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -103,6 +104,11 @@ public class ClientLogger {
         globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
     }
 
+    ClientLogger(Logger logger, Map<String, Object> context) {
+        this.logger = logger;
+        this.globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
+    }
+
     /**
      * Logs the {@link Throwable} at the warning level and returns it to be thrown.
      * <p>
@@ -117,7 +123,7 @@ public class ClientLogger {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
         if (logger.isWarnEnabled()) {
             LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContextSerialized, true)
-                .log(throwable::getMessage, throwable);
+                .log(throwable.getMessage(), throwable);
         }
 
         return throwable;
@@ -137,7 +143,7 @@ public class ClientLogger {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
         if (logger.isErrorEnabled()) {
             LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized, true)
-                .log(throwable::getMessage, throwable);
+                .log(throwable.getMessage(), throwable);
         }
         return throwable;
     }
@@ -177,7 +183,7 @@ public class ClientLogger {
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
-     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
@@ -199,7 +205,7 @@ public class ClientLogger {
      * <pre>
      * logger.atWarning&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;A formattable message. Hello, %s&quot;, name&#41;, exception&#41;;
+     *     .log&#40;&quot;A structured log message with exception.&quot;, exception&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atWarning -->
      *
@@ -222,7 +228,8 @@ public class ClientLogger {
      * <pre>
      * logger.atInfo&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;A formattable message. Hello, %s&quot;, name&#41;&#41;;
+     *     .addKeyValue&#40;&quot;hello&quot;, name&#41;
+     *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
      *
@@ -244,7 +251,7 @@ public class ClientLogger {
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
-     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
@@ -269,7 +276,7 @@ public class ClientLogger {
      *     ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
      * logger.atLevel&#40;level&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&#40;&#41; -&gt; &quot;message&quot;&#41;;
+     *     .log&#40;&quot;message&quot;&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atLevel -->
      *
@@ -295,7 +302,7 @@ public class ClientLogger {
      *     .addKeyValue&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
      *     .addKeyValue&#40;&quot;key2&quot;, true&#41;
      *     .addKeyValue&#40;&quot;key3&quot;, this::getName&#41;
-     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;A formattable message. Hello, %s&quot;, name&#41;&#41;;
+     *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.loggingeventbuilder -->
      */
@@ -345,7 +352,8 @@ public class ClientLogger {
          * <pre>
          * logger.atInfo&#40;&#41;
          *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-         *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;A formattable message. Hello, %s&quot;, name&#41;&#41;;
+         *     .addKeyValue&#40;&quot;hello&quot;, name&#41;
+         *     .log&#40;&quot;A structured log message.&quot;&#41;;
          * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
          *
@@ -375,7 +383,7 @@ public class ClientLogger {
          * logger.atVerbose&#40;&#41;
          *     &#47;&#47; equivalent to addKeyValue&#40;&quot;key&quot;, &#40;&#41; -&gt; new LoggableObject&#40;&quot;string representation&quot;&#41;.toString&#40;&#41;
          *     .addKeyValue&#40;&quot;key&quot;, new LoggableObject&#40;&quot;string representation&quot;&#41;&#41;
-         *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+         *     .log&#40;&quot;A structured log message.&quot;&#41;;
          * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
          *
@@ -418,7 +426,7 @@ public class ClientLogger {
          * <pre>
          * logger.atVerbose&#40;&#41;
          *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
-         *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+         *     .log&#40;&quot;A structured log message.&quot;&#41;;
          * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
          *
@@ -454,39 +462,57 @@ public class ClientLogger {
         /**
          * Logs message annotated with context.
          *
-         * @param messageSupplier string message supplier.
+         * @param message log message.
          */
-        public void log(Supplier<String> messageSupplier) {
+        public void log(String message) {
             if (this.isEnabled) {
-                String message = messageSupplier != null ? removeNewLinesFromLogMessage(messageSupplier.get()) : null;
-                String messageWithContext = getMessageWithContext(message, (Throwable) null);
-                if (!"{\"message\":\"\"".equals(messageWithContext)) {
-                    performLogging(level, messageWithContext, (Throwable) null);
+                message = removeNewLinesFromLogMessage(message);
+                if (isEmptyMessage(message)) {
+                    return;
                 }
+
+                performLogging(level, getMessageWithContext(message), (Throwable) null);
             }
         }
 
         /**
          * Logs message annotated with context.
          *
-         * @param messageSupplier string message supplier.
+         * @param message log message.
          * @param throwable {@link Throwable} for the message.
          * @param <T> Type of the Throwable being logged.
          *
          * @return The passed {@link Throwable}.
          */
-        public <T extends Throwable> T log(Supplier<String> messageSupplier, T throwable) {
+        public <T extends Throwable> T log(String message, T throwable) {
             if (this.isEnabled) {
-                String message = messageSupplier != null ? removeNewLinesFromLogMessage(messageSupplier.get()) : null;
-                String messageWithContext = getMessageWithContext(message, throwable);
-                if (!"{\"message\":\"\"}".equals(messageWithContext)) {
-                    performLogging(level, messageWithContext, logger.isDebugEnabled() ? throwable : null);
+                message = removeNewLinesFromLogMessage(message);
+                if (throwable != null) {
+                    addKeyValueInternal("exception.message", throwable.getMessage());
+                    if (logger instanceof DefaultLogger && logger.isDebugEnabled()) {
+                        addKeyValue("exception.stacktrace", getStackTrace(throwable));
+                    }
                 }
+                String messageWithContext = getMessageWithContext(message);
+                performLogging(level, messageWithContext, logger.isDebugEnabled() ? throwable : null);
             }
             return throwable;
         }
 
-        private String getMessageWithContext(String message, Throwable throwable) {
+        private String getStackTrace(Throwable t) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            t.printStackTrace(pw);
+            return sw.toString().trim();
+        }
+
+        private boolean isEmptyMessage(String message) {
+            return CoreUtils.isNullOrEmpty(message)
+                && CoreUtils.isNullOrEmpty(context)
+                && !hasGlobalContext;
+        }
+
+        private String getMessageWithContext(String message) {
             if (message == null) {
                 message = "";
             }
@@ -499,19 +525,6 @@ public class ClientLogger {
             JSON_STRING_ENCODER.quoteAsString(message, sb);
             sb.append('"');
 
-            if (throwable != null) {
-                sb.append(",\"exception.message\":");
-
-                String exceptionMessage = throwable.getMessage();
-                if (exceptionMessage != null) {
-                    sb.append('"');
-                    JSON_STRING_ENCODER.quoteAsString(exceptionMessage, sb);
-                    sb.append('"');
-                } else {
-                    sb.append("null");
-                }
-            }
-
             if (hasGlobalContext) {
                 sb.append(',').append(globalContextCached);
             }
@@ -522,6 +535,7 @@ public class ClientLogger {
                 }
             }
 
+            sb.append('}');
             return sb.toString();
         }
 
@@ -749,7 +763,7 @@ public class ClientLogger {
      * @param logMessage The log message to sanitize.
      * @return The updated logMessage.
      */
-    public static String removeNewLinesFromLogMessage(String logMessage) {
+    private static String removeNewLinesFromLogMessage(String logMessage) {
         if (CoreUtils.isNullOrEmpty(logMessage)) {
             return logMessage;
         }
@@ -776,30 +790,4 @@ public class ClientLogger {
         sb.append(logMessage, prevStart, logMessage.length());
         return sb.toString();
     }
-
-    /**
-     * Determines if the arguments contains a throwable that would be logged, SLF4J logs a throwable if it is the last
-     * element in the argument list.
-     *
-     * @param args The arguments passed to format the log message.
-     * @return True if the last element is a throwable, false otherwise.
-     */
-    public static boolean doesArgsHaveThrowable(Object... args) {
-        if (args.length == 0) {
-            return false;
-        }
-
-        return args[args.length - 1] instanceof Throwable;
-    }
-
-    /**
-     * Removes the last element from the arguments as it is a throwable.
-     *
-     * @param args The arguments passed to format the log message.
-     * @return The arguments with the last element removed.
-     */
-    public static Object[] removeThrowable(Object... args) {
-        return Arrays.copyOf(args, args.length - 1);
-    }
-
 }

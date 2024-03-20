@@ -5,7 +5,6 @@ package com.generic.core.util.binarydata;
 
 import com.generic.core.implementation.util.SliceInputStream;
 import com.generic.core.util.ClientLogger;
-import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.BufferedInputStream;
@@ -15,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.Channels;
@@ -133,8 +133,8 @@ public class FileBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        return serializer.deserializeFromStream(toStream(), typeReference);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        return serializer.deserializeFromStream(toStream(), type);
     }
 
     @Override

@@ -6,32 +6,34 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 
 import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.ReplicationEligibilityResultsInner;
 
-/** An immutable client-side representation of ReplicationEligibilityResults. */
+/**
+ * An immutable client-side representation of ReplicationEligibilityResults.
+ */
 public interface ReplicationEligibilityResults {
     /**
      * Gets the name property: Gets the name of this object.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: Gets the object type.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the id property: Gets Unique ARM identifier for this object.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the properties property: Gets properties model for replication eligibility results API.
-     *
+     * 
      * @return the properties value.
      */
     ReplicationEligibilityResultsProperties properties();
@@ -39,7 +41,7 @@ public interface ReplicationEligibilityResults {
     /**
      * Gets the inner
      * com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.ReplicationEligibilityResultsInner object.
-     *
+     * 
      * @return the inner object.
      */
     ReplicationEligibilityResultsInner innerModel();

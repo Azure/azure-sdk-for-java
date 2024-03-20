@@ -4,13 +4,10 @@
 package com.generic.core.http.models;
 
 import com.generic.core.http.annotation.QueryParam;
-import com.generic.core.implementation.http.rest.ErrorOptions;
 import com.generic.core.implementation.http.rest.UrlEscapers;
-import com.generic.core.util.ClientLogger;
 import com.generic.core.util.Context;
 import com.generic.core.util.binarydata.BinaryData;
 
-import java.util.EnumSet;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -115,11 +112,8 @@ import java.util.function.Consumer;
  * <!-- end com.generic.core.http.rest.requestoptions.postrequest -->
  */
 public final class RequestOptions {
-    private static final ClientLogger LOGGER = new ClientLogger(RequestOptions.class);
-    private static final EnumSet<ErrorOptions> DEFAULT = EnumSet.of(ErrorOptions.THROW);
     private Consumer<HttpRequest> requestCallback = request -> {
     };
-    private EnumSet<ErrorOptions> errorOptions = DEFAULT;
     private Context context;
 
     /**
@@ -135,18 +129,6 @@ public final class RequestOptions {
      */
     public Consumer<HttpRequest> getRequestCallback() {
         return this.requestCallback;
-    }
-
-    /**
-     * Gets the {@link ErrorOptions} that determines how error responses (400 or above) are handled.
-     * <p>
-     * Default is to throw.
-     *
-     * @return The {@link ErrorOptions} that determines how error responses (400 or above) are handled. Default is to
-     * throw.
-     */
-    public EnumSet<ErrorOptions> getErrorOptions() {
-        return this.errorOptions;
     }
 
     /**
@@ -258,33 +240,6 @@ public final class RequestOptions {
         Objects.requireNonNull(requestBody, "'requestBody' cannot be null.");
 
         this.requestCallback = this.requestCallback.andThen(request -> request.setBody(requestBody));
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link ErrorOptions} that determines how error responses (400 or above) are handled.
-     * <p>
-     * Default is to throw.
-     * <p>
-     * If both {@link ErrorOptions#THROW} and {@link ErrorOptions#NO_THROW} are included in {@code errorOptions}
-     * an exception will be thrown as they aren't compatible with each other.
-     *
-     * @param errorOptions The {@link ErrorOptions} that determines how error responses (400 or above) are handled.
-     * @return the modified RequestOptions object
-     * @throws NullPointerException If {@code errorOptions} is null.
-     * @throws IllegalArgumentException If both {@link ErrorOptions#THROW} and {@link ErrorOptions#NO_THROW} are
-     * included in {@code errorOptions}.
-     */
-    RequestOptions setErrorOptions(EnumSet<ErrorOptions> errorOptions) {
-        Objects.requireNonNull(errorOptions, "'errorOptions' cannot be null.");
-
-        if (errorOptions.contains(ErrorOptions.THROW) && errorOptions.contains(ErrorOptions.NO_THROW)) {
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(
-                "'errorOptions' cannot contain both 'ErrorOptions.THROW' and 'ErrorOptions.NO_THROW'."));
-        }
-
-        this.errorOptions = errorOptions;
 
         return this;
     }

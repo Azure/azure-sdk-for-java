@@ -17,7 +17,7 @@ import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageFile;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfMessageFile;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RetrievalToolDefinition;
 import com.azure.ai.openai.assistants.models.RunStep;
 import com.azure.ai.openai.assistants.models.ThreadDeletionStatus;
@@ -38,6 +38,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.serializer.TypeReference;
 import reactor.test.StepVerifier;
 
 import java.nio.file.Path;
@@ -250,6 +251,18 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
         T object = binaryData.toObject(clazz);
         assertNotNull(object);
         assertInstanceOf(clazz, object);
+        return object;
+    }
+
+    static <T> T assertAndGetValueFromResponse(Response<BinaryData> actualResponse, TypeReference<T> typeReference, int expectedCode) {
+        assertNotNull(actualResponse);
+        assertEquals(expectedCode, actualResponse.getStatusCode());
+        assertInstanceOf(Response.class, actualResponse);
+        BinaryData binaryData = actualResponse.getValue();
+        assertNotNull(binaryData);
+        T object = binaryData.toObject(typeReference);
+        assertNotNull(object);
+        assertInstanceOf(typeReference.getJavaClass(), object);
         return object;
     }
 
@@ -469,11 +482,11 @@ public abstract class AssistantsClientTestBase extends TestProxyTestBase {
     }
 
 
-    void validateOpenAIPageableListOfMessageFile(OpenAIPageableListOfMessageFile openAIPageableListOfMessageFile,
-        String messageId, List<String> fileIdList) {
-        assertNotNull(openAIPageableListOfMessageFile);
-        assertEquals("list", openAIPageableListOfMessageFile.getObject());
-        List<MessageFile> messageFiles = openAIPageableListOfMessageFile.getData();
+    void validateOpenAIPageableListOfMessageFile(PageableList<MessageFile> pageableList,
+                                                 String messageId, List<String> fileIdList) {
+        assertNotNull(pageableList);
+        assertEquals("list", pageableList.getObject());
+        List<MessageFile> messageFiles = pageableList.getData();
         assertNotNull(messageFiles);
         assertEquals(fileIdList.size(), messageFiles.size());
         for (int i = 0; i < messageFiles.size(); i++) {

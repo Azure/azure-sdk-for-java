@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Update replication protected item input. */
+/**
+ * Update replication protected item input.
+ */
 @Fluent
 public final class UpdateReplicationProtectedItemInput {
     /*
@@ -16,13 +18,15 @@ public final class UpdateReplicationProtectedItemInput {
     @JsonProperty(value = "properties")
     private UpdateReplicationProtectedItemInputProperties properties;
 
-    /** Creates an instance of UpdateReplicationProtectedItemInput class. */
+    /**
+     * Creates an instance of UpdateReplicationProtectedItemInput class.
+     */
     public UpdateReplicationProtectedItemInput() {
     }
 
     /**
      * Get the properties property: Update replication protected item properties.
-     *
+     * 
      * @return the properties value.
      */
     public UpdateReplicationProtectedItemInputProperties properties() {
@@ -31,19 +35,19 @@ public final class UpdateReplicationProtectedItemInput {
 
     /**
      * Set the properties property: Update replication protected item properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdateReplicationProtectedItemInput object itself.
      */
-    public UpdateReplicationProtectedItemInput withProperties(
-        UpdateReplicationProtectedItemInputProperties properties) {
+    public UpdateReplicationProtectedItemInput
+        withProperties(UpdateReplicationProtectedItemInputProperties properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

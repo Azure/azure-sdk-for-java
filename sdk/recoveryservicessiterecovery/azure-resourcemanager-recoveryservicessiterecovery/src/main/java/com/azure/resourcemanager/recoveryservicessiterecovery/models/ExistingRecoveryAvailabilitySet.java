@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Existing recovery availability set input. */
+/**
+ * Existing recovery availability set input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
 @JsonTypeName("Existing")
 @Fluent
@@ -20,14 +22,16 @@ public final class ExistingRecoveryAvailabilitySet extends RecoveryAvailabilityS
     @JsonProperty(value = "recoveryAvailabilitySetId")
     private String recoveryAvailabilitySetId;
 
-    /** Creates an instance of ExistingRecoveryAvailabilitySet class. */
+    /**
+     * Creates an instance of ExistingRecoveryAvailabilitySet class.
+     */
     public ExistingRecoveryAvailabilitySet() {
     }
 
     /**
      * Get the recoveryAvailabilitySetId property: The recovery availability set Id. Will throw error, if resource does
      * not exist.
-     *
+     * 
      * @return the recoveryAvailabilitySetId value.
      */
     public String recoveryAvailabilitySetId() {
@@ -37,7 +41,7 @@ public final class ExistingRecoveryAvailabilitySet extends RecoveryAvailabilityS
     /**
      * Set the recoveryAvailabilitySetId property: The recovery availability set Id. Will throw error, if resource does
      * not exist.
-     *
+     * 
      * @param recoveryAvailabilitySetId the recoveryAvailabilitySetId value to set.
      * @return the ExistingRecoveryAvailabilitySet object itself.
      */
@@ -48,7 +52,7 @@ public final class ExistingRecoveryAvailabilitySet extends RecoveryAvailabilityS
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

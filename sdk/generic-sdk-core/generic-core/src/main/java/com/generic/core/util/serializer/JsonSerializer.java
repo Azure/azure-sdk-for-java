@@ -3,10 +3,9 @@
 
 package com.generic.core.util.serializer;
 
-import com.generic.core.util.TypeReference;
-
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 
 /**
  * Generic interface covering basic JSON serialization and deserialization methods.
@@ -16,25 +15,25 @@ public interface JsonSerializer extends ObjectSerializer {
      * Reads a JSON byte array into its object representation.
      *
      * @param data The JSON byte array.
-     * @param typeReference {@link TypeReference} representing the object.
+     * @param type {@link Type} representing the object.
      * @param <T> Type of the object.
      *
      * @return The object represented by the deserialized JSON byte array.
      */
     @Override
-    <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference);
+    <T> T deserializeFromBytes(byte[] data, Type type);
 
     /**
      * Reads a JSON stream into its object representation.
      *
      * @param stream JSON stream.
-     * @param typeReference {@link TypeReference} representing the object.
+     * @param type {@link Type} representing the object.
      * @param <T> Type of the object.
      *
      * @return The object represented by the deserialized JSON stream.
      */
     @Override
-    <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference);
+    <T> T deserializeFromStream(InputStream stream, Type type);
 
     /**
      * Converts the object into a JSON byte array.

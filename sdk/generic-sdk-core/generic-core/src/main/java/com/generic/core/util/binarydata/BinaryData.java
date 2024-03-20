@@ -4,7 +4,6 @@
 package com.generic.core.util.binarydata;
 
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.Closeable;
@@ -12,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import java.nio.channels.WritableByteChannel;
@@ -19,7 +20,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * BinaryData is a convenient data interchange class for use throughout the SDK for Java. Put simply, BinaryData enables
@@ -524,12 +524,12 @@ public abstract class BinaryData implements Closeable {
      * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
      * type is not recommended.
      *
-     * <p>The type, represented by {@link Class}, should be a non-generic class, for generic classes use
-     * {@link #toObject(TypeReference)}.</p>
+     * <p>The type, represented by {@link Type}, can either be a generic or non-generic type. If the type is generic
+     * create a {@link ParameterizedType}, if the type is non-generic use a {@link Class}.</p>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.generic.core.util.BinaryData.toObject#Class -->
+     * <!-- src_embed com.generic.core.util.BinaryData.toObject#Type -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -544,52 +544,11 @@ public abstract class BinaryData implements Closeable {
      * Person person = binaryData.toObject&#40;Person.class&#41;;
      * System.out.println&#40;person.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.generic.core.util.BinaryData.toObject#Class -->
-     *
-     * @param <T> Type of the deserialized Object.
-     * @param clazz The {@link Class} representing the Object's type.
-     *
-     * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
-     *
-     * @throws NullPointerException If {@code clazz} is null.
-     * @see ObjectSerializer
-     */
-    public <T> T toObject(Class<T> clazz) {
-        return toObject(clazz, SERIALIZER);
-    }
-
-    /**
-     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the default
-     * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of type
-     * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
-     * type is not recommended.
-     *
-     * <p>The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
-     * generic create a subtype of {@link TypeReference}, if the type is non-generic use
-     * {@link TypeReference#createInstance(Class)}.</p>
-     *
-     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
-     *
-     * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference -->
-     * <pre>
-     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
-     *
-     * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
-     * &#47;&#47; com.generic.core.util.serializer.JsonSerializer interface.
-     * &#47;&#47; Or use Azure provided libraries for this.
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-gson
-     *
-     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
-     *
-     * Person person = binaryData.toObject&#40;TypeReference.createInstance&#40;Person.class&#41;&#41;;
-     * System.out.println&#40;person.getName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference -->
+     * <!-- end com.generic.core.util.BinaryData.toObject#Type -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference-generic -->
+     * <!-- src_embed com.generic.core.util.BinaryData.toObject#Type-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
@@ -607,21 +566,38 @@ public abstract class BinaryData implements Closeable {
      *
      * BinaryData binaryData = BinaryData.fromObject&#40;personList&#41;;
      *
-     * List&lt;Person&gt; persons = binaryData.toObject&#40;new TypeReference&lt;List&lt;Person&gt;&gt;&#40;&#41; &#123; &#125;&#41;;
+     * &#47;&#47; Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
+     * &#47;&#47; type arguments and raw type passed.
+     * List&lt;Person&gt; persons = binaryData.toObject&#40;new ParameterizedType&#40;&#41; &#123;
+     *     &#64;Override
+     *     public Type[] getActualTypeArguments&#40;&#41; &#123;
+     *         return new Type[] &#123; Person.class &#125;;
+     *     &#125;
+     *
+     *     &#64;Override
+     *     public Type getRawType&#40;&#41; &#123;
+     *         return List.class;
+     *     &#125;
+     *
+     *     &#64;Override
+     *     public Type getOwnerType&#40;&#41; &#123;
+     *         return null;
+     *     &#125;
+     * &#125;&#41;;
      * persons.forEach&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference-generic -->
+     * <!-- end com.generic.core.util.BinaryData.toObject#Type-generic -->
      *
-     * @param typeReference The {@link TypeReference} representing the Object's type.
+     * @param type The {@link Type} representing the Object's type.
      * @param <T> Type of the deserialized Object.
      *
      * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
      *
-     * @throws NullPointerException If {@code typeReference} is null.
+     * @throws NullPointerException If {@code type} is null.
      * @see ObjectSerializer
      */
-    public <T> T toObject(TypeReference<T> typeReference) {
-        return toObject(typeReference, SERIALIZER);
+    public <T> T toObject(Type type) {
+        return toObject(type, SERIALIZER);
     }
 
     /**
@@ -630,15 +606,15 @@ public abstract class BinaryData implements Closeable {
      * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
      * type is not recommended.
      *
-     * <p>The type, represented by {@link Class}, should be a non-generic class, for generic classes use
-     * {@link #toObject(TypeReference, ObjectSerializer)}.</p>
+     * <p>The type, represented by {@link Type}, can either be a generic or non-generic type. If the type is generic
+     * create a {@link ParameterizedType}, if the type is non-generic use a {@link Class}.</p>
      *
      * <p>The passed {@link ObjectSerializer} can either be one of the implementations offered by the SDKs or your own
      * implementation.</p>
      *
      * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.generic.core.util.BinaryData.toObject#Class-ObjectSerializer -->
+     * <!-- src_embed com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer -->
      * <pre>
      * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      *
@@ -652,58 +628,11 @@ public abstract class BinaryData implements Closeable {
      * Person person = binaryData.toObject&#40;Person.class, serializer&#41;;
      * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.generic.core.util.BinaryData.toObject#Class-ObjectSerializer -->
-     *
-     * @param clazz The {@link Class} representing the Object's type.
-     * @param serializer The {@link ObjectSerializer} used to deserialize object.
-     * @param <T> Type of the deserialized Object.
-     *
-     * @return An {@link Object} representing the deserialized {@link BinaryData}.
-     *
-     * @throws NullPointerException If {@code clazz} or {@code serializer} is null.
-     * @see ObjectSerializer
-     * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
-     */
-    public <T> T toObject(Class<T> clazz, ObjectSerializer serializer) {
-        Objects.requireNonNull(clazz, "'clazz' cannot be null.");
-        Objects.requireNonNull(serializer, "'serializer' cannot be null.");
-        return toObject(TypeReference.createInstance(clazz), serializer);
-    }
-
-    /**
-     * Returns an {@link Object} representation of this {@link BinaryData} by deserializing its data using the passed
-     * {@link ObjectSerializer}. Each time this method is called, the content is deserialized and a new instance of type
-     * {@code T} is returned. So, calling this method repeatedly to convert the underlying data source into the same
-     * type is not recommended.
-     *
-     * <p>The type, represented by {@link TypeReference}, can either be a generic or non-generic type. If the type is
-     * generic create a subtype of {@link TypeReference}, if the type is non-generic use
-     * {@link TypeReference#createInstance(Class)}.</p>
-     *
-     * <p>The passed {@link ObjectSerializer} can either be one of the implementations offered by the SDKs or your own
-     * implementation.</p>
-     *
-     * <p><strong>Get a non-generic Object from the BinaryData</strong></p>
-     *
-     * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
-     * <pre>
-     * final Person data = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
-     *
-     * &#47;&#47; Provide your custom serializer or use Azure provided serializers.
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-jackson or
-     * &#47;&#47; https:&#47;&#47;central.sonatype.com&#47;artifact&#47;com.generic&#47;azure-core-serializer-json-gson
-     *
-     * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
-     * BinaryData binaryData = BinaryData.fromObject&#40;data, serializer&#41;;
-     *
-     * Person person = binaryData.toObject&#40;TypeReference.createInstance&#40;Person.class&#41;, serializer&#41;;
-     * System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer -->
+     * <!-- end com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer -->
      *
      * <p><strong>Get a generic Object from the BinaryData</strong></p>
      *
-     * <!-- src_embed com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
+     * <!-- src_embed com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer-generic -->
      * <pre>
      * final Person person1 = new Person&#40;&#41;.setName&#40;&quot;John&quot;&#41;;
      * final Person person2 = new Person&#40;&#41;.setName&#40;&quot;Jack&quot;&#41;;
@@ -715,23 +644,39 @@ public abstract class BinaryData implements Closeable {
      * final ObjectSerializer serializer = new MyJsonSerializer&#40;&#41;; &#47;&#47; Replace this with your Serializer
      * BinaryData binaryData = BinaryData.fromObject&#40;personList, serializer&#41;;
      *
-     * &#47;&#47; Retains the type of the list when deserializing
-     * List&lt;Person&gt; persons = binaryData.toObject&#40;new TypeReference&lt;List&lt;Person&gt;&gt;&#40;&#41; &#123; &#125;, serializer&#41;;
+     * &#47;&#47; Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
+     * &#47;&#47; type arguments and raw type passed.
+     * List&lt;Person&gt; persons = binaryData.toObject&#40;new ParameterizedType&#40;&#41; &#123;
+     *     &#64;Override
+     *     public Type[] getActualTypeArguments&#40;&#41; &#123;
+     *         return new Type[] &#123; Person.class &#125;;
+     *     &#125;
+     *
+     *     &#64;Override
+     *     public Type getRawType&#40;&#41; &#123;
+     *         return List.class;
+     *     &#125;
+     *
+     *     &#64;Override
+     *     public Type getOwnerType&#40;&#41; &#123;
+     *         return null;
+     *     &#125;
+     * &#125;, serializer&#41;;
      * persons.forEach&#40;person -&gt; System.out.println&#40;&quot;Name : &quot; + person.getName&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.generic.core.util.BinaryData.toObject#TypeReference-ObjectSerializer-generic -->
+     * <!-- end com.generic.core.util.BinaryData.toObject#Type-ObjectSerializer-generic -->
      *
-     * @param typeReference The {@link TypeReference} representing the Object's type.
+     * @param type The {@link Type} representing the Object's type.
      * @param serializer The {@link ObjectSerializer} used to deserialize the object.
      * @param <T> Type of the deserialized Object.
      *
      * @return An {@link Object} representing the deserialized {@link BinaryData}.
      *
-     * @throws NullPointerException If {@code typeReference} or {@code serializer} is null.
+     * @throws NullPointerException If {@code type} or {@code serializer} is null.
      * @see ObjectSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
-    public abstract <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer);
+    public abstract <T> T toObject(Type type, ObjectSerializer serializer);
 
     /**
      * Returns an {@link InputStream} representation of this {@link BinaryData}.

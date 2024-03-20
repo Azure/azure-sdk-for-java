@@ -29,6 +29,19 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
     /**
      * Creates a policy that uses the passed {@link KeyCredential} to set the specified header name.
      *
+     * @param name The name of the key header that will be set to {@link KeyCredential#getKey()}.
+     * @param credential The {@link KeyCredential} containing the authorization key to use.
+     *
+     * @throws NullPointerException If {@code name} or {@code credential} is {@code null}.
+     * @throws IllegalArgumentException If {@code name} is empty.
+     */
+    public KeyCredentialPolicy(String name, KeyCredential credential) {
+        this(validateName(name), Objects.requireNonNull(credential, "'credential' cannot be null."), null);
+    }
+
+    /**
+     * Creates a policy that uses the passed {@link KeyCredential} to set the specified header name.
+     *
      * <p>The {@code prefix} will be applied before the {@link KeyCredential#getKey()} when setting the header. A space
      * will be inserted between {@code prefix} and credential.</p>
      *
@@ -61,19 +74,12 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
 
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
-        if ("http".equals(httpRequest.getUrl().getProtocol())) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
-        }
-
         setCredential(httpRequest.getHeaders());
-
         return next.process();
     }
 
     void setCredential(Headers headers) {
         String credential = this.credential.getKey();
-
         headers.set(name, (prefix == null) ? credential : prefix + " " + credential);
     }
 }

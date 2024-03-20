@@ -23,7 +23,7 @@ public @interface Metadata {
      *
      * @return The conditions that apply to the annotated class.
      */
-    TypeConditions[] conditions();
+    TypeConditions[] conditions() default {};
 
     /**
      * Indicates whether the class was automatically generated.

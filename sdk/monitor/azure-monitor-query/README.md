@@ -109,7 +109,7 @@ MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
 ```
 
 ```java readme-sample-createMetricsBatchQueryClient
-MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBuilder()
+MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("{endpoint}")
     .buildClient();
@@ -130,7 +130,7 @@ MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder(
 ```
 
 ```java readme-sample-createMetricsBatchQueryAsyncClient
-MetricsBatchQueryAsyncClient metricsBatchQueryAsyncClient = new MetricsBatchQueryClientBuilder()
+MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("{endpoint}")
     .buildAsyncClient();
@@ -534,7 +534,7 @@ for (MetricResult metric : metricsQueryResult.getMetrics()) {
 #### Handle metrics batch query response
 
 ```java readme-sample-metricsquerybatch
-MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBuilder()
+MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint("{endpoint}")
     .buildClient();

@@ -8,7 +8,6 @@ import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.generic.core.models.MockFile;
 import com.generic.core.models.MockPath;
 import com.generic.core.models.Person;
-import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonReader;
 import com.generic.json.JsonSerializable;
@@ -72,8 +71,7 @@ public class BinaryDataTest {
         final BinaryData data = BinaryData.fromObject(actualValue, SERIALIZER);
 
         // Assert
-        assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass()),
-            SERIALIZER));
+        assertEquals(expectedValue, data.toObject(expectedValue.getClass(), SERIALIZER));
     }
 
     @Test
@@ -86,8 +84,7 @@ public class BinaryDataTest {
         final BinaryData data = BinaryData.fromObject(actualValue, SERIALIZER);
 
         // Assert
-        assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass()),
-            SERIALIZER));
+        assertEquals(expectedValue, data.toObject(expectedValue.getClass(), SERIALIZER));
     }
 
     @Test
@@ -237,7 +234,7 @@ public class BinaryDataTest {
         final BinaryData data = BinaryData.fromObject(actualValue);
 
         // Assert
-        assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass())));
+        assertEquals(expectedValue, data.toObject(expectedValue.getClass()));
     }
 
     @Test
@@ -250,7 +247,7 @@ public class BinaryDataTest {
         final BinaryData data = BinaryData.fromObject(actualValue);
 
         // Assert
-        assertEquals(expectedValue, data.toObject(TypeReference.createInstance(expectedValue.getClass())));
+        assertEquals(expectedValue, data.toObject(expectedValue.getClass()));
     }
 
     @Test
@@ -550,7 +547,7 @@ public class BinaryDataTest {
             .setProperty(BinaryData.fromObject(new BinaryDataPropertyClass().setTest("test")));
         String json = "{\"property\":{\"test\":\"test\"}}";
         BinaryDataAsProperty actual = new DefaultJsonSerializer()
-            .deserializeFromBytes(json.getBytes(), TypeReference.createInstance(BinaryDataAsProperty.class));
+            .deserializeFromBytes(json.getBytes(), BinaryDataAsProperty.class);
 
         assertEquals(expected.getProperty().toString(), actual.getProperty().toString());
     }
@@ -574,7 +571,7 @@ public class BinaryDataTest {
             jsonWriter.writeStartObject();
 
             BinaryDataPropertyClass binaryDataPropertyClass =
-                property.toObject(TypeReference.createInstance(BinaryDataPropertyClass.class), SERIALIZER);
+                property.toObject(BinaryDataPropertyClass.class, SERIALIZER);
 
             jsonWriter.writeJsonField("property", binaryDataPropertyClass);
             jsonWriter.writeEndObject();

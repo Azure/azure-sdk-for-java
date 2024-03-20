@@ -99,10 +99,9 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
     public SyncOperationResourcePollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
         String operationLocationHeaderName, Context context) {
         this(operationLocationHeaderName == null ? null : HttpHeaderName.fromString(operationLocationHeaderName),
-            new PollingStrategyOptions(httpPipeline)
-            .setEndpoint(endpoint)
-            .setSerializer(serializer)
-            .setContext(context));
+            new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint)
+                .setSerializer(serializer)
+                .setContext(context));
     }
 
     /**
@@ -112,13 +111,16 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
      * @param pollingStrategyOptions options to configure this polling strategy.
      * @throws NullPointerException if {@code pollingStrategyOptions} is null.
      */
-    public SyncOperationResourcePollingStrategy(HttpHeaderName operationLocationHeaderName, PollingStrategyOptions pollingStrategyOptions) {
+    public SyncOperationResourcePollingStrategy(HttpHeaderName operationLocationHeaderName,
+        PollingStrategyOptions pollingStrategyOptions) {
         Objects.requireNonNull(pollingStrategyOptions, "'pollingStrategyOptions' cannot be null");
         this.httpPipeline = pollingStrategyOptions.getHttpPipeline();
         this.endpoint = pollingStrategyOptions.getEndpoint();
-        this.serializer = pollingStrategyOptions.getSerializer() != null ? pollingStrategyOptions.getSerializer() : new DefaultJsonSerializer();
-        this.operationLocationHeaderName = (operationLocationHeaderName == null)
-            ? DEFAULT_OPERATION_LOCATION_HEADER : operationLocationHeaderName;
+        this.serializer = pollingStrategyOptions.getSerializer() != null
+            ? pollingStrategyOptions.getSerializer()
+            : new DefaultJsonSerializer();
+        this.operationLocationHeaderName
+            = (operationLocationHeaderName == null) ? DEFAULT_OPERATION_LOCATION_HEADER : operationLocationHeaderName;
 
         this.serviceVersion = pollingStrategyOptions.getServiceVersion();
         this.context = pollingStrategyOptions.getContext() == null ? Context.NONE : pollingStrategyOptions.getContext();
@@ -128,8 +130,6 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
     public boolean canPoll(Response<?> initialResponse) {
         return operationResourceCanPoll(initialResponse, operationLocationHeaderName, endpoint, LOGGER);
     }
-
-
 
     @Override
     public PollResponse<T> onInitialResponse(Response<?> response, PollingContext<T> pollingContext,
@@ -149,31 +149,32 @@ public class SyncOperationResourcePollingStrategy<T, U> implements SyncPollingSt
         pollingContext.setData(PollingConstants.HTTP_METHOD, response.getRequest().getHttpMethod().name());
         pollingContext.setData(PollingConstants.REQUEST_URL, response.getRequest().getUrl().toString());
 
-        if (response.getStatusCode() == 200 || response.getStatusCode() == 201
-            || response.getStatusCode() == 202 || response.getStatusCode() == 204) {
+        if (response.getStatusCode() == 200
+            || response.getStatusCode() == 201
+            || response.getStatusCode() == 202
+            || response.getStatusCode() == 204) {
             Duration retryAfter = ImplUtils.getRetryAfterFromHeaders(response.getHeaders(), OffsetDateTime::now);
             return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
                 PollingUtils.convertResponseSync(response.getValue(), serializer, pollResponseType), retryAfter);
         }
 
-        throw LOGGER.logExceptionAsError(new AzureException(String.format(
-            "Operation failed or cancelled with status code %d, '%s' header: %s, and response body: %s",
-            response.getStatusCode(), operationLocationHeaderName, operationLocationHeader,
-            PollingUtils.serializeResponseSync(response.getValue(), serializer))));
+        throw LOGGER.logExceptionAsError(new AzureException(
+            String.format("Operation failed or cancelled with status code %d, '%s' header: %s, and response body: %s",
+                response.getStatusCode(), operationLocationHeaderName, operationLocationHeader,
+                PollingUtils.serializeResponseSync(response.getValue(), serializer))));
 
     }
 
     @Override
     public PollResponse<T> poll(PollingContext<T> pollingContext, TypeReference<T> pollResponseType) {
-        String url = pollingContext.getData(operationLocationHeaderName
-            .getCaseSensitiveName());
+        String url = pollingContext.getData(operationLocationHeaderName.getCaseSensitiveName());
         url = setServiceVersionQueryParam(url);
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
 
         try (HttpResponse response = httpPipeline.sendSync(request, context)) {
             BinaryData responseBody = response.getBodyAsBinaryData();
-            PollResult pollResult = PollingUtils.deserializeResponseSync(responseBody, serializer,
-                POLL_RESULT_TYPE_REFERENCE);
+            PollResult pollResult
+                = PollingUtils.deserializeResponseSync(responseBody, serializer, POLL_RESULT_TYPE_REFERENCE);
 
             String resourceLocation = pollResult.getResourceLocation();
             if (resourceLocation != null) {

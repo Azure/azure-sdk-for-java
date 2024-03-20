@@ -5,7 +5,6 @@ package com.generic.core.http.annotation;
 
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.exception.HttpResponseException;
-import com.generic.core.implementation.http.annotation.UnexpectedResponseExceptionInformationArray;
 
 import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;

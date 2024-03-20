@@ -3,13 +3,13 @@
 
 package com.generic.core.implementation.util;
 
+import com.generic.core.util.ClientLogger;
 import com.generic.core.util.configuration.Configuration;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.InvalidPathException;
 import java.time.LocalDateTime;
@@ -42,6 +42,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     private final boolean isInfoEnabled;
     private final boolean isWarnEnabled;
     private final boolean isErrorEnabled;
+    private final PrintStream logLocation;
 
     /**
      * Construct DefaultLogger for the given class.
@@ -49,7 +50,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * @param clazz Class creating the logger.
      */
     public DefaultLogger(Class<?> clazz) {
-        this(clazz.getCanonicalName(), false);
+        this(clazz.getCanonicalName(), System.out, fromEnvironment());
     }
 
     /**
@@ -59,7 +60,34 @@ public final class DefaultLogger extends MarkerIgnoringBase {
      * name passes in.
      */
     public DefaultLogger(String className) {
-        this(getClassPathFromClassName(className), false);
+        this(getClassPathFromClassName(className), System.out, fromEnvironment());
+    }
+
+    /**
+     * Construct DefaultLogger for the given class name.
+     *
+     * @param className Class name creating the logger. Will use class canonical name if exists, otherwise use the class
+     * name passes in.
+     * @param logLocation The location to log the messages.
+     * @param logLevel The log level supported by the logger.
+     */
+    public DefaultLogger(String className, PrintStream logLocation, ClientLogger.LogLevel logLevel) {
+        this.classPath = getClassPathFromClassName(className);
+        if (logLevel.equals(LogLevel.NOTSET)) {
+            isTraceEnabled = false;
+            isDebugEnabled = false;
+            isInfoEnabled = false;
+            isWarnEnabled = false;
+            isErrorEnabled = false;
+        } else {
+            isTraceEnabled = LogLevel.isGreaterOrEqual(LogLevel.VERBOSE, logLevel);
+            isDebugEnabled = LogLevel.isGreaterOrEqual(LogLevel.VERBOSE, logLevel);
+            isInfoEnabled = LogLevel.isGreaterOrEqual(LogLevel.INFORMATIONAL, logLevel);
+            isWarnEnabled = LogLevel.isGreaterOrEqual(LogLevel.WARNING, logLevel);
+            isErrorEnabled = LogLevel.isGreaterOrEqual(LogLevel.ERROR, logLevel);
+        }
+
+        this.logLocation = logLocation;
     }
 
     private static String getClassPathFromClassName(String className) {
@@ -69,24 +97,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             // Swallow ClassNotFoundException as the passed class name may not correlate to an actual class.
             // Swallow InvalidPathException as the className may contain characters that aren't legal file characters.
             return className;
-        }
-    }
-
-    private DefaultLogger(String classPath, boolean ignored) {
-        this.classPath = classPath;
-        LogLevel configuredLogLevel = fromEnvironment();
-        if (configuredLogLevel.equals(LogLevel.NOTSET)) {
-            isTraceEnabled = false;
-            isDebugEnabled = false;
-            isInfoEnabled = false;
-            isWarnEnabled = false;
-            isErrorEnabled = false;
-        } else {
-            isTraceEnabled = LogLevel.isGreaterOrEqual(LogLevel.VERBOSE, configuredLogLevel);
-            isDebugEnabled = LogLevel.isGreaterOrEqual(LogLevel.VERBOSE, configuredLogLevel);
-            isInfoEnabled = LogLevel.isGreaterOrEqual(LogLevel.INFORMATIONAL, configuredLogLevel);
-            isWarnEnabled = LogLevel.isGreaterOrEqual(LogLevel.WARNING, configuredLogLevel);
-            isErrorEnabled = LogLevel.isGreaterOrEqual(LogLevel.ERROR, configuredLogLevel);
         }
     }
 
@@ -204,7 +214,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     public boolean isInfoEnabled() {
         return isInfoEnabled;
     }
-
 
     /**
      * {@inheritDoc}
@@ -367,8 +376,7 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         // Use a larger initial buffer for the StringBuilder as it defaults to 16 and non-empty information is expected
         // to be much larger than that. This will reduce the amount of resizing and copying needed to be done.
         StringBuilder stringBuilder = new StringBuilder(256);
-        stringBuilder
-            .append(dateTime)
+        stringBuilder.append(dateTime)
             .append(OPEN_BRACKET)
             .append(threadName)
             .append(CLOSE_BRACKET)
@@ -378,10 +386,10 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             .append(WHITESPACE)
             .append(classPath)
             .append(HYPHEN)
-            .append(addExceptionStacktrace(message, t))
+            .append(message)
             .append(System.lineSeparator());
 
-        System.out.print(stringBuilder.toString());
+        logLocation.print(stringBuilder);
     }
 
     /**
@@ -440,19 +448,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
 
         // Use UTF-8 as it's more performant than ASCII in Java 8
         return new String(bytes, StandardCharsets.UTF_8);
-    }
-
-    private String addExceptionStacktrace(String message, Throwable t) {
-        if (t != null) {
-            message += "\",\"exception.stacktrace\":\"" + getStackTrace(t) + "\"";
-        }
-        return message + "}";
-    }
-    private String getStackTrace(Throwable t) {
-        StringWriter sw = new StringWriter();
-        PrintWriter pw = new PrintWriter(sw);
-        t.printStackTrace(pw);
-        return sw.toString().trim();
     }
 
     private static void zeroPad(int value, byte[] bytes, int index) {

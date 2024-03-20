@@ -8,29 +8,25 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrateInpu
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrateInputProperties;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtMigrateInput;
 
-/** Samples for ReplicationMigrationItems Migrate. */
+/**
+ * Samples for ReplicationMigrationItems Migrate.
+ */
 public final class ReplicationMigrationItemsMigrateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_Migrate.json
+     * x-ms-original-file:
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * /ReplicationMigrationItems_Migrate.json
      */
     /**
      * Sample code: Migrate item.
-     *
+     * 
      * @param manager Entry point to SiteRecoveryManager.
      */
     public static void migrateItem(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager
-            .replicationMigrationItems()
-            .migrate(
-                "migrationvault",
-                "resourcegroup1",
-                "vmwarefabric1",
-                "vmwareContainer1",
-                "virtualmachine1",
-                new MigrateInput()
-                    .withProperties(
-                        new MigrateInputProperties()
-                            .withProviderSpecificDetails(new VMwareCbtMigrateInput().withPerformShutdown("true"))),
-                com.azure.core.util.Context.NONE);
+        manager.replicationMigrationItems().migrate("migrationvault", "resourcegroup1", "vmwarefabric1",
+            "vmwareContainer1", "virtualmachine1",
+            new MigrateInput().withProperties(new MigrateInputProperties()
+                .withProviderSpecificDetails(new VMwareCbtMigrateInput().withPerformShutdown("true"))),
+            com.azure.core.util.Context.NONE);
     }
 }

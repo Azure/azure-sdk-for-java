@@ -169,6 +169,12 @@ public class Configs {
 
     public static final int MIN_MAX_RETRIES_IN_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
 
+    public static final String TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS = "COSMOS.TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS";
+
+    // Error handling strategy in diagnostics provider
+    public static final String DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = "COSMOS.DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR";
+    public static final boolean DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = true;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -482,5 +488,25 @@ public class Configs {
                     System.getProperty(MAX_TRACE_MESSAGE_LENGTH),
                     DEFAULT_MAX_TRACE_MESSAGE_LENGTH),
                 MIN_MAX_TRACE_MESSAGE_LENGTH);
+    }
+
+    public static Duration getTcpConnectionAcquisitionTimeout(int defaultValueInMs) {
+        return Duration.ofMillis(
+            getIntValue(
+                System.getProperty(TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS),
+                defaultValueInMs
+            )
+        );
+    }
+
+    public static boolean shouldDiagnosticsProviderSystemExitOnError() {
+        String shouldSystemExit =
+            System.getProperty(
+                DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR)),
+                    String.valueOf(DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR)));
+
+        return Boolean.parseBoolean(shouldSystemExit);
     }
 }

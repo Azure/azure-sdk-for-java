@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Pause replication input. */
+/**
+ * Pause replication input.
+ */
 @Fluent
 public final class PauseReplicationInput {
     /*
@@ -17,13 +19,15 @@ public final class PauseReplicationInput {
     @JsonProperty(value = "properties", required = true)
     private PauseReplicationInputProperties properties;
 
-    /** Creates an instance of PauseReplicationInput class. */
+    /**
+     * Creates an instance of PauseReplicationInput class.
+     */
     public PauseReplicationInput() {
     }
 
     /**
      * Get the properties property: Pause replication input properties.
-     *
+     * 
      * @return the properties value.
      */
     public PauseReplicationInputProperties properties() {
@@ -32,7 +36,7 @@ public final class PauseReplicationInput {
 
     /**
      * Set the properties property: Pause replication input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the PauseReplicationInput object itself.
      */
@@ -43,15 +47,13 @@ public final class PauseReplicationInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model PauseReplicationInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model PauseReplicationInput"));
         } else {
             properties().validate();
         }

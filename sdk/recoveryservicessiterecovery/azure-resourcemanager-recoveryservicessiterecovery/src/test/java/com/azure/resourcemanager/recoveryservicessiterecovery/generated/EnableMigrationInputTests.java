@@ -13,22 +13,16 @@ import org.junit.jupiter.api.Assertions;
 public final class EnableMigrationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnableMigrationInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"policyId\":\"hjkbegibtnmxieb\",\"providerSpecificDetails\":{\"instanceType\":\"EnableMigrationProviderSpecificInput\"}}}")
-                .toObject(EnableMigrationInput.class);
+        EnableMigrationInput model = BinaryData.fromString(
+            "{\"properties\":{\"policyId\":\"hjkbegibtnmxieb\",\"providerSpecificDetails\":{\"instanceType\":\"EnableMigrationProviderSpecificInput\"}}}")
+            .toObject(EnableMigrationInput.class);
         Assertions.assertEquals("hjkbegibtnmxieb", model.properties().policyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnableMigrationInput model =
-            new EnableMigrationInput()
-                .withProperties(
-                    new EnableMigrationInputProperties()
-                        .withPolicyId("hjkbegibtnmxieb")
-                        .withProviderSpecificDetails(new EnableMigrationProviderSpecificInput()));
+        EnableMigrationInput model = new EnableMigrationInput().withProperties(new EnableMigrationInputProperties()
+            .withPolicyId("hjkbegibtnmxieb").withProviderSpecificDetails(new EnableMigrationProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(EnableMigrationInput.class);
         Assertions.assertEquals("hjkbegibtnmxieb", model.properties().policyId());
     }

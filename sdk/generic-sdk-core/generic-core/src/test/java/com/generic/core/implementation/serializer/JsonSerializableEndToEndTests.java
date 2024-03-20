@@ -4,7 +4,6 @@
 package com.generic.core.implementation.serializer;
 
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonReader;
 import com.generic.json.JsonSerializable;
@@ -42,8 +41,7 @@ public class JsonSerializableEndToEndTests {
         JsonSerializableWrapper expected = new JsonSerializableWrapper()
             .setGeneralProperties(new GeneralProperties(42, true, "hello world", -0.0D));
         JsonSerializableWrapper actual =
-            SERIALIZER.deserializeFromBytes(json.getBytes(),
-                TypeReference.createInstance(JsonSerializableWrapper.class));
+            SERIALIZER.deserializeFromBytes(json.getBytes(), JsonSerializableWrapper.class);
 
         assertEquals(expected, actual);
     }

@@ -10,19 +10,27 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 
 /**
- * <p>The {@link BasicAuthenticationCredential} is used to authenticate and authorize requests made to
+ * <p>
+ * The {@link BasicAuthenticationCredential} is used to authenticate and authorize requests made to
  * Azure services using the Basic authentication scheme. Basic Authentication is a simple authentication scheme
- * that uses a combination of a username and password.</p>
+ * that uses a combination of a username and password.
+ * </p>
  *
- * <p>Note that Basic Authentication is generally considered less secure than other authentication methods,
+ * <p>
+ * Note that Basic Authentication is generally considered less secure than other authentication methods,
  * such as Azure Active Directory (AAD) authentication. It is recommended to use
  * <a href="https://learn.microsoft.com/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)</a>
- * authentication via {@link TokenCredential} whenever possible, especially for production environments.</p>
+ * authentication via {@link TokenCredential} whenever possible, especially for production environments.
+ * </p>
  *
- * <p><strong>Sample: Azure SAS Authentication</strong></p>
+ * <p>
+ * <strong>Sample: Azure SAS Authentication</strong>
+ * </p>
  *
- * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.core.credential.BasicAuthenticationCredential}, using username and password</p>
+ * <p>
+ * The following code sample demonstrates the creation of a
+ * {@link com.azure.core.credential.BasicAuthenticationCredential}, using username and password
+ * </p>
  *
  * <!-- src_embed com.azure.core.credential.basicAuthenticationCredential -->
  * <pre>

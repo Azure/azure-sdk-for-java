@@ -6,12 +6,12 @@ package com.generic.core.util.binarydata;
 import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
 import com.generic.core.util.ClientLogger;
-import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
@@ -66,8 +66,8 @@ public final class ListByteBufferBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        return serializer.deserializeFromBytes(toBytes(), typeReference);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        return serializer.deserializeFromBytes(toBytes(), type);
     }
 
     @Override

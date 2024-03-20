@@ -33,7 +33,6 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.EnumSet;
 import java.util.function.Consumer;
 
 public abstract class RestProxyBase {
@@ -64,8 +63,7 @@ public abstract class RestProxyBase {
     }
 
     public final Object invoke(Object proxy, final Method method, RequestOptions options,
-                               EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> requestCallback,
-                               SwaggerMethodParser methodParser, Object[] args) {
+                               Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, Object[] args) {
         try {
             HttpRequest request = createHttpRequest(methodParser, serializer, args);
 
@@ -78,15 +76,15 @@ public abstract class RestProxyBase {
             request.getMetadata().setEagerlyReadResponse(methodParser.isResponseEagerlyRead());
             request.getMetadata().setIgnoreResponseBody(methodParser.isResponseBodyIgnored());
 
-            return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request);
+            return invoke(proxy, method, options, requestCallback, methodParser, request);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
     protected abstract Object invoke(Object proxy, Method method, RequestOptions options,
-                                     EnumSet<ErrorOptions> errorOptions, Consumer<HttpRequest> httpRequestConsumer,
-                                     SwaggerMethodParser methodParser, HttpRequest request);
+                                     Consumer<HttpRequest> httpRequestConsumer, SwaggerMethodParser methodParser,
+                                     HttpRequest request);
 
     public abstract void updateRequest(RequestDataConfiguration requestDataConfiguration,
                                        ObjectSerializer objectSerializer) throws IOException;

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A2A provider specific input for unplanned failover. */
+/**
+ * A2A provider specific input for unplanned failover.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -27,14 +29,16 @@ public final class A2AUnplannedFailoverInput extends UnplannedFailoverProviderSp
     @JsonProperty(value = "cloudServiceCreationOption")
     private String cloudServiceCreationOption;
 
-    /** Creates an instance of A2AUnplannedFailoverInput class. */
+    /**
+     * Creates an instance of A2AUnplannedFailoverInput class.
+     */
     public A2AUnplannedFailoverInput() {
     }
 
     /**
      * Get the recoveryPointId property: The recovery point id to be passed to failover to a particular recovery point.
      * In case of latest recovery point, null should be passed.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -44,7 +48,7 @@ public final class A2AUnplannedFailoverInput extends UnplannedFailoverProviderSp
     /**
      * Set the recoveryPointId property: The recovery point id to be passed to failover to a particular recovery point.
      * In case of latest recovery point, null should be passed.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the A2AUnplannedFailoverInput object itself.
      */
@@ -56,7 +60,7 @@ public final class A2AUnplannedFailoverInput extends UnplannedFailoverProviderSp
     /**
      * Get the cloudServiceCreationOption property: A value indicating whether to use recovery cloud service for
      * failover or not.
-     *
+     * 
      * @return the cloudServiceCreationOption value.
      */
     public String cloudServiceCreationOption() {
@@ -66,7 +70,7 @@ public final class A2AUnplannedFailoverInput extends UnplannedFailoverProviderSp
     /**
      * Set the cloudServiceCreationOption property: A value indicating whether to use recovery cloud service for
      * failover or not.
-     *
+     * 
      * @param cloudServiceCreationOption the cloudServiceCreationOption value to set.
      * @return the A2AUnplannedFailoverInput object itself.
      */
@@ -77,7 +81,7 @@ public final class A2AUnplannedFailoverInput extends UnplannedFailoverProviderSp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

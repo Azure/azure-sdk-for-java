@@ -3,12 +3,12 @@
 
 package com.generic.core.util.binarydata;
 
-import com.generic.core.util.TypeReference;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
@@ -50,8 +50,8 @@ public final class StringBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(TypeReference<T> typeReference, ObjectSerializer serializer) {
-        return serializer.deserializeFromBytes(toBytes(), typeReference);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        return serializer.deserializeFromBytes(toBytes(), type);
     }
 
     @Override
