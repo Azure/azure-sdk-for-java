@@ -1,0 +1,23 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.wcus.digitaltwins.azure.net/models/dtmi:doesnotexist:fakemodel;1000?includeModelDefinition=true&api-version=2022-05-31",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-digitaltwins-core/1.3.0 (12.0.2; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "51535903-1455-4f16-8bf5-bc3137e9a364"
+    },
+    "Response" : {
+      "content-length" : "217",
+      "Strict-Transport-Security" : "max-age=2592000",
+      "traceresponse" : "00-34c02d8559273d03b7b2f6e6fff551cc-016a8ae58757993a-01",
+      "mise-correlation-id" : "48faa4ae-218e-4a24-917a-add5281be389",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "Body" : "{\"error\":{\"code\":\"ModelNotFound\",\"message\":\"There is no Model(s) available that matches the provided id(s) dtmi:doesnotexist:fakemodel;1000. Check that the Model ID provided is valid by doing a Model_List API call.\"}}",
+      "Date" : "Wed, 29 Jun 2022 13:43:53 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
