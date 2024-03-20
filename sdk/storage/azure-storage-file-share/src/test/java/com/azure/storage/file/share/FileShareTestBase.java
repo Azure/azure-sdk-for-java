@@ -9,23 +9,31 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpPipelineCallContext;
+import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ServiceVersion;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.test.shared.StorageCommonTestUtils;
+import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
-import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareItem;
@@ -36,24 +44,42 @@ import com.azure.storage.file.share.options.ShareDeleteOptions;
 import com.azure.storage.file.share.specialized.ShareLeaseAsyncClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClient;
 import com.azure.storage.file.share.specialized.ShareLeaseClientBuilder;
+import okhttp3.ConnectionPool;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
+import java.util.zip.CRC32;
 
 
 public class FileShareTestBase extends TestProxyTestBase {
     protected static final TestEnvironment ENVIRONMENT = TestEnvironment.getInstance();
     protected static final TestDataFactory DATA = TestDataFactory.getInstance();
+    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
+    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
+        .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
+        .build();
 
     protected static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
     protected static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final ClientLogger LOGGER = new ClientLogger(FileShareTestBase.class);
 
     protected String prefix;
 
@@ -64,7 +90,7 @@ public class FileShareTestBase extends TestProxyTestBase {
     be used.
     */
     protected static final String RECEIVED_LEASE_ID = "received";
-    static final String GARBAGE_LEASE_ID = CoreUtils.randomUuid().toString();
+    static final String GARBAGE_LEASE_ID = UUID.randomUUID().toString();
 
     URL testFolder = getClass().getClassLoader().getResource("testfiles");
 
@@ -78,7 +104,7 @@ public class FileShareTestBase extends TestProxyTestBase {
     @Override
     public void beforeTest() {
         super.beforeTest();
-        prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
+        prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addSanitizers(Arrays.asList(
@@ -100,13 +126,17 @@ public class FileShareTestBase extends TestProxyTestBase {
             .setQueryOrderingIgnored(true)
             .setIgnoredQueryParameters(Arrays.asList("sv"))));
 
-        ShareServiceClientBuilder builder = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount());
-        primaryFileServiceClient = builder.buildClient();
-        primaryFileServiceAsyncClient = builder.buildAsyncClient();
+        primaryFileServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
+        primaryFileServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
 
-        builder = getServiceClientBuilder(ENVIRONMENT.getPremiumFileAccount());
-        premiumFileServiceClient = builder.buildClient();
-        premiumFileServiceAsyncClient = builder.buildAsyncClient();
+        premiumFileServiceClient = getServiceClient(ENVIRONMENT.getPremiumFileAccount());
+        premiumFileServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPremiumFileAccount());
+    }
+
+    private static String getCrc32(String input) {
+        CRC32 crc32 = new CRC32();
+        crc32.update(input.getBytes(StandardCharsets.UTF_8));
+        return String.format(Locale.US, "%08X", crc32.getValue()).toLowerCase();
     }
 
     /**
@@ -149,11 +179,29 @@ public class FileShareTestBase extends TestProxyTestBase {
     }
 
     byte[] getRandomByteArray(int size) {
-        return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
+        long seed = UUID.fromString(testResourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE;
+        Random rand = new Random(seed);
+        byte[] data = new byte[size];
+        rand.nextBytes(data);
+        return data;
     }
 
-    protected ShareServiceClientBuilder getServiceClientBuilder(TestAccount account) {
-        return getServiceClientBuilder(account.getCredential(), account.getFileEndpoint(), (HttpPipelinePolicy) null);
+    protected ShareServiceAsyncClient getServiceAsyncClient(TestAccount account) {
+        return getServiceAsyncClient(account.getCredential(), account.getFileEndpoint(), (HttpPipelinePolicy) null);
+    }
+
+    protected ShareServiceAsyncClient getServiceAsyncClient(StorageSharedKeyCredential credential, String endpoint,
+        HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(credential, endpoint, policies).buildAsyncClient();
+    }
+
+    protected ShareServiceClient getServiceClient(TestAccount account) {
+        return getServiceClient(account.getCredential(), account.getFileEndpoint(), (HttpPipelinePolicy) null);
+    }
+
+    protected ShareServiceClient getServiceClient(StorageSharedKeyCredential credential, String endpoint,
+        HttpPipelinePolicy... policies) {
+        return getServiceClientBuilder(credential, endpoint, policies).buildClient();
     }
 
     protected ShareServiceClientBuilder fileServiceBuilderHelper() {
@@ -306,6 +354,35 @@ public class FileShareTestBase extends TestProxyTestBase {
             .buildClient();
     }
 
+    protected ShareFileClientBuilder getFileClientBuilderWithTokenCredential(String endpoint,
+                                                                             HttpPipelinePolicy... policies) {
+        ShareFileClientBuilder builder = new ShareFileClientBuilder().endpoint(endpoint);
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            // AZURE_TENANT_ID, AZURE_CLIENT_ID, AZURE_CLIENT_SECRET
+            builder.credential(new EnvironmentCredentialBuilder().build());
+        } else {
+            // Running in playback, we don't have access to the AAD environment variables, just use SharedKeyCredential.
+            builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential());
+        }
+        instrument(builder);
+        return builder;
+    }
+
+
+    protected static ShareLeaseAsyncClient createLeaseClient(ShareAsyncClient shareClient) {
+        return createLeaseClient(shareClient, null);
+    }
+
+    protected static ShareLeaseAsyncClient createLeaseClient(ShareAsyncClient shareClient, String leaseId) {
+        return new ShareLeaseClientBuilder()
+            .shareAsyncClient(shareClient)
+            .leaseId(leaseId)
+            .buildAsyncClient();
+    }
+
     protected ShareServiceClient getOAuthServiceClient(ShareServiceClientBuilder builder) {
         if (builder == null) {
             builder = new ShareServiceClientBuilder();
@@ -315,39 +392,6 @@ public class FileShareTestBase extends TestProxyTestBase {
         instrument(builder);
 
         return setOauthCredentials(builder).buildClient();
-    }
-
-    protected ShareServiceClient getOAuthServiceClientSharedKey(ShareServiceClientBuilder builder) {
-        if (builder == null) {
-            builder = new ShareServiceClientBuilder();
-        }
-        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildClient();
-    }
-
-    protected ShareServiceAsyncClient getOAuthServiceAsyncClient(ShareServiceClientBuilder builder) {
-        if (builder == null) {
-            builder = new ShareServiceClientBuilder();
-        }
-        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return setOauthCredentials(builder).buildAsyncClient();
-    }
-
-    protected ShareServiceAsyncClient getOAuthServiceClientAsyncSharedKey(ShareServiceClientBuilder builder) {
-        if (builder == null) {
-            builder = new ShareServiceClientBuilder();
-        }
-        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(ENVIRONMENT.getPrimaryAccount().getCredential()).buildAsyncClient();
     }
 
     protected ShareServiceClientBuilder setOauthCredentials(ShareServiceClientBuilder builder) {
@@ -386,13 +430,50 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
-        return StorageCommonTestUtils.instrument(builder, ShareFileClientBuilder.getDefaultHttpLogOptions(),
-            interceptorManager);
+        // Groovy style reflection. All our builders follow this pattern.
+        builder.httpClient(getHttpClient());
+
+        if (interceptorManager.isRecordMode()) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+        if (ENVIRONMENT.getServiceVersion() != null) {
+            try {
+                Method serviceVersionMethod = Arrays.stream(builder.getClass().getDeclaredMethods())
+                    .filter(method -> "serviceVersion".equals(method.getName())
+                        && method.getParameterCount() == 1
+                        && ServiceVersion.class.isAssignableFrom(method.getParameterTypes()[0]))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Unable to find serviceVersion method for builder: "
+                        + builder.getClass()));
+                Class<E> serviceVersionClass = (Class<E>) serviceVersionMethod.getParameterTypes()[0];
+                ServiceVersion serviceVersion = (ServiceVersion) Enum.valueOf(serviceVersionClass,
+                    ENVIRONMENT.getServiceVersion());
+                serviceVersionMethod.invoke(builder, serviceVersion);
+                builder.addPolicy(new ServiceVersionValidationPolicy(serviceVersion.getVersion()));
+            } catch (ReflectiveOperationException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        return builder;
     }
 
     protected HttpClient getHttpClient() {
-        return StorageCommonTestUtils.getHttpClient(interceptorManager);
+        if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+            switch (ENVIRONMENT.getHttpClientType()) {
+                case NETTY:
+                    return NETTY_HTTP_CLIENT;
+                case OK_HTTP:
+                    return OK_HTTP_CLIENT;
+                default:
+                    throw new IllegalArgumentException("Unknown http client type: " + ENVIRONMENT.getHttpClientType());
+            }
+        } else {
+            return interceptorManager.getPlaybackClient();
+        }
     }
 
     protected String getPrimaryConnectionString() {
@@ -449,6 +530,37 @@ public class FileShareTestBase extends TestProxyTestBase {
         }
     }
 
+    // Only sleep if test is running in live or record mode
+    protected void sleepIfRecord(long milliseconds) {
+        try {
+            if (ENVIRONMENT.getTestMode() != TestMode.PLAYBACK) {
+                Thread.sleep(milliseconds);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    /**
+     * Temporary utility method that waits if running against a live service.
+     * <p>
+     * Remove this once {@code azure-core-test} has a static equivalent of
+     * {@link TestBase#sleepIfRunningAgainstService(long)}.
+     *
+     * @param sleepMillis Milliseconds to sleep.
+     */
+    public static void sleepIfLiveTesting(long sleepMillis) {
+        if (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) {
+            return;
+        }
+
+        try {
+            Thread.sleep(sleepMillis);
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
     @SuppressWarnings("unchecked")
     public static <T, E extends Exception> T retry(Supplier<T> action, Predicate<E> retryPredicate, int times,
         Duration delay) throws E, InterruptedException {
@@ -478,10 +590,111 @@ public class FileShareTestBase extends TestProxyTestBase {
     }
 
     protected HttpPipelinePolicy getPerCallVersionPolicy() {
-        return new PerCallVersionPolicy("2017-11-09");
+        return new HttpPipelinePolicy() {
+            @Override
+            public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                context.getHttpRequest().setHeader(X_MS_VERSION, "2017-11-09");
+                return next.process();
+            }
+            @Override
+            public HttpPipelinePosition getPipelinePosition() {
+                return HttpPipelinePosition.PER_CALL;
+            }
+        };
+    }
+
+    /**
+     * Injects one retry-able IOException failure per url.
+     */
+    protected class TransientFailureInjectingHttpPipelinePolicy implements HttpPipelinePolicy {
+
+        private ConcurrentHashMap<String, Boolean> failureTracker = new ConcurrentHashMap<>();
+
+        @Override
+        public Mono<HttpResponse> process(HttpPipelineCallContext httpPipelineCallContext,
+            HttpPipelineNextPolicy httpPipelineNextPolicy) {
+            HttpRequest request = httpPipelineCallContext.getHttpRequest();
+            String key = request.getUrl().toString();
+            // Make sure that failure happens once per url.
+            if (failureTracker.getOrDefault(key, false)) {
+                return httpPipelineNextPolicy.process();
+            } else {
+                failureTracker.put(key, true);
+                return request.getBody().flatMap(byteBuffer -> {
+                    // Read a byte from each buffer to simulate that failure occurred in the middle of transfer.
+                    byteBuffer.get();
+                    return Flux.just(byteBuffer);
+                }).reduce(0L, (a, byteBuffer) -> a + byteBuffer.remaining()).flatMap(aLong -> {
+                    // Throw retry-able error.
+                    return Mono.error(new IOException("KABOOM!"));
+                });
+            }
+        }
+    }
+
+    protected static boolean olderThan20190707ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2019_07_07);
+    }
+
+    protected static boolean olderThan20191212ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2019_12_12);
+    }
+
+    protected static boolean olderThan20200210ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2020_02_10);
+    }
+
+    protected static boolean olderThan20201002ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2020_10_02);
+    }
+
+    protected static boolean olderThan20210212ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2021_02_12);
+    }
+
+    protected static boolean olderThan20210608ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2021_06_08);
+    }
+
+    protected static boolean olderThan20210410ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2021_04_10);
+    }
+
+    protected static boolean olderThan20211202ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2021_12_02);
+    }
+
+    protected static boolean olderThan20221102ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2022_11_02);
+    }
+
+    protected static boolean olderThan20230103ServiceVersion() {
+        return olderThan(ShareServiceVersion.V2023_01_03);
+    }
+
+    protected static boolean olderThan(ShareServiceVersion targetVersion) {
+        String targetServiceVersionFromEnvironment = ENVIRONMENT.getServiceVersion();
+        ShareServiceVersion version = (targetServiceVersionFromEnvironment != null)
+            ? Enum.valueOf(ShareServiceVersion.class, targetServiceVersionFromEnvironment)
+            : ShareServiceVersion.getLatest();
+
+        return version.ordinal() < targetVersion.ordinal();
+    }
+
+    public static boolean isLiveMode() {
+        return ENVIRONMENT.getTestMode() == TestMode.LIVE;
+    }
+
+    protected Duration getPollingDuration(long liveTestDurationInMillis) {
+        return (ENVIRONMENT.getTestMode() == TestMode.PLAYBACK) ? Duration.ofMillis(10)
+            : Duration.ofMillis(liveTestDurationInMillis);
     }
 
     protected static boolean isServiceVersionSpecified() {
         return ENVIRONMENT.getServiceVersion() != null;
+    }
+
+    protected static boolean isPlaybackMode() {
+        return ENVIRONMENT.getTestMode() == TestMode.PLAYBACK;
     }
 }

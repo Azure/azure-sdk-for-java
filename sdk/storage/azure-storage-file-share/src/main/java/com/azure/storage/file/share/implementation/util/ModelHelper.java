@@ -219,7 +219,6 @@ public class ModelHelper {
             .setLastReconnectTime(handleItem.getLastReconnectTime())
             .setOpenTime(handleItem.getOpenTime())
             .setAccessRights(handleItem.getAccessRightList());
-            //.setClientName(handleItem.getClientName()); Re-enable with STG93
     }
 
     public static List<HandleItem> transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {
