@@ -322,7 +322,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
 
         // if partition-level circuit breaker is enabled
         if (Configs.isPartitionLevelCircuitBreakerEnabled()) {
-            this.globalPartitionEndpointManager.tryMarkPartitionKeyRangeAsUnavailable(this.request);
+            this.globalPartitionEndpointManager.tryMarkRegionAsUnavailableForPartitionKeyRange(this.request);
         }
 
         // The request has failed with 503, SDK need to decide whether it is safe to retry for write operations

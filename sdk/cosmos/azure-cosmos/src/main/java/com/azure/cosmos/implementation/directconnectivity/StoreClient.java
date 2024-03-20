@@ -193,7 +193,7 @@ public class StoreClient implements IStoreClient {
         rxDocumentServiceResponse.setCosmosDiagnostics(request.requestContext.cosmosDiagnostics);
 
         IGlobalPartitionEndpointManager globalPartitionEndpointManager = addressResolver.getGlobalPartitionEndpointManager();
-        globalPartitionEndpointManager.tryBookmarkPartitionKeyRangeSuccess(request);
+        globalPartitionEndpointManager.tryBookmarkRegionSuccessForPartitionKeyRange(request);
 
         return rxDocumentServiceResponse;
     }

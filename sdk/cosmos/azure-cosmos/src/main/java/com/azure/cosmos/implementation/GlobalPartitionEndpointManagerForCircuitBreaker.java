@@ -31,7 +31,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
     }
 
     @Override
-    public boolean tryMarkPartitionKeyRangeAsUnavailable(RxDocumentServiceRequest request) {
+    public boolean tryMarkRegionAsUnavailableForPartitionKeyRange(RxDocumentServiceRequest request) {
 
         if (request == null) {
             throw new IllegalArgumentException("request cannot be null!");
@@ -71,7 +71,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                     this.globalEndpointManager.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
 
                 isFailoverPossible.set(partitionKeyRangeFailoverInfoAsVal.areLocationsAvailableForPartitionKeyRange(
-                    this,
                     applicableEndpoints,
                     request.isReadOnlyRequest()));
             }
@@ -93,7 +92,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
     }
 
     @Override
-    public boolean tryBookmarkPartitionKeyRangeSuccess(RxDocumentServiceRequest request) {
+    public boolean tryBookmarkRegionSuccessForPartitionKeyRange(RxDocumentServiceRequest request) {
 
         if (request == null) {
             throw new IllegalArgumentException("request cannot be null!");
@@ -169,7 +168,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                 LocationLevelFailureMetadata locationLevelFailureMetadata
                     = partitionLevelFailoverInfo.partitionLevelFailureMetadata.get(locationWithUndeterminedAvailability);
 
-                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionKeyRangeUnavailabilityStatus.FreshUnavailable) {
+                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.FreshUnavailable) {
                     return false;
                 }
             }
@@ -211,7 +210,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                     LocationLevelFailureMetadata locationLevelFailureMetadata
                         = partitionLevelFailoverInfo.partitionLevelFailureMetadata.get(unavailableLocation);
 
-                    locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.set(PartitionKeyRangeUnavailabilityStatus.StaleUnavailable);
+                    locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.set(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
                 }
 
                 return Mono.empty();
@@ -253,13 +252,13 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                 if (isReadRequest) {
                     if (locationLevelFailureMetadataAsVal.consecutiveFailureCountForReads.incrementAndGet() > 5) {
                         locationLevelFailureMetadataAsVal.unavailableForReadsSince.set(Instant.now());
-                        locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.set(PartitionKeyRangeUnavailabilityStatus.FreshUnavailable);
+                        locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.set(PartitionScopedRegionUnavailabilityStatus.FreshUnavailable);
                         isFailureThresholdBreached.set(true);
                     }
                 } else {
                     if (locationLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.incrementAndGet() > 5) {
                         locationLevelFailureMetadataAsVal.unavailableForWritesSince.set(Instant.now());
-                        locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.set(PartitionKeyRangeUnavailabilityStatus.FreshUnavailable);
+                        locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.set(PartitionScopedRegionUnavailabilityStatus.FreshUnavailable);
                         isFailureThresholdBreached.set(true);
                     }
                 }
@@ -308,7 +307,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         // 2. if current != failedLocation - a different thread has updated it
         // 3.
         public boolean areLocationsAvailableForPartitionKeyRange(
-            GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker,
             List<URI> availableLocationsAtAccountLevel,
             boolean isReadRequest) {
 
@@ -318,7 +316,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                 } else {
                     LocationLevelFailureMetadata locationLevelFailureMetadata = this.partitionLevelFailureMetadata.get(availableLocation);
 
-                    if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionKeyRangeUnavailabilityStatus.Available) {
+                    if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.Available) {
                         return true;
                     }
                 }
@@ -329,14 +327,13 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
 
             // find region with most 'stale' unavailability
             for (Map.Entry<URI, LocationLevelFailureMetadata> uriToLocationLevelFailureMetadata : this.partitionLevelFailureMetadata.entrySet()) {
-                URI unavailableLocation = uriToLocationLevelFailureMetadata.getKey();
                 LocationLevelFailureMetadata locationLevelFailureMetadata = uriToLocationLevelFailureMetadata.getValue();
 
-                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionKeyRangeUnavailabilityStatus.Available) {
+                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.Available) {
                     return true;
                 }
 
-                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionKeyRangeUnavailabilityStatus.StaleUnavailable) {
+                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.StaleUnavailable) {
                     return true;
                 }
 
@@ -360,7 +357,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
             }
 
             if (locationLevelFailureMetadataForMostStaleLocation != null) {
-                locationLevelFailureMetadataForMostStaleLocation.partitionKeyRangeUnavailabilityStatus.set(PartitionKeyRangeUnavailabilityStatus.StaleUnavailable);
+                locationLevelFailureMetadataForMostStaleLocation.partitionKeyRangeUnavailabilityStatus.set(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
                 return true;
             }
 
@@ -373,18 +370,18 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         private final AtomicInteger consecutiveFailureCountForReads = new AtomicInteger();
         private final AtomicReference<Instant> unavailableForWritesSince = new AtomicReference<>(Instant.MIN);
         private final AtomicReference<Instant> unavailableForReadsSince = new AtomicReference<>(Instant.MIN);
-        private final AtomicReference<PartitionKeyRangeUnavailabilityStatus> partitionKeyRangeUnavailabilityStatus = new AtomicReference<>(PartitionKeyRangeUnavailabilityStatus.Available);
+        private final AtomicReference<PartitionScopedRegionUnavailabilityStatus> partitionKeyRangeUnavailabilityStatus = new AtomicReference<>(PartitionScopedRegionUnavailabilityStatus.Available);
 
     }
 
-    enum PartitionKeyRangeUnavailabilityStatus {
+    enum PartitionScopedRegionUnavailabilityStatus {
         Available(100),
         FreshUnavailable(200),
         StaleUnavailable(300);
 
         private int priority;
 
-        PartitionKeyRangeUnavailabilityStatus(int priority) {
+        PartitionScopedRegionUnavailabilityStatus(int priority) {
             this.priority = priority;
         }
     }

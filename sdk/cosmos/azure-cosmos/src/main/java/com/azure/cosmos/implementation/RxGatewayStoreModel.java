@@ -548,7 +548,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
             return Mono.error(new ServiceUnavailableException("PkRange is unavailable at region", null, request.requestContext.locationEndpointToRoute, HttpConstants.SubStatusCodes.UNKNOWN));
         }
 
-        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single().doOnSuccess(ignore -> this.globalPartitionEndpointManager.tryBookmarkPartitionKeyRangeSuccess(request));
+        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single().doOnSuccess(ignore -> this.globalPartitionEndpointManager.tryBookmarkRegionSuccessForPartitionKeyRange(request));
 
         MetadataRequestRetryPolicy metadataRequestRetryPolicy = new MetadataRequestRetryPolicy(this.globalEndpointManager);
         metadataRequestRetryPolicy.onBeforeSendRequest(request);
@@ -733,9 +733,6 @@ public class RxGatewayStoreModel implements RxStoreModel {
                             PartitionKeyRange range =
                                 collectionRoutingMapValueHolder.v.getRangeByPartitionKeyRangeId(partitionKeyRangeId);
                             request.requestContext.resolvedPartitionKeyRange = range;
-
-                            this.globalPartitionEndpointManager.isRegionAvailableForPartitionKeyRange(request);
-
                             if (request.requestContext.resolvedPartitionKeyRange == null) {
                                 SessionTokenHelper.setPartitionLocalSessionToken(request, partitionKeyRangeId,
                                     sessionContainer);
@@ -750,9 +747,6 @@ public class RxGatewayStoreModel implements RxStoreModel {
                             PartitionKeyRange range =
                                 collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
                             request.requestContext.resolvedPartitionKeyRange = range;
-
-                            this.globalPartitionEndpointManager.isRegionAvailableForPartitionKeyRange(request);
-
                             SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
                         } else {
                             //Apply the ambient session.
