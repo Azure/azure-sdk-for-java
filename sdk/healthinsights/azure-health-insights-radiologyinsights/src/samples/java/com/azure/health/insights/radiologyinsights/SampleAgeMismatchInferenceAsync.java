@@ -112,6 +112,9 @@ public class SampleAgeMismatchInferenceAsync {
             latch.countDown();
         }).subscribe(result -> {
             displayAgeMismatches(result);
+        }, error -> {
+            System.err.println(error.getMessage());
+            error.printStackTrace();
         });
 
         latch.await();

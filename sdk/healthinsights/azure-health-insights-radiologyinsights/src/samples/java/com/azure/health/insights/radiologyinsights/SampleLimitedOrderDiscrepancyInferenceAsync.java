@@ -106,6 +106,9 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
             latch.countDown();
         }).subscribe(result -> {
             displayLimitedOrderDiscrepancies(result);
+        }, error -> {
+            System.err.println(error.getMessage());
+            error.printStackTrace();
         });
 
         latch.await();

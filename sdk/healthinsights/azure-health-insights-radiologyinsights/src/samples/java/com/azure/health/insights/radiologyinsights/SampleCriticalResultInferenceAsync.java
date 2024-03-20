@@ -114,6 +114,9 @@ public class SampleCriticalResultInferenceAsync {
             latch.countDown();
         }).subscribe(result -> {
             displayCriticalResults(result);
+        }, error -> {
+            System.err.println(error.getMessage());
+            error.printStackTrace();
         });
 
         latch.await();

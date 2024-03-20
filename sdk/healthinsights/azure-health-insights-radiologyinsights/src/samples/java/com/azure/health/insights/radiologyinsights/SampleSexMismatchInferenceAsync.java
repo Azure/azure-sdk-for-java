@@ -110,6 +110,9 @@ public class SampleSexMismatchInferenceAsync {
             latch.countDown();
         }).subscribe(result -> {
             displaySexMismatches(result);
+        }, error -> {
+            System.err.println(error.getMessage());
+            error.printStackTrace();
         });
 
         latch.await();

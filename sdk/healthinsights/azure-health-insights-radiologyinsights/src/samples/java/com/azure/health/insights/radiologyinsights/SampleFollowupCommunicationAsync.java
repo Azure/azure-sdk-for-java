@@ -112,6 +112,9 @@ public class SampleFollowupCommunicationAsync {
             latch.countDown();
         }).subscribe(result -> {
             displayFollowupCommunications(result);
+        }, error -> {
+            System.err.println(error.getMessage());
+            error.printStackTrace();
         });
 
         latch.await();

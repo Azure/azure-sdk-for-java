@@ -115,6 +115,9 @@ public class SampleFollowupRecommendationInferenceAsync {
             latch.countDown();
         }).subscribe(result -> {
             displayFollowUpRecommendations(result);
+        }, error -> {
+            System.err.println(error.getMessage());
+            error.printStackTrace();
         });
 
         latch.await();

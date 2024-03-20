@@ -110,6 +110,9 @@ public class SampleCompleteOrderDiscrepancyInferenceAsync {
             latch.countDown();
         }).subscribe(result -> {
             displayCompleteOrderDiscrepancies(result);
+        }, error -> {
+            System.err.println(error.getMessage());
+            error.printStackTrace();
         });
 
         latch.await();
