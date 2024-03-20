@@ -6,9 +6,9 @@ package com.azure.resourcemanager.confluent.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.confluent.fluent.models.AccessListRoleBindingsSuccessResponseInner;
+import com.azure.resourcemanager.confluent.fluent.models.RoleBindingRecordInner;
 import com.azure.resourcemanager.confluent.models.ConfluentListMetadata;
 import com.azure.resourcemanager.confluent.models.MetadataEntity;
-import com.azure.resourcemanager.confluent.models.RoleBindingRecord;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
@@ -42,7 +42,7 @@ public final class AccessListRoleBindingsSuccessResponseInnerTests {
             = new AccessListRoleBindingsSuccessResponseInner().withKind("bzdopcj")
                 .withMetadata(new ConfluentListMetadata().withFirst("hdldwmgxcxrsl").withLast("utwu")
                     .withPrev("grpkhjwniyqs").withNext("i").withTotalSize(1317619791))
-                .withData(Arrays.asList(new RoleBindingRecord().withKind("zzlvmbmpaxmodfv").withId("fy")
+                .withData(Arrays.asList(new RoleBindingRecordInner().withKind("zzlvmbmpaxmodfv").withId("fy")
                     .withMetadata(new MetadataEntity().withSelf("pfvmwyhrfou").withResourceName("taakc")
                         .withCreatedAt("iyzvqtmnub").withUpdatedAt("kpzksmondjmq").withDeletedAt("vypomgkopkwho"))
                     .withPrincipal("pajqgxysm").withRoleName("mbqfqvmk").withCrnPattern("oz")));

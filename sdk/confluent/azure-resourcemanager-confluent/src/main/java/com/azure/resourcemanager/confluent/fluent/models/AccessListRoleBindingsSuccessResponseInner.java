@@ -6,12 +6,11 @@ package com.azure.resourcemanager.confluent.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.confluent.models.ConfluentListMetadata;
-import com.azure.resourcemanager.confluent.models.RoleBindingRecord;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * List cluster success response.
+ * Details of the role bindings returned on successful response.
  */
 @Fluent
 public final class AccessListRoleBindingsSuccessResponseInner {
@@ -28,10 +27,10 @@ public final class AccessListRoleBindingsSuccessResponseInner {
     private ConfluentListMetadata metadata;
 
     /*
-     * Data of the environments list
+     * List of role binding
      */
     @JsonProperty(value = "data")
-    private List<RoleBindingRecord> data;
+    private List<RoleBindingRecordInner> data;
 
     /**
      * Creates an instance of AccessListRoleBindingsSuccessResponseInner class.
@@ -80,21 +79,21 @@ public final class AccessListRoleBindingsSuccessResponseInner {
     }
 
     /**
-     * Get the data property: Data of the environments list.
+     * Get the data property: List of role binding.
      * 
      * @return the data value.
      */
-    public List<RoleBindingRecord> data() {
+    public List<RoleBindingRecordInner> data() {
         return this.data;
     }
 
     /**
-     * Set the data property: Data of the environments list.
+     * Set the data property: List of role binding.
      * 
      * @param data the data value to set.
      * @return the AccessListRoleBindingsSuccessResponseInner object itself.
      */
-    public AccessListRoleBindingsSuccessResponseInner withData(List<RoleBindingRecord> data) {
+    public AccessListRoleBindingsSuccessResponseInner withData(List<RoleBindingRecordInner> data) {
         this.data = data;
         return this;
     }

@@ -1,14 +1,115 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2024-03-20)
 
-### Features Added
+- Azure Resource Manager Confluent client library for Java. This package contains Microsoft Azure SDK for Confluent Management SDK.  Package tag package-2024-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.RoleBindingRecord` was modified
 
-### Other Changes
+* `withId(java.lang.String)` was removed
+* `withKind(java.lang.String)` was removed
+* `withRoleName(java.lang.String)` was removed
+* `withMetadata(models.MetadataEntity)` was removed
+* `models.MetadataEntity metadata()` -> `models.MetadataEntity metadata()`
+* `validate()` was removed
+* `withCrnPattern(java.lang.String)` was removed
+* `java.lang.String crnPattern()` -> `java.lang.String crnPattern()`
+* `withPrincipal(java.lang.String)` was removed
+* `java.lang.String id()` -> `java.lang.String id()`
+* `java.lang.String principal()` -> `java.lang.String principal()`
+* `java.lang.String roleName()` -> `java.lang.String roleName()`
+* `java.lang.String kind()` -> `java.lang.String kind()`
+
+### Features Added
+
+* `models.SCMetadataEntity` was added
+
+* `models.ApiKeyResourceEntity` was added
+
+* `models.SchemaRegistryClusterRecord` was added
+
+* `models.ListSchemaRegistryClustersResponse` was added
+
+* `models.GetEnvironmentsResponse` was added
+
+* `models.ApiKeyRecord` was added
+
+* `models.AccessRoleBindingNameListSuccessResponse` was added
+
+* `models.SchemaRegistryClusterSpecEntity` was added
+
+* `models.ListRegionsSuccessResponse` was added
+
+* `models.SCEnvironmentRecord` was added
+
+* `models.RegionRecord` was added
+
+* `models.CreateApiKeyModel` was added
+
+* `models.SCClusterSpecEntity` was added
+
+* `models.RegionSpecEntity` was added
+
+* `models.ListClustersSuccessResponse` was added
+
+* `models.SchemaRegistryClusterStatusEntity` was added
+
+* `models.SCClusterRecord` was added
+
+* `models.SCClusterByokEntity` was added
+
+* `models.SCClusterNetworkEnvironmentEntity` was added
+
+* `models.ApiKeyOwnerEntity` was added
+
+* `models.SchemaRegistryClusterEnvironmentRegionEntity` was added
+
+* `models.AccessCreateRoleBindingRequestModel` was added
+
+* `models.ApiKeySpecEntity` was added
+
+#### `models.Organizations` was modified
+
+* `getSchemaRegistryClusterById(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `getClusterApiKey(java.lang.String,java.lang.String,java.lang.String)` was added
+* `getSchemaRegistryClusterByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `createApiKey(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.CreateApiKeyModel)` was added
+* `getEnvironmentByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getClusterById(java.lang.String,java.lang.String,java.lang.String,java.lang.String)` was added
+* `listClusters(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listEnvironments(java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteClusterApiKey(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listSchemaRegistryClusters(java.lang.String,java.lang.String,java.lang.String)` was added
+* `createApiKeyWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,models.CreateApiKeyModel,com.azure.core.util.Context)` was added
+* `getClusterApiKeyWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getEnvironmentById(java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteClusterApiKeyWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listClusters(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `listSchemaRegistryClusters(java.lang.String,java.lang.String,java.lang.String,java.lang.Integer,java.lang.String,com.azure.core.util.Context)` was added
+* `getClusterByIdWithResponse(java.lang.String,java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listEnvironments(java.lang.String,java.lang.String)` was added
+* `listRegions(java.lang.String,java.lang.String,models.ListAccessRequestModel)` was added
+* `listRegionsWithResponse(java.lang.String,java.lang.String,models.ListAccessRequestModel,com.azure.core.util.Context)` was added
+
+#### `models.Access` was modified
+
+* `listRoleBindingNameList(java.lang.String,java.lang.String,models.ListAccessRequestModel)` was added
+* `deleteRoleBindingWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteRoleBinding(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listRoleBindingNameListWithResponse(java.lang.String,java.lang.String,models.ListAccessRequestModel,com.azure.core.util.Context)` was added
+* `createRoleBinding(java.lang.String,java.lang.String,models.AccessCreateRoleBindingRequestModel)` was added
+* `createRoleBindingWithResponse(java.lang.String,java.lang.String,models.AccessCreateRoleBindingRequestModel,com.azure.core.util.Context)` was added
+
+#### `models.OrganizationResource` was modified
+
+* `listRegions(models.ListAccessRequestModel)` was added
+* `listRegionsWithResponse(models.ListAccessRequestModel,com.azure.core.util.Context)` was added
+
+#### `models.RoleBindingRecord` was modified
+
+* `innerModel()` was added
 
 ## 1.0.0 (2023-11-16)
 

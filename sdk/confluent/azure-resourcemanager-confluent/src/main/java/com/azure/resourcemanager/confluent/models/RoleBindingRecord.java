@@ -4,186 +4,59 @@
 
 package com.azure.resourcemanager.confluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.confluent.fluent.models.RoleBindingRecordInner;
 
 /**
- * Record of the environment.
+ * An immutable client-side representation of RoleBindingRecord.
  */
-@Fluent
-public final class RoleBindingRecord {
-    /*
-     * The type of the resource.
-     */
-    @JsonProperty(value = "kind")
-    private String kind;
-
-    /*
-     * Id of the role
-     */
-    @JsonProperty(value = "id")
-    private String id;
-
-    /*
-     * Metadata of the record
-     */
-    @JsonProperty(value = "metadata")
-    private MetadataEntity metadata;
-
-    /*
-     * The principal User or Group to bind the role to
-     */
-    @JsonProperty(value = "principal")
-    private String principal;
-
-    /*
-     * The name of the role to bind to the principal
-     */
-    @JsonProperty(value = "role_name")
-    private String roleName;
-
-    /*
-     * A CRN that specifies the scope and resource patterns necessary for the role to bind
-     */
-    @JsonProperty(value = "crn_pattern")
-    private String crnPattern;
-
+public interface RoleBindingRecord {
     /**
-     * Creates an instance of RoleBindingRecord class.
-     */
-    public RoleBindingRecord() {
-    }
-
-    /**
-     * Get the kind property: The type of the resource.
+     * Gets the kind property: The type of the resource.
      * 
      * @return the kind value.
      */
-    public String kind() {
-        return this.kind;
-    }
+    String kind();
 
     /**
-     * Set the kind property: The type of the resource.
-     * 
-     * @param kind the kind value to set.
-     * @return the RoleBindingRecord object itself.
-     */
-    public RoleBindingRecord withKind(String kind) {
-        this.kind = kind;
-        return this;
-    }
-
-    /**
-     * Get the id property: Id of the role.
+     * Gets the id property: Id of the role binding.
      * 
      * @return the id value.
      */
-    public String id() {
-        return this.id;
-    }
+    String id();
 
     /**
-     * Set the id property: Id of the role.
-     * 
-     * @param id the id value to set.
-     * @return the RoleBindingRecord object itself.
-     */
-    public RoleBindingRecord withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the metadata property: Metadata of the record.
+     * Gets the metadata property: Metadata of the record.
      * 
      * @return the metadata value.
      */
-    public MetadataEntity metadata() {
-        return this.metadata;
-    }
+    MetadataEntity metadata();
 
     /**
-     * Set the metadata property: Metadata of the record.
-     * 
-     * @param metadata the metadata value to set.
-     * @return the RoleBindingRecord object itself.
-     */
-    public RoleBindingRecord withMetadata(MetadataEntity metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /**
-     * Get the principal property: The principal User or Group to bind the role to.
+     * Gets the principal property: The principal User or Group to bind the role to.
      * 
      * @return the principal value.
      */
-    public String principal() {
-        return this.principal;
-    }
+    String principal();
 
     /**
-     * Set the principal property: The principal User or Group to bind the role to.
-     * 
-     * @param principal the principal value to set.
-     * @return the RoleBindingRecord object itself.
-     */
-    public RoleBindingRecord withPrincipal(String principal) {
-        this.principal = principal;
-        return this;
-    }
-
-    /**
-     * Get the roleName property: The name of the role to bind to the principal.
+     * Gets the roleName property: The name of the role to bind to the principal.
      * 
      * @return the roleName value.
      */
-    public String roleName() {
-        return this.roleName;
-    }
+    String roleName();
 
     /**
-     * Set the roleName property: The name of the role to bind to the principal.
-     * 
-     * @param roleName the roleName value to set.
-     * @return the RoleBindingRecord object itself.
-     */
-    public RoleBindingRecord withRoleName(String roleName) {
-        this.roleName = roleName;
-        return this;
-    }
-
-    /**
-     * Get the crnPattern property: A CRN that specifies the scope and resource patterns necessary for the role to
+     * Gets the crnPattern property: A CRN that specifies the scope and resource patterns necessary for the role to
      * bind.
      * 
      * @return the crnPattern value.
      */
-    public String crnPattern() {
-        return this.crnPattern;
-    }
+    String crnPattern();
 
     /**
-     * Set the crnPattern property: A CRN that specifies the scope and resource patterns necessary for the role to
-     * bind.
+     * Gets the inner com.azure.resourcemanager.confluent.fluent.models.RoleBindingRecordInner object.
      * 
-     * @param crnPattern the crnPattern value to set.
-     * @return the RoleBindingRecord object itself.
+     * @return the inner object.
      */
-    public RoleBindingRecord withCrnPattern(String crnPattern) {
-        this.crnPattern = crnPattern;
-        return this;
-    }
-
-    /**
-     * Validates the instance.
-     * 
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (metadata() != null) {
-            metadata().validate();
-        }
-    }
+    RoleBindingRecordInner innerModel();
 }

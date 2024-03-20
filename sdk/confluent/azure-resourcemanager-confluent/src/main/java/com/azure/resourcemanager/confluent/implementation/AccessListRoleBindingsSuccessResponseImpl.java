@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.confluent.implementation;
 
 import com.azure.resourcemanager.confluent.fluent.models.AccessListRoleBindingsSuccessResponseInner;
+import com.azure.resourcemanager.confluent.fluent.models.RoleBindingRecordInner;
 import com.azure.resourcemanager.confluent.models.AccessListRoleBindingsSuccessResponse;
 import com.azure.resourcemanager.confluent.models.ConfluentListMetadata;
 import com.azure.resourcemanager.confluent.models.RoleBindingRecord;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public final class AccessListRoleBindingsSuccessResponseImpl implements AccessListRoleBindingsSuccessResponse {
     private AccessListRoleBindingsSuccessResponseInner innerObject;
@@ -31,9 +33,10 @@ public final class AccessListRoleBindingsSuccessResponseImpl implements AccessLi
     }
 
     public List<RoleBindingRecord> data() {
-        List<RoleBindingRecord> inner = this.innerModel().data();
+        List<RoleBindingRecordInner> inner = this.innerModel().data();
         if (inner != null) {
-            return Collections.unmodifiableList(inner);
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new RoleBindingRecordImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

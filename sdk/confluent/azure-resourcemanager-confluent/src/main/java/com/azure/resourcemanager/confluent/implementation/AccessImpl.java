@@ -15,8 +15,11 @@ import com.azure.resourcemanager.confluent.fluent.models.AccessListInvitationsSu
 import com.azure.resourcemanager.confluent.fluent.models.AccessListRoleBindingsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.AccessListServiceAccountsSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.AccessListUsersSuccessResponseInner;
+import com.azure.resourcemanager.confluent.fluent.models.AccessRoleBindingNameListSuccessResponseInner;
 import com.azure.resourcemanager.confluent.fluent.models.InvitationRecordInner;
+import com.azure.resourcemanager.confluent.fluent.models.RoleBindingRecordInner;
 import com.azure.resourcemanager.confluent.models.Access;
+import com.azure.resourcemanager.confluent.models.AccessCreateRoleBindingRequestModel;
 import com.azure.resourcemanager.confluent.models.AccessInviteUserAccountModel;
 import com.azure.resourcemanager.confluent.models.AccessListClusterSuccessResponse;
 import com.azure.resourcemanager.confluent.models.AccessListEnvironmentsSuccessResponse;
@@ -24,8 +27,10 @@ import com.azure.resourcemanager.confluent.models.AccessListInvitationsSuccessRe
 import com.azure.resourcemanager.confluent.models.AccessListRoleBindingsSuccessResponse;
 import com.azure.resourcemanager.confluent.models.AccessListServiceAccountsSuccessResponse;
 import com.azure.resourcemanager.confluent.models.AccessListUsersSuccessResponse;
+import com.azure.resourcemanager.confluent.models.AccessRoleBindingNameListSuccessResponse;
 import com.azure.resourcemanager.confluent.models.InvitationRecord;
 import com.azure.resourcemanager.confluent.models.ListAccessRequestModel;
+import com.azure.resourcemanager.confluent.models.RoleBindingRecord;
 
 public final class AccessImpl implements Access {
     private static final ClientLogger LOGGER = new ClientLogger(AccessImpl.class);
@@ -194,6 +199,62 @@ public final class AccessImpl implements Access {
             = this.serviceClient().listRoleBindings(resourceGroupName, organizationName, body);
         if (inner != null) {
             return new AccessListRoleBindingsSuccessResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<RoleBindingRecord> createRoleBindingWithResponse(String resourceGroupName, String organizationName,
+        AccessCreateRoleBindingRequestModel body, Context context) {
+        Response<RoleBindingRecordInner> inner
+            = this.serviceClient().createRoleBindingWithResponse(resourceGroupName, organizationName, body, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RoleBindingRecordImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RoleBindingRecord createRoleBinding(String resourceGroupName, String organizationName,
+        AccessCreateRoleBindingRequestModel body) {
+        RoleBindingRecordInner inner
+            = this.serviceClient().createRoleBinding(resourceGroupName, organizationName, body);
+        if (inner != null) {
+            return new RoleBindingRecordImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> deleteRoleBindingWithResponse(String resourceGroupName, String organizationName,
+        String roleBindingId, Context context) {
+        return this.serviceClient().deleteRoleBindingWithResponse(resourceGroupName, organizationName, roleBindingId,
+            context);
+    }
+
+    public void deleteRoleBinding(String resourceGroupName, String organizationName, String roleBindingId) {
+        this.serviceClient().deleteRoleBinding(resourceGroupName, organizationName, roleBindingId);
+    }
+
+    public Response<AccessRoleBindingNameListSuccessResponse> listRoleBindingNameListWithResponse(
+        String resourceGroupName, String organizationName, ListAccessRequestModel body, Context context) {
+        Response<AccessRoleBindingNameListSuccessResponseInner> inner = this.serviceClient()
+            .listRoleBindingNameListWithResponse(resourceGroupName, organizationName, body, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessRoleBindingNameListSuccessResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AccessRoleBindingNameListSuccessResponse listRoleBindingNameList(String resourceGroupName,
+        String organizationName, ListAccessRequestModel body) {
+        AccessRoleBindingNameListSuccessResponseInner inner
+            = this.serviceClient().listRoleBindingNameList(resourceGroupName, organizationName, body);
+        if (inner != null) {
+            return new AccessRoleBindingNameListSuccessResponseImpl(inner, this.manager());
         } else {
             return null;
         }

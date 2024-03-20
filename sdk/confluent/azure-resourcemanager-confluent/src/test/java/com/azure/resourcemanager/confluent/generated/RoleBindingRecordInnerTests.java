@@ -5,16 +5,16 @@
 package com.azure.resourcemanager.confluent.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.confluent.fluent.models.RoleBindingRecordInner;
 import com.azure.resourcemanager.confluent.models.MetadataEntity;
-import com.azure.resourcemanager.confluent.models.RoleBindingRecord;
 import org.junit.jupiter.api.Assertions;
 
-public final class RoleBindingRecordTests {
+public final class RoleBindingRecordInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RoleBindingRecord model = BinaryData.fromString(
+        RoleBindingRecordInner model = BinaryData.fromString(
             "{\"kind\":\"vhelxprglyatdd\",\"id\":\"cbcuejrjxgciqi\",\"metadata\":{\"self\":\"osx\",\"resource_name\":\"qrhzoymibmrqyib\",\"created_at\":\"wfluszdt\",\"updated_at\":\"rkwofyyvoqa\",\"deleted_at\":\"iexpbtgiwbwo\"},\"principal\":\"washr\",\"role_name\":\"tkcnqxwb\",\"crn_pattern\":\"kulpiujwaasi\"}")
-            .toObject(RoleBindingRecord.class);
+            .toObject(RoleBindingRecordInner.class);
         Assertions.assertEquals("vhelxprglyatdd", model.kind());
         Assertions.assertEquals("cbcuejrjxgciqi", model.id());
         Assertions.assertEquals("osx", model.metadata().self());
@@ -29,11 +29,11 @@ public final class RoleBindingRecordTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RoleBindingRecord model = new RoleBindingRecord().withKind("vhelxprglyatdd").withId("cbcuejrjxgciqi")
+        RoleBindingRecordInner model = new RoleBindingRecordInner().withKind("vhelxprglyatdd").withId("cbcuejrjxgciqi")
             .withMetadata(new MetadataEntity().withSelf("osx").withResourceName("qrhzoymibmrqyib")
                 .withCreatedAt("wfluszdt").withUpdatedAt("rkwofyyvoqa").withDeletedAt("iexpbtgiwbwo"))
             .withPrincipal("washr").withRoleName("tkcnqxwb").withCrnPattern("kulpiujwaasi");
-        model = BinaryData.fromObject(model).toObject(RoleBindingRecord.class);
+        model = BinaryData.fromObject(model).toObject(RoleBindingRecordInner.class);
         Assertions.assertEquals("vhelxprglyatdd", model.kind());
         Assertions.assertEquals("cbcuejrjxgciqi", model.id());
         Assertions.assertEquals("osx", model.metadata().self());
