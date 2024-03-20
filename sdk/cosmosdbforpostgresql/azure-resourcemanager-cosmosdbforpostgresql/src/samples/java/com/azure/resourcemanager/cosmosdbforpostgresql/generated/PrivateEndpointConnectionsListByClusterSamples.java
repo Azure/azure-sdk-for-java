@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
-/** Samples for PrivateEndpointConnections ListByCluster. */
+/**
+ * Samples for PrivateEndpointConnections ListByCluster.
+ */
 public final class PrivateEndpointConnectionsListByClusterSamples {
     /*
-     * x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/PrivateEndpointConnectionsListByCluster.json
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * PrivateEndpointConnectionsListByCluster.json
      */
     /**
      * Sample code: Gets list of private endpoint connections on a cluster.
-     *
+     * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */
     public static void getsListOfPrivateEndpointConnectionsOnACluster(
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager
-            .privateEndpointConnections()
-            .listByCluster("TestResourceGroup", "testcluster", com.azure.core.util.Context.NONE);
+        manager.privateEndpointConnections().listByCluster("TestResourceGroup", "testcluster",
+            com.azure.core.util.Context.NONE);
     }
 }

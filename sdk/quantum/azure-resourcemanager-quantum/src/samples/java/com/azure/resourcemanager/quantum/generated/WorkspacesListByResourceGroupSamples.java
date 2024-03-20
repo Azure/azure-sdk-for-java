@@ -4,18 +4,21 @@
 
 package com.azure.resourcemanager.quantum.generated;
 
-/** Samples for Workspaces ListByResourceGroup. */
+/**
+ * Samples for Workspaces ListByResourceGroup.
+ */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2022-01-10-preview/examples/quantumWorkspacesListResourceGroup.json
+     * x-ms-original-file: specification/quantum/resource-manager/Microsoft.Quantum/preview/2023-11-13-preview/examples/
+     * quantumWorkspacesListResourceGroup.json
      */
     /**
      * Sample code: QuantumWorkspacesListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to AzureQuantumManager.
      */
-    public static void quantumWorkspacesListByResourceGroup(
-        com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
+    public static void
+        quantumWorkspacesListByResourceGroup(com.azure.resourcemanager.quantum.AzureQuantumManager manager) {
         manager.workspaces().listByResourceGroup("quantumResourcegroup", com.azure.core.util.Context.NONE);
     }
 }

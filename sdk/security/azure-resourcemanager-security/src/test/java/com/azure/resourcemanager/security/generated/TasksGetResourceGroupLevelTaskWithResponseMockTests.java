@@ -29,40 +29,27 @@ public final class TasksGetResourceGroupLevelTaskWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"state\":\"disnuepywyjln\",\"creationTimeUtc\":\"2021-05-30T04:46:23Z\",\"securityTaskParameters\":{\"name\":\"ttdiia\",\"\":{}},\"lastStateChangeTimeUtc\":\"2021-04-13T20:18:06Z\",\"subState\":\"zjihweebiphr\"},\"id\":\"vcjwqwoqsratj\",\"name\":\"dhzybsp\",\"type\":\"jhfrzgdkkagv\"}";
+        String responseStr
+            = "{\"properties\":{\"state\":\"kapitskshfyftt\",\"creationTimeUtc\":\"2021-06-05T01:56:09Z\",\"securityTaskParameters\":{\"name\":\"zw\",\"\":{\"bggcj\":\"datanfd\",\"hsudymymb\":\"datazhblivw\",\"kqlgxzduv\":\"datadosmbn\"}},\"lastStateChangeTimeUtc\":\"2021-10-29T01:42:39Z\",\"subState\":\"exatmdmnrsen\"},\"id\":\"oirx\",\"name\":\"ddmiploisjkzso\",\"type\":\"zn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SecurityTask response =
-            manager
-                .tasks()
-                .getResourceGroupLevelTaskWithResponse(
-                    "yvliq", "ipsejbsvsia", "eswhd", com.azure.core.util.Context.NONE)
-                .getValue();
+        SecurityTask response = manager.tasks()
+            .getResourceGroupLevelTaskWithResponse("gyweo", "bepgcmahiwfry", "w", com.azure.core.util.Context.NONE)
+            .getValue();
+
     }
 }

@@ -7,6 +7,7 @@ module com.azure.cosmos.kafka.connect {
     requires transitive com.azure.cosmos;
     requires kafka.clients;
     requires connect.api;
+    requires json.path;
 
 
     // public API surface area

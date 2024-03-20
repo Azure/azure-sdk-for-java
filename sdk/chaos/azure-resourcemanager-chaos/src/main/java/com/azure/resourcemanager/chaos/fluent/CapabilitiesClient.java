@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.chaos.fluent.models.CapabilityInner;
 
-/** An instance of this class provides access to all the operations defined in CapabilitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CapabilitiesClient.
+ */
 public interface CapabilitiesClient {
     /**
      * Get a list of Capability resources that extend a Target resource..
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -24,20 +26,16 @@ public interface CapabilitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Capability resources that extend a Target resource. as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Capability resources that extend a Target resource. as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CapabilityInner> list(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName);
+    PagedIterable<CapabilityInner> list(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName);
 
     /**
      * Get a list of Capability resources that extend a Target resource..
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -48,22 +46,17 @@ public interface CapabilitiesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Capability resources that extend a Target resource. as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Capability resources that extend a Target resource. as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CapabilityInner> list(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        String continuationToken,
+    PagedIterable<CapabilityInner> list(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, String continuationToken,
         Context context);
 
     /**
      * Get a Capability resource that extends a Target resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -77,18 +70,13 @@ public interface CapabilitiesClient {
      * @return a Capability resource that extends a Target resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CapabilityInner> getWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        String capabilityName,
+    Response<CapabilityInner> getWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, String capabilityName,
         Context context);
 
     /**
      * Get a Capability resource that extends a Target resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -101,17 +89,12 @@ public interface CapabilitiesClient {
      * @return a Capability resource that extends a Target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CapabilityInner get(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        String capabilityName);
+    CapabilityInner get(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName, String capabilityName);
 
     /**
      * Delete a Capability that extends a Target resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -125,18 +108,13 @@ public interface CapabilitiesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        String capabilityName,
+    Response<Void> deleteWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, String capabilityName,
         Context context);
 
     /**
      * Delete a Capability that extends a Target resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -148,17 +126,12 @@ public interface CapabilitiesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        String capabilityName);
+    void delete(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName, String capabilityName);
 
     /**
      * Create or update a Capability resource that extends a Target resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -173,19 +146,13 @@ public interface CapabilitiesClient {
      * @return model that represents a Capability resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CapabilityInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        String capabilityName,
-        CapabilityInner capability,
-        Context context);
+    Response<CapabilityInner> createOrUpdateWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, String capabilityName,
+        CapabilityInner capability, Context context);
 
     /**
      * Create or update a Capability resource that extends a Target resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -199,12 +166,6 @@ public interface CapabilitiesClient {
      * @return model that represents a Capability resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CapabilityInner createOrUpdate(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        String capabilityName,
-        CapabilityInner capability);
+    CapabilityInner createOrUpdate(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName, String capabilityName, CapabilityInner capability);
 }

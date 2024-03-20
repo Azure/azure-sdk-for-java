@@ -7,7 +7,9 @@ package com.azure.resourcemanager.quantum.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about pricing dimension. */
+/**
+ * Information about pricing dimension.
+ */
 @Fluent
 public final class PricingDimension {
     /*
@@ -22,13 +24,15 @@ public final class PricingDimension {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of PricingDimension class. */
+    /**
+     * Creates an instance of PricingDimension class.
+     */
     public PricingDimension() {
     }
 
     /**
      * Get the id property: Unique id of this pricing dimension.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +41,7 @@ public final class PricingDimension {
 
     /**
      * Set the id property: Unique id of this pricing dimension.
-     *
+     * 
      * @param id the id value to set.
      * @return the PricingDimension object itself.
      */
@@ -48,7 +52,7 @@ public final class PricingDimension {
 
     /**
      * Get the name property: The display name of this pricing dimension.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +61,7 @@ public final class PricingDimension {
 
     /**
      * Set the name property: The display name of this pricing dimension.
-     *
+     * 
      * @param name the name value to set.
      * @return the PricingDimension object itself.
      */
@@ -68,7 +72,7 @@ public final class PricingDimension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

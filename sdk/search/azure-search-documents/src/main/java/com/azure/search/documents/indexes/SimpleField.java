@@ -48,6 +48,13 @@ public @interface SimpleField {
     boolean isSortable() default false;
 
     /**
+     * Indicates if whether the field will be persisted separately on disk to be returned in a search result.
+     *
+     * @return A flag indicating if the field or method should generate as a stored {@link SearchField field}.
+     */
+    boolean isStored() default true;
+
+    /**
      * Indicates if the field or method should generate as a filterable {@link SearchField field}.
      *
      * @return A flag indicating if the field or method should generate as a filterable {@link SearchField field}.

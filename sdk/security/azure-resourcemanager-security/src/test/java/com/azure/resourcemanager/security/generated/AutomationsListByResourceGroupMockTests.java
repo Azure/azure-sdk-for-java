@@ -14,6 +14,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.security.SecurityManager;
 import com.azure.resourcemanager.security.models.Automation;
+import com.azure.resourcemanager.security.models.EventSource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -31,41 +32,33 @@ public final class AutomationsListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"zboimyfpqdo\",\"isEnabled\":true,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"fvpctfji\",\"tags\":{\"vuldbkkejjk\":\"ffgkuhznw\"},\"id\":\"igaw\",\"name\":\"azmxjqi\",\"type\":\"h\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"description\":\"swxdowumxqukr\",\"isEnabled\":true,\"scopes\":[{\"description\":\"lqddnhfknebwedd\",\"scopePath\":\"yzcwy\"},{\"description\":\"mkaqldqabnwvpaq\",\"scopePath\":\"xf\"},{\"description\":\"igcfddofxnf\",\"scopePath\":\"jyyrqaedw\"}],\"sources\":[{\"eventSource\":\"SubAssessments\",\"ruleSets\":[{}]},{\"eventSource\":\"SecureScoresSnapshot\",\"ruleSets\":[{},{},{}]},{\"eventSource\":\"AttackPaths\",\"ruleSets\":[{},{}]},{\"eventSource\":\"RegulatoryComplianceAssessment\",\"ruleSets\":[{},{},{},{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"}]},\"location\":\"pa\",\"tags\":{\"vothmkhjaoz\":\"dbfobdc\",\"hbpoelhscmyhrhj\":\"bwfcn\"},\"id\":\"szfqbokndwpppqw\",\"name\":\"joevzzuf\",\"type\":\"tdxmlynzlyvap\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Automation> response =
-            manager.automations().listByResourceGroup("trnzpducdaaktu", com.azure.core.util.Context.NONE);
+        PagedIterable<Automation> response
+            = manager.automations().listByResourceGroup("tsyqc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fvpctfji", response.iterator().next().location());
-        Assertions.assertEquals("ffgkuhznw", response.iterator().next().tags().get("vuldbkkejjk"));
-        Assertions.assertEquals("zboimyfpqdo", response.iterator().next().description());
+        Assertions.assertEquals("pa", response.iterator().next().location());
+        Assertions.assertEquals("dbfobdc", response.iterator().next().tags().get("vothmkhjaoz"));
+        Assertions.assertEquals("swxdowumxqukr", response.iterator().next().description());
         Assertions.assertEquals(true, response.iterator().next().isEnabled());
+        Assertions.assertEquals("lqddnhfknebwedd", response.iterator().next().scopes().get(0).description());
+        Assertions.assertEquals("yzcwy", response.iterator().next().scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.SUB_ASSESSMENTS, response.iterator().next().sources().get(0).eventSource());
     }
 }

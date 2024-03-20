@@ -1,14 +1,11 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.3 (2024-03-01)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Add support for number lookup
+  - Format only can be returned for no cost
+  - Additional number details can be returned for a cost
 
 ## 1.1.9 (2023-12-04)
 
@@ -45,6 +42,12 @@
 
 - Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
 - Upgraded `azure-communication-common` from `1.2.11` to version `1.2.12`.
+
+## 1.2.0-beta.1 (2023-09-07)
+
+### Features Added
+- Number Lookup API public preview
+- API version `2023-05-01-preview` is the default
 
 ## 1.1.5 (2023-08-18)
 

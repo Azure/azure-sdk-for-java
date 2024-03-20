@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.cosmosdbforpostgresql.models.AuthConfig;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.MaintenanceWindow;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.ServerNameItem;
 import com.azure.resourcemanager.cosmosdbforpostgresql.models.SimplePrivateEndpointConnection;
@@ -12,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Properties of the cluster. */
+/**
+ * Properties of the cluster.
+ */
 @Fluent
 public final class ClusterProperties {
     /*
@@ -178,13 +181,34 @@ public final class ClusterProperties {
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SimplePrivateEndpointConnection> privateEndpointConnections;
 
-    /** Creates an instance of ClusterProperties class. */
+    /*
+     * The database name of the cluster. Only one database per cluster is supported.
+     */
+    @JsonProperty(value = "databaseName")
+    private String databaseName;
+
+    /*
+     * If cluster backup is stored in another Azure region in addition to the copy of the backup stored in the
+     * cluster's region. Enabled only at the time of cluster creation.
+     */
+    @JsonProperty(value = "enableGeoBackup")
+    private Boolean enableGeoBackup;
+
+    /*
+     * Authentication configuration of a cluster.
+     */
+    @JsonProperty(value = "authConfig")
+    private AuthConfig authConfig;
+
+    /**
+     * Creates an instance of ClusterProperties class.
+     */
     public ClusterProperties() {
     }
 
     /**
      * Get the administratorLogin property: The administrator's login name of the servers in the cluster.
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -193,7 +217,7 @@ public final class ClusterProperties {
 
     /**
      * Get the administratorLoginPassword property: The password of the administrator login. Required for creation.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -202,7 +226,7 @@ public final class ClusterProperties {
 
     /**
      * Set the administratorLoginPassword property: The password of the administrator login. Required for creation.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ClusterProperties object itself.
      */
@@ -213,7 +237,7 @@ public final class ClusterProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the cluster.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -222,7 +246,7 @@ public final class ClusterProperties {
 
     /**
      * Get the state property: A state of a cluster/server that is visible to user.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -231,7 +255,7 @@ public final class ClusterProperties {
 
     /**
      * Get the postgresqlVersion property: The major PostgreSQL version on all cluster servers.
-     *
+     * 
      * @return the postgresqlVersion value.
      */
     public String postgresqlVersion() {
@@ -240,7 +264,7 @@ public final class ClusterProperties {
 
     /**
      * Set the postgresqlVersion property: The major PostgreSQL version on all cluster servers.
-     *
+     * 
      * @param postgresqlVersion the postgresqlVersion value to set.
      * @return the ClusterProperties object itself.
      */
@@ -251,7 +275,7 @@ public final class ClusterProperties {
 
     /**
      * Get the citusVersion property: The Citus extension version on all cluster servers.
-     *
+     * 
      * @return the citusVersion value.
      */
     public String citusVersion() {
@@ -260,7 +284,7 @@ public final class ClusterProperties {
 
     /**
      * Set the citusVersion property: The Citus extension version on all cluster servers.
-     *
+     * 
      * @param citusVersion the citusVersion value to set.
      * @return the ClusterProperties object itself.
      */
@@ -271,7 +295,7 @@ public final class ClusterProperties {
 
     /**
      * Get the maintenanceWindow property: Maintenance window of a cluster.
-     *
+     * 
      * @return the maintenanceWindow value.
      */
     public MaintenanceWindow maintenanceWindow() {
@@ -280,7 +304,7 @@ public final class ClusterProperties {
 
     /**
      * Set the maintenanceWindow property: Maintenance window of a cluster.
-     *
+     * 
      * @param maintenanceWindow the maintenanceWindow value to set.
      * @return the ClusterProperties object itself.
      */
@@ -291,7 +315,7 @@ public final class ClusterProperties {
 
     /**
      * Get the preferredPrimaryZone property: Preferred primary availability zone (AZ) for all cluster servers.
-     *
+     * 
      * @return the preferredPrimaryZone value.
      */
     public String preferredPrimaryZone() {
@@ -300,7 +324,7 @@ public final class ClusterProperties {
 
     /**
      * Set the preferredPrimaryZone property: Preferred primary availability zone (AZ) for all cluster servers.
-     *
+     * 
      * @param preferredPrimaryZone the preferredPrimaryZone value to set.
      * @return the ClusterProperties object itself.
      */
@@ -310,9 +334,9 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
-     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
-     *
+     * Get the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
+     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
+     * 
      * @return the enableShardsOnCoordinator value.
      */
     public Boolean enableShardsOnCoordinator() {
@@ -320,9 +344,9 @@ public final class ClusterProperties {
     }
 
     /**
-     * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be set
-     * to 'true' on single node clusters. Requires shard rebalancing after value is changed.
-     *
+     * Set the enableShardsOnCoordinator property: If distributed tables are placed on coordinator or not. Should be
+     * set to 'true' on single node clusters. Requires shard rebalancing after value is changed.
+     * 
      * @param enableShardsOnCoordinator the enableShardsOnCoordinator value to set.
      * @return the ClusterProperties object itself.
      */
@@ -333,7 +357,7 @@ public final class ClusterProperties {
 
     /**
      * Get the enableHa property: If high availability (HA) is enabled or not for the cluster.
-     *
+     * 
      * @return the enableHa value.
      */
     public Boolean enableHa() {
@@ -342,7 +366,7 @@ public final class ClusterProperties {
 
     /**
      * Set the enableHa property: If high availability (HA) is enabled or not for the cluster.
-     *
+     * 
      * @param enableHa the enableHa value to set.
      * @return the ClusterProperties object itself.
      */
@@ -354,7 +378,7 @@ public final class ClusterProperties {
     /**
      * Get the coordinatorServerEdition property: The edition of a coordinator server (default: GeneralPurpose).
      * Required for creation.
-     *
+     * 
      * @return the coordinatorServerEdition value.
      */
     public String coordinatorServerEdition() {
@@ -364,7 +388,7 @@ public final class ClusterProperties {
     /**
      * Set the coordinatorServerEdition property: The edition of a coordinator server (default: GeneralPurpose).
      * Required for creation.
-     *
+     * 
      * @param coordinatorServerEdition the coordinatorServerEdition value to set.
      * @return the ClusterProperties object itself.
      */
@@ -376,7 +400,7 @@ public final class ClusterProperties {
     /**
      * Get the coordinatorStorageQuotaInMb property: The storage of a server in MB. Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the coordinatorStorageQuotaInMb value.
      */
     public Integer coordinatorStorageQuotaInMb() {
@@ -386,7 +410,7 @@ public final class ClusterProperties {
     /**
      * Set the coordinatorStorageQuotaInMb property: The storage of a server in MB. Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param coordinatorStorageQuotaInMb the coordinatorStorageQuotaInMb value to set.
      * @return the ClusterProperties object itself.
      */
@@ -398,7 +422,7 @@ public final class ClusterProperties {
     /**
      * Get the coordinatorVCores property: The vCores count of a server (max: 96). Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the coordinatorVCores value.
      */
     public Integer coordinatorVCores() {
@@ -408,7 +432,7 @@ public final class ClusterProperties {
     /**
      * Set the coordinatorVCores property: The vCores count of a server (max: 96). Required for creation. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param coordinatorVCores the coordinatorVCores value to set.
      * @return the ClusterProperties object itself.
      */
@@ -419,7 +443,7 @@ public final class ClusterProperties {
 
     /**
      * Get the coordinatorEnablePublicIpAccess property: If public access is enabled on coordinator.
-     *
+     * 
      * @return the coordinatorEnablePublicIpAccess value.
      */
     public Boolean coordinatorEnablePublicIpAccess() {
@@ -428,7 +452,7 @@ public final class ClusterProperties {
 
     /**
      * Set the coordinatorEnablePublicIpAccess property: If public access is enabled on coordinator.
-     *
+     * 
      * @param coordinatorEnablePublicIpAccess the coordinatorEnablePublicIpAccess value to set.
      * @return the ClusterProperties object itself.
      */
@@ -439,7 +463,7 @@ public final class ClusterProperties {
 
     /**
      * Get the nodeServerEdition property: The edition of a node server (default: MemoryOptimized).
-     *
+     * 
      * @return the nodeServerEdition value.
      */
     public String nodeServerEdition() {
@@ -448,7 +472,7 @@ public final class ClusterProperties {
 
     /**
      * Set the nodeServerEdition property: The edition of a node server (default: MemoryOptimized).
-     *
+     * 
      * @param nodeServerEdition the nodeServerEdition value to set.
      * @return the ClusterProperties object itself.
      */
@@ -461,7 +485,7 @@ public final class ClusterProperties {
      * Get the nodeCount property: Worker node count of the cluster. When node count is 0, it represents a single node
      * configuration with the ability to create distributed tables on that node. 2 or more worker nodes represent
      * multi-node configuration. Node count value cannot be 1. Required for creation.
-     *
+     * 
      * @return the nodeCount value.
      */
     public Integer nodeCount() {
@@ -472,7 +496,7 @@ public final class ClusterProperties {
      * Set the nodeCount property: Worker node count of the cluster. When node count is 0, it represents a single node
      * configuration with the ability to create distributed tables on that node. 2 or more worker nodes represent
      * multi-node configuration. Node count value cannot be 1. Required for creation.
-     *
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the ClusterProperties object itself.
      */
@@ -484,7 +508,7 @@ public final class ClusterProperties {
     /**
      * Get the nodeStorageQuotaInMb property: The storage in MB on each worker node. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the nodeStorageQuotaInMb value.
      */
     public Integer nodeStorageQuotaInMb() {
@@ -494,7 +518,7 @@ public final class ClusterProperties {
     /**
      * Set the nodeStorageQuotaInMb property: The storage in MB on each worker node. See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param nodeStorageQuotaInMb the nodeStorageQuotaInMb value to set.
      * @return the ClusterProperties object itself.
      */
@@ -506,7 +530,7 @@ public final class ClusterProperties {
     /**
      * Get the nodeVCores property: The compute in vCores on each worker node (max: 104). See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @return the nodeVCores value.
      */
     public Integer nodeVCores() {
@@ -516,7 +540,7 @@ public final class ClusterProperties {
     /**
      * Set the nodeVCores property: The compute in vCores on each worker node (max: 104). See
      * https://learn.microsoft.com/azure/cosmos-db/postgresql/resources-compute for more information.
-     *
+     * 
      * @param nodeVCores the nodeVCores value to set.
      * @return the ClusterProperties object itself.
      */
@@ -527,7 +551,7 @@ public final class ClusterProperties {
 
     /**
      * Get the nodeEnablePublicIpAccess property: If public access is enabled on worker nodes.
-     *
+     * 
      * @return the nodeEnablePublicIpAccess value.
      */
     public Boolean nodeEnablePublicIpAccess() {
@@ -536,7 +560,7 @@ public final class ClusterProperties {
 
     /**
      * Set the nodeEnablePublicIpAccess property: If public access is enabled on worker nodes.
-     *
+     * 
      * @param nodeEnablePublicIpAccess the nodeEnablePublicIpAccess value to set.
      * @return the ClusterProperties object itself.
      */
@@ -547,7 +571,7 @@ public final class ClusterProperties {
 
     /**
      * Get the serverNames property: The list of server names in the cluster.
-     *
+     * 
      * @return the serverNames value.
      */
     public List<ServerNameItem> serverNames() {
@@ -556,7 +580,7 @@ public final class ClusterProperties {
 
     /**
      * Get the sourceResourceId property: The resource id of source cluster for read replica clusters.
-     *
+     * 
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -565,7 +589,7 @@ public final class ClusterProperties {
 
     /**
      * Set the sourceResourceId property: The resource id of source cluster for read replica clusters.
-     *
+     * 
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the ClusterProperties object itself.
      */
@@ -576,7 +600,7 @@ public final class ClusterProperties {
 
     /**
      * Get the sourceLocation property: The Azure region of source cluster for read replica clusters.
-     *
+     * 
      * @return the sourceLocation value.
      */
     public String sourceLocation() {
@@ -585,7 +609,7 @@ public final class ClusterProperties {
 
     /**
      * Set the sourceLocation property: The Azure region of source cluster for read replica clusters.
-     *
+     * 
      * @param sourceLocation the sourceLocation value to set.
      * @return the ClusterProperties object itself.
      */
@@ -596,7 +620,7 @@ public final class ClusterProperties {
 
     /**
      * Get the pointInTimeUtc property: Date and time in UTC (ISO8601 format) for cluster restore.
-     *
+     * 
      * @return the pointInTimeUtc value.
      */
     public OffsetDateTime pointInTimeUtc() {
@@ -605,7 +629,7 @@ public final class ClusterProperties {
 
     /**
      * Set the pointInTimeUtc property: Date and time in UTC (ISO8601 format) for cluster restore.
-     *
+     * 
      * @param pointInTimeUtc the pointInTimeUtc value to set.
      * @return the ClusterProperties object itself.
      */
@@ -616,7 +640,7 @@ public final class ClusterProperties {
 
     /**
      * Get the readReplicas property: The array of read replica clusters.
-     *
+     * 
      * @return the readReplicas value.
      */
     public List<String> readReplicas() {
@@ -625,7 +649,7 @@ public final class ClusterProperties {
 
     /**
      * Get the earliestRestoreTime property: The earliest restore point time (ISO8601 format) for the cluster.
-     *
+     * 
      * @return the earliestRestoreTime value.
      */
     public OffsetDateTime earliestRestoreTime() {
@@ -634,7 +658,7 @@ public final class ClusterProperties {
 
     /**
      * Get the privateEndpointConnections property: The private endpoint connections for a cluster.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<SimplePrivateEndpointConnection> privateEndpointConnections() {
@@ -642,8 +666,70 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the databaseName property: The database name of the cluster. Only one database per cluster is supported.
+     * 
+     * @return the databaseName value.
+     */
+    public String databaseName() {
+        return this.databaseName;
+    }
+
+    /**
+     * Set the databaseName property: The database name of the cluster. Only one database per cluster is supported.
+     * 
+     * @param databaseName the databaseName value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
+        return this;
+    }
+
+    /**
+     * Get the enableGeoBackup property: If cluster backup is stored in another Azure region in addition to the copy of
+     * the backup stored in the cluster's region. Enabled only at the time of cluster creation.
+     * 
+     * @return the enableGeoBackup value.
+     */
+    public Boolean enableGeoBackup() {
+        return this.enableGeoBackup;
+    }
+
+    /**
+     * Set the enableGeoBackup property: If cluster backup is stored in another Azure region in addition to the copy of
+     * the backup stored in the cluster's region. Enabled only at the time of cluster creation.
+     * 
+     * @param enableGeoBackup the enableGeoBackup value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withEnableGeoBackup(Boolean enableGeoBackup) {
+        this.enableGeoBackup = enableGeoBackup;
+        return this;
+    }
+
+    /**
+     * Get the authConfig property: Authentication configuration of a cluster.
+     * 
+     * @return the authConfig value.
+     */
+    public AuthConfig authConfig() {
+        return this.authConfig;
+    }
+
+    /**
+     * Set the authConfig property: Authentication configuration of a cluster.
+     * 
+     * @param authConfig the authConfig value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withAuthConfig(AuthConfig authConfig) {
+        this.authConfig = authConfig;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -655,6 +741,9 @@ public final class ClusterProperties {
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (authConfig() != null) {
+            authConfig().validate();
         }
     }
 }

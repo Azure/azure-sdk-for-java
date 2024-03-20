@@ -32,7 +32,7 @@ public final class ManagedVirtualNetworksListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"vNetId\":\"dmwaamqfeqsb\",\"alias\":\"gncke\",\"\":{\"tbksdpcpxw\":\"dataqaomih\",\"xzaolzkoyniragb\":\"dataiczzoxnlvixndsi\",\"h\":\"dataiukmkmthioae\",\"d\":\"datamlcenty\"}},\"name\":\"vmf\",\"type\":\"qaewu\",\"etag\":\"o\",\"id\":\"qvnkofvzpbd\"}]}";
+            = "{\"value\":[{\"properties\":{\"vNetId\":\"hnoiqtvfr\",\"alias\":\"inavbfkzv\",\"\":{\"rpdveyxcdzuld\":\"datad\"}},\"name\":\"xedm\",\"type\":\"z\",\"etag\":\"hvj\",\"id\":\"jxth\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,9 +49,9 @@ public final class ManagedVirtualNetworksListByFactoryMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<ManagedVirtualNetworkResource> response
-            = manager.managedVirtualNetworks().listByFactory("dxsyymhuueeo", "vqwm", com.azure.core.util.Context.NONE);
+        PagedIterable<ManagedVirtualNetworkResource> response = manager.managedVirtualNetworks()
+            .listByFactory("ptpreputusd", "wnkzwyry", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qvnkofvzpbd", response.iterator().next().id());
+        Assertions.assertEquals("jxth", response.iterator().next().id());
     }
 }

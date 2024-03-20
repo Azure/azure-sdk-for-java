@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.chaos.fluent.models.TargetInner;
 
-/** An instance of this class provides access to all the operations defined in TargetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TargetsClient.
+ */
 public interface TargetsClient {
     /**
      * Get a list of Target resources that extend a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -23,16 +25,16 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Target resources that extend a tracked regional resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Target resources that extend a tracked regional resource as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TargetInner> list(
-        String resourceGroupName, String parentProviderNamespace, String parentResourceType, String parentResourceName);
+    PagedIterable<TargetInner> list(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName);
 
     /**
      * Get a list of Target resources that extend a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -42,21 +44,16 @@ public interface TargetsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Target resources that extend a tracked regional resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return a list of Target resources that extend a tracked regional resource as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TargetInner> list(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String continuationToken,
-        Context context);
+    PagedIterable<TargetInner> list(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String continuationToken, Context context);
 
     /**
      * Get a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -69,17 +66,12 @@ public interface TargetsClient {
      * @return a Target resource that extends a tracked regional resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TargetInner> getWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        Context context);
+    Response<TargetInner> getWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, Context context);
 
     /**
      * Get a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -91,16 +83,12 @@ public interface TargetsClient {
      * @return a Target resource that extends a tracked regional resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TargetInner get(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName);
+    TargetInner get(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName);
 
     /**
      * Delete a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -113,17 +101,12 @@ public interface TargetsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, Context context);
 
     /**
      * Delete a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -134,16 +117,12 @@ public interface TargetsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName);
+    void delete(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName);
 
     /**
      * Create or update a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -157,18 +136,12 @@ public interface TargetsClient {
      * @return model that represents a Target resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TargetInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        TargetInner target,
-        Context context);
+    Response<TargetInner> createOrUpdateWithResponse(String resourceGroupName, String parentProviderNamespace,
+        String parentResourceType, String parentResourceName, String targetName, TargetInner target, Context context);
 
     /**
      * Create or update a Target resource that extends a tracked regional resource.
-     *
+     * 
      * @param resourceGroupName String that represents an Azure resource group.
      * @param parentProviderNamespace String that represents a resource provider namespace.
      * @param parentResourceType String that represents a resource type.
@@ -181,11 +154,6 @@ public interface TargetsClient {
      * @return model that represents a Target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TargetInner createOrUpdate(
-        String resourceGroupName,
-        String parentProviderNamespace,
-        String parentResourceType,
-        String parentResourceName,
-        String targetName,
-        TargetInner target);
+    TargetInner createOrUpdate(String resourceGroupName, String parentProviderNamespace, String parentResourceType,
+        String parentResourceName, String targetName, TargetInner target);
 }

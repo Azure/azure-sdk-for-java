@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container object under Container App Revision Replica. */
+/**
+ * Container object under Container App Revision Replica.
+ */
 @Fluent
 public final class ReplicaContainer {
     /*
@@ -64,13 +66,15 @@ public final class ReplicaContainer {
     @JsonProperty(value = "execEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String execEndpoint;
 
-    /** Creates an instance of ReplicaContainer class. */
+    /**
+     * Creates an instance of ReplicaContainer class.
+     */
     public ReplicaContainer() {
     }
 
     /**
      * Get the name property: The Name of the Container.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -79,7 +83,7 @@ public final class ReplicaContainer {
 
     /**
      * Set the name property: The Name of the Container.
-     *
+     * 
      * @param name the name value to set.
      * @return the ReplicaContainer object itself.
      */
@@ -90,7 +94,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the containerId property: The Id of the Container.
-     *
+     * 
      * @return the containerId value.
      */
     public String containerId() {
@@ -99,7 +103,7 @@ public final class ReplicaContainer {
 
     /**
      * Set the containerId property: The Id of the Container.
-     *
+     * 
      * @param containerId the containerId value to set.
      * @return the ReplicaContainer object itself.
      */
@@ -110,7 +114,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the ready property: The container ready status.
-     *
+     * 
      * @return the ready value.
      */
     public Boolean ready() {
@@ -119,7 +123,7 @@ public final class ReplicaContainer {
 
     /**
      * Set the ready property: The container ready status.
-     *
+     * 
      * @param ready the ready value to set.
      * @return the ReplicaContainer object itself.
      */
@@ -130,7 +134,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the started property: The container start status.
-     *
+     * 
      * @return the started value.
      */
     public Boolean started() {
@@ -139,7 +143,7 @@ public final class ReplicaContainer {
 
     /**
      * Set the started property: The container start status.
-     *
+     * 
      * @param started the started value to set.
      * @return the ReplicaContainer object itself.
      */
@@ -150,7 +154,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the restartCount property: The container restart count.
-     *
+     * 
      * @return the restartCount value.
      */
     public Integer restartCount() {
@@ -159,7 +163,7 @@ public final class ReplicaContainer {
 
     /**
      * Set the restartCount property: The container restart count.
-     *
+     * 
      * @param restartCount the restartCount value to set.
      * @return the ReplicaContainer object itself.
      */
@@ -170,7 +174,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the runningState property: Current running state of the container.
-     *
+     * 
      * @return the runningState value.
      */
     public ContainerAppContainerRunningState runningState() {
@@ -179,7 +183,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the runningStateDetails property: The details of container current running state.
-     *
+     * 
      * @return the runningStateDetails value.
      */
     public String runningStateDetails() {
@@ -188,7 +192,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the logStreamEndpoint property: Log Stream endpoint.
-     *
+     * 
      * @return the logStreamEndpoint value.
      */
     public String logStreamEndpoint() {
@@ -197,7 +201,7 @@ public final class ReplicaContainer {
 
     /**
      * Get the execEndpoint property: Container exec endpoint.
-     *
+     * 
      * @return the execEndpoint value.
      */
     public String execEndpoint() {
@@ -206,7 +210,7 @@ public final class ReplicaContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

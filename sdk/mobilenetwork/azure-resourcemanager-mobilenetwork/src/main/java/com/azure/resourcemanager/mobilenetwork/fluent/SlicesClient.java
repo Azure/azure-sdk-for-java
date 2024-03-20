@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SliceInner;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in SlicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SlicesClient.
+ */
 public interface SlicesClient {
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -28,12 +30,12 @@ public interface SlicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String sliceName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String sliceName);
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -44,12 +46,12 @@ public interface SlicesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String sliceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName, String sliceName,
+        Context context);
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -62,7 +64,7 @@ public interface SlicesClient {
 
     /**
      * Deletes the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -76,7 +78,7 @@ public interface SlicesClient {
 
     /**
      * Gets information about the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -87,12 +89,12 @@ public interface SlicesClient {
      * @return information about the specified network slice along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SliceInner> getWithResponse(
-        String resourceGroupName, String mobileNetworkName, String sliceName, Context context);
+    Response<SliceInner> getWithResponse(String resourceGroupName, String mobileNetworkName, String sliceName,
+        Context context);
 
     /**
      * Gets information about the specified network slice.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -106,7 +108,7 @@ public interface SlicesClient {
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -117,12 +119,12 @@ public interface SlicesClient {
      * @return the {@link SyncPoller} for polling of network slice resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters);
+    SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String sliceName, SliceInner parameters);
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -134,12 +136,12 @@ public interface SlicesClient {
      * @return the {@link SyncPoller} for polling of network slice resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters, Context context);
+    SyncPoller<PollResult<SliceInner>, SliceInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String sliceName, SliceInner parameters, Context context);
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -150,12 +152,12 @@ public interface SlicesClient {
      * @return network slice resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SliceInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters);
+    SliceInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String sliceName,
+        SliceInner parameters);
 
     /**
      * Creates or updates a network slice. Must be created in the same location as its parent mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -167,12 +169,12 @@ public interface SlicesClient {
      * @return network slice resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SliceInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String sliceName, SliceInner parameters, Context context);
+    SliceInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String sliceName,
+        SliceInner parameters, Context context);
 
     /**
      * Updates slice tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -184,12 +186,12 @@ public interface SlicesClient {
      * @return network slice resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SliceInner> updateTagsWithResponse(
-        String resourceGroupName, String mobileNetworkName, String sliceName, TagsObject parameters, Context context);
+    Response<SliceInner> updateTagsWithResponse(String resourceGroupName, String mobileNetworkName, String sliceName,
+        TagsObject parameters, Context context);
 
     /**
      * Updates slice tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param sliceName The name of the network slice.
@@ -204,7 +206,7 @@ public interface SlicesClient {
 
     /**
      * Lists all slices in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -217,7 +219,7 @@ public interface SlicesClient {
 
     /**
      * Lists all slices in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.

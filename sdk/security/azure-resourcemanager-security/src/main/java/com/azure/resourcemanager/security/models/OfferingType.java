@@ -8,62 +8,98 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the security offering. */
+/**
+ * The type of the security offering.
+ */
 public final class OfferingType extends ExpandableStringEnum<OfferingType> {
-    /** Static value CspmMonitorAws for OfferingType. */
+    /**
+     * Static value CspmMonitorAws for OfferingType.
+     */
     public static final OfferingType CSPM_MONITOR_AWS = fromString("CspmMonitorAws");
 
-    /** Static value DefenderForContainersAws for OfferingType. */
+    /**
+     * Static value DefenderForContainersAws for OfferingType.
+     */
     public static final OfferingType DEFENDER_FOR_CONTAINERS_AWS = fromString("DefenderForContainersAws");
 
-    /** Static value DefenderForServersAws for OfferingType. */
+    /**
+     * Static value DefenderForServersAws for OfferingType.
+     */
     public static final OfferingType DEFENDER_FOR_SERVERS_AWS = fromString("DefenderForServersAws");
 
-    /** Static value DefenderForDatabasesAws for OfferingType. */
+    /**
+     * Static value DefenderForDatabasesAws for OfferingType.
+     */
     public static final OfferingType DEFENDER_FOR_DATABASES_AWS = fromString("DefenderForDatabasesAws");
 
-    /** Static value InformationProtectionAws for OfferingType. */
+    /**
+     * Static value InformationProtectionAws for OfferingType.
+     */
     public static final OfferingType INFORMATION_PROTECTION_AWS = fromString("InformationProtectionAws");
 
-    /** Static value CspmMonitorGcp for OfferingType. */
+    /**
+     * Static value CspmMonitorGcp for OfferingType.
+     */
     public static final OfferingType CSPM_MONITOR_GCP = fromString("CspmMonitorGcp");
 
-    /** Static value CspmMonitorGithub for OfferingType. */
+    /**
+     * Static value CspmMonitorGithub for OfferingType.
+     */
     public static final OfferingType CSPM_MONITOR_GITHUB = fromString("CspmMonitorGithub");
 
-    /** Static value CspmMonitorAzureDevOps for OfferingType. */
+    /**
+     * Static value CspmMonitorAzureDevOps for OfferingType.
+     */
     public static final OfferingType CSPM_MONITOR_AZURE_DEV_OPS = fromString("CspmMonitorAzureDevOps");
 
-    /** Static value DefenderForServersGcp for OfferingType. */
+    /**
+     * Static value DefenderForServersGcp for OfferingType.
+     */
     public static final OfferingType DEFENDER_FOR_SERVERS_GCP = fromString("DefenderForServersGcp");
 
-    /** Static value DefenderForContainersGcp for OfferingType. */
+    /**
+     * Static value DefenderForContainersGcp for OfferingType.
+     */
     public static final OfferingType DEFENDER_FOR_CONTAINERS_GCP = fromString("DefenderForContainersGcp");
 
-    /** Static value DefenderForDatabasesGcp for OfferingType. */
+    /**
+     * Static value DefenderForDatabasesGcp for OfferingType.
+     */
     public static final OfferingType DEFENDER_FOR_DATABASES_GCP = fromString("DefenderForDatabasesGcp");
 
-    /** Static value DefenderCspmAws for OfferingType. */
+    /**
+     * Static value DefenderCspmAws for OfferingType.
+     */
     public static final OfferingType DEFENDER_CSPM_AWS = fromString("DefenderCspmAws");
 
-    /** Static value DefenderCspmGcp for OfferingType. */
+    /**
+     * Static value DefenderCspmGcp for OfferingType.
+     */
     public static final OfferingType DEFENDER_CSPM_GCP = fromString("DefenderCspmGcp");
 
-    /** Static value DefenderForDevOpsGithub for OfferingType. */
+    /**
+     * Static value DefenderForDevOpsGithub for OfferingType.
+     */
     public static final OfferingType DEFENDER_FOR_DEV_OPS_GITHUB = fromString("DefenderForDevOpsGithub");
 
-    /** Static value DefenderForDevOpsAzureDevOps for OfferingType. */
+    /**
+     * Static value DefenderForDevOpsAzureDevOps for OfferingType.
+     */
     public static final OfferingType DEFENDER_FOR_DEV_OPS_AZURE_DEV_OPS = fromString("DefenderForDevOpsAzureDevOps");
 
-    /** Static value CspmMonitorGitLab for OfferingType. */
+    /**
+     * Static value CspmMonitorGitLab for OfferingType.
+     */
     public static final OfferingType CSPM_MONITOR_GIT_LAB = fromString("CspmMonitorGitLab");
 
-    /** Static value DefenderForDevOpsGitLab for OfferingType. */
+    /**
+     * Static value DefenderForDevOpsGitLab for OfferingType.
+     */
     public static final OfferingType DEFENDER_FOR_DEV_OPS_GIT_LAB = fromString("DefenderForDevOpsGitLab");
 
     /**
      * Creates a new instance of OfferingType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -72,7 +108,7 @@ public final class OfferingType extends ExpandableStringEnum<OfferingType> {
 
     /**
      * Creates or finds a OfferingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OfferingType.
      */
@@ -83,7 +119,7 @@ public final class OfferingType extends ExpandableStringEnum<OfferingType> {
 
     /**
      * Gets known OfferingType values.
-     *
+     * 
      * @return known OfferingType values.
      */
     public static Collection<OfferingType> values() {

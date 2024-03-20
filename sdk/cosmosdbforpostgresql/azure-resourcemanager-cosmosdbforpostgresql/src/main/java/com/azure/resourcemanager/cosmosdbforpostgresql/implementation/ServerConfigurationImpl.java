@@ -15,8 +15,7 @@ public final class ServerConfigurationImpl implements ServerConfiguration {
 
     private final com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager;
 
-    ServerConfigurationImpl(
-        ServerConfigurationInner innerObject,
+    ServerConfigurationImpl(ServerConfigurationInner innerObject,
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

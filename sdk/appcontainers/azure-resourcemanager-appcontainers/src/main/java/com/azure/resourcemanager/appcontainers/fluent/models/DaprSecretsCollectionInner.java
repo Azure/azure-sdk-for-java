@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appcontainers.models.DaprSecret;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Dapr component Secrets Collection for ListSecrets Action. */
+/**
+ * Dapr component Secrets Collection for ListSecrets Action.
+ */
 @Fluent
 public final class DaprSecretsCollectionInner {
     /*
@@ -19,13 +21,15 @@ public final class DaprSecretsCollectionInner {
     @JsonProperty(value = "value", required = true)
     private List<DaprSecret> value;
 
-    /** Creates an instance of DaprSecretsCollectionInner class. */
+    /**
+     * Creates an instance of DaprSecretsCollectionInner class.
+     */
     public DaprSecretsCollectionInner() {
     }
 
     /**
      * Get the value property: Collection of secrets used by a Dapr component.
-     *
+     * 
      * @return the value value.
      */
     public List<DaprSecret> value() {
@@ -34,7 +38,7 @@ public final class DaprSecretsCollectionInner {
 
     /**
      * Set the value property: Collection of secrets used by a Dapr component.
-     *
+     * 
      * @param value the value value to set.
      * @return the DaprSecretsCollectionInner object itself.
      */
@@ -45,15 +49,13 @@ public final class DaprSecretsCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model DaprSecretsCollectionInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model DaprSecretsCollectionInner"));
         } else {
             value().forEach(e -> e.validate());
         }

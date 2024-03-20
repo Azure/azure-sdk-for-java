@@ -19,7 +19,7 @@ public enum CosmosChangeFeedStartFromModes {
 
     public static CosmosChangeFeedStartFromModes fromName(String name) {
         for (CosmosChangeFeedStartFromModes startFromModes : CosmosChangeFeedStartFromModes.values()) {
-            if (startFromModes.getName().equals(name)) {
+            if (startFromModes.getName().equalsIgnoreCase(name)) {
                 return startFromModes;
             }
         }

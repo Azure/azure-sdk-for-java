@@ -26,6 +26,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "OdbcSource", value = OdbcSource.class),
     @JsonSubTypes.Type(name = "MySqlSource", value = MySqlSource.class),
     @JsonSubTypes.Type(name = "PostgreSqlSource", value = PostgreSqlSource.class),
+    @JsonSubTypes.Type(name = "PostgreSqlV2Source", value = PostgreSqlV2Source.class),
     @JsonSubTypes.Type(name = "SybaseSource", value = SybaseSource.class),
     @JsonSubTypes.Type(name = "SapBwSource", value = SapBwSource.class),
     @JsonSubTypes.Type(name = "SalesforceSource", value = SalesforceSource.class),
@@ -51,6 +52,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "DrillSource", value = DrillSource.class),
     @JsonSubTypes.Type(name = "EloquaSource", value = EloquaSource.class),
     @JsonSubTypes.Type(name = "GoogleBigQuerySource", value = GoogleBigQuerySource.class),
+    @JsonSubTypes.Type(name = "GoogleBigQueryV2Source", value = GoogleBigQueryV2Source.class),
     @JsonSubTypes.Type(name = "GreenplumSource", value = GreenplumSource.class),
     @JsonSubTypes.Type(name = "HBaseSource", value = HBaseSource.class),
     @JsonSubTypes.Type(name = "HiveSource", value = HiveSource.class),
@@ -80,7 +82,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "GoogleAdWordsSource", value = GoogleAdWordsSource.class),
     @JsonSubTypes.Type(name = "AmazonRedshiftSource", value = AmazonRedshiftSource.class),
     @JsonSubTypes.Type(name = "WarehouseSource", value = WarehouseSource.class),
-    @JsonSubTypes.Type(name = "SalesforceV2Source", value = SalesforceV2Source.class) })
+    @JsonSubTypes.Type(name = "SalesforceV2Source", value = SalesforceV2Source.class),
+    @JsonSubTypes.Type(name = "ServiceNowV2Source", value = ServiceNowV2Source.class) })
 @Fluent
 public class TabularSource extends CopySource {
     /*

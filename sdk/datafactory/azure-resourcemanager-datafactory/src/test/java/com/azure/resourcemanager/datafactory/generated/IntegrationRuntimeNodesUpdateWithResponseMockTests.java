@@ -31,7 +31,7 @@ public final class IntegrationRuntimeNodesUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"nodeName\":\"sbyfoavozqnn\",\"machineName\":\"xitvmrqbkzchcm\",\"hostServiceUri\":\"skd\",\"status\":\"Initializing\",\"capabilities\":{\"hvqmdoqyo\":\"bwxcabfrvjpfo\",\"suwghtgpgarh\":\"zhundfkpdxfvjdf\"},\"versionStatus\":\"adedivad\",\"version\":\"xvqp\",\"registerTime\":\"2021-03-18T12:51:02Z\",\"lastConnectTime\":\"2021-07-06T05:00:38Z\",\"expiryTime\":\"2020-12-21T21:58:57Z\",\"lastStartTime\":\"2021-01-07T03:04:27Z\",\"lastStopTime\":\"2021-03-16T05:08:47Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-02-26T06:50:06Z\",\"lastEndUpdateTime\":\"2021-07-17T09:02:07Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":690651643,\"maxConcurrentJobs\":1094919284,\"\":{\"teqypt\":\"datanuivpbjclihfzrii\",\"tkqbvtdeouqixgtp\":\"datajqjoamzdsajn\",\"jjuwdvfa\":\"datakbjev\",\"ucobpkphxh\":\"datalbfrch\"}}";
+            = "{\"nodeName\":\"xqra\",\"machineName\":\"nkeodgpqdcrnubnt\",\"hostServiceUri\":\"ohtuiwsnccmunhv\",\"status\":\"Initializing\",\"capabilities\":{\"yzfuvbnelmimmc\":\"zvuiprngneymxzd\",\"egfthgjmznp\":\"evbprecge\"},\"versionStatus\":\"vafczgisegdei\",\"version\":\"lcdqxownbjkwgkgo\",\"registerTime\":\"2021-01-21T18:45:42Z\",\"lastConnectTime\":\"2021-10-26T03:12:01Z\",\"expiryTime\":\"2021-06-21T19:10:04Z\",\"lastStartTime\":\"2021-10-30T09:20:31Z\",\"lastStopTime\":\"2021-04-13T23:04:59Z\",\"lastUpdateResult\":\"Fail\",\"lastStartUpdateTime\":\"2021-10-03T06:43:31Z\",\"lastEndUpdateTime\":\"2020-12-30T11:38:38Z\",\"isActiveDispatcher\":true,\"concurrentJobsLimit\":2040293763,\"maxConcurrentJobs\":1930006622,\"\":{\"kshtgfewflxby\":\"dataqqos\",\"ldtmeendocqaptwk\":\"datavaufxxvs\",\"z\":\"dataismonwhazalftta\",\"srduqhrlltfec\":\"datasve\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,8 +49,8 @@ public final class IntegrationRuntimeNodesUpdateWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SelfHostedIntegrationRuntimeNode response = manager.integrationRuntimeNodes()
-            .updateWithResponse("jtahdtdceuhjxvc", "rx", "eeyptvrbgcprsds", "wozpmhhdnxwkf",
-                new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(1227772272),
+            .updateWithResponse("xjqysfejddiog", "ckvoxlihfg", "fznzemisqunxwos", "nchrouvtbptdeum",
+                new UpdateIntegrationRuntimeNodeRequest().withConcurrentJobsLimit(637814538),
                 com.azure.core.util.Context.NONE)
             .getValue();
 

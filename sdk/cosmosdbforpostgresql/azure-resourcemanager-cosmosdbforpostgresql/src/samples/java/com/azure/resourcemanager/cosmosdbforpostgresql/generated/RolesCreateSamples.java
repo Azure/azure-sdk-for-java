@@ -4,23 +4,23 @@
 
 package com.azure.resourcemanager.cosmosdbforpostgresql.generated;
 
-/** Samples for Roles Create. */
+/**
+ * Samples for Roles Create.
+ */
 public final class RolesCreateSamples {
     /*
-     * x-ms-original-file: specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/stable/2022-11-08/examples/RoleCreate.json
+     * x-ms-original-file:
+     * specification/postgresqlhsc/resource-manager/Microsoft.DBforPostgreSQL/preview/2023-03-02-preview/examples/
+     * RoleCreate.json
      */
     /**
      * Sample code: RoleCreate.
-     *
+     * 
      * @param manager Entry point to CosmosDBForPostgreSqlManager.
      */
-    public static void roleCreate(
-        com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
-        manager
-            .roles()
-            .define("role1")
-            .withExistingServerGroupsv2("TestGroup", "pgtestsvc4")
-            .withPassword("password")
+    public static void
+        roleCreate(com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager manager) {
+        manager.roles().define("role1").withExistingServerGroupsv2("TestGroup", "pgtestsvc4").withPassword("password")
             .create();
     }
 }

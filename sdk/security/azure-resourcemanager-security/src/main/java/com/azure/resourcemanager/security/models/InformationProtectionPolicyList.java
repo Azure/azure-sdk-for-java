@@ -9,7 +9,9 @@ import com.azure.resourcemanager.security.fluent.models.InformationProtectionPol
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Information protection policies response. */
+/**
+ * Information protection policies response.
+ */
 @Fluent
 public final class InformationProtectionPolicyList {
     /*
@@ -24,13 +26,15 @@ public final class InformationProtectionPolicyList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of InformationProtectionPolicyList class. */
+    /**
+     * Creates an instance of InformationProtectionPolicyList class.
+     */
     public InformationProtectionPolicyList() {
     }
 
     /**
      * Get the value property: List of information protection policies.
-     *
+     * 
      * @return the value value.
      */
     public List<InformationProtectionPolicyInner> value() {
@@ -39,7 +43,7 @@ public final class InformationProtectionPolicyList {
 
     /**
      * Set the value property: List of information protection policies.
-     *
+     * 
      * @param value the value value to set.
      * @return the InformationProtectionPolicyList object itself.
      */
@@ -50,7 +54,7 @@ public final class InformationProtectionPolicyList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class InformationProtectionPolicyList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

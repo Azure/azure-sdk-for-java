@@ -21,8 +21,7 @@ public final class FirewallRulesImpl implements FirewallRules {
 
     private final com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager;
 
-    public FirewallRulesImpl(
-        FirewallRulesClient innerClient,
+    public FirewallRulesImpl(FirewallRulesClient innerClient,
         com.azure.resourcemanager.cosmosdbforpostgresql.CosmosDBForPostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -36,15 +35,12 @@ public final class FirewallRulesImpl implements FirewallRules {
         this.serviceClient().delete(resourceGroupName, clusterName, firewallRuleName, context);
     }
 
-    public Response<FirewallRule> getWithResponse(
-        String resourceGroupName, String clusterName, String firewallRuleName, Context context) {
-        Response<FirewallRuleInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, clusterName, firewallRuleName, context);
+    public Response<FirewallRule> getWithResponse(String resourceGroupName, String clusterName, String firewallRuleName,
+        Context context) {
+        Response<FirewallRuleInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, clusterName, firewallRuleName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FirewallRuleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,119 +58,87 @@ public final class FirewallRulesImpl implements FirewallRules {
 
     public PagedIterable<FirewallRule> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<FirewallRuleInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new FirewallRuleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FirewallRuleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<FirewallRule> listByCluster(String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<FirewallRuleInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new FirewallRuleImpl(inner1, this.manager()));
+        PagedIterable<FirewallRuleInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FirewallRuleImpl(inner1, this.manager()));
     }
 
     public FirewallRule getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "serverGroupsv2");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
         }
-        String firewallRuleName = Utils.getValueFromIdByName(id, "firewallRules");
+        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
         if (firewallRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, firewallRuleName, Context.NONE).getValue();
     }
 
     public Response<FirewallRule> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "serverGroupsv2");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
         }
-        String firewallRuleName = Utils.getValueFromIdByName(id, "firewallRules");
+        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
         if (firewallRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, firewallRuleName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "serverGroupsv2");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
         }
-        String firewallRuleName = Utils.getValueFromIdByName(id, "firewallRules");
+        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
         if (firewallRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
         }
         this.delete(resourceGroupName, clusterName, firewallRuleName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "serverGroupsv2");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "serverGroupsv2");
         if (clusterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serverGroupsv2'.", id)));
         }
-        String firewallRuleName = Utils.getValueFromIdByName(id, "firewallRules");
+        String firewallRuleName = ResourceManagerUtils.getValueFromIdByName(id, "firewallRules");
         if (firewallRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firewallRules'.", id)));
         }
         this.delete(resourceGroupName, clusterName, firewallRuleName, context);
     }

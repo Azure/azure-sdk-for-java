@@ -21,8 +21,7 @@ public final class PacketCoreControlPlaneVersionsImpl implements PacketCoreContr
 
     private final com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager;
 
-    public PacketCoreControlPlaneVersionsImpl(
-        PacketCoreControlPlaneVersionsClient innerClient,
+    public PacketCoreControlPlaneVersionsImpl(PacketCoreControlPlaneVersionsClient innerClient,
         com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,10 +30,7 @@ public final class PacketCoreControlPlaneVersionsImpl implements PacketCoreContr
     public Response<PacketCoreControlPlaneVersion> getWithResponse(String versionName, Context context) {
         Response<PacketCoreControlPlaneVersionInner> inner = this.serviceClient().getWithResponse(versionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PacketCoreControlPlaneVersionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -52,22 +48,21 @@ public final class PacketCoreControlPlaneVersionsImpl implements PacketCoreContr
 
     public PagedIterable<PacketCoreControlPlaneVersion> list() {
         PagedIterable<PacketCoreControlPlaneVersionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PacketCoreControlPlaneVersionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PacketCoreControlPlaneVersionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PacketCoreControlPlaneVersion> list(Context context) {
         PagedIterable<PacketCoreControlPlaneVersionInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new PacketCoreControlPlaneVersionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PacketCoreControlPlaneVersionImpl(inner1, this.manager()));
     }
 
     public Response<PacketCoreControlPlaneVersion> getBySubscriptionWithResponse(String versionName, Context context) {
-        Response<PacketCoreControlPlaneVersionInner> inner =
-            this.serviceClient().getBySubscriptionWithResponse(versionName, context);
+        Response<PacketCoreControlPlaneVersionInner> inner
+            = this.serviceClient().getBySubscriptionWithResponse(versionName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PacketCoreControlPlaneVersionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -85,12 +80,14 @@ public final class PacketCoreControlPlaneVersionsImpl implements PacketCoreContr
 
     public PagedIterable<PacketCoreControlPlaneVersion> listBySubscription() {
         PagedIterable<PacketCoreControlPlaneVersionInner> inner = this.serviceClient().listBySubscription();
-        return Utils.mapPage(inner, inner1 -> new PacketCoreControlPlaneVersionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PacketCoreControlPlaneVersionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PacketCoreControlPlaneVersion> listBySubscription(Context context) {
         PagedIterable<PacketCoreControlPlaneVersionInner> inner = this.serviceClient().listBySubscription(context);
-        return Utils.mapPage(inner, inner1 -> new PacketCoreControlPlaneVersionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new PacketCoreControlPlaneVersionImpl(inner1, this.manager()));
     }
 
     private PacketCoreControlPlaneVersionsClient serviceClient() {

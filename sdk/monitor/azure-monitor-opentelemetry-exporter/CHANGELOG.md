@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.20 (Unreleased)
+## 1.0.0-beta.22 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,19 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.21 (2024-03-11)
+
+### Bugs Fixed
+- [Support stable HTTP semconv url.query](https://github.com/Azure/azure-sdk-for-java/pull/39133)
+
+## 1.0.0-beta.20 (2024-03-07)
+
+### Features Added
+- [Support ingestion sampling](https://github.com/Azure/azure-sdk-for-java/pull/39103)
+
+### Bugs Fixed
+- [Avoid warning on sporadic connection failures](https://github.com/Azure/azure-sdk-for-java/pull/39021)
 
 ## 1.0.0-beta.19 (2024-02-23)
 

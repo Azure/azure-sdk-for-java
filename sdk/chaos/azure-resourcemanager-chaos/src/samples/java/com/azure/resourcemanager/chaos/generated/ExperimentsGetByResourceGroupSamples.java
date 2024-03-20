@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.chaos.generated;
 
-/** Samples for Experiments GetByResourceGroup. */
+/**
+ * Samples for Experiments GetByResourceGroup.
+ */
 public final class ExperimentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/GetExperiment.json
+     * x-ms-original-file:
+     * specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/GetExperiment.json
      */
     /**
      * Sample code: Get a Experiment in a resource group.
-     *
+     * 
      * @param manager Entry point to ChaosManager.
      */
     public static void getAExperimentInAResourceGroup(com.azure.resourcemanager.chaos.ChaosManager manager) {
-        manager
-            .experiments()
-            .getByResourceGroupWithResponse("exampleRG", "exampleExperiment", com.azure.core.util.Context.NONE);
+        manager.experiments().getByResourceGroupWithResponse("exampleRG", "exampleExperiment",
+            com.azure.core.util.Context.NONE);
     }
 }

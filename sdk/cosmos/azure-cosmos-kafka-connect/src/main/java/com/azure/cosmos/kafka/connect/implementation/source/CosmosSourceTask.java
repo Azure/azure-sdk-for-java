@@ -14,8 +14,8 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.guava25.base.Stopwatch;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
-import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -46,7 +46,7 @@ public class CosmosSourceTask extends SourceTask {
 
     @Override
     public String version() {
-        return CosmosConstants.CURRENT_VERSION;
+        return KafkaCosmosConstants.CURRENT_VERSION;
     }
 
     @Override
@@ -112,7 +112,7 @@ public class CosmosSourceTask extends SourceTask {
             this.taskUnitsQueue.add(taskUnit);
 
             // TODO[Public Preview]: add checking for max retries checking
-            throw CosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
+            throw KafkaCosmosExceptionsHelper.convertToConnectException(e, "PollTask failed");
         }
     }
 
@@ -174,7 +174,7 @@ public class CosmosSourceTask extends SourceTask {
                 return Pair.of(records, false);
             })
             .onErrorResume(throwable -> {
-                if (CosmosExceptionsHelper.isFeedRangeGoneException(throwable)) {
+                if (KafkaCosmosExceptionsHelper.isFeedRangeGoneException(throwable)) {
                     return this.handleFeedRangeGone(feedRangeTaskUnit)
                         .map(shouldRemoveOriginalTaskUnit -> Pair.of(new ArrayList<>(), shouldRemoveOriginalTaskUnit));
                 }

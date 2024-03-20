@@ -33,48 +33,31 @@ public final class MonitorsListAppServicesMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"azureResourceId\":\"nsmvbxwyj\",\"agentVersion\":\"lh\",\"agentStatus\":\"aalnjixi\"}]}";
+        String responseStr
+            = "{\"value\":[{\"azureResourceId\":\"dvxzbncblylpst\",\"agentVersion\":\"hh\",\"agentStatus\":\"rzdzucerscdnt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NewRelicObservabilityManager manager =
-            NewRelicObservabilityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NewRelicObservabilityManager manager = NewRelicObservabilityManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AppServiceInfo> response =
-            manager
-                .monitors()
-                .listAppServices(
-                    "nxipeil",
-                    "jzuaejxdultskzbb",
-                    new AppServicesGetRequest()
-                        .withAzureResourceIds(Arrays.asList("umveekgpwozuhkf", "bsjyofdx", "uusdttouwa"))
-                        .withUserEmail("oekqvk"),
-                    com.azure.core.util.Context.NONE);
+        PagedIterable<AppServiceInfo> response = manager.monitors().listAppServices(
+            "r", "gccymvaolpssl", new AppServicesGetRequest()
+                .withAzureResourceIds(Arrays.asList("mmdnbbglzps", "iydmcwyhzdxs")).withUserEmail("adbzmnvdfznud"),
+            com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nsmvbxwyj", response.iterator().next().azureResourceId());
-        Assertions.assertEquals("lh", response.iterator().next().agentVersion());
-        Assertions.assertEquals("aalnjixi", response.iterator().next().agentStatus());
+        Assertions.assertEquals("dvxzbncblylpst", response.iterator().next().azureResourceId());
+        Assertions.assertEquals("hh", response.iterator().next().agentVersion());
+        Assertions.assertEquals("rzdzucerscdnt", response.iterator().next().agentStatus());
     }
 }
