@@ -565,6 +565,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return null;
         }
 
+        if (value instanceof ExpandableEnum) {
+            value = serialize(serializer, ((ExpandableEnum<?>) value).getValue());
+        }
+
         if (value instanceof String) {
             return (String) value;
         } else if (value.getClass().isPrimitive()
@@ -572,8 +576,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             || value instanceof Number
             || value instanceof Boolean
             || value instanceof Character
-            || value instanceof DateTimeRfc1123
-            || value instanceof ExpandableEnum) {
+            || value instanceof DateTimeRfc1123) {
 
             return String.valueOf(value);
         } else if (value instanceof OffsetDateTime) {
