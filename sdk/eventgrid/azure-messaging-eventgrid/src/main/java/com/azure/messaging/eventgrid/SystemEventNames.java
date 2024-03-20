@@ -47,6 +47,7 @@ import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferExpiredEve
 import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferIssuedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerOfferRevokedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerRegisteredEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsUserDisconnectedEventData;
@@ -473,6 +474,11 @@ public final class SystemEventNames {
      */
     public static final String COMMUNICATION_ROUTER_WORKER_REGISTERED
         = "Microsoft.Communication.RouterWorkerRegistered";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerUpdated event.
+     */
+    public static final String COMMUNICATION_ROUTER_WORKER_UPDATED = "Microsoft.Communication.RouterWorkerUpdated";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event.
@@ -1499,6 +1505,7 @@ public final class SystemEventNames {
             put(COMMUNICATION_ROUTER_WORKER_OFFER_ISSUED, AcsRouterWorkerOfferIssuedEventData.class);
             put(COMMUNICATION_ROUTER_WORKER_OFFER_REVOKED, AcsRouterWorkerOfferRevokedEventData.class);
             put(COMMUNICATION_ROUTER_WORKER_REGISTERED, AcsRouterWorkerRegisteredEventData.class);
+            put(COMMUNICATION_ROUTER_WORKER_UPDATED, AcsRouterWorkerUpdatedEventData.class);
             put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
             put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
             put(COMMUNICATION_USER_DISCONNECTED, AcsUserDisconnectedEventData.class);
