@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-messaging-webpubsub</artifactId>
-  <version>1.2.12</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
+  <version>1.2.13</version> <!-- {x-version-update;com.azure:azure-messaging-webpubsub;current} -->
 
   <name>Microsoft Azure client library for Azure Web Pub Sub Service</name>
   <description>This package contains the Microsoft Azure Web Pub Sub library.</description>
@@ -42,24 +42,24 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.46.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.47.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.14.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.31</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>9.37.3</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.23.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.24.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -95,7 +95,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.11.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -136,7 +136,7 @@
             <bannedDependencies>
               <includes>
                 <include>com.azure:*</include>
-                <include>com.nimbusds:nimbus-jose-jwt:[9.31]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+                <include>com.nimbusds:nimbus-jose-jwt:[9.37.3]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
