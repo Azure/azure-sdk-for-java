@@ -154,6 +154,10 @@ jobs:
       # steps on windows
       - template: /eng/common/testproxy/test-proxy-tool-shutdown.yml
 
-      - template: /eng/common/pipelines/templates/steps/credscan.yml
-        parameters:
-          BaselineFilePath: $(Build.SourcesDirectory)\eng\java.gdnbaselines
+      - task: securedevelopmentteam.vss-secure-development-tools.build-task-credscan.CredScan@3
+        displayName: CredScan running
+        condition: and(succeededOrFailed(), ne(variables['SKIP_CREDSCAN'], true))
+        inputs:
+          toolVersion: 2.3.12.23
+          scanFolder: $(Build.SourcesDirectory)
+          suppressionsFile: $(Build.SourcesDirectory)\eng\java.gdnbaselines
