@@ -128,7 +128,7 @@ com.azure:azure-health-insights-clinicalmatching;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-cancerprofiling;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-health-insights-radiologyinsights;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-identity;1.11.4;1.12.0-beta.2
-com.azure:azure-identity-extensions;1.1.13;1.2.0-beta.2
+com.azure:azure-identity-extensions;1.1.13;1.1.14
 com.azure:azure-identity-broker;1.0.4;1.1.0-beta.1
 com.azure:azure-identity-broker-samples;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity-perf;1.0.0-beta.1;1.0.0-beta.1
