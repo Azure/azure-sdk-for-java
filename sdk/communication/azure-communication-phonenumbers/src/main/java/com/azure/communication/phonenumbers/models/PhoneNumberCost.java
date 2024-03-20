@@ -7,7 +7,7 @@ package com.azure.communication.phonenumbers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The incurred cost for a single phone number. */
+/** The PhoneNumberCost model. */
 @Immutable
 public final class PhoneNumberCost {
     /*
