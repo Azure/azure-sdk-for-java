@@ -3,17 +3,11 @@
 
 package com.azure.data.appconfiguration.implementation;
 
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MatchConditions;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
 import com.azure.data.appconfiguration.implementation.models.UpdateSnapshotHeaders;
@@ -26,7 +20,6 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -185,66 +178,5 @@ public class Utility {
         return serviceClient.updateSnapshotWithResponseAsync(snapshotName,
                 new SnapshotUpdateParameters().setStatus(status), ifMatch, null)
             .map(response -> new SimpleResponse<>(response, response.getValue()));
-    }
-
-    // Parse the next link from the link header, if it exists. And return the continuation token url without the "<" and ">"
-    public static String parseNextLink(String nextLink) {
-        // actual value of next link: </kv?api-version=2023-10-01&$Select=&after=a2V5MTg4Cg%3D%3D>; rel="next"
-        // The format of nextLink is always: "<url>; rel="next"", so we need to remove the "<" and ">" and the "; rel="next""
-        if (nextLink == null) {
-            return null;
-        }
-        String[] parts = nextLink.split(";");
-
-        return parts[0].substring(1, parts[0].length() - 1);
-    }
-
-    // Handle 304 status code to a valid response or pass error as it is if not 304.
-    // Async handler
-    public static Mono<PagedResponse<KeyValue>> handleNotModifiedErrorToValidResponse(HttpResponseException error) {
-        HttpResponse httpResponse = error.getResponse();
-        String continuationToken = parseNextLink(httpResponse.getHeaderValue(HttpHeaderName.LINK));
-        if (httpResponse.getStatusCode() == 304) {
-            return Mono.just(
-                    new PagedResponseBase<>(
-                            httpResponse.getRequest(),
-                            httpResponse.getStatusCode(),
-                            httpResponse.getHeaders(),
-                            null,
-                            continuationToken,
-                            null));
-        }
-        return Mono.error(error);
-    }
-    // Sync Handler
-    public static PagedResponse<ConfigurationSetting> handleNotModifiedErrorToValidResponse(HttpResponseException error,
-        ClientLogger logger) {
-        HttpResponse httpResponse = error.getResponse();
-        String continuationToken = parseNextLink(httpResponse.getHeaderValue(HttpHeaderName.LINK));
-        if (httpResponse.getStatusCode() == 304) {
-            return new PagedResponseBase<>(
-                            httpResponse.getRequest(),
-                            httpResponse.getStatusCode(),
-                            httpResponse.getHeaders(),
-                            null,
-                            continuationToken,
-                            null);
-        }
-        throw logger.logExceptionAsError(error);
-    }
-
-    // Get the ETag from a list
-    public static String getPageETag(List<MatchConditions> matchConditionsList, AtomicInteger pageETagIndex) {
-        int pageETagListSize = (matchConditionsList == null || matchConditionsList.isEmpty())
-                ? 0
-                : matchConditionsList.size();
-        String nextPageETag = null;
-        int pageETagIndexValue = pageETagIndex.get();
-        if (pageETagIndexValue < pageETagListSize) {
-            nextPageETag = matchConditionsList.get(pageETagIndexValue).getIfNoneMatch();
-            pageETagIndex.set(pageETagIndexValue + 1);
-        }
-
-        return nextPageETag;
     }
 }
