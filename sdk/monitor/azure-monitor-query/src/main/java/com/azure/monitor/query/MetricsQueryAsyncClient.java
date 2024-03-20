@@ -33,9 +33,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.monitor.query.implementation.metrics.models.MetricsHelper.convertToMetricsQueryResult;
 
 /**
- * The asynchronous client for querying Azure Monitor metrics.
- *
- * <h2>Overview</h2>
+ * <p>The asynchronous client for querying Azure Monitor metrics.</p>
  *
  * <p>Azure Monitor Metrics is a feature of Azure Monitor that collects numeric data from monitored resources into a
  * time-series database. Metrics are numerical values that are collected at regular intervals and describe some aspect
@@ -70,6 +68,8 @@ import static com.azure.monitor.query.implementation.metrics.models.MetricsHelpe
  * <ul>
  *     <li>
  *         {@link MetricsQueryAsyncClient#queryResource(String, List)} - Query metrics for an Azure resource.
+ *         {@link MetricsQueryAsyncClient#listMetricNamespaces(String, OffsetDateTime)} - Lists all the metrics namespaces created for the resource URI.
+ *         {@link MetricsQueryAsyncClient#listMetricDefinitions(String)} - Lists all the metrics definitions created for the resource URI.
  *     </li>
  * </ul>
  *

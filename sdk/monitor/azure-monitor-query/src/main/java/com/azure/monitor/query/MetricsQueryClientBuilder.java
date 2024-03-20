@@ -24,9 +24,7 @@ import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefiniti
 import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImplBuilder;
 
 /**
- * Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.
- *
- * <h2>Overview</h2>
+ * <p>Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.</p>
  *
  * <p>
  *     The MetricsQueryClientBuilder is responsible for authenticating a building instances of {@link MetricsQueryClient} and
@@ -90,6 +88,11 @@ public final class MetricsQueryClientBuilder implements EndpointTrait<MetricsQue
     private final AzureMonitorMetricBatchBuilder innerMetricsBatchBuilder = new AzureMonitorMetricBatchBuilder();
     private final ClientLogger logger = new ClientLogger(MetricsQueryClientBuilder.class);
     private MetricsQueryServiceVersion serviceVersion;
+
+    /**
+     * Creates an instance of MetricsQueryClientBuilder.
+     */
+    public MetricsQueryClientBuilder() { }
 
     /**
      * Sets the metrics query endpoint.

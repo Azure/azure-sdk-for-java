@@ -21,9 +21,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.logs.AzureLogAnalyticsImplBuilder;
 
 /**
- * Fluent builder for creating instances of {@link LogsQueryClient} and {@link LogsQueryAsyncClient}.
- *
- * <h2>Overview</h2>
+ * <p>Fluent builder for creating instances of {@link LogsQueryClient} and {@link LogsQueryAsyncClient}.</p>
  *
  * <p>The LogsQueryClientBuilder is responsible for authenticating a building instances of {@link LogsQueryClient} and
  *  {@link LogsQueryAsyncClient}. Customizations can be applied to clients through the builder using the various options
@@ -74,6 +72,11 @@ public final class LogsQueryClientBuilder implements EndpointTrait<LogsQueryClie
     private final ClientLogger logger = new ClientLogger(LogsQueryClientBuilder.class);
     private final AzureLogAnalyticsImplBuilder innerLogBuilder = new AzureLogAnalyticsImplBuilder();
     private LogsQueryServiceVersion serviceVersion;
+
+    /**
+     * Creates an instance of LogsQueryClientBuilder.
+     */
+    public LogsQueryClientBuilder() { }
 
     /**
      * Sets the log query endpoint.

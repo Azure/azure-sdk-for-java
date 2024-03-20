@@ -18,7 +18,7 @@
  *     apps can be consolidated into a single <a href="https://learn.microsoft.com/azure/azure-monitor/logs/data-platform-logs#log-analytics-and-workspaces">Azure Log Analytics workspace</a>.
  *     The various data types can be analyzed together using the Kusto Query Language.</li>
  *
- *     <li><a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics"></a> - Collects
+ *     <li><a href="https://learn.microsoft.com/azure/azure-monitor/essentials/data-platform-metrics">Metrics</a> - Collects
  *     numeric data from monitored resources into a time series database. Metrics are numerical values that are
  *     collected at regular intervals and describe some aspect of a system at a particular time. Metrics are lightweight
  *     and capable of supporting near real-time scenarios, making them particularly useful for alerting and fast
@@ -32,11 +32,6 @@
  * this possible you'll need to use AAD authentication via
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a>
  * to connect to the service.</p>
- *
- * <ol>
- *   <li>Azure Active Directory for Logs Query Client, see {@link com.azure.monitor.query.LogsQueryClientBuilder#credential(com.azure.core.credential.TokenCredential) TokenCredential}.</li>
- *   <li>Azure Active Directory for Metrics Query Client, see {@link com.azure.monitor.query.MetricsQueryClientBuilder#credential(com.azure.core.credential.TokenCredential) TokenCredential}.</li>
- * </ol>
  *
  * <p><strong>Sample: Construct Asynchronous Clients</strong></p>
  *
@@ -111,7 +106,7 @@
  * <!-- end com.azure.monitor.query.LogsQueryClient.query#String-String-QueryTimeInterval -->
  *
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.monitor.query.LogsQueryAsyncClient#queryWorkspace(java.lang.String, java.lang.String, com.azure.monitor.query.models.QueryTimeInterval)}.</p>
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.monitor.query.LogsQueryAsyncClient#queryWorkspace(java.lang.String, java.lang.String, com.azure.monitor.query.models.QueryTimeInterval) QueryWorkspace Async API}.</p>
  *
  * <br/>
  *

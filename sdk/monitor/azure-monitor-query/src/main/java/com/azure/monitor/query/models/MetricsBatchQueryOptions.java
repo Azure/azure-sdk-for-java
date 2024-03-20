@@ -20,6 +20,10 @@ public final class MetricsBatchQueryOptions {
     private String orderBy;
     private String filter;
 
+    /**
+     * Creates an instance of MetricsBatchQueryOptions.
+     */
+    public MetricsBatchQueryOptions() { }
 
     /**
      * Returns the time span for which the metrics data is queried.
