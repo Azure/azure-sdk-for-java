@@ -4,7 +4,7 @@
 
 ### Features Added
 
-- Added support for using the default broker 
+- Added support for using the default broker account
 
 ### Breaking Changes
 
