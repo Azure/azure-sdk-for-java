@@ -1,15 +1,14 @@
 # Release History
 
-## 12.25.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-- Fixed bug where RequestRetryOptions.tryTimeout adds delay to the client request in the synchronous http client flow.
+## 12.24.2 (2024-02-22)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+
 
 ## 12.24.1 (2023-12-04)
 
@@ -19,6 +18,7 @@
 
 - Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
 - Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
 
 ## 12.24.0 (2023-11-08)
 
