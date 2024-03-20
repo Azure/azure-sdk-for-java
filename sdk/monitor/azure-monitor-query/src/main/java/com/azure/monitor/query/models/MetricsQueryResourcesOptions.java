@@ -21,7 +21,7 @@ public final class MetricsQueryResourcesOptions {
     private String filter;
 
     /**
-     * Creates an instance of MetricsBatchQueryOptions.
+     * Creates an instance of MetricsQueryResourcesOptions.
      */
     public MetricsQueryResourcesOptions() { }
 
