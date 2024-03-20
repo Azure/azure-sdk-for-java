@@ -99,6 +99,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: core
+    TimeoutInMinutes: 90
     JavadocSafeJavaBuildVersion: '1.21'
     EnableBatchRelease: true
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
