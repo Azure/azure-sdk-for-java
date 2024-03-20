@@ -17,14 +17,7 @@ public final class TransferToParticipantRequestInternal {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
-     * Used by customer to send custom calling context to targets
-     */
-    @JsonProperty(value = "customCallingContext")
-    private CustomCallingContext customCallingContext;
-
-    /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
@@ -36,13 +29,21 @@ public final class TransferToParticipantRequestInternal {
     private CommunicationIdentifierModel transferee;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
+
+    /*
+     * Used by customer to send custom calling context to targets
+     */
+    @JsonProperty(value = "customCallingContext")
+    private CustomCallingContext customCallingContext;
+
+    /** Creates an instance of TransferToParticipantRequestInternal class. */
+    public TransferToParticipantRequestInternal() {}
 
     /**
      * Get the targetParticipant property: The identity of the target where call should be transferred to.
@@ -61,26 +62,6 @@ public final class TransferToParticipantRequestInternal {
      */
     public TransferToParticipantRequestInternal setTargetParticipant(CommunicationIdentifierModel targetParticipant) {
         this.targetParticipant = targetParticipant;
-        return this;
-    }
-
-    /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
-     * @return the customCallingContext value.
-     */
-    public CustomCallingContext getCustomCallingContext() {
-        return this.customCallingContext;
-    }
-
-    /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
-     * @param customCallingContext the customCallingContext value to set.
-     * @return the TransferToParticipantRequestInternal object itself.
-     */
-    public TransferToParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
-        this.customCallingContext = customCallingContext;
         return this;
     }
 
@@ -147,6 +128,26 @@ public final class TransferToParticipantRequestInternal {
      */
     public TransferToParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
+        return this;
+    }
+
+    /**
+     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
+     *
+     * @return the customCallingContext value.
+     */
+    public CustomCallingContext getCustomCallingContext() {
+        return this.customCallingContext;
+    }
+
+    /**
+     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
+     *
+     * @param customCallingContext the customCallingContext value to set.
+     * @return the TransferToParticipantRequestInternal object itself.
+     */
+    public TransferToParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
+        this.customCallingContext = customCallingContext;
         return this;
     }
 }

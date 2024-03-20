@@ -23,8 +23,7 @@ public final class RecognizeRequest {
     private PlaySourceInternal playPrompt;
 
     /*
-     * If set recognize can barge into other existing
-     * queued-up/currently-processing requests.
+     * If set recognize can barge into other existing queued-up/currently-processing requests.
      */
     @JsonProperty(value = "interruptCallMediaOperation")
     private Boolean interruptCallMediaOperation;
@@ -42,13 +41,15 @@ public final class RecognizeRequest {
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
+
+    /** Creates an instance of RecognizeRequest class. */
+    public RecognizeRequest() {}
 
     /**
      * Get the recognizeInputType property: Determines the type of the recognition.

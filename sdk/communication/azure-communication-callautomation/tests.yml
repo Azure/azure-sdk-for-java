@@ -1,7 +1,7 @@
 trigger: none
 
-extends:
-  template: /sdk/communication/communication-tests-template.yml
+stages:
+- template: /sdk/communication/communication-tests-template.yml
   parameters:
     PackageName: azure-communication-callautomation
     SafeName: azurecommunicationcallautomation

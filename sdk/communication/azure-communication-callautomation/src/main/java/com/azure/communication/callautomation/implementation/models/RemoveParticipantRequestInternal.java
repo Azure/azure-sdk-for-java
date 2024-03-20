@@ -17,20 +17,21 @@ public final class RemoveParticipantRequestInternal {
     private CommunicationIdentifierModel participantToRemove;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
+
+    /** Creates an instance of RemoveParticipantRequestInternal class. */
+    public RemoveParticipantRequestInternal() {}
 
     /**
      * Get the participantToRemove property: The participants to be removed from the call.
