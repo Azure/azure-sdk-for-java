@@ -6,47 +6,57 @@ package com.azure.resourcemanager.support.models;
 
 import com.azure.resourcemanager.support.fluent.models.ServiceInner;
 import java.util.List;
+import java.util.Map;
 
-/** An immutable client-side representation of Service. */
+/**
+ * An immutable client-side representation of Service.
+ */
 public interface Service {
     /**
      * Gets the id property: Id of the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: Name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: Type of the resource 'Microsoft.Support/services'.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the displayName property: Localized name of the Azure service.
-     *
+     * 
      * @return the displayName value.
      */
     String displayName();
 
     /**
      * Gets the resourceTypes property: ARM Resource types.
-     *
+     * 
      * @return the resourceTypes value.
      */
     List<String> resourceTypes();
 
     /**
+     * Gets the metadata property: Metadata about the service, only visible for 1P clients.
+     * 
+     * @return the metadata value.
+     */
+    Map<String, String> metadata();
+
+    /**
      * Gets the inner com.azure.resourcemanager.support.fluent.models.ServiceInner object.
-     *
+     * 
      * @return the inner object.
      */
     ServiceInner innerModel();

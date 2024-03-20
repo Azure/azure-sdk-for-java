@@ -4,31 +4,34 @@
 
 package com.azure.resourcemanager.support.models;
 
-import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SupportTicketChatTranscriptsNoSubscriptions. */
-public interface SupportTicketChatTranscriptsNoSubscriptions {
+/**
+ * Resource collection API of LookUpResourceIds.
+ */
+public interface LookUpResourceIds {
     /**
-     * Lists all chat transcripts for a support ticket.
-     *
-     * @param supportTicketName Support ticket name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Chat Transcripts resources as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<ChatTranscriptDetails> list(String supportTicketName);
-
-    /**
-     * Lists all chat transcripts for a support ticket.
-     *
-     * @param supportTicketName Support ticket name.
+     * This operation fetches ARM resource id of support resource type.
+     * 
+     * @param lookUpResourceIdRequest Look up resource id request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Chat Transcripts resources as paginated response with {@link PagedIterable}.
+     * @return the look up resource id response along with {@link Response}.
      */
-    PagedIterable<ChatTranscriptDetails> list(String supportTicketName, Context context);
+    Response<LookUpResourceIdResponse> postWithResponse(LookUpResourceIdRequest lookUpResourceIdRequest,
+        Context context);
+
+    /**
+     * This operation fetches ARM resource id of support resource type.
+     * 
+     * @param lookUpResourceIdRequest Look up resource id request body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the look up resource id response.
+     */
+    LookUpResourceIdResponse post(LookUpResourceIdRequest lookUpResourceIdRequest);
 }

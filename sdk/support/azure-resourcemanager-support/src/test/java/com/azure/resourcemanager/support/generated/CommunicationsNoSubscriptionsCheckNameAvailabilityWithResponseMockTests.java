@@ -31,43 +31,28 @@ public final class CommunicationsNoSubscriptionsCheckNameAvailabilityWithRespons
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"gqqqxh\",\"message\":\"xrxc\"}";
+        String responseStr = "{\"nameAvailable\":true,\"reason\":\"xrxzbujrtr\",\"message\":\"vwrevkhgnlnzon\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SupportManager manager =
-            SupportManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SupportManager manager = SupportManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CheckNameAvailabilityOutput response =
-            manager
-                .communicationsNoSubscriptions()
-                .checkNameAvailabilityWithResponse(
-                    "tsttktlahbq",
-                    new CheckNameAvailabilityInput()
-                        .withName("ctxtgzukxi")
-                        .withType(Type.MICROSOFT_SUPPORT_COMMUNICATIONS),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        CheckNameAvailabilityOutput response = manager.communicationsNoSubscriptions()
+            .checkNameAvailabilityWithResponse("frddgamquhiosrsj", new CheckNameAvailabilityInput()
+                .withName("ivfcdisyirnx").withType(Type.MICROSOFT_SUPPORT_SUPPORT_TICKETS),
+                com.azure.core.util.Context.NONE)
+            .getValue();
+
     }
 }
