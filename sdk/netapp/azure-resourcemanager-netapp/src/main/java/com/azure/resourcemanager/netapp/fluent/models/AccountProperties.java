@@ -39,19 +39,6 @@ public final class AccountProperties {
     @JsonProperty(value = "disableShowmount", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean disableShowmount;
 
-    /*
-     * Domain for NFSv4 user ID mapping. This property will be set for all NetApp accounts in the subscription and
-     * region and only affect non ldap NFSv4 volumes.
-     */
-    @JsonProperty(value = "nfsV4IDDomain")
-    private String nfsV4IdDomain;
-
-    /*
-     * This will have true value only if account is Multiple AD enabled.
-     */
-    @JsonProperty(value = "isMultiAdEnabled", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isMultiAdEnabled;
-
     /**
      * Creates an instance of AccountProperties class.
      */
@@ -115,37 +102,6 @@ public final class AccountProperties {
      */
     public Boolean disableShowmount() {
         return this.disableShowmount;
-    }
-
-    /**
-     * Get the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
-     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
-     * 
-     * @return the nfsV4IdDomain value.
-     */
-    public String nfsV4IdDomain() {
-        return this.nfsV4IdDomain;
-    }
-
-    /**
-     * Set the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
-     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
-     * 
-     * @param nfsV4IdDomain the nfsV4IdDomain value to set.
-     * @return the AccountProperties object itself.
-     */
-    public AccountProperties withNfsV4IdDomain(String nfsV4IdDomain) {
-        this.nfsV4IdDomain = nfsV4IdDomain;
-        return this;
-    }
-
-    /**
-     * Get the isMultiAdEnabled property: This will have true value only if account is Multiple AD enabled.
-     * 
-     * @return the isMultiAdEnabled value.
-     */
-    public Boolean isMultiAdEnabled() {
-        return this.isMultiAdEnabled;
     }
 
     /**
