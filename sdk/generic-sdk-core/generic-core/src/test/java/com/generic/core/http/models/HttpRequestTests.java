@@ -38,7 +38,7 @@ public class HttpRequestTests {
 
     @Test
     public void constructorWithHeaders() throws MalformedURLException {
-        final Headers headers = new Headers();
+        final HttpHeaders headers = new HttpHeaders();
         final HttpRequest request = new HttpRequest(HttpMethod.POST, createUrl("http://request.url"))
             .setHeaders(headers);
 
@@ -109,9 +109,9 @@ public class HttpRequestTests {
 
     @Test
     public void testClone() throws IOException {
-        final Headers headers = new Headers()
-            .set(HeaderName.fromString("my-header"), "my-value")
-            .set(HeaderName.fromString("other-header"), "other-value");
+        final HttpHeaders headers = new HttpHeaders()
+            .set(HttpHeaderName.fromString("my-header"), "my-value")
+            .set(HttpHeaderName.fromString("other-header"), "other-value");
 
         final HttpRequest request = new HttpRequest(HttpMethod.PUT, createUrl("http://request.url"))
             .setHeaders(headers);
@@ -124,13 +124,13 @@ public class HttpRequestTests {
         assertNotSame(request.getHeaders(), bufferedRequest.getHeaders());
         assertEquals(request.getHeaders().getSize(), bufferedRequest.getHeaders().getSize());
 
-        for (Header clonedHeader : bufferedRequest.getHeaders()) {
-            for (Header originalHeader : request.getHeaders()) {
+        for (HttpHeader clonedHeader : bufferedRequest.getHeaders()) {
+            for (HttpHeader originalHeader : request.getHeaders()) {
                 assertNotSame(clonedHeader, originalHeader);
             }
 
             assertEquals(clonedHeader.getValue(),
-                request.getHeaders().getValue(HeaderName.fromString(clonedHeader.getName())));
+                request.getHeaders().getValue(HttpHeaderName.fromString(clonedHeader.getName())));
         }
 
         assertSame(request.getBody(), bufferedRequest.getBody());
@@ -148,7 +148,7 @@ public class HttpRequestTests {
     }
 
     private Long getContentLength(HttpRequest request) {
-        String contentLengthValue = request.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
+        String contentLengthValue = request.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
         return contentLengthValue == null ? null : Long.parseLong(contentLengthValue);
     }
 }

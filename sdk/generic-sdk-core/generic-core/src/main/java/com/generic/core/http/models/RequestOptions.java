@@ -151,7 +151,7 @@ public final class RequestOptions {
      *
      * @return the modified RequestOptions object
      */
-    public RequestOptions addHeader(HeaderName header, String value) {
+    public RequestOptions addHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
 
         return this;
@@ -167,7 +167,7 @@ public final class RequestOptions {
      *
      * @return the modified RequestOptions object
      */
-    public RequestOptions setHeader(HeaderName header, String value) {
+    public RequestOptions setHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
 
         return this;

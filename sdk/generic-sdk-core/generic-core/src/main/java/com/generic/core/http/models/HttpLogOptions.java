@@ -22,32 +22,32 @@ import static com.generic.core.util.configuration.Configuration.getGlobalConfigu
  */
 public final class HttpLogOptions {
     private HttpLogDetailLevel logLevel;
-    private List<HeaderName> allowedHeaderNames;
+    private List<HttpHeaderName> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
     private HttpRequestLogger requestLogger;
     private HttpResponseLogger responseLogger;
-    private static final List<HeaderName> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList(
-        HeaderName.TRACEPARENT,
-        HeaderName.ACCEPT,
-        HeaderName.CACHE_CONTROL,
-        HeaderName.CONNECTION,
-        HeaderName.CONTENT_LENGTH,
-        HeaderName.CONTENT_TYPE,
-        HeaderName.DATE,
-        HeaderName.ETAG,
-        HeaderName.EXPIRES,
-        HeaderName.IF_MATCH,
-        HeaderName.IF_MODIFIED_SINCE,
-        HeaderName.IF_NONE_MATCH,
-        HeaderName.IF_UNMODIFIED_SINCE,
-        HeaderName.LAST_MODIFIED,
-        HeaderName.PRAGMA,
-        HeaderName.CLIENT_REQUEST_ID,
-        HeaderName.RETRY_AFTER,
-        HeaderName.SERVER,
-        HeaderName.TRANSFER_ENCODING,
-        HeaderName.USER_AGENT,
-        HeaderName.WWW_AUTHENTICATE
+    private static final List<HttpHeaderName> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList(
+        HttpHeaderName.TRACEPARENT,
+        HttpHeaderName.ACCEPT,
+        HttpHeaderName.CACHE_CONTROL,
+        HttpHeaderName.CONNECTION,
+        HttpHeaderName.CONTENT_LENGTH,
+        HttpHeaderName.CONTENT_TYPE,
+        HttpHeaderName.DATE,
+        HttpHeaderName.ETAG,
+        HttpHeaderName.EXPIRES,
+        HttpHeaderName.IF_MATCH,
+        HttpHeaderName.IF_MODIFIED_SINCE,
+        HttpHeaderName.IF_NONE_MATCH,
+        HttpHeaderName.IF_UNMODIFIED_SINCE,
+        HttpHeaderName.LAST_MODIFIED,
+        HttpHeaderName.PRAGMA,
+        HttpHeaderName.CLIENT_REQUEST_ID,
+        HttpHeaderName.RETRY_AFTER,
+        HttpHeaderName.SERVER,
+        HttpHeaderName.TRANSFER_ENCODING,
+        HttpHeaderName.USER_AGENT,
+        HttpHeaderName.WWW_AUTHENTICATE
     );
 
     private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList(
@@ -92,7 +92,7 @@ public final class HttpLogOptions {
      *
      * @return The list of allowed headers.
      */
-    public List<HeaderName> getAllowedHeaderNames() {
+    public List<HttpHeaderName> getAllowedHeaderNames() {
         return Collections.unmodifiableList(allowedHeaderNames);
     }
 
@@ -102,7 +102,7 @@ public final class HttpLogOptions {
      * <p>
      * This method sets the provided header names to be the allowed header names which will be logged for all HTTP
      * requests and responses, overwriting any previously configured headers. Additionally, users can use
-     * {@link HttpLogOptions#addAllowedHeaderName(HeaderName)} or {@link HttpLogOptions#getAllowedHeaderNames()} to add or
+     * {@link HttpLogOptions#addAllowedHeaderName(HttpHeaderName)} or {@link HttpLogOptions#getAllowedHeaderNames()} to add or
      * remove more headers names to the existing set of allowed header names.
      * </p>
      *
@@ -110,7 +110,7 @@ public final class HttpLogOptions {
      *
      * @return The updated HttpLogOptions object.
      */
-    public HttpLogOptions setAllowedHeaderNames(final List<HeaderName> allowedHeaderNames) {
+    public HttpLogOptions setAllowedHeaderNames(final List<HttpHeaderName> allowedHeaderNames) {
         this.allowedHeaderNames = allowedHeaderNames == null ? new ArrayList<>() : allowedHeaderNames;
 
         return this;
@@ -125,7 +125,7 @@ public final class HttpLogOptions {
      *
      * @throws NullPointerException If {@code allowedHeaderName} is {@code null}.
      */
-    public HttpLogOptions addAllowedHeaderName(final HeaderName allowedHeaderName) {
+    public HttpLogOptions addAllowedHeaderName(final HttpHeaderName allowedHeaderName) {
         Objects.requireNonNull(allowedHeaderName);
         this.allowedHeaderNames.add(allowedHeaderName);
 

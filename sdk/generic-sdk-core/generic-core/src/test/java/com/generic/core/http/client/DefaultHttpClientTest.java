@@ -3,9 +3,9 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.models.Header;
-import com.generic.core.http.models.HeaderName;
-import com.generic.core.http.models.Headers;
+import com.generic.core.http.models.HttpHeader;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
@@ -182,26 +182,26 @@ public class DefaultHttpClientTest {
     public void validateHeadersReturnAsIs() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        HeaderName singleValueHeaderName = HeaderName.fromString("singleValue");
+        HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
 
-        HeaderName multiValueHeaderName = HeaderName.fromString("Multi-value");
+        HttpHeaderName multiValueHeaderName = HttpHeaderName.fromString("Multi-value");
         final List<String> multiValueHeaderValue = Arrays.asList("value1", "value2");
 
-        Headers headers = new Headers().set(singleValueHeaderName, singleValueHeaderValue)
+        HttpHeaders headers = new HttpHeaders().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
         try (Response<?> response = client.send(
             new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
             assertEquals(200, response.getStatusCode());
 
-            Headers responseHeaders = response.getHeaders();
-            Header singleValueHeader = responseHeaders.get(singleValueHeaderName);
+            HttpHeaders responseHeaders = response.getHeaders();
+            HttpHeader singleValueHeader = responseHeaders.get(singleValueHeaderName);
 
             assertEquals(singleValueHeaderName.getCaseSensitiveName(), singleValueHeader.getName());
             assertEquals(singleValueHeaderValue, singleValueHeader.getValue());
 
-            Header multiValueHeader = responseHeaders.get(multiValueHeaderName);
+            HttpHeader multiValueHeader = responseHeaders.get(multiValueHeaderName);
 
             assertEquals(multiValueHeaderName.getCaseSensitiveName(), multiValueHeader.getName());
             assertEquals(multiValueHeaderValue.size(), multiValueHeader.getValues().size());
@@ -233,7 +233,7 @@ public class DefaultHttpClientTest {
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"));
-        request.getHeaders().set(HeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)));
+        request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)));
         request.setBody(BinaryData.fromString(contentChunk));
 
         try (Response<?> response = client.send(request)) {

@@ -18,7 +18,7 @@ public class HttpResponse<T> implements Response<T> {
         HttpResponseAccessHelper.setAccessor(HttpResponse::setValue);
     }
 
-    private final Headers headers;
+    private final HttpHeaders headers;
     private final HttpRequest request;
     private final int statusCode;
 
@@ -30,10 +30,10 @@ public class HttpResponse<T> implements Response<T> {
      *
      * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
      * @param statusCode The response status code.
-     * @param headers The response {@link Headers}.
+     * @param headers The response {@link HttpHeaders}.
      * @param value The response body.
      */
-    public HttpResponse(HttpRequest request, int statusCode, Headers headers, T value) {
+    public HttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, T value) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;
@@ -41,11 +41,11 @@ public class HttpResponse<T> implements Response<T> {
     }
 
     /**
-     * Get all response {@link Headers}.
+     * Get all response {@link HttpHeaders}.
      *
-     * @return The response {@link Headers}.
+     * @return The response {@link HttpHeaders}.
      */
-    public final Headers getHeaders() {
+    public final HttpHeaders getHeaders() {
         return headers;
     }
 

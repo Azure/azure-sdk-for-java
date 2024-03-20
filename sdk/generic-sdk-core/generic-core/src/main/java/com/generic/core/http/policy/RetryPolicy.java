@@ -3,7 +3,7 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.models.Headers;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpRetryOptions;
 import com.generic.core.http.models.Response;
@@ -37,7 +37,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     // RetryPolicy is a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(RetryPolicy.class);
     private final int maxRetries;
-    private final Function<Headers, Duration> delayFromHeaders;
+    private final Function<HttpHeaders, Duration> delayFromHeaders;
     private final Duration baseDelay;
     private final Duration maxDelay;
     private final Duration fixedDelay;
@@ -102,7 +102,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * {@code retryAfterHeader} is not null.
      */
     RetryPolicy(Duration baseDelay, Duration maxDelay, Duration fixedDelay, int maxRetries,
-                Function<Headers, Duration> delayFromHeaders, Predicate<HttpRequestRetryCondition> shouldRetryCondition) {
+                Function<HttpHeaders, Duration> delayFromHeaders, Predicate<HttpRequestRetryCondition> shouldRetryCondition) {
         if (fixedDelay == null && baseDelay == null) {
             this.baseDelay = DEFAULT_BASE_DELAY;
             this.maxDelay = DEFAULT_MAX_DELAY;
@@ -124,7 +124,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying using the well-known retry headers.
      */
-    private Duration getWellKnownRetryDelay(Headers responseHeaders, int tryCount, Supplier<OffsetDateTime> nowSupplier) {
+    private Duration getWellKnownRetryDelay(HttpHeaders responseHeaders, int tryCount, Supplier<OffsetDateTime> nowSupplier) {
         Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(responseHeaders, nowSupplier);
         if (retryDelay != null) {
             return retryDelay;
@@ -200,7 +200,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying.
      */
     private Duration determineDelayDuration(Response<?> response, int tryCount,
-                                            Function<Headers, Duration> delayFromHeaders) {
+                                            Function<HttpHeaders, Duration> delayFromHeaders) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (delayFromHeaders == null) {
             return getWellKnownRetryDelay(response.getHeaders(), tryCount, OffsetDateTime::now);

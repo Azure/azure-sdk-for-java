@@ -3,10 +3,10 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.models.HeaderName;
+import com.generic.core.http.models.HttpHeaderName;
 
 public final class HeaderSubstitution extends Substitution {
-    private final HeaderName headerName;
+    private final HttpHeaderName headerName;
 
     /**
      * Create a new Substitution.
@@ -19,7 +19,7 @@ public final class HeaderSubstitution extends Substitution {
      */
     public HeaderSubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode) {
         super(urlParameterName, methodParameterIndex, shouldEncode);
-        this.headerName = (urlParameterName == null) ? null : HeaderName.fromString(urlParameterName);
+        this.headerName = (urlParameterName == null) ? null : HttpHeaderName.fromString(urlParameterName);
     }
 
     /**
@@ -29,7 +29,7 @@ public final class HeaderSubstitution extends Substitution {
      *
      * @return The header name.
      */
-    public HeaderName getHeaderName() {
+    public HttpHeaderName getHeaderName() {
         return headerName;
     }
 }

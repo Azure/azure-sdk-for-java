@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.models.Headers;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
 import com.generic.core.util.ClientLogger;
@@ -111,7 +111,7 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
         Response<?> invoke(final Response<?> response, final Object bodyAsObject) {
             final HttpRequest httpRequest = response.getRequest();
             final int responseStatusCode = response.getStatusCode();
-            final Headers responseHeaders = response.getHeaders();
+            final HttpHeaders responseHeaders = response.getHeaders();
 
             try {
                 switch (this.parameterCount) {
@@ -136,18 +136,18 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
 
     @FunctionalInterface
     private interface ResponseFunc3 {
-        MethodType SIGNATURE = MethodType.methodType(Object.class, HttpRequest.class, int.class, Headers.class);
+        MethodType SIGNATURE = MethodType.methodType(Object.class, HttpRequest.class, int.class, HttpHeaders.class);
         MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc3.class);
 
-        Object apply(HttpRequest httpRequest, int responseStatusCode, Headers responseHeaders);
+        Object apply(HttpRequest httpRequest, int responseStatusCode, HttpHeaders responseHeaders);
     }
 
     @FunctionalInterface
     private interface ResponseFunc4 {
-        MethodType SIGNATURE = MethodType.methodType(Object.class, HttpRequest.class, int.class, Headers.class,
+        MethodType SIGNATURE = MethodType.methodType(Object.class, HttpRequest.class, int.class, HttpHeaders.class,
             Object.class);
         MethodType METHOD_TYPE = MethodType.methodType(ResponseFunc4.class);
 
-        Object apply(HttpRequest httpRequest, int responseStatusCode, Headers responseHeaders, Object body);
+        Object apply(HttpRequest httpRequest, int responseStatusCode, HttpHeaders responseHeaders, Object body);
     }
 }

@@ -4,8 +4,8 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.MockHttpResponse;
-import com.generic.core.http.models.HeaderName;
-import com.generic.core.http.models.Headers;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -50,14 +50,14 @@ class ResponseConstructorsCacheBenchMarkTestData {
 
     // 1. final VoidResponse               (Ctr_args: 3)
     public static final class VoidResponse extends HttpResponse<Void> {
-        VoidResponse(HttpRequest request, int statusCode, Headers headers, Void value) {
+        VoidResponse(HttpRequest request, int statusCode, HttpHeaders headers, Void value) {
             super(request, statusCode, headers, value);
         }
     }
 
     // 2. HttpResponse<Foo> Type         (Ctr_args: 4)
     public static final class FooSimpleResponse extends HttpResponse<Foo> {
-        FooSimpleResponse(HttpRequest request, int statusCode, Headers headers, Foo value) {
+        FooSimpleResponse(HttpRequest request, int statusCode, HttpHeaders headers, Foo value) {
             super(request, statusCode, headers, value);
         }
     }
@@ -71,8 +71,8 @@ class ResponseConstructorsCacheBenchMarkTestData {
 
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
     private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUrl());
-    private static final HeaderName HELLO = HeaderName.fromString("hello");
-    private static final Headers RESPONSE_HEADERS = new Headers().set(HELLO, "world");
+    private static final HttpHeaderName HELLO = HttpHeaderName.fromString("hello");
+    private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders().set(HELLO, "world");
     private static final int RESPONSE_STATUS_CODE = 200;
     private static final Foo FOO = new Foo().setName("foo1");
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);

@@ -13,8 +13,8 @@ import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.exception.HttpExceptionType;
-import com.generic.core.http.models.HeaderName;
-import com.generic.core.http.models.Headers;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
@@ -77,8 +77,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final List<QuerySubstitution> querySubstitutions = new ArrayList<>();
     private final List<Substitution> formSubstitutions = new ArrayList<>();
     private final List<HeaderSubstitution> headerSubstitutions = new ArrayList<>();
-    private final Headers requestHeaders = new Headers();
-    private final Headers responseHeaders = new Headers();
+    private final HttpHeaders requestHeaders = new HttpHeaders();
+    private final HttpHeaders responseHeaders = new HttpHeaders();
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
     private final Type bodyJavaType;
@@ -142,10 +142,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         if (!headerValue.isEmpty()) {
                             if (headerValue.contains(",")) {
                                 // There are multiple values for this header, so we split them out.
-                                this.requestHeaders.set(HeaderName.fromString(headerName),
+                                this.requestHeaders.set(HttpHeaderName.fromString(headerName),
                                     Arrays.asList(headerValue.split(",")));
                             } else {
-                                this.requestHeaders.set(HeaderName.fromString(headerName), headerValue);
+                                this.requestHeaders.set(HttpHeaderName.fromString(headerName), headerValue);
                             }
                         }
                     }
@@ -364,13 +364,13 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
     /**
      * Sets the headers that have been added to this value based on the provided method arguments into the passed
-     * {@link Headers}.
+     * {@link HttpHeaders}.
      *
      * @param swaggerMethodArguments The arguments that will be used to create the headers' values.
-     * @param headers The {@link Headers} where the header values will be set.
+     * @param headers The {@link HttpHeaders} where the header values will be set.
      * @param serializer {@link ObjectSerializer} that is used to serialize the header values.
      */
-    public void setHeaders(Object[] swaggerMethodArguments, Headers headers, ObjectSerializer serializer) {
+    public void setHeaders(Object[] swaggerMethodArguments, HttpHeaders headers, ObjectSerializer serializer) {
         headers.setAllHeaders(requestHeaders);
 
         if (swaggerMethodArguments == null) {
@@ -393,7 +393,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
                         final String headerValue = serialize(serializer, headerCollectionEntry.getValue());
 
                         if (headerValue != null) {
-                            headers.set(HeaderName.fromString(headerName), headerValue);
+                            headers.set(HttpHeaderName.fromString(headerName), headerValue);
                         }
                     }
                 } else {

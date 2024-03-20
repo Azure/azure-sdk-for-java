@@ -3,11 +3,12 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.http.models.HeaderName;
-import com.generic.core.http.models.Headers;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.util.binarydata.BinaryData;
+import okhttp3.Headers;
 import okhttp3.ResponseBody;
 
 /**
@@ -39,13 +40,13 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
     }
 
     /**
-     * Creates {@link Headers Generic Core's headers} from {@link okhttp3.Headers OkHttp headers}.
+     * Creates {@link HttpHeaders Generic Core's headers} from {@link Headers OkHttp headers}.
      *
-     * @param okHttpHeaders {@link okhttp3.Headers OkHttp headers}.
+     * @param okHttpHeaders {@link Headers OkHttp headers}.
      *
-     * @return {@link Headers Generic Core's headers}.
+     * @return {@link HttpHeaders Generic Core's headers}.
      */
-    static Headers fromOkHttpHeaders(okhttp3.Headers okHttpHeaders) {
+    static HttpHeaders fromOkHttpHeaders(Headers okHttpHeaders) {
         /*
          * While OkHttp's Headers class offers a method which converts the headers into a Map<String, List<String>>,
          * which matches one of the setters in our HttpHeaders, the method implicitly lower cases header names while
@@ -53,7 +54,7 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
          * case-insensitive per their definition RFC but this could cause issues when/if the headers are used in
          * serialization or deserialization as casing may matter.
          */
-        Headers httpHeaders = new Headers((int) (okHttpHeaders.size() / 0.75F));
+        HttpHeaders httpHeaders = new HttpHeaders((int) (okHttpHeaders.size() / 0.75F));
 
         /*
          * Use OkHttp's Headers.forEach() instead of the names and values approach. forEach() allows for a single
@@ -62,7 +63,7 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
          * Overall, this is much better performing as almost all headers will have a single value.
          */
         okHttpHeaders.forEach(nameValuePair ->
-            httpHeaders.add(HeaderName.fromString(nameValuePair.getFirst()), nameValuePair.getSecond()));
+            httpHeaders.add(HttpHeaderName.fromString(nameValuePair.getFirst()), nameValuePair.getSecond()));
 
         return httpHeaders;
     }

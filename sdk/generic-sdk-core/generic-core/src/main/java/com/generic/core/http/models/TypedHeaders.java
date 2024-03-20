@@ -9,13 +9,13 @@ package com.generic.core.http.models;
  */
 public interface TypedHeaders<T extends TypedHeaders<T>> {
     /**
-     * Creates a new instance of the implementing class from the provided {@link Headers}.
+     * Creates a new instance of the implementing class from the provided {@link HttpHeaders}.
      *
      * @param <T> The type of the implementing class.
-     * @param headers The {@link Headers} to create an instance of the implementing class from.
+     * @param headers The {@link HttpHeaders} to create an instance of the implementing class from.
      * @return A new instance of the implementing class.
      */
-    static <T> T fromHeaders(Headers headers) {
+    static <T> T fromHeaders(HttpHeaders headers) {
         throw new UnsupportedOperationException("Classes implementing TypedHeaders must implement this method.");
     }
 }

@@ -3,7 +3,7 @@
 
 package com.generic.core.http;
 
-import com.generic.core.http.models.Headers;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -39,7 +39,7 @@ public class RestProxyResponseConstructionBenchmark {
     private static final ResponseConstructorsCache CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
 
     private static final HttpRequest REQUEST = new HttpRequest(HttpMethod.GET, "https://example.com");
-    private static final Headers HEADERS = new Headers();
+    private static final HttpHeaders HEADERS = new HttpHeaders();
 
     private static final Class<? extends Response<?>> RESPONSE_TYPE =
         (Class<? extends Response<?>>) TypeUtil.getRawClass(TypeUtil.createParameterizedType(HttpResponse.class,

@@ -3,9 +3,9 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.models.Header;
-import com.generic.core.http.models.HeaderName;
-import com.generic.core.http.models.Headers;
+import com.generic.core.http.models.HttpHeader;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpLogOptions;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -28,8 +28,8 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.generic.core.http.models.HeaderName.CLIENT_REQUEST_ID;
-import static com.generic.core.http.models.HeaderName.TRACEPARENT;
+import static com.generic.core.http.models.HttpHeaderName.CLIENT_REQUEST_ID;
+import static com.generic.core.http.models.HttpHeaderName.TRACEPARENT;
 
 /**
  * The pipeline policy that handles logging of HTTP requests and responses.
@@ -40,7 +40,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
     private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
-    private final List<HeaderName> allowedHeaderNames;
+    private final List<HttpHeaderName> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
     private final HttpRequestLogger requestLogger;
     private final HttpResponseLogger responseLogger;
@@ -156,7 +156,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return;
             }
 
-            String contentType = request.getHeaders().getValue(HeaderName.CONTENT_TYPE);
+            String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             long contentLength = getContentLength(logger, request.getHeaders());
 
             logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLength);
@@ -195,7 +195,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         private void logContentLength(Response<?> response, ClientLogger.LoggingEventBuilder logBuilder) {
-            String contentLengthString = response.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
+            String contentLengthString = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
 
             if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
                 logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, contentLengthString);
@@ -217,7 +217,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             logHeaders(logger, response, logBuilder);
 
             if (httpLogDetailLevel.shouldLogBody()) {
-                String contentTypeHeader = response.getHeaders().getValue(HeaderName.CONTENT_TYPE);
+                String contentTypeHeader = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
                 long contentLength = getContentLength(logger, response.getHeaders());
 
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
@@ -293,11 +293,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param sb StringBuilder that is generating the log message.
      * @param logLevel Log level the environment is configured to use.
      */
-    private static void addHeadersToLogMessage(List<HeaderName> allowedHeaderNames, Headers headers,
+    private static void addHeadersToLogMessage(List<HttpHeaderName> allowedHeaderNames, HttpHeaders headers,
                                                ClientLogger.LoggingEventBuilder logBuilder) {
-        for (Header header : headers) {
+        for (HttpHeader header : headers) {
             String headerName = header.getName();
-            String headerValue = allowedHeaderNames.contains(HeaderName.fromString(headerName))
+            String headerValue = allowedHeaderNames.contains(HttpHeaderName.fromString(headerName))
                 ? header.getValue() : REDACTED_PLACEHOLDER;
             logBuilder.addKeyValue(headerName, headerValue);
         }
@@ -310,10 +310,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param headers HTTP headers that are checked for containing Content-Length.
      * @return
      */
-    private static long getContentLength(ClientLogger logger, Headers headers) {
+    private static long getContentLength(ClientLogger logger, HttpHeaders headers) {
         long contentLength = 0;
 
-        String contentLengthString = headers.getValue(HeaderName.CONTENT_LENGTH);
+        String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
 
         if (CoreUtils.isNullOrEmpty(contentLengthString)) {
             return contentLength;
