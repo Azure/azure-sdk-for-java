@@ -9,8 +9,10 @@ import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
+import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
+import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.callautomation.models.events.SendDtmfTonesCompleted;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -22,7 +24,6 @@ import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -39,7 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
-
+    //@DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -106,7 +107,12 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // wait for callConnected
             CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnected);
-            
+
+            // play media to all participants
+            CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
+            callMediaAsync.playToAll(new FileSource().setUrl(MEDIA_SOURCE)).block();
+            PlayCompleted playCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(playCompleted);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         } finally {
@@ -121,6 +127,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         }
     }
 
+    //@DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -133,7 +140,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
          * 2. Create a call from source to one ACS target.
          * 3. Get updated call properties and check for the connected state.
          * 4. Start continuous Dtmf detection on source, expect no failure(exception)
-         * 5. Send Dtmf tones to target, expect SendDtmfCompleted event and no failure(exception)
+         * 5. Send Dtmf tones to target, expect SendDtmfTonesCompleted event and no failure(exception)
          * 6. Stop continuous Dtmf detection on source, expect ContinuousDtmfDetectionStopped event and no failure(exception)
          * 7. Hang up the call.
          */
@@ -145,8 +152,8 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         List<CallConnectionAsync> callDestructors = new ArrayList<>();
 
         try {
-            CommunicationIdentifier caller;
-            CommunicationIdentifier receiver;
+            PhoneNumberIdentifier caller;
+            PhoneNumberIdentifier receiver;
             // when in playback, use Sanitized values
             if (getTestMode() == TestMode.PLAYBACK) {
                 caller = new PhoneNumberIdentifier("Sanitized");
@@ -169,7 +176,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             String uniqueId = serviceBusWithNewCall(caller, receiver);
 
             // create a call
-            CallInvite invite = new CallInvite((PhoneNumberIdentifier) receiver, (PhoneNumberIdentifier) caller);
+            CallInvite invite = new CallInvite(receiver, caller);
             CreateCallResult createCallResult = client.createCall(invite, DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).block();
 
             // validate the call
@@ -191,6 +198,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
+            String targetConnectionId = answerCallResult.getCallConnectionProperties().getCallConnectionId();
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
@@ -205,9 +213,9 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             // send Dtmf tones to target
             callMediaAsync.sendDtmfTones(Stream.of(DtmfTone.A, DtmfTone.B).collect(Collectors.toList()), receiver).block();
 
-            // validate SendDtmfCompleted
-            SendDtmfTonesCompleted sendDtmfCompleted = waitForEvent(SendDtmfTonesCompleted.class, callerConnectionId, Duration.ofSeconds(20));
-            assertNotNull(sendDtmfCompleted);
+            // validate SendDtmfTonesCompleted
+            SendDtmfTonesCompleted sendDtmfTonesCompleted = waitForEvent(SendDtmfTonesCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(sendDtmfTonesCompleted);
 
             // stop continuous dtmf
             callMediaAsync.stopContinuousDtmfRecognition(receiver).block();

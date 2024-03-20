@@ -51,9 +51,11 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -566,6 +568,8 @@ public final class CallMediaAsync {
             return contentsInternal.sendDtmfTonesWithResponseAsync(
                 callConnectionId,
                 requestInternal,
+                UUID.randomUUID(),
+                OffsetDateTime.now(),
                 context
             ).map(response -> new SimpleResponse<>(response, SendDtmfTonesResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException e) {

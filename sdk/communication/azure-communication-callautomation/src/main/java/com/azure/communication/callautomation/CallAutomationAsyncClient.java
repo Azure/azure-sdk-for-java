@@ -42,8 +42,10 @@ import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
+import java.time.OffsetDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -162,6 +164,8 @@ public final class CallAutomationAsyncClient {
             context = context == null ? Context.NONE : context;
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
                     createCallRequestInternal,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
@@ -266,6 +270,8 @@ public final class CallAutomationAsyncClient {
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
                     request,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
@@ -319,8 +325,10 @@ public final class CallAutomationAsyncClient {
                 .setTarget(CommunicationIdentifierConverter.convert(redirectCallOptions.getTargetParticipant().getTargetParticipant()));
 
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(
-                request,
-                context);
+                    request,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
+                    context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -365,6 +373,8 @@ public final class CallAutomationAsyncClient {
 
             return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(
                     request,
+                    UUID.randomUUID(),
+                    OffsetDateTime.now(),
                     context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

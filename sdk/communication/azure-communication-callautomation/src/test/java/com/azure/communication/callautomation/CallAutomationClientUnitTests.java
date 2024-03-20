@@ -3,10 +3,12 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallRejectReason;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -33,7 +35,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         CallAutomationClient callAutomationClient = getCallAutomationClientWithSourceIdentity(caller, new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 201)
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 201)
             )));
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
 
@@ -43,16 +45,53 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    public void createCallWithResponse() {
+        CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null), 201)
+            )));
+        CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
+        List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
+        CreateGroupCallOptions callOptions = new CreateGroupCallOptions(targets, CALL_CALLBACK_URL);
+        callOptions.setOperationContext(CALL_SUBJECT);
+
+        Response<CreateCallResult> createCallResult = callAutomationClient.createGroupCallWithResponse(callOptions, Context.NONE);
+
+        assertNotNull(createCallResult);
+        assertEquals(201, createCallResult.getStatusCode());
+        assertNotNull(createCallResult.getValue());
+    }
+
+    @Test
     public void answerCall() {
         CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
-                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID, DATA_SUBSCRIPTION_ID), 200)
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 200)
             )));
 
         AnswerCallResult answerCallResult = callAutomationClient.answerCall(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL);
 
         assertNotNull(answerCallResult);
+    }
+
+    @Test
+    public void answerCallWithResponse() {
+        CallAutomationClient callAutomationClient = getCallAutomationClient(new ArrayList<>(
+            Collections.singletonList(
+                new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
+                    CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 200)
+            )));
+
+        AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL);
+
+        Response<AnswerCallResult> answerCallResult = callAutomationClient.answerCallWithResponse(
+            answerCallOptions, Context.NONE);
+
+        assertNotNull(answerCallResult);
+        assertEquals(200, answerCallResult.getStatusCode());
+        assertNotNull(answerCallResult.getValue());
     }
 
     @Test
