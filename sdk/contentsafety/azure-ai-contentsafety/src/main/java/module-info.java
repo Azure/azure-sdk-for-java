@@ -4,7 +4,9 @@
 
 module com.azure.ai.contentsafety {
     requires transitive com.azure.core;
+
     exports com.azure.ai.contentsafety;
     exports com.azure.ai.contentsafety.models;
+
     opens com.azure.ai.contentsafety.models to com.azure.core, com.fasterxml.jackson.databind;
 }
