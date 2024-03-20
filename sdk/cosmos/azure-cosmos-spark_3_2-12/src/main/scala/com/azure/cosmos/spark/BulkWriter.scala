@@ -460,7 +460,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
                 })
               val requestOperationContext = ReadManyOperation.operationContext
               if (shouldRetry(e.getStatusCode, e.getSubStatusCode, requestOperationContext)) {
-                  log.logWarning(s"for itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}], " +
+                  log.logInfo(s"for itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}], " +
                       s"encountered status code '${e.getStatusCode}:${e.getSubStatusCode}' in read many, will retry! " +
                       s"attemptNumber=${requestOperationContext.attemptNumber}, exceptionMessage=${e.getMessage},  " +
                       s"Context: {${operationContext.toString}} $getThreadInfo")
