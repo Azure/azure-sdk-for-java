@@ -32,46 +32,30 @@ public final class ConnectedEnvironmentsCheckNameAvailabilityWithResponseMockTes
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"mbnkb\"}";
+        String responseStr = "{\"nameAvailable\":false,\"reason\":\"Invalid\",\"message\":\"jtfvpndpmiljpn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ContainerAppsApiManager manager =
-            ContainerAppsApiManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ContainerAppsApiManager manager = ContainerAppsApiManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CheckNameAvailabilityResponse response =
-            manager
-                .connectedEnvironments()
-                .checkNameAvailabilityWithResponse(
-                    "yqo",
-                    "mpqoxw",
-                    new CheckNameAvailabilityRequest().withName("fdbxiqxeiiqbim").withType("mwwinhehfqpofv"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        CheckNameAvailabilityResponse response = manager.connectedEnvironments()
+            .checkNameAvailabilityWithResponse("zregzgyufutrwpw", "ryekzkd",
+                new CheckNameAvailabilityRequest().withName("eotta").withType("yos"), com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals(CheckNameAvailabilityReason.ALREADY_EXISTS, response.reason());
-        Assertions.assertEquals("mbnkb", response.message());
+        Assertions.assertEquals(false, response.nameAvailable());
+        Assertions.assertEquals(CheckNameAvailabilityReason.INVALID, response.reason());
+        Assertions.assertEquals("jtfvpndpmiljpn", response.message());
     }
 }

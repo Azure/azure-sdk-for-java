@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sticky Sessions for Single Revision Mode. */
+/**
+ * Sticky Sessions for Single Revision Mode.
+ */
 @Fluent
 public final class IngressStickySessions {
     /*
@@ -16,13 +18,15 @@ public final class IngressStickySessions {
     @JsonProperty(value = "affinity")
     private Affinity affinity;
 
-    /** Creates an instance of IngressStickySessions class. */
+    /**
+     * Creates an instance of IngressStickySessions class.
+     */
     public IngressStickySessions() {
     }
 
     /**
      * Get the affinity property: Sticky Session Affinity.
-     *
+     * 
      * @return the affinity value.
      */
     public Affinity affinity() {
@@ -31,7 +35,7 @@ public final class IngressStickySessions {
 
     /**
      * Set the affinity property: Sticky Session Affinity.
-     *
+     * 
      * @param affinity the affinity value to set.
      * @return the IngressStickySessions object itself.
      */
@@ -42,7 +46,7 @@ public final class IngressStickySessions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Current running State of the job. */
+/**
+ * Current running State of the job.
+ */
 public final class JobExecutionRunningState extends ExpandableStringEnum<JobExecutionRunningState> {
-    /** Static value Running for JobExecutionRunningState. */
+    /**
+     * Static value Running for JobExecutionRunningState.
+     */
     public static final JobExecutionRunningState RUNNING = fromString("Running");
 
-    /** Static value Processing for JobExecutionRunningState. */
+    /**
+     * Static value Processing for JobExecutionRunningState.
+     */
     public static final JobExecutionRunningState PROCESSING = fromString("Processing");
 
-    /** Static value Stopped for JobExecutionRunningState. */
+    /**
+     * Static value Stopped for JobExecutionRunningState.
+     */
     public static final JobExecutionRunningState STOPPED = fromString("Stopped");
 
-    /** Static value Degraded for JobExecutionRunningState. */
+    /**
+     * Static value Degraded for JobExecutionRunningState.
+     */
     public static final JobExecutionRunningState DEGRADED = fromString("Degraded");
 
-    /** Static value Failed for JobExecutionRunningState. */
+    /**
+     * Static value Failed for JobExecutionRunningState.
+     */
     public static final JobExecutionRunningState FAILED = fromString("Failed");
 
-    /** Static value Unknown for JobExecutionRunningState. */
+    /**
+     * Static value Unknown for JobExecutionRunningState.
+     */
     public static final JobExecutionRunningState UNKNOWN = fromString("Unknown");
 
-    /** Static value Succeeded for JobExecutionRunningState. */
+    /**
+     * Static value Succeeded for JobExecutionRunningState.
+     */
     public static final JobExecutionRunningState SUCCEEDED = fromString("Succeeded");
 
     /**
      * Creates a new instance of JobExecutionRunningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class JobExecutionRunningState extends ExpandableStringEnum<JobExec
 
     /**
      * Creates or finds a JobExecutionRunningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding JobExecutionRunningState.
      */
@@ -53,7 +69,7 @@ public final class JobExecutionRunningState extends ExpandableStringEnum<JobExec
 
     /**
      * Gets known JobExecutionRunningState values.
-     *
+     * 
      * @return known JobExecutionRunningState values.
      */
     public static Collection<JobExecutionRunningState> values() {

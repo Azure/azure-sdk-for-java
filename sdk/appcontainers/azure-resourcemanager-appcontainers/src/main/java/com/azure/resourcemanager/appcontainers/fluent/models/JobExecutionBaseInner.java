@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container App's Job execution name. */
+/**
+ * Container App's Job execution name.
+ */
 @Fluent
 public final class JobExecutionBaseInner {
     /*
@@ -22,13 +24,15 @@ public final class JobExecutionBaseInner {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of JobExecutionBaseInner class. */
+    /**
+     * Creates an instance of JobExecutionBaseInner class.
+     */
     public JobExecutionBaseInner() {
     }
 
     /**
      * Get the name property: Job execution name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class JobExecutionBaseInner {
 
     /**
      * Set the name property: Job execution name.
-     *
+     * 
      * @param name the name value to set.
      * @return the JobExecutionBaseInner object itself.
      */
@@ -48,7 +52,7 @@ public final class JobExecutionBaseInner {
 
     /**
      * Get the id property: Job execution Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -57,7 +61,7 @@ public final class JobExecutionBaseInner {
 
     /**
      * Set the id property: Job execution Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the JobExecutionBaseInner object itself.
      */
@@ -68,7 +72,7 @@ public final class JobExecutionBaseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

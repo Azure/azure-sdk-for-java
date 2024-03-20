@@ -5,12 +5,15 @@
 package com.azure.resourcemanager.appcontainers.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.appcontainers.models.DaprComponentServiceBinding;
 import com.azure.resourcemanager.appcontainers.models.DaprMetadata;
 import com.azure.resourcemanager.appcontainers.models.Secret;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Dapr Component resource specific properties. */
+/**
+ * Dapr Component resource specific properties.
+ */
 @Fluent
 public final class DaprComponentProperties {
     /*
@@ -61,13 +64,21 @@ public final class DaprComponentProperties {
     @JsonProperty(value = "scopes")
     private List<String> scopes;
 
-    /** Creates an instance of DaprComponentProperties class. */
+    /*
+     * List of container app services that are bound to the Dapr component
+     */
+    @JsonProperty(value = "serviceComponentBind")
+    private List<DaprComponentServiceBinding> serviceComponentBind;
+
+    /**
+     * Creates an instance of DaprComponentProperties class.
+     */
     public DaprComponentProperties() {
     }
 
     /**
      * Get the componentType property: Component type.
-     *
+     * 
      * @return the componentType value.
      */
     public String componentType() {
@@ -76,7 +87,7 @@ public final class DaprComponentProperties {
 
     /**
      * Set the componentType property: Component type.
-     *
+     * 
      * @param componentType the componentType value to set.
      * @return the DaprComponentProperties object itself.
      */
@@ -87,7 +98,7 @@ public final class DaprComponentProperties {
 
     /**
      * Get the version property: Component version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -96,7 +107,7 @@ public final class DaprComponentProperties {
 
     /**
      * Set the version property: Component version.
-     *
+     * 
      * @param version the version value to set.
      * @return the DaprComponentProperties object itself.
      */
@@ -107,7 +118,7 @@ public final class DaprComponentProperties {
 
     /**
      * Get the ignoreErrors property: Boolean describing if the component errors are ignores.
-     *
+     * 
      * @return the ignoreErrors value.
      */
     public Boolean ignoreErrors() {
@@ -116,7 +127,7 @@ public final class DaprComponentProperties {
 
     /**
      * Set the ignoreErrors property: Boolean describing if the component errors are ignores.
-     *
+     * 
      * @param ignoreErrors the ignoreErrors value to set.
      * @return the DaprComponentProperties object itself.
      */
@@ -127,7 +138,7 @@ public final class DaprComponentProperties {
 
     /**
      * Get the initTimeout property: Initialization timeout.
-     *
+     * 
      * @return the initTimeout value.
      */
     public String initTimeout() {
@@ -136,7 +147,7 @@ public final class DaprComponentProperties {
 
     /**
      * Set the initTimeout property: Initialization timeout.
-     *
+     * 
      * @param initTimeout the initTimeout value to set.
      * @return the DaprComponentProperties object itself.
      */
@@ -147,7 +158,7 @@ public final class DaprComponentProperties {
 
     /**
      * Get the secrets property: Collection of secrets used by a Dapr component.
-     *
+     * 
      * @return the secrets value.
      */
     public List<Secret> secrets() {
@@ -156,7 +167,7 @@ public final class DaprComponentProperties {
 
     /**
      * Set the secrets property: Collection of secrets used by a Dapr component.
-     *
+     * 
      * @param secrets the secrets value to set.
      * @return the DaprComponentProperties object itself.
      */
@@ -167,7 +178,7 @@ public final class DaprComponentProperties {
 
     /**
      * Get the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
-     *
+     * 
      * @return the secretStoreComponent value.
      */
     public String secretStoreComponent() {
@@ -176,7 +187,7 @@ public final class DaprComponentProperties {
 
     /**
      * Set the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
-     *
+     * 
      * @param secretStoreComponent the secretStoreComponent value to set.
      * @return the DaprComponentProperties object itself.
      */
@@ -187,7 +198,7 @@ public final class DaprComponentProperties {
 
     /**
      * Get the metadata property: Component metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public List<DaprMetadata> metadata() {
@@ -196,7 +207,7 @@ public final class DaprComponentProperties {
 
     /**
      * Set the metadata property: Component metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the DaprComponentProperties object itself.
      */
@@ -207,7 +218,7 @@ public final class DaprComponentProperties {
 
     /**
      * Get the scopes property: Names of container apps that can use this Dapr component.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -216,7 +227,7 @@ public final class DaprComponentProperties {
 
     /**
      * Set the scopes property: Names of container apps that can use this Dapr component.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the DaprComponentProperties object itself.
      */
@@ -226,8 +237,28 @@ public final class DaprComponentProperties {
     }
 
     /**
+     * Get the serviceComponentBind property: List of container app services that are bound to the Dapr component.
+     * 
+     * @return the serviceComponentBind value.
+     */
+    public List<DaprComponentServiceBinding> serviceComponentBind() {
+        return this.serviceComponentBind;
+    }
+
+    /**
+     * Set the serviceComponentBind property: List of container app services that are bound to the Dapr component.
+     * 
+     * @param serviceComponentBind the serviceComponentBind value to set.
+     * @return the DaprComponentProperties object itself.
+     */
+    public DaprComponentProperties withServiceComponentBind(List<DaprComponentServiceBinding> serviceComponentBind) {
+        this.serviceComponentBind = serviceComponentBind;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -236,6 +267,9 @@ public final class DaprComponentProperties {
         }
         if (metadata() != null) {
             metadata().forEach(e -> e.validate());
+        }
+        if (serviceComponentBind() != null) {
+            serviceComponentBind().forEach(e -> e.validate());
         }
     }
 }

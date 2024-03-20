@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentProvis
 import com.azure.resourcemanager.appcontainers.models.CustomDomainConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** ConnectedEnvironment resource specific properties. */
+/**
+ * ConnectedEnvironment resource specific properties.
+ */
 @Fluent
 public final class ConnectedEnvironmentProperties {
     /*
@@ -48,13 +50,15 @@ public final class ConnectedEnvironmentProperties {
     @JsonProperty(value = "customDomainConfiguration")
     private CustomDomainConfiguration customDomainConfiguration;
 
-    /** Creates an instance of ConnectedEnvironmentProperties class. */
+    /**
+     * Creates an instance of ConnectedEnvironmentProperties class.
+     */
     public ConnectedEnvironmentProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the Kubernetes Environment.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ConnectedEnvironmentProvisioningState provisioningState() {
@@ -63,7 +67,7 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Get the deploymentErrors property: Any errors that occurred during deployment or deployment validation.
-     *
+     * 
      * @return the deploymentErrors value.
      */
     public String deploymentErrors() {
@@ -72,7 +76,7 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Get the defaultDomain property: Default Domain Name for the cluster.
-     *
+     * 
      * @return the defaultDomain value.
      */
     public String defaultDomain() {
@@ -81,7 +85,7 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Get the staticIp property: Static IP of the connectedEnvironment.
-     *
+     * 
      * @return the staticIp value.
      */
     public String staticIp() {
@@ -90,7 +94,7 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Set the staticIp property: Static IP of the connectedEnvironment.
-     *
+     * 
      * @param staticIp the staticIp value to set.
      * @return the ConnectedEnvironmentProperties object itself.
      */
@@ -100,9 +104,9 @@ public final class ConnectedEnvironmentProperties {
     }
 
     /**
-     * Get the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
-     * Service communication telemetry.
-     *
+     * Get the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service
+     * to Service communication telemetry.
+     * 
      * @return the daprAIConnectionString value.
      */
     public String daprAIConnectionString() {
@@ -110,9 +114,9 @@ public final class ConnectedEnvironmentProperties {
     }
 
     /**
-     * Set the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service to
-     * Service communication telemetry.
-     *
+     * Set the daprAIConnectionString property: Application Insights connection string used by Dapr to export Service
+     * to Service communication telemetry.
+     * 
      * @param daprAIConnectionString the daprAIConnectionString value to set.
      * @return the ConnectedEnvironmentProperties object itself.
      */
@@ -123,7 +127,7 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Get the customDomainConfiguration property: Custom domain configuration for the environment.
-     *
+     * 
      * @return the customDomainConfiguration value.
      */
     public CustomDomainConfiguration customDomainConfiguration() {
@@ -132,19 +136,19 @@ public final class ConnectedEnvironmentProperties {
 
     /**
      * Set the customDomainConfiguration property: Custom domain configuration for the environment.
-     *
+     * 
      * @param customDomainConfiguration the customDomainConfiguration value to set.
      * @return the ConnectedEnvironmentProperties object itself.
      */
-    public ConnectedEnvironmentProperties withCustomDomainConfiguration(
-        CustomDomainConfiguration customDomainConfiguration) {
+    public ConnectedEnvironmentProperties
+        withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration) {
         this.customDomainConfiguration = customDomainConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
