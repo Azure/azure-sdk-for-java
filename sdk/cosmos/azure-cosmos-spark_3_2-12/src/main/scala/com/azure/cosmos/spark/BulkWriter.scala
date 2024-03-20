@@ -156,15 +156,12 @@ private class BulkWriter(container: CosmosAsyncContainer,
 
   writeConfig.maxMicroBatchSize match {
     case Some(customMaxMicroBatchSize) =>
-      ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-        .getCosmosBulkExecutionOptionsAccessor
-        .setMaxMicroBatchSize(
-          cosmosBulkExecutionOptions,
-          Math.max(
-            1,
-            Math.min(customMaxMicroBatchSize, BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST)
-          )
-        )
+     cosmosBulkExecutionOptions.setMaxMicroBatchSize(
+       Math.max(
+        1,
+        Math.min(customMaxMicroBatchSize, BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST)
+       )
+     )
     case None =>
   }
 

@@ -127,11 +127,11 @@ public final class CosmosBulkExecutionOptions {
         return this;
     }
 
-    int getMaxMicroBatchSize() {
+    public int getMaxMicroBatchSize() {
         return maxMicroBatchSize;
     }
 
-    CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
+    public CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
     }
@@ -440,11 +440,6 @@ public final class CosmosBulkExecutionOptions {
                     }
 
                     return cosmosBulkExecutionOptions.getMaxMicroBatchSize();
-                }
-
-                @Override
-                public void setMaxMicroBatchSize(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, int maxMicroBatchSize) {
-                    cosmosBulkExecutionOptions.setMaxMicroBatchSize(maxMicroBatchSize);
                 }
 
                 @Override
