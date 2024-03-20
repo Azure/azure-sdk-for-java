@@ -5,7 +5,6 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
@@ -14,6 +13,7 @@ import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Code snippets for {@link DataLakeDirectoryClient}
@@ -52,7 +52,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
      * Code snippets for {@link DataLakeDirectoryClient#delete()},
      * {@link DataLakeDirectoryClient#deleteWithResponse(boolean, DataLakeRequestConditions, Duration, Context)},
      * {@link DataLakeDirectoryClient#deleteRecursively()} and
-     * {@link DataLakeDirectoryClient#deleteRecursivelyWithResponse(DataLakeRequestConditions, Duration, Context)}
+     * {@link DataLakeDirectoryClient#deleteRecursivelyWithResponse(DataLakeRequestConditions, Duration, Context)
      */
     public void deleteCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeDirectoryClient.delete
@@ -126,7 +126,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String umask = "umask";
         String owner = "rwx";
         String group = "r--";
-        String leaseId = CoreUtils.randomUuid().toString();
+        String leaseId = UUID.randomUUID().toString();
         Integer duration = 15;
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)
@@ -208,7 +208,7 @@ public class DataLakeDirectoryClientJavaDocSamples {
         String umask = "umask";
         String owner = "rwx";
         String group = "r--";
-        String leaseId = CoreUtils.randomUuid().toString();
+        String leaseId = UUID.randomUUID().toString();
         Integer duration = 15;
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
             .setPermissions(permissions)

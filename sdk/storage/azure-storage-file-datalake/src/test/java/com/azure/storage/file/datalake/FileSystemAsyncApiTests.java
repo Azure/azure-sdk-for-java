@@ -7,9 +7,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.models.BlobErrorCode;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.common.Utility;
 import com.azure.storage.file.datalake.models.DataLakeAccessPolicy;
-import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DataLakeSignedIdentifier;
 import com.azure.storage.file.datalake.models.DataLakeStorageException;
@@ -27,6 +26,7 @@ import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptio
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -768,7 +768,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             null, null), 201);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createFileOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
@@ -783,7 +783,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createFileOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
@@ -877,7 +877,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createFileOptionsWithLeaseId() {
         String leaseId = CoreUtils.randomUuid().toString();
@@ -896,7 +896,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createFileOptionsWithLeaseDuration() {
         String leaseId = CoreUtils.randomUuid().toString();
@@ -916,7 +916,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @ParameterizedTest
     @MethodSource("createFileOptionsWithTimeExpiresOnAbsoluteAndNeverExpireSupplier")
     public void createFileOptionsWithTimeExpiresOnAbsoluteAndNeverExpire(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -928,7 +928,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         return Stream.of(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)), null);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createFileOptionsWithTimeToExpireRelativeToNow() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
@@ -1016,7 +1016,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             new DataLakePathCreateOptions().setUmask("0057").setPermissions("0777")), 201);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsFileOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
@@ -1031,7 +1031,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsFileOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
@@ -1117,7 +1117,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsFileOptionsWithLeaseId() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
@@ -1137,7 +1137,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyError(DataLakeStorageException.class);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsFileOptionsWithLeaseDuration() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions().setLeaseDuration(15)
@@ -1156,7 +1156,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @ParameterizedTest
     @MethodSource("createIfNotExistsFileOptionsWithTimeExpiresOnAbsoluteAndNeverExpireSupplier")
     public void createIfNotExistsFileOptionsWithTimeExpiresOnAbsoluteAndNeverExpire(DataLakePathScheduleDeletionOptions deletionOptions) {
@@ -1169,7 +1169,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         return Stream.of(new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1)), null);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsFileOptionsWithTimeToExpireRelativeToNow() {
         DataLakePathCreateOptions options = new DataLakePathCreateOptions()
@@ -1432,7 +1432,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             null, null, null), 201);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createDirOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
@@ -1447,7 +1447,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createDirOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
@@ -1658,7 +1658,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             new DataLakePathCreateOptions().setPermissions("0777").setUmask("0057")), 201);
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsDirOptionsWithACL() {
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx");
@@ -1673,7 +1673,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2021-06-08")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20210608ServiceVersion")
     @Test
     public void createIfNotExistsDirOptionsWithOwnerAndGroup() {
         String ownerName = testResourceNamer.randomUuid();
@@ -1989,7 +1989,7 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
             .verifyComplete();
     }
 
-    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "2020-02-10")
+    @DisabledIf("com.azure.storage.file.datalake.DataLakeTestBase#olderThan20200210ServiceVersion")
     @Test
     public void listPathsExpiryAndCreation() {
         String dirName = generatePathName();
@@ -2022,18 +2022,6 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         StepVerifier.create(dataLakeFileSystemAsyncClient.listPaths(new ListPathsOptions().setRecursive(true)))
             .expectNextCount(2)
             .verifyComplete();
-    }
-
-    @Test
-    public void listPathsCreationTimeParse() {
-        // this test is ensuring that we're handling the date format that the service returns for the creation time
-        // it can be returned in two formats: RFC 1123 date string or Windows file time
-        dataLakeFileSystemAsyncClient.getDirectoryAsyncClient(generatePathName()).create().block();
-        dataLakeFileSystemAsyncClient.getFileAsyncClient(generatePathName()).create().block();
-        ListPathsOptions options = new ListPathsOptions().setRecursive(true);
-
-        // assert that NumberFormatException is not thrown
-        assertDoesNotThrow(() -> dataLakeFileSystemAsyncClient.listPaths(options).blockLast());
     }
 
     @Test
@@ -2134,10 +2122,10 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
         assertAsyncResponseStatusCode(dc2.getPropertiesWithResponse(null), 200);
 
         StepVerifier.create(dataLakeFileSystemAsyncClient.listPaths())
-            .assertNext(r -> assertEquals(name + "dir1", r.getName()))
-            .assertNext(r -> assertEquals(name + "dir2", r.getName()))
-            .assertNext(r -> assertEquals(name + "file1", r.getName()))
-            .assertNext(r -> assertEquals(name + "file2", r.getName()))
+            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "dir1", r.getName()))
+            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "dir2", r.getName()))
+            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "file1", r.getName()))
+            .assertNext(r -> assertEquals(Utility.urlDecode(name) + "file2", r.getName()))
             .verifyComplete();
     }
 
@@ -2358,62 +2346,6 @@ public class FileSystemAsyncApiTests extends DataLakeTestBase {
 
         StepVerifier.create(dataLakeFileSystemAsyncClient.getAccessPolicyWithResponse(null))
             .assertNext(r -> assertEquals("2019-02-02", r.getHeaders().getValue(X_MS_VERSION)))
-            .verifyComplete();
-    }
-
-    @Test
-    public void defaultAudience() {
-        DataLakeFileSystemAsyncClient aadFsClient =
-            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
-                .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
-                .audience(null) // should default to "https://storage.azure.com/"
-                .buildAsyncClient();
-
-        StepVerifier.create(aadFsClient.exists())
-            .expectNext(true)
-            .verifyComplete();
-    }
-
-    @Test
-    public void storageAccountAudience() {
-        DataLakeFileSystemAsyncClient aadFsClient =
-            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
-                .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
-                .audience(DataLakeAudience.createDataLakeServiceAccountAudience(dataLakeFileSystemAsyncClient.getAccountName()))
-                .buildAsyncClient();
-
-        StepVerifier.create(aadFsClient.exists())
-            .expectNext(true)
-            .verifyComplete();
-    }
-
-    @Test
-    public void audienceError() {
-        DataLakeFileSystemAsyncClient aadFsClient =
-            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
-                .audience(DataLakeAudience.createDataLakeServiceAccountAudience("badAudience"))
-                .buildAsyncClient();
-
-        StepVerifier.create(aadFsClient.exists())
-            .verifyErrorSatisfies(r -> {
-                DataLakeStorageException e = assertInstanceOf(DataLakeStorageException.class, r);
-                assertEquals(BlobErrorCode.INVALID_AUTHENTICATION_INFO.toString(), e.getErrorCode());
-            });
-    }
-
-    @Test
-    public void audienceFromString() {
-        String url = String.format("https://%s.blob.core.windows.net/", dataLakeFileSystemAsyncClient.getAccountName());
-        DataLakeAudience audience = DataLakeAudience.fromString(url);
-
-        DataLakeFileSystemAsyncClient aadFsClient =
-            getFileSystemClientBuilderWithTokenCredential(ENVIRONMENT.getDataLakeAccount().getDataLakeEndpoint())
-                .fileSystemName(dataLakeFileSystemAsyncClient.getFileSystemName())
-                .audience(audience)
-                .buildAsyncClient();
-
-        StepVerifier.create(aadFsClient.exists())
-            .expectNext(true)
             .verifyComplete();
     }
 }

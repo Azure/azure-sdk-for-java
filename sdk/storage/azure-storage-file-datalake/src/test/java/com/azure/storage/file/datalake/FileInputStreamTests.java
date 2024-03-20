@@ -4,13 +4,13 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.test.utils.TestUtils;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.file.datalake.models.ConsistentReadControl;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -75,7 +75,7 @@ public class FileInputStreamTests extends DataLakeTestBase {
     }
 
     // Only run this test in live mode as BlobOutputStream dynamically assigns blocks
-    @LiveOnly
+    @EnabledIf("com.azure.storage.file.datalake.DataLakeTestBase#isLiveMode")
     @ParameterizedTest
     @MethodSource("uploadDownloadBlockSizeSupplier")
     public void uploadDownloadBlockSize(Integer blockSize, int numChunks, int[] sizes) throws IOException {

@@ -359,13 +359,13 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public DataLakeFileAsyncClient getFileAsyncClient(String fileName) {
         Objects.requireNonNull(fileName, "'fileName' can not be set to null");
 
+        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(fileName).buildBlockBlobAsyncClient();
+
         String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
 
-        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(pathPrefix + fileName)
-            .buildBlockBlobAsyncClient();
-
-        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(), getAccountName(),
-            getFileSystemName(), pathPrefix + fileName, blockBlobAsyncClient, this.getSasToken(), getCpkInfo(),
+        return new DataLakeFileAsyncClient(getHttpPipeline(), getAccountUrl(),
+            getServiceVersion(), getAccountName(), getFileSystemName(), Utility.urlEncode(pathPrefix
+            + Utility.urlDecode(fileName)), blockBlobAsyncClient, this.getSasToken(), getCpkInfo(),
             isTokenCredentialAuthenticated());
     }
 
@@ -490,7 +490,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * String umask = &quot;umask&quot;;
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
-     * String leaseId = CoreUtils.randomUuid&#40;&#41;.toString&#40;&#41;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
      * Integer duration = 15;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
@@ -747,13 +747,14 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
     public DataLakeDirectoryAsyncClient getSubdirectoryAsyncClient(String subdirectoryName) {
         Objects.requireNonNull(subdirectoryName, "'subdirectoryName' can not be set to null");
 
-        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
-
-        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(pathPrefix + subdirectoryName)
+        BlockBlobAsyncClient blockBlobAsyncClient = prepareBuilderAppendPath(subdirectoryName)
             .buildBlockBlobAsyncClient();
 
+        String pathPrefix = getObjectPath().isEmpty() ? "" : getObjectPath() + "/";
+
         return new DataLakeDirectoryAsyncClient(getHttpPipeline(), getAccountUrl(), getServiceVersion(),
-            getAccountName(), getFileSystemName(), pathPrefix + subdirectoryName, blockBlobAsyncClient,
+            getAccountName(), getFileSystemName(),
+            Utility.urlEncode(pathPrefix + Utility.urlDecode(subdirectoryName)), blockBlobAsyncClient,
             this.getSasToken(), getCpkInfo(), isTokenCredentialAuthenticated());
     }
 
@@ -880,7 +881,7 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
      * String umask = &quot;umask&quot;;
      * String owner = &quot;rwx&quot;;
      * String group = &quot;r--&quot;;
-     * String leaseId = CoreUtils.randomUuid&#40;&#41;.toString&#40;&#41;;
+     * String leaseId = UUID.randomUUID&#40;&#41;.toString&#40;&#41;;
      * Integer duration = 15;
      * DataLakePathCreateOptions options = new DataLakePathCreateOptions&#40;&#41;
      *     .setPermissions&#40;permissions&#41;
@@ -1301,7 +1302,6 @@ public final class DataLakeDirectoryAsyncClient extends DataLakePathAsyncClient 
         return new SpecializedBlobClientBuilder()
             .pipeline(getHttpPipeline())
             .serviceVersion(TransformUtils.toBlobServiceVersion(getServiceVersion()))
-            .endpoint(blobUrl)
-            .blobName(pathName);
+            .endpoint(StorageImplUtils.appendToUrlPath(blobUrl, pathName).toString());
     }
 }
