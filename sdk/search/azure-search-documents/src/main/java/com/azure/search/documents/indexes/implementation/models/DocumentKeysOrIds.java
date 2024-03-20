@@ -14,9 +14,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * The DocumentKeysOrIds model.
- */
+/** The DocumentKeysOrIds model. */
 @Fluent
 public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrIds> {
     /*
@@ -29,15 +27,12 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
      */
     private List<String> datasourceDocumentIds;
 
-    /**
-     * Creates an instance of DocumentKeysOrIds class.
-     */
-    public DocumentKeysOrIds() {
-    }
+    /** Creates an instance of DocumentKeysOrIds class. */
+    public DocumentKeysOrIds() {}
 
     /**
      * Get the documentKeys property: document keys to be reset.
-     * 
+     *
      * @return the documentKeys value.
      */
     public List<String> getDocumentKeys() {
@@ -46,7 +41,7 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
 
     /**
      * Set the documentKeys property: document keys to be reset.
-     * 
+     *
      * @param documentKeys the documentKeys value to set.
      * @return the DocumentKeysOrIds object itself.
      */
@@ -57,7 +52,7 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
 
     /**
      * Get the datasourceDocumentIds property: datasource document identifiers to be reset.
-     * 
+     *
      * @return the datasourceDocumentIds value.
      */
     public List<String> getDatasourceDocumentIds() {
@@ -66,7 +61,7 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
 
     /**
      * Set the datasourceDocumentIds property: datasource document identifiers to be reset.
-     * 
+     *
      * @param datasourceDocumentIds the datasourceDocumentIds value to set.
      * @return the DocumentKeysOrIds object itself.
      */
@@ -79,38 +74,39 @@ public final class DocumentKeysOrIds implements JsonSerializable<DocumentKeysOrI
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("documentKeys", this.documentKeys, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("datasourceDocumentIds", this.datasourceDocumentIds,
-            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField(
+                "datasourceDocumentIds", this.datasourceDocumentIds, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of DocumentKeysOrIds from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of DocumentKeysOrIds if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the DocumentKeysOrIds.
      */
     public static DocumentKeysOrIds fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DocumentKeysOrIds deserializedDocumentKeysOrIds = new DocumentKeysOrIds();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    DocumentKeysOrIds deserializedDocumentKeysOrIds = new DocumentKeysOrIds();
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("documentKeys".equals(fieldName)) {
-                    List<String> documentKeys = reader.readArray(reader1 -> reader1.getString());
-                    deserializedDocumentKeysOrIds.documentKeys = documentKeys;
-                } else if ("datasourceDocumentIds".equals(fieldName)) {
-                    List<String> datasourceDocumentIds = reader.readArray(reader1 -> reader1.getString());
-                    deserializedDocumentKeysOrIds.datasourceDocumentIds = datasourceDocumentIds;
-                } else {
-                    reader.skipChildren();
-                }
-            }
+                        if ("documentKeys".equals(fieldName)) {
+                            List<String> documentKeys = reader.readArray(reader1 -> reader1.getString());
+                            deserializedDocumentKeysOrIds.documentKeys = documentKeys;
+                        } else if ("datasourceDocumentIds".equals(fieldName)) {
+                            List<String> datasourceDocumentIds = reader.readArray(reader1 -> reader1.getString());
+                            deserializedDocumentKeysOrIds.datasourceDocumentIds = datasourceDocumentIds;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
 
-            return deserializedDocumentKeysOrIds;
-        });
+                    return deserializedDocumentKeysOrIds;
+                });
     }
 }

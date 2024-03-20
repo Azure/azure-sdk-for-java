@@ -5,7 +5,6 @@ package com.azure.search.documents.indexes;
 
 import com.azure.core.models.GeoPoint;
 import com.azure.search.documents.TestHelpers;
-import com.azure.search.documents.indexes.models.LexicalNormalizerName;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.test.environment.models.HotelAnalyzerException;
@@ -17,11 +16,8 @@ import com.azure.search.documents.test.environment.models.HotelTwoDimensional;
 import com.azure.search.documents.test.environment.models.HotelWithArray;
 import com.azure.search.documents.test.environment.models.HotelWithEmptyInSynonymMaps;
 import com.azure.search.documents.test.environment.models.HotelWithIgnoredFields;
+import com.azure.search.documents.test.environment.models.HotelWithUnsupportedField;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 
 import java.time.OffsetDateTime;
 import java.util.Arrays;
@@ -37,7 +33,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Execution(ExecutionMode.CONCURRENT)
 public class FieldBuilderTests {
     @Test
     public void hotelSearchableThrowException() {
@@ -71,7 +66,6 @@ public class FieldBuilderTests {
             SearchFieldDataType.collection(SearchFieldDataType.STRING))
             .setSearchable(true)
             .setKey(false)
-            .setStored(true)
             .setHidden(false)
             .setFilterable(false)
             .setSortable(false)
@@ -126,7 +120,7 @@ public class FieldBuilderTests {
     public void supportedFields() {
         List<SearchField> fields = SearchIndexClient.buildSearchFields(AllSupportedFields.class, null);
 
-        assertEquals(23, fields.size());
+        assertEquals(19, fields.size());
 
         Map<String, SearchFieldDataType> fieldToDataType = fields.stream()
             .collect(Collectors.toMap(SearchField::getName, SearchField::getType));
@@ -150,10 +144,6 @@ public class FieldBuilderTests {
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.INT32), fieldToDataType.get("intList"));
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SINGLE), fieldToDataType.get("floatArray"));
         assertEquals(SearchFieldDataType.collection(SearchFieldDataType.SINGLE), fieldToDataType.get("floatList"));
-        assertEquals(SearchFieldDataType.INT16, fieldToDataType.get("nullableShort"));
-        assertEquals(SearchFieldDataType.INT16, fieldToDataType.get("primitiveShort"));
-        assertEquals(SearchFieldDataType.SBYTE, fieldToDataType.get("nullableByte"));
-        assertEquals(SearchFieldDataType.SBYTE, fieldToDataType.get("primitiveByte"));
     }
 
     @SuppressWarnings({"unused", "UseOfObsoleteDateTimeApi"})
@@ -272,66 +262,13 @@ public class FieldBuilderTests {
         public Float[] getFloatArray() {
             return floatArray;
         }
-
-        // 20. name = 'primitiveShort', OData type = INT16
-        private short primitiveShort;
-        public short getPrimitiveShort() {
-            return primitiveShort;
-        }
-
-        // 21. name = 'nullableShort', OData type = INT16
-        private Short nullableShort;
-        public Short getNullableShort() {
-            return nullableShort;
-        }
-
-        // 22. name = 'primitiveByte', OData type = SBYTE
-        private byte primitiveByte;
-        public byte getPrimitiveByte() {
-            return primitiveByte;
-        }
-
-        // 23. name = 'nullableByte', OData type = SBYTE
-        private Byte nullableByte;
-        public Byte getNullableByte() {
-            return nullableByte;
-        }
     }
+
     @Test
-    public void validNormalizerField() {
-        List<SearchField> fields = SearchIndexClient.buildSearchFields(ValidNormalizer.class, null);
-
-        assertEquals(1, fields.size());
-
-        SearchField normalizerField = fields.get(0);
-        assertEquals(LexicalNormalizerName.STANDARD, normalizerField.getNormalizerName());
-    }
-
-    @SuppressWarnings("unused")
-    public static final class ValidNormalizer {
-        @SimpleField(normalizerName = "standard", isFilterable = true)
-        public String validNormalizer;
-    }
-
-    @ParameterizedTest
-    @ValueSource(classes = { NonStringNormalizer.class, MissingFunctionalityNormalizer.class })
-    public void invalidNormalizerField(Class<?> type) {
-        RuntimeException ex = assertThrows(RuntimeException.class,
-            () -> SearchIndexClient.buildSearchFields(type, null));
-
-        assertTrue(ex.getMessage().contains("A field with a normalizer name"));
-    }
-
-    @SuppressWarnings("unused")
-    public static final class NonStringNormalizer {
-        @SimpleField(normalizerName = "standard")
-        public int wrongTypeForNormalizer;
-    }
-
-    @SuppressWarnings("unused")
-    public static final class MissingFunctionalityNormalizer {
-        @SimpleField(normalizerName = "standard")
-        public String rightTypeWrongFunctionality;
+    public void unsupportedFields() {
+        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+            SearchIndexClient.buildSearchFields(HotelWithUnsupportedField.class, null));
+        assertExceptionMassageAndDataType(exception, null, "is not supported");
     }
 
     @Test
@@ -446,7 +383,6 @@ public class FieldBuilderTests {
         SearchField hotelId = new SearchField("hotelId", SearchFieldDataType.STRING)
             .setKey(true)
             .setSortable(true)
-            .setStored(true)
             .setHidden(false)
             .setSearchable(false)
             .setFacetable(false)
@@ -454,7 +390,6 @@ public class FieldBuilderTests {
         SearchField tags = new SearchField("tags", SearchFieldDataType.collection(SearchFieldDataType.STRING))
             .setKey(false)
             .setHidden(false)
-            .setStored(true)
             .setSearchable(true)
             .setSortable(false)
             .setFilterable(false)

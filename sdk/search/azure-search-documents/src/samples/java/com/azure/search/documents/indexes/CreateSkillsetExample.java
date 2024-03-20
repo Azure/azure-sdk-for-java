@@ -20,7 +20,7 @@ import java.util.List;
 public class CreateSkillsetExample {
 
     /**
-     * From the Azure portal, get your Azure AI Search service URL and API key,
+     * From the Azure portal, get your Azure Cognitive Search service URL and API key,
      * and set the values of these environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");

@@ -13,10 +13,9 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * A skill to translate text from one language to another.
- */
+/** A skill to translate text from one language to another. */
 @Fluent
 public final class TextTranslationSkill extends SearchIndexerSkill {
     /*
@@ -38,13 +37,15 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
 
     /**
      * Creates an instance of TextTranslationSkill class.
-     * 
+     *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      * @param defaultToLanguageCode the defaultToLanguageCode value to set.
      */
-    public TextTranslationSkill(List<InputFieldMappingEntry> inputs, List<OutputFieldMappingEntry> outputs,
-        TextTranslationSkillLanguage defaultToLanguageCode) {
+    public TextTranslationSkill(
+            List<InputFieldMappingEntry> inputs,
+            List<OutputFieldMappingEntry> outputs,
+            TextTranslationSkillLanguage defaultToLanguageCode) {
         super(inputs, outputs);
         this.defaultToLanguageCode = defaultToLanguageCode;
     }
@@ -52,7 +53,7 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /**
      * Get the defaultToLanguageCode property: The language code to translate documents into for documents that don't
      * specify the to language explicitly.
-     * 
+     *
      * @return the defaultToLanguageCode value.
      */
     public TextTranslationSkillLanguage getDefaultToLanguageCode() {
@@ -62,7 +63,7 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /**
      * Get the defaultFromLanguageCode property: The language code to translate documents from for documents that don't
      * specify the from language explicitly.
-     * 
+     *
      * @return the defaultFromLanguageCode value.
      */
     public TextTranslationSkillLanguage getDefaultFromLanguageCode() {
@@ -72,7 +73,7 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
     /**
      * Set the defaultFromLanguageCode property: The language code to translate documents from for documents that don't
      * specify the from language explicitly.
-     * 
+     *
      * @param defaultFromLanguageCode the defaultFromLanguageCode value to set.
      * @return the TextTranslationSkill object itself.
      */
@@ -85,7 +86,7 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      * Get the suggestedFrom property: The language code to translate documents from when neither the fromLanguageCode
      * input nor the defaultFromLanguageCode parameter are provided, and the automatic language detection is
      * unsuccessful. Default is `en`.
-     * 
+     *
      * @return the suggestedFrom value.
      */
     public TextTranslationSkillLanguage getSuggestedFrom() {
@@ -96,7 +97,7 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
      * Set the suggestedFrom property: The language code to translate documents from when neither the fromLanguageCode
      * input nor the defaultFromLanguageCode parameter are provided, and the automatic language detection is
      * unsuccessful. Default is `en`.
-     * 
+     *
      * @param suggestedFrom the suggestedFrom value to set.
      * @return the TextTranslationSkill object itself.
      */
@@ -105,27 +106,21 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TextTranslationSkill setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TextTranslationSkill setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public TextTranslationSkill setContext(String context) {
         super.setContext(context);
@@ -141,95 +136,95 @@ public final class TextTranslationSkill extends SearchIndexerSkill {
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("context", getContext());
-        jsonWriter.writeStringField("defaultToLanguageCode",
-            this.defaultToLanguageCode == null ? null : this.defaultToLanguageCode.toString());
-        jsonWriter.writeStringField("defaultFromLanguageCode",
-            this.defaultFromLanguageCode == null ? null : this.defaultFromLanguageCode.toString());
-        jsonWriter.writeStringField("suggestedFrom", this.suggestedFrom == null ? null : this.suggestedFrom.toString());
+        jsonWriter.writeStringField("defaultToLanguageCode", Objects.toString(this.defaultToLanguageCode, null));
+        jsonWriter.writeStringField("defaultFromLanguageCode", Objects.toString(this.defaultFromLanguageCode, null));
+        jsonWriter.writeStringField("suggestedFrom", Objects.toString(this.suggestedFrom, null));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of TextTranslationSkill from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of TextTranslationSkill if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the TextTranslationSkill.
      */
     public static TextTranslationSkill fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean inputsFound = false;
-            List<InputFieldMappingEntry> inputs = null;
-            boolean outputsFound = false;
-            List<OutputFieldMappingEntry> outputs = null;
-            String name = null;
-            String description = null;
-            String context = null;
-            boolean defaultToLanguageCodeFound = false;
-            TextTranslationSkillLanguage defaultToLanguageCode = null;
-            TextTranslationSkillLanguage defaultFromLanguageCode = null;
-            TextTranslationSkillLanguage suggestedFrom = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    boolean defaultToLanguageCodeFound = false;
+                    TextTranslationSkillLanguage defaultToLanguageCode = null;
+                    TextTranslationSkillLanguage defaultFromLanguageCode = null;
+                    TextTranslationSkillLanguage suggestedFrom = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Skills.Text.TranslationSkill".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.TranslationSkill'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Skills.Text.TranslationSkill".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.TranslationSkill'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getString();
+                        } else if ("defaultToLanguageCode".equals(fieldName)) {
+                            defaultToLanguageCode = TextTranslationSkillLanguage.fromString(reader.getString());
+                            defaultToLanguageCodeFound = true;
+                        } else if ("defaultFromLanguageCode".equals(fieldName)) {
+                            defaultFromLanguageCode = TextTranslationSkillLanguage.fromString(reader.getString());
+                        } else if ("suggestedFrom".equals(fieldName)) {
+                            suggestedFrom = TextTranslationSkillLanguage.fromString(reader.getString());
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                    inputsFound = true;
-                } else if ("outputs".equals(fieldName)) {
-                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                    outputsFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("context".equals(fieldName)) {
-                    context = reader.getString();
-                } else if ("defaultToLanguageCode".equals(fieldName)) {
-                    defaultToLanguageCode = TextTranslationSkillLanguage.fromString(reader.getString());
-                    defaultToLanguageCodeFound = true;
-                } else if ("defaultFromLanguageCode".equals(fieldName)) {
-                    defaultFromLanguageCode = TextTranslationSkillLanguage.fromString(reader.getString());
-                } else if ("suggestedFrom".equals(fieldName)) {
-                    suggestedFrom = TextTranslationSkillLanguage.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (inputsFound && outputsFound && defaultToLanguageCodeFound) {
-                TextTranslationSkill deserializedTextTranslationSkill
-                    = new TextTranslationSkill(inputs, outputs, defaultToLanguageCode);
-                deserializedTextTranslationSkill.setName(name);
-                deserializedTextTranslationSkill.setDescription(description);
-                deserializedTextTranslationSkill.setContext(context);
-                deserializedTextTranslationSkill.defaultFromLanguageCode = defaultFromLanguageCode;
-                deserializedTextTranslationSkill.suggestedFrom = suggestedFrom;
+                    if (inputsFound && outputsFound && defaultToLanguageCodeFound) {
+                        TextTranslationSkill deserializedTextTranslationSkill =
+                                new TextTranslationSkill(inputs, outputs, defaultToLanguageCode);
+                        deserializedTextTranslationSkill.setName(name);
+                        deserializedTextTranslationSkill.setDescription(description);
+                        deserializedTextTranslationSkill.setContext(context);
+                        deserializedTextTranslationSkill.defaultFromLanguageCode = defaultFromLanguageCode;
+                        deserializedTextTranslationSkill.suggestedFrom = suggestedFrom;
 
-                return deserializedTextTranslationSkill;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!inputsFound) {
-                missingProperties.add("inputs");
-            }
-            if (!outputsFound) {
-                missingProperties.add("outputs");
-            }
-            if (!defaultToLanguageCodeFound) {
-                missingProperties.add("defaultToLanguageCode");
-            }
+                        return deserializedTextTranslationSkill;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
+                    if (!defaultToLanguageCodeFound) {
+                        missingProperties.add("defaultToLanguageCode");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

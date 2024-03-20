@@ -8,49 +8,31 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * Defines the data type of a field in a search index.
- */
+/** Defines the data type of a field in a search index. */
 public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldDataType> {
 
-    /**
-     * Indicates that a field contains a string.
-     */
+    /** Indicates that a field contains a string. */
     public static final SearchFieldDataType STRING = fromString("Edm.String");
 
-    /**
-     * Indicates that a field contains a 32-bit signed integer.
-     */
+    /** Indicates that a field contains a 32-bit signed integer. */
     public static final SearchFieldDataType INT32 = fromString("Edm.Int32");
 
-    /**
-     * Indicates that a field contains a 64-bit signed integer.
-     */
+    /** Indicates that a field contains a 64-bit signed integer. */
     public static final SearchFieldDataType INT64 = fromString("Edm.Int64");
 
-    /**
-     * Indicates that a field contains an IEEE double-precision floating point number.
-     */
+    /** Indicates that a field contains an IEEE double-precision floating point number. */
     public static final SearchFieldDataType DOUBLE = fromString("Edm.Double");
 
-    /**
-     * Indicates that a field contains a Boolean value (true or false).
-     */
+    /** Indicates that a field contains a Boolean value (true or false). */
     public static final SearchFieldDataType BOOLEAN = fromString("Edm.Boolean");
 
-    /**
-     * Indicates that a field contains a date/time value, including timezone information.
-     */
+    /** Indicates that a field contains a date/time value, including timezone information. */
     public static final SearchFieldDataType DATE_TIME_OFFSET = fromString("Edm.DateTimeOffset");
 
-    /**
-     * Indicates that a field contains a geo-location in terms of longitude and latitude.
-     */
+    /** Indicates that a field contains a geo-location in terms of longitude and latitude. */
     public static final SearchFieldDataType GEOGRAPHY_POINT = fromString("Edm.GeographyPoint");
 
-    /**
-     * Indicates that a field contains one or more complex objects that in turn have sub-fields of other types.
-     */
+    /** Indicates that a field contains one or more complex objects that in turn have sub-fields of other types. */
     public static final SearchFieldDataType COMPLEX = fromString("Edm.ComplexType");
 
     /**
@@ -60,29 +42,12 @@ public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldD
     public static final SearchFieldDataType SINGLE = fromString("Edm.Single");
 
     /**
-     * Indicates that a field contains a half-precision floating point number. This is only valid when used with
-     * Collection(Edm.Half).
-     */
-    public static final SearchFieldDataType HALF = fromString("Edm.Half");
-
-    /**
-     * Indicates that a field contains a 16-bit signed integer. This is only valid when used with Collection(Edm.Int16).
-     */
-    public static final SearchFieldDataType INT16 = fromString("Edm.Int16");
-
-    /**
-     * Indicates that a field contains a 8-bit signed integer. This is only valid when used with Collection(Edm.SByte).
-     */
-    public static final SearchFieldDataType SBYTE = fromString("Edm.SByte");
-
-    /**
      * Creates a new instance of SearchFieldDataType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SearchFieldDataType() {
-    }
+    public SearchFieldDataType() {}
 
     /**
      * Creates or finds a SearchFieldDataType from its string representation.

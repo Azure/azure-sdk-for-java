@@ -1,46 +1,13 @@
 # Release History
 
-## 11.7.0-beta.3 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 11.7.0-beta.2 (2024-03-11)
-
-### Features Added
-
-- Added support for the java types `Byte` and `Short` to FieldBuilder.
-- Added support for "isStored" annotation to FieldBuilder.
-- Added `VectorSearchCompressionConfiguration` to `VectorSearch`
-
-### Breaking Changes
-
-- Replaced `SearchErrorException` with `ErrorResponseException`
+## 11.6.2 (2024-02-22)
 
 ### Other Changes
 
 #### Dependency Updates
 
-- Upgraded `azure-core-serializer-json-jackson` to version `1.4.10`.
-- Upgraded `azure-core-http-netty` to version `1.14.1`.
-- Upgraded `azure-core` to version `1.47.0`.
-
-## 11.7.0-beta.1 (2024-02-09)
-
-### Features Added
-
-- Exposing HttpPipeline within clients.
-
-### Other Changes
-
-- Rebranding Azure Cognitive Search to Azure AI Search within the SDK.
-- Updated JavaDoc to assist with developer experience.
-- Sample added to show how to maintain a consistent sessionId across multiple requests.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 
 ## 11.6.1 (2023-12-06)
 

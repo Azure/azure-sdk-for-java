@@ -9,187 +9,118 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * The language codes supported for input text by SplitSkill.
- */
+/** The language codes supported for input text by SplitSkill. */
 public final class SplitSkillLanguage extends ExpandableStringEnum<SplitSkillLanguage> {
-    /**
-     * Amharic.
-     */
+    /** Amharic. */
     public static final SplitSkillLanguage AM = fromString("am");
 
-    /**
-     * Bosnian.
-     */
+    /** Bosnian. */
     public static final SplitSkillLanguage BS = fromString("bs");
 
-    /**
-     * Czech.
-     */
+    /** Czech. */
     public static final SplitSkillLanguage CS = fromString("cs");
 
-    /**
-     * Danish.
-     */
+    /** Danish. */
     public static final SplitSkillLanguage DA = fromString("da");
 
-    /**
-     * German.
-     */
+    /** German. */
     public static final SplitSkillLanguage DE = fromString("de");
 
-    /**
-     * English.
-     */
+    /** English. */
     public static final SplitSkillLanguage EN = fromString("en");
 
-    /**
-     * Spanish.
-     */
+    /** Spanish. */
     public static final SplitSkillLanguage ES = fromString("es");
 
-    /**
-     * Estonian.
-     */
+    /** Estonian. */
     public static final SplitSkillLanguage ET = fromString("et");
 
-    /**
-     * Finnish.
-     */
+    /** Finnish. */
     public static final SplitSkillLanguage FI = fromString("fi");
 
-    /**
-     * French.
-     */
+    /** French. */
     public static final SplitSkillLanguage FR = fromString("fr");
 
-    /**
-     * Hebrew.
-     */
+    /** Hebrew. */
     public static final SplitSkillLanguage HE = fromString("he");
 
-    /**
-     * Hindi.
-     */
+    /** Hindi. */
     public static final SplitSkillLanguage HI = fromString("hi");
 
-    /**
-     * Croatian.
-     */
+    /** Croatian. */
     public static final SplitSkillLanguage HR = fromString("hr");
 
-    /**
-     * Hungarian.
-     */
+    /** Hungarian. */
     public static final SplitSkillLanguage HU = fromString("hu");
 
-    /**
-     * Indonesian.
-     */
+    /** Indonesian. */
     public static final SplitSkillLanguage ID = fromString("id");
 
-    /**
-     * Icelandic.
-     */
+    /** Icelandic. */
     public static final SplitSkillLanguage IS = fromString("is");
 
-    /**
-     * Italian.
-     */
+    /** Italian. */
     public static final SplitSkillLanguage IT = fromString("it");
 
-    /**
-     * Japanese.
-     */
+    /** Japanese. */
     public static final SplitSkillLanguage JA = fromString("ja");
 
-    /**
-     * Korean.
-     */
+    /** Korean. */
     public static final SplitSkillLanguage KO = fromString("ko");
 
-    /**
-     * Latvian.
-     */
+    /** Latvian. */
     public static final SplitSkillLanguage LV = fromString("lv");
 
-    /**
-     * Norwegian.
-     */
+    /** Norwegian. */
     public static final SplitSkillLanguage NB = fromString("nb");
 
-    /**
-     * Dutch.
-     */
+    /** Dutch. */
     public static final SplitSkillLanguage NL = fromString("nl");
 
-    /**
-     * Polish.
-     */
+    /** Polish. */
     public static final SplitSkillLanguage PL = fromString("pl");
 
-    /**
-     * Portuguese (Portugal).
-     */
+    /** Portuguese (Portugal). */
     public static final SplitSkillLanguage PT = fromString("pt");
 
-    /**
-     * Portuguese (Brazil).
-     */
+    /** Portuguese (Brazil). */
     public static final SplitSkillLanguage PT_BR = fromString("pt-br");
 
-    /**
-     * Russian.
-     */
+    /** Russian. */
     public static final SplitSkillLanguage RU = fromString("ru");
 
-    /**
-     * Slovak.
-     */
+    /** Slovak. */
     public static final SplitSkillLanguage SK = fromString("sk");
 
-    /**
-     * Slovenian.
-     */
+    /** Slovenian. */
     public static final SplitSkillLanguage SL = fromString("sl");
 
-    /**
-     * Serbian.
-     */
+    /** Serbian. */
     public static final SplitSkillLanguage SR = fromString("sr");
 
-    /**
-     * Swedish.
-     */
+    /** Swedish. */
     public static final SplitSkillLanguage SV = fromString("sv");
 
-    /**
-     * Turkish.
-     */
+    /** Turkish. */
     public static final SplitSkillLanguage TR = fromString("tr");
 
-    /**
-     * Urdu.
-     */
+    /** Urdu. */
     public static final SplitSkillLanguage UR = fromString("ur");
 
-    /**
-     * Chinese (Simplified).
-     */
+    /** Chinese (Simplified). */
     public static final SplitSkillLanguage ZH = fromString("zh");
 
     /**
      * Creates a new instance of SplitSkillLanguage value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public SplitSkillLanguage() {
-    }
+    public SplitSkillLanguage() {}
 
     /**
      * Creates or finds a SplitSkillLanguage from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SplitSkillLanguage.
      */
@@ -199,7 +130,7 @@ public final class SplitSkillLanguage extends ExpandableStringEnum<SplitSkillLan
 
     /**
      * Gets known SplitSkillLanguage values.
-     * 
+     *
      * @return known SplitSkillLanguage values.
      */
     public static Collection<SplitSkillLanguage> values() {

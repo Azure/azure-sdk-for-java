@@ -18,9 +18,7 @@ import java.util.Collection;
  * `extractive|threshold-0.9`. Default threshold is 0.7.
  */
 public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType> {
-    /**
-     * Do not return answers for the query.
-     */
+    /** Do not return answers for the query. */
     public static final QueryAnswerType NONE = fromString("none");
 
     /**
@@ -31,16 +29,15 @@ public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType>
 
     /**
      * Creates a new instance of QueryAnswerType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public QueryAnswerType() {
-    }
+    public QueryAnswerType() {}
 
     /**
      * Creates or finds a QueryAnswerType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding QueryAnswerType.
      */
@@ -50,7 +47,7 @@ public final class QueryAnswerType extends ExpandableStringEnum<QueryAnswerType>
 
     /**
      * Gets known QueryAnswerType values.
-     * 
+     *
      * @return known QueryAnswerType values.
      */
     public static Collection<QueryAnswerType> values() {

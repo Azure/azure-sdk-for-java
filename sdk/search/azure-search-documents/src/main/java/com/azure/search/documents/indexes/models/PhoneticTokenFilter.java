@@ -10,10 +10,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-/**
- * Create tokens for phonetic matches. This token filter is implemented using Apache Lucene.
- */
+/** Create tokens for phonetic matches. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class PhoneticTokenFilter extends TokenFilter {
 
@@ -84,7 +85,7 @@ public final class PhoneticTokenFilter extends TokenFilter {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.PhoneticTokenFilter");
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("encoder", this.encoder == null ? null : this.encoder.toString());
+        jsonWriter.writeStringField("encoder", Objects.toString(this.encoder, null));
         jsonWriter.writeBooleanField("replace", this.originalTokensReplaced);
         return jsonWriter.writeEndObject();
     }
@@ -94,45 +95,52 @@ public final class PhoneticTokenFilter extends TokenFilter {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of PhoneticTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the PhoneticTokenFilter.
      */
     public static PhoneticTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            PhoneticEncoder encoder = null;
-            Boolean originalTokensReplaced = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.PhoneticTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PhoneticTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    PhoneticEncoder encoder = null;
+                    Boolean originalTokensReplaced = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.PhoneticTokenFilter".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.PhoneticTokenFilter'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("encoder".equals(fieldName)) {
+                            encoder = PhoneticEncoder.fromString(reader.getString());
+                        } else if ("replace".equals(fieldName)) {
+                            originalTokensReplaced = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("encoder".equals(fieldName)) {
-                    encoder = PhoneticEncoder.fromString(reader.getString());
-                } else if ("replace".equals(fieldName)) {
-                    originalTokensReplaced = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                PhoneticTokenFilter deserializedPhoneticTokenFilter = new PhoneticTokenFilter(name);
-                deserializedPhoneticTokenFilter.encoder = encoder;
-                deserializedPhoneticTokenFilter.originalTokensReplaced = originalTokensReplaced;
-                return deserializedPhoneticTokenFilter;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                    if (nameFound) {
+                        PhoneticTokenFilter deserializedPhoneticTokenFilter = new PhoneticTokenFilter(name);
+                        deserializedPhoneticTokenFilter.encoder = encoder;
+                        deserializedPhoneticTokenFilter.originalTokensReplaced = originalTokensReplaced;
+                        return deserializedPhoneticTokenFilter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

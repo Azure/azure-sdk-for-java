@@ -43,7 +43,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
 
     /**
      * Creates an instance of SentimentSkillV3 class.
-     * 
+     *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
@@ -53,7 +53,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
 
     /**
      * Get the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
-     * 
+     *
      * @return the defaultLanguageCode value.
      */
     public String getDefaultLanguageCode() {
@@ -62,7 +62,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
 
     /**
      * Set the defaultLanguageCode property: A value indicating which language code to use. Default is `en`.
-     * 
+     *
      * @param defaultLanguageCode the defaultLanguageCode value to set.
      * @return the SentimentSkillV3 object itself.
      */
@@ -75,7 +75,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
      * Get the includeOpinionMining property: If set to true, the skill output will include information from Text
      * Analytics for opinion mining, namely targets (nouns or verbs) and their associated assessment (adjective) in the
      * text. Default is false.
-     * 
+     *
      * @return the includeOpinionMining value.
      */
     public Boolean isIncludeOpinionMining() {
@@ -86,7 +86,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
      * Set the includeOpinionMining property: If set to true, the skill output will include information from Text
      * Analytics for opinion mining, namely targets (nouns or verbs) and their associated assessment (adjective) in the
      * text. Default is false.
-     * 
+     *
      * @param includeOpinionMining the includeOpinionMining value to set.
      * @return the SentimentSkillV3 object itself.
      */
@@ -99,7 +99,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
      * Get the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
      * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
      * necessary.
-     * 
+     *
      * @return the modelVersion value.
      */
     public String getModelVersion() {
@@ -110,7 +110,7 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
      * Set the modelVersion property: The version of the model to use when calling the Text Analytics service. It will
      * default to the latest available when not specified. We recommend you do not specify this value unless absolutely
      * necessary.
-     * 
+     *
      * @param modelVersion the modelVersion value to set.
      * @return the SentimentSkillV3 object itself.
      */
@@ -119,27 +119,21 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SentimentSkillV3 setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SentimentSkillV3 setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public SentimentSkillV3 setContext(String context) {
         super.setContext(context);
@@ -163,80 +157,82 @@ public final class SentimentSkillV3 extends SearchIndexerSkill {
 
     /**
      * Reads an instance of SentimentSkillV3 from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SentimentSkillV3 if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the SentimentSkillV3.
      */
     public static SentimentSkillV3 fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean inputsFound = false;
-            List<InputFieldMappingEntry> inputs = null;
-            boolean outputsFound = false;
-            List<OutputFieldMappingEntry> outputs = null;
-            String name = null;
-            String description = null;
-            String context = null;
-            String defaultLanguageCode = null;
-            Boolean includeOpinionMining = null;
-            String modelVersion = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean inputsFound = false;
+                    List<InputFieldMappingEntry> inputs = null;
+                    boolean outputsFound = false;
+                    List<OutputFieldMappingEntry> outputs = null;
+                    String name = null;
+                    String description = null;
+                    String context = null;
+                    String defaultLanguageCode = null;
+                    Boolean includeOpinionMining = null;
+                    String modelVersion = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Skills.Text.V3.SentimentSkill".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.V3.SentimentSkill'. The found '@odata.type' was '"
-                                + odataType + "'.");
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Skills.Text.V3.SentimentSkill".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Skills.Text.V3.SentimentSkill'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("inputs".equals(fieldName)) {
+                            inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
+                            inputsFound = true;
+                        } else if ("outputs".equals(fieldName)) {
+                            outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
+                            outputsFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("context".equals(fieldName)) {
+                            context = reader.getString();
+                        } else if ("defaultLanguageCode".equals(fieldName)) {
+                            defaultLanguageCode = reader.getString();
+                        } else if ("includeOpinionMining".equals(fieldName)) {
+                            includeOpinionMining = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("modelVersion".equals(fieldName)) {
+                            modelVersion = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                    inputsFound = true;
-                } else if ("outputs".equals(fieldName)) {
-                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                    outputsFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("context".equals(fieldName)) {
-                    context = reader.getString();
-                } else if ("defaultLanguageCode".equals(fieldName)) {
-                    defaultLanguageCode = reader.getString();
-                } else if ("includeOpinionMining".equals(fieldName)) {
-                    includeOpinionMining = reader.getNullable(JsonReader::getBoolean);
-                } else if ("modelVersion".equals(fieldName)) {
-                    modelVersion = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (inputsFound && outputsFound) {
-                SentimentSkillV3 deserializedSentimentSkillV3 = new SentimentSkillV3(inputs, outputs);
-                deserializedSentimentSkillV3.setName(name);
-                deserializedSentimentSkillV3.setDescription(description);
-                deserializedSentimentSkillV3.setContext(context);
-                deserializedSentimentSkillV3.defaultLanguageCode = defaultLanguageCode;
-                deserializedSentimentSkillV3.includeOpinionMining = includeOpinionMining;
-                deserializedSentimentSkillV3.modelVersion = modelVersion;
+                    if (inputsFound && outputsFound) {
+                        SentimentSkillV3 deserializedSentimentSkillV3 = new SentimentSkillV3(inputs, outputs);
+                        deserializedSentimentSkillV3.setName(name);
+                        deserializedSentimentSkillV3.setDescription(description);
+                        deserializedSentimentSkillV3.setContext(context);
+                        deserializedSentimentSkillV3.defaultLanguageCode = defaultLanguageCode;
+                        deserializedSentimentSkillV3.includeOpinionMining = includeOpinionMining;
+                        deserializedSentimentSkillV3.modelVersion = modelVersion;
 
-                return deserializedSentimentSkillV3;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!inputsFound) {
-                missingProperties.add("inputs");
-            }
-            if (!outputsFound) {
-                missingProperties.add("outputs");
-            }
+                        return deserializedSentimentSkillV3;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!inputsFound) {
+                        missingProperties.add("inputs");
+                    }
+                    if (!outputsFound) {
+                        missingProperties.add("outputs");
+                    }
 
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

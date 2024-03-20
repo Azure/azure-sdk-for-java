@@ -6,15 +6,12 @@ package com.azure.search.documents;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.models.SuggestOptions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Execution(ExecutionMode.CONCURRENT)
 public class SuggestOptionsHandlerTests {
 
     private static final List<String> SELECT_STAR = Collections.singletonList("*");

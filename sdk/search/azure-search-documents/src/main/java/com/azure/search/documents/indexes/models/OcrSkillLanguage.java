@@ -9,872 +9,529 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * The language codes supported for input by OcrSkill.
- */
+/** The language codes supported for input by OcrSkill. */
 public final class OcrSkillLanguage extends ExpandableStringEnum<OcrSkillLanguage> {
-    /**
-     * Afrikaans.
-     */
+    /** Afrikaans. */
     public static final OcrSkillLanguage AF = fromString("af");
 
-    /**
-     * Albanian.
-     */
+    /** Albanian. */
     public static final OcrSkillLanguage SQ = fromString("sq");
 
-    /**
-     * Angika (Devanagiri).
-     */
+    /** Angika (Devanagiri). */
     public static final OcrSkillLanguage ANP = fromString("anp");
 
-    /**
-     * Arabic.
-     */
+    /** Arabic. */
     public static final OcrSkillLanguage AR = fromString("ar");
 
-    /**
-     * Asturian.
-     */
+    /** Asturian. */
     public static final OcrSkillLanguage AST = fromString("ast");
 
-    /**
-     * Awadhi-Hindi (Devanagiri).
-     */
+    /** Awadhi-Hindi (Devanagiri). */
     public static final OcrSkillLanguage AWA = fromString("awa");
 
-    /**
-     * Azerbaijani (Latin).
-     */
+    /** Azerbaijani (Latin). */
     public static final OcrSkillLanguage AZ = fromString("az");
 
-    /**
-     * Bagheli.
-     */
+    /** Bagheli. */
     public static final OcrSkillLanguage BFY = fromString("bfy");
 
-    /**
-     * Basque.
-     */
+    /** Basque. */
     public static final OcrSkillLanguage EU = fromString("eu");
 
-    /**
-     * Belarusian (Cyrillic and Latin).
-     */
+    /** Belarusian (Cyrillic and Latin). */
     public static final OcrSkillLanguage BE = fromString("be");
 
-    /**
-     * Belarusian (Cyrillic).
-     */
+    /** Belarusian (Cyrillic). */
     public static final OcrSkillLanguage BE_CYRL = fromString("be-cyrl");
 
-    /**
-     * Belarusian (Latin).
-     */
+    /** Belarusian (Latin). */
     public static final OcrSkillLanguage BE_LATN = fromString("be-latn");
 
-    /**
-     * Bhojpuri-Hindi (Devanagiri).
-     */
+    /** Bhojpuri-Hindi (Devanagiri). */
     public static final OcrSkillLanguage BHO = fromString("bho");
 
-    /**
-     * Bislama.
-     */
+    /** Bislama. */
     public static final OcrSkillLanguage BI = fromString("bi");
 
-    /**
-     * Bodo (Devanagiri).
-     */
+    /** Bodo (Devanagiri). */
     public static final OcrSkillLanguage BRX = fromString("brx");
 
-    /**
-     * Bosnian Latin.
-     */
+    /** Bosnian Latin. */
     public static final OcrSkillLanguage BS = fromString("bs");
 
-    /**
-     * Brajbha.
-     */
+    /** Brajbha. */
     public static final OcrSkillLanguage BRA = fromString("bra");
 
-    /**
-     * Breton.
-     */
+    /** Breton. */
     public static final OcrSkillLanguage BR = fromString("br");
 
-    /**
-     * Bulgarian.
-     */
+    /** Bulgarian. */
     public static final OcrSkillLanguage BG = fromString("bg");
 
-    /**
-     * Bundeli.
-     */
+    /** Bundeli. */
     public static final OcrSkillLanguage BNS = fromString("bns");
 
-    /**
-     * Buryat (Cyrillic).
-     */
+    /** Buryat (Cyrillic). */
     public static final OcrSkillLanguage BUA = fromString("bua");
 
-    /**
-     * Catalan.
-     */
+    /** Catalan. */
     public static final OcrSkillLanguage CA = fromString("ca");
 
-    /**
-     * Cebuano.
-     */
+    /** Cebuano. */
     public static final OcrSkillLanguage CEB = fromString("ceb");
 
-    /**
-     * Chamling.
-     */
+    /** Chamling. */
     public static final OcrSkillLanguage RAB = fromString("rab");
 
-    /**
-     * Chamorro.
-     */
+    /** Chamorro. */
     public static final OcrSkillLanguage CH = fromString("ch");
 
-    /**
-     * Chhattisgarhi (Devanagiri).
-     */
+    /** Chhattisgarhi (Devanagiri). */
     public static final OcrSkillLanguage HNE = fromString("hne");
 
-    /**
-     * Chinese Simplified.
-     */
+    /** Chinese Simplified. */
     public static final OcrSkillLanguage ZH_HANS = fromString("zh-Hans");
 
-    /**
-     * Chinese Traditional.
-     */
+    /** Chinese Traditional. */
     public static final OcrSkillLanguage ZH_HANT = fromString("zh-Hant");
 
-    /**
-     * Cornish.
-     */
+    /** Cornish. */
     public static final OcrSkillLanguage KW = fromString("kw");
 
-    /**
-     * Corsican.
-     */
+    /** Corsican. */
     public static final OcrSkillLanguage CO = fromString("co");
 
-    /**
-     * Crimean Tatar (Latin).
-     */
+    /** Crimean Tatar (Latin). */
     public static final OcrSkillLanguage CRH = fromString("crh");
 
-    /**
-     * Croatian.
-     */
+    /** Croatian. */
     public static final OcrSkillLanguage HR = fromString("hr");
 
-    /**
-     * Czech.
-     */
+    /** Czech. */
     public static final OcrSkillLanguage CS = fromString("cs");
 
-    /**
-     * Danish.
-     */
+    /** Danish. */
     public static final OcrSkillLanguage DA = fromString("da");
 
-    /**
-     * Dari.
-     */
+    /** Dari. */
     public static final OcrSkillLanguage PRS = fromString("prs");
 
-    /**
-     * Dhimal (Devanagiri).
-     */
+    /** Dhimal (Devanagiri). */
     public static final OcrSkillLanguage DHI = fromString("dhi");
 
-    /**
-     * Dogri (Devanagiri).
-     */
+    /** Dogri (Devanagiri). */
     public static final OcrSkillLanguage DOI = fromString("doi");
 
-    /**
-     * Dutch.
-     */
+    /** Dutch. */
     public static final OcrSkillLanguage NL = fromString("nl");
 
-    /**
-     * English.
-     */
+    /** English. */
     public static final OcrSkillLanguage EN = fromString("en");
 
-    /**
-     * Erzya (Cyrillic).
-     */
+    /** Erzya (Cyrillic). */
     public static final OcrSkillLanguage MYV = fromString("myv");
 
-    /**
-     * Estonian.
-     */
+    /** Estonian. */
     public static final OcrSkillLanguage ET = fromString("et");
 
-    /**
-     * Faroese.
-     */
+    /** Faroese. */
     public static final OcrSkillLanguage FO = fromString("fo");
 
-    /**
-     * Fijian.
-     */
+    /** Fijian. */
     public static final OcrSkillLanguage FJ = fromString("fj");
 
-    /**
-     * Filipino.
-     */
+    /** Filipino. */
     public static final OcrSkillLanguage FIL = fromString("fil");
 
-    /**
-     * Finnish.
-     */
+    /** Finnish. */
     public static final OcrSkillLanguage FI = fromString("fi");
 
-    /**
-     * French.
-     */
+    /** French. */
     public static final OcrSkillLanguage FR = fromString("fr");
 
-    /**
-     * Frulian.
-     */
+    /** Frulian. */
     public static final OcrSkillLanguage FUR = fromString("fur");
 
-    /**
-     * Gagauz (Latin).
-     */
+    /** Gagauz (Latin). */
     public static final OcrSkillLanguage GAG = fromString("gag");
 
-    /**
-     * Galician.
-     */
+    /** Galician. */
     public static final OcrSkillLanguage GL = fromString("gl");
 
-    /**
-     * German.
-     */
+    /** German. */
     public static final OcrSkillLanguage DE = fromString("de");
 
-    /**
-     * Gilbertese.
-     */
+    /** Gilbertese. */
     public static final OcrSkillLanguage GIL = fromString("gil");
 
-    /**
-     * Gondi (Devanagiri).
-     */
+    /** Gondi (Devanagiri). */
     public static final OcrSkillLanguage GON = fromString("gon");
 
-    /**
-     * Greek.
-     */
+    /** Greek. */
     public static final OcrSkillLanguage EL = fromString("el");
 
-    /**
-     * Greenlandic.
-     */
+    /** Greenlandic. */
     public static final OcrSkillLanguage KL = fromString("kl");
 
-    /**
-     * Gurung (Devanagiri).
-     */
+    /** Gurung (Devanagiri). */
     public static final OcrSkillLanguage GVR = fromString("gvr");
 
-    /**
-     * Haitian Creole.
-     */
+    /** Haitian Creole. */
     public static final OcrSkillLanguage HT = fromString("ht");
 
-    /**
-     * Halbi (Devanagiri).
-     */
+    /** Halbi (Devanagiri). */
     public static final OcrSkillLanguage HLB = fromString("hlb");
 
-    /**
-     * Hani.
-     */
+    /** Hani. */
     public static final OcrSkillLanguage HNI = fromString("hni");
 
-    /**
-     * Haryanvi.
-     */
+    /** Haryanvi. */
     public static final OcrSkillLanguage BGC = fromString("bgc");
 
-    /**
-     * Hawaiian.
-     */
+    /** Hawaiian. */
     public static final OcrSkillLanguage HAW = fromString("haw");
 
-    /**
-     * Hindi.
-     */
+    /** Hindi. */
     public static final OcrSkillLanguage HI = fromString("hi");
 
-    /**
-     * Hmong Daw (Latin).
-     */
+    /** Hmong Daw (Latin). */
     public static final OcrSkillLanguage MWW = fromString("mww");
 
-    /**
-     * Ho (Devanagiri).
-     */
+    /** Ho (Devanagiri). */
     public static final OcrSkillLanguage HOC = fromString("hoc");
 
-    /**
-     * Hungarian.
-     */
+    /** Hungarian. */
     public static final OcrSkillLanguage HU = fromString("hu");
 
-    /**
-     * Icelandic.
-     */
+    /** Icelandic. */
     public static final OcrSkillLanguage IS = fromString("is");
 
-    /**
-     * Inari Sami.
-     */
+    /** Inari Sami. */
     public static final OcrSkillLanguage SMN = fromString("smn");
 
-    /**
-     * Indonesian.
-     */
+    /** Indonesian. */
     public static final OcrSkillLanguage ID = fromString("id");
 
-    /**
-     * Interlingua.
-     */
+    /** Interlingua. */
     public static final OcrSkillLanguage IA = fromString("ia");
 
-    /**
-     * Inuktitut (Latin).
-     */
+    /** Inuktitut (Latin). */
     public static final OcrSkillLanguage IU = fromString("iu");
 
-    /**
-     * Irish.
-     */
+    /** Irish. */
     public static final OcrSkillLanguage GA = fromString("ga");
 
-    /**
-     * Italian.
-     */
+    /** Italian. */
     public static final OcrSkillLanguage IT = fromString("it");
 
-    /**
-     * Japanese.
-     */
+    /** Japanese. */
     public static final OcrSkillLanguage JA = fromString("ja");
 
-    /**
-     * Jaunsari (Devanagiri).
-     */
+    /** Jaunsari (Devanagiri). */
     public static final OcrSkillLanguage JNS = fromString("Jns");
 
-    /**
-     * Javanese.
-     */
+    /** Javanese. */
     public static final OcrSkillLanguage JV = fromString("jv");
 
-    /**
-     * Kabuverdianu.
-     */
+    /** Kabuverdianu. */
     public static final OcrSkillLanguage KEA = fromString("kea");
 
-    /**
-     * Kachin (Latin).
-     */
+    /** Kachin (Latin). */
     public static final OcrSkillLanguage KAC = fromString("kac");
 
-    /**
-     * Kangri (Devanagiri).
-     */
+    /** Kangri (Devanagiri). */
     public static final OcrSkillLanguage XNR = fromString("xnr");
 
-    /**
-     * Karachay-Balkar.
-     */
+    /** Karachay-Balkar. */
     public static final OcrSkillLanguage KRC = fromString("krc");
 
-    /**
-     * Kara-Kalpak (Cyrillic).
-     */
+    /** Kara-Kalpak (Cyrillic). */
     public static final OcrSkillLanguage KAA_CYRL = fromString("kaa-cyrl");
 
-    /**
-     * Kara-Kalpak (Latin).
-     */
+    /** Kara-Kalpak (Latin). */
     public static final OcrSkillLanguage KAA = fromString("kaa");
 
-    /**
-     * Kashubian.
-     */
+    /** Kashubian. */
     public static final OcrSkillLanguage CSB = fromString("csb");
 
-    /**
-     * Kazakh (Cyrillic).
-     */
+    /** Kazakh (Cyrillic). */
     public static final OcrSkillLanguage KK_CYRL = fromString("kk-cyrl");
 
-    /**
-     * Kazakh (Latin).
-     */
+    /** Kazakh (Latin). */
     public static final OcrSkillLanguage KK_LATN = fromString("kk-latn");
 
-    /**
-     * Khaling.
-     */
+    /** Khaling. */
     public static final OcrSkillLanguage KLR = fromString("klr");
 
-    /**
-     * Khasi.
-     */
+    /** Khasi. */
     public static final OcrSkillLanguage KHA = fromString("kha");
 
-    /**
-     * K'iche'.
-     */
+    /** K'iche'. */
     public static final OcrSkillLanguage QUC = fromString("quc");
 
-    /**
-     * Korean.
-     */
+    /** Korean. */
     public static final OcrSkillLanguage KO = fromString("ko");
 
-    /**
-     * Korku.
-     */
+    /** Korku. */
     public static final OcrSkillLanguage KFQ = fromString("kfq");
 
-    /**
-     * Koryak.
-     */
+    /** Koryak. */
     public static final OcrSkillLanguage KPY = fromString("kpy");
 
-    /**
-     * Kosraean.
-     */
+    /** Kosraean. */
     public static final OcrSkillLanguage KOS = fromString("kos");
 
-    /**
-     * Kumyk (Cyrillic).
-     */
+    /** Kumyk (Cyrillic). */
     public static final OcrSkillLanguage KUM = fromString("kum");
 
-    /**
-     * Kurdish (Arabic).
-     */
+    /** Kurdish (Arabic). */
     public static final OcrSkillLanguage KU_ARAB = fromString("ku-arab");
 
-    /**
-     * Kurdish (Latin).
-     */
+    /** Kurdish (Latin). */
     public static final OcrSkillLanguage KU_LATN = fromString("ku-latn");
 
-    /**
-     * Kurukh (Devanagiri).
-     */
+    /** Kurukh (Devanagiri). */
     public static final OcrSkillLanguage KRU = fromString("kru");
 
-    /**
-     * Kyrgyz (Cyrillic).
-     */
+    /** Kyrgyz (Cyrillic). */
     public static final OcrSkillLanguage KY = fromString("ky");
 
-    /**
-     * Lakota.
-     */
+    /** Lakota. */
     public static final OcrSkillLanguage LKT = fromString("lkt");
 
-    /**
-     * Latin.
-     */
+    /** Latin. */
     public static final OcrSkillLanguage LA = fromString("la");
 
-    /**
-     * Lithuanian.
-     */
+    /** Lithuanian. */
     public static final OcrSkillLanguage LT = fromString("lt");
 
-    /**
-     * Lower Sorbian.
-     */
+    /** Lower Sorbian. */
     public static final OcrSkillLanguage DSB = fromString("dsb");
 
-    /**
-     * Lule Sami.
-     */
+    /** Lule Sami. */
     public static final OcrSkillLanguage SMJ = fromString("smj");
 
-    /**
-     * Luxembourgish.
-     */
+    /** Luxembourgish. */
     public static final OcrSkillLanguage LB = fromString("lb");
 
-    /**
-     * Mahasu Pahari (Devanagiri).
-     */
+    /** Mahasu Pahari (Devanagiri). */
     public static final OcrSkillLanguage BFZ = fromString("bfz");
 
-    /**
-     * Malay (Latin).
-     */
+    /** Malay (Latin). */
     public static final OcrSkillLanguage MS = fromString("ms");
 
-    /**
-     * Maltese.
-     */
+    /** Maltese. */
     public static final OcrSkillLanguage MT = fromString("mt");
 
-    /**
-     * Malto (Devanagiri).
-     */
+    /** Malto (Devanagiri). */
     public static final OcrSkillLanguage KMJ = fromString("kmj");
 
-    /**
-     * Manx.
-     */
+    /** Manx. */
     public static final OcrSkillLanguage GV = fromString("gv");
 
-    /**
-     * Maori.
-     */
+    /** Maori. */
     public static final OcrSkillLanguage MI = fromString("mi");
 
-    /**
-     * Marathi.
-     */
+    /** Marathi. */
     public static final OcrSkillLanguage MR = fromString("mr");
 
-    /**
-     * Mongolian (Cyrillic).
-     */
+    /** Mongolian (Cyrillic). */
     public static final OcrSkillLanguage MN = fromString("mn");
 
-    /**
-     * Montenegrin (Cyrillic).
-     */
+    /** Montenegrin (Cyrillic). */
     public static final OcrSkillLanguage CNR_CYRL = fromString("cnr-cyrl");
 
-    /**
-     * Montenegrin (Latin).
-     */
+    /** Montenegrin (Latin). */
     public static final OcrSkillLanguage CNR_LATN = fromString("cnr-latn");
 
-    /**
-     * Neapolitan.
-     */
+    /** Neapolitan. */
     public static final OcrSkillLanguage NAP = fromString("nap");
 
-    /**
-     * Nepali.
-     */
+    /** Nepali. */
     public static final OcrSkillLanguage NE = fromString("ne");
 
-    /**
-     * Niuean.
-     */
+    /** Niuean. */
     public static final OcrSkillLanguage NIU = fromString("niu");
 
-    /**
-     * Nogay.
-     */
+    /** Nogay. */
     public static final OcrSkillLanguage NOG = fromString("nog");
 
-    /**
-     * Northern Sami (Latin).
-     */
+    /** Northern Sami (Latin). */
     public static final OcrSkillLanguage SME = fromString("sme");
 
-    /**
-     * Norwegian.
-     */
+    /** Norwegian. */
     public static final OcrSkillLanguage NB = fromString("nb");
 
-    /**
-     * Norwegian.
-     */
+    /** Norwegian. */
     public static final OcrSkillLanguage NO = fromString("no");
 
-    /**
-     * Occitan.
-     */
+    /** Occitan. */
     public static final OcrSkillLanguage OC = fromString("oc");
 
-    /**
-     * Ossetic.
-     */
+    /** Ossetic. */
     public static final OcrSkillLanguage OS = fromString("os");
 
-    /**
-     * Pashto.
-     */
+    /** Pashto. */
     public static final OcrSkillLanguage PS = fromString("ps");
 
-    /**
-     * Persian.
-     */
+    /** Persian. */
     public static final OcrSkillLanguage FA = fromString("fa");
 
-    /**
-     * Polish.
-     */
+    /** Polish. */
     public static final OcrSkillLanguage PL = fromString("pl");
 
-    /**
-     * Portuguese.
-     */
+    /** Portuguese. */
     public static final OcrSkillLanguage PT = fromString("pt");
 
-    /**
-     * Punjabi (Arabic).
-     */
+    /** Punjabi (Arabic). */
     public static final OcrSkillLanguage PA = fromString("pa");
 
-    /**
-     * Ripuarian.
-     */
+    /** Ripuarian. */
     public static final OcrSkillLanguage KSH = fromString("ksh");
 
-    /**
-     * Romanian.
-     */
+    /** Romanian. */
     public static final OcrSkillLanguage RO = fromString("ro");
 
-    /**
-     * Romansh.
-     */
+    /** Romansh. */
     public static final OcrSkillLanguage RM = fromString("rm");
 
-    /**
-     * Russian.
-     */
+    /** Russian. */
     public static final OcrSkillLanguage RU = fromString("ru");
 
-    /**
-     * Sadri (Devanagiri).
-     */
+    /** Sadri (Devanagiri). */
     public static final OcrSkillLanguage SCK = fromString("sck");
 
-    /**
-     * Samoan (Latin).
-     */
+    /** Samoan (Latin). */
     public static final OcrSkillLanguage SM = fromString("sm");
 
-    /**
-     * Sanskrit (Devanagiri).
-     */
+    /** Sanskrit (Devanagiri). */
     public static final OcrSkillLanguage SA = fromString("sa");
 
-    /**
-     * Santali (Devanagiri).
-     */
+    /** Santali (Devanagiri). */
     public static final OcrSkillLanguage SAT = fromString("sat");
 
-    /**
-     * Scots.
-     */
+    /** Scots. */
     public static final OcrSkillLanguage SCO = fromString("sco");
 
-    /**
-     * Scottish Gaelic.
-     */
+    /** Scottish Gaelic. */
     public static final OcrSkillLanguage GD = fromString("gd");
 
-    /**
-     * Serbian (Latin).
-     */
+    /** Serbian (Latin). */
     public static final OcrSkillLanguage SR = fromString("sr");
 
-    /**
-     * Serbian (Cyrillic).
-     */
+    /** Serbian (Cyrillic). */
     public static final OcrSkillLanguage SR_CYRL = fromString("sr-Cyrl");
 
-    /**
-     * Serbian (Latin).
-     */
+    /** Serbian (Latin). */
     public static final OcrSkillLanguage SR_LATN = fromString("sr-Latn");
 
-    /**
-     * Sherpa (Devanagiri).
-     */
+    /** Sherpa (Devanagiri). */
     public static final OcrSkillLanguage XSR = fromString("xsr");
 
-    /**
-     * Sirmauri (Devanagiri).
-     */
+    /** Sirmauri (Devanagiri). */
     public static final OcrSkillLanguage SRX = fromString("srx");
 
-    /**
-     * Skolt Sami.
-     */
+    /** Skolt Sami. */
     public static final OcrSkillLanguage SMS = fromString("sms");
 
-    /**
-     * Slovak.
-     */
+    /** Slovak. */
     public static final OcrSkillLanguage SK = fromString("sk");
 
-    /**
-     * Slovenian.
-     */
+    /** Slovenian. */
     public static final OcrSkillLanguage SL = fromString("sl");
 
-    /**
-     * Somali (Arabic).
-     */
+    /** Somali (Arabic). */
     public static final OcrSkillLanguage SO = fromString("so");
 
-    /**
-     * Southern Sami.
-     */
+    /** Southern Sami. */
     public static final OcrSkillLanguage SMA = fromString("sma");
 
-    /**
-     * Spanish.
-     */
+    /** Spanish. */
     public static final OcrSkillLanguage ES = fromString("es");
 
-    /**
-     * Swahili (Latin).
-     */
+    /** Swahili (Latin). */
     public static final OcrSkillLanguage SW = fromString("sw");
 
-    /**
-     * Swedish.
-     */
+    /** Swedish. */
     public static final OcrSkillLanguage SV = fromString("sv");
 
-    /**
-     * Tajik (Cyrillic).
-     */
+    /** Tajik (Cyrillic). */
     public static final OcrSkillLanguage TG = fromString("tg");
 
-    /**
-     * Tatar (Latin).
-     */
+    /** Tatar (Latin). */
     public static final OcrSkillLanguage TT = fromString("tt");
 
-    /**
-     * Tetum.
-     */
+    /** Tetum. */
     public static final OcrSkillLanguage TET = fromString("tet");
 
-    /**
-     * Thangmi.
-     */
+    /** Thangmi. */
     public static final OcrSkillLanguage THF = fromString("thf");
 
-    /**
-     * Tongan.
-     */
+    /** Tongan. */
     public static final OcrSkillLanguage TO = fromString("to");
 
-    /**
-     * Turkish.
-     */
+    /** Turkish. */
     public static final OcrSkillLanguage TR = fromString("tr");
 
-    /**
-     * Turkmen (Latin).
-     */
+    /** Turkmen (Latin). */
     public static final OcrSkillLanguage TK = fromString("tk");
 
-    /**
-     * Tuvan.
-     */
+    /** Tuvan. */
     public static final OcrSkillLanguage TYV = fromString("tyv");
 
-    /**
-     * Upper Sorbian.
-     */
+    /** Upper Sorbian. */
     public static final OcrSkillLanguage HSB = fromString("hsb");
 
-    /**
-     * Urdu.
-     */
+    /** Urdu. */
     public static final OcrSkillLanguage UR = fromString("ur");
 
-    /**
-     * Uyghur (Arabic).
-     */
+    /** Uyghur (Arabic). */
     public static final OcrSkillLanguage UG = fromString("ug");
 
-    /**
-     * Uzbek (Arabic).
-     */
+    /** Uzbek (Arabic). */
     public static final OcrSkillLanguage UZ_ARAB = fromString("uz-arab");
 
-    /**
-     * Uzbek (Cyrillic).
-     */
+    /** Uzbek (Cyrillic). */
     public static final OcrSkillLanguage UZ_CYRL = fromString("uz-cyrl");
 
-    /**
-     * Uzbek (Latin).
-     */
+    /** Uzbek (Latin). */
     public static final OcrSkillLanguage UZ = fromString("uz");
 
-    /**
-     * Volapük.
-     */
+    /** Volapük. */
     public static final OcrSkillLanguage VO = fromString("vo");
 
-    /**
-     * Walser.
-     */
+    /** Walser. */
     public static final OcrSkillLanguage WAE = fromString("wae");
 
-    /**
-     * Welsh.
-     */
+    /** Welsh. */
     public static final OcrSkillLanguage CY = fromString("cy");
 
-    /**
-     * Western Frisian.
-     */
+    /** Western Frisian. */
     public static final OcrSkillLanguage FY = fromString("fy");
 
-    /**
-     * Yucatec Maya.
-     */
+    /** Yucatec Maya. */
     public static final OcrSkillLanguage YUA = fromString("yua");
 
-    /**
-     * Zhuang.
-     */
+    /** Zhuang. */
     public static final OcrSkillLanguage ZA = fromString("za");
 
-    /**
-     * Zulu.
-     */
+    /** Zulu. */
     public static final OcrSkillLanguage ZU = fromString("zu");
 
-    /**
-     * Unknown (All).
-     */
+    /** Unknown (All). */
     public static final OcrSkillLanguage UNK = fromString("unk");
 
     /**
      * Creates a new instance of OcrSkillLanguage value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public OcrSkillLanguage() {
-    }
+    public OcrSkillLanguage() {}
 
     /**
      * Creates or finds a OcrSkillLanguage from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding OcrSkillLanguage.
      */
@@ -884,7 +541,7 @@ public final class OcrSkillLanguage extends ExpandableStringEnum<OcrSkillLanguag
 
     /**
      * Gets known OcrSkillLanguage values.
-     * 
+     *
      * @return known OcrSkillLanguage values.
      */
     public static Collection<OcrSkillLanguage> values() {

@@ -13,11 +13,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The result of testing an analyzer on text.
- */
+/** The result of testing an analyzer on text. */
 @Immutable
 public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
     /*
@@ -27,7 +26,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Creates an instance of AnalyzeResult class.
-     * 
+     *
      * @param tokens the tokens value to set.
      */
     public AnalyzeResult(List<AnalyzedTokenInfo> tokens) {
@@ -36,7 +35,7 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Get the tokens property: The list of tokens returned by the analyzer specified in the request.
-     * 
+     *
      * @return the tokens value.
      */
     public List<AnalyzedTokenInfo> getTokens() {
@@ -52,32 +51,41 @@ public final class AnalyzeResult implements JsonSerializable<AnalyzeResult> {
 
     /**
      * Reads an instance of AnalyzeResult from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of AnalyzeResult if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the AnalyzeResult.
      */
     public static AnalyzeResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean tokensFound = false;
-            List<AnalyzedTokenInfo> tokens = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean tokensFound = false;
+                    List<AnalyzedTokenInfo> tokens = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("tokens".equals(fieldName)) {
-                    tokens = reader.readArray(reader1 -> AnalyzedTokenInfo.fromJson(reader1));
-                    tokensFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (tokensFound) {
-                return new AnalyzeResult(tokens);
-            }
-            throw new IllegalStateException("Missing required property: tokens");
-        });
+                        if ("tokens".equals(fieldName)) {
+                            tokens = reader.readArray(reader1 -> AnalyzedTokenInfo.fromJson(reader1));
+                            tokensFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (tokensFound) {
+                        AnalyzeResult deserializedAnalyzeResult = new AnalyzeResult(tokens);
+
+                        return deserializedAnalyzeResult;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!tokensFound) {
+                        missingProperties.add("tokens");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

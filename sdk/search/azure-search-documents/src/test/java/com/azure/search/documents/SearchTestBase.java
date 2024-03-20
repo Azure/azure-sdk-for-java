@@ -3,7 +3,6 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelay;
@@ -80,9 +79,9 @@ public abstract class SearchTestBase extends TestProxyTestBase {
     protected static final String API_KEY = Configuration.getGlobalConfiguration()
         .get("SEARCH_SERVICE_API_KEY", "apiKey");
 
-    protected static final String STORAGE_CONNECTION_STRING = Configuration.getGlobalConfiguration()
+    private static final String STORAGE_CONNECTION_STRING = Configuration.getGlobalConfiguration()
         .get("SEARCH_STORAGE_CONNECTION_STRING", "connectionString");
-    protected static final String BLOB_CONTAINER_NAME = "searchcontainer";
+    private static final String BLOB_CONTAINER_NAME = "searchcontainer";
 
     protected static final TestMode TEST_MODE = initializeTestMode();
 
@@ -90,10 +89,8 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
     static final String HOTELS_DATA_JSON = "HotelsDataArray.json";
 
-    // This has to be used in all test modes as this is more retry counts than the standard policy.
-    // Change the delay based on the mode.
-    static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY = new RetryPolicy(new FixedDelay(4,
-            TEST_MODE == TestMode.PLAYBACK ? Duration.ofMillis(1) : Duration.ofSeconds(15)));
+    static final RetryPolicy SERVICE_THROTTLE_SAFE_RETRY_POLICY =
+        new RetryPolicy(new FixedDelay(4, Duration.ofSeconds(15)));
 
     protected String createHotelIndex() {
         return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
@@ -120,13 +117,14 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         SearchIndexClientBuilder builder = new SearchIndexClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(true, interceptorManager, isSync))
-            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
+            .httpClient(getHttpClient(true, interceptorManager, isSync));
 
         if (interceptorManager.isPlaybackMode()) {
             addPolicies(builder);
             return builder;
         }
+
+        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -140,14 +138,15 @@ public abstract class SearchTestBase extends TestProxyTestBase {
         SearchIndexerClientBuilder builder = new SearchIndexerClientBuilder()
             .endpoint(ENDPOINT)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(true, interceptorManager, isSync))
-            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
+            .httpClient(getHttpClient(true, interceptorManager, isSync));
 
         addPolicies(builder, policies);
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
         }
+
+        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -157,7 +156,17 @@ public abstract class SearchTestBase extends TestProxyTestBase {
 
     }
 
-    private static void addPolicies(HttpTrait<?> builder, HttpPipelinePolicy... policies) {
+    private static void addPolicies(SearchIndexClientBuilder builder, HttpPipelinePolicy... policies) {
+        if (policies == null) {
+            return;
+        }
+
+        for (HttpPipelinePolicy policy : policies) {
+            builder.addPolicy(policy);
+        }
+    }
+
+    private static void addPolicies(SearchIndexerClientBuilder builder, HttpPipelinePolicy... policies) {
         if (policies == null) {
             return;
         }
@@ -182,12 +191,13 @@ public abstract class SearchTestBase extends TestProxyTestBase {
             .endpoint(ENDPOINT)
             .indexName(indexName)
             .credential(new AzureKeyCredential(API_KEY))
-            .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync))
-            .retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
+            .httpClient(getHttpClient(wrapWithAssertingClient, interceptorManager, isSync));
 
         if (interceptorManager.isPlaybackMode()) {
             return builder;
         }
+
+        builder.retryPolicy(SERVICE_THROTTLE_SAFE_RETRY_POLICY);
 
         if (!interceptorManager.isLiveMode()) {
             builder.addPolicy(interceptorManager.getRecordPolicy());

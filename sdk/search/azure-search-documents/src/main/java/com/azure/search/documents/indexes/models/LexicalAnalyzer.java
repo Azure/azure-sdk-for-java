@@ -13,11 +13,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/**
- * Base type for analyzers.
- */
+/** Base type for analyzers. */
 @Immutable
-public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
+public abstract class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
     /*
      * The name of the analyzer. It must only contain letters, digits, spaces, dashes or underscores, can only start
      * and end with alphanumeric characters, and is limited to 128 characters.
@@ -26,7 +24,7 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
 
     /**
      * Creates an instance of LexicalAnalyzer class.
-     * 
+     *
      * @param name the name value to set.
      */
     public LexicalAnalyzer(String name) {
@@ -36,7 +34,7 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
     /**
      * Get the name property: The name of the analyzer. It must only contain letters, digits, spaces, dashes or
      * underscores, can only start and end with alphanumeric characters, and is limited to 128 characters.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -52,64 +50,50 @@ public class LexicalAnalyzer implements JsonSerializable<LexicalAnalyzer> {
 
     /**
      * Reads an instance of LexicalAnalyzer from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of LexicalAnalyzer if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the LexicalAnalyzer.
      */
     public static LexicalAnalyzer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
+        return jsonReader.readObject(
+                reader -> {
+                    String discriminatorValue = null;
+                    JsonReader readerToUse = reader.bufferObject();
 
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
-                }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("#Microsoft.Azure.Search.CustomAnalyzer".equals(discriminatorValue)) {
-                return CustomAnalyzer.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.PatternAnalyzer".equals(discriminatorValue)) {
-                return PatternAnalyzer.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.StandardAnalyzer".equals(discriminatorValue)) {
-                return LuceneStandardAnalyzer.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Azure.Search.StopAnalyzer".equals(discriminatorValue)) {
-                return StopAnalyzer.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
-            }
-        });
-    }
+                    readerToUse.nextToken(); // Prepare for reading
+                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = readerToUse.getFieldName();
+                        readerToUse.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            discriminatorValue = readerToUse.getString();
+                            break;
+                        } else {
+                            readerToUse.skipChildren();
+                        }
+                    }
 
-    static LexicalAnalyzer fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                return new LexicalAnalyzer(name);
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                    if (discriminatorValue != null) {
+                        readerToUse = readerToUse.reset();
+                    }
+                    // Use the discriminator value to determine which subtype should be deserialized.
+                    if ("#Microsoft.Azure.Search.CustomAnalyzer".equals(discriminatorValue)) {
+                        return CustomAnalyzer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.PatternAnalyzer".equals(discriminatorValue)) {
+                        return PatternAnalyzer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.StandardAnalyzer".equals(discriminatorValue)) {
+                        return LuceneStandardAnalyzer.fromJson(readerToUse);
+                    } else if ("#Microsoft.Azure.Search.StopAnalyzer".equals(discriminatorValue)) {
+                        return StopAnalyzer.fromJson(readerToUse);
+                    } else {
+                        throw new IllegalStateException(
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.CustomAnalyzer', '#Microsoft.Azure.Search.PatternAnalyzer', '#Microsoft.Azure.Search.StandardAnalyzer', or '#Microsoft.Azure.Search.StopAnalyzer'. It was: '"
+                                        + discriminatorValue
+                                        + "'.");
+                    }
+                });
     }
 }
