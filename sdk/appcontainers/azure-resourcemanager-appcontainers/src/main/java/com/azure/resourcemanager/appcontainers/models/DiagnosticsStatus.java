@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Rendering details of a diagnostics table. */
+/**
+ * Rendering details of a diagnostics table.
+ */
 @Fluent
 public final class DiagnosticsStatus {
     /*
@@ -22,13 +24,15 @@ public final class DiagnosticsStatus {
     @JsonProperty(value = "statusId")
     private Integer statusId;
 
-    /** Creates an instance of DiagnosticsStatus class. */
+    /**
+     * Creates an instance of DiagnosticsStatus class.
+     */
     public DiagnosticsStatus() {
     }
 
     /**
      * Get the message property: Diagnostic message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -37,7 +41,7 @@ public final class DiagnosticsStatus {
 
     /**
      * Set the message property: Diagnostic message.
-     *
+     * 
      * @param message the message value to set.
      * @return the DiagnosticsStatus object itself.
      */
@@ -48,7 +52,7 @@ public final class DiagnosticsStatus {
 
     /**
      * Get the statusId property: Status.
-     *
+     * 
      * @return the statusId value.
      */
     public Integer statusId() {
@@ -57,7 +61,7 @@ public final class DiagnosticsStatus {
 
     /**
      * Set the statusId property: Status.
-     *
+     * 
      * @param statusId the statusId value to set.
      * @return the DiagnosticsStatus object itself.
      */
@@ -68,7 +72,7 @@ public final class DiagnosticsStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

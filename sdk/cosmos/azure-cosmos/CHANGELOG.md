@@ -8,6 +8,7 @@
 
 #### Bugs Fixed
 * Suppress exceptions when calling diagnostics handlers. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Fixed an issue where no cross region retry for write operations due to channel acquisition timeout - See [PR 39255](https://github.com/Azure/azure-sdk-for-java/pull/39255)
 
 #### Other Changes
 * Only call System.exit in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)

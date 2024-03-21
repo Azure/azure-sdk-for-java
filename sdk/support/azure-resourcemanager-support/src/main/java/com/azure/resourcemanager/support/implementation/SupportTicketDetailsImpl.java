@@ -8,6 +8,7 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.support.fluent.models.SupportTicketDetailsInner;
 import com.azure.resourcemanager.support.models.Consent;
 import com.azure.resourcemanager.support.models.ContactProfile;
+import com.azure.resourcemanager.support.models.IsTemporaryTicket;
 import com.azure.resourcemanager.support.models.QuotaTicketDetails;
 import com.azure.resourcemanager.support.models.SecondaryConsent;
 import com.azure.resourcemanager.support.models.ServiceLevelAgreement;
@@ -132,6 +133,10 @@ public final class SupportTicketDetailsImpl
         return this.innerModel().fileWorkspaceName();
     }
 
+    public IsTemporaryTicket isTemporaryTicket() {
+        return this.innerModel().isTemporaryTicket();
+    }
+
     public TechnicalTicketDetails technicalTicketDetails() {
         return this.innerModel().technicalTicketDetails();
     }
@@ -162,17 +167,14 @@ public final class SupportTicketDetailsImpl
     private UpdateSupportTicket updateUpdateSupportTicket;
 
     public SupportTicketDetails create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSupportTickets()
-                .create(supportTicketName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getSupportTickets().create(supportTicketName,
+            this.innerModel(), Context.NONE);
         return this;
     }
 
     public SupportTicketDetails create(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getSupportTickets().create(supportTicketName, this.innerModel(), context);
+        this.innerObject
+            = serviceManager.serviceClient().getSupportTickets().create(supportTicketName, this.innerModel(), context);
         return this;
     }
 
@@ -188,45 +190,33 @@ public final class SupportTicketDetailsImpl
     }
 
     public SupportTicketDetails apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSupportTickets()
-                .updateWithResponse(supportTicketName, updateUpdateSupportTicket, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSupportTickets()
+            .updateWithResponse(supportTicketName, updateUpdateSupportTicket, Context.NONE).getValue();
         return this;
     }
 
     public SupportTicketDetails apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSupportTickets()
-                .updateWithResponse(supportTicketName, updateUpdateSupportTicket, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSupportTickets()
+            .updateWithResponse(supportTicketName, updateUpdateSupportTicket, context).getValue();
         return this;
     }
 
-    SupportTicketDetailsImpl(
-        SupportTicketDetailsInner innerObject, com.azure.resourcemanager.support.SupportManager serviceManager) {
+    SupportTicketDetailsImpl(SupportTicketDetailsInner innerObject,
+        com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.supportTicketName = Utils.getValueFromIdByName(innerObject.id(), "supportTickets");
+        this.supportTicketName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "supportTickets");
     }
 
     public SupportTicketDetails refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSupportTickets()
-                .getWithResponse(supportTicketName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getSupportTickets()
+            .getWithResponse(supportTicketName, Context.NONE).getValue();
         return this;
     }
 
     public SupportTicketDetails refresh(Context context) {
-        this.innerObject =
-            serviceManager.serviceClient().getSupportTickets().getWithResponse(supportTicketName, context).getValue();
+        this.innerObject
+            = serviceManager.serviceClient().getSupportTickets().getWithResponse(supportTicketName, context).getValue();
         return this;
     }
 
@@ -253,6 +243,11 @@ public final class SupportTicketDetailsImpl
             this.updateUpdateSupportTicket.withSeverity(severity);
             return this;
         }
+    }
+
+    public SupportTicketDetailsImpl withEnrollmentId(String enrollmentId) {
+        this.innerModel().withEnrollmentId(enrollmentId);
+        return this;
     }
 
     public SupportTicketDetailsImpl withRequire24X7Response(Boolean require24X7Response) {

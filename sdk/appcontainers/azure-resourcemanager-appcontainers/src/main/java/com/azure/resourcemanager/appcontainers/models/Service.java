@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container App to be a dev service. */
+/**
+ * Container App to be a dev service.
+ */
 @Fluent
 public final class Service {
     /*
@@ -17,13 +19,15 @@ public final class Service {
     @JsonProperty(value = "type", required = true)
     private String type;
 
-    /** Creates an instance of Service class. */
+    /**
+     * Creates an instance of Service class.
+     */
     public Service() {
     }
 
     /**
      * Get the type property: Dev ContainerApp service type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -32,7 +36,7 @@ public final class Service {
 
     /**
      * Set the type property: Dev ContainerApp service type.
-     *
+     * 
      * @param type the type value to set.
      * @return the Service object itself.
      */
@@ -43,7 +47,7 @@ public final class Service {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
