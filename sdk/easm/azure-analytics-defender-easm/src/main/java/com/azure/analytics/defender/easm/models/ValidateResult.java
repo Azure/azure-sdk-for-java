@@ -5,22 +5,19 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ValidateResult model.
  */
 @Immutable
-public final class ValidateResult implements JsonSerializable<ValidateResult> {
+public final class ValidateResult {
 
     /*
      * This is the top-level error object whose code matches the x-ms-error-code response header.
      */
     @Generated
+    @JsonProperty(value = "error")
     private ErrorDetail error;
 
     /**
@@ -31,47 +28,13 @@ public final class ValidateResult implements JsonSerializable<ValidateResult> {
     }
 
     /**
-     * Get the error property: This is the top-level error object whose code matches the x-ms-error-code response header.
+     * Get the error property: This is the top-level error object whose code matches the x-ms-error-code response
+     * header.
      *
      * @return the error value.
      */
     @Generated
     public ErrorDetail getError() {
         return this.error;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("error", this.error);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ValidateResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ValidateResult if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ValidateResult.
-     */
-    @Generated
-    public static ValidateResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ValidateResult deserializedValidateResult = new ValidateResult();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("error".equals(fieldName)) {
-                    deserializedValidateResult.error = ErrorDetail.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedValidateResult;
-        });
     }
 }

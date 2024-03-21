@@ -5,65 +5,69 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * A request body used to create a discovery group.
  */
 @Fluent
-public final class DiscoGroupData implements JsonSerializable<DiscoGroupData> {
+public final class DiscoGroupData {
 
     /*
      * The name for a disco group.
      */
     @Generated
+    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The description for a disco group.
      */
     @Generated
+    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The tier for the disco group which will affect the algorithm used for the disco runs in this group.
      */
     @Generated
+    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * The frequency at which the disco group is supposed to be rerun in milliseconds.
      */
     @Generated
+    @JsonProperty(value = "frequencyMilliseconds")
     private Long frequencyMilliseconds;
 
     /*
      * The list of seeds used for the disco group runs.
      */
     @Generated
+    @JsonProperty(value = "seeds")
     private List<DiscoSource> seeds;
 
     /*
      * The list of names used for the disco group runs.
      */
     @Generated
+    @JsonProperty(value = "names")
     private List<String> names;
 
     /*
      * The list of excludes used for the disco group runs, aka assets to exclude from the discovery algorithm.
      */
     @Generated
+    @JsonProperty(value = "excludes")
     private List<DiscoSource> excludes;
 
     /*
      * The unique identifier for the disco template used for the disco group creation.
      */
     @Generated
+    @JsonProperty(value = "templateId")
     private String templateId;
 
     /**
@@ -118,7 +122,8 @@ public final class DiscoGroupData implements JsonSerializable<DiscoGroupData> {
     }
 
     /**
-     * Get the tier property: The tier for the disco group which will affect the algorithm used for the disco runs in this group.
+     * Get the tier property: The tier for the disco group which will affect the algorithm used for the disco runs in
+     * this group.
      *
      * @return the tier value.
      */
@@ -128,7 +133,8 @@ public final class DiscoGroupData implements JsonSerializable<DiscoGroupData> {
     }
 
     /**
-     * Set the tier property: The tier for the disco group which will affect the algorithm used for the disco runs in this group.
+     * Set the tier property: The tier for the disco group which will affect the algorithm used for the disco runs in
+     * this group.
      *
      * @param tier the tier value to set.
      * @return the DiscoGroupData object itself.
@@ -140,7 +146,8 @@ public final class DiscoGroupData implements JsonSerializable<DiscoGroupData> {
     }
 
     /**
-     * Get the frequencyMilliseconds property: The frequency at which the disco group is supposed to be rerun in milliseconds.
+     * Get the frequencyMilliseconds property: The frequency at which the disco group is supposed to be rerun in
+     * milliseconds.
      *
      * @return the frequencyMilliseconds value.
      */
@@ -150,7 +157,8 @@ public final class DiscoGroupData implements JsonSerializable<DiscoGroupData> {
     }
 
     /**
-     * Set the frequencyMilliseconds property: The frequency at which the disco group is supposed to be rerun in milliseconds.
+     * Set the frequencyMilliseconds property: The frequency at which the disco group is supposed to be rerun in
+     * milliseconds.
      *
      * @param frequencyMilliseconds the frequencyMilliseconds value to set.
      * @return the DiscoGroupData object itself.
@@ -206,7 +214,8 @@ public final class DiscoGroupData implements JsonSerializable<DiscoGroupData> {
     }
 
     /**
-     * Get the excludes property: The list of excludes used for the disco group runs, aka assets to exclude from the discovery algorithm.
+     * Get the excludes property: The list of excludes used for the disco group runs, aka assets to exclude from the
+     * discovery algorithm.
      *
      * @return the excludes value.
      */
@@ -216,7 +225,8 @@ public final class DiscoGroupData implements JsonSerializable<DiscoGroupData> {
     }
 
     /**
-     * Set the excludes property: The list of excludes used for the disco group runs, aka assets to exclude from the discovery algorithm.
+     * Set the excludes property: The list of excludes used for the disco group runs, aka assets to exclude from the
+     * discovery algorithm.
      *
      * @param excludes the excludes value to set.
      * @return the DiscoGroupData object itself.
@@ -247,64 +257,5 @@ public final class DiscoGroupData implements JsonSerializable<DiscoGroupData> {
     public DiscoGroupData setTemplateId(String templateId) {
         this.templateId = templateId;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("tier", this.tier);
-        jsonWriter.writeNumberField("frequencyMilliseconds", this.frequencyMilliseconds);
-        jsonWriter.writeArrayField("seeds", this.seeds, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("names", this.names, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeArrayField("excludes", this.excludes, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("templateId", this.templateId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DiscoGroupData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DiscoGroupData if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the DiscoGroupData.
-     */
-    @Generated
-    public static DiscoGroupData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            DiscoGroupData deserializedDiscoGroupData = new DiscoGroupData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    deserializedDiscoGroupData.name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    deserializedDiscoGroupData.description = reader.getString();
-                } else if ("tier".equals(fieldName)) {
-                    deserializedDiscoGroupData.tier = reader.getString();
-                } else if ("frequencyMilliseconds".equals(fieldName)) {
-                    deserializedDiscoGroupData.frequencyMilliseconds = reader.getNullable(JsonReader::getLong);
-                } else if ("seeds".equals(fieldName)) {
-                    List<DiscoSource> seeds = reader.readArray(reader1 -> DiscoSource.fromJson(reader1));
-                    deserializedDiscoGroupData.seeds = seeds;
-                } else if ("names".equals(fieldName)) {
-                    List<String> names = reader.readArray(reader1 -> reader1.getString());
-                    deserializedDiscoGroupData.names = names;
-                } else if ("excludes".equals(fieldName)) {
-                    List<DiscoSource> excludes = reader.readArray(reader1 -> DiscoSource.fromJson(reader1));
-                    deserializedDiscoGroupData.excludes = excludes;
-                } else if ("templateId".equals(fieldName)) {
-                    deserializedDiscoGroupData.templateId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedDiscoGroupData;
-        });
     }
 }

@@ -5,17 +5,16 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The HostAssetResource model.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("host")
 @Immutable
 public final class HostAssetResource extends AssetResource {
 
@@ -23,7 +22,8 @@ public final class HostAssetResource extends AssetResource {
      * asset
      */
     @Generated
-    private final HostAsset asset;
+    @JsonProperty(value = "asset")
+    private HostAsset asset;
 
     /**
      * Creates an instance of HostAssetResource class.
@@ -31,8 +31,8 @@ public final class HostAssetResource extends AssetResource {
      * @param asset the asset value to set.
      */
     @Generated
-    private HostAssetResource(HostAsset asset) {
-        setKind("host");
+    @JsonCreator
+    private HostAssetResource(@JsonProperty(value = "asset") HostAsset asset) {
         this.asset = asset;
     }
 
@@ -44,113 +44,5 @@ public final class HostAssetResource extends AssetResource {
     @Generated
     public HostAsset getAsset() {
         return this.asset;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", getKind());
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("displayName", getDisplayName());
-        jsonWriter.writeStringField("uuid", getUuid());
-        jsonWriter.writeStringField("createdDate",
-            getCreatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDate()));
-        jsonWriter.writeStringField("updatedDate",
-            getUpdatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getUpdatedDate()));
-        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
-        jsonWriter.writeStringField("externalId", getExternalId());
-        jsonWriter.writeArrayField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("wildcard", isWildcard());
-        jsonWriter.writeStringField("discoGroupName", getDiscoGroupName());
-        jsonWriter.writeArrayField("auditTrail", getAuditTrail(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("reason", getReason());
-        jsonWriter.writeJsonField("asset", this.asset);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of HostAssetResource from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of HostAssetResource if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the HostAssetResource.
-     */
-    @Generated
-    public static HostAssetResource fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            String kind = "host";
-            String name = null;
-            String displayName = null;
-            String uuid = null;
-            OffsetDateTime createdDate = null;
-            OffsetDateTime updatedDate = null;
-            AssetState state = null;
-            String externalId = null;
-            List<String> labels = null;
-            Boolean wildcard = null;
-            String discoGroupName = null;
-            List<AuditTrailItem> auditTrail = null;
-            String reason = null;
-            HostAsset asset = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    kind = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("displayName".equals(fieldName)) {
-                    displayName = reader.getString();
-                } else if ("uuid".equals(fieldName)) {
-                    uuid = reader.getString();
-                } else if ("createdDate".equals(fieldName)) {
-                    createdDate = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("updatedDate".equals(fieldName)) {
-                    updatedDate = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("state".equals(fieldName)) {
-                    state = AssetState.fromString(reader.getString());
-                } else if ("externalId".equals(fieldName)) {
-                    externalId = reader.getString();
-                } else if ("labels".equals(fieldName)) {
-                    labels = reader.readArray(reader1 -> reader1.getString());
-                } else if ("wildcard".equals(fieldName)) {
-                    wildcard = reader.getNullable(JsonReader::getBoolean);
-                } else if ("discoGroupName".equals(fieldName)) {
-                    discoGroupName = reader.getString();
-                } else if ("auditTrail".equals(fieldName)) {
-                    auditTrail = reader.readArray(reader1 -> AuditTrailItem.fromJson(reader1));
-                } else if ("reason".equals(fieldName)) {
-                    reason = reader.getString();
-                } else if ("asset".equals(fieldName)) {
-                    asset = HostAsset.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            HostAssetResource deserializedHostAssetResource = new HostAssetResource(asset);
-            deserializedHostAssetResource.setId(id);
-            deserializedHostAssetResource.setKind(kind);
-            deserializedHostAssetResource.setName(name);
-            deserializedHostAssetResource.setDisplayName(displayName);
-            deserializedHostAssetResource.setUuid(uuid);
-            deserializedHostAssetResource.setCreatedDate(createdDate);
-            deserializedHostAssetResource.setUpdatedDate(updatedDate);
-            deserializedHostAssetResource.setState(state);
-            deserializedHostAssetResource.setExternalId(externalId);
-            deserializedHostAssetResource.setLabels(labels);
-            deserializedHostAssetResource.setWildcard(wildcard);
-            deserializedHostAssetResource.setDiscoGroupName(discoGroupName);
-            deserializedHostAssetResource.setAuditTrail(auditTrail);
-            deserializedHostAssetResource.setReason(reason);
-            return deserializedHostAssetResource;
-        });
     }
 }

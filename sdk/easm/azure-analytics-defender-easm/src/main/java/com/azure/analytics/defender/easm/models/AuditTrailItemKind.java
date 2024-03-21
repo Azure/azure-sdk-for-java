@@ -5,6 +5,7 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -77,6 +78,7 @@ public final class AuditTrailItemKind extends ExpandableStringEnum<AuditTrailIte
      * @return the corresponding AuditTrailItemKind.
      */
     @Generated
+    @JsonCreator
     public static AuditTrailItemKind fromString(String name) {
         return fromString(name, AuditTrailItemKind.class);
     }

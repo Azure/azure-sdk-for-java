@@ -5,6 +5,7 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -53,6 +54,7 @@ public final class PageAssetRedirectType extends ExpandableStringEnum<PageAssetR
      * @return the corresponding PageAssetRedirectType.
      */
     @Generated
+    @JsonCreator
     public static PageAssetRedirectType fromString(String name) {
         return fromString(name, PageAssetRedirectType.class);
     }

@@ -5,17 +5,16 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The IpBlockAssetResource model.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("ipBlock")
 @Immutable
 public final class IpBlockAssetResource extends AssetResource {
 
@@ -23,7 +22,8 @@ public final class IpBlockAssetResource extends AssetResource {
      * asset
      */
     @Generated
-    private final IpBlockAsset asset;
+    @JsonProperty(value = "asset")
+    private IpBlockAsset asset;
 
     /**
      * Creates an instance of IpBlockAssetResource class.
@@ -31,8 +31,8 @@ public final class IpBlockAssetResource extends AssetResource {
      * @param asset the asset value to set.
      */
     @Generated
-    private IpBlockAssetResource(IpBlockAsset asset) {
-        setKind("ipBlock");
+    @JsonCreator
+    private IpBlockAssetResource(@JsonProperty(value = "asset") IpBlockAsset asset) {
         this.asset = asset;
     }
 
@@ -44,113 +44,5 @@ public final class IpBlockAssetResource extends AssetResource {
     @Generated
     public IpBlockAsset getAsset() {
         return this.asset;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", getKind());
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("displayName", getDisplayName());
-        jsonWriter.writeStringField("uuid", getUuid());
-        jsonWriter.writeStringField("createdDate",
-            getCreatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDate()));
-        jsonWriter.writeStringField("updatedDate",
-            getUpdatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getUpdatedDate()));
-        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
-        jsonWriter.writeStringField("externalId", getExternalId());
-        jsonWriter.writeArrayField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("wildcard", isWildcard());
-        jsonWriter.writeStringField("discoGroupName", getDiscoGroupName());
-        jsonWriter.writeArrayField("auditTrail", getAuditTrail(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("reason", getReason());
-        jsonWriter.writeJsonField("asset", this.asset);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of IpBlockAssetResource from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of IpBlockAssetResource if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the IpBlockAssetResource.
-     */
-    @Generated
-    public static IpBlockAssetResource fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            String kind = "ipBlock";
-            String name = null;
-            String displayName = null;
-            String uuid = null;
-            OffsetDateTime createdDate = null;
-            OffsetDateTime updatedDate = null;
-            AssetState state = null;
-            String externalId = null;
-            List<String> labels = null;
-            Boolean wildcard = null;
-            String discoGroupName = null;
-            List<AuditTrailItem> auditTrail = null;
-            String reason = null;
-            IpBlockAsset asset = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    kind = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("displayName".equals(fieldName)) {
-                    displayName = reader.getString();
-                } else if ("uuid".equals(fieldName)) {
-                    uuid = reader.getString();
-                } else if ("createdDate".equals(fieldName)) {
-                    createdDate = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("updatedDate".equals(fieldName)) {
-                    updatedDate = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("state".equals(fieldName)) {
-                    state = AssetState.fromString(reader.getString());
-                } else if ("externalId".equals(fieldName)) {
-                    externalId = reader.getString();
-                } else if ("labels".equals(fieldName)) {
-                    labels = reader.readArray(reader1 -> reader1.getString());
-                } else if ("wildcard".equals(fieldName)) {
-                    wildcard = reader.getNullable(JsonReader::getBoolean);
-                } else if ("discoGroupName".equals(fieldName)) {
-                    discoGroupName = reader.getString();
-                } else if ("auditTrail".equals(fieldName)) {
-                    auditTrail = reader.readArray(reader1 -> AuditTrailItem.fromJson(reader1));
-                } else if ("reason".equals(fieldName)) {
-                    reason = reader.getString();
-                } else if ("asset".equals(fieldName)) {
-                    asset = IpBlockAsset.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            IpBlockAssetResource deserializedIpBlockAssetResource = new IpBlockAssetResource(asset);
-            deserializedIpBlockAssetResource.setId(id);
-            deserializedIpBlockAssetResource.setKind(kind);
-            deserializedIpBlockAssetResource.setName(name);
-            deserializedIpBlockAssetResource.setDisplayName(displayName);
-            deserializedIpBlockAssetResource.setUuid(uuid);
-            deserializedIpBlockAssetResource.setCreatedDate(createdDate);
-            deserializedIpBlockAssetResource.setUpdatedDate(updatedDate);
-            deserializedIpBlockAssetResource.setState(state);
-            deserializedIpBlockAssetResource.setExternalId(externalId);
-            deserializedIpBlockAssetResource.setLabels(labels);
-            deserializedIpBlockAssetResource.setWildcard(wildcard);
-            deserializedIpBlockAssetResource.setDiscoGroupName(discoGroupName);
-            deserializedIpBlockAssetResource.setAuditTrail(auditTrail);
-            deserializedIpBlockAssetResource.setReason(reason);
-            return deserializedIpBlockAssetResource;
-        });
     }
 }

@@ -5,6 +5,7 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -65,6 +66,7 @@ public final class AssetUpdateState extends ExpandableStringEnum<AssetUpdateStat
      * @return the corresponding AssetUpdateState.
      */
     @Generated
+    @JsonCreator
     public static AssetUpdateState fromString(String name) {
         return fromString(name, AssetUpdateState.class);
     }

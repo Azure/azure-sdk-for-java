@@ -5,17 +5,16 @@ package com.azure.analytics.defender.easm.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The SslCertAssetResource model.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("sslCert")
 @Immutable
 public final class SslCertAssetResource extends AssetResource {
 
@@ -23,7 +22,8 @@ public final class SslCertAssetResource extends AssetResource {
      * asset
      */
     @Generated
-    private final SslCertAsset asset;
+    @JsonProperty(value = "asset")
+    private SslCertAsset asset;
 
     /**
      * Creates an instance of SslCertAssetResource class.
@@ -31,8 +31,8 @@ public final class SslCertAssetResource extends AssetResource {
      * @param asset the asset value to set.
      */
     @Generated
-    private SslCertAssetResource(SslCertAsset asset) {
-        setKind("sslCert");
+    @JsonCreator
+    private SslCertAssetResource(@JsonProperty(value = "asset") SslCertAsset asset) {
         this.asset = asset;
     }
 
@@ -44,113 +44,5 @@ public final class SslCertAssetResource extends AssetResource {
     @Generated
     public SslCertAsset getAsset() {
         return this.asset;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", getKind());
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("displayName", getDisplayName());
-        jsonWriter.writeStringField("uuid", getUuid());
-        jsonWriter.writeStringField("createdDate",
-            getCreatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDate()));
-        jsonWriter.writeStringField("updatedDate",
-            getUpdatedDate() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getUpdatedDate()));
-        jsonWriter.writeStringField("state", getState() == null ? null : getState().toString());
-        jsonWriter.writeStringField("externalId", getExternalId());
-        jsonWriter.writeArrayField("labels", getLabels(), (writer, element) -> writer.writeString(element));
-        jsonWriter.writeBooleanField("wildcard", isWildcard());
-        jsonWriter.writeStringField("discoGroupName", getDiscoGroupName());
-        jsonWriter.writeArrayField("auditTrail", getAuditTrail(), (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("reason", getReason());
-        jsonWriter.writeJsonField("asset", this.asset);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SslCertAssetResource from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SslCertAssetResource if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the SslCertAssetResource.
-     */
-    @Generated
-    public static SslCertAssetResource fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            String kind = "sslCert";
-            String name = null;
-            String displayName = null;
-            String uuid = null;
-            OffsetDateTime createdDate = null;
-            OffsetDateTime updatedDate = null;
-            AssetState state = null;
-            String externalId = null;
-            List<String> labels = null;
-            Boolean wildcard = null;
-            String discoGroupName = null;
-            List<AuditTrailItem> auditTrail = null;
-            String reason = null;
-            SslCertAsset asset = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    kind = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("displayName".equals(fieldName)) {
-                    displayName = reader.getString();
-                } else if ("uuid".equals(fieldName)) {
-                    uuid = reader.getString();
-                } else if ("createdDate".equals(fieldName)) {
-                    createdDate = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("updatedDate".equals(fieldName)) {
-                    updatedDate = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                } else if ("state".equals(fieldName)) {
-                    state = AssetState.fromString(reader.getString());
-                } else if ("externalId".equals(fieldName)) {
-                    externalId = reader.getString();
-                } else if ("labels".equals(fieldName)) {
-                    labels = reader.readArray(reader1 -> reader1.getString());
-                } else if ("wildcard".equals(fieldName)) {
-                    wildcard = reader.getNullable(JsonReader::getBoolean);
-                } else if ("discoGroupName".equals(fieldName)) {
-                    discoGroupName = reader.getString();
-                } else if ("auditTrail".equals(fieldName)) {
-                    auditTrail = reader.readArray(reader1 -> AuditTrailItem.fromJson(reader1));
-                } else if ("reason".equals(fieldName)) {
-                    reason = reader.getString();
-                } else if ("asset".equals(fieldName)) {
-                    asset = SslCertAsset.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            SslCertAssetResource deserializedSslCertAssetResource = new SslCertAssetResource(asset);
-            deserializedSslCertAssetResource.setId(id);
-            deserializedSslCertAssetResource.setKind(kind);
-            deserializedSslCertAssetResource.setName(name);
-            deserializedSslCertAssetResource.setDisplayName(displayName);
-            deserializedSslCertAssetResource.setUuid(uuid);
-            deserializedSslCertAssetResource.setCreatedDate(createdDate);
-            deserializedSslCertAssetResource.setUpdatedDate(updatedDate);
-            deserializedSslCertAssetResource.setState(state);
-            deserializedSslCertAssetResource.setExternalId(externalId);
-            deserializedSslCertAssetResource.setLabels(labels);
-            deserializedSslCertAssetResource.setWildcard(wildcard);
-            deserializedSslCertAssetResource.setDiscoGroupName(discoGroupName);
-            deserializedSslCertAssetResource.setAuditTrail(auditTrail);
-            deserializedSslCertAssetResource.setReason(reason);
-            return deserializedSslCertAssetResource;
-        });
     }
 }
