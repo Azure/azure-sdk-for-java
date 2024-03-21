@@ -3,7 +3,6 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.models.ContentType;
 import com.generic.core.http.models.HttpHeader;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
@@ -12,11 +11,9 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.http.models.Response;
-import com.generic.core.http.models.ServerSentEvent;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
-import com.generic.core.implementation.util.ServerSentEventHelper;
-import com.generic.core.models.RetrySSEResult;
+import com.generic.core.implementation.util.ServerSentEventUtil;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.binarydata.BinaryData;
 
@@ -39,16 +36,12 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import static com.generic.core.implementation.util.ServerSentEventUtil.DEFAULT_EVENT;
-import static com.generic.core.implementation.util.ServerSentEventUtil.DIGITS_ONLY;
-import static com.generic.core.implementation.util.ServerSentEventUtil.LAST_EVENT_ID;
-import static com.generic.core.implementation.util.ServerSentEventUtil.NO_LISTENER_LOG_MESSAGE;
+import static com.generic.core.implementation.util.ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE;
+import static com.generic.core.implementation.util.ServerSentEventUtil.processTextEventStream;
 
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
@@ -209,20 +202,18 @@ class DefaultHttpClient implements HttpClient {
             HttpHeaders responseHeaders = getResponseHeaders(connection);
 
             ServerSentEventListener listener = httpRequest.getServerSentEventListener();
-            if (connection.getErrorStream() == null && isTextEventStream(responseHeaders)) {
-                if (listener != null) {
-                    processTextEventStream(httpRequest, connection, listener);
-                } else {
-                    LOGGER.atInfo().log(NO_LISTENER_LOG_MESSAGE);
-                }
 
-                return new HttpResponse<>(httpRequest, responseCode, responseHeaders, null);
-            } else {
-                AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
-
-                return new HttpResponse<>(httpRequest, responseCode, responseHeaders,
-                    BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
+            if (listener == null && isTextEventStream(responseHeaders)) {
+                throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
             }
+
+            if (connection.getErrorStream() == null && isTextEventStream(responseHeaders)) {
+                processTextEventStream(httpRequest, httpRequestConsumer -> this.send(httpRequest), connection.getInputStream(), listener, LOGGER);
+                return new HttpResponse<>(httpRequest, responseCode, responseHeaders, null);
+            }
+
+            AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
+            return new HttpResponse<>(httpRequest, responseCode, responseHeaders, BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         } finally {
@@ -230,144 +221,11 @@ class DefaultHttpClient implements HttpClient {
         }
     }
 
-    private void processTextEventStream(HttpRequest httpRequest, HttpURLConnection connection,
-        ServerSentEventListener listener) {
-        RetrySSEResult retrySSEResult;
-        try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-            retrySSEResult = processBuffer(reader, listener);
-            if (retrySSEResult != null && !retryExceptionForSSE(retrySSEResult, listener, httpRequest)
-                && !Thread.currentThread().isInterrupted()) {
-                this.send(httpRequest);
-            }
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
-    }
-
     private static boolean isTextEventStream(HttpHeaders responseHeaders) {
-        return Objects.equals(ContentType.TEXT_EVENT_STREAM, responseHeaders.getValue(HttpHeaderName.CONTENT_TYPE));
-    }
-
-<<<<<<< HEAD
-    /**
-     * Processes the sse buffer and dispatches the event
-     *
-     * @param reader The BufferedReader object
-     * @param listener The listener object attached with the httpRequest
-     * @return A retry result if a retry is needed, otherwise null
-     */
-    private RetrySSEResult processBuffer(BufferedReader reader, ServerSentEventListener listener) {
-        StringBuilder collectedData = new StringBuilder();
-        ServerSentEvent event = null;
-        try {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                collectedData.append(line).append("\n");
-                if (isEndOfBlock(collectedData)) {
-                    event = processLines(collectedData.toString().split("\n"));
-                    if (!Objects.equals(event.getEvent(), DEFAULT_EVENT) || event.getData() != null) {
-                        listener.onEvent(event);
-                    }
-                    collectedData = new StringBuilder(); // clear the collected data
-                }
-            }
-            listener.onClose();
-        } catch (IOException e) {
-            if (event != null) {
-                return new RetrySSEResult(e, event.getId(), ServerSentEventHelper.getRetryAfter(event));
-            } else {
-                return new RetrySSEResult(e, -1, null);
-            }
+        if (responseHeaders != null) {
+            return ServerSentEventUtil.isTextEventStreamContentType(responseHeaders.getValue(HeaderName.CONTENT_TYPE));
         }
-        return null;
-    }
-
-    private boolean isEndOfBlock(StringBuilder sb) {
-        // blocks of data are separated by double newlines
-        // add more end of blocks here if needed
-        return sb.indexOf("\n\n") >= 0;
-    }
-
-    private ServerSentEvent processLines(String[] lines) {
-        List<String> eventData = null;
-        ServerSentEvent event = new ServerSentEvent();
-
-        for (String line : lines) {
-            int idx = line.indexOf(':');
-            if (idx == 0) {
-                ServerSentEventHelper.setComment(event, line.substring(1).trim());
-                continue;
-            }
-            String field = line.substring(0, idx < 0 ? lines.length : idx).trim().toLowerCase();
-            String value = idx < 0 ? "" : line.substring(idx + 1).trim();
-
-            switch (field) {
-                case "event":
-                    ServerSentEventHelper.setEvent(event, value);
-                    break;
-                case "data":
-                    if (eventData == null) {
-                        eventData = new ArrayList<>();
-                    }
-                    eventData.add(value);
-                    break;
-                case "id":
-                    if (!value.isEmpty()) {
-                        ServerSentEventHelper.setId(event, Long.parseLong(value));
-                    }
-                    break;
-                case "retry":
-                    if (!value.isEmpty() && DIGITS_ONLY.matcher(value).matches()) {
-                        ServerSentEventHelper.setRetryAfter(event, Duration.ofMillis(Long.parseLong(value)));
-                    }
-                    break;
-                default:
-                    throw LOGGER.logThrowableAsWarning(
-                        new IllegalArgumentException("Invalid data received from server"));
-            }
-        }
-
-        if (event.getEvent() == null) {
-            ServerSentEventHelper.setEvent(event, DEFAULT_EVENT);
-        }
-        if (eventData != null) {
-            ServerSentEventHelper.setData(event, eventData);
-        }
-
-        return event;
-    }
-
-    /**
-     * Retries the request if the listener allows it
-     *
-     * @param retrySSEResult the result of the retry
-     * @param listener The listener object attached with the httpRequest
-     * @param httpRequest the HTTP Request being sent
-     */
-    private void retryExceptionForSSE(RetrySSEResult retrySSEResult, ServerSentEventListener listener,
-        HttpRequest httpRequest) {
-        if (Thread.currentThread().isInterrupted() || !listener.shouldRetry(retrySSEResult.getException(),
-            retrySSEResult.getRetryAfter(), retrySSEResult.getLastEventId())) {
-            listener.onError(retrySSEResult.getException());
-            return;
-        }
-
-        if (retrySSEResult.getLastEventId() != -1) {
-            httpRequest.getHeaders()
-                .add(HttpHeaderName.fromString(LAST_EVENT_ID), String.valueOf(retrySSEResult.getLastEventId()));
-        }
-
-        try {
-            if (retrySSEResult.getRetryAfter() != null) {
-                Thread.sleep(retrySSEResult.getRetryAfter().toMillis());
-            }
-        } catch (InterruptedException ignored) {
-            return;
-        }
-
-        if (!Thread.currentThread().isInterrupted()) {
-            this.send(httpRequest);
-        }
+        return false;
     }
 
     private HttpHeaders getResponseHeaders(HttpURLConnection connection) {
@@ -386,7 +244,7 @@ class DefaultHttpClient implements HttpClient {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
 
         try (InputStream errorStream = connection.getErrorStream();
-            InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream) {
+             InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream) {
             byte[] buffer = new byte[8192];
             int length;
             while ((length = inputStream.read(buffer)) != -1) {
