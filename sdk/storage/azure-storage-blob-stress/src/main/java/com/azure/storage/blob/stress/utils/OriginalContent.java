@@ -9,13 +9,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.ParallelTransferOptions;
+import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.stress.ContentInfo;
 import com.azure.storage.stress.CrcInputStream;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Base64;
 
@@ -50,6 +51,22 @@ public class OriginalContent {
                         new ParallelTransferOptions()
                             .setMaxSingleUploadSizeLong(4 * 1024 * 1024L)
                             .setMaxConcurrency(1))
+                    .then(data.getContentInfo()),
+                CrcInputStream::close)
+            .map(info -> dataChecksum = info.getCrc())
+            .then();
+    }
+
+    public Mono<Void> setupPageBlob(PageBlobAsyncClient blobClient, long blobSize) {
+        if (dataChecksum != -1) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException("setupBlob can't be called again"));
+        }
+
+        this.blobSize = blobSize;
+        return Mono.using(
+                () -> new CrcInputStream(BLOB_CONTENT_HEAD, blobSize),
+                data -> blobClient
+                    .uploadPages(new PageRange().setStart(0).setEnd(blobSize - 1), toFluxByteBuffer(data, 8192))
                     .then(data.getContentInfo()),
                 CrcInputStream::close)
             .map(info -> dataChecksum = info.getCrc())
@@ -93,5 +110,9 @@ public class OriginalContent {
         } catch (Throwable e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    public BinaryData getBlobContentHead() {
+        return BLOB_CONTENT_HEAD;
     }
 }

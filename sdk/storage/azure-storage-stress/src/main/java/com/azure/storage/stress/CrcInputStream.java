@@ -21,14 +21,18 @@ public class CrcInputStream extends InputStream {
     private final InputStream inputStream;
     private final CRC32 crc = new CRC32();
     private final ByteBuffer head = ByteBuffer.allocate(1024);
+    private final boolean markSupported;
+    private long markPosition = -1;
     private long length = 0;
 
     public CrcInputStream(BinaryData source, long size) {
         this.inputStream = new RepeatingInputStream(source, size);
+        this.markSupported = true;
     }
 
     public CrcInputStream(InputStream source) {
         this.inputStream = source;
+        this.markSupported = source.markSupported();
     }
 
     @Override
@@ -69,6 +73,31 @@ public class CrcInputStream extends InputStream {
             sink.emitError(e, Sinks.EmitFailureHandler.FAIL_FAST);
             throw LOGGER.logThrowableAsError(e);
         }
+    }
+
+    @Override
+    public synchronized void mark(int readLimit) {
+        if (markSupported) {
+            inputStream.mark(readLimit);
+            markPosition = length;
+        }
+    }
+
+    @Override
+    public synchronized void reset() throws IOException {
+        if (markPosition != -1) {
+            inputStream.reset();
+            length = markPosition; // Reset length to markPosition
+            crc.reset(); // Reset CRC32 to recalculate from the markPosition
+            head.clear(); // Clear the head buffer
+        } else {
+            throw new IOException("Mark/reset not supported or mark not set");
+        }
+    }
+
+    @Override
+    public boolean markSupported() {
+        return markSupported;
     }
 
     public Mono<ContentInfo> getContentInfo() {

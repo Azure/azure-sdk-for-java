@@ -13,8 +13,8 @@ import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.stress.utils.TelemetryHelper;
-import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.FaultInjectingHttpPolicy;
+import com.azure.storage.stress.FaultInjectionProbabilities;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
@@ -22,7 +22,7 @@ import java.time.Instant;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
+public abstract class PageBlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final String CONTAINER_NAME = "stress-" + UUID.randomUUID();
     protected final TelemetryHelper telemetryHelper = new TelemetryHelper(this.getClass());
     private final BlobServiceClient noFaultServiceClient;
@@ -31,10 +31,10 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     private final BlobContainerAsyncClient asyncNoFaultContainerClient;
     private Instant startTime;
 
-    public BlobScenarioBase(TOptions options) {
+    public PageBlobScenarioBase(TOptions options) {
         super(options);
 
-        String connectionString = options.getConnectionString();
+        String connectionString = options.getPageBlobConnectionString();
 
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
 
@@ -105,12 +105,11 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         return noFaultServiceClient.getBlobContainerClient(CONTAINER_NAME);
     }
 
-
     protected String generateBlobName() {
         return "blob-" + UUID.randomUUID();
     }
 
-    protected static HttpLogOptions getLogOptions() {
+    private static HttpLogOptions getLogOptions() {
         return new HttpLogOptions()
             .setLogLevel(HttpLogDetailLevel.HEADERS)
             .addAllowedHeaderName("x-ms-faultinjector-response-option")
@@ -121,7 +120,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
             .addAllowedHeaderName("x-ms-range");
     }
 
-    protected static FaultInjectionProbabilities getFaultProbabilities() {
+    private static FaultInjectionProbabilities getFaultProbabilities() {
         return new FaultInjectionProbabilities()
             .setNoResponseIndefinite(0.003D)
             .setNoResponseClose(0.004D)
