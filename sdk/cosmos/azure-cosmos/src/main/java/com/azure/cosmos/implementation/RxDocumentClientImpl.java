@@ -3481,6 +3481,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }
 
             @Override
+            public <T> CosmosItemSerializer getEffectiveItemSerializer(CosmosQueryRequestOptions queryRequestOptions) {
+                return RxDocumentClientImpl.this.getEffectiveItemSerializer(queryRequestOptions);
+            }
+
+            @Override
             public Mono<RxDocumentServiceResponse> readFeedAsync(RxDocumentServiceRequest request) {
                 // TODO Auto-generated method stub
                 return null;
@@ -4968,7 +4973,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request -> readFeed(request)
                 .map(response -> toFeedResponsePage(
                                     response,
-                                    qryOptAccessor.getImpl(nonNullOptions).getItemFactoryMethod(klass),
+                                    this.getEffectiveItemSerializer(nonNullOptions),
                                     klass));
 
         return Paginator

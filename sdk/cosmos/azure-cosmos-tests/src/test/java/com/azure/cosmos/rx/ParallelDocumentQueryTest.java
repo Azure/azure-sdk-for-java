@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.FailureValidator;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -18,7 +19,9 @@ import com.azure.cosmos.implementation.ItemOperations;
 import com.azure.cosmos.implementation.QueryMetrics;
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.TestUtils;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.implementation.guava27.Strings;
@@ -32,6 +35,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.groups.Tuple;
 import org.testng.annotations.AfterClass;
@@ -751,7 +755,22 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
                 .CosmosReadManyRequestOptionsHelper
                 .getCosmosReadManyRequestOptionsAccessor()
                 .getImpl(queryRequestOptions)
-                .setItemFactoryMethod(factoryMethod);
+                .setCustomSerializer(
+                    new CosmosItemSerializer() {
+                        @Override
+                        public <T> Map<String, Object> serialize(T item) {
+                            throw new NotImplementedException("Not supported");
+                        }
+
+                        @Override
+                        public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
+                            if (classType == String.class) {
+                                return (T)jsonNodeMap.get("id");
+                            }
+
+                            return CosmosItemSerializer.DEFAULT_SERIALIZER.deserialize(jsonNodeMap, classType);
+                        }
+                    });
 
         FeedResponse<String> documentFeedResponse =
                 ImplementationBridgeHelpers

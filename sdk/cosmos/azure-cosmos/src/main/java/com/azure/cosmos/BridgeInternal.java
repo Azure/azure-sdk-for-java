@@ -97,10 +97,10 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> toFeedResponsePage(
         RxDocumentServiceResponse response,
-        Function<JsonNode, T> factoryMethod,
+        CosmosItemSerializer itemSerializer,
         Class<T> cls) {
 
-        FeedResponse<T> feedResponse = ModelBridgeInternal.toFeedResponsePage(response, factoryMethod, cls);
+        FeedResponse<T> feedResponse = ModelBridgeInternal.toFeedResponsePage(response, itemSerializer, cls);
         applyDiagnosticsToFeedResponse(response.getCosmosDiagnostics(), feedResponse);
 
         return feedResponse;
@@ -142,10 +142,10 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> toChangeFeedResponsePage(
         RxDocumentServiceResponse response,
-        Function<JsonNode, T> factoryMethod,
+        CosmosItemSerializer itemSerializer,
         Class<T> cls) {
 
-        FeedResponse<T> feedResponse = ModelBridgeInternal.toChangeFeedResponsePage(response, factoryMethod, cls);
+        FeedResponse<T> feedResponse = ModelBridgeInternal.toChangeFeedResponsePage(response, itemSerializer, cls);
         applyDiagnosticsToFeedResponse(response.getCosmosDiagnostics(), feedResponse);
 
         return feedResponse;

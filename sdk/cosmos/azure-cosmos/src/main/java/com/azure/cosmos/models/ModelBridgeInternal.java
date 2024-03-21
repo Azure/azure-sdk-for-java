@@ -38,7 +38,6 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.lang.reflect.InvocationTargetException;
@@ -48,7 +47,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
-import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -300,10 +298,10 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> toFeedResponsePage(
         RxDocumentServiceResponse response,
-        Function<JsonNode, T> factoryMethod,
+        CosmosItemSerializer effectiveSerializer,
         Class<T> cls) {
 
-        return new FeedResponse<>(response.getQueryResponse(factoryMethod, cls), response);
+        return new FeedResponse<>(response.getQueryResponse(effectiveSerializer, cls), response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -314,11 +312,11 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> FeedResponse<T> toChangeFeedResponsePage(
         RxDocumentServiceResponse response,
-        Function<JsonNode, T> factoryMethod,
+        CosmosItemSerializer effectiveSerializer,
         Class<T> cls) {
 
         return new FeedResponse<>(
-            noChanges(response) ? Collections.emptyList() : response.getQueryResponse(factoryMethod, cls),
+            noChanges(response) ? Collections.emptyList() : response.getQueryResponse(effectiveSerializer, cls),
             response.getResponseHeaders(), noChanges(response));
     }
 

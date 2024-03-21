@@ -11,14 +11,12 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
-import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.Function;
 
 /**
  * Specifies the options associated with readMany methods
@@ -40,7 +38,6 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     private Map<String, String> customOptions;
     private boolean indexMetricsEnabled;
     private UUID correlationActivityId;
-    private Function<JsonNode, ?> itemFactoryMethod;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
     private CosmosItemSerializer customSerializer;
@@ -70,7 +67,6 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         this.customOptions = options.customOptions;
         this.indexMetricsEnabled = options.indexMetricsEnabled;
         this.correlationActivityId = options.correlationActivityId;
-        this.itemFactoryMethod = options.itemFactoryMethod;
         this.thresholds = options.thresholds;
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.excludeRegions = options.excludeRegions;
@@ -420,21 +416,6 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      */
     public Map<String, String> getHeaders() {
         return this.customOptions;
-    }
-
-    public Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
-
-    @SuppressWarnings("unchecked")
-    public <T> Function<JsonNode, T> getItemFactoryMethod(Class<T> classOfT) {
-
-        return (Function<JsonNode, T>)this.itemFactoryMethod;
-    }
-
-    @SuppressWarnings("unchecked")
-    public T setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
-        this.itemFactoryMethod = factoryMethod;
-
-        return (T)this;
     }
 
     public CosmosDiagnosticsThresholds getThresholds() {

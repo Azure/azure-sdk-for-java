@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.ObjectNodeMap;
 import com.azure.cosmos.implementation.PrimitiveJsonNodeMap;
 import com.azure.cosmos.implementation.Utils;

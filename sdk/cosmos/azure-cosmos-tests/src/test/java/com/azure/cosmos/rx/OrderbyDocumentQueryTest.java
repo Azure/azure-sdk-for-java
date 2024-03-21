@@ -9,6 +9,7 @@ import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.FeedResponseListValidator;
 import com.azure.cosmos.implementation.FeedResponseValidator;
@@ -204,8 +205,18 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             // customers if we ever make the custom factory method public
             // For now in Spark don't need to worry about extracting values - we would need a wrapper to
             // allow inferring schema anyway.
-            .setItemFactoryMethod(
-                (node) -> node.get("_value").intValue());
+            .setCustomSerializer(
+                new CosmosItemSerializer() {
+                    @Override
+                    public <T> Map<String, Object> serialize(T item) {
+                        return null;
+                    }
+
+                    @Override
+                    public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
+                        return (T)(jsonNodeMap.get("_value"));
+                    }
+                });
 
         int pageSize = 3;
         CosmosPagedFlux<Integer> queryObservable = createdCollection.queryItems(query, options,

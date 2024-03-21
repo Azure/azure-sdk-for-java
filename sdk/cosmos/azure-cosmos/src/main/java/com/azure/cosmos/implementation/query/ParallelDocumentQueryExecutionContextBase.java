@@ -3,21 +3,26 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.JsonSerializable;
+import com.azure.cosmos.implementation.ObjectNodeMap;
 import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.implementation.PrimitiveJsonNodeMap;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -40,7 +45,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
     protected final List<DocumentProducer<T>> documentProducers;
     protected final SqlQuerySpec querySpec;
     protected int top = -1;
-    private final Function<JsonNode, T> factoryMethod;
+    private final CosmosItemSerializer itemSerializer;
 
     protected ParallelDocumentQueryExecutionContextBase(DiagnosticsClientContext diagnosticsClientContext,
                                                         IDocumentQueryClient client,
@@ -49,8 +54,10 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
                                                         UUID correlatedActivityId, boolean shouldUnwrapSelectValue, AtomicBoolean isQueryCancelledOnTimeout) {
         super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions, resourceLink, correlatedActivityId, isQueryCancelledOnTimeout);
 
-        this.factoryMethod =  DocumentQueryExecutionContextBase.getEffectiveFactoryMethod(
-            this.cosmosQueryRequestOptions, shouldUnwrapSelectValue, resourceType);
+        CosmosItemSerializer candidateSerializer = client.getEffectiveItemSerializer(this.cosmosQueryRequestOptions);
+        this.itemSerializer = candidateSerializer != CosmosItemSerializer.DEFAULT_SERIALIZER
+            ? candidateSerializer
+            : ValueUnwrapCosmosItemSerializer.create(shouldUnwrapSelectValue);
         documentProducers = new ArrayList<>();
         if (!Strings.isNullOrEmpty(rewrittenQuery)) {
             this.querySpec = new SqlQuerySpec(rewrittenQuery, super.query.getParameters());
@@ -89,7 +96,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
             };
 
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) ->  this.executeRequestAsync(
-                    this.factoryMethod,
+                    this.itemSerializer,
                     request);
             final FeedRangeEpkImpl targetRange = entry.getKey();
             final String continuationToken = entry.getValue();
@@ -159,7 +166,7 @@ public abstract class ParallelDocumentQueryExecutionContextBase<T>
             };
 
             Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc = (request) -> this.executeRequestAsync(
-                    this.factoryMethod,
+                    this.itemSerializer,
                     request);
 
             DocumentProducer<T> dp =

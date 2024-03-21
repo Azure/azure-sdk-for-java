@@ -308,9 +308,11 @@ public class CosmosException extends AzureException {
     }
 
     /**
-     * Gets the sub status code.
+     * Gets the sub status code. Teh sub status code is exposed for informational purposes only - new sub status codes
+     * can be added anytime and applications should never take a dependency on certain sub status codes. For
+     * applications treating errors based on status code is sufficient.
      *
-     * @return the status code.
+     * @return the sub status code.
      */
     public int getSubStatusCode() {
         int code = HttpConstants.SubStatusCodes.UNKNOWN;
