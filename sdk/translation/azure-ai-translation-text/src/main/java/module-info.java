@@ -4,9 +4,7 @@
 
 module com.azure.ai.translation.text {
     requires transitive com.azure.core;
-    requires transitive com.azure.json;
     exports com.azure.ai.translation.text;
     exports com.azure.ai.translation.text.models;
     opens com.azure.ai.translation.text.models to com.azure.core, com.fasterxml.jackson.databind;
-    opens com.azure.ai.translation.text.models to com.azure.core;
 }
