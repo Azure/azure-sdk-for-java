@@ -127,10 +127,23 @@ public final class CosmosBulkExecutionOptions {
         return this;
     }
 
+    /**
+     * The maximum batching size for bulk operations. Once queued docs exceed this values the micro
+     * batch will be flushed to the wire.
+     *
+     * @return the max micro batch size.
+     */
     public int getMaxMicroBatchSize() {
         return maxMicroBatchSize;
     }
 
+    /**
+     * The maximum batching size for bulk operations. Once queued docs exceed this values the micro
+     * batch will be flushed to the wire.
+     *
+     * @param maxMicroBatchSize maximum batching size.
+     * @return the bulk processing options.
+     */
     public CosmosBulkExecutionOptions setMaxMicroBatchSize(int maxMicroBatchSize) {
         this.maxMicroBatchSize = maxMicroBatchSize;
         return this;
