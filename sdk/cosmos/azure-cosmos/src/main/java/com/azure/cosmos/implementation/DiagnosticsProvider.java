@@ -642,12 +642,6 @@ public final class DiagnosticsProvider {
         return propagatingFlux.flatMap(ignored -> publisher);
     }
 
-    public boolean shouldSampleOutOperation(CosmosPagedFluxOptions options) {
-        final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
-        options.setSamplingRateSnapshot(samplingRateSnapshot);
-        return shouldSampleOutOperation(samplingRateSnapshot);
-    }
-
     private boolean shouldSampleOutOperation(double samplingRate) {
         if (samplingRate == 1) {
             return false;
