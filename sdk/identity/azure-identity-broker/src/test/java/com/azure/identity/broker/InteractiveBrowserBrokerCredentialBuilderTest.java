@@ -245,7 +245,7 @@ class InteractiveBrowserBrokerCredentialBuilderTest {
     void setDefaultBrokerAccount() {
         assertDoesNotThrow(() -> {
             InteractiveBrowserBrokerCredentialBuilder builder = new InteractiveBrowserBrokerCredentialBuilder();
-            builder.useDefaultBrokerAccount(true);
+            builder.useDefaultBrokerAccount();
             builder.build();
         });
     }
