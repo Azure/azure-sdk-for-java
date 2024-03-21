@@ -60,7 +60,7 @@ public final class ServerSentEventUtil {
      * @param logger The logger object
      */
     public static void processTextEventStream(HttpRequest httpRequest, Consumer<HttpRequest> httpRequestConsumer,
-                                              InputStream inputStream, ServerSentEventListener listener, ClientLogger logger) {
+        InputStream inputStream, ServerSentEventListener listener, ClientLogger logger) {
         RetrySSEResult retrySSEResult;
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
             retrySSEResult = processBuffer(reader, listener);
