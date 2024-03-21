@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 public class HttpClientProvidersTests {
     @Test
     public void testNoProvider() {
-        HttpClient httpClient = HttpClient.createDefault();
+        HttpClient httpClient = HttpClient.getDefault();
 
         assertInstanceOf(DefaultHttpClient.class, httpClient);
     }
