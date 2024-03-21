@@ -2130,8 +2130,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         DocumentClientRetryPolicy finalRetryPolicyInstance = requestRetryPolicy;
+        AtomicReference<RxDocumentServiceRequest> documentServiceRequestReference = new AtomicReference<>();
 
-        return getPointOperationResponseMonoWithE2ETimeout(
+        return handleRegionFeedbackForPointOperation(getPointOperationResponseMonoWithE2ETimeout(
             nonNullRequestOptions,
             endToEndPolicyConfig,
             ObservableHelper.inlineIfPossibleAsObs(() ->
@@ -2141,10 +2142,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         nonNullRequestOptions,
                         disableAutomaticIdGeneration,
                         finalRetryPolicyInstance,
-                        scopedDiagnosticsFactory),
+                        scopedDiagnosticsFactory,
+                        documentServiceRequestReference),
                 requestRetryPolicy),
             scopedDiagnosticsFactory
-        );
+        ), documentServiceRequestReference);
     }
 
     private Mono<ResourceResponse<Document>> createDocumentInternal(
@@ -2153,7 +2155,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         RequestOptions options,
         boolean disableAutomaticIdGeneration,
         DocumentClientRetryPolicy requestRetryPolicy,
-        DiagnosticsClientContext clientContextOverride) {
+        DiagnosticsClientContext clientContextOverride,
+        AtomicReference<RxDocumentServiceRequest> documentServiceRequestReference) {
         try {
             logger.debug("Creating a Document. collectionLink: [{}]", collectionLink);
 
@@ -2161,7 +2164,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 options, disableAutomaticIdGeneration, OperationType.Create, clientContextOverride);
 
             return requestObs
-                    .flatMap(request -> create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options)))
+                    .flatMap(request -> {
+                        documentServiceRequestReference.set(request);
+                        return create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
+                    })
                     .map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
 
         } catch (Exception e) {
@@ -2197,6 +2203,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     requestOptions.getMarkE2ETimeoutInRequestContextCallbackHook()));
         }
         return rxDocumentServiceResponseMono;
+    }
+
+    private <T> Mono<T> handleRegionFeedbackForPointOperation(Mono<T> response, AtomicReference<RxDocumentServiceRequest> requestReference) {
+        return response.doOnError(throwable -> {
+            if (throwable instanceof OperationCancelledException) {
+                this.globalPartitionEndpointManager.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get());
+            }
+        });
     }
 
     private static Throwable getCancellationExceptionForPointOperations(
