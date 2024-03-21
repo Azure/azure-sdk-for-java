@@ -42,6 +42,11 @@ public final class LogsBatchQuery {
     }
 
     /**
+     * Creates an instance of LogsBatchQuery.
+     */
+    public LogsBatchQuery() { }
+
+    /**
      * Adds a new logs query to the batch.
      * @param workspaceId The workspaceId on which the query is executed.
      * @param query The Kusto query.
