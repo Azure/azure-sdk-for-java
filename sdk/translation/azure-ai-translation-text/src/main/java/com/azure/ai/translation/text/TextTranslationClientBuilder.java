@@ -65,6 +65,8 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
 
     private String region;
 
+    private String azureResourceId;
+
     private KeyCredential credential;
 
     private TokenCredential tokenCredential;
@@ -266,11 +268,24 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
      *
      * @param region where the Translator resource is created.
      * @return The updated {@link TextTranslationClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is null.
+     * @throws NullPointerException If {@code redion} is null.
      */
     public TextTranslationClientBuilder region(String region) {
         Objects.requireNonNull(region, "'region' cannot be null.");
         this.region = region;
+        return this;
+    }
+
+    /**
+     * Sets the Azure Resource Id used to authorize requests sent to the service.
+     *
+     * @param azureResourceId Id of the Translator Resource.
+     * @return The updated {@link TextTranslationClientBuilder} object.
+     * @throws NullPointerException If {@code azureResourceId} is null.
+     */
+    public TextTranslationClientBuilder azureResourceId(String azureResourceId) {
+        Objects.requireNonNull(azureResourceId, "'azureResourceId' cannot be null.");
+        this.azureResourceId = azureResourceId;
         return this;
     }
 
@@ -342,6 +357,11 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+
+            if (this.region != null && this.azureResourceId != null) {
+                policies.add(new TranslatorRegionAuthenticationPolicy(this.region));
+                policies.add(new TranslatorResourceIdAuthenticationPolicy(this.azureResourceId));
+            }
         }
         if (this.credential != null) {
             policies.add(new KeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
