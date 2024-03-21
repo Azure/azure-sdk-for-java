@@ -11,8 +11,8 @@ jobs:
     dependsOn: ${{parameters.DependsOn}}
 
     pool:
-      image: azsdk-pool-mms-ubuntu-2004-1espt
-      name: azsdk-pool-mms-ubuntu-2004-general
+      image: $(LINUXVMIMAGE)
+      name: $(LINUXPOOL)
       os: linux
 
     steps:
