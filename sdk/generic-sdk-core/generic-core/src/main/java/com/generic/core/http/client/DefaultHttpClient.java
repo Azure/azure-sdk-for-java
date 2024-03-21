@@ -223,7 +223,7 @@ class DefaultHttpClient implements HttpClient {
 
     private static boolean isTextEventStream(HttpHeaders responseHeaders) {
         if (responseHeaders != null) {
-            return ServerSentEventUtil.isTextEventStreamContentType(responseHeaders.getValue(HeaderName.CONTENT_TYPE));
+            return ServerSentEventUtil.isTextEventStreamContentType(responseHeaders.getValue(HttpHeaderName.CONTENT_TYPE));
         }
         return false;
     }

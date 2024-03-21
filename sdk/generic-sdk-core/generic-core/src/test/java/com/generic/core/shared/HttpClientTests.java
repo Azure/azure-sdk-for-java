@@ -1819,16 +1819,14 @@ public abstract class HttpClientTests {
     }
 
     /**
-     * Test throws IllegalArgumentException for invalid data stream.
+     * Test throws Runtime exception for no listener attached.
      */
     @Test
-    public void throwsIllegalArgumentExceptionForInvalidSSEData() {
+    public void throwsExceptionForNoListener() {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(SSE_RESPONSE)).setBody(requestBody);
 
-        assertThrows(IllegalArgumentException.class,
-            () -> createHttpClient().send(request.setServerSentEventListener(sse -> {
-            })));
+        assertThrows(RuntimeException.class, () -> createHttpClient().send(request));
     }
 
     private static Stream<BiConsumer<String, Service29>> voidErrorReturnsErrorBodySupplier() {

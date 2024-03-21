@@ -170,7 +170,7 @@ class OkHttpHttpClient implements HttpClient {
     private static boolean isTextEventStream(okhttp3.Headers responseHeaders) {
         if (responseHeaders != null) {
             return ServerSentEventUtil
-                .isTextEventStreamContentType(responseHeaders.get(HeaderName.CONTENT_TYPE.toString()));
+                .isTextEventStreamContentType(responseHeaders.get(HttpHeaderName.CONTENT_TYPE.toString()));
         }
         return false;
     }
