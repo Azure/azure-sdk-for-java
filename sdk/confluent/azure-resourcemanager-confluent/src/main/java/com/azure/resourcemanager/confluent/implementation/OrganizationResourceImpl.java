@@ -151,8 +151,8 @@ public final class OrganizationResourceImpl
         com.azure.resourcemanager.confluent.ConfluentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.organizationName = Utils.getValueFromIdByName(innerObject.id(), "organizations");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.organizationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "organizations");
     }
 
     public OrganizationResource refresh() {
