@@ -128,7 +128,7 @@ public final class CosmosBulkExecutionOptions {
     }
 
     /**
-     * The maximum batching size for bulk operations. Once queued docs exceed this values the micro
+     * The maximum batch size for bulk operations. Once queued docs exceed this value, the micro
      * batch will be flushed to the wire.
      *
      * @return the max micro batch size.
