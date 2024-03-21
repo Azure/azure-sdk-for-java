@@ -829,26 +829,28 @@ public class IdentityClient extends IdentityClientBase {
         return getPublicClientInstance(request).getValue().flatMap(pc -> {
             if (options.isBrokerEnabled() && options.useDefaultBrokerAccount()) {
                 return Mono.fromFuture(() ->
-                    acquireTokenFromPublicClientSilently(request, pc, null, false)).
-                    // if something bad happened we fall back.
-                    onErrorResume(t -> Mono.empty()).
-                    map(MsalToken::new);
+                    acquireTokenFromPublicClientSilently(request, pc, null, false))
+                    .onErrorResume(e -> Mono.empty());
             } else {
                 return Mono.empty();
             }
-        }).
-        switchIfEmpty(Mono.defer(() -> {
+        })
+        .switchIfEmpty(Mono.defer(() -> {
             InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
                 buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
             SynchronizedAccessor<PublicClientApplication> publicClient = getPublicClientInstance(request);
 
             return publicClient.getValue()
-                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(builder.build())))
-                .onErrorMap(t -> new ClientAuthenticationException(
-                    "Failed to acquire token with Interactive Browser Authentication.", null, t))
-                .map(MsalToken::new);
-        }));
+                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(builder.build())));
+
+        }))
+        // If we're already throwing a ClientAuthenticationException we don't need to wrap it again.
+        .doOnError(t -> !(t instanceof ClientAuthenticationException),
+                        t -> {
+                throw new ClientAuthenticationException("Failed to acquire token with Interactive Browser Authentication.", null, t);
+            })
+        .map(MsalToken::new);
     }
 
     /**
