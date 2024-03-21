@@ -5,10 +5,8 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
@@ -21,6 +19,7 @@ public final class TransliterableScript extends CommonScriptModel {
      * List of scripts available to convert text to.
      */
     @Generated
+    @JsonProperty(value = "toScripts")
     private final List<CommonScriptModel> toScripts;
 
     /**
@@ -33,8 +32,10 @@ public final class TransliterableScript extends CommonScriptModel {
      * @param toScripts the toScripts value to set.
      */
     @Generated
-    private TransliterableScript(String code, String name, String nativeName, String dir,
-        List<CommonScriptModel> toScripts) {
+    @JsonCreator
+    private TransliterableScript(@JsonProperty(value = "code") String code, @JsonProperty(value = "name") String name,
+        @JsonProperty(value = "nativeName") String nativeName, @JsonProperty(value = "dir") String dir,
+        @JsonProperty(value = "toScripts") List<CommonScriptModel> toScripts) {
         super(code, name, nativeName, dir);
         this.toScripts = toScripts;
     }
@@ -47,57 +48,5 @@ public final class TransliterableScript extends CommonScriptModel {
     @Generated
     public List<CommonScriptModel> getToScripts() {
         return this.toScripts;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("code", getCode());
-        jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("nativeName", getNativeName());
-        jsonWriter.writeStringField("dir", getDir());
-        jsonWriter.writeArrayField("toScripts", this.toScripts, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TransliterableScript from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TransliterableScript if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TransliterableScript.
-     */
-    @Generated
-    public static TransliterableScript fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String code = null;
-            String name = null;
-            String nativeName = null;
-            String dir = null;
-            List<CommonScriptModel> toScripts = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("code".equals(fieldName)) {
-                    code = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("nativeName".equals(fieldName)) {
-                    nativeName = reader.getString();
-                } else if ("dir".equals(fieldName)) {
-                    dir = reader.getString();
-                } else if ("toScripts".equals(fieldName)) {
-                    toScripts = reader.readArray(reader1 -> CommonScriptModel.fromJson(reader1));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new TransliterableScript(code, name, nativeName, dir, toScripts);
-        });
     }
 }

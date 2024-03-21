@@ -5,23 +5,21 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * Element containing the translated text.
  */
 @Immutable
-public final class TranslatedTextItem implements JsonSerializable<TranslatedTextItem> {
+public final class TranslatedTextItem {
 
     /*
      * The detectedLanguage property is only present in the result object when language auto-detection is requested.
      */
     @Generated
+    @JsonProperty(value = "detectedLanguage")
     private DetectedLanguage detectedLanguage;
 
     /*
@@ -29,6 +27,7 @@ public final class TranslatedTextItem implements JsonSerializable<TranslatedText
      * languages specified through the to query parameter.
      */
     @Generated
+    @JsonProperty(value = "translations")
     private final List<Translation> translations;
 
     /*
@@ -38,6 +37,7 @@ public final class TranslatedTextItem implements JsonSerializable<TranslatedText
      * converted into Arab script.
      */
     @Generated
+    @JsonProperty(value = "sourceText")
     private SourceText sourceText;
 
     /**
@@ -46,7 +46,8 @@ public final class TranslatedTextItem implements JsonSerializable<TranslatedText
      * @param translations the translations value to set.
      */
     @Generated
-    private TranslatedTextItem(List<Translation> translations) {
+    @JsonCreator
+    private TranslatedTextItem(@JsonProperty(value = "translations") List<Translation> translations) {
         this.translations = translations;
     }
 
@@ -82,52 +83,5 @@ public final class TranslatedTextItem implements JsonSerializable<TranslatedText
     @Generated
     public SourceText getSourceText() {
         return this.sourceText;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("translations", this.translations, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeJsonField("detectedLanguage", this.detectedLanguage);
-        jsonWriter.writeJsonField("sourceText", this.sourceText);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of TranslatedTextItem from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of TranslatedTextItem if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the TranslatedTextItem.
-     */
-    @Generated
-    public static TranslatedTextItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            List<Translation> translations = null;
-            DetectedLanguage detectedLanguage = null;
-            SourceText sourceText = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("translations".equals(fieldName)) {
-                    translations = reader.readArray(reader1 -> Translation.fromJson(reader1));
-                } else if ("detectedLanguage".equals(fieldName)) {
-                    detectedLanguage = DetectedLanguage.fromJson(reader);
-                } else if ("sourceText".equals(fieldName)) {
-                    sourceText = SourceText.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            TranslatedTextItem deserializedTranslatedTextItem = new TranslatedTextItem(translations);
-            deserializedTranslatedTextItem.detectedLanguage = detectedLanguage;
-            deserializedTranslatedTextItem.sourceText = sourceText;
-            return deserializedTranslatedTextItem;
-        });
     }
 }

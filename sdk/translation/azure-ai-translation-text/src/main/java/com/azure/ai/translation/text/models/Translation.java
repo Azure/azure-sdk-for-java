@@ -5,46 +5,48 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Translation result.
  */
 @Immutable
-public final class Translation implements JsonSerializable<Translation> {
+public final class Translation {
 
     /*
      * A string representing the language code of the target language.
      */
     @Generated
+    @JsonProperty(value = "to")
     private final String to;
 
     /*
      * A string giving the translated text.
      */
     @Generated
+    @JsonProperty(value = "text")
     private final String text;
 
     /*
      * An object giving the translated text in the script specified by the toScript parameter.
      */
     @Generated
+    @JsonProperty(value = "transliteration")
     private TransliteratedText transliteration;
 
     /*
      * Alignment information.
      */
     @Generated
+    @JsonProperty(value = "alignment")
     private TranslatedTextAlignment alignment;
 
     /*
      * Sentence boundaries in the input and output texts.
      */
     @Generated
+    @JsonProperty(value = "sentLen")
     private SentenceLength sentLen;
 
     /**
@@ -54,7 +56,8 @@ public final class Translation implements JsonSerializable<Translation> {
      * @param text the text value to set.
      */
     @Generated
-    private Translation(String to, String text) {
+    @JsonCreator
+    private Translation(@JsonProperty(value = "to") String to, @JsonProperty(value = "text") String text) {
         this.to = to;
         this.text = text;
     }
@@ -107,61 +110,5 @@ public final class Translation implements JsonSerializable<Translation> {
     @Generated
     public SentenceLength getSentLen() {
         return this.sentLen;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("to", this.to);
-        jsonWriter.writeStringField("text", this.text);
-        jsonWriter.writeJsonField("transliteration", this.transliteration);
-        jsonWriter.writeJsonField("alignment", this.alignment);
-        jsonWriter.writeJsonField("sentLen", this.sentLen);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of Translation from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of Translation if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Translation.
-     */
-    @Generated
-    public static Translation fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String to = null;
-            String text = null;
-            TransliteratedText transliteration = null;
-            TranslatedTextAlignment alignment = null;
-            SentenceLength sentLen = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("to".equals(fieldName)) {
-                    to = reader.getString();
-                } else if ("text".equals(fieldName)) {
-                    text = reader.getString();
-                } else if ("transliteration".equals(fieldName)) {
-                    transliteration = TransliteratedText.fromJson(reader);
-                } else if ("alignment".equals(fieldName)) {
-                    alignment = TranslatedTextAlignment.fromJson(reader);
-                } else if ("sentLen".equals(fieldName)) {
-                    sentLen = SentenceLength.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            Translation deserializedTranslation = new Translation(to, text);
-            deserializedTranslation.transliteration = transliteration;
-            deserializedTranslation.alignment = alignment;
-            deserializedTranslation.sentLen = sentLen;
-            return deserializedTranslation;
-        });
     }
 }

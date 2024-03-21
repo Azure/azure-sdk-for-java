@@ -5,10 +5,11 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for ProfanityMarker.
+ * Translator profanity markers.
  */
 public final class ProfanityMarker extends ExpandableStringEnum<ProfanityMarker> {
 
@@ -41,6 +42,7 @@ public final class ProfanityMarker extends ExpandableStringEnum<ProfanityMarker>
      * @return the corresponding ProfanityMarker.
      */
     @Generated
+    @JsonCreator
     public static ProfanityMarker fromString(String name) {
         return fromString(name, ProfanityMarker.class);
     }

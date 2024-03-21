@@ -5,24 +5,22 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * Dictionary Example element.
  */
 @Immutable
-public final class DictionaryExampleItem implements JsonSerializable<DictionaryExampleItem> {
+public final class DictionaryExampleItem {
 
     /*
      * A string giving the normalized form of the source term. Generally, this should be identical
      * to the value of the Text field at the matching list index in the body of the request.
      */
     @Generated
+    @JsonProperty(value = "normalizedSource")
     private final String normalizedSource;
 
     /*
@@ -30,12 +28,14 @@ public final class DictionaryExampleItem implements JsonSerializable<DictionaryE
      * to the value of the Translation field at the matching list index in the body of the request.
      */
     @Generated
+    @JsonProperty(value = "normalizedTarget")
     private final String normalizedTarget;
 
     /*
      * A list of examples for the (source term, target term) pair.
      */
     @Generated
+    @JsonProperty(value = "examples")
     private final List<DictionaryExample> examples;
 
     /**
@@ -46,7 +46,10 @@ public final class DictionaryExampleItem implements JsonSerializable<DictionaryE
      * @param examples the examples value to set.
      */
     @Generated
-    private DictionaryExampleItem(String normalizedSource, String normalizedTarget, List<DictionaryExample> examples) {
+    @JsonCreator
+    private DictionaryExampleItem(@JsonProperty(value = "normalizedSource") String normalizedSource,
+        @JsonProperty(value = "normalizedTarget") String normalizedTarget,
+        @JsonProperty(value = "examples") List<DictionaryExample> examples) {
         this.normalizedSource = normalizedSource;
         this.normalizedTarget = normalizedTarget;
         this.examples = examples;
@@ -82,49 +85,5 @@ public final class DictionaryExampleItem implements JsonSerializable<DictionaryE
     @Generated
     public List<DictionaryExample> getExamples() {
         return this.examples;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("normalizedSource", this.normalizedSource);
-        jsonWriter.writeStringField("normalizedTarget", this.normalizedTarget);
-        jsonWriter.writeArrayField("examples", this.examples, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of DictionaryExampleItem from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of DictionaryExampleItem if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DictionaryExampleItem.
-     */
-    @Generated
-    public static DictionaryExampleItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String normalizedSource = null;
-            String normalizedTarget = null;
-            List<DictionaryExample> examples = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("normalizedSource".equals(fieldName)) {
-                    normalizedSource = reader.getString();
-                } else if ("normalizedTarget".equals(fieldName)) {
-                    normalizedTarget = reader.getString();
-                } else if ("examples".equals(fieldName)) {
-                    examples = reader.readArray(reader1 -> DictionaryExample.fromJson(reader1));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new DictionaryExampleItem(normalizedSource, normalizedTarget, examples);
-        });
     }
 }

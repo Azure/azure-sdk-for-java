@@ -5,10 +5,11 @@ package com.azure.ai.translation.text.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for TextType.
+ * Translation text type.
  */
 public final class TextType extends ExpandableStringEnum<TextType> {
 
@@ -41,6 +42,7 @@ public final class TextType extends ExpandableStringEnum<TextType> {
      * @return the corresponding TextType.
      */
     @Generated
+    @JsonCreator
     public static TextType fromString(String name) {
         return fromString(name, TextType.class);
     }
