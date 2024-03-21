@@ -20,6 +20,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClientBuilder;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesServiceVersion;
+import com.azure.monitor.ingestion.models.LogIngestionAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -168,6 +169,19 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
     public LogsIngestionClientBuilder credential(TokenCredential tokenCredential) {
         innerLogBuilder.credential(tokenCredential);
         this.tokenCredential = tokenCredential;
+        return this;
+    }
+
+
+    /**
+     * Sets the audience for the authorization scope of log ingestion clients. If this value is not set, the default
+     * audience will be the azure public cloud.
+     *
+     * @param audience the audience value.
+     * @return the updated {@link LogsIngestionClientBuilder}.
+     */
+    public LogsIngestionClientBuilder audience(LogIngestionAudience audience) {
+        innerLogBuilder.audience(audience);
         return this;
     }
 

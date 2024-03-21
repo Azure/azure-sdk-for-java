@@ -22,9 +22,10 @@ context-client-method-parameter: true
 required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 credential-types: tokencredential
-credential-scopes: https://monitor.azure.com//.default,https://monitor.azure.cn//.default,https://monitor.azure.us//.default
+credential-scopes: https://monitor.azure.com//.default
 client-side-validations: true
 artifact-id: azure-monitor-ingestion
 data-plane: true
 enable-sync-stack: true
+customization-class: src/main/java/MonitorIngestionCustomizations.java
 ```
