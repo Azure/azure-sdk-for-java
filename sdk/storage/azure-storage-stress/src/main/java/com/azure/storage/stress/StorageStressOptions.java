@@ -12,6 +12,8 @@ public class StorageStressOptions extends PerfStressOptions {
     private boolean enableFaultInjection = false;
     @Parameter(names = { "--cs"}, description = "Storage connection string")
     private String connectionString = Configuration.getGlobalConfiguration().get("STORAGE_CONNECTION_STRING");
+    @Parameter(names = { "--pbcs"}, description = "Page Blob Storage connection string")
+    private String pageBlobConnectionString = Configuration.getGlobalConfiguration().get("PAGE_BLOB_STORAGE_CONNECTION_STRING");
     @Parameter(names = { "--requestFaulted" }, description = "Is request faulted")
     private boolean isRequestFaulted = false;
 
@@ -21,6 +23,10 @@ public class StorageStressOptions extends PerfStressOptions {
 
     public String getConnectionString() {
         return connectionString;
+    }
+
+    public String getPageBlobConnectionString() {
+        return pageBlobConnectionString;
     }
 
     /**

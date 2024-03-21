@@ -18,13 +18,12 @@ import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
 
-public class UploadPages extends BlobScenarioBase<StorageStressOptions> {
+public class UploadPages extends PageBlobScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncClient;
     private final BlobAsyncClient asyncNoFaultClient;
-    // this blob is used to perform normal upload in the setup phase
-    private final BlobAsyncClient tempSetupBlobClient;
+    private final PageBlobAsyncClient tempSetupPageBlobClient;
 
     public UploadPages(StorageStressOptions options) {
         super(options);
@@ -34,7 +33,9 @@ public class UploadPages extends BlobScenarioBase<StorageStressOptions> {
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
         this.syncClient = getSyncContainerClient().getBlobClient(blobName);
         this.asyncClient = getAsyncContainerClient().getBlobAsyncClient(blobName);
-        this.tempSetupBlobClient = getAsyncContainerClientNoFault().getBlobAsyncClient(tempBlobName);
+        // this blob is used to perform normal upload in the setup phase
+        BlobAsyncClient tempSetupBlobClient = getAsyncContainerClientNoFault().getBlobAsyncClient(tempBlobName);
+        this.tempSetupPageBlobClient = tempSetupBlobClient.getPageBlobAsyncClient();
     }
 
     @Override
@@ -62,11 +63,14 @@ public class UploadPages extends BlobScenarioBase<StorageStressOptions> {
     public Mono<Void> setupAsync() {
         return super.setupAsync()
             .then(asyncNoFaultClient.getPageBlobAsyncClient().create(options.getSize()))
-            .then(originalContent.setupBlob(tempSetupBlobClient, options.getSize()));
+            .then(tempSetupPageBlobClient.create(options.getSize()))
+            .then(originalContent.setupPageBlob(tempSetupPageBlobClient, options.getSize()));
     }
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return super.cleanupAsync().then(tempSetupBlobClient.delete());
+        return asyncNoFaultClient.getPageBlobAsyncClient().delete()
+            .then(tempSetupPageBlobClient.delete())
+            .then(super.cleanupAsync());
     }
 }

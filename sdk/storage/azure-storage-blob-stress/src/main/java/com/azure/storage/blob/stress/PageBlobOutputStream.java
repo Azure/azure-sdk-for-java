@@ -9,6 +9,7 @@ import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.specialized.BlobOutputStream;
+import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.stress.utils.OriginalContent;
 import com.azure.storage.stress.CrcInputStream;
@@ -20,13 +21,13 @@ import java.io.IOException;
 
 import static com.azure.core.util.FluxUtil.monoError;
 
-public class PageBlobOutputStream extends BlobScenarioBase<StorageStressOptions> {
+public class PageBlobOutputStream extends PageBlobScenarioBase<StorageStressOptions> {
     ClientLogger LOGGER = new ClientLogger(BlockBlobOutputStream.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final BlobClient syncClient;
     private final BlobAsyncClient asyncNoFaultClient;
     // this blob is used to perform normal upload in the setup phase
-    private final BlobAsyncClient tempSetupBlobClient;
+    private final PageBlobAsyncClient tempSetupPageBlobClient;
 
     public PageBlobOutputStream(StorageStressOptions options) {
         super(options);
@@ -35,7 +36,8 @@ public class PageBlobOutputStream extends BlobScenarioBase<StorageStressOptions>
 
         this.syncClient = getSyncContainerClient().getBlobClient(blobName);
         this.asyncNoFaultClient = getAsyncContainerClientNoFault().getBlobAsyncClient(blobName);
-        this.tempSetupBlobClient = getAsyncContainerClientNoFault().getBlobAsyncClient(tempBlobName);
+        BlobAsyncClient tempSetupBlobClient = getAsyncContainerClientNoFault().getBlobAsyncClient(tempBlobName);
+        this.tempSetupPageBlobClient = tempSetupBlobClient.getPageBlobAsyncClient();
     }
 
     @Override
@@ -88,12 +90,14 @@ public class PageBlobOutputStream extends BlobScenarioBase<StorageStressOptions>
     public Mono<Void> setupAsync() {
         return super.setupAsync()
             .then(asyncNoFaultClient.getPageBlobAsyncClient().create(options.getSize()))
-            .then(originalContent.setupBlob(tempSetupBlobClient, options.getSize()));
+            .then(tempSetupPageBlobClient.create(options.getSize()))
+            .then(originalContent.setupPageBlob(tempSetupPageBlobClient, options.getSize()));
     }
 
     @Override
     public Mono<Void> cleanupAsync() {
-        return asyncNoFaultClient.delete()
+        return asyncNoFaultClient.getPageBlobAsyncClient().delete()
+            .then(tempSetupPageBlobClient.delete())
             .then(super.cleanupAsync());
     }
 }
