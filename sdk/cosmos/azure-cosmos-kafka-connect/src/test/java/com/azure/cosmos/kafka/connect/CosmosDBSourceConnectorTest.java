@@ -66,9 +66,9 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
         ConfigDef configDef = sourceConnector.config();
         Map<String, ConfigDef.ConfigKey> configs = configDef.configKeys();
-        List<SourceConfigEntry<?>> allValidConfigs = ALL_VALID_CONFIGS;
+        List<KafkaCosmosConfigEntry<?>> allValidConfigs = ALL_VALID_CONFIGS;
 
-        for (SourceConfigEntry<?> sourceConfigEntry : allValidConfigs) {
+        for (KafkaCosmosConfigEntry<?> sourceConfigEntry : allValidConfigs) {
             assertThat(configs.containsKey(sourceConfigEntry.getName())).isTrue();
 
             configs.containsKey(sourceConfigEntry.getName());
@@ -374,15 +374,15 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
     @Test(groups = "unit")
     public void missingRequiredConfig() {
 
-        List<SourceConfigEntry<?>> requiredConfigs =
+        List<KafkaCosmosConfigEntry<?>> requiredConfigs =
             ALL_VALID_CONFIGS
                 .stream()
-                .filter(sourceConfigEntry -> !sourceConfigEntry.isOptional)
+                .filter(sourceConfigEntry -> !sourceConfigEntry.isOptional())
                 .collect(Collectors.toList());
 
         assertThat(requiredConfigs.size()).isGreaterThan(1);
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
-        for (SourceConfigEntry<?> configEntry : requiredConfigs) {
+        for (KafkaCosmosConfigEntry<?> configEntry : requiredConfigs) {
 
             Map<String, String> sourceConfigMap = this.getValidSourceConfig();
             sourceConfigMap.remove(configEntry.getName());
@@ -391,7 +391,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
                 validatedConfig
                     .configValues()
                     .stream()
-                    .filter(config -> config.name().equalsIgnoreCase(configEntry.name))
+                    .filter(config -> config.name().equalsIgnoreCase(configEntry.getName()))
                     .findFirst()
                     .get();
 
@@ -579,57 +579,33 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         assertThat(expectedMetadataTaskUnit).isEqualTo(metadataTaskUnitFromTaskConfig);
     }
 
-    public static class SourceConfigEntry<T> {
-        private final String name;
-        private final T defaultValue;
-        private final boolean isOptional;
-
-        public SourceConfigEntry(String name, T defaultValue, boolean isOptional) {
-            this.name = name;
-            this.defaultValue = defaultValue;
-            this.isOptional = isOptional;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public T getDefaultValue() {
-            return defaultValue;
-        }
-
-        public boolean isOptional() {
-            return isOptional;
-        }
-    }
-
     public static class SourceConfigs {
-        public static final List<SourceConfigEntry<?>> ALL_VALID_CONFIGS = Arrays.asList(
-            new SourceConfigEntry<String>("kafka.connect.cosmos.accountEndpoint", null, false),
-            new SourceConfigEntry<String>("kafka.connect.cosmos.accountKey", null, false),
-            new SourceConfigEntry<Boolean>("kafka.connect.cosmos.useGatewayMode", false, true),
-            new SourceConfigEntry<String>("kafka.connect.cosmos.preferredRegionsList", Strings.Emtpy, true),
-            new SourceConfigEntry<String>("kafka.connect.cosmos.applicationName", Strings.Emtpy, true),
-            new SourceConfigEntry<String>("kafka.connect.cosmos.source.database.name", null, false),
-            new SourceConfigEntry<Boolean>("kafka.connect.cosmos.source.containers.includeAll", false, true),
-            new SourceConfigEntry<String>("kafka.connect.cosmos.source.containers.includedList", Strings.Emtpy, true),
-            new SourceConfigEntry<String>("kafka.connect.cosmos.source.containers.topicMap", Strings.Emtpy, true),
-            new SourceConfigEntry<String>(
+        public static final List<KafkaCosmosConfigEntry<?>> ALL_VALID_CONFIGS = Arrays.asList(
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.accountEndpoint", null, false),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.accountKey", null, false),
+            new KafkaCosmosConfigEntry<Boolean>("kafka.connect.cosmos.useGatewayMode", false, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.preferredRegionsList", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.applicationName", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.source.database.name", null, false),
+            new KafkaCosmosConfigEntry<Boolean>("kafka.connect.cosmos.source.containers.includeAll", false, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.source.containers.includedList", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.source.containers.topicMap", Strings.Emtpy, true),
+            new KafkaCosmosConfigEntry<String>(
                 "kafka.connect.cosmos.source.changeFeed.startFrom",
                 CosmosChangeFeedStartFromModes.BEGINNING.getName(),
                 true),
-            new SourceConfigEntry<String>(
+            new KafkaCosmosConfigEntry<String>(
                 "kafka.connect.cosmos.source.changeFeed.mode",
                 CosmosChangeFeedModes.LATEST_VERSION.getName(),
                 true),
-            new SourceConfigEntry<Integer>("kafka.connect.cosmos.source.changeFeed.maxItemCountHint", 1000, true),
-            new SourceConfigEntry<Integer>("kafka.connect.cosmos.source.metadata.poll.delay.ms", 5 * 60 * 1000, true),
-            new SourceConfigEntry<String>(
+            new KafkaCosmosConfigEntry<Integer>("kafka.connect.cosmos.source.changeFeed.maxItemCountHint", 1000, true),
+            new KafkaCosmosConfigEntry<Integer>("kafka.connect.cosmos.source.metadata.poll.delay.ms", 5 * 60 * 1000, true),
+            new KafkaCosmosConfigEntry<String>(
                 "kafka.connect.cosmos.source.metadata.storage.topic",
                 "_cosmos.metadata.topic",
                 true),
-            new SourceConfigEntry<Boolean>("kafka.connect.cosmos.source.messageKey.enabled", true, true),
-            new SourceConfigEntry<String>("kafka.connect.cosmos.source.messageKey.field", "id", true)
+            new KafkaCosmosConfigEntry<Boolean>("kafka.connect.cosmos.source.messageKey.enabled", true, true),
+            new KafkaCosmosConfigEntry<String>("kafka.connect.cosmos.source.messageKey.field", "id", true)
         );
     }
 }

@@ -33,7 +33,7 @@ public final class CommunicationServicesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"rmclfplphoxu\",\"dataLocation\":\"crpab\",\"notificationHubId\":\"epsbjtazqu\",\"version\":\"ywpmueefjzwfqkq\",\"immutableResourceId\":\"ids\",\"linkedDomains\":[\"nobglaocq\",\"tcc\",\"g\"]},\"identity\":{\"principalId\":\"7003f4bf-93d3-453d-9de3-0be1a5e78250\",\"tenantId\":\"0d8d20d9-f552-447e-b412-91d468ba50ac\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"yrxvwfudwpznt\":{\"principalId\":\"f164af8c-2ede-4e44-82d8-78154418b5f0\",\"clientId\":\"6bf885ab-5a37-435a-b09a-88c9cc2fd899\"},\"zhlrqjb\":{\"principalId\":\"6660e23a-50ce-4f20-8f7d-4a7df832b73d\",\"clientId\":\"6fccf7f4-49c4-4207-8224-43a5cfb1cbb2\"}}},\"location\":\"kfrlhrxsbky\",\"tags\":{\"uzbpzkafku\":\"ca\",\"rnwb\":\"b\",\"hspkdeemao\":\"ehhseyvjusrts\",\"gkvtmelmqkrhah\":\"mx\"},\"id\":\"ljuahaquhcdh\",\"name\":\"duala\",\"type\":\"xqpvfadmw\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"hostName\":\"brjcxe\",\"dataLocation\":\"fuwutttxf\",\"notificationHubId\":\"rbirphxe\",\"version\":\"yva\",\"immutableResourceId\":\"nljky\",\"linkedDomains\":[\"vuujq\"]},\"identity\":{\"principalId\":\"d1370ea4-70f5-4ddf-bb49-cb5a41fbae09\",\"tenantId\":\"f90dff6b-94fb-40e7-83dc-85438df93e2f\",\"type\":\"None\",\"userAssignedIdentities\":{\"yoxgvcltbgsnc\":{\"principalId\":\"191c3c83-857b-4b1a-bcda-1b65b274bc6a\",\"clientId\":\"2942f4e1-ae8f-4303-b88f-2ca0345e5ee2\"},\"jeszzhbijhtxfv\":{\"principalId\":\"9cd64346-ab86-4494-8699-1fa0d1670311\",\"clientId\":\"e5d37ff6-9006-4a9c-85bd-7d287ddbc539\"}}},\"location\":\"bfs\",\"tags\":{\"pvecxgodeb\":\"eh\",\"pukgriwflzlfb\":\"qkkrb\",\"qzahmgkbrp\":\"zpuzycisp\"},\"id\":\"y\",\"name\":\"hibnuqqkpika\",\"type\":\"rgvtqag\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -53,11 +53,10 @@ public final class CommunicationServicesListMockTests {
         PagedIterable<CommunicationServiceResource> response
             = manager.communicationServices().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kfrlhrxsbky", response.iterator().next().location());
-        Assertions.assertEquals("ca", response.iterator().next().tags().get("uzbpzkafku"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED,
-            response.iterator().next().identity().type());
-        Assertions.assertEquals("crpab", response.iterator().next().dataLocation());
-        Assertions.assertEquals("nobglaocq", response.iterator().next().linkedDomains().get(0));
+        Assertions.assertEquals("bfs", response.iterator().next().location());
+        Assertions.assertEquals("eh", response.iterator().next().tags().get("pvecxgodeb"));
+        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.iterator().next().identity().type());
+        Assertions.assertEquals("fuwutttxf", response.iterator().next().dataLocation());
+        Assertions.assertEquals("vuujq", response.iterator().next().linkedDomains().get(0));
     }
 }

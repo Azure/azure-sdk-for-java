@@ -11,25 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class IoTSeverityMetricsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IoTSeverityMetrics model =
-            BinaryData
-                .fromString("{\"high\":9028045602986691631,\"medium\":2874780118088744582,\"low\":9144697658006681867}")
-                .toObject(IoTSeverityMetrics.class);
-        Assertions.assertEquals(9028045602986691631L, model.high());
-        Assertions.assertEquals(2874780118088744582L, model.medium());
-        Assertions.assertEquals(9144697658006681867L, model.low());
+        IoTSeverityMetrics model = BinaryData
+            .fromString("{\"high\":1153291785536508123,\"medium\":3923567572835192454,\"low\":4719184191319342854}")
+            .toObject(IoTSeverityMetrics.class);
+        Assertions.assertEquals(1153291785536508123L, model.high());
+        Assertions.assertEquals(3923567572835192454L, model.medium());
+        Assertions.assertEquals(4719184191319342854L, model.low());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IoTSeverityMetrics model =
-            new IoTSeverityMetrics()
-                .withHigh(9028045602986691631L)
-                .withMedium(2874780118088744582L)
-                .withLow(9144697658006681867L);
+        IoTSeverityMetrics model = new IoTSeverityMetrics().withHigh(1153291785536508123L)
+            .withMedium(3923567572835192454L).withLow(4719184191319342854L);
         model = BinaryData.fromObject(model).toObject(IoTSeverityMetrics.class);
-        Assertions.assertEquals(9028045602986691631L, model.high());
-        Assertions.assertEquals(2874780118088744582L, model.medium());
-        Assertions.assertEquals(9144697658006681867L, model.low());
+        Assertions.assertEquals(1153291785536508123L, model.high());
+        Assertions.assertEquals(3923567572835192454L, model.medium());
+        Assertions.assertEquals(4719184191319342854L, model.low());
     }
 }

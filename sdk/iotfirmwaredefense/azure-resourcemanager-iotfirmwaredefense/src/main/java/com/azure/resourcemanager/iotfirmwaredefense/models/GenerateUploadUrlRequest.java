@@ -7,7 +7,9 @@ package com.azure.resourcemanager.iotfirmwaredefense.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties for generating an upload URL. */
+/**
+ * Properties for generating an upload URL.
+ */
 @Fluent
 public final class GenerateUploadUrlRequest {
     /*
@@ -16,13 +18,15 @@ public final class GenerateUploadUrlRequest {
     @JsonProperty(value = "firmwareId")
     private String firmwareId;
 
-    /** Creates an instance of GenerateUploadUrlRequest class. */
+    /**
+     * Creates an instance of GenerateUploadUrlRequest class.
+     */
     public GenerateUploadUrlRequest() {
     }
 
     /**
      * Get the firmwareId property: A unique ID for the firmware to be uploaded.
-     *
+     * 
      * @return the firmwareId value.
      */
     public String firmwareId() {
@@ -31,7 +35,7 @@ public final class GenerateUploadUrlRequest {
 
     /**
      * Set the firmwareId property: A unique ID for the firmware to be uploaded.
-     *
+     * 
      * @param firmwareId the firmwareId value to set.
      * @return the GenerateUploadUrlRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class GenerateUploadUrlRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

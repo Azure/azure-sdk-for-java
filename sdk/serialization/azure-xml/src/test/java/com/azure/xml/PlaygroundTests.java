@@ -3,8 +3,6 @@
 
 package com.azure.xml;
 
-import com.azure.xml.implementation.DefaultXmlReader;
-import com.azure.xml.implementation.DefaultXmlWriter;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.stream.XMLStreamException;
@@ -48,7 +46,7 @@ public class PlaygroundTests {
         SignedIdentifiersWrapper wrapper = new SignedIdentifiersWrapper(Collections.singletonList(signedIdentifier));
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (XmlWriter xmlWriter = DefaultXmlWriter.toStream(byteArrayOutputStream)) {
+        try (XmlWriter xmlWriter = XmlWriter.toStream(byteArrayOutputStream)) {
             xmlWriter.writeStartDocument();
             wrapper.toXml(xmlWriter);
         }
@@ -68,7 +66,7 @@ public class PlaygroundTests {
 
         SignedIdentifiersWrapper wrapper = new SignedIdentifiersWrapper(Collections.singletonList(signedIdentifier));
 
-        try (XmlReader xmlReader = DefaultXmlReader.fromString(SIMPLE_XML)) {
+        try (XmlReader xmlReader = XmlReader.fromString(SIMPLE_XML)) {
             SignedIdentifiersWrapper actualWrapper = SignedIdentifiersWrapper.fromXml(xmlReader);
 
             assertNotNull(actualWrapper);
@@ -119,7 +117,7 @@ public class PlaygroundTests {
             .setContent(namespacePropertiesEntryContent);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        try (XmlWriter xmlWriter = DefaultXmlWriter.toStream(byteArrayOutputStream)) {
+        try (XmlWriter xmlWriter = XmlWriter.toStream(byteArrayOutputStream)) {
             xmlWriter.writeStartDocument();
             namespacePropertiesEntry.toXml(xmlWriter);
         }
@@ -156,7 +154,7 @@ public class PlaygroundTests {
             .setLink(responseLink)
             .setContent(namespacePropertiesEntryContent);
 
-        try (XmlReader xmlReader = DefaultXmlReader.fromString(COMPLEX_XML)) {
+        try (XmlReader xmlReader = XmlReader.fromString(COMPLEX_XML)) {
             NamespacePropertiesEntry actualEntry = NamespacePropertiesEntry.fromXml(xmlReader);
 
             assertNotNull(actualEntry);

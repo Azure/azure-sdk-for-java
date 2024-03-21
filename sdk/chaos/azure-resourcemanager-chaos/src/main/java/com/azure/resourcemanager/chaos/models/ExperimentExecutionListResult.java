@@ -9,7 +9,9 @@ import com.azure.resourcemanager.chaos.fluent.models.ExperimentExecutionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Model that represents a list of Experiment executions and a link for pagination. */
+/**
+ * Model that represents a list of Experiment executions and a link for pagination.
+ */
 @Immutable
 public final class ExperimentExecutionListResult {
     /*
@@ -24,13 +26,15 @@ public final class ExperimentExecutionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ExperimentExecutionListResult class. */
+    /**
+     * Creates an instance of ExperimentExecutionListResult class.
+     */
     public ExperimentExecutionListResult() {
     }
 
     /**
      * Get the value property: List of Experiment executions.
-     *
+     * 
      * @return the value value.
      */
     public List<ExperimentExecutionInner> value() {
@@ -39,7 +43,7 @@ public final class ExperimentExecutionListResult {
 
     /**
      * Get the nextLink property: URL to retrieve the next page of Experiment executions.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ExperimentExecutionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

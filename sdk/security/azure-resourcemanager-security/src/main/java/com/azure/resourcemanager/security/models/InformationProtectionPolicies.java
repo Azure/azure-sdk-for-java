@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of InformationProtectionPolicies. */
+/**
+ * Resource collection API of InformationProtectionPolicies.
+ */
 public interface InformationProtectionPolicies {
     /**
      * Details of the information protection policy.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param informationProtectionPolicyName Name of the information protection policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -22,14 +24,14 @@ public interface InformationProtectionPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information protection policy along with {@link Response}.
      */
-    Response<InformationProtectionPolicy> getWithResponse(
-        String scope, InformationProtectionPolicyName informationProtectionPolicyName, Context context);
+    Response<InformationProtectionPolicy> getWithResponse(String scope,
+        InformationProtectionPolicyName informationProtectionPolicyName, Context context);
 
     /**
      * Details of the information protection policy.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param informationProtectionPolicyName Name of the information protection policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,9 +42,9 @@ public interface InformationProtectionPolicies {
 
     /**
      * Information protection policies of a specific management group.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -52,9 +54,9 @@ public interface InformationProtectionPolicies {
 
     /**
      * Information protection policies of a specific management group.
-     *
+     * 
      * @param scope Scope of the query, can be subscription (/subscriptions/0b06d9ea-afe6-4779-bd59-30e5c2d9d13f) or
-     *     management group (/providers/Microsoft.Management/managementGroups/mgName).
+     * management group (/providers/Microsoft.Management/managementGroups/mgName).
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -65,7 +67,7 @@ public interface InformationProtectionPolicies {
 
     /**
      * Details of the information protection policy.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,7 +78,7 @@ public interface InformationProtectionPolicies {
 
     /**
      * Details of the information protection policy.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -88,7 +90,7 @@ public interface InformationProtectionPolicies {
 
     /**
      * Begins definition for a new InformationProtectionPolicy resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new InformationProtectionPolicy definition.
      */

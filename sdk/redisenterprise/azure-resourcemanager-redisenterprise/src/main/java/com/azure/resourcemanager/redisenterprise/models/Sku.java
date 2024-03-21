@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SKU parameters supplied to the create RedisEnterprise operation. */
+/**
+ * SKU parameters supplied to the create RedisEnterprise operation.
+ */
 @Fluent
 public final class Sku {
     /*
@@ -24,14 +26,16 @@ public final class Sku {
     @JsonProperty(value = "capacity")
     private Integer capacity;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
     /**
      * Get the name property: The type of RedisEnterprise cluster to deploy. Possible values: (Enterprise_E10,
      * EnterpriseFlash_F300 etc.).
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -41,7 +45,7 @@ public final class Sku {
     /**
      * Set the name property: The type of RedisEnterprise cluster to deploy. Possible values: (Enterprise_E10,
      * EnterpriseFlash_F300 etc.).
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -53,7 +57,7 @@ public final class Sku {
     /**
      * Get the capacity property: The size of the RedisEnterprise cluster. Defaults to 2 or 3 depending on SKU. Valid
      * values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs.
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -63,7 +67,7 @@ public final class Sku {
     /**
      * Set the capacity property: The size of the RedisEnterprise cluster. Defaults to 2 or 3 depending on SKU. Valid
      * values are (2, 4, 6, ...) for Enterprise SKUs and (3, 9, 15, ...) for Flash SKUs.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -74,7 +78,7 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

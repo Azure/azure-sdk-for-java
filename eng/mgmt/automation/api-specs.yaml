@@ -115,5 +115,7 @@ vmware:
 web:
   service: appservice
   suffix: generated
+workloads/Microsoft.Workloads/SAPDiscoverySites:
+  service: migrationdiscoverysap
 workloads/Microsoft.Workloads/SAPVirtualInstance:
   service: workloadssapvirtualinstance

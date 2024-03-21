@@ -6,7 +6,12 @@ package com.azure.resourcemanager.security.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.security.fluent.models.AutomationInner;
+import com.azure.resourcemanager.security.models.AutomationAction;
 import com.azure.resourcemanager.security.models.AutomationList;
+import com.azure.resourcemanager.security.models.AutomationRuleSet;
+import com.azure.resourcemanager.security.models.AutomationScope;
+import com.azure.resourcemanager.security.models.AutomationSource;
+import com.azure.resourcemanager.security.models.EventSource;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,63 +20,96 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomationListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomationList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"jpqqmted\",\"isEnabled\":false,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"hyeozphvwau\",\"tags\":{\"gupkvipmdscwxq\":\"c\"},\"id\":\"pevzhfst\",\"name\":\"txhojujb\",\"type\":\"pelmcuvhixbjxyf\"},{\"properties\":{\"description\":\"lrcoolsttpki\",\"isEnabled\":false,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"jrywvtylbfpnc\",\"tags\":{\"cbihwqk\":\"oiwiithtywub\",\"umwctondz\":\"fdntwjchrdgoih\"},\"id\":\"luudfdlwggytsb\",\"name\":\"tov\",\"type\":\"tgseinqfiufxqkn\"},{\"properties\":{\"description\":\"gnepttwqmsni\",\"isEnabled\":false,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"nrojlpijnkr\",\"tags\":{\"nasx\":\"ddhcratizzr\"},\"id\":\"ft\",\"name\":\"zq\",\"type\":\"zh\"},{\"properties\":{\"description\":\"esgogc\",\"isEnabled\":true,\"scopes\":[],\"sources\":[],\"actions\":[]},\"location\":\"krlgnyhm\",\"tags\":{\"thrrgh\":\"xkk\",\"gf\":\"jbdhqxvc\"},\"id\":\"pdso\",\"name\":\"bshrnsvbuswd\",\"type\":\"z\"}],\"nextLink\":\"bycnunvjsrtkf\"}")
-                .toObject(AutomationList.class);
-        Assertions.assertEquals("hyeozphvwau", model.value().get(0).location());
-        Assertions.assertEquals("c", model.value().get(0).tags().get("gupkvipmdscwxq"));
-        Assertions.assertEquals("jpqqmted", model.value().get(0).description());
-        Assertions.assertEquals(false, model.value().get(0).isEnabled());
+        AutomationList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"deoj\",\"isEnabled\":true,\"scopes\":[{\"description\":\"smtxpsieb\",\"scopePath\":\"hvpesapskrdqm\"},{\"description\":\"jdhtldwkyzxu\",\"scopePath\":\"kn\"},{\"description\":\"scwsv\",\"scopePath\":\"otogtwrupqs\"}],\"sources\":[{\"eventSource\":\"AttackPathsSnapshot\",\"ruleSets\":[{},{},{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"}]},\"location\":\"ceoveilovno\",\"tags\":{\"bkc\":\"jfcn\"},\"id\":\"x\",\"name\":\"hbttkphyw\",\"type\":\"nv\"},{\"properties\":{\"description\":\"qnermclfplphoxu\",\"isEnabled\":false,\"scopes\":[{\"description\":\"gyepsbjt\",\"scopePath\":\"qugxywpmueefjzwf\"}],\"sources\":[{\"eventSource\":\"SecureScoreControls\",\"ruleSets\":[{},{},{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]},\"location\":\"yonobgl\",\"tags\":{\"tlmoyrx\":\"qxtccmgyudx\"},\"id\":\"wfudwpzntxhdzhl\",\"name\":\"qj\",\"type\":\"hckfrlhrx\"},{\"properties\":{\"description\":\"yvpycanuzbpzk\",\"isEnabled\":true,\"scopes\":[{\"description\":\"crnwbmeh\",\"scopePath\":\"eyvjusrtslhspkde\"},{\"description\":\"aofmxagkvtme\",\"scopePath\":\"qkrhahvljua\"},{\"description\":\"quhcdhmduala\",\"scopePath\":\"qpv\"},{\"description\":\"dmwsrcrgvxpvgomz\",\"scopePath\":\"misgwbnb\"}],\"sources\":[{\"eventSource\":\"SubAssessmentsSnapshot\",\"ruleSets\":[{}]},{\"eventSource\":\"AttackPathsSnapshot\",\"ruleSets\":[{},{},{}]},{\"eventSource\":\"SecureScoreControlsSnapshot\",\"ruleSets\":[{},{},{}]},{\"eventSource\":\"SubAssessmentsSnapshot\",\"ruleSets\":[{},{},{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]},\"location\":\"hashsfwxosow\",\"tags\":{\"ucww\":\"ugicjooxdjebw\",\"bvmeuecivy\":\"vo\",\"ueiotwmcdyt\":\"zceuojgjrw\"},\"id\":\"x\",\"name\":\"it\",\"type\":\"nrjawgqwg\"},{\"properties\":{\"description\":\"isk\",\"isEnabled\":false,\"scopes\":[{\"description\":\"cg\",\"scopePath\":\"wndnhj\"}],\"sources\":[{\"eventSource\":\"RegulatoryComplianceAssessment\",\"ruleSets\":[{}]},{\"eventSource\":\"AttackPaths\",\"ruleSets\":[{},{},{}]},{\"eventSource\":\"SecureScoresSnapshot\",\"ruleSets\":[{},{},{}]},{\"eventSource\":\"SecureScoreControls\",\"ruleSets\":[{},{},{}]}],\"actions\":[{\"actionType\":\"AutomationAction\"},{\"actionType\":\"AutomationAction\"}]},\"location\":\"pow\",\"tags\":{\"lupj\":\"rzqlveu\",\"riplrbpbewtg\":\"khfxobbcswsrt\"},\"id\":\"fgb\",\"name\":\"c\",\"type\":\"wxzvlvqhjkb\"}],\"nextLink\":\"ibtnmxiebwwaloay\"}")
+            .toObject(AutomationList.class);
+        Assertions.assertEquals("ceoveilovno", model.value().get(0).location());
+        Assertions.assertEquals("jfcn", model.value().get(0).tags().get("bkc"));
+        Assertions.assertEquals("deoj", model.value().get(0).description());
+        Assertions.assertEquals(true, model.value().get(0).isEnabled());
+        Assertions.assertEquals("smtxpsieb", model.value().get(0).scopes().get(0).description());
+        Assertions.assertEquals("hvpesapskrdqm", model.value().get(0).scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.ATTACK_PATHS_SNAPSHOT, model.value().get(0).sources().get(0).eventSource());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomationList model =
-            new AutomationList()
+        AutomationList model
+            = new AutomationList()
                 .withValue(
-                    Arrays
-                        .asList(
-                            new AutomationInner()
-                                .withLocation("hyeozphvwau")
-                                .withTags(mapOf("gupkvipmdscwxq", "c"))
-                                .withDescription("jpqqmted")
-                                .withIsEnabled(false)
-                                .withScopes(Arrays.asList())
-                                .withSources(Arrays.asList())
-                                .withActions(Arrays.asList()),
-                            new AutomationInner()
-                                .withLocation("jrywvtylbfpnc")
-                                .withTags(mapOf("cbihwqk", "oiwiithtywub", "umwctondz", "fdntwjchrdgoih"))
-                                .withDescription("lrcoolsttpki")
-                                .withIsEnabled(false)
-                                .withScopes(Arrays.asList())
-                                .withSources(Arrays.asList())
-                                .withActions(Arrays.asList()),
-                            new AutomationInner()
-                                .withLocation("nrojlpijnkr")
-                                .withTags(mapOf("nasx", "ddhcratizzr"))
-                                .withDescription("gnepttwqmsni")
-                                .withIsEnabled(false)
-                                .withScopes(Arrays.asList())
-                                .withSources(Arrays.asList())
-                                .withActions(Arrays.asList()),
-                            new AutomationInner()
-                                .withLocation("krlgnyhm")
-                                .withTags(mapOf("thrrgh", "xkk", "gf", "jbdhqxvc"))
-                                .withDescription("esgogc")
-                                .withIsEnabled(true)
-                                .withScopes(Arrays.asList())
-                                .withSources(Arrays.asList())
-                                .withActions(Arrays.asList())));
+                    Arrays.asList(
+                        new AutomationInner().withLocation("ceoveilovno").withTags(mapOf("bkc", "jfcn"))
+                            .withDescription("deoj").withIsEnabled(true)
+                            .withScopes(Arrays.asList(
+                                new AutomationScope().withDescription("smtxpsieb").withScopePath("hvpesapskrdqm"),
+                                new AutomationScope().withDescription("jdhtldwkyzxu").withScopePath("kn"),
+                                new AutomationScope().withDescription("scwsv").withScopePath("otogtwrupqs")))
+                            .withSources(
+                                Arrays.asList(new AutomationSource().withEventSource(EventSource.ATTACK_PATHS_SNAPSHOT)
+                                    .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
+                                        new AutomationRuleSet()))))
+                            .withActions(Arrays.asList(new AutomationAction())),
+                        new AutomationInner().withLocation("yonobgl").withTags(mapOf("tlmoyrx", "qxtccmgyudx"))
+                            .withDescription("qnermclfplphoxu").withIsEnabled(false)
+                            .withScopes(Arrays.asList(
+                                new AutomationScope().withDescription("gyepsbjt").withScopePath("qugxywpmueefjzwf")))
+                            .withSources(
+                                Arrays.asList(new AutomationSource().withEventSource(EventSource.SECURE_SCORE_CONTROLS)
+                                    .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
+                                        new AutomationRuleSet()))))
+                            .withActions(
+                                Arrays.asList(new AutomationAction(), new AutomationAction(), new AutomationAction())),
+                        new AutomationInner().withLocation("hashsfwxosow")
+                            .withTags(mapOf("ucww", "ugicjooxdjebw", "bvmeuecivy", "vo", "ueiotwmcdyt", "zceuojgjrw"))
+                            .withDescription("yvpycanuzbpzk").withIsEnabled(true)
+                            .withScopes(Arrays.asList(
+                                new AutomationScope().withDescription("crnwbmeh").withScopePath("eyvjusrtslhspkde"),
+                                new AutomationScope().withDescription("aofmxagkvtme").withScopePath("qkrhahvljua"),
+                                new AutomationScope().withDescription("quhcdhmduala").withScopePath("qpv"),
+                                new AutomationScope().withDescription("dmwsrcrgvxpvgomz").withScopePath("misgwbnb")))
+                            .withSources(Arrays.asList(
+                                new AutomationSource().withEventSource(EventSource.SUB_ASSESSMENTS_SNAPSHOT)
+                                    .withRuleSets(Arrays.asList(new AutomationRuleSet())),
+                                new AutomationSource().withEventSource(EventSource.ATTACK_PATHS_SNAPSHOT)
+                                    .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
+                                        new AutomationRuleSet())),
+                                new AutomationSource().withEventSource(EventSource.SECURE_SCORE_CONTROLS_SNAPSHOT)
+                                    .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
+                                        new AutomationRuleSet())),
+                                new AutomationSource().withEventSource(EventSource.SUB_ASSESSMENTS_SNAPSHOT)
+                                    .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
+                                        new AutomationRuleSet()))))
+                            .withActions(
+                                Arrays.asList(new AutomationAction(), new AutomationAction(), new AutomationAction())),
+                        new AutomationInner().withLocation("pow")
+                            .withTags(mapOf("lupj", "rzqlveu", "riplrbpbewtg", "khfxobbcswsrt")).withDescription("isk")
+                            .withIsEnabled(false)
+                            .withScopes(
+                                Arrays.asList(new AutomationScope().withDescription("cg").withScopePath("wndnhj")))
+                            .withSources(Arrays.asList(
+                                new AutomationSource().withEventSource(EventSource.REGULATORY_COMPLIANCE_ASSESSMENT)
+                                    .withRuleSets(Arrays.asList(new AutomationRuleSet())),
+                                new AutomationSource().withEventSource(EventSource.ATTACK_PATHS)
+                                    .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
+                                        new AutomationRuleSet())),
+                                new AutomationSource().withEventSource(EventSource.SECURE_SCORES_SNAPSHOT)
+                                    .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
+                                        new AutomationRuleSet())),
+                                new AutomationSource().withEventSource(EventSource.SECURE_SCORE_CONTROLS)
+                                    .withRuleSets(Arrays.asList(new AutomationRuleSet(), new AutomationRuleSet(),
+                                        new AutomationRuleSet()))))
+                            .withActions(Arrays.asList(new AutomationAction(), new AutomationAction()))));
         model = BinaryData.fromObject(model).toObject(AutomationList.class);
-        Assertions.assertEquals("hyeozphvwau", model.value().get(0).location());
-        Assertions.assertEquals("c", model.value().get(0).tags().get("gupkvipmdscwxq"));
-        Assertions.assertEquals("jpqqmted", model.value().get(0).description());
-        Assertions.assertEquals(false, model.value().get(0).isEnabled());
+        Assertions.assertEquals("ceoveilovno", model.value().get(0).location());
+        Assertions.assertEquals("jfcn", model.value().get(0).tags().get("bkc"));
+        Assertions.assertEquals("deoj", model.value().get(0).description());
+        Assertions.assertEquals(true, model.value().get(0).isEnabled());
+        Assertions.assertEquals("smtxpsieb", model.value().get(0).scopes().get(0).description());
+        Assertions.assertEquals("hvpesapskrdqm", model.value().get(0).scopes().get(0).scopePath());
+        Assertions.assertEquals(EventSource.ATTACK_PATHS_SNAPSHOT, model.value().get(0).sources().get(0).eventSource());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

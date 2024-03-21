@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmosdbforpostgresql.fluent.models.FirewallRuleInner;
 
-/** An instance of this class provides access to all the operations defined in FirewallRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FirewallRulesClient.
+ */
 public interface FirewallRulesClient {
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -28,12 +30,12 @@ public interface FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of represents a cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
-        String resourceGroupName, String clusterName, String firewallRuleName, FirewallRuleInner parameters);
+    SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String firewallRuleName, FirewallRuleInner parameters);
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -45,16 +47,12 @@ public interface FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of represents a cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String firewallRuleName,
-        FirewallRuleInner parameters,
-        Context context);
+    SyncPoller<PollResult<FirewallRuleInner>, FirewallRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String clusterName, String firewallRuleName, FirewallRuleInner parameters, Context context);
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -65,12 +63,12 @@ public interface FirewallRulesClient {
      * @return represents a cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FirewallRuleInner createOrUpdate(
-        String resourceGroupName, String clusterName, String firewallRuleName, FirewallRuleInner parameters);
+    FirewallRuleInner createOrUpdate(String resourceGroupName, String clusterName, String firewallRuleName,
+        FirewallRuleInner parameters);
 
     /**
      * Creates a new cluster firewall rule or updates an existing cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -82,16 +80,12 @@ public interface FirewallRulesClient {
      * @return represents a cluster firewall rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FirewallRuleInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String firewallRuleName,
-        FirewallRuleInner parameters,
-        Context context);
+    FirewallRuleInner createOrUpdate(String resourceGroupName, String clusterName, String firewallRuleName,
+        FirewallRuleInner parameters, Context context);
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -101,12 +95,12 @@ public interface FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String firewallRuleName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String firewallRuleName);
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -117,12 +111,12 @@ public interface FirewallRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String firewallRuleName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String firewallRuleName, Context context);
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -135,7 +129,7 @@ public interface FirewallRulesClient {
 
     /**
      * Deletes a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -149,7 +143,7 @@ public interface FirewallRulesClient {
 
     /**
      * Gets information about a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -160,12 +154,12 @@ public interface FirewallRulesClient {
      * @return information about a cluster firewall rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FirewallRuleInner> getWithResponse(
-        String resourceGroupName, String clusterName, String firewallRuleName, Context context);
+    Response<FirewallRuleInner> getWithResponse(String resourceGroupName, String clusterName, String firewallRuleName,
+        Context context);
 
     /**
      * Gets information about a cluster firewall rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param firewallRuleName The name of the cluster firewall rule.
@@ -179,7 +173,7 @@ public interface FirewallRulesClient {
 
     /**
      * Lists all the firewall rules on cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,7 +186,7 @@ public interface FirewallRulesClient {
 
     /**
      * Lists all the firewall rules on cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param context The context to associate with this operation.

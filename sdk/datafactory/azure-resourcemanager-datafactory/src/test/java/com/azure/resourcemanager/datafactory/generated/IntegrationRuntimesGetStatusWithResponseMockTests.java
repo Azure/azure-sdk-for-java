@@ -30,7 +30,7 @@ public final class IntegrationRuntimesGetStatusWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"name\":\"bfcvnhrencxokt\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"gnhlpqcctuxxytm\",\"state\":\"Stopped\",\"\":{\"shvyjnrj\":\"dataziafgbfkmqhz\",\"nez\":\"datatnksleurj\",\"wnptmriqeaugid\":\"dataewjxcd\",\"srtzg\":\"datazgst\"}}}";
+            = "{\"name\":\"rdhxamjhpqfj\",\"properties\":{\"type\":\"IntegrationRuntimeStatus\",\"dataFactoryName\":\"fi\",\"state\":\"AccessDenied\",\"\":{\"llfq\":\"dataofwzc\"}}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,8 +48,7 @@ public final class IntegrationRuntimesGetStatusWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeStatusResponse response = manager.integrationRuntimes()
-            .getStatusWithResponse("fkwjiuiryjdwda", "cw", "kxwoqhffnojiq", com.azure.core.util.Context.NONE)
-            .getValue();
+            .getStatusWithResponse("cgesbte", "fenhlitc", "dgesflnzibg", com.azure.core.util.Context.NONE).getValue();
 
     }
 }

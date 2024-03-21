@@ -9,7 +9,9 @@ import com.azure.resourcemanager.chaos.models.CapabilityTypePropertiesRuntimePro
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Model that represents the Capability Type properties model. */
+/**
+ * Model that represents the Capability Type properties model.
+ */
 @Fluent
 public final class CapabilityTypeProperties {
     /*
@@ -72,13 +74,15 @@ public final class CapabilityTypeProperties {
     @JsonProperty(value = "runtimeProperties")
     private CapabilityTypePropertiesRuntimeProperties runtimeProperties;
 
-    /** Creates an instance of CapabilityTypeProperties class. */
+    /**
+     * Creates an instance of CapabilityTypeProperties class.
+     */
     public CapabilityTypeProperties() {
     }
 
     /**
      * Get the publisher property: String of the Publisher that this Capability Type extends.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -87,7 +91,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the targetType property: String of the Target Type that this Capability Type extends.
-     *
+     * 
      * @return the targetType value.
      */
     public String targetType() {
@@ -96,7 +100,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the displayName property: Localized string of the display name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -105,7 +109,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the description property: Localized string of the description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -114,7 +118,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the parametersSchema property: URL to retrieve JSON schema of the Capability Type parameters.
-     *
+     * 
      * @return the parametersSchema value.
      */
     public String parametersSchema() {
@@ -123,7 +127,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the urn property: String of the URN for this Capability Type.
-     *
+     * 
      * @return the urn value.
      */
     public String urn() {
@@ -132,7 +136,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the kind property: String of the kind of this Capability Type.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -141,7 +145,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the azureRbacActions property: Control plane actions necessary to execute capability type.
-     *
+     * 
      * @return the azureRbacActions value.
      */
     public List<String> azureRbacActions() {
@@ -150,7 +154,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Set the azureRbacActions property: Control plane actions necessary to execute capability type.
-     *
+     * 
      * @param azureRbacActions the azureRbacActions value to set.
      * @return the CapabilityTypeProperties object itself.
      */
@@ -161,7 +165,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the azureRbacDataActions property: Data plane actions necessary to execute capability type.
-     *
+     * 
      * @return the azureRbacDataActions value.
      */
     public List<String> azureRbacDataActions() {
@@ -170,7 +174,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Set the azureRbacDataActions property: Data plane actions necessary to execute capability type.
-     *
+     * 
      * @param azureRbacDataActions the azureRbacDataActions value to set.
      * @return the CapabilityTypeProperties object itself.
      */
@@ -181,7 +185,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Get the runtimeProperties property: Runtime properties of this Capability Type.
-     *
+     * 
      * @return the runtimeProperties value.
      */
     public CapabilityTypePropertiesRuntimeProperties runtimeProperties() {
@@ -190,7 +194,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Set the runtimeProperties property: Runtime properties of this Capability Type.
-     *
+     * 
      * @param runtimeProperties the runtimeProperties value to set.
      * @return the CapabilityTypeProperties object itself.
      */
@@ -201,7 +205,7 @@ public final class CapabilityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

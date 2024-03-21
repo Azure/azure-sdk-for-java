@@ -14,29 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigurationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigurationInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"description\":\"idnsezcxtb\",\"dataType\":\"Numeric\",\"allowedValues\":\"yc\",\"requiresRestart\":true,\"serverRoleGroupConfigurations\":[{\"role\":\"Worker\",\"value\":\"mdwzjeiachboo\",\"defaultValue\":\"lnrosfqp\",\"source\":\"ehzzvypyqrim\"},{\"role\":\"Worker\",\"value\":\"npvswjdkirso\",\"defaultValue\":\"qxhcrmn\",\"source\":\"jtckwhdso\"}],\"provisioningState\":\"Succeeded\"},\"id\":\"i\",\"name\":\"jxsqwpgrjbz\",\"type\":\"orcjxvsnby\"}")
-                .toObject(ConfigurationInner.class);
+        ConfigurationInner model = BinaryData.fromString(
+            "{\"properties\":{\"description\":\"gwdslfhotwm\",\"dataType\":\"Integer\",\"allowedValues\":\"wlbjnpgacftade\",\"requiresRestart\":true,\"serverRoleGroupConfigurations\":[{\"role\":\"Worker\",\"value\":\"yfsoppu\",\"defaultValue\":\"esnzwde\",\"source\":\"avo\"},{\"role\":\"Worker\",\"value\":\"zdmohctbqvu\",\"defaultValue\":\"xdn\",\"source\":\"vo\"}],\"provisioningState\":\"InProgress\"},\"id\":\"jugwdkcglhsl\",\"name\":\"zj\",\"type\":\"yggdtjixh\"}")
+            .toObject(ConfigurationInner.class);
         Assertions.assertEquals(true, model.requiresRestart());
         Assertions.assertEquals(ServerRole.WORKER, model.serverRoleGroupConfigurations().get(0).role());
-        Assertions.assertEquals("mdwzjeiachboo", model.serverRoleGroupConfigurations().get(0).value());
+        Assertions.assertEquals("yfsoppu", model.serverRoleGroupConfigurations().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigurationInner model =
-            new ConfigurationInner()
-                .withRequiresRestart(true)
-                .withServerRoleGroupConfigurations(
-                    Arrays
-                        .asList(
-                            new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("mdwzjeiachboo"),
-                            new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("npvswjdkirso")));
+        ConfigurationInner model = new ConfigurationInner().withRequiresRestart(true).withServerRoleGroupConfigurations(
+            Arrays.asList(new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("yfsoppu"),
+                new ServerRoleGroupConfiguration().withRole(ServerRole.WORKER).withValue("zdmohctbqvu")));
         model = BinaryData.fromObject(model).toObject(ConfigurationInner.class);
         Assertions.assertEquals(true, model.requiresRestart());
         Assertions.assertEquals(ServerRole.WORKER, model.serverRoleGroupConfigurations().get(0).role());
-        Assertions.assertEquals("mdwzjeiachboo", model.serverRoleGroupConfigurations().get(0).value());
+        Assertions.assertEquals("yfsoppu", model.serverRoleGroupConfigurations().get(0).value());
     }
 }

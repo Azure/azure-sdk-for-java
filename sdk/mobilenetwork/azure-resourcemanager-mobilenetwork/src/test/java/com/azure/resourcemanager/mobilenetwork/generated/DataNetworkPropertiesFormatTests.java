@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DataNetworkPropertiesFormatTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataNetworkPropertiesFormat model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Failed\",\"description\":\"mdwzjeiachboo\"}")
+        DataNetworkPropertiesFormat model
+            = BinaryData.fromString("{\"provisioningState\":\"Failed\",\"description\":\"mdwzjeiachboo\"}")
                 .toObject(DataNetworkPropertiesFormat.class);
         Assertions.assertEquals("mdwzjeiachboo", model.description());
     }

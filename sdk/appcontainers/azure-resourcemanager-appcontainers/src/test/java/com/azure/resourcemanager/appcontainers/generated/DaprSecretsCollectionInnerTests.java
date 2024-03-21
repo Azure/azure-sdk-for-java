@@ -12,18 +12,15 @@ import java.util.Arrays;
 public final class DaprSecretsCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DaprSecretsCollectionInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"vpesapskrdqmhjjd\",\"value\":\"ldwkyzxuutkn\"},{\"name\":\"scwsv\",\"value\":\"otogtwrupqs\"},{\"name\":\"nmic\",\"value\":\"vce\"}]}")
-                .toObject(DaprSecretsCollectionInner.class);
+        DaprSecretsCollectionInner model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"lw\",\"value\":\"ztzp\"},{\"name\":\"ncckw\",\"value\":\"zqwhxxbuyqaxzfeq\"},{\"name\":\"ppriol\",\"value\":\"rjaltolmncw\"}]}")
+            .toObject(DaprSecretsCollectionInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DaprSecretsCollectionInner model =
-            new DaprSecretsCollectionInner()
-                .withValue(Arrays.asList(new DaprSecret(), new DaprSecret(), new DaprSecret()));
+        DaprSecretsCollectionInner model = new DaprSecretsCollectionInner()
+            .withValue(Arrays.asList(new DaprSecret(), new DaprSecret(), new DaprSecret()));
         model = BinaryData.fromObject(model).toObject(DaprSecretsCollectionInner.class);
     }
 }

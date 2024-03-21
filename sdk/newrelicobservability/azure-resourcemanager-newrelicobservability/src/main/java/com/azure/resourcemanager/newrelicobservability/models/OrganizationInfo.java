@@ -7,7 +7,9 @@ package com.azure.resourcemanager.newrelicobservability.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Organization Info of the NewRelic account. */
+/**
+ * Organization Info of the NewRelic account.
+ */
 @Fluent
 public final class OrganizationInfo {
     /*
@@ -16,13 +18,15 @@ public final class OrganizationInfo {
     @JsonProperty(value = "organizationId")
     private String organizationId;
 
-    /** Creates an instance of OrganizationInfo class. */
+    /**
+     * Creates an instance of OrganizationInfo class.
+     */
     public OrganizationInfo() {
     }
 
     /**
      * Get the organizationId property: Organization id.
-     *
+     * 
      * @return the organizationId value.
      */
     public String organizationId() {
@@ -31,7 +35,7 @@ public final class OrganizationInfo {
 
     /**
      * Set the organizationId property: Organization id.
-     *
+     * 
      * @param organizationId the organizationId value to set.
      * @return the OrganizationInfo object itself.
      */
@@ -42,7 +46,7 @@ public final class OrganizationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

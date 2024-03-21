@@ -7,25 +7,27 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.security.fluent.models.ConnectorSettingInner;
 
-/** An immutable client-side representation of ConnectorSetting. */
+/**
+ * An immutable client-side representation of ConnectorSetting.
+ */
 public interface ConnectorSetting {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
@@ -33,7 +35,7 @@ public interface ConnectorSetting {
     /**
      * Gets the hybridComputeSettings property: Settings for hybrid compute management. These settings are relevant only
      * for Arc autoProvision (Hybrid Compute).
-     *
+     * 
      * @return the hybridComputeSettings value.
      */
     HybridComputeSettingsProperties hybridComputeSettings();
@@ -41,26 +43,34 @@ public interface ConnectorSetting {
     /**
      * Gets the authenticationDetails property: Settings for authentication management, these settings are relevant only
      * for the cloud connector.
-     *
+     * 
      * @return the authenticationDetails value.
      */
     AuthenticationDetailsProperties authenticationDetails();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.ConnectorSettingInner object.
-     *
+     * 
      * @return the inner object.
      */
     ConnectorSettingInner innerModel();
 
-    /** The entirety of the ConnectorSetting definition. */
+    /**
+     * The entirety of the ConnectorSetting definition.
+     */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithCreate {
     }
-    /** The ConnectorSetting definition stages. */
+
+    /**
+     * The ConnectorSetting definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the ConnectorSetting definition. */
+        /**
+         * The first stage of the ConnectorSetting definition.
+         */
         interface Blank extends WithCreate {
         }
+
         /**
          * The stage of the ConnectorSetting definition which contains all the minimum required properties for the
          * resource to be created, but also allows for any other optional properties to be specified.
@@ -69,105 +79,123 @@ public interface ConnectorSetting {
             extends DefinitionStages.WithHybridComputeSettings, DefinitionStages.WithAuthenticationDetails {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             ConnectorSetting create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             ConnectorSetting create(Context context);
         }
-        /** The stage of the ConnectorSetting definition allowing to specify hybridComputeSettings. */
+
+        /**
+         * The stage of the ConnectorSetting definition allowing to specify hybridComputeSettings.
+         */
         interface WithHybridComputeSettings {
             /**
              * Specifies the hybridComputeSettings property: Settings for hybrid compute management. These settings are
              * relevant only for Arc autoProvision (Hybrid Compute)..
-             *
+             * 
              * @param hybridComputeSettings Settings for hybrid compute management. These settings are relevant only for
-             *     Arc autoProvision (Hybrid Compute).
+             * Arc autoProvision (Hybrid Compute).
              * @return the next definition stage.
              */
             WithCreate withHybridComputeSettings(HybridComputeSettingsProperties hybridComputeSettings);
         }
-        /** The stage of the ConnectorSetting definition allowing to specify authenticationDetails. */
+
+        /**
+         * The stage of the ConnectorSetting definition allowing to specify authenticationDetails.
+         */
         interface WithAuthenticationDetails {
             /**
              * Specifies the authenticationDetails property: Settings for authentication management, these settings are
              * relevant only for the cloud connector..
-             *
+             * 
              * @param authenticationDetails Settings for authentication management, these settings are relevant only for
-             *     the cloud connector.
+             * the cloud connector.
              * @return the next definition stage.
              */
             WithCreate withAuthenticationDetails(AuthenticationDetailsProperties authenticationDetails);
         }
     }
+
     /**
      * Begins update for the ConnectorSetting resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     ConnectorSetting.Update update();
 
-    /** The template for ConnectorSetting update. */
+    /**
+     * The template for ConnectorSetting update.
+     */
     interface Update extends UpdateStages.WithHybridComputeSettings, UpdateStages.WithAuthenticationDetails {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         ConnectorSetting apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         ConnectorSetting apply(Context context);
     }
-    /** The ConnectorSetting update stages. */
+
+    /**
+     * The ConnectorSetting update stages.
+     */
     interface UpdateStages {
-        /** The stage of the ConnectorSetting update allowing to specify hybridComputeSettings. */
+        /**
+         * The stage of the ConnectorSetting update allowing to specify hybridComputeSettings.
+         */
         interface WithHybridComputeSettings {
             /**
              * Specifies the hybridComputeSettings property: Settings for hybrid compute management. These settings are
              * relevant only for Arc autoProvision (Hybrid Compute)..
-             *
+             * 
              * @param hybridComputeSettings Settings for hybrid compute management. These settings are relevant only for
-             *     Arc autoProvision (Hybrid Compute).
+             * Arc autoProvision (Hybrid Compute).
              * @return the next definition stage.
              */
             Update withHybridComputeSettings(HybridComputeSettingsProperties hybridComputeSettings);
         }
-        /** The stage of the ConnectorSetting update allowing to specify authenticationDetails. */
+
+        /**
+         * The stage of the ConnectorSetting update allowing to specify authenticationDetails.
+         */
         interface WithAuthenticationDetails {
             /**
              * Specifies the authenticationDetails property: Settings for authentication management, these settings are
              * relevant only for the cloud connector..
-             *
+             * 
              * @param authenticationDetails Settings for authentication management, these settings are relevant only for
-             *     the cloud connector.
+             * the cloud connector.
              * @return the next definition stage.
              */
             Update withAuthenticationDetails(AuthenticationDetailsProperties authenticationDetails);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     ConnectorSetting refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */

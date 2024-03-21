@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.security.models.ResourceStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Compliance result data. */
+/**
+ * Compliance result data.
+ */
 @Immutable
 public final class ComplianceResultProperties {
     /*
@@ -17,13 +19,15 @@ public final class ComplianceResultProperties {
     @JsonProperty(value = "resourceStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceStatus resourceStatus;
 
-    /** Creates an instance of ComplianceResultProperties class. */
+    /**
+     * Creates an instance of ComplianceResultProperties class.
+     */
     public ComplianceResultProperties() {
     }
 
     /**
      * Get the resourceStatus property: The status of the resource regarding a single assessment.
-     *
+     * 
      * @return the resourceStatus value.
      */
     public ResourceStatus resourceStatus() {
@@ -32,7 +36,7 @@ public final class ComplianceResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

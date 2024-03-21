@@ -32,13 +32,15 @@ public final class JobTemplate {
     @JsonProperty(value = "volumes")
     private List<Volume> volumes;
 
-    /** Creates an instance of JobTemplate class. */
+    /**
+     * Creates an instance of JobTemplate class.
+     */
     public JobTemplate() {
     }
 
     /**
      * Get the initContainers property: List of specialized containers that run before app containers.
-     *
+     * 
      * @return the initContainers value.
      */
     public List<InitContainer> initContainers() {
@@ -47,7 +49,7 @@ public final class JobTemplate {
 
     /**
      * Set the initContainers property: List of specialized containers that run before app containers.
-     *
+     * 
      * @param initContainers the initContainers value to set.
      * @return the JobTemplate object itself.
      */
@@ -58,7 +60,7 @@ public final class JobTemplate {
 
     /**
      * Get the containers property: List of container definitions for the Container App.
-     *
+     * 
      * @return the containers value.
      */
     public List<Container> containers() {
@@ -67,7 +69,7 @@ public final class JobTemplate {
 
     /**
      * Set the containers property: List of container definitions for the Container App.
-     *
+     * 
      * @param containers the containers value to set.
      * @return the JobTemplate object itself.
      */
@@ -78,7 +80,7 @@ public final class JobTemplate {
 
     /**
      * Get the volumes property: List of volume definitions for the Container App.
-     *
+     * 
      * @return the volumes value.
      */
     public List<Volume> volumes() {
@@ -87,7 +89,7 @@ public final class JobTemplate {
 
     /**
      * Set the volumes property: List of volume definitions for the Container App.
-     *
+     * 
      * @param volumes the volumes value to set.
      * @return the JobTemplate object itself.
      */
@@ -98,7 +100,7 @@ public final class JobTemplate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

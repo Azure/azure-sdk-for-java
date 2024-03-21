@@ -15,8 +15,7 @@ public final class JobSecretsCollectionImpl implements JobSecretsCollection {
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    JobSecretsCollectionImpl(
-        JobSecretsCollectionInner innerObject,
+    JobSecretsCollectionImpl(JobSecretsCollectionInner innerObject,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -10,7 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.models.SecuritySolutionsReferenceDataProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SecuritySolutionsReferenceData model. */
+/**
+ * The SecuritySolutionsReferenceData model.
+ */
 @Fluent
 public final class SecuritySolutionsReferenceData extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
     @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of SecuritySolutionsReferenceData class. */
+    /**
+     * Creates an instance of SecuritySolutionsReferenceData class.
+     */
     public SecuritySolutionsReferenceData() {
     }
 
     /**
      * Get the innerProperties property: The properties property.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SecuritySolutionsReferenceDataProperties innerProperties() {
@@ -40,7 +44,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Get the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -49,7 +53,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Get the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @return the securityFamily value.
      */
     public SecurityFamily securityFamily() {
@@ -58,7 +62,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Set the securityFamily property: The security family of the security solution.
-     *
+     * 
      * @param securityFamily the securityFamily value to set.
      * @return the SecuritySolutionsReferenceData object itself.
      */
@@ -72,7 +76,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Get the alertVendorName property: The security solutions' vendor name.
-     *
+     * 
      * @return the alertVendorName value.
      */
     public String alertVendorName() {
@@ -81,7 +85,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Set the alertVendorName property: The security solutions' vendor name.
-     *
+     * 
      * @param alertVendorName the alertVendorName value to set.
      * @return the SecuritySolutionsReferenceData object itself.
      */
@@ -95,7 +99,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Get the packageInfoUrl property: The security solutions' package info url.
-     *
+     * 
      * @return the packageInfoUrl value.
      */
     public String packageInfoUrl() {
@@ -104,7 +108,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Set the packageInfoUrl property: The security solutions' package info url.
-     *
+     * 
      * @param packageInfoUrl the packageInfoUrl value to set.
      * @return the SecuritySolutionsReferenceData object itself.
      */
@@ -118,7 +122,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Get the productName property: The security solutions' product name.
-     *
+     * 
      * @return the productName value.
      */
     public String productName() {
@@ -127,7 +131,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Set the productName property: The security solutions' product name.
-     *
+     * 
      * @param productName the productName value to set.
      * @return the SecuritySolutionsReferenceData object itself.
      */
@@ -141,7 +145,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Get the publisher property: The security solutions' publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -150,7 +154,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Set the publisher property: The security solutions' publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the SecuritySolutionsReferenceData object itself.
      */
@@ -164,7 +168,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Get the publisherDisplayName property: The security solutions' publisher display name.
-     *
+     * 
      * @return the publisherDisplayName value.
      */
     public String publisherDisplayName() {
@@ -173,7 +177,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Set the publisherDisplayName property: The security solutions' publisher display name.
-     *
+     * 
      * @param publisherDisplayName the publisherDisplayName value to set.
      * @return the SecuritySolutionsReferenceData object itself.
      */
@@ -187,7 +191,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Get the template property: The security solutions' template.
-     *
+     * 
      * @return the template value.
      */
     public String template() {
@@ -196,7 +200,7 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Set the template property: The security solutions' template.
-     *
+     * 
      * @param template the template value to set.
      * @return the SecuritySolutionsReferenceData object itself.
      */
@@ -210,15 +214,13 @@ public final class SecuritySolutionsReferenceData extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SecuritySolutionsReferenceData"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model SecuritySolutionsReferenceData"));
         } else {
             innerProperties().validate();
         }

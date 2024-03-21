@@ -17,8 +17,8 @@ public final class AdaptiveNetworkHardeningImpl implements AdaptiveNetworkHarden
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    AdaptiveNetworkHardeningImpl(
-        AdaptiveNetworkHardeningInner innerObject, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    AdaptiveNetworkHardeningImpl(AdaptiveNetworkHardeningInner innerObject,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -13,15 +13,15 @@ public final class MongoDbCursorMethodsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbCursorMethodsProperties model = BinaryData.fromString(
-            "{\"project\":\"dataen\",\"sort\":\"dataqjvdde\",\"skip\":\"datavrjhtpxydiuviup\",\"limit\":\"datatnsyrrybdyqiv\",\"\":{\"zihdkq\":\"datauh\",\"inwgi\":\"datajwthwcpijgasnafd\"}}")
+            "{\"project\":\"datacntdwijx\",\"sort\":\"dataltowdwiffagfe\",\"skip\":\"datambpgcbltthsuzx\",\"limit\":\"datavifl\",\"\":{\"scobhhblj\":\"datak\",\"us\":\"datavpokvhobygffuzh\"}}")
             .toObject(MongoDbCursorMethodsProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MongoDbCursorMethodsProperties model
-            = new MongoDbCursorMethodsProperties().withProject("dataen").withSort("dataqjvdde")
-                .withSkip("datavrjhtpxydiuviup").withLimit("datatnsyrrybdyqiv").withAdditionalProperties(mapOf());
+            = new MongoDbCursorMethodsProperties().withProject("datacntdwijx").withSort("dataltowdwiffagfe")
+                .withSkip("datambpgcbltthsuzx").withLimit("datavifl").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(MongoDbCursorMethodsProperties.class);
     }
 

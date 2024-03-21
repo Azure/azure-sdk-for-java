@@ -164,8 +164,9 @@ public final class CommunicationServiceResourceImpl implements CommunicationServ
         com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.communicationServiceName = Utils.getValueFromIdByName(innerObject.id(), "communicationServices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.communicationServiceName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "communicationServices");
     }
 
     public CommunicationServiceResource refresh() {

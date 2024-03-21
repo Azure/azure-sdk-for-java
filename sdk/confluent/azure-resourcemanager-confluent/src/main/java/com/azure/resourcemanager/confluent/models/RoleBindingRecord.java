@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Record of the environment.
+ * Details on principal, role name and crn pattern of a role binding.
  */
 @Fluent
 public final class RoleBindingRecord {
@@ -19,7 +19,7 @@ public final class RoleBindingRecord {
     private String kind;
 
     /*
-     * Id of the role
+     * Id of the role binding
      */
     @JsonProperty(value = "id")
     private String id;
@@ -75,7 +75,7 @@ public final class RoleBindingRecord {
     }
 
     /**
-     * Get the id property: Id of the role.
+     * Get the id property: Id of the role binding.
      * 
      * @return the id value.
      */
@@ -84,7 +84,7 @@ public final class RoleBindingRecord {
     }
 
     /**
-     * Set the id property: Id of the role.
+     * Set the id property: Id of the role binding.
      * 
      * @param id the id value to set.
      * @return the RoleBindingRecord object itself.

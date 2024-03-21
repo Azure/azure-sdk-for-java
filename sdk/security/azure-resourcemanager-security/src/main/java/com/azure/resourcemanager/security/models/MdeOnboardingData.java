@@ -6,25 +6,27 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.resourcemanager.security.fluent.models.MdeOnboardingDataInner;
 
-/** An immutable client-side representation of MdeOnboardingData. */
+/**
+ * An immutable client-side representation of MdeOnboardingData.
+ */
 public interface MdeOnboardingData {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
@@ -32,7 +34,7 @@ public interface MdeOnboardingData {
     /**
      * Gets the onboardingPackageWindows property: The onboarding package used to onboard Windows machines to MDE, coded
      * in base64. This can also be used for onboarding using the dedicated VM Extension.
-     *
+     * 
      * @return the onboardingPackageWindows value.
      */
     byte[] onboardingPackageWindows();
@@ -40,14 +42,14 @@ public interface MdeOnboardingData {
     /**
      * Gets the onboardingPackageLinux property: The onboarding package used to onboard Linux machines to MDE, coded in
      * base64. This can also be used for onboarding using the dedicated VM Extension.
-     *
+     * 
      * @return the onboardingPackageLinux value.
      */
     byte[] onboardingPackageLinux();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.MdeOnboardingDataInner object.
-     *
+     * 
      * @return the inner object.
      */
     MdeOnboardingDataInner innerModel();

@@ -45,6 +45,11 @@
       --add-reads com.azure.storage.blob.cryptography=com.azure.core.http.vertx
     </javaModulesSurefireArgLine>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
@@ -89,7 +94,7 @@
       cross platform compatibility within SDKs -->
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-storage</artifactId>
-      <version>8.4.0</version> <!-- {x-version-update;storage_com.microsoft.azure:azure-storage;external_dependency} -->
+      <version>8.6.6</version> <!-- {x-version-update;storage_com.microsoft.azure:azure-storage;external_dependency} -->
       <scope>test</scope>
       <exclusions>
         <exclusion>
@@ -121,7 +126,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.11.4</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

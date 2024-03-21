@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SecurityAssessmentMetadataPropertiesResponsePublishDates model. */
+/**
+ * The SecurityAssessmentMetadataPropertiesResponsePublishDates model.
+ */
 @Fluent
 public final class SecurityAssessmentMetadataPropertiesResponsePublishDates {
     /*
@@ -23,13 +25,15 @@ public final class SecurityAssessmentMetadataPropertiesResponsePublishDates {
     @JsonProperty(value = "public", required = true)
     private String publicProperty;
 
-    /** Creates an instance of SecurityAssessmentMetadataPropertiesResponsePublishDates class. */
+    /**
+     * Creates an instance of SecurityAssessmentMetadataPropertiesResponsePublishDates class.
+     */
     public SecurityAssessmentMetadataPropertiesResponsePublishDates() {
     }
 
     /**
      * Get the ga property: The GA property.
-     *
+     * 
      * @return the ga value.
      */
     public String ga() {
@@ -38,7 +42,7 @@ public final class SecurityAssessmentMetadataPropertiesResponsePublishDates {
 
     /**
      * Set the ga property: The GA property.
-     *
+     * 
      * @param ga the ga value to set.
      * @return the SecurityAssessmentMetadataPropertiesResponsePublishDates object itself.
      */
@@ -49,7 +53,7 @@ public final class SecurityAssessmentMetadataPropertiesResponsePublishDates {
 
     /**
      * Get the publicProperty property: The public property.
-     *
+     * 
      * @return the publicProperty value.
      */
     public String publicProperty() {
@@ -58,7 +62,7 @@ public final class SecurityAssessmentMetadataPropertiesResponsePublishDates {
 
     /**
      * Set the publicProperty property: The public property.
-     *
+     * 
      * @param publicProperty the publicProperty value to set.
      * @return the SecurityAssessmentMetadataPropertiesResponsePublishDates object itself.
      */
@@ -69,19 +73,16 @@ public final class SecurityAssessmentMetadataPropertiesResponsePublishDates {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publicProperty() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publicProperty in model"
-                            + " SecurityAssessmentMetadataPropertiesResponsePublishDates"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property publicProperty in model SecurityAssessmentMetadataPropertiesResponsePublishDates"));
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(SecurityAssessmentMetadataPropertiesResponsePublishDates.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(SecurityAssessmentMetadataPropertiesResponsePublishDates.class);
 }

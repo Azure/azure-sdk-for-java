@@ -681,8 +681,29 @@ public final class OpenAIClient {
     }
 
     /**
-     * Gets chat completions for the provided chat messages. Chat completions support a wide variety of tasks and
-     * generate text that continues from or "completes" provided prompt data.
+     * Gets chat completions for the provided chat messages in streaming mode. Chat completions support a wide variety
+     * of tasks and generate text that continues from or "completes" provided prompt data.
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     * <!-- src_embed com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
+     * <pre>
+     * openAIClient.getChatCompletionsStream&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;&#41;
+     *         .forEach&#40;chatCompletions -&gt; &#123;
+     *             if &#40;CoreUtils.isNullOrEmpty&#40;chatCompletions.getChoices&#40;&#41;&#41;&#41; &#123;
+     *                 return;
+     *             &#125;
+     *             ChatResponseMessage delta = chatCompletions.getChoices&#40;&#41;.get&#40;0&#41;.getDelta&#40;&#41;;
+     *             if &#40;delta.getRole&#40;&#41; != null&#41; &#123;
+     *                 System.out.println&#40;&quot;Role = &quot; + delta.getRole&#40;&#41;&#41;;
+     *             &#125;
+     *             if &#40;delta.getContent&#40;&#41; != null&#41; &#123;
+     *                 String content = delta.getContent&#40;&#41;;
+     *                 System.out.print&#40;content&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
@@ -707,6 +728,60 @@ public final class OpenAIClient {
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream
             = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return new IterableStream<>(chatCompletionsStream.getEvents());
+    }
+
+    /**
+     * Gets chat completions for the provided chat messages in streaming mode. Chat completions support a wide variety
+     * of tasks and generate text that continues from or "completes" provided prompt data.
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     * <!-- src_embed com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload
+     * -->
+     * <pre>
+     * openAIClient.getChatCompletionsStreamWithResponse&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;,
+     *                 new RequestOptions&#40;&#41;.setHeader&#40;&quot;my-header&quot;, &quot;my-header-value&quot;&#41;&#41;
+     *         .getValue&#40;&#41;
+     *         .forEach&#40;chatCompletions -&gt; &#123;
+     *             if &#40;CoreUtils.isNullOrEmpty&#40;chatCompletions.getChoices&#40;&#41;&#41;&#41; &#123;
+     *                 return;
+     *             &#125;
+     *             ChatResponseMessage delta = chatCompletions.getChoices&#40;&#41;.get&#40;0&#41;.getDelta&#40;&#41;;
+     *             if &#40;delta.getRole&#40;&#41; != null&#41; &#123;
+     *                 System.out.println&#40;&quot;Role = &quot; + delta.getRole&#40;&#41;&#41;;
+     *             &#125;
+     *             if &#40;delta.getContent&#40;&#41; != null&#41; &#123;
+     *                 String content = delta.getContent&#40;&#41;;
+     *                 System.out.print&#40;content&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptionsMaxOverload -->
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
+     * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return chat completions stream for the provided chat messages. Completions support a wide variety of tasks and
+     * generate text that continues from or "completes" provided prompt data.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Response<IterableStream<ChatCompletions>> getChatCompletionsStreamWithResponse(String deploymentOrModelName,
+        ChatCompletionsOptions chatCompletionsOptions, RequestOptions requestOptions) {
+        chatCompletionsOptions.setStream(true);
+        Response<BinaryData> response = getChatCompletionsWithResponse(deploymentOrModelName,
+            BinaryData.fromObject(chatCompletionsOptions), requestOptions);
+        Flux<ByteBuffer> responseStream = response.getValue().toFluxByteBuffer();
+        OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream
+            = new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
+        return new SimpleResponse<>(response, new IterableStream<>(chatCompletionsStream.getEvents()));
     }
 
     /**

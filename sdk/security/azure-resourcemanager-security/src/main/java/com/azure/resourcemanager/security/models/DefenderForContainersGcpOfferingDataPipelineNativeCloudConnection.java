@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The native cloud connection configuration. */
+/**
+ * The native cloud connection configuration.
+ */
 @Fluent
 public final class DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection {
     /*
@@ -22,14 +24,16 @@ public final class DefenderForContainersGcpOfferingDataPipelineNativeCloudConnec
     @JsonProperty(value = "workloadIdentityProviderId")
     private String workloadIdentityProviderId;
 
-    /** Creates an instance of DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection class. */
+    /**
+     * Creates an instance of DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection class.
+     */
     public DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection() {
     }
 
     /**
      * Get the serviceAccountEmailAddress property: The data collection service account email address in GCP for this
      * offering.
-     *
+     * 
      * @return the serviceAccountEmailAddress value.
      */
     public String serviceAccountEmailAddress() {
@@ -39,12 +43,12 @@ public final class DefenderForContainersGcpOfferingDataPipelineNativeCloudConnec
     /**
      * Set the serviceAccountEmailAddress property: The data collection service account email address in GCP for this
      * offering.
-     *
+     * 
      * @param serviceAccountEmailAddress the serviceAccountEmailAddress value to set.
      * @return the DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection object itself.
      */
-    public DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection withServiceAccountEmailAddress(
-        String serviceAccountEmailAddress) {
+    public DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection
+        withServiceAccountEmailAddress(String serviceAccountEmailAddress) {
         this.serviceAccountEmailAddress = serviceAccountEmailAddress;
         return this;
     }
@@ -52,7 +56,7 @@ public final class DefenderForContainersGcpOfferingDataPipelineNativeCloudConnec
     /**
      * Get the workloadIdentityProviderId property: The data collection GCP workload identity provider id for this
      * offering.
-     *
+     * 
      * @return the workloadIdentityProviderId value.
      */
     public String workloadIdentityProviderId() {
@@ -62,19 +66,19 @@ public final class DefenderForContainersGcpOfferingDataPipelineNativeCloudConnec
     /**
      * Set the workloadIdentityProviderId property: The data collection GCP workload identity provider id for this
      * offering.
-     *
+     * 
      * @param workloadIdentityProviderId the workloadIdentityProviderId value to set.
      * @return the DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection object itself.
      */
-    public DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection withWorkloadIdentityProviderId(
-        String workloadIdentityProviderId) {
+    public DefenderForContainersGcpOfferingDataPipelineNativeCloudConnection
+        withWorkloadIdentityProviderId(String workloadIdentityProviderId) {
         this.workloadIdentityProviderId = workloadIdentityProviderId;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
