@@ -17,6 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.time.Duration;
 import java.util.Set;
 
 import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
@@ -36,7 +37,12 @@ class JdkHttpClient implements HttpClient {
 
     private final Set<String> restrictedHeaders;
 
-    JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders) {
+    private final Duration writeTimeout;
+    private final Duration responseTimeout;
+    private final Duration readTimeout;
+
+    JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
+        Duration responseTimeout, Duration readTimeout) {
         this.jdkHttpClient = httpClient;
         int javaVersion = getJavaVersion();
         if (javaVersion <= 11) {
@@ -46,6 +52,10 @@ class JdkHttpClient implements HttpClient {
 
         this.restrictedHeaders = restrictedHeaders;
         LOGGER.verbose("Effective restricted headers: {}", restrictedHeaders);
+
+        this.writeTimeout = writeTimeout;
+        this.responseTimeout = responseTimeout;
+        this.readTimeout = readTimeout;
     }
 
     @Override
@@ -113,7 +123,7 @@ class JdkHttpClient implements HttpClient {
      * @return the HttpRequest
      */
     private java.net.http.HttpRequest toJdkHttpRequest(HttpRequest request, Context context) {
-        return new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER);
+        return new AzureJdkHttpRequest(request, context, restrictedHeaders, LOGGER, writeTimeout, responseTimeout);
     }
 
     /**

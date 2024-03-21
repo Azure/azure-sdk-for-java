@@ -186,7 +186,8 @@ public class HttpFaultInjectingTests {
                     .setHttpClientProvider(VertxAsyncHttpClientProvider.class));
             case JDK_HTTP:
                 try {
-                    return HttpClient.createDefault(new HttpClientOptions().readTimeout(Duration.ofSeconds(2))
+                    return HttpClient.createDefault(new HttpClientOptions()
+                        .readTimeout(Duration.ofSeconds(2))
                         .responseTimeout(Duration.ofSeconds(2))
                         .setHttpClientProvider((Class<? extends HttpClientProvider>) Class.forName(
                             "com.azure.core.http.jdk.httpclient.JdkHttpClientProvider")));
