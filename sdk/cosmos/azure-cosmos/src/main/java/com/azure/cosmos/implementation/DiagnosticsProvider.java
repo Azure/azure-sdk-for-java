@@ -477,6 +477,12 @@ public final class DiagnosticsProvider {
     }
 
     private void handleDiagnostics(Context context, CosmosDiagnosticsContext cosmosCtx) {
+
+        final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
+        if (this.shouldSampleOutOperation(samplingRateSnapshot)) {
+            return;
+        }
+
         // @TODO - investigate whether we should push the handling of diagnostics out of the hot path
         // currently diagnostics are handled by the same thread on the hot path - which is intentional
         // because any async queueing/throttling/sampling can best be done by diagnostic handlers
@@ -674,10 +680,6 @@ public final class DiagnosticsProvider {
             ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot);
         }
 
-        if (shouldSampleOutOperation(samplingRateSnapshot)) {
-            return resultPublisher;
-        }
-
         Optional<Object> callDepth = context.getData(COSMOS_CALL_DEPTH);
         final boolean isNestedCall = callDepth.isPresent();
         if (isNestedCall) {
@@ -786,7 +788,7 @@ public final class DiagnosticsProvider {
 
         checkNotNull(cosmosCtx, "Argument 'cosmosCtx' must not be null.");
 
-        // endOperation can be called form two places in Reactor - making sure we process completion only once
+        // endOperation can be called from two places in Reactor - making sure we process completion only once
         if (ctxAccessor.endOperation(
             cosmosCtx,
             statusCode,

@@ -150,9 +150,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         FeedOperationState state = pagedFluxOptions.getFeedOperationState();
         DiagnosticsProvider tracerProvider = state != null ? state.getDiagnosticsProvider() : null;
         Object lockHolder = new Object();
-        if (tracerProvider == null ||
-            !tracerProvider.isEnabled()
-            || tracerProvider.shouldSampleOutOperation(pagedFluxOptions)) {
+        if (tracerProvider == null || !tracerProvider.isEnabled()) {
 
             return publisher
                 .doOnEach(signal -> {
