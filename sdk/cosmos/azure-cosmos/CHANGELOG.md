@@ -3,7 +3,7 @@
 ### 4.57.0-beta.1 (Unreleased)
 
 #### Features Added
-* Changed `setMaxMicroBatchSize` and `getMaxMicroBatchSize` in `CosmosBulkExecutionOptions` to public. See [PR 39335](https://github.com/Azure/azure-sdk-for-java/pull/39335)
+* Added public APIs `setMaxMicroBatchSize` and `getMaxMicroBatchSize` in `CosmosBulkExecutionOptions` - See [PR 39335](https://github.com/Azure/azure-sdk-for-java/pull/39335)
 
 #### Breaking Changes
 
