@@ -22,22 +22,26 @@ public interface HttpClient {
     Response<?> send(HttpRequest request);
 
     /**
-     * Creates a new default {@link HttpClient} instance.
+     * Creates an instance of the default {@link HttpClient} implementation, entirely unrelated to all other instances
+     * that were created previously.
      *
-     * @return A new default {@link HttpClient} instance.
+     * @return An instance of the default {@link HttpClient} implementation, entirely unrelated to all other instances
+     * that were created previously.
      */
-    static HttpClient createDefault() {
+    static HttpClient getDefault() {
         return new DefaultHttpClientBuilder().build();
     }
 
     /**
-     * Creates a new instance of the {@link HttpClient} that the default {@link HttpClientProvider} is configured to
-     * create.
+     * Returns a new instance of the {@link HttpClient} that the default {@link HttpClientProvider} is configured to
+     * create. If no {@link HttpClientProvider} can be found on the classpath, an instance of the default
+     * {@link HttpClient} implementation will be created instead, in which it would effectively be the same as calling
+     * {@link #getDefault()}.
      *
      * @return A new {@link HttpClient} instance, entirely unrelated to all other instances that were created
      * previously.
      */
-    static HttpClient createInstance() {
+    static HttpClient getInstance() {
         final String NO_DEFAULT_PROVIDER_MESSAGE = "A request was made to load the default HttpClient provider "
             + "but one could not be found on the classpath. If you are using a dependency manager, consider including "
             + "a dependency on azure-core-http-netty or azure-core-http-okhttp. Depending on your existing "

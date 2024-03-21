@@ -65,7 +65,7 @@ public class HttpPipelineBuilder {
         if (httpClient != null) {
             client = httpClient;
         } else {
-            client = HttpClient.createDefault();
+            client = HttpClient.getDefault();
         }
 
         return new HttpPipeline(client, policies);
