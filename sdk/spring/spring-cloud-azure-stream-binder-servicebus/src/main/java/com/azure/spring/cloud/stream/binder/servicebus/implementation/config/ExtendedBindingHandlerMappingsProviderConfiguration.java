@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.cloud.stream.binder.servicebus.implementation.config;
 
 import org.springframework.boot.context.properties.source.ConfigurationPropertyName;
