@@ -481,7 +481,12 @@ public final class TableServiceClient {
     }
 
     Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Context context) {
-        return createTableWithResponse(tableName, null, context);
+        context = TableUtils.setContext(context, true);
+        final TableProperties properties = new TableProperties().setTableName(tableName);
+
+        return new SimpleResponse<>(implementation.getTables()
+            .createWithResponse(properties, null, ResponseFormat.RETURN_NO_CONTENT, null, context),
+            getTableClient(tableName));
     }
 
     /**
