@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.stream.binder.eventhubs.implementation.config;
 
 import com.azure.messaging.eventhubs.LoadBalancingStrategy;
-import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.core.properties.EventHubsProducerProperties;
