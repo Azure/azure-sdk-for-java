@@ -268,7 +268,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
      *
      * @param region where the Translator resource is created.
      * @return The updated {@link TextTranslationClientBuilder} object.
-     * @throws NullPointerException If {@code redion} is null.
+     * @throws NullPointerException If {@code region} is null.
      */
     public TextTranslationClientBuilder region(String region) {
         Objects.requireNonNull(region, "'region' cannot be null.");
