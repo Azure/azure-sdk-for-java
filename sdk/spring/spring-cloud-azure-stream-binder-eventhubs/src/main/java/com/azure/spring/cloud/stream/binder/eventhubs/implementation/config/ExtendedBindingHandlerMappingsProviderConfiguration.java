@@ -14,15 +14,15 @@ import java.util.Map;
 @Configuration
 public class ExtendedBindingHandlerMappingsProviderConfiguration {
 
-	@Bean
-	public BindingHandlerAdvise.MappingsProvider kafkaExtendedPropertiesDefaultMappingsProvider() {
-		return () -> {
-			Map<ConfigurationPropertyName, ConfigurationPropertyName> mappings = new HashMap<>();
-			mappings.put(
-					ConfigurationPropertyName.of("spring.cloud.stream.eventhubs.bindings"),
-					ConfigurationPropertyName.of("spring.cloud.stream.eventhubs.default"));
-			return mappings;
-		};
-	}
+    @Bean
+    public BindingHandlerAdvise.MappingsProvider kafkaExtendedPropertiesDefaultMappingsProvider() {
+        return () -> {
+            Map<ConfigurationPropertyName, ConfigurationPropertyName> mappings = new HashMap<>();
+            mappings.put(
+                ConfigurationPropertyName.of("spring.cloud.stream.eventhubs.bindings"),
+                ConfigurationPropertyName.of("spring.cloud.stream.eventhubs.default"));
+            return mappings;
+        };
+    }
 
 }
