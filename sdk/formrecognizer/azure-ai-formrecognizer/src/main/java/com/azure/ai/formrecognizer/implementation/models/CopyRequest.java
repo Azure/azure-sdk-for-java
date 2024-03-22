@@ -5,43 +5,39 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Request parameter to copy an existing custom model from the source resource to a target resource referenced by the
  * resource ID.
  */
 @Fluent
-public final class CopyRequest implements JsonSerializable<CopyRequest> {
+public final class CopyRequest {
     /*
      * Azure Resource Id of the target Form Recognizer resource where the model is copied to.
      */
+    @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
     /*
      * Location of the target Azure resource. A valid Azure region name supported by Cognitive Services.
      */
+    @JsonProperty(value = "targetResourceRegion", required = true)
     private String targetResourceRegion;
 
     /*
      * Entity that encodes claims to authorize the copy request.
      */
+    @JsonProperty(value = "copyAuthorization", required = true)
     private CopyAuthorizationResult copyAuthorization;
 
-    /**
-     * Creates an instance of CopyRequest class.
-     */
-    public CopyRequest() {
-    }
+    /** Creates an instance of CopyRequest class. */
+    public CopyRequest() {}
 
     /**
      * Get the targetResourceId property: Azure Resource Id of the target Form Recognizer resource where the model is
      * copied to.
-     * 
+     *
      * @return the targetResourceId value.
      */
     public String getTargetResourceId() {
@@ -51,7 +47,7 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
     /**
      * Set the targetResourceId property: Azure Resource Id of the target Form Recognizer resource where the model is
      * copied to.
-     * 
+     *
      * @param targetResourceId the targetResourceId value to set.
      * @return the CopyRequest object itself.
      */
@@ -61,9 +57,9 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
     }
 
     /**
-     * Get the targetResourceRegion property: Location of the target Azure resource. A valid Azure region name
-     * supported by Cognitive Services.
-     * 
+     * Get the targetResourceRegion property: Location of the target Azure resource. A valid Azure region name supported
+     * by Cognitive Services.
+     *
      * @return the targetResourceRegion value.
      */
     public String getTargetResourceRegion() {
@@ -71,9 +67,9 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
     }
 
     /**
-     * Set the targetResourceRegion property: Location of the target Azure resource. A valid Azure region name
-     * supported by Cognitive Services.
-     * 
+     * Set the targetResourceRegion property: Location of the target Azure resource. A valid Azure region name supported
+     * by Cognitive Services.
+     *
      * @param targetResourceRegion the targetResourceRegion value to set.
      * @return the CopyRequest object itself.
      */
@@ -84,7 +80,7 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
 
     /**
      * Get the copyAuthorization property: Entity that encodes claims to authorize the copy request.
-     * 
+     *
      * @return the copyAuthorization value.
      */
     public CopyAuthorizationResult getCopyAuthorization() {
@@ -93,52 +89,12 @@ public final class CopyRequest implements JsonSerializable<CopyRequest> {
 
     /**
      * Set the copyAuthorization property: Entity that encodes claims to authorize the copy request.
-     * 
+     *
      * @param copyAuthorization the copyAuthorization value to set.
      * @return the CopyRequest object itself.
      */
     public CopyRequest setCopyAuthorization(CopyAuthorizationResult copyAuthorization) {
         this.copyAuthorization = copyAuthorization;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
-        jsonWriter.writeStringField("targetResourceRegion", this.targetResourceRegion);
-        jsonWriter.writeJsonField("copyAuthorization", this.copyAuthorization);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CopyRequest from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CopyRequest if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CopyRequest.
-     */
-    public static CopyRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            CopyRequest deserializedCopyRequest = new CopyRequest();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("targetResourceId".equals(fieldName)) {
-                    deserializedCopyRequest.targetResourceId = reader.getString();
-                } else if ("targetResourceRegion".equals(fieldName)) {
-                    deserializedCopyRequest.targetResourceRegion = reader.getString();
-                } else if ("copyAuthorization".equals(fieldName)) {
-                    deserializedCopyRequest.copyAuthorization = CopyAuthorizationResult.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedCopyRequest;
-        });
     }
 }

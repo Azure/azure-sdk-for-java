@@ -12,10 +12,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A complex object that can be used to specify alternative spellings or synonyms to the root entity name.
- */
+/** A complex object that can be used to specify alternative spellings or synonyms to the root entity name. */
 @Fluent
 public final class CustomEntityAlias implements JsonSerializable<CustomEntityAlias> {
     /*
@@ -40,7 +40,7 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
 
     /**
      * Creates an instance of CustomEntityAlias class.
-     * 
+     *
      * @param text the text value to set.
      */
     public CustomEntityAlias(String text) {
@@ -49,7 +49,7 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
 
     /**
      * Get the text property: The text of the alias.
-     * 
+     *
      * @return the text value.
      */
     public String getText() {
@@ -58,7 +58,7 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
 
     /**
      * Get the caseSensitive property: Determine if the alias is case sensitive.
-     * 
+     *
      * @return the caseSensitive value.
      */
     public Boolean isCaseSensitive() {
@@ -67,7 +67,7 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
 
     /**
      * Set the caseSensitive property: Determine if the alias is case sensitive.
-     * 
+     *
      * @param caseSensitive the caseSensitive value to set.
      * @return the CustomEntityAlias object itself.
      */
@@ -78,7 +78,7 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
 
     /**
      * Get the accentSensitive property: Determine if the alias is accent sensitive.
-     * 
+     *
      * @return the accentSensitive value.
      */
     public Boolean isAccentSensitive() {
@@ -87,7 +87,7 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
 
     /**
      * Set the accentSensitive property: Determine if the alias is accent sensitive.
-     * 
+     *
      * @param accentSensitive the accentSensitive value to set.
      * @return the CustomEntityAlias object itself.
      */
@@ -98,7 +98,7 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
 
     /**
      * Get the fuzzyEditDistance property: Determine the fuzzy edit distance of the alias.
-     * 
+     *
      * @return the fuzzyEditDistance value.
      */
     public Integer getFuzzyEditDistance() {
@@ -107,7 +107,7 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
 
     /**
      * Set the fuzzyEditDistance property: Determine the fuzzy edit distance of the alias.
-     * 
+     *
      * @param fuzzyEditDistance the fuzzyEditDistance value to set.
      * @return the CustomEntityAlias object itself.
      */
@@ -128,46 +128,53 @@ public final class CustomEntityAlias implements JsonSerializable<CustomEntityAli
 
     /**
      * Reads an instance of CustomEntityAlias from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomEntityAlias if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomEntityAlias.
      */
     public static CustomEntityAlias fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean textFound = false;
-            String text = null;
-            Boolean caseSensitive = null;
-            Boolean accentSensitive = null;
-            Integer fuzzyEditDistance = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean textFound = false;
+                    String text = null;
+                    Boolean caseSensitive = null;
+                    Boolean accentSensitive = null;
+                    Integer fuzzyEditDistance = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("text".equals(fieldName)) {
-                    text = reader.getString();
-                    textFound = true;
-                } else if ("caseSensitive".equals(fieldName)) {
-                    caseSensitive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("accentSensitive".equals(fieldName)) {
-                    accentSensitive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("fuzzyEditDistance".equals(fieldName)) {
-                    fuzzyEditDistance = reader.getNullable(JsonReader::getInt);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (textFound) {
-                CustomEntityAlias deserializedCustomEntityAlias = new CustomEntityAlias(text);
-                deserializedCustomEntityAlias.caseSensitive = caseSensitive;
-                deserializedCustomEntityAlias.accentSensitive = accentSensitive;
-                deserializedCustomEntityAlias.fuzzyEditDistance = fuzzyEditDistance;
+                        if ("text".equals(fieldName)) {
+                            text = reader.getString();
+                            textFound = true;
+                        } else if ("caseSensitive".equals(fieldName)) {
+                            caseSensitive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("accentSensitive".equals(fieldName)) {
+                            accentSensitive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("fuzzyEditDistance".equals(fieldName)) {
+                            fuzzyEditDistance = reader.getNullable(JsonReader::getInt);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (textFound) {
+                        CustomEntityAlias deserializedCustomEntityAlias = new CustomEntityAlias(text);
+                        deserializedCustomEntityAlias.caseSensitive = caseSensitive;
+                        deserializedCustomEntityAlias.accentSensitive = accentSensitive;
+                        deserializedCustomEntityAlias.fuzzyEditDistance = fuzzyEditDistance;
 
-                return deserializedCustomEntityAlias;
-            }
-            throw new IllegalStateException("Missing required property: text");
-        });
+                        return deserializedCustomEntityAlias;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!textFound) {
+                        missingProperties.add("text");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

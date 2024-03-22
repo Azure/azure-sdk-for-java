@@ -12,7 +12,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -39,7 +38,6 @@ import reactor.core.publisher.Mono;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -49,8 +47,6 @@ import static com.azure.data.appconfiguration.implementation.ConfigurationSettin
 import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
-import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
-import static com.azure.data.appconfiguration.implementation.Utility.handleNotModifiedErrorToValidResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotAsync;
@@ -1040,33 +1036,27 @@ public final class ConfigurationAsyncClient {
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
-        final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
-        AtomicInteger pageETagIndex = new AtomicInteger(0);
         return new PagedFlux<>(
-                () -> withContext(context -> serviceClient.getKeyValuesSinglePageAsync(
-                        keyFilter,
-                        labelFilter,
-                        null,
-                        acceptDateTime,
-                        settingFields,
-                        null,
-                        null,
-                        getPageETag(matchConditionsList, pageETagIndex),
-                        addTracingNamespace(context))
-                        .onErrorResume(HttpResponseException.class,
-                            (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>) throwable ->
-                                handleNotModifiedErrorToValidResponse(throwable))
-                        .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
-                nextLink -> withContext(context -> serviceClient.getKeyValuesNextSinglePageAsync(
-                        nextLink,
-                        acceptDateTime,
-                        null,
-                        getPageETag(matchConditionsList, pageETagIndex),
-                        addTracingNamespace(context))
-                        .onErrorResume(HttpResponseException.class,
-                            (Function<HttpResponseException, Mono<PagedResponse<KeyValue>>>) throwable ->
-                                handleNotModifiedErrorToValidResponse(throwable))
-                        .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
+            () -> withContext(
+                context -> serviceClient.getKeyValuesSinglePageAsync(
+                    keyFilter,
+                    labelFilter,
+                    null,
+                    acceptDateTime,
+                    settingFields,
+                    null,
+                    null,
+                    null,
+                    addTracingNamespace(context))
+                               .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
+            nextLink -> withContext(
+                context -> serviceClient.getKeyValuesNextSinglePageAsync(
+                    nextLink,
+                    acceptDateTime,
+                    null,
+                    null,
+                    addTracingNamespace(context))
+                               .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
         );
     }
 

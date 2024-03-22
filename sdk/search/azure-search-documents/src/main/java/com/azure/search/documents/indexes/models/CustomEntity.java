@@ -12,11 +12,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * An object that contains information about the matches that were found, and related metadata.
- */
+/** An object that contains information about the matches that were found, and related metadata. */
 @Fluent
 public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /*
@@ -96,7 +95,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
 
     /**
      * Creates an instance of CustomEntity class.
-     * 
+     *
      * @param name the name value to set.
      */
     public CustomEntity(String name) {
@@ -104,9 +103,9 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     }
 
     /**
-     * Get the name property: The top-level entity descriptor. Matches in the skill output will be grouped by this
-     * name, and it should represent the "normalized" form of the text being found.
-     * 
+     * Get the name property: The top-level entity descriptor. Matches in the skill output will be grouped by this name,
+     * and it should represent the "normalized" form of the text being found.
+     *
      * @return the name value.
      */
     public String getName() {
@@ -116,7 +115,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Get the description property: This field can be used as a passthrough for custom metadata about the matched
      * text(s). The value of this field will appear with every match of its entity in the skill output.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -126,7 +125,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Set the description property: This field can be used as a passthrough for custom metadata about the matched
      * text(s). The value of this field will appear with every match of its entity in the skill output.
-     * 
+     *
      * @param description the description value to set.
      * @return the CustomEntity object itself.
      */
@@ -136,9 +135,9 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     }
 
     /**
-     * Get the type property: This field can be used as a passthrough for custom metadata about the matched text(s).
-     * The value of this field will appear with every match of its entity in the skill output.
-     * 
+     * Get the type property: This field can be used as a passthrough for custom metadata about the matched text(s). The
+     * value of this field will appear with every match of its entity in the skill output.
+     *
      * @return the type value.
      */
     public String getType() {
@@ -146,9 +145,9 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     }
 
     /**
-     * Set the type property: This field can be used as a passthrough for custom metadata about the matched text(s).
-     * The value of this field will appear with every match of its entity in the skill output.
-     * 
+     * Set the type property: This field can be used as a passthrough for custom metadata about the matched text(s). The
+     * value of this field will appear with every match of its entity in the skill output.
+     *
      * @param type the type value to set.
      * @return the CustomEntity object itself.
      */
@@ -160,7 +159,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Get the subtype property: This field can be used as a passthrough for custom metadata about the matched text(s).
      * The value of this field will appear with every match of its entity in the skill output.
-     * 
+     *
      * @return the subtype value.
      */
     public String getSubtype() {
@@ -170,7 +169,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Set the subtype property: This field can be used as a passthrough for custom metadata about the matched text(s).
      * The value of this field will appear with every match of its entity in the skill output.
-     * 
+     *
      * @param subtype the subtype value to set.
      * @return the CustomEntity object itself.
      */
@@ -182,7 +181,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Get the id property: This field can be used as a passthrough for custom metadata about the matched text(s). The
      * value of this field will appear with every match of its entity in the skill output.
-     * 
+     *
      * @return the id value.
      */
     public String getId() {
@@ -192,7 +191,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Set the id property: This field can be used as a passthrough for custom metadata about the matched text(s). The
      * value of this field will appear with every match of its entity in the skill output.
-     * 
+     *
      * @param id the id value to set.
      * @return the CustomEntity object itself.
      */
@@ -203,9 +202,9 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
 
     /**
      * Get the caseSensitive property: Defaults to false. Boolean value denoting whether comparisons with the entity
-     * name should be sensitive to character casing. Sample case insensitive matches of "Microsoft" could be:
-     * microsoft, microSoft, MICROSOFT.
-     * 
+     * name should be sensitive to character casing. Sample case insensitive matches of "Microsoft" could be: microsoft,
+     * microSoft, MICROSOFT.
+     *
      * @return the caseSensitive value.
      */
     public Boolean isCaseSensitive() {
@@ -214,9 +213,9 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
 
     /**
      * Set the caseSensitive property: Defaults to false. Boolean value denoting whether comparisons with the entity
-     * name should be sensitive to character casing. Sample case insensitive matches of "Microsoft" could be:
-     * microsoft, microSoft, MICROSOFT.
-     * 
+     * name should be sensitive to character casing. Sample case insensitive matches of "Microsoft" could be: microsoft,
+     * microSoft, MICROSOFT.
+     *
      * @param caseSensitive the caseSensitive value to set.
      * @return the CustomEntity object itself.
      */
@@ -228,7 +227,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Get the accentSensitive property: Defaults to false. Boolean value denoting whether comparisons with the entity
      * name should be sensitive to accent.
-     * 
+     *
      * @return the accentSensitive value.
      */
     public Boolean isAccentSensitive() {
@@ -238,7 +237,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Set the accentSensitive property: Defaults to false. Boolean value denoting whether comparisons with the entity
      * name should be sensitive to accent.
-     * 
+     *
      * @param accentSensitive the accentSensitive value to set.
      * @return the CustomEntity object itself.
      */
@@ -248,12 +247,12 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     }
 
     /**
-     * Get the fuzzyEditDistance property: Defaults to 0. Maximum value of 5. Denotes the acceptable number of
-     * divergent characters that would still constitute a match with the entity name. The smallest possible fuzziness
-     * for any given match is returned. For instance, if the edit distance is set to 3, "Windows10" would still match
-     * "Windows", "Windows10" and "Windows 7". When case sensitivity is set to false, case differences do NOT count
-     * towards fuzziness tolerance, but otherwise do.
-     * 
+     * Get the fuzzyEditDistance property: Defaults to 0. Maximum value of 5. Denotes the acceptable number of divergent
+     * characters that would still constitute a match with the entity name. The smallest possible fuzziness for any
+     * given match is returned. For instance, if the edit distance is set to 3, "Windows10" would still match "Windows",
+     * "Windows10" and "Windows 7". When case sensitivity is set to false, case differences do NOT count towards
+     * fuzziness tolerance, but otherwise do.
+     *
      * @return the fuzzyEditDistance value.
      */
     public Integer getFuzzyEditDistance() {
@@ -261,12 +260,12 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     }
 
     /**
-     * Set the fuzzyEditDistance property: Defaults to 0. Maximum value of 5. Denotes the acceptable number of
-     * divergent characters that would still constitute a match with the entity name. The smallest possible fuzziness
-     * for any given match is returned. For instance, if the edit distance is set to 3, "Windows10" would still match
-     * "Windows", "Windows10" and "Windows 7". When case sensitivity is set to false, case differences do NOT count
-     * towards fuzziness tolerance, but otherwise do.
-     * 
+     * Set the fuzzyEditDistance property: Defaults to 0. Maximum value of 5. Denotes the acceptable number of divergent
+     * characters that would still constitute a match with the entity name. The smallest possible fuzziness for any
+     * given match is returned. For instance, if the edit distance is set to 3, "Windows10" would still match "Windows",
+     * "Windows10" and "Windows 7". When case sensitivity is set to false, case differences do NOT count towards
+     * fuzziness tolerance, but otherwise do.
+     *
      * @param fuzzyEditDistance the fuzzyEditDistance value to set.
      * @return the CustomEntity object itself.
      */
@@ -278,7 +277,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Get the defaultCaseSensitive property: Changes the default case sensitivity value for this entity. It be used to
      * change the default value of all aliases caseSensitive values.
-     * 
+     *
      * @return the defaultCaseSensitive value.
      */
     public Boolean isDefaultCaseSensitive() {
@@ -288,7 +287,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Set the defaultCaseSensitive property: Changes the default case sensitivity value for this entity. It be used to
      * change the default value of all aliases caseSensitive values.
-     * 
+     *
      * @param defaultCaseSensitive the defaultCaseSensitive value to set.
      * @return the CustomEntity object itself.
      */
@@ -298,9 +297,9 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     }
 
     /**
-     * Get the defaultAccentSensitive property: Changes the default accent sensitivity value for this entity. It be
-     * used to change the default value of all aliases accentSensitive values.
-     * 
+     * Get the defaultAccentSensitive property: Changes the default accent sensitivity value for this entity. It be used
+     * to change the default value of all aliases accentSensitive values.
+     *
      * @return the defaultAccentSensitive value.
      */
     public Boolean isDefaultAccentSensitive() {
@@ -308,9 +307,9 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     }
 
     /**
-     * Set the defaultAccentSensitive property: Changes the default accent sensitivity value for this entity. It be
-     * used to change the default value of all aliases accentSensitive values.
-     * 
+     * Set the defaultAccentSensitive property: Changes the default accent sensitivity value for this entity. It be used
+     * to change the default value of all aliases accentSensitive values.
+     *
      * @param defaultAccentSensitive the defaultAccentSensitive value to set.
      * @return the CustomEntity object itself.
      */
@@ -322,7 +321,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Get the defaultFuzzyEditDistance property: Changes the default fuzzy edit distance value for this entity. It can
      * be used to change the default value of all aliases fuzzyEditDistance values.
-     * 
+     *
      * @return the defaultFuzzyEditDistance value.
      */
     public Integer getDefaultFuzzyEditDistance() {
@@ -332,7 +331,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Set the defaultFuzzyEditDistance property: Changes the default fuzzy edit distance value for this entity. It can
      * be used to change the default value of all aliases fuzzyEditDistance values.
-     * 
+     *
      * @param defaultFuzzyEditDistance the defaultFuzzyEditDistance value to set.
      * @return the CustomEntity object itself.
      */
@@ -344,7 +343,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Get the aliases property: An array of complex objects that can be used to specify alternative spellings or
      * synonyms to the root entity name.
-     * 
+     *
      * @return the aliases value.
      */
     public List<CustomEntityAlias> getAliases() {
@@ -354,7 +353,7 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
     /**
      * Set the aliases property: An array of complex objects that can be used to specify alternative spellings or
      * synonyms to the root entity name.
-     * 
+     *
      * @param aliases the aliases value to set.
      * @return the CustomEntity object itself.
      */
@@ -383,78 +382,85 @@ public final class CustomEntity implements JsonSerializable<CustomEntity> {
 
     /**
      * Reads an instance of CustomEntity from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomEntity if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the CustomEntity.
      */
     public static CustomEntity fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            String description = null;
-            String type = null;
-            String subtype = null;
-            String id = null;
-            Boolean caseSensitive = null;
-            Boolean accentSensitive = null;
-            Integer fuzzyEditDistance = null;
-            Boolean defaultCaseSensitive = null;
-            Boolean defaultAccentSensitive = null;
-            Integer defaultFuzzyEditDistance = null;
-            List<CustomEntityAlias> aliases = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    String description = null;
+                    String type = null;
+                    String subtype = null;
+                    String id = null;
+                    Boolean caseSensitive = null;
+                    Boolean accentSensitive = null;
+                    Integer fuzzyEditDistance = null;
+                    Boolean defaultCaseSensitive = null;
+                    Boolean defaultAccentSensitive = null;
+                    Integer defaultFuzzyEditDistance = null;
+                    List<CustomEntityAlias> aliases = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
-                } else if ("subtype".equals(fieldName)) {
-                    subtype = reader.getString();
-                } else if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("caseSensitive".equals(fieldName)) {
-                    caseSensitive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("accentSensitive".equals(fieldName)) {
-                    accentSensitive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("fuzzyEditDistance".equals(fieldName)) {
-                    fuzzyEditDistance = reader.getNullable(JsonReader::getInt);
-                } else if ("defaultCaseSensitive".equals(fieldName)) {
-                    defaultCaseSensitive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("defaultAccentSensitive".equals(fieldName)) {
-                    defaultAccentSensitive = reader.getNullable(JsonReader::getBoolean);
-                } else if ("defaultFuzzyEditDistance".equals(fieldName)) {
-                    defaultFuzzyEditDistance = reader.getNullable(JsonReader::getInt);
-                } else if ("aliases".equals(fieldName)) {
-                    aliases = reader.readArray(reader1 -> CustomEntityAlias.fromJson(reader1));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                CustomEntity deserializedCustomEntity = new CustomEntity(name);
-                deserializedCustomEntity.description = description;
-                deserializedCustomEntity.type = type;
-                deserializedCustomEntity.subtype = subtype;
-                deserializedCustomEntity.id = id;
-                deserializedCustomEntity.caseSensitive = caseSensitive;
-                deserializedCustomEntity.accentSensitive = accentSensitive;
-                deserializedCustomEntity.fuzzyEditDistance = fuzzyEditDistance;
-                deserializedCustomEntity.defaultCaseSensitive = defaultCaseSensitive;
-                deserializedCustomEntity.defaultAccentSensitive = defaultAccentSensitive;
-                deserializedCustomEntity.defaultFuzzyEditDistance = defaultFuzzyEditDistance;
-                deserializedCustomEntity.aliases = aliases;
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("type".equals(fieldName)) {
+                            type = reader.getString();
+                        } else if ("subtype".equals(fieldName)) {
+                            subtype = reader.getString();
+                        } else if ("id".equals(fieldName)) {
+                            id = reader.getString();
+                        } else if ("caseSensitive".equals(fieldName)) {
+                            caseSensitive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("accentSensitive".equals(fieldName)) {
+                            accentSensitive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("fuzzyEditDistance".equals(fieldName)) {
+                            fuzzyEditDistance = reader.getNullable(JsonReader::getInt);
+                        } else if ("defaultCaseSensitive".equals(fieldName)) {
+                            defaultCaseSensitive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("defaultAccentSensitive".equals(fieldName)) {
+                            defaultAccentSensitive = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("defaultFuzzyEditDistance".equals(fieldName)) {
+                            defaultFuzzyEditDistance = reader.getNullable(JsonReader::getInt);
+                        } else if ("aliases".equals(fieldName)) {
+                            aliases = reader.readArray(reader1 -> CustomEntityAlias.fromJson(reader1));
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        CustomEntity deserializedCustomEntity = new CustomEntity(name);
+                        deserializedCustomEntity.description = description;
+                        deserializedCustomEntity.type = type;
+                        deserializedCustomEntity.subtype = subtype;
+                        deserializedCustomEntity.id = id;
+                        deserializedCustomEntity.caseSensitive = caseSensitive;
+                        deserializedCustomEntity.accentSensitive = accentSensitive;
+                        deserializedCustomEntity.fuzzyEditDistance = fuzzyEditDistance;
+                        deserializedCustomEntity.defaultCaseSensitive = defaultCaseSensitive;
+                        deserializedCustomEntity.defaultAccentSensitive = defaultAccentSensitive;
+                        deserializedCustomEntity.defaultFuzzyEditDistance = defaultFuzzyEditDistance;
+                        deserializedCustomEntity.aliases = aliases;
 
-                return deserializedCustomEntity;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                        return deserializedCustomEntity;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

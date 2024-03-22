@@ -618,9 +618,6 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void listSettingFromSnapshotWithFields(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
 
-    @Test
-    public abstract void listSettingsWithPageETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion);
-
     /**
      * Helper method to verify that the RestResponse matches what was expected. This method assumes a response status of 200.
      *

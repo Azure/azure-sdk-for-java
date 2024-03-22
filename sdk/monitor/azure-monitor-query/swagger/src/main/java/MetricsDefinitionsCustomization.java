@@ -7,20 +7,16 @@ public class MetricsDefinitionsCustomization extends Customization {
 
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        libraryCustomization.getPackage("com.azure.monitor.query.implementation.metricsdefinitions")
-            .listClasses()
-            .forEach(cu -> logger.info("Class name " + cu.getFileName()));
-
         ClassCustomization metricsDefinitions = libraryCustomization
                 .getClass("com.azure.monitor.query.implementation.metricsdefinitions", "MetricDefinitions");
         metricsDefinitions.rename("MetricDefinitionsImpl");
 
         ClassCustomization metricsDefinitionsClient = libraryCustomization
-                .getClass("com.azure.monitor.query.implementation.metricsdefinitions", "AzureMonitorMetricsDefinitionsAPI");
+                .getClass("com.azure.monitor.query.implementation.metricsdefinitions", "MonitorManagementClient");
         metricsDefinitionsClient.rename("MetricsDefinitionsClientImpl");
 
         ClassCustomization metricsDefinitionsClientBuilder = libraryCustomization
-                .getClass("com.azure.monitor.query.implementation.metricsdefinitions", "AzureMonitorMetricsDefinitionsAPIBuilder");
+                .getClass("com.azure.monitor.query.implementation.metricsdefinitions", "MonitorManagementClientBuilder");
         metricsDefinitionsClientBuilder.rename("MetricsDefinitionsClientImplBuilder");
 
         String replace = libraryCustomization.getRawEditor().getFileContent("src/main/java/com/azure/monitor/query/implementation" +

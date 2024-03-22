@@ -5,31 +5,23 @@
 package com.azure.ai.formrecognizer.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Uri or local path to source data.
- */
+/** Uri or local path to source data. */
 @Fluent
-public final class SourcePath implements JsonSerializable<SourcePath> {
+public final class SourcePath {
     /*
      * File source path.
      */
+    @JsonProperty(value = "source")
     private String source;
 
-    /**
-     * Creates an instance of SourcePath class.
-     */
-    public SourcePath() {
-    }
+    /** Creates an instance of SourcePath class. */
+    public SourcePath() {}
 
     /**
      * Get the source property: File source path.
-     * 
+     *
      * @return the source value.
      */
     public String getSource() {
@@ -38,45 +30,12 @@ public final class SourcePath implements JsonSerializable<SourcePath> {
 
     /**
      * Set the source property: File source path.
-     * 
+     *
      * @param source the source value to set.
      * @return the SourcePath object itself.
      */
     public SourcePath setSource(String source) {
         this.source = source;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("source", this.source);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of SourcePath from the JsonReader.
-     * 
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of SourcePath if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
-     * @throws IOException If an error occurs while reading the SourcePath.
-     */
-    public static SourcePath fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            SourcePath deserializedSourcePath = new SourcePath();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("source".equals(fieldName)) {
-                    deserializedSourcePath.source = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-
-            return deserializedSourcePath;
-        });
     }
 }

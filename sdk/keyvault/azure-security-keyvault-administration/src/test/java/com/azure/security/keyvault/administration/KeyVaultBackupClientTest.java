@@ -20,20 +20,26 @@ import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 public class KeyVaultBackupClientTest extends KeyVaultBackupClientTestBase {
     private KeyVaultBackupClient client;
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        client = getClientBuilder(buildSyncAssertingClient(
+        client = spy(getClientBuilder(buildSyncAssertingClient(
             interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
-            .buildClient();
+            .buildClient());
+        if (interceptorManager.isPlaybackMode()) {
+            when(client.getDefaultPollingInterval()).thenReturn(Duration.ofMillis(10));
+        }
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {

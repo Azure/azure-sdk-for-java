@@ -104,14 +104,14 @@ public class RequestRetryPolicyTest {
 
                 @Override
                 public HttpResponse sendSync(HttpRequest request, Context context) {
-                    return send(request).block();
+                    beforeSendingRequest(request);
+                    return response;
                 }
 
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     beforeSendingRequest(request);
-                    return count < 3
-                        ? Mono.just(response).delaySubscription(Duration.ofSeconds(5)) : Mono.just(response);
+                    return Mono.just(response);
                 }
             })
             .policies(new RequestRetryPolicy(retryTestOptions))

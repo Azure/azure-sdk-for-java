@@ -10,11 +10,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
-/**
- * Removes stop words from a token stream. This token filter is implemented using Apache Lucene.
- */
+/** Removes stop words from a token stream. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class StopwordsTokenFilter extends TokenFilter {
 
@@ -143,7 +143,7 @@ public final class StopwordsTokenFilter extends TokenFilter {
         jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.StopwordsTokenFilter");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeArrayField("stopwords", this.stopwords, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("stopwordsList", this.stopwordsList == null ? null : this.stopwordsList.toString());
+        jsonWriter.writeStringField("stopwordsList", Objects.toString(this.stopwordsList, null));
         jsonWriter.writeBooleanField("ignoreCase", this.caseIgnored);
         jsonWriter.writeBooleanField("removeTrailing", this.trailingStopWordsRemoved);
         return jsonWriter.writeEndObject();
@@ -154,54 +154,61 @@ public final class StopwordsTokenFilter extends TokenFilter {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of StopwordsTokenFilter if the JsonReader was pointing to an instance of it, or null if it
-     * was pointing to JSON null.
+     *     was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the StopwordsTokenFilter.
      */
     public static StopwordsTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            List<String> stopwords = null;
-            StopwordsList stopwordsList = null;
-            Boolean caseIgnored = null;
-            Boolean trailingStopWordsRemoved = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.StopwordsTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StopwordsTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    List<String> stopwords = null;
+                    StopwordsList stopwordsList = null;
+                    Boolean caseIgnored = null;
+                    Boolean trailingStopWordsRemoved = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.StopwordsTokenFilter".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StopwordsTokenFilter'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("stopwords".equals(fieldName)) {
+                            stopwords = reader.readArray(reader1 -> reader1.getString());
+                        } else if ("stopwordsList".equals(fieldName)) {
+                            stopwordsList = StopwordsList.fromString(reader.getString());
+                        } else if ("ignoreCase".equals(fieldName)) {
+                            caseIgnored = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("removeTrailing".equals(fieldName)) {
+                            trailingStopWordsRemoved = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("stopwords".equals(fieldName)) {
-                    stopwords = reader.readArray(reader1 -> reader1.getString());
-                } else if ("stopwordsList".equals(fieldName)) {
-                    stopwordsList = StopwordsList.fromString(reader.getString());
-                } else if ("ignoreCase".equals(fieldName)) {
-                    caseIgnored = reader.getNullable(JsonReader::getBoolean);
-                } else if ("removeTrailing".equals(fieldName)) {
-                    trailingStopWordsRemoved = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                StopwordsTokenFilter deserializedStopwordsTokenFilter = new StopwordsTokenFilter(name);
-                deserializedStopwordsTokenFilter.stopwords = stopwords;
-                deserializedStopwordsTokenFilter.stopwordsList = stopwordsList;
-                deserializedStopwordsTokenFilter.caseIgnored = caseIgnored;
-                deserializedStopwordsTokenFilter.trailingStopWordsRemoved = trailingStopWordsRemoved;
-                return deserializedStopwordsTokenFilter;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                    if (nameFound) {
+                        StopwordsTokenFilter deserializedStopwordsTokenFilter = new StopwordsTokenFilter(name);
+                        deserializedStopwordsTokenFilter.stopwords = stopwords;
+                        deserializedStopwordsTokenFilter.stopwordsList = stopwordsList;
+                        deserializedStopwordsTokenFilter.caseIgnored = caseIgnored;
+                        deserializedStopwordsTokenFilter.trailingStopWordsRemoved = trailingStopWordsRemoved;
+                        return deserializedStopwordsTokenFilter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**

@@ -9,102 +9,67 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * The language codes supported for input text by KeyPhraseExtractionSkill.
- */
+/** The language codes supported for input text by KeyPhraseExtractionSkill. */
 public final class KeyPhraseExtractionSkillLanguage extends ExpandableStringEnum<KeyPhraseExtractionSkillLanguage> {
-    /**
-     * Danish.
-     */
+    /** Danish. */
     public static final KeyPhraseExtractionSkillLanguage DA = fromString("da");
 
-    /**
-     * Dutch.
-     */
+    /** Dutch. */
     public static final KeyPhraseExtractionSkillLanguage NL = fromString("nl");
 
-    /**
-     * English.
-     */
+    /** English. */
     public static final KeyPhraseExtractionSkillLanguage EN = fromString("en");
 
-    /**
-     * Finnish.
-     */
+    /** Finnish. */
     public static final KeyPhraseExtractionSkillLanguage FI = fromString("fi");
 
-    /**
-     * French.
-     */
+    /** French. */
     public static final KeyPhraseExtractionSkillLanguage FR = fromString("fr");
 
-    /**
-     * German.
-     */
+    /** German. */
     public static final KeyPhraseExtractionSkillLanguage DE = fromString("de");
 
-    /**
-     * Italian.
-     */
+    /** Italian. */
     public static final KeyPhraseExtractionSkillLanguage IT = fromString("it");
 
-    /**
-     * Japanese.
-     */
+    /** Japanese. */
     public static final KeyPhraseExtractionSkillLanguage JA = fromString("ja");
 
-    /**
-     * Korean.
-     */
+    /** Korean. */
     public static final KeyPhraseExtractionSkillLanguage KO = fromString("ko");
 
-    /**
-     * Norwegian (Bokmaal).
-     */
+    /** Norwegian (Bokmaal). */
     public static final KeyPhraseExtractionSkillLanguage NO = fromString("no");
 
-    /**
-     * Polish.
-     */
+    /** Polish. */
     public static final KeyPhraseExtractionSkillLanguage PL = fromString("pl");
 
-    /**
-     * Portuguese (Portugal).
-     */
+    /** Portuguese (Portugal). */
     public static final KeyPhraseExtractionSkillLanguage PT_PT = fromString("pt-PT");
 
-    /**
-     * Portuguese (Brazil).
-     */
+    /** Portuguese (Brazil). */
     public static final KeyPhraseExtractionSkillLanguage PT_BR = fromString("pt-BR");
 
-    /**
-     * Russian.
-     */
+    /** Russian. */
     public static final KeyPhraseExtractionSkillLanguage RU = fromString("ru");
 
-    /**
-     * Spanish.
-     */
+    /** Spanish. */
     public static final KeyPhraseExtractionSkillLanguage ES = fromString("es");
 
-    /**
-     * Swedish.
-     */
+    /** Swedish. */
     public static final KeyPhraseExtractionSkillLanguage SV = fromString("sv");
 
     /**
      * Creates a new instance of KeyPhraseExtractionSkillLanguage value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public KeyPhraseExtractionSkillLanguage() {
-    }
+    public KeyPhraseExtractionSkillLanguage() {}
 
     /**
      * Creates or finds a KeyPhraseExtractionSkillLanguage from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding KeyPhraseExtractionSkillLanguage.
      */
@@ -114,7 +79,7 @@ public final class KeyPhraseExtractionSkillLanguage extends ExpandableStringEnum
 
     /**
      * Gets known KeyPhraseExtractionSkillLanguage values.
-     * 
+     *
      * @return known KeyPhraseExtractionSkillLanguage values.
      */
     public static Collection<KeyPhraseExtractionSkillLanguage> values() {

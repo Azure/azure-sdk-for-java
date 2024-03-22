@@ -9,51 +9,49 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/**
- * The ChatMessage model.
- */
+/** The ChatMessage model. */
 @Fluent
 public final class ChatMessage {
-    /**
+    /*
      * The id of the chat message.
      */
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /**
+    /*
      * Type of the chat message.
      *
      */
     @JsonProperty(value = "type", required = true)
     private ChatMessageType type;
 
-    /**
+    /*
      * Version of the chat message.
      */
     @JsonProperty(value = "version", required = true)
     private String version;
 
-    /**
+    /*
      * Content of the chat message.
      */
     @JsonProperty(value = "content")
     private ChatMessageContent content;
 
-    /**
+    /*
      * The display name of the chat message sender. This property is used to
      * populate sender name for push notifications.
      */
     @JsonProperty(value = "senderDisplayName")
     private String senderDisplayName;
 
-    /**
+    /*
      * The timestamp when the chat message arrived at the server. The timestamp
      * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "createdOn")
     private OffsetDateTime createdOn;
 
-    /**
+    /*
      * Identifies a participant in Azure Communication services. A participant
      * is, for example, a phone number or an Azure communication user. This
      * model must be interpreted as a union: Apart from rawId, at most one
@@ -62,21 +60,21 @@ public final class ChatMessage {
     @JsonProperty(value = "senderCommunicationIdentifier")
     private CommunicationIdentifier sender;
 
-    /**
+    /*
      * The timestamp when the chat message was deleted. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "deletedOn")
     private OffsetDateTime deletedOn;
 
-    /**
+    /*
      * The timestamp when the chat message was edited. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
      */
     @JsonProperty(value = "editedOn")
     private OffsetDateTime editedOn;
 
-    /**
+    /*
      * Message metadata.
      */
     @JsonProperty(value = "metadata")

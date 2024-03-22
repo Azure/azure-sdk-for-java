@@ -16,17 +16,14 @@ import com.azure.search.documents.indexes.implementation.models.EntityRecognitio
 import com.azure.search.documents.indexes.implementation.models.SentimentSkillV1;
 import com.azure.search.documents.indexes.implementation.models.SentimentSkillV3;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Base type for skills.
- */
+/** Base type for skills. */
 @Fluent
-public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> {
+public abstract class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> {
     /*
      * The name of the skill which uniquely identifies it within the skillset. A skill with no name defined will be
-     * given a default name of its 1-based index in the skills array, prefixed with the character '#'.
+     * given a default name of its 1-based index in the skills array, prefixed with the character `#`.
      */
     private String name;
 
@@ -54,7 +51,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
 
     /**
      * Creates an instance of SearchIndexerSkill class.
-     * 
+     *
      * @param inputs the inputs value to set.
      * @param outputs the outputs value to set.
      */
@@ -66,8 +63,8 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
     /**
      * Get the name property: The name of the skill which uniquely identifies it within the skillset. A skill with no
      * name defined will be given a default name of its 1-based index in the skills array, prefixed with the character
-     * '#'.
-     * 
+     * `#`.
+     *
      * @return the name value.
      */
     public String getName() {
@@ -77,8 +74,8 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
     /**
      * Set the name property: The name of the skill which uniquely identifies it within the skillset. A skill with no
      * name defined will be given a default name of its 1-based index in the skills array, prefixed with the character
-     * '#'.
-     * 
+     * `#`.
+     *
      * @param name the name value to set.
      * @return the SearchIndexerSkill object itself.
      */
@@ -90,7 +87,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
     /**
      * Get the description property: The description of the skill which describes the inputs, outputs, and usage of the
      * skill.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -100,7 +97,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
     /**
      * Set the description property: The description of the skill which describes the inputs, outputs, and usage of the
      * skill.
-     * 
+     *
      * @param description the description value to set.
      * @return the SearchIndexerSkill object itself.
      */
@@ -112,7 +109,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
     /**
      * Get the context property: Represents the level at which operations take place, such as the document root or
      * document content (for example, /document or /document/content). The default is /document.
-     * 
+     *
      * @return the context value.
      */
     public String getContext() {
@@ -122,7 +119,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
     /**
      * Set the context property: Represents the level at which operations take place, such as the document root or
      * document content (for example, /document or /document/content). The default is /document.
-     * 
+     *
      * @param context the context value to set.
      * @return the SearchIndexerSkill object itself.
      */
@@ -134,7 +131,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
     /**
      * Get the inputs property: Inputs of the skills could be a column in the source data set, or the output of an
      * upstream skill.
-     * 
+     *
      * @return the inputs value.
      */
     public List<InputFieldMappingEntry> getInputs() {
@@ -144,7 +141,7 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
     /**
      * Get the outputs property: The output of a skill is either a field in a search index, or a value that can be
      * consumed as an input by another skill.
-     * 
+     *
      * @return the outputs value.
      */
     public List<OutputFieldMappingEntry> getOutputs() {
@@ -164,124 +161,82 @@ public class SearchIndexerSkill implements JsonSerializable<SearchIndexerSkill> 
 
     /**
      * Reads an instance of SearchIndexerSkill from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerSkill if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the SearchIndexerSkill.
      */
     public static SearchIndexerSkill fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String discriminatorValue = null;
-            JsonReader readerToUse = reader.bufferObject();
+        return jsonReader.readObject(
+                reader -> {
+                    String discriminatorValue = null;
+                    JsonReader readerToUse = reader.bufferObject();
 
-            readerToUse.nextToken(); // Prepare for reading
-            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = readerToUse.getFieldName();
-                readerToUse.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    discriminatorValue = readerToUse.getString();
-                    break;
-                } else {
-                    readerToUse.skipChildren();
-                }
-            }
-            // Use the discriminator value to determine which subtype should be deserialized.
-            if ("#Microsoft.Skills.Util.ConditionalSkill".equals(discriminatorValue)) {
-                return ConditionalSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.KeyPhraseExtractionSkill".equals(discriminatorValue)) {
-                return KeyPhraseExtractionSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Vision.OcrSkill".equals(discriminatorValue)) {
-                return OcrSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Vision.ImageAnalysisSkill".equals(discriminatorValue)) {
-                return ImageAnalysisSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.LanguageDetectionSkill".equals(discriminatorValue)) {
-                return LanguageDetectionSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Util.ShaperSkill".equals(discriminatorValue)) {
-                return ShaperSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.MergeSkill".equals(discriminatorValue)) {
-                return MergeSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.V3.SentimentSkill".equals(discriminatorValue)) {
-                return SentimentSkillV3.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.V3.EntityLinkingSkill".equals(discriminatorValue)) {
-                return EntityLinkingSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.V3.EntityRecognitionSkill".equals(discriminatorValue)) {
-                return EntityRecognitionSkillV3.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.SplitSkill".equals(discriminatorValue)) {
-                return SplitSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.CustomEntityLookupSkill".equals(discriminatorValue)) {
-                return CustomEntityLookupSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.TranslationSkill".equals(discriminatorValue)) {
-                return TextTranslationSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Util.DocumentExtractionSkill".equals(discriminatorValue)) {
-                return DocumentExtractionSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Custom.WebApiSkill".equals(discriminatorValue)) {
-                return WebApiSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Custom.AmlSkill".equals(discriminatorValue)) {
-                return AzureMachineLearningSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill".equals(discriminatorValue)) {
-                return AzureOpenAIEmbeddingSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.PIIDetectionSkill".equals(discriminatorValue)) {
-                return PiiDetectionSkill.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.EntityRecognitionSkill".equals(discriminatorValue)) {
-                return EntityRecognitionSkillV1.fromJson(readerToUse.reset());
-            } else if ("#Microsoft.Skills.Text.SentimentSkill".equals(discriminatorValue)) {
-                return SentimentSkillV1.fromJson(readerToUse.reset());
-            } else {
-                return fromJsonKnownDiscriminator(readerToUse.reset());
-            }
-        });
-    }
+                    readerToUse.nextToken(); // Prepare for reading
+                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = readerToUse.getFieldName();
+                        readerToUse.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            discriminatorValue = readerToUse.getString();
+                            break;
+                        } else {
+                            readerToUse.skipChildren();
+                        }
+                    }
 
-    static SearchIndexerSkill fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean inputsFound = false;
-            List<InputFieldMappingEntry> inputs = null;
-            boolean outputsFound = false;
-            List<OutputFieldMappingEntry> outputs = null;
-            String name = null;
-            String description = null;
-            String context = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if ("inputs".equals(fieldName)) {
-                    inputs = reader.readArray(reader1 -> InputFieldMappingEntry.fromJson(reader1));
-                    inputsFound = true;
-                } else if ("outputs".equals(fieldName)) {
-                    outputs = reader.readArray(reader1 -> OutputFieldMappingEntry.fromJson(reader1));
-                    outputsFound = true;
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("context".equals(fieldName)) {
-                    context = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (inputsFound && outputsFound) {
-                SearchIndexerSkill deserializedSearchIndexerSkill = new SearchIndexerSkill(inputs, outputs);
-                deserializedSearchIndexerSkill.name = name;
-                deserializedSearchIndexerSkill.description = description;
-                deserializedSearchIndexerSkill.context = context;
-
-                return deserializedSearchIndexerSkill;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!inputsFound) {
-                missingProperties.add("inputs");
-            }
-            if (!outputsFound) {
-                missingProperties.add("outputs");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    if (discriminatorValue != null) {
+                        readerToUse = readerToUse.reset();
+                    }
+                    // Use the discriminator value to determine which subtype should be deserialized.
+                    if ("#Microsoft.Skills.Util.ConditionalSkill".equals(discriminatorValue)) {
+                        return ConditionalSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Text.KeyPhraseExtractionSkill".equals(discriminatorValue)) {
+                        return KeyPhraseExtractionSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Vision.OcrSkill".equals(discriminatorValue)) {
+                        return OcrSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Vision.ImageAnalysisSkill".equals(discriminatorValue)) {
+                        return ImageAnalysisSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Text.LanguageDetectionSkill".equals(discriminatorValue)) {
+                        return LanguageDetectionSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Util.ShaperSkill".equals(discriminatorValue)) {
+                        return ShaperSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Text.MergeSkill".equals(discriminatorValue)) {
+                        return MergeSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Text.V3.SentimentSkill".equals(discriminatorValue)) {
+                        SentimentSkillV3 codegen = SentimentSkillV3.fromJson(readerToUse);
+                        return (codegen == null) ? null : new SentimentSkill(codegen);
+                    } else if ("#Microsoft.Skills.Text.V3.EntityLinkingSkill".equals(discriminatorValue)) {
+                        return EntityLinkingSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Text.V3.EntityRecognitionSkill".equals(discriminatorValue)) {
+                        EntityRecognitionSkillV3 codegen = EntityRecognitionSkillV3.fromJson(readerToUse);
+                        return (codegen == null) ? null : new EntityRecognitionSkill(codegen);
+                    } else if ("#Microsoft.Skills.Text.SplitSkill".equals(discriminatorValue)) {
+                        return SplitSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Text.CustomEntityLookupSkill".equals(discriminatorValue)) {
+                        return CustomEntityLookupSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Text.TranslationSkill".equals(discriminatorValue)) {
+                        return TextTranslationSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Util.DocumentExtractionSkill".equals(discriminatorValue)) {
+                        return DocumentExtractionSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Custom.WebApiSkill".equals(discriminatorValue)) {
+                        return WebApiSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Text.PIIDetectionSkill".equals(discriminatorValue)) {
+                        return PiiDetectionSkill.fromJson(readerToUse);
+                    } else if ("#Microsoft.Skills.Text.EntityRecognitionSkill".equals(discriminatorValue)) {
+                        EntityRecognitionSkillV1 codegen = EntityRecognitionSkillV1.fromJson(readerToUse);
+                        return (codegen == null) ? null : new EntityRecognitionSkill(codegen);
+                    } else if ("#Microsoft.Skills.Text.SentimentSkill".equals(discriminatorValue)) {
+                        SentimentSkillV1 codegen = SentimentSkillV1.fromJson(readerToUse);
+                        return (codegen == null) ? null : new SentimentSkill(codegen);
+                    } else {
+                        throw new IllegalStateException(
+                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Skills.Util.ConditionalSkill', '#Microsoft.Skills.Text.KeyPhraseExtractionSkill', '#Microsoft.Skills.Vision.OcrSkill', '#Microsoft.Skills.Vision.ImageAnalysisSkill', '#Microsoft.Skills.Text.LanguageDetectionSkill', '#Microsoft.Skills.Util.ShaperSkill', '#Microsoft.Skills.Text.MergeSkill', '#Microsoft.Skills.Text.V3.SentimentSkill', '#Microsoft.Skills.Text.V3.EntityLinkingSkill', '#Microsoft.Skills.Text.V3.EntityRecognitionSkill', '#Microsoft.Skills.Text.SplitSkill', '#Microsoft.Skills.Text.CustomEntityLookupSkill', '#Microsoft.Skills.Text.TranslationSkill', '#Microsoft.Skills.Util.DocumentExtractionSkill', '#Microsoft.Skills.Custom.WebApiSkill', '#Microsoft.Skills.Text.PIIDetectionSkill', '#Microsoft.Skills.Text.EntityRecognitionSkill', or '#Microsoft.Skills.Text.SentimentSkill'. It was: '"
+                                        + discriminatorValue
+                                        + "'.");
+                    }
+                });
     }
 }

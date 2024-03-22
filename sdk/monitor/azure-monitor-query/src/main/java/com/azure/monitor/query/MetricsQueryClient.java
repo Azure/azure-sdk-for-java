@@ -124,7 +124,7 @@ public final class MetricsQueryClient {
         Response<MetricsResponse> metricsResponseResponse = metricsClient
             .getMetrics()
             .listWithResponse(resourceUri, timespan, granularity, String.join(",", metricsNames),
-                aggregation, top, orderBy, filter, ResultType.DATA, metricNamespace, null, null, null, context);
+                aggregation, top, orderBy, filter, ResultType.DATA, metricNamespace, context);
         return convertToMetricsQueryResult(metricsResponseResponse);
     }
 

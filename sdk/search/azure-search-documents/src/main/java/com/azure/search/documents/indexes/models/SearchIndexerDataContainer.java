@@ -12,10 +12,10 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Represents information about the entity (such as Azure SQL table or CosmosDB collection) that will be indexed.
- */
+/** Represents information about the entity (such as Azure SQL table or CosmosDB collection) that will be indexed. */
 @Fluent
 public final class SearchIndexerDataContainer implements JsonSerializable<SearchIndexerDataContainer> {
     /*
@@ -32,7 +32,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
 
     /**
      * Creates an instance of SearchIndexerDataContainer class.
-     * 
+     *
      * @param name the name value to set.
      */
     public SearchIndexerDataContainer(String name) {
@@ -40,9 +40,9 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
     }
 
     /**
-     * Get the name property: The name of the table or view (for Azure SQL data source) or collection (for CosmosDB
-     * data source) that will be indexed.
-     * 
+     * Get the name property: The name of the table or view (for Azure SQL data source) or collection (for CosmosDB data
+     * source) that will be indexed.
+     *
      * @return the name value.
      */
     public String getName() {
@@ -52,7 +52,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
     /**
      * Get the query property: A query that is applied to this data container. The syntax and meaning of this parameter
      * is datasource-specific. Not supported by Azure SQL datasources.
-     * 
+     *
      * @return the query value.
      */
     public String getQuery() {
@@ -62,7 +62,7 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
     /**
      * Set the query property: A query that is applied to this data container. The syntax and meaning of this parameter
      * is datasource-specific. Not supported by Azure SQL datasources.
-     * 
+     *
      * @param query the query value to set.
      * @return the SearchIndexerDataContainer object itself.
      */
@@ -81,39 +81,46 @@ public final class SearchIndexerDataContainer implements JsonSerializable<Search
 
     /**
      * Reads an instance of SearchIndexerDataContainer from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerDataContainer if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     *     it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerDataContainer.
      */
     public static SearchIndexerDataContainer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            String query = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    String query = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
 
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("query".equals(fieldName)) {
-                    query = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                SearchIndexerDataContainer deserializedSearchIndexerDataContainer
-                    = new SearchIndexerDataContainer(name);
-                deserializedSearchIndexerDataContainer.query = query;
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("query".equals(fieldName)) {
+                            query = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        SearchIndexerDataContainer deserializedSearchIndexerDataContainer =
+                                new SearchIndexerDataContainer(name);
+                        deserializedSearchIndexerDataContainer.query = query;
 
-                return deserializedSearchIndexerDataContainer;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+                        return deserializedSearchIndexerDataContainer;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

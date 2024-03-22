@@ -13,9 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Matches single or multi-word synonyms in a token stream. This token filter is implemented using Apache Lucene.
- */
+/** Matches single or multi-word synonyms in a token stream. This token filter is implemented using Apache Lucene. */
 @Fluent
 public final class SynonymTokenFilter extends TokenFilter {
 
@@ -88,10 +86,10 @@ public final class SynonymTokenFilter extends TokenFilter {
     /**
      * Get the expand property: A value indicating whether all words in the list of synonyms (if =&gt; notation is not
      * used) will map to one another. If true, all words in the list of synonyms (if =&gt; notation is not used) will
-     * map to one another. The following list: incredible, unbelievable, fabulous, amazing is equivalent to:
-     * incredible, unbelievable, fabulous, amazing =&gt; incredible, unbelievable, fabulous, amazing. If false, the
-     * following list: incredible, unbelievable, fabulous, amazing will be equivalent to: incredible, unbelievable,
-     * fabulous, amazing =&gt; incredible. Default is true.
+     * map to one another. The following list: incredible, unbelievable, fabulous, amazing is equivalent to: incredible,
+     * unbelievable, fabulous, amazing =&gt; incredible, unbelievable, fabulous, amazing. If false, the following list:
+     * incredible, unbelievable, fabulous, amazing will be equivalent to: incredible, unbelievable, fabulous, amazing
+     * =&gt; incredible. Default is true.
      *
      * @return the expand value.
      */
@@ -102,10 +100,10 @@ public final class SynonymTokenFilter extends TokenFilter {
     /**
      * Set the expand property: A value indicating whether all words in the list of synonyms (if =&gt; notation is not
      * used) will map to one another. If true, all words in the list of synonyms (if =&gt; notation is not used) will
-     * map to one another. The following list: incredible, unbelievable, fabulous, amazing is equivalent to:
-     * incredible, unbelievable, fabulous, amazing =&gt; incredible, unbelievable, fabulous, amazing. If false, the
-     * following list: incredible, unbelievable, fabulous, amazing will be equivalent to: incredible, unbelievable,
-     * fabulous, amazing =&gt; incredible. Default is true.
+     * map to one another. The following list: incredible, unbelievable, fabulous, amazing is equivalent to: incredible,
+     * unbelievable, fabulous, amazing =&gt; incredible, unbelievable, fabulous, amazing. If false, the following list:
+     * incredible, unbelievable, fabulous, amazing will be equivalent to: incredible, unbelievable, fabulous, amazing
+     * =&gt; incredible. Default is true.
      *
      * @param expand the expand value to set.
      * @return the SynonymTokenFilter object itself.
@@ -131,58 +129,60 @@ public final class SynonymTokenFilter extends TokenFilter {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SynonymTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     * polymorphic discriminator.
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the SynonymTokenFilter.
      */
     public static SynonymTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            boolean synonymsFound = false;
-            List<String> synonyms = null;
-            Boolean caseIgnored = null;
-            Boolean expand = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("@odata.type".equals(fieldName)) {
-                    String odataType = reader.getString();
-                    if (!"#Microsoft.Azure.Search.SynonymTokenFilter".equals(odataType)) {
-                        throw new IllegalStateException(
-                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SynonymTokenFilter'. The found '@odata.type' was '"
-                                + odataType + "'.");
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    boolean synonymsFound = false;
+                    List<String> synonyms = null;
+                    Boolean caseIgnored = null;
+                    Boolean expand = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("@odata.type".equals(fieldName)) {
+                            String odataType = reader.getString();
+                            if (!"#Microsoft.Azure.Search.SynonymTokenFilter".equals(odataType)) {
+                                throw new IllegalStateException(
+                                        "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.SynonymTokenFilter'. The found '@odata.type' was '"
+                                                + odataType
+                                                + "'.");
+                            }
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("synonyms".equals(fieldName)) {
+                            synonyms = reader.readArray(reader1 -> reader1.getString());
+                            synonymsFound = true;
+                        } else if ("ignoreCase".equals(fieldName)) {
+                            caseIgnored = reader.getNullable(JsonReader::getBoolean);
+                        } else if ("expand".equals(fieldName)) {
+                            expand = reader.getNullable(JsonReader::getBoolean);
+                        } else {
+                            reader.skipChildren();
+                        }
                     }
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("synonyms".equals(fieldName)) {
-                    synonyms = reader.readArray(reader1 -> reader1.getString());
-                    synonymsFound = true;
-                } else if ("ignoreCase".equals(fieldName)) {
-                    caseIgnored = reader.getNullable(JsonReader::getBoolean);
-                } else if ("expand".equals(fieldName)) {
-                    expand = reader.getNullable(JsonReader::getBoolean);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound && synonymsFound) {
-                SynonymTokenFilter deserializedSynonymTokenFilter = new SynonymTokenFilter(name, synonyms);
-                deserializedSynonymTokenFilter.caseIgnored = caseIgnored;
-                deserializedSynonymTokenFilter.expand = expand;
-                return deserializedSynonymTokenFilter;
-            }
-            List<String> missingProperties = new ArrayList<>();
-            if (!nameFound) {
-                missingProperties.add("name");
-            }
-            if (!synonymsFound) {
-                missingProperties.add("synonyms");
-            }
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
-        });
+                    if (nameFound && synonymsFound) {
+                        SynonymTokenFilter deserializedSynonymTokenFilter = new SynonymTokenFilter(name, synonyms);
+                        deserializedSynonymTokenFilter.caseIgnored = caseIgnored;
+                        deserializedSynonymTokenFilter.expand = expand;
+                        return deserializedSynonymTokenFilter;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    if (!synonymsFound) {
+                        missingProperties.add("synonyms");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

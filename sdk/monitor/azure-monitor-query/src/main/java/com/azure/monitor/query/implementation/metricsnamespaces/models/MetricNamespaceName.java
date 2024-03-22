@@ -7,9 +7,7 @@ package com.azure.monitor.query.implementation.metricsnamespaces.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The fully qualified metric namespace name.
- */
+/** The fully qualified metric namespace name. */
 @Fluent
 public final class MetricNamespaceName {
     /*
@@ -18,15 +16,12 @@ public final class MetricNamespaceName {
     @JsonProperty(value = "metricNamespaceName")
     private String metricNamespaceName;
 
-    /**
-     * Creates an instance of MetricNamespaceName class.
-     */
-    public MetricNamespaceName() {
-    }
+    /** Creates an instance of MetricNamespaceName class. */
+    public MetricNamespaceName() {}
 
     /**
      * Get the metricNamespaceName property: The metric namespace name.
-     * 
+     *
      * @return the metricNamespaceName value.
      */
     public String getMetricNamespaceName() {
@@ -35,7 +30,7 @@ public final class MetricNamespaceName {
 
     /**
      * Set the metricNamespaceName property: The metric namespace name.
-     * 
+     *
      * @param metricNamespaceName the metricNamespaceName value to set.
      * @return the MetricNamespaceName object itself.
      */
@@ -43,4 +38,11 @@ public final class MetricNamespaceName {
         this.metricNamespaceName = metricNamespaceName;
         return this;
     }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {}
 }

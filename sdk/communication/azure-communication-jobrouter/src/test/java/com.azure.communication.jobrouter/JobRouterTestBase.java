@@ -45,7 +45,7 @@ class JobRouterTestBase extends TestProxyTestBase {
     protected String getConnectionString() {
         String connectionString = interceptorManager.isPlaybackMode()
             ? "endpoint=https://REDACTED.int.communication.azure.net;accessKey=secret"
-            : Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING");
+            : Configuration.getGlobalConfiguration().get("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         Objects.requireNonNull(connectionString);
         return connectionString;
     }

@@ -31,6 +31,7 @@ public final class CommunicationErrorResponseException extends HttpResponseExcep
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public CommunicationErrorResponse getValue() {
         return (CommunicationErrorResponse) super.getValue();

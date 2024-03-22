@@ -311,35 +311,4 @@ public final class RouterWorkerInternal {
         this.availableForOffers = availableForOffers;
         return this;
     }
-
-    /*
-     * If this is set, the worker will only receive up to this many new offers at a time.
-     */
-    @Generated
-    @JsonProperty(value = "maxConcurrentOffers")
-    private Integer maxConcurrentOffers;
-
-    /**
-     * Get the maxConcurrentOffers property: If this is set, the worker will only receive up to this many new offers at
-     * a time.
-     *
-     * @return the maxConcurrentOffers value.
-     */
-    @Generated
-    public Integer getMaxConcurrentOffers() {
-        return this.maxConcurrentOffers;
-    }
-
-    /**
-     * Set the maxConcurrentOffers property: If this is set, the worker will only receive up to this many new offers at
-     * a time.
-     *
-     * @param maxConcurrentOffers the maxConcurrentOffers value to set.
-     * @return the RouterWorkerInternal object itself.
-     */
-    @Generated
-    public RouterWorkerInternal setMaxConcurrentOffers(Integer maxConcurrentOffers) {
-        this.maxConcurrentOffers = maxConcurrentOffers;
-        return this;
-    }
 }

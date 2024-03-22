@@ -7,9 +7,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ChatAttachmentType.
- */
+/** Defines values for ChatAttachmentType. */
 public final class ChatAttachmentType extends ExpandableStringEnum<ChatAttachmentType> {
     /** Static value image for ChatAttachmentType. */
     public static final ChatAttachmentType IMAGE = fromString("image");

@@ -1157,7 +1157,6 @@ public final class JobRouterClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * <p>
@@ -1204,7 +1203,6 @@ public final class JobRouterClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1579,7 +1577,6 @@ public final class JobRouterClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1705,7 +1702,6 @@ public final class JobRouterClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
-     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1962,8 +1958,7 @@ public final class JobRouterClient {
     public RouterWorker getWorker(String workerId) {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return RouterWorkerConstructorProxy
-            .create(getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorkerInternal.class));
+        return getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorker.class);
     }
 
     /**

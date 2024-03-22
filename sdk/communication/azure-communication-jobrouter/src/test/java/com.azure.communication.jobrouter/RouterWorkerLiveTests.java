@@ -75,15 +75,13 @@ public class RouterWorkerLiveTests extends JobRouterTestBase {
             .setTags(tags)
             .setAvailableForOffers(false)
             .setChannels(channels)
-            .setQueues(queues)
-            .setMaxConcurrentOffers(1);
+            .setQueues(queues);
 
         // Action
         RouterWorker result = jobRouterClient.createWorker(createWorkerOptions);
 
         // Verify
         assertEquals(workerId, result.getId());
-        assertEquals(1, result.getMaxConcurrentOffers());
 
         // Cleanup
         jobRouterClient.deleteWorker(workerId);

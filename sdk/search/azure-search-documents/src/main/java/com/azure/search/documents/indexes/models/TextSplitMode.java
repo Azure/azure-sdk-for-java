@@ -9,32 +9,25 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * A value indicating which split mode to perform.
- */
+/** A value indicating which split mode to perform. */
 public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
-    /**
-     * Split the text into individual pages.
-     */
+    /** Split the text into individual pages. */
     public static final TextSplitMode PAGES = fromString("pages");
 
-    /**
-     * Split the text into individual sentences.
-     */
+    /** Split the text into individual sentences. */
     public static final TextSplitMode SENTENCES = fromString("sentences");
 
     /**
      * Creates a new instance of TextSplitMode value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public TextSplitMode() {
-    }
+    public TextSplitMode() {}
 
     /**
      * Creates or finds a TextSplitMode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding TextSplitMode.
      */
@@ -44,7 +37,7 @@ public final class TextSplitMode extends ExpandableStringEnum<TextSplitMode> {
 
     /**
      * Gets known TextSplitMode values.
-     * 
+     *
      * @return known TextSplitMode values.
      */
     public static Collection<TextSplitMode> values() {

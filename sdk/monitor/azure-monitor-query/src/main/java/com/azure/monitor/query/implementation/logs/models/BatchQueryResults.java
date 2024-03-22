@@ -10,13 +10,13 @@ import java.util.List;
 
 /**
  * A query response for a single query in a batch.
- * 
- * Contains the tables, columns &amp; rows resulting from a query.
+ *
+ * <p>Contains the tables, columns &amp; rows resulting from a query.
  */
 @Fluent
 public final class BatchQueryResults {
     /*
-     * The results of the query in tabular format.
+     * The list of tables, columns and rows.
      */
     @JsonProperty(value = "tables")
     private List<Table> tables;
@@ -39,15 +39,12 @@ public final class BatchQueryResults {
     @JsonProperty(value = "error")
     private ErrorInfo error;
 
-    /**
-     * Creates an instance of BatchQueryResults class.
-     */
-    public BatchQueryResults() {
-    }
+    /** Creates an instance of BatchQueryResults class. */
+    public BatchQueryResults() {}
 
     /**
-     * Get the tables property: The results of the query in tabular format.
-     * 
+     * Get the tables property: The list of tables, columns and rows.
+     *
      * @return the tables value.
      */
     public List<Table> getTables() {
@@ -55,8 +52,8 @@ public final class BatchQueryResults {
     }
 
     /**
-     * Set the tables property: The results of the query in tabular format.
-     * 
+     * Set the tables property: The list of tables, columns and rows.
+     *
      * @param tables the tables value to set.
      * @return the BatchQueryResults object itself.
      */
@@ -67,7 +64,7 @@ public final class BatchQueryResults {
 
     /**
      * Get the statistics property: Statistics represented in JSON format.
-     * 
+     *
      * @return the statistics value.
      */
     public Object getStatistics() {
@@ -76,7 +73,7 @@ public final class BatchQueryResults {
 
     /**
      * Set the statistics property: Statistics represented in JSON format.
-     * 
+     *
      * @param statistics the statistics value to set.
      * @return the BatchQueryResults object itself.
      */
@@ -87,7 +84,7 @@ public final class BatchQueryResults {
 
     /**
      * Get the render property: Visualization data in JSON format.
-     * 
+     *
      * @return the render value.
      */
     public Object getRender() {
@@ -96,7 +93,7 @@ public final class BatchQueryResults {
 
     /**
      * Set the render property: Visualization data in JSON format.
-     * 
+     *
      * @param render the render value to set.
      * @return the BatchQueryResults object itself.
      */
@@ -107,7 +104,7 @@ public final class BatchQueryResults {
 
     /**
      * Get the error property: The code and message for an error.
-     * 
+     *
      * @return the error value.
      */
     public ErrorInfo getError() {
@@ -116,12 +113,26 @@ public final class BatchQueryResults {
 
     /**
      * Set the error property: The code and message for an error.
-     * 
+     *
      * @param error the error value to set.
      * @return the BatchQueryResults object itself.
      */
     public BatchQueryResults setError(ErrorInfo error) {
         this.error = error;
         return this;
+    }
+
+    /**
+     * Validates the instance.
+     *
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (getTables() != null) {
+            getTables().forEach(e -> e.validate());
+        }
+        if (getError() != null) {
+            getError().validate();
+        }
     }
 }

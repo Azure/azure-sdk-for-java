@@ -11,11 +11,11 @@ public class MetricsCustomization extends Customization {
         metrics.rename("MetricsImpl");
 
         ClassCustomization metricsClient = libraryCustomization
-            .getClass("com.azure.monitor.query.implementation.metrics", "AzureMonitorMetricsDataAPI");
+                .getClass("com.azure.monitor.query.implementation.metrics", "MonitorManagementClient");
         metricsClient.rename("MonitorManagementClientImpl");
 
         ClassCustomization metricsClientBuilder = libraryCustomization
-                .getClass("com.azure.monitor.query.implementation.metrics", "AzureMonitorMetricsDataAPIBuilder");
+                .getClass("com.azure.monitor.query.implementation.metrics", "MonitorManagementClientBuilder");
         metricsClientBuilder.rename("MonitorManagementClientImplBuilder");
 
         String replace = libraryCustomization.getRawEditor().getFileContent("src/main/java/com/azure/monitor/query/implementation" +

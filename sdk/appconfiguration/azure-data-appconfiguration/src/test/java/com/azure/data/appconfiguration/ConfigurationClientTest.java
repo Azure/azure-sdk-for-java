@@ -4,9 +4,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.MatchConditions;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -1501,55 +1499,6 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             assertEquals(ConfigurationSnapshotStatus.ARCHIVED, client.archiveSnapshot(name).getStatus());
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.data.appconfiguration.TestHelper#getTestParameters")
-    public void listSettingsWithPageETag(HttpClient httpClient, ConfigurationServiceVersion serviceVersion) {
-        client = getConfigurationClient(httpClient, serviceVersion);
-        // Step 1: Prepare testing data.
-        // Clean all existing settings before this test purpose
-        client.listConfigurationSettings(null)
-                .stream()
-                .forEach(configurationSetting -> client.deleteConfigurationSetting(configurationSetting));
-        // Add a few setting to form a page of settings
-        final ConfigurationSetting setting = new ConfigurationSetting().setKey(getKey()).setValue("value");
-        final ConfigurationSetting setting2 = new ConfigurationSetting().setKey(getKey()).setValue("value");
-        client.setConfigurationSetting(setting);
-        client.setConfigurationSetting(setting2);
-        // Get all page ETags
-        PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(null);
-        List<MatchConditions> matchConditionsList = new ArrayList<>();
-        configurationSettings.iterableByPage().forEach(pagedResponse -> {
-            matchConditionsList.add(new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
-        });
-
-        // Step 2: Test list settings with page ETag
-        // Validation 1: Validate all pages are not modified and return empty list of settings in each page response.
-        // List settings with page ETag
-        PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
-                new SettingSelector().setMatchConditions(matchConditionsList));
-        settings.iterableByPage().forEach(pagedResponse -> {
-            // No changes on the server side, so the response should be empty list
-            assertEquals(0, pagedResponse.getValue().size());
-        });
-        // Validation 2: validate the page has the updated setting should be returned
-        // Update a setting
-        final ConfigurationSetting updatedSetting = new ConfigurationSetting().setKey(setting.getKey()).setValue("new value");
-        client.setConfigurationSetting(updatedSetting);
-        // List settings with expired page ETag
-        settings = client.listConfigurationSettings(new SettingSelector().setMatchConditions(matchConditionsList));
-        // The page has the updated setting should be returned, so the response should not be empty list
-        settings.iterableByPage().forEach(pagedResponse -> {
-            assertFalse(pagedResponse.getValue().isEmpty());
-            // find the updated setting in the list
-            ConfigurationSetting updatedSettingFromResponse = pagedResponse.getValue()
-                    .stream()
-                    .filter(s -> s.getKey().equals(updatedSetting.getKey()))
-                    .findAny()
-                    .get();
-            assertConfigurationEquals(updatedSetting, updatedSettingFromResponse);
         });
     }
 

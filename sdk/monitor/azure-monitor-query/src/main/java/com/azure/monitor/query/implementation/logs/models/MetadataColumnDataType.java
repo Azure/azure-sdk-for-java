@@ -8,72 +8,49 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * The data type of the column.
- */
+/** The data type of the column. */
 public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataColumnDataType> {
-    /**
-     * Static value bool for MetadataColumnDataType.
-     */
+    /** Static value bool for MetadataColumnDataType. */
     public static final MetadataColumnDataType BOOL = fromString("bool");
 
-    /**
-     * Static value datetime for MetadataColumnDataType.
-     */
+    /** Static value datetime for MetadataColumnDataType. */
     public static final MetadataColumnDataType DATETIME = fromString("datetime");
 
-    /**
-     * Static value dynamic for MetadataColumnDataType.
-     */
+    /** Static value dynamic for MetadataColumnDataType. */
     public static final MetadataColumnDataType DYNAMIC = fromString("dynamic");
 
-    /**
-     * Static value int for MetadataColumnDataType.
-     */
+    /** Static value int for MetadataColumnDataType. */
     public static final MetadataColumnDataType INT = fromString("int");
 
-    /**
-     * Static value long for MetadataColumnDataType.
-     */
+    /** Static value long for MetadataColumnDataType. */
     public static final MetadataColumnDataType LONG = fromString("long");
 
-    /**
-     * Static value real for MetadataColumnDataType.
-     */
+    /** Static value real for MetadataColumnDataType. */
     public static final MetadataColumnDataType REAL = fromString("real");
 
-    /**
-     * Static value string for MetadataColumnDataType.
-     */
+    /** Static value string for MetadataColumnDataType. */
     public static final MetadataColumnDataType STRING = fromString("string");
 
-    /**
-     * Static value guid for MetadataColumnDataType.
-     */
+    /** Static value guid for MetadataColumnDataType. */
     public static final MetadataColumnDataType GUID = fromString("guid");
 
-    /**
-     * Static value decimal for MetadataColumnDataType.
-     */
+    /** Static value decimal for MetadataColumnDataType. */
     public static final MetadataColumnDataType DECIMAL = fromString("decimal");
 
-    /**
-     * Static value timespan for MetadataColumnDataType.
-     */
+    /** Static value timespan for MetadataColumnDataType. */
     public static final MetadataColumnDataType TIMESPAN = fromString("timespan");
 
     /**
      * Creates a new instance of MetadataColumnDataType value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public MetadataColumnDataType() {
-    }
+    public MetadataColumnDataType() {}
 
     /**
      * Creates or finds a MetadataColumnDataType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding MetadataColumnDataType.
      */
@@ -84,7 +61,7 @@ public final class MetadataColumnDataType extends ExpandableStringEnum<MetadataC
 
     /**
      * Gets known MetadataColumnDataType values.
-     * 
+     *
      * @return known MetadataColumnDataType values.
      */
     public static Collection<MetadataColumnDataType> values() {

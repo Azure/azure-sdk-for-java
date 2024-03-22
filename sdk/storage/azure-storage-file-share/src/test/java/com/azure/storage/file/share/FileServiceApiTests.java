@@ -7,8 +7,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.test.shared.extensions.PlaybackOnly;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.file.share.models.ListSharesOptions;
 import com.azure.storage.file.share.models.ShareAccessTier;
 import com.azure.storage.file.share.models.ShareCorsRule;
@@ -28,6 +26,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -102,7 +101,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         FileShareTestHelper.assertResponseStatusCode(createShareResponse, 201);
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @Test
     public void createShareMaxOverloads() {
         Response<ShareClient> createShareResponse = primaryFileServiceClient.createShareWithResponse(shareName,
@@ -135,7 +134,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         FileShareTestHelper.assertExceptionStatusCodeAndMessage(e, 404, ShareErrorCode.SHARE_NOT_FOUND);
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("listSharesWithFilterSupplier")
     public void listSharesWithFilter(ListSharesOptions options, int limits, boolean includeMetadata,
@@ -178,7 +177,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         );
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @ParameterizedTest
     @MethodSource("listSharesWithArgsSupplier")
     public void listSharesWithArgs(ListSharesOptions options, int limits, boolean includeMetadata,
@@ -239,7 +238,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         }
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @Test
     public void listSharesGetAccessTier() {
         String shareName = generateShareName();
@@ -263,7 +262,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         assertEquals("pending-from-hot", item.getProperties().getAccessTierTransitionState());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2021-02-12")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20210212ServiceVersion")
     @Test
     public void listSharesWithPremiumShare() {
         String premiumShareName = generateShareName();
@@ -302,7 +301,7 @@ public class FileServiceApiTests extends FileShareTestBase {
             getPropertiesAfterResponse.getValue());
     }
 
-    @PlaybackOnly
+    @EnabledIf("com.azure.storage.file.share.FileShareTestBase#isPlaybackMode")
     @ResourceLock("ServiceProperties")
     @Test
     public void setAndGetPropertiesPremium() {
@@ -356,7 +355,7 @@ public class FileServiceApiTests extends FileShareTestBase {
             Arguments.of(INVALID_ALLOWED_METHOD, 400, ShareErrorCode.INVALID_XML_NODE_VALUE));
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreShareMin() {
         ShareClient shareClient = primaryFileServiceClient.getShareClient(generateShareName());
@@ -364,7 +363,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         String fileName = generatePathName();
         shareClient.getFileClient(fileName).create(2);
         shareClient.delete();
-        sleepIfRunningAgainstService(30000);
+        sleepIfLiveTesting(30000);
         ShareItem shareItem = primaryFileServiceClient.listShares(
             new ListSharesOptions()
                 .setPrefix(shareClient.getShareName())
@@ -377,7 +376,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         restoredShareClient.getFileClient(fileName).exists();
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreShareMax() {
         ShareClient shareClient = primaryFileServiceClient.getShareClient(generateShareName());
@@ -385,7 +384,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         String fileName = generatePathName();
         shareClient.getFileClient(fileName).create(2);
         shareClient.delete();
-        sleepIfRunningAgainstService(30000);
+        sleepIfLiveTesting(30000);
         ShareItem shareItem = primaryFileServiceClient.listShares(
             new ListSharesOptions()
                 .setPrefix(shareClient.getShareName())
@@ -398,7 +397,7 @@ public class FileServiceApiTests extends FileShareTestBase {
         assertTrue(restoredShareClient.getFileClient(fileName).exists());
     }
 
-    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2019-12-12")
+    @DisabledIf("com.azure.storage.file.share.FileShareTestBase#olderThan20191212ServiceVersion")
     @Test
     public void restoreShareError() {
         assertThrows(ShareStorageException.class, () -> primaryFileServiceClient.undeleteShare(generateShareName(),
@@ -410,8 +409,8 @@ public class FileServiceApiTests extends FileShareTestBase {
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     public void perCallPolicy() {
-        ShareServiceClient serviceClient = getServiceClientBuilder(ENVIRONMENT.getPrimaryAccount().getCredential(),
-            primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy()).buildClient();
+        ShareServiceClient serviceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+            primaryFileServiceClient.getFileServiceUrl(), getPerCallVersionPolicy());
         Response<ShareServiceProperties> response = serviceClient.getPropertiesWithResponse(null, null);
         assertEquals(response.getHeaders().getValue(X_MS_VERSION), "2017-11-09");
     }

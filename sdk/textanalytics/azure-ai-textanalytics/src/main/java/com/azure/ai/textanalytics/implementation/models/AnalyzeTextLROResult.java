@@ -5,19 +5,42 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
-import java.util.Objects;
 
 /** The AnalyzeTextLROResult model. */
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "kind",
+        defaultImpl = AnalyzeTextLROResult.class)
+@JsonTypeName("AnalyzeTextLROResult")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "EntityRecognitionLROResults", value = EntityRecognitionLROResult.class),
+    @JsonSubTypes.Type(name = "CustomEntityRecognitionLROResults", value = CustomEntityRecognitionLROResult.class),
+    @JsonSubTypes.Type(
+            name = "CustomSingleLabelClassificationLROResults",
+            value = CustomSingleLabelClassificationLROResult.class),
+    @JsonSubTypes.Type(
+            name = "CustomMultiLabelClassificationLROResults",
+            value = CustomMultiLabelClassificationLROResult.class),
+    @JsonSubTypes.Type(name = "EntityLinkingLROResults", value = EntityLinkingLROResult.class),
+    @JsonSubTypes.Type(name = "PiiEntityRecognitionLROResults", value = PiiEntityRecognitionLROResult.class),
+    @JsonSubTypes.Type(name = "ExtractiveSummarizationLROResults", value = ExtractiveSummarizationLROResult.class),
+    @JsonSubTypes.Type(name = "HealthcareLROResults", value = HealthcareLROResult.class),
+    @JsonSubTypes.Type(name = "SentimentAnalysisLROResults", value = SentimentLROResult.class),
+    @JsonSubTypes.Type(name = "KeyPhraseExtractionLROResults", value = KeyPhraseExtractionLROResult.class),
+    @JsonSubTypes.Type(name = "AbstractiveSummarizationLROResults", value = AbstractiveSummarizationLROResult.class)
+})
 @Fluent
 public class AnalyzeTextLROResult extends TaskState {
     /*
      * The taskName property.
      */
+    @JsonProperty(value = "taskName")
     private String taskName;
 
     /** Creates an instance of AnalyzeTextLROResult class. */
@@ -55,77 +78,5 @@ public class AnalyzeTextLROResult extends TaskState {
     public AnalyzeTextLROResult setStatus(State status) {
         super.setStatus(status);
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("lastUpdateDateTime", Objects.toString(getLastUpdateDateTime(), null));
-        jsonWriter.writeStringField("status", Objects.toString(getStatus(), null));
-        jsonWriter.writeStringField("taskName", this.taskName);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AnalyzeTextLROResult from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AnalyzeTextLROResult if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
-     * @throws IOException If an error occurs while reading the AnalyzeTextLROResult.
-     */
-    public static AnalyzeTextLROResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    String discriminatorValue = null;
-                    JsonReader readerToUse = reader.bufferObject();
-
-                    readerToUse.nextToken(); // Prepare for reading
-                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = readerToUse.getFieldName();
-                        readerToUse.nextToken();
-                        if ("kind".equals(fieldName)) {
-                            discriminatorValue = readerToUse.getString();
-                            break;
-                        } else {
-                            readerToUse.skipChildren();
-                        }
-                    }
-
-                    if (discriminatorValue != null) {
-                        readerToUse = readerToUse.reset();
-                    }
-                    // Use the discriminator value to determine which subtype should be deserialized.
-                    if ("EntityRecognitionLROResults".equals(discriminatorValue)) {
-                        return EntityRecognitionLROResult.fromJson(readerToUse);
-                    } else if ("CustomEntityRecognitionLROResults".equals(discriminatorValue)) {
-                        return CustomEntityRecognitionLROResult.fromJson(readerToUse);
-                    } else if ("CustomSingleLabelClassificationLROResults".equals(discriminatorValue)) {
-                        return CustomSingleLabelClassificationLROResult.fromJson(readerToUse);
-                    } else if ("CustomMultiLabelClassificationLROResults".equals(discriminatorValue)) {
-                        return CustomMultiLabelClassificationLROResult.fromJson(readerToUse);
-                    } else if ("EntityLinkingLROResults".equals(discriminatorValue)) {
-                        return EntityLinkingLROResult.fromJson(readerToUse);
-                    } else if ("PiiEntityRecognitionLROResults".equals(discriminatorValue)) {
-                        return PiiEntityRecognitionLROResult.fromJson(readerToUse);
-                    } else if ("ExtractiveSummarizationLROResults".equals(discriminatorValue)) {
-                        return ExtractiveSummarizationLROResult.fromJson(readerToUse);
-                    } else if ("HealthcareLROResults".equals(discriminatorValue)) {
-                        return HealthcareLROResult.fromJson(readerToUse);
-                    } else if ("SentimentAnalysisLROResults".equals(discriminatorValue)) {
-                        return SentimentLROResult.fromJson(readerToUse);
-                    } else if ("KeyPhraseExtractionLROResults".equals(discriminatorValue)) {
-                        return KeyPhraseExtractionLROResult.fromJson(readerToUse);
-                    } else if ("AbstractiveSummarizationLROResults".equals(discriminatorValue)) {
-                        return AbstractiveSummarizationLROResult.fromJson(readerToUse);
-                    } else {
-                        throw new IllegalStateException(
-                                "Discriminator field 'kind' didn't match one of the expected values 'EntityRecognitionLROResults', 'CustomEntityRecognitionLROResults', 'CustomSingleLabelClassificationLROResults', 'CustomMultiLabelClassificationLROResults', 'EntityLinkingLROResults', 'PiiEntityRecognitionLROResults', 'ExtractiveSummarizationLROResults', 'HealthcareLROResults', 'SentimentAnalysisLROResults', 'KeyPhraseExtractionLROResults', or 'AbstractiveSummarizationLROResults'. It was: '"
-                                        + discriminatorValue
-                                        + "'.");
-                    }
-                });
     }
 }

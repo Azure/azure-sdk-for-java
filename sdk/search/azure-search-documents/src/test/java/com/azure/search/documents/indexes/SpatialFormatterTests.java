@@ -10,8 +10,6 @@ import com.azure.core.models.GeoPosition;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.SpatialFormatter;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -30,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 /**
  * Tests {@link SpatialFormatter}.
  */
-@Execution(ExecutionMode.CONCURRENT)
 public class SpatialFormatterTests {
     private final ClientLogger logger = new ClientLogger(SpatialFormatterTests.class);
 

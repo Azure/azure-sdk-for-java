@@ -12,10 +12,11 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.implementation.models.DataSourceCredentials;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
-/**
- * Represents a datasource definition, which can be used to configure an indexer.
- */
+/** Represents a datasource definition, which can be used to configure an indexer. */
 @Fluent
 public final class SearchIndexerDataSourceConnection implements JsonSerializable<SearchIndexerDataSourceConnection> {
 
@@ -43,13 +44,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * The data container for the datasource.
      */
     private SearchIndexerDataContainer container;
-
-    /*
-     * An explicit managed identity to use for this datasource. If not specified and the connection string is a managed
-     * identity, the system-assigned managed identity is used. If not specified, the value remains unchanged. If "none"
-     * is specified, the value of this property is cleared.
-     */
-    private SearchIndexerDataIdentity identity;
 
     /*
      * The data change detection policy for the datasource.
@@ -156,30 +150,6 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
     }
 
     /**
-     * Get the identity property: An explicit managed identity to use for this datasource. If not specified and the
-     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
-     * value remains unchanged. If "none" is specified, the value of this property is cleared.
-     *
-     * @return the identity value.
-     */
-    public SearchIndexerDataIdentity getIdentity() {
-        return this.identity;
-    }
-
-    /**
-     * Set the identity property: An explicit managed identity to use for this datasource. If not specified and the
-     * connection string is a managed identity, the system-assigned managed identity is used. If not specified, the
-     * value remains unchanged. If "none" is specified, the value of this property is cleared.
-     *
-     * @param identity the identity value to set.
-     * @return the SearchIndexerDataSourceConnection object itself.
-     */
-    public SearchIndexerDataSourceConnection setIdentity(SearchIndexerDataIdentity identity) {
-        this.identity = identity;
-        return this;
-    }
-
-    /**
      * Get the dataChangeDetectionPolicy property: The data change detection policy for the datasource.
      *
      * @return the dataChangeDetectionPolicy value.
@@ -194,8 +164,8 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param dataChangeDetectionPolicy the dataChangeDetectionPolicy value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
-    public SearchIndexerDataSourceConnection
-        setDataChangeDetectionPolicy(DataChangeDetectionPolicy dataChangeDetectionPolicy) {
+    public SearchIndexerDataSourceConnection setDataChangeDetectionPolicy(
+            DataChangeDetectionPolicy dataChangeDetectionPolicy) {
         this.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
         return this;
     }
@@ -215,8 +185,8 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param dataDeletionDetectionPolicy the dataDeletionDetectionPolicy value to set.
      * @return the SearchIndexerDataSourceConnection object itself.
      */
-    public SearchIndexerDataSourceConnection
-        setDataDeletionDetectionPolicy(DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
+    public SearchIndexerDataSourceConnection setDataDeletionDetectionPolicy(
+            DataDeletionDetectionPolicy dataDeletionDetectionPolicy) {
         this.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
         return this;
     }
@@ -278,10 +248,9 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeStringField("description", this.description);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("type", Objects.toString(this.type, null));
         jsonWriter.writeJsonField("credentials", this.credentials);
         jsonWriter.writeJsonField("container", this.container);
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeJsonField("dataChangeDetectionPolicy", this.dataChangeDetectionPolicy);
         jsonWriter.writeJsonField("dataDeletionDetectionPolicy", this.dataDeletionDetectionPolicy);
         jsonWriter.writeStringField("@odata.etag", this.eTag);
@@ -294,67 +263,71 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerDataSourceConnection if the JsonReader was pointing to an instance of it, or
-     * null if it was pointing to JSON null.
+     *     null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerDataSourceConnection.
      */
     public static SearchIndexerDataSourceConnection fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            boolean nameFound = false;
-            String name = null;
-            String description = null;
-            SearchIndexerDataSourceType type = null;
-            DataSourceCredentials credentials = null;
-            SearchIndexerDataContainer container = null;
-            SearchIndexerDataIdentity identity = null;
-            DataChangeDetectionPolicy dataChangeDetectionPolicy = null;
-            DataDeletionDetectionPolicy dataDeletionDetectionPolicy = null;
-            String eTag = null;
-            SearchResourceEncryptionKey encryptionKey = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                    nameFound = true;
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = SearchIndexerDataSourceType.fromString(reader.getString());
-                } else if ("credentials".equals(fieldName)) {
-                    credentials = DataSourceCredentials.fromJson(reader);
-                } else if ("container".equals(fieldName)) {
-                    container = SearchIndexerDataContainer.fromJson(reader);
-                } else if ("identity".equals(fieldName)) {
-                    identity = SearchIndexerDataIdentity.fromJson(reader);
-                } else if ("dataChangeDetectionPolicy".equals(fieldName)) {
-                    dataChangeDetectionPolicy = DataChangeDetectionPolicy.fromJson(reader);
-                } else if ("dataDeletionDetectionPolicy".equals(fieldName)) {
-                    dataDeletionDetectionPolicy = DataDeletionDetectionPolicy.fromJson(reader);
-                } else if ("@odata.etag".equals(fieldName)) {
-                    eTag = reader.getString();
-                } else if ("encryptionKey".equals(fieldName)) {
-                    encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            if (nameFound) {
-                SearchIndexerDataSourceConnection deserializedSearchIndexerDataSourceConnection
-                    = new SearchIndexerDataSourceConnection(name);
-                deserializedSearchIndexerDataSourceConnection.description = description;
-                deserializedSearchIndexerDataSourceConnection.type = type;
-                deserializedSearchIndexerDataSourceConnection.credentials = credentials;
-                deserializedSearchIndexerDataSourceConnection.container = container;
-                deserializedSearchIndexerDataSourceConnection.identity = identity;
-                deserializedSearchIndexerDataSourceConnection.dataChangeDetectionPolicy = dataChangeDetectionPolicy;
-                deserializedSearchIndexerDataSourceConnection.dataDeletionDetectionPolicy = dataDeletionDetectionPolicy;
-                deserializedSearchIndexerDataSourceConnection.eTag = eTag;
-                deserializedSearchIndexerDataSourceConnection.encryptionKey = encryptionKey;
-                return deserializedSearchIndexerDataSourceConnection;
-            }
-            throw new IllegalStateException("Missing required property: name");
-        });
+        return jsonReader.readObject(
+                reader -> {
+                    boolean nameFound = false;
+                    String name = null;
+                    String description = null;
+                    SearchIndexerDataSourceType type = null;
+                    DataSourceCredentials credentials = null;
+                    SearchIndexerDataContainer container = null;
+                    DataChangeDetectionPolicy dataChangeDetectionPolicy = null;
+                    DataDeletionDetectionPolicy dataDeletionDetectionPolicy = null;
+                    String eTag = null;
+                    SearchResourceEncryptionKey encryptionKey = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+                        if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                            nameFound = true;
+                        } else if ("description".equals(fieldName)) {
+                            description = reader.getString();
+                        } else if ("type".equals(fieldName)) {
+                            type = SearchIndexerDataSourceType.fromString(reader.getString());
+                        } else if ("credentials".equals(fieldName)) {
+                            credentials = DataSourceCredentials.fromJson(reader);
+                        } else if ("container".equals(fieldName)) {
+                            container = SearchIndexerDataContainer.fromJson(reader);
+                        } else if ("dataChangeDetectionPolicy".equals(fieldName)) {
+                            dataChangeDetectionPolicy = DataChangeDetectionPolicy.fromJson(reader);
+                        } else if ("dataDeletionDetectionPolicy".equals(fieldName)) {
+                            dataDeletionDetectionPolicy = DataDeletionDetectionPolicy.fromJson(reader);
+                        } else if ("@odata.etag".equals(fieldName)) {
+                            eTag = reader.getString();
+                        } else if ("encryptionKey".equals(fieldName)) {
+                            encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (nameFound) {
+                        SearchIndexerDataSourceConnection deserializedSearchIndexerDataSourceConnection =
+                                new SearchIndexerDataSourceConnection(name);
+                        deserializedSearchIndexerDataSourceConnection.description = description;
+                        deserializedSearchIndexerDataSourceConnection.type = type;
+                        deserializedSearchIndexerDataSourceConnection.credentials = credentials;
+                        deserializedSearchIndexerDataSourceConnection.container = container;
+                        deserializedSearchIndexerDataSourceConnection.dataChangeDetectionPolicy =
+                                dataChangeDetectionPolicy;
+                        deserializedSearchIndexerDataSourceConnection.dataDeletionDetectionPolicy =
+                                dataDeletionDetectionPolicy;
+                        deserializedSearchIndexerDataSourceConnection.eTag = eTag;
+                        deserializedSearchIndexerDataSourceConnection.encryptionKey = encryptionKey;
+                        return deserializedSearchIndexerDataSourceConnection;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!nameFound) {
+                        missingProperties.add("name");
+                    }
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 
     /**
@@ -365,12 +338,15 @@ public final class SearchIndexerDataSourceConnection implements JsonSerializable
      * @param connectionString The connection string for the datasource.
      * @param container The data container for the datasource.
      */
-    public SearchIndexerDataSourceConnection(String name, SearchIndexerDataSourceType type, String connectionString,
-        SearchIndexerDataContainer container) {
+    public SearchIndexerDataSourceConnection(
+            String name,
+            SearchIndexerDataSourceType type,
+            String connectionString,
+            SearchIndexerDataContainer container) {
         this.name = name;
         this.type = type;
-        this.credentials
-            = (connectionString == null) ? null : new DataSourceCredentials().setConnectionString(connectionString);
+        this.credentials =
+                (connectionString == null) ? null : new DataSourceCredentials().setConnectionString(connectionString);
         this.container = container;
     }
 

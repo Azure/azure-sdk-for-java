@@ -23,283 +23,146 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.monitor.query.implementation.metricsdefinitions.models.ErrorContractException;
 import com.azure.monitor.query.implementation.metricsdefinitions.models.ErrorResponseException;
 import com.azure.monitor.query.implementation.metricsdefinitions.models.MetricDefinition;
 import com.azure.monitor.query.implementation.metricsdefinitions.models.MetricDefinitionCollection;
-import com.azure.monitor.query.implementation.metricsdefinitions.models.SubscriptionScopeMetricDefinition;
-import com.azure.monitor.query.implementation.metricsdefinitions.models.SubscriptionScopeMetricDefinitionCollection;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in MetricDefinitions.
- */
+/** An instance of this class provides access to all the operations defined in MetricDefinitions. */
 public final class MetricDefinitionsImpl {
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final MetricDefinitionsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final MetricsDefinitionsClientImpl client;
 
     /**
      * Initializes an instance of MetricDefinitions.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     MetricDefinitionsImpl(MetricsDefinitionsClientImpl client) {
-        this.service
-            = RestProxy.create(MetricDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+                RestProxy.create(
+                        MetricDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureMonitorMetricsDefinitionsAPIMetricDefinitions to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for MonitorManagementClientMetricDefinitions to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureMonitorMetricsD")
+    @ServiceInterface(name = "MonitorManagementCli")
     public interface MetricDefinitionsService {
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metricDefinitions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<Response<SubscriptionScopeMetricDefinitionCollection>> listAtSubscriptionScope(
-            @HostParam("$host") String host, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @QueryParam("region") String region,
-            @QueryParam("metricnamespace") String metricnamespace, @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metricDefinitions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Response<SubscriptionScopeMetricDefinitionCollection> listAtSubscriptionScopeSync(
-            @HostParam("$host") String host, @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion, @QueryParam("region") String region,
-            @QueryParam("metricnamespace") String metricnamespace, @HeaderParam("Accept") String accept,
-            Context context);
+        @Get("/{resourceUri}/providers/Microsoft.Insights/metricDefinitions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Mono<Response<MetricDefinitionCollection>> list(
+                @HostParam("$host") String host,
+                @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("metricnamespace") String metricnamespace,
+                @HeaderParam("Accept") String accept,
+                Context context);
 
         @Get("/{resourceUri}/providers/Microsoft.Insights/metricDefinitions")
-        @ExpectedResponses({ 200 })
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<Response<MetricDefinitionCollection>> list(@HostParam("$host") String host,
-            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion, @QueryParam("metricnamespace") String metricnamespace,
-            @HeaderParam("Accept") String accept, Context context);
-
-        @Get("/{resourceUri}/providers/Microsoft.Insights/metricDefinitions")
-        @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Response<MetricDefinitionCollection> listSync(@HostParam("$host") String host,
-            @PathParam(value = "resourceUri", encoded = true) String resourceUri,
-            @QueryParam("api-version") String apiVersion, @QueryParam("metricnamespace") String metricnamespace,
-            @HeaderParam("Accept") String accept, Context context);
-    }
-
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SubscriptionScopeMetricDefinition>> listAtSubscriptionScopeSinglePageAsync(String region,
-        String metricnamespace) {
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listAtSubscriptionScope(this.client.getHost(),
-                this.client.getSubscriptionId(), this.client.getApiVersion(), region, metricnamespace, accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), null, null));
-    }
-
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<SubscriptionScopeMetricDefinition>> listAtSubscriptionScopeSinglePageAsync(String region,
-        String metricnamespace, Context context) {
-        final String accept = "application/json";
-        return service
-            .listAtSubscriptionScope(this.client.getHost(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), region, metricnamespace, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), null, null));
-    }
-
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SubscriptionScopeMetricDefinition> listAtSubscriptionScopeAsync(String region,
-        String metricnamespace) {
-        return new PagedFlux<>(() -> listAtSubscriptionScopeSinglePageAsync(region, metricnamespace));
-    }
-
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<SubscriptionScopeMetricDefinition> listAtSubscriptionScopeAsync(String region,
-        String metricnamespace, Context context) {
-        return new PagedFlux<>(() -> listAtSubscriptionScopeSinglePageAsync(region, metricnamespace, context));
-    }
-
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SubscriptionScopeMetricDefinition> listAtSubscriptionScopeSinglePage(String region,
-        String metricnamespace) {
-        final String accept = "application/json";
-        Response<SubscriptionScopeMetricDefinitionCollection> res
-            = service.listAtSubscriptionScopeSync(this.client.getHost(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), region, metricnamespace, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), null, null);
-    }
-
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions along with {@link PagedResponse}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SubscriptionScopeMetricDefinition> listAtSubscriptionScopeSinglePage(String region,
-        String metricnamespace, Context context) {
-        final String accept = "application/json";
-        Response<SubscriptionScopeMetricDefinitionCollection> res
-            = service.listAtSubscriptionScopeSync(this.client.getHost(), this.client.getSubscriptionId(),
-                this.client.getApiVersion(), region, metricnamespace, accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), null, null);
-    }
-
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionScopeMetricDefinition> listAtSubscriptionScope(String region,
-        String metricnamespace) {
-        return new PagedIterable<>(() -> listAtSubscriptionScopeSinglePage(region, metricnamespace, Context.NONE));
-    }
-
-    /**
-     * Lists the metric definitions for the subscription.
-     * 
-     * @param region The region where the metrics you want reside.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents collection of metric definitions as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionScopeMetricDefinition> listAtSubscriptionScope(String region,
-        String metricnamespace, Context context) {
-        return new PagedIterable<>(() -> listAtSubscriptionScopeSinglePage(region, metricnamespace, context));
+        Response<MetricDefinitionCollection> listSync(
+                @HostParam("$host") String host,
+                @PathParam(value = "resourceUri", encoded = true) String resourceUri,
+                @QueryParam("api-version") String apiVersion,
+                @QueryParam("metricnamespace") String metricnamespace,
+                @HeaderParam("Accept") String accept,
+                Context context);
     }
 
     /**
      * Lists the metric definitions for the resource.
-     * 
+     *
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents collection of metric definitions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<MetricDefinition>> listSinglePageAsync(String resourceUri, String metricnamespace) {
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (resourceUri == null) {
+            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
+        }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.list(this.client.getHost(), resourceUri, this.client.getApiVersion(),
-                metricnamespace, accept, context))
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), null, null));
+        return FluxUtil.withContext(
+                        context ->
+                                service.list(
+                                        this.client.getHost(),
+                                        resourceUri,
+                                        this.client.getApiVersion(),
+                                        metricnamespace,
+                                        accept,
+                                        context))
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        null,
+                                        null));
     }
 
     /**
      * Lists the metric definitions for the resource.
-     * 
+     *
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents collection of metric definitions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<MetricDefinition>> listSinglePageAsync(String resourceUri, String metricnamespace,
-        Context context) {
+    public Mono<PagedResponse<MetricDefinition>> listSinglePageAsync(
+            String resourceUri, String metricnamespace, Context context) {
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (resourceUri == null) {
+            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
+        }
         final String accept = "application/json";
-        return service
-            .list(this.client.getHost(), resourceUri, this.client.getApiVersion(), metricnamespace, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().getValue(), null, null));
+        return service.list(
+                        this.client.getHost(),
+                        resourceUri,
+                        this.client.getApiVersion(),
+                        metricnamespace,
+                        accept,
+                        context)
+                .map(
+                        res ->
+                                new PagedResponseBase<>(
+                                        res.getRequest(),
+                                        res.getStatusCode(),
+                                        res.getHeaders(),
+                                        res.getValue().getValue(),
+                                        null,
+                                        null));
     }
 
     /**
      * Lists the metric definitions for the resource.
-     * 
+     *
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -312,9 +175,9 @@ public final class MetricDefinitionsImpl {
 
     /**
      * Lists the metric definitions for the resource.
-     * 
+     *
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -328,9 +191,9 @@ public final class MetricDefinitionsImpl {
 
     /**
      * Lists the metric definitions for the resource.
-     * 
+     *
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -338,18 +201,30 @@ public final class MetricDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricDefinition> listSinglePage(String resourceUri, String metricnamespace) {
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (resourceUri == null) {
+            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
+        }
         final String accept = "application/json";
-        Response<MetricDefinitionCollection> res = service.listSync(this.client.getHost(), resourceUri,
-            this.client.getApiVersion(), metricnamespace, accept, Context.NONE);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), null, null);
+        Response<MetricDefinitionCollection> res =
+                service.listSync(
+                        this.client.getHost(),
+                        resourceUri,
+                        this.client.getApiVersion(),
+                        metricnamespace,
+                        accept,
+                        Context.NONE);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
      * Lists the metric definitions for the resource.
-     * 
+     *
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -358,18 +233,30 @@ public final class MetricDefinitionsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<MetricDefinition> listSinglePage(String resourceUri, String metricnamespace, Context context) {
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (resourceUri == null) {
+            throw new IllegalArgumentException("Parameter resourceUri is required and cannot be null.");
+        }
         final String accept = "application/json";
-        Response<MetricDefinitionCollection> res = service.listSync(this.client.getHost(), resourceUri,
-            this.client.getApiVersion(), metricnamespace, accept, context);
-        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-            res.getValue().getValue(), null, null);
+        Response<MetricDefinitionCollection> res =
+                service.listSync(
+                        this.client.getHost(),
+                        resourceUri,
+                        this.client.getApiVersion(),
+                        metricnamespace,
+                        accept,
+                        context);
+        return new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(), null, null);
     }
 
     /**
      * Lists the metric definitions for the resource.
-     * 
+     *
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -382,9 +269,9 @@ public final class MetricDefinitionsImpl {
 
     /**
      * Lists the metric definitions for the resource.
-     * 
+     *
      * @param resourceUri The identifier of the resource.
-     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param metricnamespace Metric namespace to query metric definitions for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.

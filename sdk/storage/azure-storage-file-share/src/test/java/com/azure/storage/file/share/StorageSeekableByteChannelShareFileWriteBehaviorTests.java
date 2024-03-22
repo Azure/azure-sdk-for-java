@@ -6,8 +6,6 @@ package com.azure.storage.file.share;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.test.utils.TestUtils;
-import com.azure.core.util.Context;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.ShareFileProperties;
@@ -18,56 +16,73 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentMatcher;
+import org.mockito.ArgumentMatchers;
+import org.mockito.Mockito;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.time.Duration;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileShareTestBase {
     @ParameterizedTest
     @MethodSource("writeBehaviorWriteCallsToClientCorrectlySupplier")
     public void writeBehaviorWriteCallsToClientCorrectly(int offset, ShareRequestConditions conditions,
         FileLastWrittenMode mode) throws IOException {
+        ShareFileClient client = Mockito.mock(ShareFileClient.class);
+        StorageSeekableByteChannelShareFileWriteBehavior behavior =
+            new StorageSeekableByteChannelShareFileWriteBehavior(client, conditions, mode);
         // Stubbed ShareFileUploadInfo
         ShareFileUploadInfo stubbedUploadInfo = new ShareFileUploadInfo("randomEtag", testResourceNamer.now(),
             new byte[0], false);
+
         // Stubbed Response
         Response<ShareFileUploadInfo> stubbedResponse = new SimpleResponse<>(null, 200, new HttpHeaders(),
             stubbedUploadInfo);
 
-        AtomicInteger uploadRangeCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null) {
-            @Override
-            public Response<ShareFileUploadInfo> uploadRangeWithResponse(ShareFileUploadRangeOptions options,
-                Duration timeout, Context context) {
-                assertNull(timeout);
-                assertNull(context);
-                uploadRangeCallCount.incrementAndGet();
-                assertEquals(offset, options.getOffset());
-                assertEquals(conditions, options.getRequestConditions());
-                assertEquals(mode, options.getLastWrittenMode());
-                TestUtils.assertArraysEqual(DATA.getDefaultBytes(), getBytes(options.getDataStream()));
-
-                return stubbedResponse;
-            }
-        };
-
-        StorageSeekableByteChannelShareFileWriteBehavior behavior =
-            new StorageSeekableByteChannelShareFileWriteBehavior(client, conditions, mode);
+        when(client.uploadRangeWithResponse(ArgumentMatchers.argThat(new ShareFileUploadRangeOptionsMatcher(offset,
+            conditions, mode)), isNull(), isNull()))
+            .thenReturn(stubbedResponse);
 
         behavior.write(DATA.getDefaultData(), offset);
-        assertEquals(1, uploadRangeCallCount.get());
+
+        verify(client, times(1)).uploadRangeWithResponse(any(), isNull(), isNull());
     }
 
-    private static byte[] getBytes(InputStream is) {
+    private static class ShareFileUploadRangeOptionsMatcher implements ArgumentMatcher<ShareFileUploadRangeOptions> {
+        private final int offset;
+        private final ShareRequestConditions conditions;
+        private final FileLastWrittenMode mode;
+
+        ShareFileUploadRangeOptionsMatcher(int offset, ShareRequestConditions conditions, FileLastWrittenMode mode) {
+            this.offset = offset;
+            this.conditions = conditions;
+            this.mode = mode;
+        }
+
+        @Override
+        public boolean matches(ShareFileUploadRangeOptions options) {
+            try {
+                return options.getOffset() == offset && (conditions == null ? options.getRequestConditions() == null
+                    : conditions.equals(options.getRequestConditions()))
+                    && (mode == null ? options.getLastWrittenMode() == null : mode.equals(options.getLastWrittenMode()))
+                    && Arrays.equals(getBytes(options.getDataStream()), DATA.getDefaultBytes());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    private static byte[] getBytes(InputStream is) throws IOException {
         try (ByteArrayOutputStream buffer = new ByteArrayOutputStream()) {
             int bytesRead;
             // reading the content of the stream within a byte buffer
@@ -78,8 +93,6 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
             }
 
             return buffer.toByteArray();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 
@@ -94,20 +107,16 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     @ParameterizedTest
     @MethodSource("writeBehaviorCanSeekAnywhereInFileRangeSupplier")
     public void writeBehaviorCanSeekAnywhereInFileRange(long fileSize, int position) {
-        AtomicInteger getPropertiesCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null) {
-            @Override
-            public ShareFileProperties getProperties() {
-                getPropertiesCallCount.incrementAndGet();
-                return new ShareFileProperties(null, null, null, null, fileSize, null,
-                    null, null, null, null, null, null, null, null, null, null, null, null);
-            }
-        };
+        ShareFileClient client = Mockito.mock(ShareFileClient.class);
         StorageSeekableByteChannelShareFileWriteBehavior behavior =
             new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
+        when(client.getProperties())
+            .thenReturn(new ShareFileProperties(null, null, null, null, fileSize, null,
+                null, null, null, null, null, null, null, null, null, null, null, null));
 
         behavior.assertCanSeek(position);
-        assertEquals(1, getPropertiesCallCount.get());
+
+        verify(client, times(1)).getProperties();
     }
 
     private static Stream<Arguments> writeBehaviorCanSeekAnywhereInFileRangeSupplier() {
@@ -120,21 +129,16 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
     @ParameterizedTest
     @MethodSource("writeBehaviorThrowsWhenSeekingBeyondRangeSupplier")
     public void writeBehaviorThrowsWhenSeekingBeyondRange(long fileSize, int position) {
-        AtomicInteger getPropertiesCallCount = new AtomicInteger(0);
-        ShareFileClient client = new ShareFileClient(null) {
-            @Override
-            public ShareFileProperties getProperties() {
-                getPropertiesCallCount.incrementAndGet();
-                return new ShareFileProperties(null, null, null, null, fileSize, null,
-                    null, null, null, null, null, null, null, null, null, null, null, null);
-            }
-        };
-
+        ShareFileClient client = Mockito.mock(ShareFileClient.class);
         StorageSeekableByteChannelShareFileWriteBehavior behavior =
             new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
+        when(client.getProperties())
+            .thenReturn(new ShareFileProperties(null, null, null, null, fileSize, null,
+                null, null, null, null, null, null, null, null, null, null, null, null));
 
         assertThrows(UnsupportedOperationException.class, () -> behavior.assertCanSeek(position));
-        assertEquals(1, getPropertiesCallCount.get());
+
+        verify(client, times(1)).getProperties();
     }
 
     private static Stream<Arguments> writeBehaviorThrowsWhenSeekingBeyondRangeSupplier() {
@@ -145,7 +149,7 @@ public class StorageSeekableByteChannelShareFileWriteBehaviorTests extends FileS
 
     @Test
     public void writeBehaviorTruncateUnsupported() {
-        ShareFileClient client = new ShareFileClient(null);
+        ShareFileClient client = Mockito.mock(ShareFileClient.class);
         StorageSeekableByteChannelShareFileWriteBehavior behavior =
             new StorageSeekableByteChannelShareFileWriteBehavior(client, null, null);
         assertThrows(UnsupportedOperationException.class, () -> behavior.resize(10));

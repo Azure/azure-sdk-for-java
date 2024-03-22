@@ -4,7 +4,6 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
@@ -22,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -95,7 +95,7 @@ class StorageSeekableByteChannelBlockBlobWriteBehavior implements StorageSeekabl
 
     @Override
     public void write(ByteBuffer src, long destOffset) throws IOException {
-        String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(UTF_8));
+        String blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(UTF_8));
         BlockBlobStageBlockOptions options = new BlockBlobStageBlockOptions(blockId, BinaryData.fromByteBuffer(src));
         if (conditions != null) {
             options.setLeaseId(conditions.getLeaseId());
