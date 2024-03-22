@@ -3,10 +3,11 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.models.Header;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
-import okhttp3.Response;
+import com.generic.core.http.models.HttpHeader;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
+import com.generic.core.http.models.Response;
+import okhttp3.Headers;
 
 import java.util.Iterator;
 import java.util.List;
@@ -14,21 +15,21 @@ import java.util.Map;
 import java.util.stream.Stream;
 
 /**
- * Wraps an {@link okhttp3.Headers OkHttp Headers} instance and provides a {@link Headers generic-core Headers} view
- * onto it. This avoids the need to copy the {@link okhttp3.Headers OkHttp Headers} into a
- * {@link Headers generic-core Headers} instance. Whilst it's not necessary to support mutability (as these headers
+ * Wraps an {@link Headers OkHttp Headers} instance and provides a {@link HttpHeaders generic-core Headers} view
+ * onto it. This avoids the need to copy the {@link Headers OkHttp Headers} into a
+ * {@link HttpHeaders generic-core Headers} instance. Whilst it's not necessary to support mutability (as these headers
  * are the result of an {@link Response OkHttp Response}), we do so in any case, given the additional implementation
  * cost is minimal.
  */
-public final class OkHttpToCoreHttpHeadersWrapper extends Headers {
-    private final okhttp3.Headers okhttpHeaders;
+public final class OkHttpToCoreHttpHeadersWrapper extends HttpHeaders {
+    private final Headers okhttpHeaders;
 
-    private Headers coreHeaders;
+    private HttpHeaders coreHeaders;
     private boolean converted = false;
 
-    public OkHttpToCoreHttpHeadersWrapper(okhttp3.Headers okhttpHeaders) {
+    public OkHttpToCoreHttpHeadersWrapper(Headers okhttpHeaders) {
         this.okhttpHeaders = okhttpHeaders;
-        this.coreHeaders = new Headers(okhttpHeaders.size() * 2);
+        this.coreHeaders = new HttpHeaders(okhttpHeaders.size() * 2);
     }
 
     @Override
@@ -37,7 +38,7 @@ public final class OkHttpToCoreHttpHeadersWrapper extends Headers {
     }
 
     @Override
-    public Headers add(HeaderName name, String value) {
+    public HttpHeaders add(HttpHeaderName name, String value) {
         if (name == null || value == null) {
             return this;
         }
@@ -51,7 +52,7 @@ public final class OkHttpToCoreHttpHeadersWrapper extends Headers {
 
 
     @Override
-    public Headers set(HeaderName name, String value) {
+    public HttpHeaders set(HttpHeaderName name, String value) {
         if (name == null) {
             return this;
         }
@@ -64,7 +65,7 @@ public final class OkHttpToCoreHttpHeadersWrapper extends Headers {
     }
 
     @Override
-    public Headers set(HeaderName name, List<String> values) {
+    public HttpHeaders set(HttpHeaderName name, List<String> values) {
         if (name == null) {
             return this;
         }
@@ -77,7 +78,7 @@ public final class OkHttpToCoreHttpHeadersWrapper extends Headers {
     }
 
     @Override
-    public Headers setAll(Map<String, List<String>> headers) {
+    public HttpHeaders setAll(Map<String, List<String>> headers) {
         convertIfNeeded();
 
         coreHeaders.setAll(headers);
@@ -86,7 +87,7 @@ public final class OkHttpToCoreHttpHeadersWrapper extends Headers {
     }
 
     @Override
-    public Headers setAllHeaders(Headers headers) {
+    public HttpHeaders setAllHeaders(HttpHeaders headers) {
         convertIfNeeded();
 
         coreHeaders.setAllHeaders(headers);
@@ -95,28 +96,28 @@ public final class OkHttpToCoreHttpHeadersWrapper extends Headers {
     }
 
     @Override
-    public Header get(HeaderName name) {
+    public HttpHeader get(HttpHeaderName name) {
         convertIfNeeded();
 
         return coreHeaders.get(name);
     }
 
     @Override
-    public Header remove(HeaderName name) {
+    public HttpHeader remove(HttpHeaderName name) {
         convertIfNeeded();
 
         return coreHeaders.remove(name);
     }
 
     @Override
-    public String getValue(HeaderName name) {
+    public String getValue(HttpHeaderName name) {
         convertIfNeeded();
 
         return coreHeaders.getValue(name);
     }
 
     @Override
-    public List<String> getValues(HeaderName name) {
+    public List<String> getValues(HttpHeaderName name) {
         convertIfNeeded();
 
         return coreHeaders.getValues(name);
@@ -130,14 +131,14 @@ public final class OkHttpToCoreHttpHeadersWrapper extends Headers {
     }
 
     @Override
-    public Iterator<Header> iterator() {
+    public Iterator<HttpHeader> iterator() {
         convertIfNeeded();
 
         return coreHeaders.iterator();
     }
 
     @Override
-    public Stream<Header> stream() {
+    public Stream<HttpHeader> stream() {
         convertIfNeeded();
 
         return coreHeaders.stream();

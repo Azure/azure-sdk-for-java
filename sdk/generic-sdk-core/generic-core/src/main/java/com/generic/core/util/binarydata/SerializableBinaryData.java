@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.models;
+package com.generic.core.util.binarydata;
 
-import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -17,28 +15,32 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * A {@link BinaryData} implementation backed by a {@link ByteBuffer}.
+ * A {@link BinaryData} implementation backed by a serializable object.
  */
-public final class ByteBufferBinaryData extends BinaryData {
-    private final ByteBuffer content;
+public final class SerializableBinaryData extends BinaryData {
+    private final Object content;
+    private final ObjectSerializer serializer;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<ByteBufferBinaryData, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(ByteBufferBinaryData.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<SerializableBinaryData, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(SerializableBinaryData.class, byte[].class, "bytes");
 
     /**
-     * Creates a new instance of {@link ByteBufferBinaryData}.
+     * Creates a new instance of {@link SerializableBinaryData}.
      *
-     * @param content The {@link ByteBuffer} content.
-     * @throws NullPointerException If {@code content} is null.
+     * @param content The serializable object that forms the content of this instance.
+     * @param serializer The serializer that serializes the {@code content}.
+     *
+     * @throws NullPointerException if {@code serializer} is null.
      */
-    public ByteBufferBinaryData(ByteBuffer content) {
-        this.content = Objects.requireNonNull(content, "'content' cannot be null.");
+    public SerializableBinaryData(Object content, ObjectSerializer serializer) {
+        this.content = content;
+        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
     }
 
     @Override
     public Long getLength() {
-        return (long) content.remaining();
+        return this.content == null ? null : (long) toBytes().length;
     }
 
     @Override
@@ -58,18 +60,12 @@ public final class ByteBufferBinaryData extends BinaryData {
 
     @Override
     public InputStream toStream() {
-        return new ByteArrayInputStream(toBytes());
+        return new ByteArrayInputStream(getBytes());
     }
 
     @Override
     public ByteBuffer toByteBuffer() {
-        return content.asReadOnlyBuffer();
-    }
-
-    @Override
-    public void writeTo(OutputStream outputStream) throws IOException {
-        ByteBuffer buffer = toByteBuffer();
-        ImplUtils.writeByteBufferToStream(buffer, outputStream);
+        return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
     }
 
     @Override
@@ -83,13 +79,7 @@ public final class ByteBufferBinaryData extends BinaryData {
     }
 
     private byte[] getBytes() {
-        byte[] bytes = new byte[content.remaining()];
-
-        content.mark();
-        content.get(bytes);
-        content.flip();
-
-        return bytes;
+        return serializer.serializeToBytes(content);
     }
 
     @Override

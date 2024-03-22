@@ -3,7 +3,7 @@
 
 package com.generic.core.http.pipeline;
 
-import com.generic.core.http.Response;
+import com.generic.core.http.models.Response;
 import com.generic.core.implementation.http.HttpPipelineCallState;
 
 /**

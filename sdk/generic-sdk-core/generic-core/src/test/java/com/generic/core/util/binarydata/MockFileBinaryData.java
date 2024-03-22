@@ -1,7 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.models;
+package com.generic.core.util.binarydata;
+
+import com.generic.core.models.MockPath;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

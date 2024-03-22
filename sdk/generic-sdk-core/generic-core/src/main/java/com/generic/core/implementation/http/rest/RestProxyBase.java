@@ -3,12 +3,14 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.exception.HttpResponseException;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
+import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
@@ -18,11 +20,9 @@ import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
 import com.generic.core.implementation.util.UrlBuilder;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.Context;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.Context;
+import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonSerializable;
 
@@ -160,7 +160,7 @@ public abstract class RestProxyBase {
         final HttpRequest request =
             configRequest(new HttpRequest(methodParser.getHttpMethod(), url), methodParser, objectSerializer, args);
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
-        Headers httpHeaders = request.getHeaders();
+        HttpHeaders httpHeaders = request.getHeaders();
 
         methodParser.setHeaders(args, httpHeaders, serializer);
 
@@ -172,7 +172,7 @@ public abstract class RestProxyBase {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
 
         if (bodyContentObject == null) {
-            request.getHeaders().set(HeaderName.CONTENT_LENGTH, "0");
+            request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, "0");
         } else {
             // We read the content type from the @BodyParam annotation
             String contentType = methodParser.getBodyContentType();
@@ -187,13 +187,13 @@ public abstract class RestProxyBase {
                 }
             }
 
-            request.getHeaders().set(HeaderName.CONTENT_TYPE, contentType);
+            request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, contentType);
 
             if (bodyContentObject instanceof BinaryData) {
                 BinaryData binaryData = (BinaryData) bodyContentObject;
 
                 if (binaryData.getLength() != null) {
-                    request.getHeaders().set(HeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
+                    request.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
                 }
 
                 // The request body is not read here. BinaryData lazily converts the underlying content which is then
@@ -241,10 +241,10 @@ public abstract class RestProxyBase {
             .append(response.getStatusCode())
             .append(", ");
 
-        final String contentType = response.getHeaders().getValue(HeaderName.CONTENT_TYPE);
+        final String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
 
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = response.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
+            String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
 
             exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseBody == null || responseBody.length == 0) {
