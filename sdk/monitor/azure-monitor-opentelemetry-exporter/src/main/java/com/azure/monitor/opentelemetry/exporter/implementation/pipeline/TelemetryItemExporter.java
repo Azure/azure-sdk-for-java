@@ -137,8 +137,10 @@ public class TelemetryItemExporter {
         List<ByteBuffer> byteBuffers;
         // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
         // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
+        // Don't send _OTELRESOURCE_ custom metric when Resource is the default, telemetry is sent via track method
         // insert _OTELRESOURCE_ at the beginning of each batch
-        if (!"Statsbeat".equals(telemetryItems.get(0).getName())) {
+        if (!"Statsbeat".equals(telemetryItems.get(0).getName()) 
+            && !telemetryItemBatchKey.resource.equals(Resource.getDefault())) {
             telemetryItems.add(0, createOtelResourceMetric(telemetryItemBatchKey));
         }
         try {
