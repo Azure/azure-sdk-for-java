@@ -29,7 +29,7 @@ public class TextTranslationClientBase extends TestProxyTestBase {
     public void beforeTest() {
         if (getTestMode() != TestMode.LIVE) {
             interceptorManager.addMatchers(Collections.singletonList(new CustomMatcher()
-                .setHeadersKeyOnlyMatch(Arrays.asList("Ocp-Apim-Subscription-Region" , "Ocp-Apim-ResourceId"))));
+                .setHeadersKeyOnlyMatch(Arrays.asList("Ocp-Apim-Subscription-Region", "Ocp-Apim-ResourceId"))));
         }
     }
 
