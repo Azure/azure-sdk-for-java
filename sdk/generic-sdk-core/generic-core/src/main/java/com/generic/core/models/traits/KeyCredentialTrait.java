@@ -6,8 +6,8 @@ package com.generic.core.models.traits;
 import com.generic.core.credential.KeyCredential;
 
 /**
- * An {@link com.generic.core.models.traits SDK for Java trait} providing a consistent interface for setting
- * {@link KeyCredential}. Refer to the SDK for Java
+ * A {@link com.generic.core.models.traits trait} providing a consistent interface for setting {@link KeyCredential}.
+ * Refer to the SDK for Java
  * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a> documentation for more details on
  * proper usage of the {@link KeyCredential} type.
  *

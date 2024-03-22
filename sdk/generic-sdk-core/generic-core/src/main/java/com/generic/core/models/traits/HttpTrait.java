@@ -11,8 +11,8 @@ import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 
 /**
- * An {@link com.generic.core.models.traits SDK for Java trait} providing a consistent interface for configuration of
- * HTTP-specific settings. Refer to the SDK for Java
+ * A {@link com.generic.core.models.traits trait} providing a consistent interface for configuration of HTTP-specific
+ * settings. Refer to the SDK for Java
  * <a href="https://aka.ms/azsdk/java/docs/http-client-pipeline">HTTP clients and pipelines</a> documentation for more
  * details on proper usage and configuration of the SDK for Javan HTTP clients.
  *
@@ -135,10 +135,10 @@ public interface HttpTrait<T extends HttpTrait<T>> {
      * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
-     * @param httpRedirectOptions The {@link HttpRedirectOptions} to use for all the requests made through the client.
+     * @param redirectOptions The {@link HttpRedirectOptions} to use for all the requests made through the client.
      *
      * @return Returns the same concrete type with the appropriate properties updated, to allow for fluent chaining of
      * operations.
      */
-    T httpRedirectOptions(HttpRedirectOptions httpRedirectOptions);
+    T httpRedirectOptions(HttpRedirectOptions redirectOptions);
 }

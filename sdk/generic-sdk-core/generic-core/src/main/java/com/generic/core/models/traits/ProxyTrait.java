@@ -7,8 +7,8 @@ import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.ProxyOptions;
 
 /**
- * An {@link com.generic.core.models.traits SDK for Java trait} providing a consistent interface for configuration
- * of proxy-specific settings. Refer to the SDK for Java
+ * A {@link com.generic.core.models.traits trait} providing a consistent interface for configuration of proxy-specific
+ * settings. Refer to the SDK for Java
  * <a href="https://aka.ms/azsdk/java/docs/http-client-pipeline">HTTP clients and pipelines</a> documentation for more
  * details on proper usage and configuration of the SDK for Javan HTTP clients.
  *
@@ -18,7 +18,7 @@ import com.generic.core.http.models.ProxyOptions;
  * @see com.generic.core.models.traits
  * @see ProxyOptions
  */
-public interface ProxyTrait <T extends HttpTrait<T>> {
+public interface ProxyTrait<T extends ProxyTrait<T>> {
     /**
      * Sets the {@link ProxyOptions} to use with an {@link HttpClient} when sending and receiving requests to and from
      * the service.
