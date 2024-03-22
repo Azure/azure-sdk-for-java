@@ -879,7 +879,7 @@ public class ImplementationBridgeHelpers {
 
             String getSpanName(CosmosDiagnosticsContext ctx);
 
-            void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate);
+            void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate, boolean isSampledOut);
 
             Integer getSequenceNumber(CosmosDiagnosticsContext ctx);
 

@@ -168,6 +168,9 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                 });
         }
 
+        final boolean isSampledOut = tracerProvider.shouldSampleOutOperation(pagedFluxOptions);
+        final double samplingRateSnapshot = pagedFluxOptions.getSamplingRateSnapshot();
+
         Flux<FeedResponse<T>> result = tracerProvider
             .runUnderSpanInContext(publisher)
             .doOnEach(signal -> {
@@ -183,39 +186,51 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                             state.mergeDiagnosticsContext();
 
                             CosmosDiagnosticsContext ctxSnapshot = state.getDiagnosticsContextSnapshot();
+
+                            ctxAccessor
+                                .setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot, isSampledOut);
+
                             tracerProvider.recordFeedResponseConsumerLatency(
                                 signal,
                                 ctxSnapshot,
                                 Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
-                            tracerProvider.endSpan(ctxSnapshot, traceCtx, ctxAccessor.isEmptyCompletion(ctxSnapshot));
+                            tracerProvider.endSpan(ctxSnapshot, traceCtx, ctxAccessor.isEmptyCompletion(ctxSnapshot), isSampledOut);
 
                             break;
                         case ON_NEXT:
                             this.recordFeedResponse(pagedFluxOptions, tracerProvider, response, feedResponseConsumerLatencyInNanos);
                             state.mergeDiagnosticsContext();
-                            tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx, false);
+                            CosmosDiagnosticsContext ctxSnapshotOnNext = state.getDiagnosticsContextSnapshot();
+                            ctxAccessor
+                                .setSamplingRateSnapshot(ctxSnapshotOnNext, samplingRateSnapshot, isSampledOut);
+                            tracerProvider.endSpan(ctxSnapshotOnNext, traceCtx, false, isSampledOut);
                             state.resetDiagnosticsContext();
 
                             DiagnosticsProvider.setContextInReactor(tracerProvider.startSpan(
                                 state.getSpanName(),
                                 state.getDiagnosticsContextSnapshot(),
-                                traceCtx));
+                                traceCtx,
+                                isSampledOut));
 
                             break;
 
                         case ON_ERROR:
                             state.mergeDiagnosticsContext();
+                            CosmosDiagnosticsContext ctxSnapshotOnError = state.getDiagnosticsContextSnapshot();
+                            ctxAccessor
+                                .setSamplingRateSnapshot(ctxSnapshotOnError, samplingRateSnapshot, isSampledOut);
                             tracerProvider.recordFeedResponseConsumerLatency(
                                 signal,
-                                state.getDiagnosticsContextSnapshot(),
+                                ctxSnapshotOnError,
                                 Duration.ofNanos(feedResponseConsumerLatencyInNanos.get()));
 
                             // all info is extracted from CosmosException when applicable
                             tracerProvider.endSpan(
                                 state.getDiagnosticsContextSnapshot(),
                                 traceCtx,
-                                signal.getThrowable()
+                                signal.getThrowable(),
+                                isSampledOut
                             );
 
                             break;
@@ -232,8 +247,12 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                     Context traceCtx = DiagnosticsProvider.getContextFromReactorOrNull(reactorCtx);
                     synchronized (lockHolder) {
                         state.mergeDiagnosticsContext();
+                        CosmosDiagnosticsContext ctxSnapshot = state.getDiagnosticsContextSnapshot();
 
-                        tracerProvider.endSpan(state.getDiagnosticsContextSnapshot(), traceCtx, false);
+                        ctxAccessor
+                            .setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot, isSampledOut);
+
+                        tracerProvider.endSpan(ctxSnapshot, traceCtx, false, isSampledOut);
                     }
                 })
                 .doOnComplete(() -> {
@@ -242,14 +261,17 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         state.mergeDiagnosticsContext();
 
                         CosmosDiagnosticsContext ctxSnapshot = state.getDiagnosticsContextSnapshot();
-                        tracerProvider.endSpan(ctxSnapshot, traceCtx, ctxAccessor.isEmptyCompletion(ctxSnapshot));
+                        ctxAccessor
+                            .setSamplingRateSnapshot(ctxSnapshot, samplingRateSnapshot, isSampledOut);
+                        tracerProvider.endSpan(ctxSnapshot, traceCtx, ctxAccessor.isEmptyCompletion(ctxSnapshot), isSampledOut);
                     }
                 }))
             .contextWrite(DiagnosticsProvider.setContextInReactor(
                 tracerProvider.startSpan(
                     state.getSpanName(),
                     state.getDiagnosticsContextSnapshot(),
-                    context)
+                    context,
+                    isSampledOut)
             ));
     }
 
