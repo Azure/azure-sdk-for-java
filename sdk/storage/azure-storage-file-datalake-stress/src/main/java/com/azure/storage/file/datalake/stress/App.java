@@ -10,9 +10,14 @@ public class App {
     public static void main(String[] args) {
         TelemetryHelper.init();
         PerfStressProgram.run(new Class<?>[]{
+            Append.class,
+            DataLakeOutputStream.class,
+            Flush.class,
             Read.class,
             ReadToFile.class,
             OpenInputStream.class,
+            Upload.class,
+            UploadFromFile.class
         }, args);
     }
 }

@@ -79,3 +79,91 @@ matrix:
       faults: true
       durationMin: 25
       imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes), no chunking
+    append-small-test:
+      testScenario: append
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes) asynchronously, no chunking
+    append-async-test:
+      testScenario: append
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes) to output stream, no chunking
+    outputstream-test:
+      testScenario: datalakeoutputstream
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes), no chunking
+    flush-test:
+      testScenario: flush
+      sync: true
+      sizeBytes: 1024
+      parallel: 10
+      faults: true
+      requestFaulted: true
+      durationMin: 25
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes), no chunking
+    upload-small-test:
+      testScenario: upload
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes) asynchronously, no chunking
+    upload-async-test:
+      testScenario: read
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 1KB (1024 bytes) from a file, no chunking
+    uploadfromfile-test:
+      testScenario: uploadfromfile
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test uploads 50MB (1024 * 1024 * 50) from a file, no chunking
+    uploadfromfilelarge-test:
+      testScenario: uploadfromfile
+      sync: true
+      sizeBytes: "52428800"
+      parallel: 25
+      faults: true
+      requestFaulted: true
+      durationMin: 10
+      imageBuildDir: "../../.."

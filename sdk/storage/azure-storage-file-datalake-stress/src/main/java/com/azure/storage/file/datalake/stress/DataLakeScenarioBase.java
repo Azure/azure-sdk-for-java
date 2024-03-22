@@ -25,12 +25,10 @@ import java.util.UUID;
 public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final String FILE_SYSTEM_NAME = "stress-" + UUID.randomUUID();
     protected final TelemetryHelper telemetryHelper = new TelemetryHelper(this.getClass());
-    private final DataLakeServiceClient syncClient;
-    private final DataLakeServiceAsyncClient asyncClient;
-    private final DataLakeServiceAsyncClient asyncNoFaultClient;
     private final DataLakeFileSystemClient syncFileSystemClient;
     private final DataLakeFileSystemAsyncClient asyncFileSystemClient;
     private final DataLakeFileSystemAsyncClient asyncNoFaultFileSystemClient;
+    private final DataLakeFileSystemClient syncNoFaultFileSystemClient;
     private Instant startTime;
 
     public DataLakeScenarioBase(TOptions options) {
@@ -44,16 +42,18 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
             .connectionString(connectionString)
             .httpLogOptions(getLogOptions());
 
-        asyncNoFaultClient = clientBuilder.buildAsyncClient();
+        DataLakeServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();
+        DataLakeServiceClient syncNoFaultClient = clientBuilder.buildClient();
 
         if (options.isFaultInjectionEnabled()) {
             clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(),
                 options.isRequestFaulted()));
         }
 
-        syncClient = clientBuilder.buildClient();
-        asyncClient = clientBuilder.buildAsyncClient();
+        DataLakeServiceClient syncClient = clientBuilder.buildClient();
+        DataLakeServiceAsyncClient asyncClient = clientBuilder.buildAsyncClient();
         asyncNoFaultFileSystemClient = asyncNoFaultClient.getFileSystemAsyncClient(FILE_SYSTEM_NAME);
+        syncNoFaultFileSystemClient = syncNoFaultClient.getFileSystemClient(FILE_SYSTEM_NAME);
         syncFileSystemClient = syncClient.getFileSystemClient(FILE_SYSTEM_NAME);
         asyncFileSystemClient = asyncClient.getFileSystemAsyncClient(FILE_SYSTEM_NAME);
     }
@@ -98,7 +98,11 @@ public abstract class DataLakeScenarioBase<TOptions extends StorageStressOptions
         return asyncFileSystemClient;
     }
 
-    protected DataLakeFileSystemAsyncClient getAsyncFileSystemAsyncClientNoFault() {
+    protected DataLakeFileSystemClient getSyncFileSystemClientNoFault() {
+        return syncNoFaultFileSystemClient;
+    }
+
+    protected DataLakeFileSystemAsyncClient getAsyncFileSystemClientNoFault() {
         return asyncNoFaultFileSystemClient;
     }
 

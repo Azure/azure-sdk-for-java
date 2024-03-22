@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.file.datalake.stress;
 
 import com.azure.core.util.Context;
@@ -21,7 +24,7 @@ public class Read extends DataLakeScenarioBase<StorageStressOptions> {
         String fileName = generateFileName();
         this.syncClient = getSyncFileSystemClient().getFileClient(fileName);
         this.asyncClient = getAsyncFileSystemClient().getFileAsyncClient(fileName);
-        this.asyncNoFaultClient = getAsyncFileSystemAsyncClientNoFault().getFileAsyncClient(fileName);
+        this.asyncNoFaultClient = getAsyncFileSystemClientNoFault().getFileAsyncClient(fileName);
     }
 
     @Override
