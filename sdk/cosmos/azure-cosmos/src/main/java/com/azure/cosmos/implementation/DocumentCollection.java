@@ -13,6 +13,7 @@ import com.azure.cosmos.models.IndexingPolicy;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.UniqueKeyPolicy;
+import com.azure.cosmos.models.VectorEmbeddingPolicy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
@@ -41,6 +42,7 @@ public final class DocumentCollection extends Resource {
     private UniqueKeyPolicy uniqueKeyPolicy;
     private PartitionKeyDefinition partitionKeyDefinition;
     private ClientEncryptionPolicy clientEncryptionPolicyInternal;
+    private VectorEmbeddingPolicy vectorEmbeddingPolicy;
 
     /**
      * Constructor.
@@ -409,6 +411,36 @@ public final class DocumentCollection extends Resource {
         }
 
         setProperty(this, Constants.Properties.CLIENT_ENCRYPTION_POLICY, value);
+    }
+
+    /**
+     * Gets the Vector Embedding Policy containing paths for embeddings along with path-specific settings for the item
+     * used in performing vector search on the items in a collection in the Azure CosmosDB database service.
+     *
+     * @return the Vector Embedding Policy.
+     */
+    public VectorEmbeddingPolicy getVectorEmbeddingPolicy() {
+        if (this.vectorEmbeddingPolicy == null) {
+            if (super.has(Constants.Properties.VECTOR_EMBEDDING_POLICY)) {
+                this.vectorEmbeddingPolicy = super.getObject(Constants.Properties.VECTOR_EMBEDDING_POLICY,
+                    VectorEmbeddingPolicy.class);
+            }
+        }
+        return this.vectorEmbeddingPolicy;
+    }
+
+    /**
+     * Sets the Vector Embedding Policy containing paths for embeddings along with path-specific settings for the item
+     * used in performing vector search on the items in a collection in the Azure CosmosDB database service.
+     *
+     * @param value the Vector Embedding Policy.
+     */
+    public void setVectorEmbeddingPolicy(VectorEmbeddingPolicy value) {
+        if (value == null) {
+            throw new IllegalArgumentException("VectorEmbeddingPolicy cannot be null.");
+        }
+        this.vectorEmbeddingPolicy = value;
+        setProperty(this, Constants.Properties.VECTOR_EMBEDDING_POLICY, value);
     }
 
     public void populatePropertyBag() {

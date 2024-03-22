@@ -92,7 +92,7 @@ public final class CompositePath {
     }
 
     /**
-     * Gets the sort order for the composite path.
+     * Sets the sort order for the composite path.
      * <p>
      * For example if you want to run the query "SELECT * FROM c ORDER BY c.age asc, c.height desc",
      * then you need to make the order for "/age" "ascending" and the order for "/height" "descending".
