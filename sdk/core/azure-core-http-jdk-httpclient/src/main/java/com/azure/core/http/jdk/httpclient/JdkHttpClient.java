@@ -9,23 +9,18 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.jdk.httpclient.implementation.AzureJdkHttpRequest;
 import com.azure.core.http.jdk.httpclient.implementation.ByteArrayTimeoutResponseSubscriber;
-import com.azure.core.http.jdk.httpclient.implementation.FlowableTimeoutResponseSubscriber;
 import com.azure.core.http.jdk.httpclient.implementation.InputStreamTimeoutResponseSubscriber;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseAsync;
 import com.azure.core.http.jdk.httpclient.implementation.JdkHttpResponseSync;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.nio.ByteBuffer;
 import java.time.Duration;
-import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Flow;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -90,13 +85,14 @@ class JdkHttpClient implements HttpClient {
                     return new JdkHttpResponseSync(request, statusCode, headers, jdkResponse.body());
                 });
         } else {
-            java.net.http.HttpResponse.BodyHandler<Flow.Publisher<List<ByteBuffer>>> bodyHandler
-                = getResponseHandler(readTimeout, java.net.http.HttpResponse.BodyHandlers::ofPublisher,
-                    FlowableTimeoutResponseSubscriber::new);
-
+            // The way 'BodyHandlers.ofPublisher()' works is that it returns the 'CompletableFuture' as soon as the
+            // response is received, before any values of the 'Flow.Publisher<List<ByteBuffer>>' are emitted.
+            // Given this, we can hook into 'Flux.timeout(Duration)' when we convert the
+            // 'Flow.Publisher<List<ByteBuffer>>' to 'Flux<ByteBuffer>' to track the read timeout.
             return jdkRequestMono
-                .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, bodyHandler)))
-                .map(jdkResponse -> new JdkHttpResponseAsync(request, jdkResponse));
+                .flatMap(jdkRequest -> Mono.fromCompletionStage(
+                    jdkHttpClient.sendAsync(jdkRequest, java.net.http.HttpResponse.BodyHandlers.ofPublisher())))
+                .map(jdkResponse -> new JdkHttpResponseAsync(request, jdkResponse, readTimeout));
         }
     }
 
@@ -151,34 +147,7 @@ class JdkHttpClient implements HttpClient {
      * @return the java major version
      */
     private static int getJavaVersion() {
-        // java.version format:
-        // 8 and lower: 1.7, 1.8.0
-        // 9 and above: 12, 14.1.1
-        String version = System.getProperty("java.version");
-        if (CoreUtils.isNullOrEmpty(version)) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Can't find 'java.version' system property."));
-        }
-        if (version.startsWith("1.")) {
-            if (version.length() < 3) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version));
-            }
-            try {
-                return Integer.parseInt(version.substring(2, 3));
-            } catch (Exception t) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
-            }
-        } else {
-            int idx = version.indexOf(".");
-
-            if (idx == -1) {
-                return Integer.parseInt(version);
-            }
-            try {
-                return Integer.parseInt(version.substring(0, idx));
-            } catch (Exception t) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Can't parse 'java.version':" + version, t));
-            }
-        }
+        return Runtime.version().feature();
     }
 
     /**

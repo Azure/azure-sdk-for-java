@@ -1,22 +1,23 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.core.http.jdk.httpclient.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
+package com.azure.core.http.jdk.httpclient.implementation;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
 import java.nio.ByteBuffer;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.TimerTask;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Flow;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.Semaphore;
 
 /**
  * Implementation of {@link HttpResponse.BodySubscriber} that emits the response body as a {@link InputStream} while
@@ -28,24 +29,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class InputStreamTimeoutResponseSubscriber extends InputStream
     implements HttpResponse.BodySubscriber<InputStream> {
-    private static final ClientLogger LOGGER = new ClientLogger(InputStreamTimeoutResponseSubscriber.class);
-
-    static final int MAX_BUFFERS_IN_QUEUE = 1;  // lock-step with the producer
-
-    // An immutable ByteBuffer sentinel to mark that the last byte was received.
+    // Sentinel values to indicate completion.
     private static final ByteBuffer LAST_BUFFER = ByteBuffer.wrap(new byte[0]);
     private static final List<ByteBuffer> LAST_LIST = List.of(LAST_BUFFER);
 
     // A queue of yet unprocessed ByteBuffers received from the flow API.
     private final BlockingQueue<List<ByteBuffer>> buffers;
     private volatile Flow.Subscription subscription;
+    private volatile boolean subscribed;
     private volatile boolean closed;
     private volatile Throwable failed;
     private volatile Iterator<ByteBuffer> currentListItr;
     private volatile ByteBuffer currentBuffer;
-    private final AtomicBoolean subscribed = new AtomicBoolean();
+
+    private final Semaphore semaphore = new Semaphore(1);
 
     private final long readTimeout;
+    private TimerTask currentTimeout;
 
     /**
      * Creates a response body subscriber that emits the response body as a {@link InputStream} while tracking a timeout
@@ -54,46 +54,38 @@ public final class InputStreamTimeoutResponseSubscriber extends InputStream
      * @param readTimeout The timeout for reading each value emitted by the subscription.
      */
     public InputStreamTimeoutResponseSubscriber(long readTimeout) {
+        // Use a queue size of 2 to allow for the in-process list of buffers and the sentinel value.
+        // onComplete happens after onNext which will result in two items in the queue.
+        // All other states are invalid if there are more than two items in the queue.
         this.buffers = new ArrayBlockingQueue<>(2);
         this.readTimeout = readTimeout;
     }
 
     @Override
     public CompletionStage<InputStream> getBody() {
-        // Returns the stream immediately, before the
-        // response body is received.
-        // This makes it possible for sendAsync().get().body()
-        // to complete before the response body is received.
+        // Complete the future immediately as consumption of the network body is lazy and will be done through the
+        // InputStream APIs.
         return CompletableFuture.completedStage(this);
     }
 
-    // Returns the current byte buffer to read from.
-    // If the current buffer has no remaining data, this method will take the
-    // next buffer from the buffers queue, possibly blocking until
-    // a new buffer is made available through the Flow API, or the
-    // end of the flow has been reached.
     private ByteBuffer current() throws IOException {
         while (currentBuffer == null || !currentBuffer.hasRemaining()) {
-            // Check whether the stream is closed or exhausted
-            if (closed || failed != null) {
-                throw new IOException("closed", failed);
-            }
-            if (currentBuffer == LAST_BUFFER)
+            // Validate state before attempting to get a new buffer.
+            validateState();
+
+            if (currentBuffer == LAST_BUFFER) {
                 break;
+            }
 
             try {
                 if (currentListItr == null || !currentListItr.hasNext()) {
-                    // Take a new list of buffers from the queue, blocking
-                    // if none is available yet...
-
-                    LOGGER.verbose("Taking list of Buffers");
+                    // Use 'take' over 'poll' to block until an item is available.
+                    // This is important to ensure that the timeout is correctly scheduled.
                     List<ByteBuffer> lb = buffers.take();
                     currentListItr = lb.iterator();
-                    LOGGER.verbose("List of Buffers Taken");
 
-                    // Check whether an exception was encountered upstream
-                    if (closed || failed != null)
-                        throw new IOException("closed", failed);
+                    // Validate state again as an error may have happened while waiting for the buffer.
+                    validateState();
 
                     // Check whether we're done.
                     if (lb == LAST_LIST) {
@@ -105,182 +97,193 @@ public final class InputStreamTimeoutResponseSubscriber extends InputStream
                     // Request another upstream item ( list of buffers )
                     Flow.Subscription s = subscription;
                     if (s != null) {
-                        LOGGER.verbose("Increased demand by 1");
+                        currentTimeout = createTimeout();
                         s.request(1);
                     }
-                    assert currentListItr != null;
-                    if (lb.isEmpty())
+
+                    if (lb.isEmpty()) {
                         continue;
+                    }
                 }
-                assert currentListItr != null;
-                assert currentListItr.hasNext();
-                LOGGER.verbose("Next Buffer");
+
                 currentBuffer = currentListItr.next();
             } catch (InterruptedException ex) {
-                try {
-                    close();
-                } catch (IOException ignored) {
-                }
+                close();
                 Thread.currentThread().interrupt();
                 throw new IOException(ex);
             }
         }
-        assert currentBuffer == LAST_BUFFER || currentBuffer.hasRemaining();
+
         return currentBuffer;
+    }
+
+    private void validateState() throws IOException {
+        // Stream is closed, it's invalid to attempt to read after closure.
+        if (closed) {
+            throw new IOException("closed", failed);
+        }
+
+        // Stream has failed, propagate the exception.
+        if (failed != null) {
+            // If the failure was a timeout, throw a HttpTimeoutException instead.
+            if (failed instanceof HttpTimeoutException) {
+                throw (HttpTimeoutException) failed;
+            } else {
+                throw new IOException(failed);
+            }
+        }
     }
 
     @Override
     public int read(byte[] bytes, int off, int len) throws IOException {
         Objects.checkFromIndexSize(off, len, bytes.length);
+
+        // Nothing to be read, return.
         if (len == 0) {
             return 0;
         }
-        // get the buffer to read from, possibly blocking if
-        // none is available
-        ByteBuffer buffer;
-        if ((buffer = current()) == LAST_BUFFER)
+
+        ByteBuffer buffer = current();
+        // If this is the sentinel value, we're done.
+        if (buffer == LAST_BUFFER) {
             return -1;
+        }
 
-        // don't attempt to read more than what is available
-        // in the current buffer.
+        // Either read what was requested or what is left in the buffer.
         int read = Math.min(buffer.remaining(), len);
-        assert read > 0 && read <= buffer.remaining();
-
-        // buffer.get() will do the boundary check for us.
         buffer.get(bytes, off, read);
+
         return read;
     }
 
     @Override
     public int read() throws IOException {
-        ByteBuffer buffer;
-        if ((buffer = current()) == LAST_BUFFER)
+        ByteBuffer buffer = current();
+        if (buffer == LAST_BUFFER) {
+            // If this is the sentinel value, we're done.
             return -1;
+        }
+
         return buffer.get() & 0xFF;
     }
 
     @Override
-    public int available() throws IOException {
+    public int available() {
         // best effort: returns the number of remaining bytes in
         // the current buffer if any, or 1 if the current buffer
         // is null or empty but the queue or current buffer list
         // are not empty. Returns 0 otherwise.
-        if (closed)
+        if (closed) {
             return 0;
+        }
+
         int available = 0;
         ByteBuffer current = currentBuffer;
-        if (current == LAST_BUFFER)
+        if (current == LAST_BUFFER) {
             return 0;
-        if (current != null)
+        }
+
+        if (current != null) {
             available = current.remaining();
-        if (available != 0)
+        }
+
+        if (available != 0) {
             return available;
+        }
+
         Iterator<?> iterator = currentListItr;
-        if (iterator != null && iterator.hasNext())
+        if (iterator != null && iterator.hasNext()) {
             return 1;
-        if (buffers.isEmpty())
+        }
+
+        if (buffers.isEmpty()) {
             return 0;
+        }
+
         return 1;
     }
 
     @Override
     public void onSubscribe(Flow.Subscription s) {
-        Objects.requireNonNull(s);
-        LOGGER.verbose("onSubscribe called");
-        try {
-            if (!subscribed.compareAndSet(false, true)) {
-                LOGGER.verbose("Already subscribed: canceling");
-                s.cancel();
-            } else {
-                // check whether the stream is already closed.
-                // if so, we should cancel the subscription
-                // immediately.
-                boolean closed;
-                synchronized (this) {
-                    closed = this.closed;
-                    if (!closed) {
-                        this.subscription = s;
-                        // should contain at least 2, unless closed or failed.
-                        assert buffers.remainingCapacity() > 1 || failed != null
-                            : "buffers capacity: " + buffers.remainingCapacity() + ", closed: " + closed
-                                + ", terminated: " + buffers.contains(LAST_LIST) + ", failed: " + failed;
-                    }
-                }
-                if (closed) {
-                    LOGGER.verbose("Already closed: canceling");
-                    s.cancel();
-                    return;
-                }
-                LOGGER.verbose("onSubscribe: requesting " + Math.max(1, buffers.remainingCapacity() - 1));
-                s.request(Math.max(1, buffers.remainingCapacity() - 1));
-            }
-        } catch (Throwable t) {
-            failed = t;
-            LOGGER.verbose("onSubscribe failed", t);
-            try {
-                close();
-            } catch (IOException x) {
-                // OK
-            } finally {
-                onError(t);
-            }
+        if (subscribed) {
+            // Only one subscription is valid.
+            s.cancel();
+            return;
         }
+
+        // Check for the stream being closed before the subscription.
+        boolean closed = this.closed;
+        if (closed) {
+            // Stream was closed before subscription, cancel the subscription.
+            s.cancel();
+            return;
+        }
+
+        subscription = s;
+        subscribed = true;
+        currentTimeout = createTimeout();
+        s.request(1);
     }
 
     @Override
     public void onNext(List<ByteBuffer> t) {
+        // Cancel the timeout as the next element has been received.
+        currentTimeout.cancel();
         Objects.requireNonNull(t);
-        try {
-            LOGGER.verbose("next item received");
-            if (!buffers.offer(t)) {
-                throw new IllegalStateException("queue is full");
-            }
-            LOGGER.verbose("item offered");
-        } catch (Throwable ex) {
+        if (!buffers.offer(t)) {
+            IllegalStateException ex = new IllegalStateException("queue is full");
             failed = ex;
-            try {
-                close();
-            } catch (IOException ex1) {
-                // OK
-            } finally {
-                onError(ex);
-            }
+            close();
+            onError(ex);
         }
     }
 
     @Override
-    public void onError(Throwable thrwbl) {
-        LOGGER.verbose("onError called: " + thrwbl);
+    public void onError(Throwable throwable) {
+        // Cancel the timeout as we're in an error state.
+        currentTimeout.cancel();
         subscription = null;
-        failed = Objects.requireNonNull(thrwbl);
-        // The client process that reads the input stream might
-        // be blocked in queue.take().
-        // Tries to offer LAST_LIST to the queue. If the queue is
-        // full we don't care if we can't insert this buffer, as
-        // the client can't be blocked in queue.take() in that case.
-        // Adding LAST_LIST to the queue is harmless, as the client
-        // should find failed != null before handling LAST_LIST.
+
+        // If we've already received a failure, add the new error as a suppressed exception.
+        if (failed != null) {
+            failed.addSuppressed(throwable);
+        } else {
+            failed = Objects.requireNonNull(throwable);
+        }
+
+        // Offer to the queue the sentinel value. If the stream was waiting on the queue this will unblock it and allow
+        // the stream to propagate the exception.
+        // If the queue is full, this will drop this offer, but that's fine as we're already in an error state.
         buffers.offer(LAST_LIST);
     }
 
     @Override
     public void onComplete() {
-        LOGGER.verbose("onComplete called");
+        // Cancel the timeout as we're done.
+        currentTimeout.cancel();
         subscription = null;
+
+        // Offer to the queue the sentinel value. If the stream was waiting on the queue this will unblock it and allow
+        // the stream to propagate the completion.
         onNext(LAST_LIST);
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         Flow.Subscription s;
-        synchronized (this) {
-            if (closed)
+        semaphore.acquireUninterruptibly();
+        try {
+            if (closed) {
                 return;
+            }
+
             closed = true;
             s = subscription;
             subscription = null;
+        } finally {
+            semaphore.release();
         }
-        LOGGER.verbose("close called");
+
         // s will be null if already completed
         try {
             if (s != null) {
@@ -288,7 +291,19 @@ public final class InputStreamTimeoutResponseSubscriber extends InputStream
             }
         } finally {
             buffers.offer(LAST_LIST);
-            super.close();
         }
+    }
+
+    private TimerTask createTimeout() {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                failed = new HttpTimeoutException("Timeout reading response body.");
+                subscription.cancel();
+            }
+        };
+
+        JdkHttpUtils.scheduleTimeoutTask(task, readTimeout);
+        return task;
     }
 }

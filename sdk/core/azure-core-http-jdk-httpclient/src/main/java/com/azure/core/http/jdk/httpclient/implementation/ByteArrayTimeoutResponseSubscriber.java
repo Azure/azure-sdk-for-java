@@ -3,6 +3,7 @@
 package com.azure.core.http.jdk.httpclient.implementation;
 
 import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,6 @@ import java.util.TimerTask;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionStage;
 import java.util.concurrent.Flow;
-import java.util.concurrent.TimeoutException;
 
 /**
  * Implementation of {@link HttpResponse.BodySubscriber} that accumulates the response body into a byte array while
@@ -72,7 +72,7 @@ public final class ByteArrayTimeoutResponseSubscriber implements HttpResponse.Bo
     @Override
     public void onComplete() {
         currentTimeout.cancel();
-        int size = received.stream().mapToInt(ByteBuffer::remaining).sum();
+        int size = JdkHttpUtils.getSizeOfBuffers(received);
         byte[] result = new byte[size];
         int offset = 0;
         for (ByteBuffer buffer : received) {
@@ -87,8 +87,8 @@ public final class ByteArrayTimeoutResponseSubscriber implements HttpResponse.Bo
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
+                future.completeExceptionally(new HttpTimeoutException("Timeout reading response body."));
                 subscription.cancel();
-                future.completeExceptionally(new TimeoutException("Timeout reading response body."));
             }
         };
 

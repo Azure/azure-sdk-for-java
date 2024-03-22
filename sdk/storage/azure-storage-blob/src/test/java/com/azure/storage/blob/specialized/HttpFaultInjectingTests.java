@@ -29,7 +29,6 @@ import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.common.policy.RetryPolicyType;
-import com.azure.storage.common.test.shared.TestHttpClientType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -301,9 +300,6 @@ public class HttpFaultInjectingTests {
         // https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
         return ENVIRONMENT.getTestMode() == TestMode.LIVE
             && !osName.contains("mac os")
-            && !osName.contains("darwin")
-            // JDK HttpClient needs more work with connection, request, and response timeouts. Right now, it ends up
-            // with requests waiting for forever in this test.
-            && ENVIRONMENT.getHttpClientType() != TestHttpClientType.JDK_HTTP;
+            && !osName.contains("darwin");
     }
 }

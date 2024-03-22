@@ -7,9 +7,12 @@ import com.azure.core.http.HttpRequest;
 import reactor.adapter.JdkFlowAdapter;
 import reactor.core.publisher.Flux;
 
+import java.net.http.HttpTimeoutException;
 import java.nio.ByteBuffer;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Flow;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 import static com.azure.core.http.jdk.httpclient.implementation.JdkHttpUtils.fromJdkHttpHeaders;
@@ -28,11 +31,24 @@ public final class JdkHttpResponseAsync extends JdkHttpResponseBase {
      *
      * @param request the request which resulted in this response.
      * @param response the JDK HttpClient response.
+     * @param readTimeout the read timeout for the response.
      */
     public JdkHttpResponseAsync(final HttpRequest request,
-        java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> response) {
+        java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> response, Duration readTimeout) {
         super(request, response.statusCode(), fromJdkHttpHeaders(response.headers()));
-        this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(response.body()).flatMapSequential(Flux::fromIterable);
+        if (readTimeout != null && !readTimeout.isNegative() && !readTimeout.isZero()) {
+            this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(response.body())
+                .timeout(readTimeout)
+                .onErrorMap(TimeoutException.class, e -> {
+                    HttpTimeoutException ex = new HttpTimeoutException("Read timed out");
+                    ex.addSuppressed(e);
+                    return ex;
+                })
+                .flatMapSequential(Flux::fromIterable);
+        } else {
+            this.contentFlux
+                = JdkFlowAdapter.flowPublisherToFlux(response.body()).flatMapSequential(Flux::fromIterable);
+        }
     }
 
     @Override
