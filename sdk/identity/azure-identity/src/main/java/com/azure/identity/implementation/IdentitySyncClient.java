@@ -347,7 +347,8 @@ public class IdentitySyncClient extends IdentityClientBase {
                     null,
                     false);
             } catch (Exception e) {
-                // Ignore the exception and proceed with interactive authentication.
+                // The error case here represents the silent acquisition failing. There's nothing actionable and
+                // in this case the fallback path of showing the dialog will capture any meaningful error and share it.
             }
         }
         if (token == null) {

@@ -830,6 +830,8 @@ public class IdentityClient extends IdentityClientBase {
             if (options.isBrokerEnabled() && options.useDefaultBrokerAccount()) {
                 return Mono.fromFuture(() ->
                     acquireTokenFromPublicClientSilently(request, pc, null, false))
+                    // The error case here represents the silent acquisition failing. There's nothing actionable and
+                    // in this case the fallback path of showing the dialog will capture any meaningful error and share it.
                     .onErrorResume(e -> Mono.empty());
             } else {
                 return Mono.empty();
@@ -846,7 +848,7 @@ public class IdentityClient extends IdentityClientBase {
 
         }))
         // If we're already throwing a ClientAuthenticationException we don't need to wrap it again.
-        .doOnError(t -> !(t instanceof ClientAuthenticationException),
+        .onErrorMap(t -> !(t instanceof ClientAuthenticationException),
                         t -> {
                 throw new ClientAuthenticationException("Failed to acquire token with Interactive Browser Authentication.", null, t);
             })
