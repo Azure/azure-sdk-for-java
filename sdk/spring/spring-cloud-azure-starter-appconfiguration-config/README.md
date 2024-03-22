@@ -64,7 +64,7 @@ spring.cloud.azure.appconfiguration.stores[0].selects[0].key-filter | The key pa
 spring.cloud.azure.appconfiguration.stores[0].selects[0].label-filter | The label used to indicate which configuration(s) will be loaded. | No | `${spring.profiles.active}` or if null `\0`
 spring.cloud.azure.appconfiguration.stores[0].selects[0].snapshot-name | The snapshot name used to indicate which configuration(s) will be loaded. | No | null
 spring.cloud.azure.appconfiguration.stores[0].trim-key-prefix[0] | The prefix that will be trimmed from the key when the configuration is loaded. | No | null, unless using key-filter, then it is the key-filter
-spring.cloud.azure.appconfiguraiton.stores[0].replicaDiscoveryEnabled | Enables periodic checking if new replicas of the store have been created. And found stores will be added to the bottom of the list of endpoints used in cases where the store can't be reached. | No | true
+spring.cloud.azure.appconfiguration.stores[0].replicaDiscoveryEnabled | Enables periodic checking if new replicas of the store have been created. And found stores will be added to the bottom of the list of endpoints used in cases where the store can't be reached. | No | true
 
 Configuration Store Authentication
 
