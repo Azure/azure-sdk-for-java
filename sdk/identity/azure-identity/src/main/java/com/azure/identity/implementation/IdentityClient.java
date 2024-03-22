@@ -824,10 +824,19 @@ public class IdentityClient extends IdentityClientBase {
         }
 
         if (options.isBrokerEnabled() && options.useOperatingSystemAccount()) {
-            return getPublicClientInstance(request).getValue().flatMap(pc ->
-                Mono.fromFuture(() ->
-                    acquireTokenFromPublicClientSilently(request, pc, null, false)).
-                    map(MsalToken::new));
+            return getPublicClientInstance(request).getValue()
+                .flatMap(pc -> Mono.fromFuture(() -> acquireTokenFromPublicClientSilently(request, pc, null, false))
+                    .onErrorResume(e -> {
+                        Mono<IAuthenticationResult> acquireToken = Mono.fromFuture(() -> pc.acquireToken(
+                            buildInteractiveRequestParameters(request, loginHint, redirectUri).build()));
+
+                        return acquireToken.onErrorMap(t -> {
+                            t.addSuppressed(e);
+                            return new ClientAuthenticationException(
+                                "Failed to acquire token with Interactive Browser Authentication.", null, t);
+                        });
+                    }))
+                .map(MsalToken::new);
         } else {
 
             InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
