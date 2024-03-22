@@ -717,7 +717,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
     }
 
     @Test
-    public void createStorageAccountWithDisabledPublicNetworkAccess() {
+    public void canCreateStorageAccountWithDisabledPublicNetworkAccess() {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         StorageAccount storageAccount = storageManager
             .storageAccounts()
@@ -731,7 +731,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
     }
 
     @Test
-    public void updatePublicNetworkAccess() {
+    public void canUpdatePublicNetworkAccess() {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         StorageAccount storageAccount = storageManager
             .storageAccounts()

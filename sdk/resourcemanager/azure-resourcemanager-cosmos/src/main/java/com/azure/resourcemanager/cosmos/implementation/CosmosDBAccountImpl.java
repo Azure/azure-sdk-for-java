@@ -45,7 +45,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
@@ -84,7 +83,7 @@ class CosmosDBAccountImpl
 
     @Override
     public PublicNetworkAccess publicNetworkAccess() {
-        return Objects.isNull(this.innerModel().publicNetworkAccess()) ? null : this.innerModel().publicNetworkAccess();
+        return this.innerModel().publicNetworkAccess();
     }
 
     @Override

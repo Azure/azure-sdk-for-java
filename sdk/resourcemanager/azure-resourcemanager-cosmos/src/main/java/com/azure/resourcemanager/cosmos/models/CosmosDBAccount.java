@@ -37,9 +37,9 @@ public interface CosmosDBAccount
     DatabaseAccountOfferType databaseAccountOfferType();
 
     /**
-     * Whether the cosmos db can be accessed from public network.
+     * Whether the CosmosD account can be accessed from public network.
      *
-     * @return whether the cosmos db can be accessed from public network.
+     * @return whether the CosmosD account can be accessed from public network.
      */
     PublicNetworkAccess publicNetworkAccess();
 
@@ -405,10 +405,10 @@ public interface CosmosDBAccount
                 String name);
         }
 
-        /** The stage of cosmos db definition allowing to configure network access settings. */
+        /** The stage of CosmosDB account definition allowing to configure network access settings. */
         interface WithPublicNetworkAccess {
             /**
-             * Disables public network access for the cosmos db.
+             * Disables public network access for the CosmosDB account.
              *
              * @return the next stage of the definition
              */
@@ -633,16 +633,16 @@ public interface CosmosDBAccount
             WithOptionals withoutPrivateEndpointConnection(String name);
         }
 
-        /** The stage of cosmos db update allowing to configure network access settings. */
+        /** The stage of CosmosDB account update allowing to configure network access settings. */
         interface WithPublicNetworkAccess {
             /**
-             * Enables public network access for the cosmos db.
+             * Enables public network access for the CosmosDB account.
              *
              * @return the next stage of the update
              */
             Update enablePublicNetworkAccess();
             /**
-             * Disables public network access for the cosmos db.
+             * Disables public network access for the CosmosDB account.
              *
              * @return the next stage of the update
              */

@@ -1838,7 +1838,9 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT enablePublicNetworkAccess() {
-        this.ensureIpSecurityRestrictions();
+        if (Objects.isNull(this.siteConfig)) {
+            this.siteConfig = new SiteConfigResourceInner();
+        }
         this.siteConfig.withPublicNetworkAccess("Enabled");
         return (FluentImplT) this;
     }
@@ -1846,7 +1848,9 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     @Override
     @SuppressWarnings("unchecked")
     public FluentImplT disablePublicNetworkAccess() {
-        this.ensureIpSecurityRestrictions();
+        if (Objects.isNull(this.siteConfig)) {
+            this.siteConfig = new SiteConfigResourceInner();
+        }
         this.siteConfig.withPublicNetworkAccess("Disabled");
         return (FluentImplT) this;
     }

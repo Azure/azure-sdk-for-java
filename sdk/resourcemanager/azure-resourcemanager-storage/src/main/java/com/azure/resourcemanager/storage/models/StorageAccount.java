@@ -253,9 +253,9 @@ public interface StorageAccount
      */
     String userAssignedIdentityIdForCustomerEncryptionKey();
     /**
-     * Whether the storage can be accessed from public network.
+     * Whether the storage account can be accessed from public network.
      *
-     * @return whether the storage can be accessed from public network.
+     * @return whether the storage account can be accessed from public network.
      */
     PublicNetworkAccess publicNetworkAccess();
 
@@ -563,10 +563,10 @@ public interface StorageAccount
             WithCreate disableSharedKeyAccess();
         }
 
-        /** The stage of storage definition allowing to configure network access settings. */
+        /** The stage of storage account definition allowing to configure network access settings. */
         interface WithNetworkAccess {
             /**
-             * Disables public network access for the storage.
+             * Disables public network access for the storage account.
              *
              * @return the next stage of the definition
              */
@@ -999,17 +999,17 @@ public interface StorageAccount
             Update disableSharedKeyAccess();
         }
 
-        /** The stage of storage update allowing to configure network access. */
+        /** The stage of storage account update allowing to configure network access. */
         interface WithNetworkAccess {
             /**
-             * Enables public network access for the storage.
+             * Enables public network access for the storage account.
              *
              * @return the next stage of the update
              */
             Update enablePublicNetworkAccess();
 
             /**
-             * Disables public network access for the storage.
+             * Disables public network access for the storage account.
              *
              * @return the next stage of the update
              */
