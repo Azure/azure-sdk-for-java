@@ -17,6 +17,10 @@ import java.util.Map;
 @Configuration
 public class ExtendedBindingHandlerMappingsProviderConfiguration {
 
+    /**
+     * Provide mappings for EventHubs extended properties.
+     * @return the mappings for EventHubs extended properties.
+     */
     @Bean
     public BindingHandlerAdvise.MappingsProvider eventHubsExtendedPropertiesDefaultMappingsProvider() {
         return () -> {

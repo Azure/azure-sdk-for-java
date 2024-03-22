@@ -17,6 +17,10 @@ import java.util.Map;
 @Configuration
 public class ExtendedBindingHandlerMappingsProviderConfiguration {
 
+    /**
+     * Provide mappings for ServiceBus extended properties.
+     * @return the mappings for ServiceBus extended properties.
+     */
     @Bean
     public BindingHandlerAdvise.MappingsProvider serviceBusExtendedPropertiesDefaultMappingsProvider() {
         return () -> {
