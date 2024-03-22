@@ -166,6 +166,7 @@ public class ConfigurationJavaDocCodeSnippet {
             this.value = value;
         }
 
+        @Override
         public String getValue() {
             return value;
         }

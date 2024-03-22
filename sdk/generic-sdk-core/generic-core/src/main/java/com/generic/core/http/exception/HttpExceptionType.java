@@ -24,6 +24,7 @@ public final class HttpExceptionType implements ExpandableEnum<String> {
         this.caseInsensitive = name.toLowerCase();
     }
 
+    @Override
     public String getValue() {
         return caseSensitive;
     }
