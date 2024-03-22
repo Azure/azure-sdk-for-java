@@ -116,8 +116,9 @@ class AppConfigurationReplicaClient {
         List<ConfigurationSetting> configurationSettings = new ArrayList<>();
         try {
             PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(settingSelector);
-            this.failedAttempts = 0;
             settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
+            // Needs to happen after or we don't know if the request succeeded or failed.
+            this.failedAttempts = 0;
             return configurationSettings;
         } catch (HttpResponseException e) {
             if (e.getResponse() != null) {

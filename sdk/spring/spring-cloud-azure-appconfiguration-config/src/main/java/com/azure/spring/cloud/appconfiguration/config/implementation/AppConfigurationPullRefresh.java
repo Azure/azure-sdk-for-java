@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationRefresh;
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationStoreHealth;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
+import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 
 import reactor.core.publisher.Mono;
@@ -42,6 +43,8 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
     private final Duration refreshInterval;
 
     private List<String> profiles;
+    
+    private final ReplicaLookUp replicaLookUp;
 
     /**
      * Component used for checking for and triggering configuration refreshes.
@@ -51,10 +54,11 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
      * @param defaultMinBackoff minimum time between backoff retries minimum backoff time
      */
     public AppConfigurationPullRefresh(AppConfigurationReplicaClientFactory clientFactory, Duration refreshInterval,
-        Long defaultMinBackoff) {
+        Long defaultMinBackoff, ReplicaLookUp replicaLookUp) {
         this.defaultMinBackoff = defaultMinBackoff;
         this.refreshInterval = refreshInterval;
         this.clientFactory = clientFactory;
+        this.replicaLookUp = replicaLookUp;
 
     }
 
@@ -101,7 +105,7 @@ public class AppConfigurationPullRefresh implements AppConfigurationRefresh, Env
             BaseAppConfigurationPolicy.setWatchRequests(true);
             try {
                 RefreshEventData eventData = AppConfigurationRefreshUtil.refreshStoresCheck(clientFactory,
-                    refreshInterval, profiles, defaultMinBackoff);
+                    refreshInterval, profiles, defaultMinBackoff, replicaLookUp);
                 if (eventData.getDoRefresh()) {
                     publisher.publishEvent(new RefreshEvent(this, eventData, eventData.getMessage()));
                     return true;

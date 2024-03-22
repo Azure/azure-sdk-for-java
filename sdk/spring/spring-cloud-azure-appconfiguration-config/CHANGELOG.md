@@ -4,6 +4,9 @@
 
 ### Features Added
 
+* Added Auto fail over support. Will automatically find Azure App Configuration replica stores for provided store. The found replica stores will be used as fail over stores after all provided replicas have failed.
+* Added property to disable auto fail over support `spring.cloud.azure.appconfiguration.stores[0].replica-discovery-enabled`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

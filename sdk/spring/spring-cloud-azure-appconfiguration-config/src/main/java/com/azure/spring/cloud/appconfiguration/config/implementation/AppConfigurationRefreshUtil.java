@@ -15,9 +15,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagKeyValueSelector;
@@ -34,7 +36,7 @@ class AppConfigurationRefreshUtil {
      * @return If a refresh event is called.
      */
     static RefreshEventData refreshStoresCheck(AppConfigurationReplicaClientFactory clientFactory,
-        Duration refreshInterval, List<String> profiles, Long defaultMinBackoff) {
+        Duration refreshInterval, List<String> profiles, Long defaultMinBackoff, ReplicaLookUp replicaLookUp) {
         RefreshEventData eventData = new RefreshEventData();
         BaseAppConfigurationPolicy.setWatchRequests(true);
 
@@ -62,14 +64,14 @@ class AppConfigurationRefreshUtil {
                 if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
                     for (AppConfigurationReplicaClient client : clients) {
                         try {
-                            refreshWithTime(client, StateHolder.getState(originEndpoint), monitor.getRefreshInterval(), eventData);
+                            refreshWithTime(client, StateHolder.getState(originEndpoint), monitor.getRefreshInterval(), eventData, replicaLookUp);
                             if (eventData.getDoRefresh()) {
                                 clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
                                 return eventData;
                             }
                             // If check didn't throw an error other clients don't need to be checked.
                             break;
-                        } catch (AppConfigurationStatusException e) {
+                        } catch (HttpResponseException e) {
                             LOGGER.warn(
                                 "Failed attempting to connect to " + client.getEndpoint() + " during refresh check.");
 
@@ -87,14 +89,14 @@ class AppConfigurationRefreshUtil {
                         try {
                             refreshWithTimeFeatureFlags(client, featureStore,
                                 StateHolder.getStateFeatureFlag(originEndpoint),
-                                monitor.getFeatureFlagRefreshInterval(), eventData, profiles);
+                                monitor.getFeatureFlagRefreshInterval(), eventData, profiles, replicaLookUp);
                             if (eventData.getDoRefresh()) {
                                 clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
                                 return eventData;
                             }
                             // If check didn't throw an error other clients don't need to be checked.
                             break;
-                        } catch (AppConfigurationStatusException e) {
+                        } catch (HttpResponseException e) {
                             LOGGER.warn(
                                 "Failed attempting to connect to " + client.getEndpoint() + " during refresh check.");
 
@@ -165,9 +167,9 @@ class AppConfigurationRefreshUtil {
      * @param eventData Info for this refresh event.
      */
     private static void refreshWithTime(AppConfigurationReplicaClient client, State state, Duration refreshInterval,
-        RefreshEventData eventData) throws AppConfigurationStatusException {
+        RefreshEventData eventData, ReplicaLookUp replicaLookUp) throws AppConfigurationStatusException {
         if (Instant.now().isAfter(state.getNextRefreshCheck())) {
-
+            replicaLookUp.updateAutoFailoverEndpoints();
             refreshWithoutTime(client, state.getWatchKeys(), eventData);
 
             StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
@@ -198,11 +200,11 @@ class AppConfigurationRefreshUtil {
     }
 
     private static void refreshWithTimeFeatureFlags(AppConfigurationReplicaClient client, FeatureFlagStore featureStore,
-        State state, Duration refreshInterval, RefreshEventData eventData, List<String> profiles)
+        State state, Duration refreshInterval, RefreshEventData eventData, List<String> profiles, ReplicaLookUp replicaLookUp)
         throws AppConfigurationStatusException {
         Instant date = Instant.now();
         if (date.isAfter(state.getNextRefreshCheck())) {
-
+            replicaLookUp.updateAutoFailoverEndpoints();
             int watchedKeySize = 0;
 
             for (FeatureFlagKeyValueSelector watchKey : featureStore.getSelects()) {
