@@ -7,7 +7,7 @@ variables:
 stages:
   - stage: "spring_boot_compatibility_tests"
     jobs:
-      - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+      - template: /eng/common/pipelines/templates/jobs/generate-job-matrix.yml
         parameters:
           SparseCheckout: true
           JobTemplatePath: ../../../../../sdk/spring/pipeline/compatibility-tests-job.yml
@@ -22,7 +22,7 @@ stages:
               GenerateVMJobs: true
           PreGenerationSteps:
             - script: |
-                pip install termcolor
+                python -m pip install termcolor
               displayName: 'python module install'
             - script: |
                 python ./sdk/spring/scripts/compatibility_update_supported_version_matrix_json.py -m 3
