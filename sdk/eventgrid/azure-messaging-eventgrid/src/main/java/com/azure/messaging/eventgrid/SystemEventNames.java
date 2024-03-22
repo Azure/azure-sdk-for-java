@@ -4,6 +4,8 @@
 package com.azure.messaging.eventgrid;
 
 import com.azure.core.models.CloudEvent;
+import com.azure.messaging.eventgrid.systemevents.AcsAdvancedMessageDeliveryStatusUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.AcsAdvancedMessageReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberAddedToThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMemberRemovedFromThreadWithUserEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsChatMessageDeletedEventData;
@@ -236,6 +238,19 @@ import java.util.Map;
  * system events by their known string.
  */
 public final class SystemEventNames {
+    /**
+     * Schema of the Data property of an EventGridEvent for a
+     * Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated event.
+     */
+    public static final String COMMUNICATION_ADVANCED_MESSAGE_DELIVERY_STATUS_UPDATED
+        = "Microsoft.Communication.AdvancedMessageDeliveryStatusUpdated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.AdvancedMessageReceived event.
+     */
+    public static final String COMMUNICATION_ADVANCED_MESSAGE_RECEIVED
+        = "Microsoft.Communication.AdvancedMessageReceived";
+
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeleted event.
      */
@@ -1460,6 +1475,9 @@ public final class SystemEventNames {
         = "Microsoft.Communication.ChatParticipantRemovedFromThreadWithUser";
     private static final Map<String, Class<?>> SYSTEM_EVENT_MAPPINGS = new HashMap<String, Class<?>>() {
         {
+            put(COMMUNICATION_ADVANCED_MESSAGE_DELIVERY_STATUS_UPDATED,
+                AcsAdvancedMessageDeliveryStatusUpdatedEventData.class);
+            put(COMMUNICATION_ADVANCED_MESSAGE_RECEIVED, AcsAdvancedMessageReceivedEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_DELETED, AcsChatMessageDeletedEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_DELETED_IN_THREAD, AcsChatMessageDeletedInThreadEventData.class);
             put(COMMUNICATION_CHAT_MESSAGE_EDITED, AcsChatMessageEditedEventData.class);
