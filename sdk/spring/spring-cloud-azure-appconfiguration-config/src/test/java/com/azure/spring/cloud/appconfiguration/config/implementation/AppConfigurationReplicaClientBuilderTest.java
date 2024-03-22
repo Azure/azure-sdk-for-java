@@ -196,7 +196,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         String message = assertThrows(IllegalArgumentException.class,
             () -> clientBuilder.buildClients(configStore).get(0)).getMessage();
 
-        assertEquals("More than 1 Connection method was set for connecting to App Configuration.", message);
+        assertEquals("More than 1 connection method was set for connecting to App Configuration.", message);
     }
 
     @Test
