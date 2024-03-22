@@ -124,6 +124,13 @@ public interface KubernetesCluster
      */
     String agentPoolResourceGroup();
 
+    /**
+     * Whether the kubernetes cluster can be accessed from public network.
+     *
+     * @return whether the kubernetes cluster can be accessed from public network.
+     */
+    boolean isPublicNetworkAccessEnabled();
+
     // Actions
 
     /**
@@ -175,6 +182,7 @@ public interface KubernetesCluster
             DefinitionStages.WithNetworkProfile,
             DefinitionStages.WithAddOnProfiles,
             DefinitionStages.WithManagedClusterSku,
+            DefinitionStages.WithPublicNetworkAccess,
             KubernetesCluster.DefinitionStages.WithCreate {
     }
 
@@ -596,6 +604,22 @@ public interface KubernetesCluster
             WithCreate withAgentPoolResourceGroup(String resourceGroupName);
         }
 
+        /** The stage of Kubernetes cluster  definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -615,6 +639,7 @@ public interface KubernetesCluster
                 WithDiskEncryption,
                 WithAgentPoolResourceGroup,
                 WithManagedClusterSku,
+                WithPublicNetworkAccess,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -630,6 +655,7 @@ public interface KubernetesCluster
             UpdateStages.WithLocalAccounts,
             UpdateStages.WithVersion,
             UpdateStages.WithManagedClusterSku,
+            UpdateStages.WithPublicNetworkAccess,
             Resource.UpdateWithTags<KubernetesCluster.Update>,
             Appliable<KubernetesCluster> {
     }
@@ -806,6 +832,23 @@ public interface KubernetesCluster
              * @return the next stage
              */
             Update withVersion(String kubernetesVersion);
+        }
+
+
+        /** The stage of kubernetes cluster update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the kubernetes cluster.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
         }
     }
 }

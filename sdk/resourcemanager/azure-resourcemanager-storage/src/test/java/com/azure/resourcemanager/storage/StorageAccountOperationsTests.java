@@ -714,4 +714,49 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
         Assertions.assertNotNull(storageAccount.systemAssignedManagedServiceIdentityTenantId());
         Assertions.assertFalse(storageAccount.userAssignedManagedServiceIdentityIds().isEmpty());
     }
+
+    @Test
+    public void createStorageAccountWithEnablePublicNetworkAccess() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .enablePublicNetworkAccess()
+            .create();
+        Assertions.assertTrue(storageAccount.isPublicNetworkAccessEnabled());
+    }
+
+    @Test
+    public void createStorageAccountWithDisabledPublicNetworkAccess() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .disablePublicNetworkAccess()
+            .create();
+        Assertions.assertFalse(storageAccount.isPublicNetworkAccessEnabled());
+    }
+
+    @Test
+    public void updatePublicNetworkAccess() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        StorageAccount storageAccount = storageManager
+            .storageAccounts()
+            .define(saName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withSystemAssignedManagedServiceIdentity()
+            .create();
+        storageAccount.update().disablePublicNetworkAccess().apply();
+        Assertions.assertFalse(storageAccount.isPublicNetworkAccessEnabled());
+
+        storageAccount.update().enablePublicNetworkAccess().apply();
+        Assertions.assertTrue(storageAccount.isPublicNetworkAccessEnabled());
+    }
 }

@@ -71,6 +71,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionArmResourceInner;
+import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -1833,6 +1834,28 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
             );
         }
         return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT enablePublicNetworkAccess() {
+        this.ensureIpSecurityRestrictions();
+        this.siteConfig.withPublicNetworkAccess("Enabled");
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public FluentImplT disablePublicNetworkAccess() {
+        this.ensureIpSecurityRestrictions();
+        this.siteConfig.withPublicNetworkAccess("Disabled");
+        return (FluentImplT) this;
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public boolean isPublicNetworkAccessEnabled() {
+        return PublicNetworkAccess.ENABLED.equals(PublicNetworkAccess.fromString(innerModel().publicNetworkAccess()));
     }
 
     @Override

@@ -369,6 +369,59 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         assertSameVersion(RedisCache.RedisVersion.V6, redisCache.redisVersion());
     }
 
+    @Test
+    public void canCreateRedisCacheWithEnablePublicNetworkAccess() {
+        resourceManager.resourceGroups().define(rgNameSecond).withRegion(Region.US_CENTRAL);
+
+        RedisCache redisCache =
+            redisManager
+                .redisCaches()
+                .define(rrName)
+                .withRegion(Region.ASIA_EAST)
+                .withNewResourceGroup(rgName)
+                .withBasicSku()
+                .enablePublicNetworkAccess()
+                .create();
+        Assertions.assertTrue(redisCache.isPublicNetworkAccessEnabled());
+    }
+
+    @Test
+    public void canCreateRedisCacheWithDisablePublicNetworkAccess() {
+        resourceManager.resourceGroups().define(rgNameSecond).withRegion(Region.US_CENTRAL);
+
+        RedisCache redisCache =
+            redisManager
+                .redisCaches()
+                .define(rrName)
+                .withRegion(Region.ASIA_EAST)
+                .withNewResourceGroup(rgName)
+                .withBasicSku()
+                .disablePublicNetworkAccess()
+                .create();
+        Assertions.assertFalse(redisCache.isPublicNetworkAccessEnabled());
+    }
+
+    @Test
+    public void canUpdatePublicNetworkAccess() {
+        resourceManager.resourceGroups().define(rgNameSecond).withRegion(Region.US_CENTRAL);
+
+        RedisCache redisCache =
+            redisManager
+                .redisCaches()
+                .define(rrName)
+                .withRegion(Region.ASIA_EAST)
+                .withNewResourceGroup(rgName)
+                .withBasicSku()
+                .enablePublicNetworkAccess()
+                .create();
+
+        redisCache.update().disablePublicNetworkAccess().apply();
+        Assertions.assertFalse(redisCache.isPublicNetworkAccessEnabled());
+
+        redisCache.update().enablePublicNetworkAccess().apply();
+        Assertions.assertTrue(redisCache.isPublicNetworkAccessEnabled());
+    }
+
     // e.g 6.xxxx
     private static final Pattern MINOR_VERSION_REGEX = Pattern.compile("([1-9]+)\\..*");
 

@@ -279,4 +279,70 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
         Assertions.assertEquals(cosmosDBAccount.readableReplications().size(), 2);
         Assertions.assertEquals(cosmosDBAccount.defaultConsistencyLevel(), DefaultConsistencyLevel.EVENTUAL);
     }
+
+    @Test
+    public void canCreateCosmosDBAccountWithEnablePublicNetworkAccess() {
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
+
+        CosmosDBAccount cosmosDBAccount =
+            cosmosManager
+                .databaseAccounts()
+                .define(cosmosDbAccountName)
+                .withRegion(Region.US_WEST_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withDataModelAzureTable()
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_WEST)
+                .withTag("tag1", "value1")
+                .enablePublicNetworkAccess()
+                .create();
+
+        Assertions.assertTrue(cosmosDBAccount.isPublicNetworkAccessEnabled());
+    }
+
+    @Test
+    public void canCreateCosmosDBAccountWithDisablePublicNetworkAccess() {
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
+
+        CosmosDBAccount cosmosDBAccount =
+            cosmosManager
+                .databaseAccounts()
+                .define(cosmosDbAccountName)
+                .withRegion(Region.US_WEST_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withDataModelAzureTable()
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_WEST)
+                .withTag("tag1", "value1")
+                .disablePublicNetworkAccess()
+                .create();
+
+        Assertions.assertFalse(cosmosDBAccount.isPublicNetworkAccessEnabled());
+    }
+
+    @Test
+    public void canUpdatePublicNetworkAccess() {
+        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
+
+        CosmosDBAccount cosmosDBAccount =
+            cosmosManager
+                .databaseAccounts()
+                .define(cosmosDbAccountName)
+                .withRegion(Region.US_WEST_CENTRAL)
+                .withNewResourceGroup(rgName)
+                .withDataModelAzureTable()
+                .withEventualConsistency()
+                .withWriteReplication(Region.US_EAST)
+                .withReadReplication(Region.US_WEST)
+                .withTag("tag1", "value1")
+                .create();
+
+        cosmosDBAccount.update().disablePublicNetworkAccess().apply();
+        Assertions.assertFalse(cosmosDBAccount.isPublicNetworkAccessEnabled());
+
+        cosmosDBAccount.update().enablePublicNetworkAccess().apply();
+        Assertions.assertTrue(cosmosDBAccount.isPublicNetworkAccessEnabled());
+    }
 }

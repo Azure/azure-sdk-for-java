@@ -37,6 +37,13 @@ public interface CosmosDBAccount
     DatabaseAccountOfferType databaseAccountOfferType();
 
     /**
+     * Whether the cosmos db can be accessed from public network.
+     *
+     * @return whether the cosmos db can be accessed from public network.
+     */
+    boolean isPublicNetworkAccessEnabled();
+
+    /**
      * @return specifies the set of IP addresses or IP address ranges in CIDR form.
      * @deprecated use {@link #ipRules()}
      */
@@ -397,6 +404,22 @@ public interface CosmosDBAccount
             PrivateEndpointConnection.DefinitionStages.Blank<WithCreate> defineNewPrivateEndpointConnection(
                 String name);
         }
+
+        /** The stage of cosmos db definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the cosmos db.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the cosmos db.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -411,7 +434,8 @@ public interface CosmosDBAccount
                 WithConnector,
                 WithKeyBasedMetadataWriteAccess,
                 WithPrivateEndpointConnection,
-                DefinitionWithTags<WithCreate> {
+                DefinitionWithTags<WithCreate>,
+                WithPublicNetworkAccess {
         }
     }
 
@@ -431,7 +455,8 @@ public interface CosmosDBAccount
                 UpdateStages.WithConnector,
                 UpdateStages.WithKeyBasedMetadataWriteAccess,
                 UpdateStages.WithPrivateEndpointConnection,
-                UpdateStages.WithIpRules {
+                UpdateStages.WithIpRules,
+                UpdateStages.WithPublicNetworkAccess {
         }
 
         /** The stage of the cosmos db definition allowing the definition of a write location. */
@@ -612,6 +637,22 @@ public interface CosmosDBAccount
              * @return the next stage
              */
             WithOptionals withoutPrivateEndpointConnection(String name);
+        }
+
+        /** The stage of cosmos db update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the cosmos db.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the cosmos db.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
         }
     }
 }

@@ -252,6 +252,12 @@ public interface StorageAccount
      *         {@link StorageAccount#identityTypeForCustomerEncryptionKey()} is not {@link IdentityType#USER_ASSIGNED}
      */
     String userAssignedIdentityIdForCustomerEncryptionKey();
+    /**
+     * Whether the storage can be accessed from public network.
+     *
+     * @return whether the storage can be accessed from public network.
+     */
+    boolean isPublicNetworkAccessEnabled();
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
@@ -557,8 +563,20 @@ public interface StorageAccount
             WithCreate disableSharedKeyAccess();
         }
 
-        /** The stage of storage account definition allowing to configure network access settings. */
+        /** The stage of storage definition allowing to configure network access settings. */
         interface WithNetworkAccess {
+            /**
+             * Enables public network access for the storage.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate enablePublicNetworkAccess();
+            /**
+             * Disables public network access for the storage.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
             /**
              * Specifies that by default access to storage account should be allowed from all networks.
              *
@@ -987,8 +1005,22 @@ public interface StorageAccount
             Update disableSharedKeyAccess();
         }
 
-        /** The stage of storage account update allowing to configure network access. */
+        /** The stage of storage update allowing to configure network access. */
         interface WithNetworkAccess {
+            /**
+             * Enables public network access for the storage.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+
+            /**
+             * Disables public network access for the storage.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
+
             /**
              * Specifies that by default access to storage account should be allowed from all networks.
              *
