@@ -99,7 +99,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.FORBIDDEN) &&
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.FORBIDDEN_WRITEFORBIDDEN))
         {
-            logger.warn("Endpoint not writable. Will refresh cache and retry ", e);
+            logger.info("Endpoint not writable. Will refresh cache and retry ", e);
             return this.shouldRetryOnEndpointFailureAsync(false, true, false);
         }
 
@@ -109,7 +109,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
                 Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.DATABASE_ACCOUNT_NOTFOUND) &&
                 this.isReadRequest)
         {
-            logger.warn("Endpoint not available for reads. Will refresh cache and retry. ", e);
+            logger.info("Endpoint not available for reads. Will refresh cache and retry. ", e);
             return this.shouldRetryOnEndpointFailureAsync(true, false, false);
         }
 
@@ -117,7 +117,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         if (WebExceptionUtility.isNetworkFailure(e)) {
             if (clientException != null && Exceptions.isSubStatusCode(clientException, HttpConstants.SubStatusCodes.GATEWAY_ENDPOINT_UNAVAILABLE)) {
                 if (this.isReadRequest || WebExceptionUtility.isWebExceptionRetriable(e)) {
-                    logger.warn("Gateway endpoint not reachable. Will refresh cache and retry. ", e);
+                    logger.info("Gateway endpoint not reachable. Will refresh cache and retry. ", e);
                     return this.shouldRetryOnEndpointFailureAsync(this.isReadRequest, false, true);
                 } else {
                     return this.shouldNotRetryOnEndpointFailureAsync(this.isReadRequest, false, false);
@@ -147,7 +147,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             Exceptions.isStatusCode(clientException, HttpConstants.StatusCodes.SERVICE_UNAVAILABLE)) {
 
             boolean isWebExceptionRetriable = WebExceptionUtility.isWebExceptionRetriable(e);
-            logger.warn(
+            logger.info(
                 "Service unavailable - IsReadRequest {}, IsWebExceptionRetriable {}, NonIdempotentWriteRetriesEnabled {}",
                 this.isReadRequest,
                 isWebExceptionRetriable,
@@ -359,7 +359,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        logger.warn("shouldRetryOnServiceUnavailable() Retrying. Received on endpoint {}, IsReadRequest = {}", this.locationEndpoint, isReadRequest);
+        logger.info("shouldRetryOnServiceUnavailable() Retrying. Received on endpoint {}, IsReadRequest = {}", this.locationEndpoint, isReadRequest);
 
         // Retrying on second PreferredLocations
         // RetryCount is used as zero-based index

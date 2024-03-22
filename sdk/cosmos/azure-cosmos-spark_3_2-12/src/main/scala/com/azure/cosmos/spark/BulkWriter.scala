@@ -156,15 +156,12 @@ private class BulkWriter(container: CosmosAsyncContainer,
 
   writeConfig.maxMicroBatchSize match {
     case Some(customMaxMicroBatchSize) =>
-      ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
-        .getCosmosBulkExecutionOptionsAccessor
-        .setMaxMicroBatchSize(
-          cosmosBulkExecutionOptions,
-          Math.max(
-            1,
-            Math.min(customMaxMicroBatchSize, BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST)
-          )
-        )
+     cosmosBulkExecutionOptions.setMaxMicroBatchSize(
+       Math.max(
+        1,
+        Math.min(customMaxMicroBatchSize, BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST)
+       )
+     )
     case None =>
   }
 
@@ -460,7 +457,7 @@ private class BulkWriter(container: CosmosAsyncContainer,
                 })
               val requestOperationContext = ReadManyOperation.operationContext
               if (shouldRetry(e.getStatusCode, e.getSubStatusCode, requestOperationContext)) {
-                  log.logWarning(s"for itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}], " +
+                  log.logInfo(s"for itemId=[${requestOperationContext.itemId}], partitionKeyValue=[${requestOperationContext.partitionKeyValue}], " +
                       s"encountered status code '${e.getStatusCode}:${e.getSubStatusCode}' in read many, will retry! " +
                       s"attemptNumber=${requestOperationContext.attemptNumber}, exceptionMessage=${e.getMessage},  " +
                       s"Context: {${operationContext.toString}} $getThreadInfo")
