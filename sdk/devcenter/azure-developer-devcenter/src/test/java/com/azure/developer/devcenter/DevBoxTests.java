@@ -159,7 +159,7 @@ class DevBoxTests extends DevCenterClientTestBase {
         OffsetDateTime delayUntil = currentScheduledTime.plusMinutes(10);
 
         List<DevBoxActionDelayResult> actionsDelayResult = devBoxesClient.delayAllActions(projectName, meUserId, devBoxName, delayUntil).stream().collect(Collectors.toList()); 
-        DevBoxActionDelayStatus actionDelayStatus = actionsDelayResult.get(0).getResult();
+        DevBoxActionDelayStatus actionDelayStatus = actionsDelayResult.get(0).getDelayStatus();
 
         Assertions.assertEquals(1, actionsDelayResult.size());
         Assertions.assertEquals(DevBoxActionDelayStatus.SUCCEEDED, actionDelayStatus);
