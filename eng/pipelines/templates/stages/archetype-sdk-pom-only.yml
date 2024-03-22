@@ -1,10 +1,3 @@
-resources:
-  repositories:
-    - repository: azure-sdk-build-tools
-      type: git
-      name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20230829.1
-
 parameters:
 - name: Artifacts
   type: object
@@ -28,38 +21,46 @@ parameters:
   type: string
   default: azure-docs-sdk-java
 
-stages:
-  - stage: Build
-    jobs:
-      - template: /eng/pipelines/templates/jobs/build-validate-pom.yml
-        parameters:
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
-          SDKType: ${{parameters.SDKType}}
-          Artifacts:
-          - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
-            - ${{ each artifact in parameters.Artifacts }}:
-              - ${{ if ne(artifact.releaseInBatch, 'false') }}:
-                - ${{ artifact }}
-          - ${{ else }}:
-            - ${{ parameters.Artifacts }}
+extends:
+  template: /eng/pipelines/templates/stages/1es-redirect.yml
+  parameters:
+    stages:
+      - stage: Build
+        variables:
+          - template: /eng/pipelines/templates/variables/globals.yml
+          - template: /eng/pipelines/templates/variables/image.yml
+          - name: ArtifactsJson
+            value: '${{ convertToJson(parameters.Artifacts) }}'
+        jobs:
+          - template: /eng/pipelines/templates/jobs/build-validate-pom.yml
+            parameters:
+              ServiceDirectory: ${{parameters.ServiceDirectory}}
+              SDKType: ${{parameters.SDKType}}
+              Artifacts:
+              - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+                    - ${{ artifact }}
+              - ${{ else }}:
+                - ${{ parameters.Artifacts }}
 
-  # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
-  - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-      - template: archetype-java-release-pom-only.yml
-        parameters:
-          DependsOn: Build
-          ServiceDirectory: ${{parameters.ServiceDirectory}}
-          RunIntegrationStage: false
-          SDKType: ${{parameters.SDKType}}
-          Artifacts:
-          - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
-            - ${{ each artifact in parameters.Artifacts }}:
-              - ${{ if ne(artifact.releaseInBatch, 'false') }}:
-                - ${{ artifact }}
-          - ${{ else }}:
-            - ${{ parameters.Artifacts }}
-          ArtifactName: packages
-          TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
-          TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-          EnableIntegrationStage: false
+      # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
+      - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
+        - template: archetype-java-release-pom-only.yml
+          parameters:
+            DependsOn: Build
+            ServiceDirectory: ${{parameters.ServiceDirectory}}
+            RunIntegrationStage: false
+            SDKType: ${{parameters.SDKType}}
+            Artifacts:
+            - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
+              - ${{ each artifact in parameters.Artifacts }}:
+                - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+                  - ${{ artifact }}
+            - ${{ else }}:
+              - ${{ parameters.Artifacts }}
+            ArtifactName: packages
+            TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+            TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+            EnableIntegrationStage: false
 

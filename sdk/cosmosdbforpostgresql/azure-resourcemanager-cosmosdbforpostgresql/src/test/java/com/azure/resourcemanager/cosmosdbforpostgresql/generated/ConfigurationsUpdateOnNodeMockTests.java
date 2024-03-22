@@ -31,45 +31,27 @@ public final class ConfigurationsUpdateOnNodeMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"value\":\"mwmbes\",\"source\":\"nkww\",\"description\":\"pjflcxogao\",\"defaultValue\":\"nzmnsikvm\",\"dataType\":\"Boolean\",\"allowedValues\":\"qqkdltfzxmhhvhgu\",\"requiresRestart\":false,\"provisioningState\":\"Succeeded\"},\"id\":\"obdagxtibqdxb\",\"name\":\"wakbogqxndl\",\"type\":\"zgx\"}";
+        String responseStr
+            = "{\"properties\":{\"value\":\"c\",\"source\":\"fwdsj\",\"description\":\"aljutiiswac\",\"defaultValue\":\"gdkz\",\"dataType\":\"Enumeration\",\"allowedValues\":\"fvhqc\",\"requiresRestart\":true,\"provisioningState\":\"Succeeded\"},\"id\":\"n\",\"name\":\"pfuflrw\",\"type\":\"mh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CosmosDBForPostgreSqlManager manager =
-            CosmosDBForPostgreSqlManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CosmosDBForPostgreSqlManager manager = CosmosDBForPostgreSqlManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ServerConfiguration response =
-            manager
-                .configurations()
-                .updateOnNode(
-                    "cwyhzdxssa",
-                    "bzmnvdfznud",
-                    "od",
-                    new ServerConfigurationInner().withValue("zbn"),
-                    com.azure.core.util.Context.NONE);
+        ServerConfiguration response = manager.configurations().updateOnNode("wlauwzizxbmpg", "jefuzmuvpbttdumo", "p",
+            new ServerConfigurationInner().withValue("ebmnzbtbhjpglk"), com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mwmbes", response.value());
+        Assertions.assertEquals("c", response.value());
     }
 }

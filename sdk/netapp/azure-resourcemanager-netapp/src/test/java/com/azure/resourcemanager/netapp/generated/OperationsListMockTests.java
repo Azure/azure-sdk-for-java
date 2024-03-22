@@ -33,7 +33,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"name\":\"fzwiivwzjbhyz\",\"display\":{\"provider\":\"rkambt\",\"resource\":\"egv\",\"operation\":\"vuqeqvldspast\",\"description\":\"kkdmfl\"},\"origin\":\"stmjlxrri\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"ewchpxlktwku\",\"displayName\":\"ycslevufuztcktyh\",\"displayDescription\":\"qedcgzulwm\",\"unit\":\"qzz\",\"supportedAggregationTypes\":[\"Average\",\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"dzgkr\",\"qeevt\",\"epr\",\"utnwytpzdmovzvf\"],\"internalMetricName\":\"awzqadfl\",\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"iglaecx\",\"sourceMdmNamespace\":\"t\",\"dimensions\":[{},{}],\"aggregationType\":\"pvz\",\"fillGapWithZero\":false,\"category\":\"mldgxobfirc\",\"resourceIdDimensionNameOverride\":\"pkc\",\"isInternal\":false},{\"name\":\"riykhyawfvjlbox\",\"displayName\":\"kjlmx\",\"displayDescription\":\"mdy\",\"unit\":\"dwdigumb\",\"supportedAggregationTypes\":[\"Average\",\"Average\",\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"jazysdzhezwwvaiq\"],\"internalMetricName\":\"vv\",\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"p\",\"sourceMdmNamespace\":\"qyikvy\",\"dimensions\":[{}],\"aggregationType\":\"avluwmncs\",\"fillGapWithZero\":false,\"category\":\"fybvpoek\",\"resourceIdDimensionNameOverride\":\"gsgbdhuzq\",\"isInternal\":false},{\"name\":\"gkynscliqh\",\"displayName\":\"h\",\"displayDescription\":\"komtkubotppn\",\"unit\":\"xz\",\"supportedAggregationTypes\":[\"Average\",\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"cev\"],\"internalMetricName\":\"gtltdhlf\",\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"py\",\"sourceMdmNamespace\":\"gtrd\",\"dimensions\":[{},{}],\"aggregationType\":\"mzzs\",\"fillGapWithZero\":false,\"category\":\"rnysux\",\"resourceIdDimensionNameOverride\":\"rafwgckhocxvdf\",\"isInternal\":false}],\"logSpecifications\":[{\"name\":\"roud\",\"displayName\":\"pavehhr\"},{\"name\":\"bunzozudh\",\"displayName\":\"gkmoyxcdyuibhmfd\"}]}}}]}";
+            = "{\"value\":[{\"name\":\"hixbjxyfwnyl\",\"display\":{\"provider\":\"o\",\"resource\":\"ttpkiwkkbnujrywv\",\"operation\":\"lbfpncurd\",\"description\":\"wiithtywub\"},\"origin\":\"bihwqknfdnt\",\"properties\":{\"serviceSpecification\":{\"metricSpecifications\":[{\"name\":\"goihx\",\"displayName\":\"wct\",\"displayDescription\":\"dzjlu\",\"unit\":\"fdlwg\",\"supportedAggregationTypes\":[\"Average\",\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"vvt\",\"seinqfiuf\",\"qknp\",\"rgnepttwqmsniffc\"],\"internalMetricName\":\"qnrojlpijnkrxfrd\",\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"atiz\",\"sourceMdmNamespace\":\"onasxifto\",\"dimensions\":[{},{},{},{}],\"aggregationType\":\"hftwesgog\",\"fillGapWithZero\":true,\"category\":\"nnxk\",\"resourceIdDimensionNameOverride\":\"gnyhmossxkkg\",\"isInternal\":true},{\"name\":\"gh\",\"displayName\":\"bdhqxvcxgf\",\"displayDescription\":\"dsofbshrns\",\"unit\":\"uswdv\",\"supportedAggregationTypes\":[\"Average\",\"Average\",\"Average\"],\"supportedTimeGrainTypes\":[\"nvjsrtkfa\",\"nopqgikyzirtx\",\"yuxzejntpsewgi\",\"ilqu\"],\"internalMetricName\":\"ydxtqm\",\"enableRegionalMdmAccount\":false,\"sourceMdmAccount\":\"orgguf\",\"sourceMdmNamespace\":\"aomtbghhavgrvkff\",\"dimensions\":[{},{},{},{}],\"aggregationType\":\"hpjbib\",\"fillGapWithZero\":true,\"category\":\"xumvfcluyovw\",\"resourceIdDimensionNameOverride\":\"bkfezzxscyhwzdgi\",\"isInternal\":true},{\"name\":\"zbomvzzbtdcqvpni\",\"displayName\":\"jviylwdshfs\",\"displayDescription\":\"rbgyefry\",\"unit\":\"gaojf\",\"supportedAggregationTypes\":[\"Average\"],\"supportedTimeGrainTypes\":[\"mrfhirctymox\"],\"internalMetricName\":\"tpipiwyczuhx\",\"enableRegionalMdmAccount\":true,\"sourceMdmAccount\":\"jlihhyus\",\"sourceMdmNamespace\":\"kasdvlm\",\"dimensions\":[{},{},{},{}],\"aggregationType\":\"zxulucvpamrsreu\",\"fillGapWithZero\":true,\"category\":\"risjnhnytxifqjz\",\"resourceIdDimensionNameOverride\":\"mrhublwpc\",\"isInternal\":false}],\"logSpecifications\":[{\"name\":\"jupauut\",\"displayName\":\"oqh\"},{\"name\":\"ejqgw\",\"displayName\":\"nfqn\"},{\"name\":\"ypsxjvfoim\",\"displayName\":\"slirciz\"}]}}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -52,45 +52,45 @@ public final class OperationsListMockTests {
 
         PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("fzwiivwzjbhyz", response.iterator().next().name());
-        Assertions.assertEquals("rkambt", response.iterator().next().display().provider());
-        Assertions.assertEquals("egv", response.iterator().next().display().resource());
-        Assertions.assertEquals("vuqeqvldspast", response.iterator().next().display().operation());
-        Assertions.assertEquals("kkdmfl", response.iterator().next().display().description());
-        Assertions.assertEquals("stmjlxrri", response.iterator().next().origin());
-        Assertions.assertEquals("ewchpxlktwku",
+        Assertions.assertEquals("hixbjxyfwnyl", response.iterator().next().name());
+        Assertions.assertEquals("o", response.iterator().next().display().provider());
+        Assertions.assertEquals("ttpkiwkkbnujrywv", response.iterator().next().display().resource());
+        Assertions.assertEquals("lbfpncurd", response.iterator().next().display().operation());
+        Assertions.assertEquals("wiithtywub", response.iterator().next().display().description());
+        Assertions.assertEquals("bihwqknfdnt", response.iterator().next().origin());
+        Assertions.assertEquals("goihx",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).name());
-        Assertions.assertEquals("ycslevufuztcktyh",
+        Assertions.assertEquals("wct",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayName());
-        Assertions.assertEquals("qedcgzulwm",
+        Assertions.assertEquals("dzjlu",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).displayDescription());
-        Assertions.assertEquals("qzz",
+        Assertions.assertEquals("fdlwg",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).unit());
         Assertions.assertEquals(MetricAggregationType.AVERAGE, response.iterator().next().serviceSpecification()
             .metricSpecifications().get(0).supportedAggregationTypes().get(0));
-        Assertions.assertEquals("dzgkr", response.iterator().next().serviceSpecification().metricSpecifications().get(0)
+        Assertions.assertEquals("vvt", response.iterator().next().serviceSpecification().metricSpecifications().get(0)
             .supportedTimeGrainTypes().get(0));
-        Assertions.assertEquals("awzqadfl",
+        Assertions.assertEquals("qnrojlpijnkrxfrd",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).internalMetricName());
         Assertions.assertEquals(false,
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).enableRegionalMdmAccount());
-        Assertions.assertEquals("iglaecx",
+        Assertions.assertEquals("atiz",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmAccount());
-        Assertions.assertEquals("t",
+        Assertions.assertEquals("onasxifto",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).sourceMdmNamespace());
-        Assertions.assertEquals("pvz",
+        Assertions.assertEquals("hftwesgog",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).aggregationType());
-        Assertions.assertEquals(false,
+        Assertions.assertEquals(true,
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).fillGapWithZero());
-        Assertions.assertEquals("mldgxobfirc",
+        Assertions.assertEquals("nnxk",
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).category());
-        Assertions.assertEquals("pkc", response.iterator().next().serviceSpecification().metricSpecifications().get(0)
-            .resourceIdDimensionNameOverride());
-        Assertions.assertEquals(false,
+        Assertions.assertEquals("gnyhmossxkkg", response.iterator().next().serviceSpecification().metricSpecifications()
+            .get(0).resourceIdDimensionNameOverride());
+        Assertions.assertEquals(true,
             response.iterator().next().serviceSpecification().metricSpecifications().get(0).isInternal());
-        Assertions.assertEquals("roud",
+        Assertions.assertEquals("jupauut",
             response.iterator().next().serviceSpecification().logSpecifications().get(0).name());
-        Assertions.assertEquals("pavehhr",
+        Assertions.assertEquals("oqh",
             response.iterator().next().serviceSpecification().logSpecifications().get(0).displayName());
     }
 }

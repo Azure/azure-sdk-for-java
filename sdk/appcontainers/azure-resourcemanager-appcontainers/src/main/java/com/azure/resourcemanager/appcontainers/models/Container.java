@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Container App container definition. */
+/**
+ * Container App container definition.
+ */
 @Fluent
 public final class Container extends BaseContainer {
     /*
@@ -17,13 +19,15 @@ public final class Container extends BaseContainer {
     @JsonProperty(value = "probes")
     private List<ContainerAppProbe> probes;
 
-    /** Creates an instance of Container class. */
+    /**
+     * Creates an instance of Container class.
+     */
     public Container() {
     }
 
     /**
      * Get the probes property: List of probes for the container.
-     *
+     * 
      * @return the probes value.
      */
     public List<ContainerAppProbe> probes() {
@@ -32,7 +36,7 @@ public final class Container extends BaseContainer {
 
     /**
      * Set the probes property: List of probes for the container.
-     *
+     * 
      * @param probes the probes value to set.
      * @return the Container object itself.
      */
@@ -41,49 +45,63 @@ public final class Container extends BaseContainer {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withImage(String image) {
         super.withImage(image);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withCommand(List<String> command) {
         super.withCommand(command);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withArgs(List<String> args) {
         super.withArgs(args);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withEnv(List<EnvironmentVar> env) {
         super.withEnv(env);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withResources(ContainerResources resources) {
         super.withResources(resources);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Container withVolumeMounts(List<VolumeMount> volumeMounts) {
         super.withVolumeMounts(volumeMounts);
@@ -92,7 +110,7 @@ public final class Container extends BaseContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

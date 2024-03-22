@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.2 (2024-03-01)
+## 1.2.0-beta.3 (2024-03-01)
 
 ### Features Added
 - Add support for number lookup

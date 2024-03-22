@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appcontainers.models.Secret;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Container Apps Job Secrets Collection ARM resource. */
+/**
+ * Container Apps Job Secrets Collection ARM resource.
+ */
 @Fluent
 public final class JobSecretsCollectionInner {
     /*
@@ -19,13 +21,15 @@ public final class JobSecretsCollectionInner {
     @JsonProperty(value = "value", required = true)
     private List<Secret> value;
 
-    /** Creates an instance of JobSecretsCollectionInner class. */
+    /**
+     * Creates an instance of JobSecretsCollectionInner class.
+     */
     public JobSecretsCollectionInner() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<Secret> value() {
@@ -34,7 +38,7 @@ public final class JobSecretsCollectionInner {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the JobSecretsCollectionInner object itself.
      */
@@ -45,14 +49,13 @@ public final class JobSecretsCollectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model JobSecretsCollectionInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model JobSecretsCollectionInner"));
         } else {
             value().forEach(e -> e.validate());
         }

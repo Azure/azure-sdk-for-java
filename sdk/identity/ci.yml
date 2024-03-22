@@ -48,9 +48,10 @@ parameters:
   default: true
 
 extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: identity
+    TimeoutInMinutes: 90
     EnableBatchRelease: true
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
@@ -69,8 +70,9 @@ extends:
       - name: perf-test-core
         groupId: com.azure
     LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
+          CalledFromClient: true
           ServiceDirectory: identity
           SupportedClouds: 'Public,UsGov,China'
           Artifacts:

@@ -11,29 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"serverEdition\":\"yevc\",\"storageQuotaInMb\":308422624,\"vCores\":284710625,\"enableHa\":true,\"enablePublicIpAccess\":false,\"isReadOnly\":false,\"administratorLogin\":\"jzrnf\"}")
-                .toObject(ServerProperties.class);
-        Assertions.assertEquals("yevc", model.serverEdition());
-        Assertions.assertEquals(308422624, model.storageQuotaInMb());
-        Assertions.assertEquals(284710625, model.vCores());
-        Assertions.assertEquals(true, model.enableHa());
+        ServerProperties model = BinaryData.fromString(
+            "{\"serverEdition\":\"bciqfouflm\",\"storageQuotaInMb\":1828393347,\"vCores\":492225371,\"enableHa\":false,\"enablePublicIpAccess\":true,\"isReadOnly\":false,\"administratorLogin\":\"ugpbkw\"}")
+            .toObject(ServerProperties.class);
+        Assertions.assertEquals("bciqfouflm", model.serverEdition());
+        Assertions.assertEquals(1828393347, model.storageQuotaInMb());
+        Assertions.assertEquals(492225371, model.vCores());
+        Assertions.assertEquals(false, model.enableHa());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ServerProperties model =
-            new ServerProperties()
-                .withServerEdition("yevc")
-                .withStorageQuotaInMb(308422624)
-                .withVCores(284710625)
-                .withEnableHa(true);
+        ServerProperties model = new ServerProperties().withServerEdition("bciqfouflm").withStorageQuotaInMb(1828393347)
+            .withVCores(492225371).withEnableHa(false);
         model = BinaryData.fromObject(model).toObject(ServerProperties.class);
-        Assertions.assertEquals("yevc", model.serverEdition());
-        Assertions.assertEquals(308422624, model.storageQuotaInMb());
-        Assertions.assertEquals(284710625, model.vCores());
-        Assertions.assertEquals(true, model.enableHa());
+        Assertions.assertEquals("bciqfouflm", model.serverEdition());
+        Assertions.assertEquals(1828393347, model.storageQuotaInMb());
+        Assertions.assertEquals(492225371, model.vCores());
+        Assertions.assertEquals(false, model.enableHa());
     }
 }

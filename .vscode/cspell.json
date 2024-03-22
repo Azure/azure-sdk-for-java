@@ -16,6 +16,7 @@
     "**/sdk/**/target/**",
     "**/session-records/**",
     "**/sdk/**/**/assets.json",
+    "**/sdk/**/*-matrix.json",
     "**/chromedriver",
     ".gitignore",
     "*.jar",

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appcontainers.fluent.models.AuthConfigInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** AuthConfig collection ARM resource. */
+/**
+ * AuthConfig collection ARM resource.
+ */
 @Fluent
 public final class AuthConfigCollection {
     /*
@@ -25,13 +27,15 @@ public final class AuthConfigCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AuthConfigCollection class. */
+    /**
+     * Creates an instance of AuthConfigCollection class.
+     */
     public AuthConfigCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<AuthConfigInner> value() {
@@ -40,7 +44,7 @@ public final class AuthConfigCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the AuthConfigCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class AuthConfigCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class AuthConfigCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model AuthConfigCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model AuthConfigCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

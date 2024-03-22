@@ -20,22 +20,18 @@ public final class ManagedEnvironmentsDiagnosticsImpl implements ManagedEnvironm
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public ManagedEnvironmentsDiagnosticsImpl(
-        ManagedEnvironmentsDiagnosticsClient innerClient,
+    public ManagedEnvironmentsDiagnosticsImpl(ManagedEnvironmentsDiagnosticsClient innerClient,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<ManagedEnvironment> getRootWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
-        Response<ManagedEnvironmentInner> inner =
-            this.serviceClient().getRootWithResponse(resourceGroupName, environmentName, context);
+    public Response<ManagedEnvironment> getRootWithResponse(String resourceGroupName, String environmentName,
+        Context context) {
+        Response<ManagedEnvironmentInner> inner
+            = this.serviceClient().getRootWithResponse(resourceGroupName, environmentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ManagedEnvironmentImpl(inner.getValue(), this.manager()));
         } else {
             return null;

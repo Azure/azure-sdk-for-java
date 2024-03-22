@@ -11,37 +11,28 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Targets CreateOrUpdate. */
+/**
+ * Samples for Targets CreateOrUpdate.
+ */
 public final class TargetsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/chaos/resource-manager/Microsoft.Chaos/stable/2023-11-01/examples/CreateUpdateTarget.json
+     * x-ms-original-file:
+     * specification/chaos/resource-manager/Microsoft.Chaos/stable/2024-01-01/examples/CreateUpdateTarget.json
      */
     /**
      * Sample code: Create/update a Target that extends a virtual machine resource.
-     *
+     * 
      * @param manager Entry point to ChaosManager.
      */
     public static void createUpdateATargetThatExtendsAVirtualMachineResource(
         com.azure.resourcemanager.chaos.ChaosManager manager) throws IOException {
-        manager
-            .targets()
-            .createOrUpdateWithResponse(
-                "exampleRG",
-                "Microsoft.Compute",
-                "virtualMachines",
-                "exampleVM",
-                "Microsoft-Agent",
-                new TargetInner()
-                    .withProperties(
-                        mapOf(
-                            "identities",
-                            SerializerFactory
-                                .createDefaultManagementSerializerAdapter()
-                                .deserialize(
-                                    "[{\"type\":\"CertificateSubjectIssuer\",\"subject\":\"CN=example.subject\"}]",
-                                    Object.class,
-                                    SerializerEncoding.JSON))),
-                com.azure.core.util.Context.NONE);
+        manager.targets().createOrUpdateWithResponse("exampleRG", "Microsoft.Compute", "virtualMachines", "exampleVM",
+            "Microsoft-Agent",
+            new TargetInner().withProperties(mapOf("identities",
+                SerializerFactory.createDefaultManagementSerializerAdapter().deserialize(
+                    "[{\"type\":\"CertificateSubjectIssuer\",\"subject\":\"CN=example.subject\"}]", Object.class,
+                    SerializerEncoding.JSON))),
+            com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

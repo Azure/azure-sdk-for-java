@@ -10,7 +10,9 @@ import com.azure.resourcemanager.newrelicobservability.fluent.models.MonitoredRe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of all the resources being monitored by NewRelic monitor resource. */
+/**
+ * List of all the resources being monitored by NewRelic monitor resource.
+ */
 @Fluent
 public final class MonitoredResourceListResponse {
     /*
@@ -25,13 +27,15 @@ public final class MonitoredResourceListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of MonitoredResourceListResponse class. */
+    /**
+     * Creates an instance of MonitoredResourceListResponse class.
+     */
     public MonitoredResourceListResponse() {
     }
 
     /**
      * Get the value property: The MonitoredResource items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<MonitoredResourceInner> value() {
@@ -40,7 +44,7 @@ public final class MonitoredResourceListResponse {
 
     /**
      * Set the value property: The MonitoredResource items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the MonitoredResourceListResponse object itself.
      */
@@ -51,7 +55,7 @@ public final class MonitoredResourceListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class MonitoredResourceListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the MonitoredResourceListResponse object itself.
      */
@@ -71,15 +75,13 @@ public final class MonitoredResourceListResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model MonitoredResourceListResponse"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model MonitoredResourceListResponse"));
         } else {
             value().forEach(e -> e.validate());
         }

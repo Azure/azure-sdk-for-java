@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountProperties model =
-            BinaryData
-                .fromString(
-                    "{\"organizationId\":\"wixjsprozvcp\",\"accountId\":\"eg\",\"accountName\":\"wmfdatscmdvpjhul\",\"region\":\"uvm\"}")
-                .toObject(AccountProperties.class);
+        AccountProperties model = BinaryData.fromString(
+            "{\"organizationId\":\"wixjsprozvcp\",\"accountId\":\"eg\",\"accountName\":\"wmfdatscmdvpjhul\",\"region\":\"uvm\"}")
+            .toObject(AccountProperties.class);
         Assertions.assertEquals("wixjsprozvcp", model.organizationId());
         Assertions.assertEquals("eg", model.accountId());
         Assertions.assertEquals("wmfdatscmdvpjhul", model.accountName());
@@ -24,12 +22,8 @@ public final class AccountPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountProperties model =
-            new AccountProperties()
-                .withOrganizationId("wixjsprozvcp")
-                .withAccountId("eg")
-                .withAccountName("wmfdatscmdvpjhul")
-                .withRegion("uvm");
+        AccountProperties model = new AccountProperties().withOrganizationId("wixjsprozvcp").withAccountId("eg")
+            .withAccountName("wmfdatscmdvpjhul").withRegion("uvm");
         model = BinaryData.fromObject(model).toObject(AccountProperties.class);
         Assertions.assertEquals("wixjsprozvcp", model.organizationId());
         Assertions.assertEquals("eg", model.accountId());

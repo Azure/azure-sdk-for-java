@@ -32,24 +32,24 @@ public final class ExperimentsImpl implements Experiments {
 
     public PagedIterable<Experiment> list() {
         PagedIterable<ExperimentInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ExperimentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExperimentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Experiment> list(Boolean running, String continuationToken, Context context) {
         PagedIterable<ExperimentInner> inner = this.serviceClient().list(running, continuationToken, context);
-        return Utils.mapPage(inner, inner1 -> new ExperimentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExperimentImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Experiment> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ExperimentInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ExperimentImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExperimentImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Experiment> listByResourceGroup(
-        String resourceGroupName, Boolean running, String continuationToken, Context context) {
-        PagedIterable<ExperimentInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, running, continuationToken, context);
-        return Utils.mapPage(inner, inner1 -> new ExperimentImpl(inner1, this.manager()));
+    public PagedIterable<Experiment> listByResourceGroup(String resourceGroupName, Boolean running,
+        String continuationToken, Context context) {
+        PagedIterable<ExperimentInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, running, continuationToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExperimentImpl(inner1, this.manager()));
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String experimentName) {
@@ -60,15 +60,12 @@ public final class ExperimentsImpl implements Experiments {
         this.serviceClient().delete(resourceGroupName, experimentName, context);
     }
 
-    public Response<Experiment> getByResourceGroupWithResponse(
-        String resourceGroupName, String experimentName, Context context) {
-        Response<ExperimentInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, experimentName, context);
+    public Response<Experiment> getByResourceGroupWithResponse(String resourceGroupName, String experimentName,
+        Context context) {
+        Response<ExperimentInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, experimentName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ExperimentImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -101,27 +98,24 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public PagedIterable<ExperimentExecution> listAllExecutions(String resourceGroupName, String experimentName) {
-        PagedIterable<ExperimentExecutionInner> inner =
-            this.serviceClient().listAllExecutions(resourceGroupName, experimentName);
-        return Utils.mapPage(inner, inner1 -> new ExperimentExecutionImpl(inner1, this.manager()));
+        PagedIterable<ExperimentExecutionInner> inner
+            = this.serviceClient().listAllExecutions(resourceGroupName, experimentName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExperimentExecutionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ExperimentExecution> listAllExecutions(
-        String resourceGroupName, String experimentName, Context context) {
-        PagedIterable<ExperimentExecutionInner> inner =
-            this.serviceClient().listAllExecutions(resourceGroupName, experimentName, context);
-        return Utils.mapPage(inner, inner1 -> new ExperimentExecutionImpl(inner1, this.manager()));
+    public PagedIterable<ExperimentExecution> listAllExecutions(String resourceGroupName, String experimentName,
+        Context context) {
+        PagedIterable<ExperimentExecutionInner> inner
+            = this.serviceClient().listAllExecutions(resourceGroupName, experimentName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ExperimentExecutionImpl(inner1, this.manager()));
     }
 
-    public Response<ExperimentExecution> getExecutionWithResponse(
-        String resourceGroupName, String experimentName, String executionId, Context context) {
-        Response<ExperimentExecutionInner> inner =
-            this.serviceClient().getExecutionWithResponse(resourceGroupName, experimentName, executionId, context);
+    public Response<ExperimentExecution> getExecutionWithResponse(String resourceGroupName, String experimentName,
+        String executionId, Context context) {
+        Response<ExperimentExecutionInner> inner
+            = this.serviceClient().getExecutionWithResponse(resourceGroupName, experimentName, executionId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ExperimentExecutionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -129,8 +123,8 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public ExperimentExecution getExecution(String resourceGroupName, String experimentName, String executionId) {
-        ExperimentExecutionInner inner =
-            this.serviceClient().getExecution(resourceGroupName, experimentName, executionId);
+        ExperimentExecutionInner inner
+            = this.serviceClient().getExecution(resourceGroupName, experimentName, executionId);
         if (inner != null) {
             return new ExperimentExecutionImpl(inner, this.manager());
         } else {
@@ -138,25 +132,22 @@ public final class ExperimentsImpl implements Experiments {
         }
     }
 
-    public Response<ExperimentExecutionDetails> executionDetailsWithResponse(
-        String resourceGroupName, String experimentName, String executionId, Context context) {
-        Response<ExperimentExecutionDetailsInner> inner =
-            this.serviceClient().executionDetailsWithResponse(resourceGroupName, experimentName, executionId, context);
+    public Response<ExperimentExecutionDetails> executionDetailsWithResponse(String resourceGroupName,
+        String experimentName, String executionId, Context context) {
+        Response<ExperimentExecutionDetailsInner> inner = this.serviceClient()
+            .executionDetailsWithResponse(resourceGroupName, experimentName, executionId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ExperimentExecutionDetailsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ExperimentExecutionDetails executionDetails(
-        String resourceGroupName, String experimentName, String executionId) {
-        ExperimentExecutionDetailsInner inner =
-            this.serviceClient().executionDetails(resourceGroupName, experimentName, executionId);
+    public ExperimentExecutionDetails executionDetails(String resourceGroupName, String experimentName,
+        String executionId) {
+        ExperimentExecutionDetailsInner inner
+            = this.serviceClient().executionDetails(resourceGroupName, experimentName, executionId);
         if (inner != null) {
             return new ExperimentExecutionDetailsImpl(inner, this.manager());
         } else {
@@ -165,77 +156,57 @@ public final class ExperimentsImpl implements Experiments {
     }
 
     public Experiment getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String experimentName = Utils.getValueFromIdByName(id, "experiments");
+        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
         if (experimentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, experimentName, Context.NONE).getValue();
     }
 
     public Response<Experiment> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String experimentName = Utils.getValueFromIdByName(id, "experiments");
+        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
         if (experimentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, experimentName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String experimentName = Utils.getValueFromIdByName(id, "experiments");
+        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
         if (experimentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
         }
         this.delete(resourceGroupName, experimentName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String experimentName = Utils.getValueFromIdByName(id, "experiments");
+        String experimentName = ResourceManagerUtils.getValueFromIdByName(id, "experiments");
         if (experimentName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'experiments'.", id)));
         }
         this.delete(resourceGroupName, experimentName, context);
     }
