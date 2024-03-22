@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Replication protection intent custom data details. */
+/**
+ * Replication protection intent custom data details.
+ */
 @Fluent
 public final class ReplicationProtectionIntentProperties {
     /*
@@ -46,13 +48,15 @@ public final class ReplicationProtectionIntentProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private ReplicationProtectionIntentProviderSpecificSettings providerSpecificDetails;
 
-    /** Creates an instance of ReplicationProtectionIntentProperties class. */
+    /**
+     * Creates an instance of ReplicationProtectionIntentProperties class.
+     */
     public ReplicationProtectionIntentProperties() {
     }
 
     /**
      * Get the friendlyName property: The name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -61,7 +65,7 @@ public final class ReplicationProtectionIntentProperties {
 
     /**
      * Set the friendlyName property: The name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ReplicationProtectionIntentProperties object itself.
      */
@@ -72,7 +76,7 @@ public final class ReplicationProtectionIntentProperties {
 
     /**
      * Get the jobId property: The job Id.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -81,7 +85,7 @@ public final class ReplicationProtectionIntentProperties {
 
     /**
      * Get the jobState property: The job state.
-     *
+     * 
      * @return the jobState value.
      */
     public String jobState() {
@@ -90,7 +94,7 @@ public final class ReplicationProtectionIntentProperties {
 
     /**
      * Get the isActive property: A value indicating whether the intent object is active.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -99,7 +103,7 @@ public final class ReplicationProtectionIntentProperties {
 
     /**
      * Get the creationTimeUtc property: The creation time in UTC.
-     *
+     * 
      * @return the creationTimeUtc value.
      */
     public String creationTimeUtc() {
@@ -108,7 +112,7 @@ public final class ReplicationProtectionIntentProperties {
 
     /**
      * Get the providerSpecificDetails property: The Replication provider custom settings.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ReplicationProtectionIntentProviderSpecificSettings providerSpecificDetails() {
@@ -117,19 +121,19 @@ public final class ReplicationProtectionIntentProperties {
 
     /**
      * Set the providerSpecificDetails property: The Replication provider custom settings.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the ReplicationProtectionIntentProperties object itself.
      */
-    public ReplicationProtectionIntentProperties withProviderSpecificDetails(
-        ReplicationProtectionIntentProviderSpecificSettings providerSpecificDetails) {
+    public ReplicationProtectionIntentProperties
+        withProviderSpecificDetails(ReplicationProtectionIntentProviderSpecificSettings providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,8 +12,10 @@ import okhttp3.ConnectionPool;
 import java.util.concurrent.TimeUnit;
 
 /**
- * <p>This class provides an OkHttp-based implementation for the {@link HttpClientProvider} interface.
- * It is designed to create instances of {@link HttpClient} using OkHttp as the underlying client.</p>
+ * <p>
+ * This class provides an OkHttp-based implementation for the {@link HttpClientProvider} interface.
+ * It is designed to create instances of {@link HttpClient} using OkHttp as the underlying client.
+ * </p>
  *
  * @see com.azure.core.http.okhttp
  * @see HttpClientProvider
@@ -21,8 +23,8 @@ import java.util.concurrent.TimeUnit;
  * @see OkHttpAsyncHttpClientBuilder
  */
 public final class OkHttpAsyncClientProvider implements HttpClientProvider {
-    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING =
-        Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
+    private static final boolean AZURE_ENABLE_HTTP_CLIENT_SHARING
+        = Configuration.getGlobalConfiguration().get("AZURE_ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE);
     private final boolean enableHttpClientSharing;
 
     // Enum Singleton Pattern
@@ -74,9 +76,9 @@ public final class OkHttpAsyncClientProvider implements HttpClientProvider {
             .readTimeout(clientOptions.getReadTimeout());
 
         Integer poolSize = clientOptions.getMaximumConnectionPoolSize();
-        int maximumConnectionPoolSize = (poolSize != null && poolSize > 0)
-            ? poolSize
-            : 5; // By default, OkHttp uses a maximum idle connection count of 5.
+        int maximumConnectionPoolSize = (poolSize != null && poolSize > 0) ? poolSize : 5; // By default, OkHttp uses a
+                                                                                          // maximum idle connection
+                                                                                          // count of 5.
 
         ConnectionPool connectionPool = new ConnectionPool(maximumConnectionPoolSize,
             clientOptions.getConnectionIdleTimeout().toMillis(), TimeUnit.MILLISECONDS);

@@ -1151,6 +1151,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      * <p>
@@ -1197,6 +1198,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1568,6 +1570,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *
@@ -1693,6 +1696,7 @@ public final class JobRouterAsyncClient {
      *     ]
      *     loadRatio: Double (Optional)
      *     availableForOffers: Boolean (Optional)
+     *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
      *

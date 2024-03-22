@@ -5,19 +5,18 @@ package com.generic.core.implementation.serializer;
 
 import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.MockHttpResponseDecodeData;
-import com.generic.core.http.Response;
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.Response;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.http.serializer.HttpResponseBodyDecoder;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.DateTimeRfc1123;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.TypeReference;
+import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -110,7 +109,7 @@ public class HttpResponseBodyDecoderTests {
     public void exceptionInErrorDeserializationReturnsException() {
         ObjectSerializer ioExceptionThrower = new DefaultJsonSerializer() {
             @Override
-            public <T> T deserializeFromBytes(byte[] bytes, TypeReference<T> typeReference) {
+            public <T> T deserializeFromBytes(byte[] bytes, Type type) {
                 throw new UncheckedIOException(new IOException());
             }
         };

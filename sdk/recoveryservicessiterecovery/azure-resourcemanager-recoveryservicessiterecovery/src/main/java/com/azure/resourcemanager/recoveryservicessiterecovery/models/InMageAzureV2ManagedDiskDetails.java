@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** InMageAzureV2 Managed disk details. */
+/**
+ * InMageAzureV2 Managed disk details.
+ */
 @Fluent
 public final class InMageAzureV2ManagedDiskDetails {
     /*
@@ -40,13 +42,15 @@ public final class InMageAzureV2ManagedDiskDetails {
     @JsonProperty(value = "targetDiskName")
     private String targetDiskName;
 
-    /** Creates an instance of InMageAzureV2ManagedDiskDetails class. */
+    /**
+     * Creates an instance of InMageAzureV2ManagedDiskDetails class.
+     */
     public InMageAzureV2ManagedDiskDetails() {
     }
 
     /**
      * Get the diskId property: The disk id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -55,7 +59,7 @@ public final class InMageAzureV2ManagedDiskDetails {
 
     /**
      * Set the diskId property: The disk id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the InMageAzureV2ManagedDiskDetails object itself.
      */
@@ -66,7 +70,7 @@ public final class InMageAzureV2ManagedDiskDetails {
 
     /**
      * Get the seedManagedDiskId property: Seed managed disk Id.
-     *
+     * 
      * @return the seedManagedDiskId value.
      */
     public String seedManagedDiskId() {
@@ -75,7 +79,7 @@ public final class InMageAzureV2ManagedDiskDetails {
 
     /**
      * Set the seedManagedDiskId property: Seed managed disk Id.
-     *
+     * 
      * @param seedManagedDiskId the seedManagedDiskId value to set.
      * @return the InMageAzureV2ManagedDiskDetails object itself.
      */
@@ -86,7 +90,7 @@ public final class InMageAzureV2ManagedDiskDetails {
 
     /**
      * Get the replicaDiskType property: The replica disk type.
-     *
+     * 
      * @return the replicaDiskType value.
      */
     public String replicaDiskType() {
@@ -95,7 +99,7 @@ public final class InMageAzureV2ManagedDiskDetails {
 
     /**
      * Set the replicaDiskType property: The replica disk type.
-     *
+     * 
      * @param replicaDiskType the replicaDiskType value to set.
      * @return the InMageAzureV2ManagedDiskDetails object itself.
      */
@@ -106,7 +110,7 @@ public final class InMageAzureV2ManagedDiskDetails {
 
     /**
      * Get the diskEncryptionSetId property: The DiskEncryptionSet ARM ID.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -115,7 +119,7 @@ public final class InMageAzureV2ManagedDiskDetails {
 
     /**
      * Set the diskEncryptionSetId property: The DiskEncryptionSet ARM ID.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the InMageAzureV2ManagedDiskDetails object itself.
      */
@@ -126,7 +130,7 @@ public final class InMageAzureV2ManagedDiskDetails {
 
     /**
      * Get the targetDiskName property: The target disk name.
-     *
+     * 
      * @return the targetDiskName value.
      */
     public String targetDiskName() {
@@ -135,7 +139,7 @@ public final class InMageAzureV2ManagedDiskDetails {
 
     /**
      * Set the targetDiskName property: The target disk name.
-     *
+     * 
      * @param targetDiskName the targetDiskName value to set.
      * @return the InMageAzureV2ManagedDiskDetails object itself.
      */
@@ -146,7 +150,7 @@ public final class InMageAzureV2ManagedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

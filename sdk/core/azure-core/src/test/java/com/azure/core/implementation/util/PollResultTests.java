@@ -12,28 +12,21 @@ public class PollResultTests {
 
     @Test
     public void testPollResultStatus() {
-        Assertions.assertEquals(
-            LongRunningOperationStatus.NOT_STARTED,
+        Assertions.assertEquals(LongRunningOperationStatus.NOT_STARTED,
             new PollResult().setStatus("notStarted").getStatus());
 
-        Assertions.assertEquals(
-            LongRunningOperationStatus.IN_PROGRESS,
+        Assertions.assertEquals(LongRunningOperationStatus.IN_PROGRESS,
             new PollResult().setStatus("inProgress").getStatus());
 
-        Assertions.assertEquals(
-            LongRunningOperationStatus.IN_PROGRESS,
+        Assertions.assertEquals(LongRunningOperationStatus.IN_PROGRESS,
             new PollResult().setStatus("running").getStatus());
 
-        Assertions.assertEquals(
-            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+        Assertions.assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
             new PollResult().setStatus("succeeded").getStatus());
 
-        Assertions.assertEquals(
-            LongRunningOperationStatus.FAILED,
-            new PollResult().setStatus("failed").getStatus());
+        Assertions.assertEquals(LongRunningOperationStatus.FAILED, new PollResult().setStatus("failed").getStatus());
 
-        Assertions.assertEquals(
-            LongRunningOperationStatus.USER_CANCELLED,
+        Assertions.assertEquals(LongRunningOperationStatus.USER_CANCELLED,
             new PollResult().setStatus("canceled").getStatus());
 
         final String unknownStatusString = "idontknow";

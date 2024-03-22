@@ -25,7 +25,7 @@ Use this library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai-assistants</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -131,7 +131,7 @@ do {
 Assuming the run successfully completed, listing messages from the thread that was run will now reflect new information
 added by the assistant:
 ```java readme-sample-listMessagesAfterRun
-OpenAIPageableListOfThreadMessage messages = client.listMessages(run.getThreadId());
+PageableList<ThreadMessage> messages = client.listMessages(run.getThreadId());
 List<ThreadMessage> data = messages.getData();
 for (int i = 0; i < data.size(); i++) {
     ThreadMessage dataMessage = data.get(i);

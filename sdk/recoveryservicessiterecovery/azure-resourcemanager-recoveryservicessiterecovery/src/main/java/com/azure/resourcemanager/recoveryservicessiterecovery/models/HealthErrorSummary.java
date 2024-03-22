@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** class to define the summary of the health error details. */
+/**
+ * class to define the summary of the health error details.
+ */
 @Fluent
 public final class HealthErrorSummary {
     /*
@@ -55,13 +57,15 @@ public final class HealthErrorSummary {
     @JsonProperty(value = "affectedResourceCorrelationIds")
     private List<String> affectedResourceCorrelationIds;
 
-    /** Creates an instance of HealthErrorSummary class. */
+    /**
+     * Creates an instance of HealthErrorSummary class.
+     */
     public HealthErrorSummary() {
     }
 
     /**
      * Get the summaryCode property: The code of the health error.
-     *
+     * 
      * @return the summaryCode value.
      */
     public String summaryCode() {
@@ -70,7 +74,7 @@ public final class HealthErrorSummary {
 
     /**
      * Set the summaryCode property: The code of the health error.
-     *
+     * 
      * @param summaryCode the summaryCode value to set.
      * @return the HealthErrorSummary object itself.
      */
@@ -81,7 +85,7 @@ public final class HealthErrorSummary {
 
     /**
      * Get the category property: The category of the health error.
-     *
+     * 
      * @return the category value.
      */
     public HealthErrorCategory category() {
@@ -90,7 +94,7 @@ public final class HealthErrorSummary {
 
     /**
      * Set the category property: The category of the health error.
-     *
+     * 
      * @param category the category value to set.
      * @return the HealthErrorSummary object itself.
      */
@@ -101,7 +105,7 @@ public final class HealthErrorSummary {
 
     /**
      * Get the severity property: Severity of error.
-     *
+     * 
      * @return the severity value.
      */
     public Severity severity() {
@@ -110,7 +114,7 @@ public final class HealthErrorSummary {
 
     /**
      * Set the severity property: Severity of error.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the HealthErrorSummary object itself.
      */
@@ -121,7 +125,7 @@ public final class HealthErrorSummary {
 
     /**
      * Get the summaryMessage property: The summary message of the health error.
-     *
+     * 
      * @return the summaryMessage value.
      */
     public String summaryMessage() {
@@ -130,7 +134,7 @@ public final class HealthErrorSummary {
 
     /**
      * Set the summaryMessage property: The summary message of the health error.
-     *
+     * 
      * @param summaryMessage the summaryMessage value to set.
      * @return the HealthErrorSummary object itself.
      */
@@ -141,7 +145,7 @@ public final class HealthErrorSummary {
 
     /**
      * Get the affectedResourceType property: The type of affected ARM resource.
-     *
+     * 
      * @return the affectedResourceType value.
      */
     public String affectedResourceType() {
@@ -150,7 +154,7 @@ public final class HealthErrorSummary {
 
     /**
      * Set the affectedResourceType property: The type of affected ARM resource.
-     *
+     * 
      * @param affectedResourceType the affectedResourceType value to set.
      * @return the HealthErrorSummary object itself.
      */
@@ -162,7 +166,7 @@ public final class HealthErrorSummary {
     /**
      * Get the affectedResourceSubtype property: The sub type of any subcomponent within the ARM resource that this
      * might be applicable. Value remains null if not applicable.
-     *
+     * 
      * @return the affectedResourceSubtype value.
      */
     public String affectedResourceSubtype() {
@@ -172,7 +176,7 @@ public final class HealthErrorSummary {
     /**
      * Set the affectedResourceSubtype property: The sub type of any subcomponent within the ARM resource that this
      * might be applicable. Value remains null if not applicable.
-     *
+     * 
      * @param affectedResourceSubtype the affectedResourceSubtype value to set.
      * @return the HealthErrorSummary object itself.
      */
@@ -185,7 +189,7 @@ public final class HealthErrorSummary {
      * Get the affectedResourceCorrelationIds property: The list of affected resource correlation Ids. This can be used
      * to uniquely identify the count of items affected by a specific category and severity as well as count of item
      * affected by an specific issue.
-     *
+     * 
      * @return the affectedResourceCorrelationIds value.
      */
     public List<String> affectedResourceCorrelationIds() {
@@ -196,7 +200,7 @@ public final class HealthErrorSummary {
      * Set the affectedResourceCorrelationIds property: The list of affected resource correlation Ids. This can be used
      * to uniquely identify the count of items affected by a specific category and severity as well as count of item
      * affected by an specific issue.
-     *
+     * 
      * @param affectedResourceCorrelationIds the affectedResourceCorrelationIds value to set.
      * @return the HealthErrorSummary object itself.
      */
@@ -207,7 +211,7 @@ public final class HealthErrorSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

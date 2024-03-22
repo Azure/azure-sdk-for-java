@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-// Includes work from:
 /*
  * Copyright The OpenTelemetry Authors
  * SPDX-License-Identifier: Apache-2.0
@@ -13,30 +12,36 @@ import io.opentelemetry.api.common.AttributeKey;
 
 import java.util.List;
 
+import static com.azure.monitor.opentelemetry.exporter.implementation.AttributeKeyTemplate.stringArrayKeyTemplate;
+import static com.azure.monitor.opentelemetry.exporter.implementation.AttributeKeyTemplate.stringKeyTemplate;
 import static io.opentelemetry.api.common.AttributeKey.booleanKey;
 import static io.opentelemetry.api.common.AttributeKey.doubleKey;
 import static io.opentelemetry.api.common.AttributeKey.longKey;
 import static io.opentelemetry.api.common.AttributeKey.stringArrayKey;
 import static io.opentelemetry.api.common.AttributeKey.stringKey;
 
-// this is a copy of io.opentelemetry.semconv.SemanticAttributes
+// this is a copy of io.opentelemetry.semconv.SemanticAttributes (1.23.1-alpha)
 // because the module that contains that class is not stable,
 // so don't want to take a dependency on it
+
+// DO NOT EDIT, this is an Auto-generated file from
+// buildscripts/templates/SemanticAttributes.java.j2
+
 @SuppressWarnings("unused")
 public final class SemanticAttributes {
     /** The URL of the OpenTelemetry schema for these keys and values. */
-    public static final String SCHEMA_URL = "https://opentelemetry.io/schemas/1.22.0";
+    public static final String SCHEMA_URL = "https://opentelemetry.io/schemas/1.23.1";
 
     /**
-     * Client address - domain name if available without reverse DNS lookup, otherwise IP address or
+     * Client address - domain name if available without reverse DNS lookup; otherwise, IP address or
      * Unix domain socket name.
      *
      * <p>Notes:
      *
      * <ul>
      *   <li>When observed from the server side, and when communicating through an intermediary,
-     *       {@code client.address} SHOULD represent the client address behind any intermediaries
-     *       (e.g. proxies) if it's available.
+     *       {@code client.address} SHOULD represent the client address behind any intermediaries, for
+     *       example proxies, if it's available.
      * </ul>
      */
     public static final AttributeKey<String> CLIENT_ADDRESS = stringKey("client.address");
@@ -48,11 +53,417 @@ public final class SemanticAttributes {
      *
      * <ul>
      *   <li>When observed from the server side, and when communicating through an intermediary,
-     *       {@code client.port} SHOULD represent the client port behind any intermediaries (e.g.
-     *       proxies) if it's available.
+     *       {@code client.port} SHOULD represent the client port behind any intermediaries, for
+     *       example proxies, if it's available.
      * </ul>
      */
     public static final AttributeKey<Long> CLIENT_PORT = longKey("client.port");
+
+    /**
+     * Destination address - domain name if available without reverse DNS lookup; otherwise, IP
+     * address or Unix domain socket name.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>When observed from the source side, and when communicating through an intermediary,
+     *       {@code destination.address} SHOULD represent the destination address behind any
+     *       intermediaries, for example proxies, if it's available.
+     * </ul>
+     */
+    public static final AttributeKey<String> DESTINATION_ADDRESS = stringKey("destination.address");
+
+    /** Destination port number */
+    public static final AttributeKey<Long> DESTINATION_PORT = longKey("destination.port");
+
+    /**
+     * Describes a class of error the operation ended with.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>The {@code error.type} SHOULD be predictable and SHOULD have low cardinality.
+     *       Instrumentations SHOULD document the list of errors they report.
+     *   <li>The cardinality of {@code error.type} within one instrumentation library SHOULD be low.
+     *       Telemetry consumers that aggregate data from multiple instrumentation libraries and
+     *       applications should be prepared for {@code error.type} to have high cardinality at query
+     *       time when no additional filters are applied.
+     *   <li>If the operation has completed successfully, instrumentations SHOULD NOT set {@code
+     *       error.type}.
+     *   <li>If a specific domain defines its own set of error identifiers (such as HTTP or gRPC
+     *       status codes), it's RECOMMENDED to:
+     *   <li>Use a domain-specific attribute
+     *   <li>Set {@code error.type} to capture all errors, regardless of whether they are defined
+     *       within the domain-specific set or not.
+     * </ul>
+     */
+    public static final AttributeKey<String> ERROR_TYPE = stringKey("error.type");
+
+    /** The exception message. */
+    public static final AttributeKey<String> EXCEPTION_MESSAGE = stringKey("exception.message");
+
+    /**
+     * A stacktrace as a string in the natural representation for the language runtime. The
+     * representation is to be determined and documented by each language SIG.
+     */
+    public static final AttributeKey<String> EXCEPTION_STACKTRACE = stringKey("exception.stacktrace");
+
+    /**
+     * The type of the exception (its fully-qualified class name, if applicable). The dynamic type of
+     * the exception should be preferred over the static type in languages that support it.
+     */
+    public static final AttributeKey<String> EXCEPTION_TYPE = stringKey("exception.type");
+
+    /**
+     * The name of the invoked function.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>SHOULD be equal to the {@code faas.name} resource attribute of the invoked function.
+     * </ul>
+     */
+    public static final AttributeKey<String> FAAS_INVOKED_NAME = stringKey("faas.invoked_name");
+
+    /**
+     * The cloud provider of the invoked function.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>SHOULD be equal to the {@code cloud.provider} resource attribute of the invoked function.
+     * </ul>
+     */
+    public static final AttributeKey<String> FAAS_INVOKED_PROVIDER =
+        stringKey("faas.invoked_provider");
+
+    /**
+     * The cloud region of the invoked function.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>SHOULD be equal to the {@code cloud.region} resource attribute of the invoked function.
+     * </ul>
+     */
+    public static final AttributeKey<String> FAAS_INVOKED_REGION = stringKey("faas.invoked_region");
+
+    /** Type of the trigger which caused this function invocation. */
+    public static final AttributeKey<String> FAAS_TRIGGER = stringKey("faas.trigger");
+
+    /**
+     * The <a href="/docs/resource/README.md#service">{@code service.name}</a> of the remote service.
+     * SHOULD be equal to the actual {@code service.name} resource attribute of the remote service if
+     * any.
+     */
+    public static final AttributeKey<String> PEER_SERVICE = stringKey("peer.service");
+
+    /**
+     * Username or client_id extracted from the access token or <a
+     * href="https://tools.ietf.org/html/rfc7235#section-4.2">Authorization</a> header in the inbound
+     * request from outside the system.
+     */
+    public static final AttributeKey<String> ENDUSER_ID = stringKey("enduser.id");
+
+    /**
+     * Actual/assumed role the client is making the request under extracted from token or application
+     * security context.
+     */
+    public static final AttributeKey<String> ENDUSER_ROLE = stringKey("enduser.role");
+
+    /**
+     * Scopes or granted authorities the client currently possesses extracted from token or
+     * application security context. The value would come from the scope associated with an <a
+     * href="https://tools.ietf.org/html/rfc6749#section-3.3">OAuth 2.0 Access Token</a> or an
+     * attribute value in a <a
+     * href="http://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html">SAML
+     * 2.0 Assertion</a>.
+     */
+    public static final AttributeKey<String> ENDUSER_SCOPE = stringKey("enduser.scope");
+
+    /**
+     * The domain identifies the business context for the events.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Events across different domains may have same {@code event.name}, yet be unrelated
+     *       events.
+     * </ul>
+     */
+    public static final AttributeKey<String> EVENT_DOMAIN = stringKey("event.domain");
+
+    /** The name identifies the event. */
+    public static final AttributeKey<String> EVENT_NAME = stringKey("event.name");
+
+    /**
+     * A unique identifier for the Log Record.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>If an id is provided, other log records with the same id will be considered duplicates
+     *       and can be removed safely. This means, that two distinguishable log records MUST have
+     *       different values. The id MAY be an <a href="https://github.com/ulid/spec">Universally
+     *       Unique Lexicographically Sortable Identifier (ULID)</a>, but other identifiers (e.g.
+     *       UUID) may be used as needed.
+     * </ul>
+     */
+    public static final AttributeKey<String> LOG_RECORD_UID = stringKey("log.record.uid");
+
+    /** The stream associated with the log. See below for a list of well-known values. */
+    public static final AttributeKey<String> LOG_IOSTREAM = stringKey("log.iostream");
+
+    /** The basename of the file. */
+    public static final AttributeKey<String> LOG_FILE_NAME = stringKey("log.file.name");
+
+    /** The basename of the file, with symlinks resolved. */
+    public static final AttributeKey<String> LOG_FILE_NAME_RESOLVED =
+        stringKey("log.file.name_resolved");
+
+    /** The full path to the file. */
+    public static final AttributeKey<String> LOG_FILE_PATH = stringKey("log.file.path");
+
+    /** The full path to the file, with symlinks resolved. */
+    public static final AttributeKey<String> LOG_FILE_PATH_RESOLVED =
+        stringKey("log.file.path_resolved");
+
+    /**
+     * This attribute represents the state the application has transitioned into at the occurrence of
+     * the event.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>The iOS lifecycle states are defined in the <a
+     *       href="https://developer.apple.com/documentation/uikit/uiapplicationdelegate#1656902">UIApplicationDelegate
+     *       documentation</a>, and from which the {@code OS terminology} column values are derived.
+     * </ul>
+     */
+    public static final AttributeKey<String> IOS_STATE = stringKey("ios.state");
+
+    /**
+     * This attribute represents the state the application has transitioned into at the occurrence of
+     * the event.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>The Android lifecycle states are defined in <a
+     *       href="https://developer.android.com/guide/components/activities/activity-lifecycle#lc">Activity
+     *       lifecycle callbacks</a>, and from which the {@code OS identifiers} are derived.
+     * </ul>
+     */
+    public static final AttributeKey<String> ANDROID_STATE = stringKey("android.state");
+
+    /**
+     * The name of the connection pool; unique within the instrumented application. In case the
+     * connection pool implementation doesn't provide a name, then the <a
+     * href="/docs/database/database-spans.md#connection-level-attributes">db.connection_string</a>
+     * should be used
+     */
+    public static final AttributeKey<String> POOL_NAME = stringKey("pool.name");
+
+    /** The state of a connection in the pool */
+    public static final AttributeKey<String> STATE = stringKey("state");
+
+    /**
+     * Name of the buffer pool.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Pool names are generally obtained via <a
+     *       href="https://docs.oracle.com/en/java/javase/11/docs/api/java.management/java/lang/management/BufferPoolMXBean.html#getName()">BufferPoolMXBean#getName()</a>.
+     * </ul>
+     */
+    public static final AttributeKey<String> JVM_BUFFER_POOL_NAME = stringKey("jvm.buffer.pool.name");
+
+    /**
+     * Name of the memory pool.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Pool names are generally obtained via <a
+     *       href="https://docs.oracle.com/en/java/javase/11/docs/api/java.management/java/lang/management/MemoryPoolMXBean.html#getName()">MemoryPoolMXBean#getName()</a>.
+     * </ul>
+     */
+    public static final AttributeKey<String> JVM_MEMORY_POOL_NAME = stringKey("jvm.memory.pool.name");
+
+    /** The type of memory. */
+    public static final AttributeKey<String> JVM_MEMORY_TYPE = stringKey("jvm.memory.type");
+
+    /**
+     * Name of the garbage collector action.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Garbage collector action is generally obtained via <a
+     *       href="https://docs.oracle.com/en/java/javase/11/docs/api/jdk.management/com/sun/management/GarbageCollectionNotificationInfo.html#getGcAction()">GarbageCollectionNotificationInfo#getGcAction()</a>.
+     * </ul>
+     */
+    public static final AttributeKey<String> JVM_GC_ACTION = stringKey("jvm.gc.action");
+
+    /**
+     * Name of the garbage collector.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Garbage collector name is generally obtained via <a
+     *       href="https://docs.oracle.com/en/java/javase/11/docs/api/jdk.management/com/sun/management/GarbageCollectionNotificationInfo.html#getGcName()">GarbageCollectionNotificationInfo#getGcName()</a>.
+     * </ul>
+     */
+    public static final AttributeKey<String> JVM_GC_NAME = stringKey("jvm.gc.name");
+
+    /** Whether the thread is daemon or not. */
+    public static final AttributeKey<Boolean> JVM_THREAD_DAEMON = booleanKey("jvm.thread.daemon");
+
+    /** State of the thread. */
+    public static final AttributeKey<String> JVM_THREAD_STATE = stringKey("jvm.thread.state");
+
+    /** The device identifier */
+    public static final AttributeKey<String> SYSTEM_DEVICE = stringKey("system.device");
+
+    /** The logical CPU number [0..n-1] */
+    public static final AttributeKey<Long> SYSTEM_CPU_LOGICAL_NUMBER =
+        longKey("system.cpu.logical_number");
+
+    /** The state of the CPU */
+    public static final AttributeKey<String> SYSTEM_CPU_STATE = stringKey("system.cpu.state");
+
+    /** The memory state */
+    public static final AttributeKey<String> SYSTEM_MEMORY_STATE = stringKey("system.memory.state");
+
+    /** The paging access direction */
+    public static final AttributeKey<String> SYSTEM_PAGING_DIRECTION =
+        stringKey("system.paging.direction");
+
+    /** The memory paging state */
+    public static final AttributeKey<String> SYSTEM_PAGING_STATE = stringKey("system.paging.state");
+
+    /** The memory paging type */
+    public static final AttributeKey<String> SYSTEM_PAGING_TYPE = stringKey("system.paging.type");
+
+    /** The disk operation direction */
+    public static final AttributeKey<String> SYSTEM_DISK_DIRECTION =
+        stringKey("system.disk.direction");
+
+    /** The filesystem mode */
+    public static final AttributeKey<String> SYSTEM_FILESYSTEM_MODE =
+        stringKey("system.filesystem.mode");
+
+    /** The filesystem mount path */
+    public static final AttributeKey<String> SYSTEM_FILESYSTEM_MOUNTPOINT =
+        stringKey("system.filesystem.mountpoint");
+
+    /** The filesystem state */
+    public static final AttributeKey<String> SYSTEM_FILESYSTEM_STATE =
+        stringKey("system.filesystem.state");
+
+    /** The filesystem type */
+    public static final AttributeKey<String> SYSTEM_FILESYSTEM_TYPE =
+        stringKey("system.filesystem.type");
+
+    /** */
+    public static final AttributeKey<String> SYSTEM_NETWORK_DIRECTION =
+        stringKey("system.network.direction");
+
+    /** A stateless protocol MUST NOT set this attribute */
+    public static final AttributeKey<String> SYSTEM_NETWORK_STATE = stringKey("system.network.state");
+
+    /**
+     * The process state, e.g., <a
+     * href="https://man7.org/linux/man-pages/man1/ps.1.html#PROCESS_STATE_CODES">Linux Process State
+     * Codes</a>
+     */
+    public static final AttributeKey<String> SYSTEM_PROCESSES_STATUS =
+        stringKey("system.processes.status");
+
+    /**
+     * The column number in {@code code.filepath} best representing the operation. It SHOULD point
+     * within the code unit named in {@code code.function}.
+     */
+    public static final AttributeKey<Long> CODE_COLUMN = longKey("code.column");
+
+    /**
+     * The source code file name that identifies the code unit as uniquely as possible (preferably an
+     * absolute file path).
+     */
+    public static final AttributeKey<String> CODE_FILEPATH = stringKey("code.filepath");
+
+    /**
+     * The method or function name, or equivalent (usually rightmost part of the code unit's name).
+     */
+    public static final AttributeKey<String> CODE_FUNCTION = stringKey("code.function");
+
+    /**
+     * The line number in {@code code.filepath} best representing the operation. It SHOULD point
+     * within the code unit named in {@code code.function}.
+     */
+    public static final AttributeKey<Long> CODE_LINENO = longKey("code.lineno");
+
+    /**
+     * The &quot;namespace&quot; within which {@code code.function} is defined. Usually the qualified
+     * class or module name, such that {@code code.namespace} + some separator + {@code code.function}
+     * form a unique identifier for the code unit.
+     */
+    public static final AttributeKey<String> CODE_NAMESPACE = stringKey("code.namespace");
+
+    /**
+     * Deprecated, use {@code http.request.method} instead.
+     *
+     * @deprecated Deprecated, use `http.request.method` instead.
+     */
+    @Deprecated public static final AttributeKey<String> HTTP_METHOD = stringKey("http.method");
+
+    /**
+     * Deprecated, use {@code http.request.header.content-length} instead.
+     *
+     * @deprecated Deprecated, use `http.request.header.content-length` instead.
+     */
+    @Deprecated
+    public static final AttributeKey<Long> HTTP_REQUEST_CONTENT_LENGTH =
+        longKey("http.request_content_length");
+
+    /**
+     * Deprecated, use {@code http.response.header.content-length} instead.
+     *
+     * @deprecated Deprecated, use `http.response.header.content-length` instead.
+     */
+    @Deprecated
+    public static final AttributeKey<Long> HTTP_RESPONSE_CONTENT_LENGTH =
+        longKey("http.response_content_length");
+
+    /**
+     * Deprecated, use {@code url.scheme} instead.
+     *
+     * @deprecated Deprecated, use `url.scheme` instead.
+     */
+    @Deprecated public static final AttributeKey<String> HTTP_SCHEME = stringKey("http.scheme");
+
+    /**
+     * Deprecated, use {@code http.response.status_code} instead.
+     *
+     * @deprecated Deprecated, use `http.response.status_code` instead.
+     */
+    @Deprecated public static final AttributeKey<Long> HTTP_STATUS_CODE = longKey("http.status_code");
+
+    /**
+     * Deprecated, use {@code url.path} and {@code url.query} instead.
+     *
+     * @deprecated Deprecated, use `url.path` and `url.query` instead.
+     */
+    @Deprecated public static final AttributeKey<String> HTTP_TARGET = stringKey("http.target");
+
+    /**
+     * Deprecated, use {@code url.full} instead.
+     *
+     * @deprecated Deprecated, use `url.full` instead.
+     */
+    @Deprecated public static final AttributeKey<String> HTTP_URL = stringKey("http.url");
 
     /**
      * Deprecated, use {@code server.address}.
@@ -156,453 +567,6 @@ public final class SemanticAttributes {
     @Deprecated public static final AttributeKey<String> NET_TRANSPORT = stringKey("net.transport");
 
     /**
-     * Destination address - domain name if available without reverse DNS lookup, otherwise IP address
-     * or Unix domain socket name.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>When observed from the source side, and when communicating through an intermediary,
-     *       {@code destination.address} SHOULD represent the destination address behind any
-     *       intermediaries (e.g. proxies) if it's available.
-     * </ul>
-     */
-    public static final AttributeKey<String> DESTINATION_ADDRESS = stringKey("destination.address");
-
-    /** Destination port number */
-    public static final AttributeKey<Long> DESTINATION_PORT = longKey("destination.port");
-
-    /**
-     * Describes a class of error the operation ended with.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>The {@code error.type} SHOULD be predictable and SHOULD have low cardinality.
-     *       Instrumentations SHOULD document the list of errors they report.
-     *   <li>The cardinality of {@code error.type} within one instrumentation library SHOULD be low,
-     *       but telemetry consumers that aggregate data from multiple instrumentation libraries and
-     *       applications should be prepared for {@code error.type} to have high cardinality at query
-     *       time, when no additional filters are applied.
-     *   <li>If the operation has completed successfully, instrumentations SHOULD NOT set {@code
-     *       error.type}.
-     *   <li>If a specific domain defines its own set of error codes (such as HTTP or gRPC status
-     *       codes), it's RECOMMENDED to use a domain-specific attribute and also set {@code
-     *       error.type} to capture all errors, regardless of whether they are defined within the
-     *       domain-specific set or not.
-     * </ul>
-     */
-    public static final AttributeKey<String> ERROR_TYPE = stringKey("error.type");
-
-    /** The exception message. */
-    public static final AttributeKey<String> EXCEPTION_MESSAGE = stringKey("exception.message");
-
-    /**
-     * A stacktrace as a string in the natural representation for the language runtime. The
-     * representation is to be determined and documented by each language SIG.
-     */
-    public static final AttributeKey<String> EXCEPTION_STACKTRACE = stringKey("exception.stacktrace");
-
-    /**
-     * The type of the exception (its fully-qualified class name, if applicable). The dynamic type of
-     * the exception should be preferred over the static type in languages that support it.
-     */
-    public static final AttributeKey<String> EXCEPTION_TYPE = stringKey("exception.type");
-
-    /**
-     * The name of the invoked function.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>SHOULD be equal to the {@code faas.name} resource attribute of the invoked function.
-     * </ul>
-     */
-    public static final AttributeKey<String> FAAS_INVOKED_NAME = stringKey("faas.invoked_name");
-
-    /**
-     * The cloud provider of the invoked function.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>SHOULD be equal to the {@code cloud.provider} resource attribute of the invoked function.
-     * </ul>
-     */
-    public static final AttributeKey<String> FAAS_INVOKED_PROVIDER =
-        stringKey("faas.invoked_provider");
-
-    /**
-     * The cloud region of the invoked function.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>SHOULD be equal to the {@code cloud.region} resource attribute of the invoked function.
-     * </ul>
-     */
-    public static final AttributeKey<String> FAAS_INVOKED_REGION = stringKey("faas.invoked_region");
-
-    /** Type of the trigger which caused this function invocation. */
-    public static final AttributeKey<String> FAAS_TRIGGER = stringKey("faas.trigger");
-
-    /**
-     * The <a href="/docs/resource/README.md#service">{@code service.name}</a> of the remote service.
-     * SHOULD be equal to the actual {@code service.name} resource attribute of the remote service if
-     * any.
-     */
-    public static final AttributeKey<String> PEER_SERVICE = stringKey("peer.service");
-
-    /**
-     * Username or client_id extracted from the access token or <a
-     * href="https://tools.ietf.org/html/rfc7235#section-4.2">Authorization</a> header in the inbound
-     * request from outside the system.
-     */
-    public static final AttributeKey<String> ENDUSER_ID = stringKey("enduser.id");
-
-    /**
-     * Actual/assumed role the client is making the request under extracted from token or application
-     * security context.
-     */
-    public static final AttributeKey<String> ENDUSER_ROLE = stringKey("enduser.role");
-
-    /**
-     * Scopes or granted authorities the client currently possesses extracted from token or
-     * application security context. The value would come from the scope associated with an <a
-     * href="https://tools.ietf.org/html/rfc6749#section-3.3">OAuth 2.0 Access Token</a> or an
-     * attribute value in a <a
-     * href="http://docs.oasis-open.org/security/saml/Post2.0/sstc-saml-tech-overview-2.0.html">SAML
-     * 2.0 Assertion</a>.
-     */
-    public static final AttributeKey<String> ENDUSER_SCOPE = stringKey("enduser.scope");
-
-    /** Whether the thread is daemon or not. */
-    public static final AttributeKey<Boolean> THREAD_DAEMON = booleanKey("thread.daemon");
-
-    /** Current &quot;managed&quot; thread ID (as opposed to OS thread ID). */
-    public static final AttributeKey<Long> THREAD_ID = longKey("thread.id");
-
-    /** Current thread name. */
-    public static final AttributeKey<String> THREAD_NAME = stringKey("thread.name");
-
-    /**
-     * The column number in {@code code.filepath} best representing the operation. It SHOULD point
-     * within the code unit named in {@code code.function}.
-     */
-    public static final AttributeKey<Long> CODE_COLUMN = longKey("code.column");
-
-    /**
-     * The source code file name that identifies the code unit as uniquely as possible (preferably an
-     * absolute file path).
-     */
-    public static final AttributeKey<String> CODE_FILEPATH = stringKey("code.filepath");
-
-    /**
-     * The method or function name, or equivalent (usually rightmost part of the code unit's name).
-     */
-    public static final AttributeKey<String> CODE_FUNCTION = stringKey("code.function");
-
-    /**
-     * The line number in {@code code.filepath} best representing the operation. It SHOULD point
-     * within the code unit named in {@code code.function}.
-     */
-    public static final AttributeKey<Long> CODE_LINENO = longKey("code.lineno");
-
-    /**
-     * The &quot;namespace&quot; within which {@code code.function} is defined. Usually the qualified
-     * class or module name, such that {@code code.namespace} + some separator + {@code code.function}
-     * form a unique identifier for the code unit.
-     */
-    public static final AttributeKey<String> CODE_NAMESPACE = stringKey("code.namespace");
-
-    /**
-     * The domain identifies the business context for the events.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>Events across different domains may have same {@code event.name}, yet be unrelated
-     *       events.
-     * </ul>
-     */
-    public static final AttributeKey<String> EVENT_DOMAIN = stringKey("event.domain");
-
-    /** The name identifies the event. */
-    public static final AttributeKey<String> EVENT_NAME = stringKey("event.name");
-
-    /**
-     * A unique identifier for the Log Record.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>If an id is provided, other log records with the same id will be considered duplicates
-     *       and can be removed safely. This means, that two distinguishable log records MUST have
-     *       different values. The id MAY be an <a href="https://github.com/ulid/spec">Universally
-     *       Unique Lexicographically Sortable Identifier (ULID)</a>, but other identifiers (e.g.
-     *       UUID) may be used as needed.
-     * </ul>
-     */
-    public static final AttributeKey<String> LOG_RECORD_UID = stringKey("log.record.uid");
-
-    /** The stream associated with the log. See below for a list of well-known values. */
-    public static final AttributeKey<String> LOG_IOSTREAM = stringKey("log.iostream");
-
-    /** The basename of the file. */
-    public static final AttributeKey<String> LOG_FILE_NAME = stringKey("log.file.name");
-
-    /** The basename of the file, with symlinks resolved. */
-    public static final AttributeKey<String> LOG_FILE_NAME_RESOLVED =
-        stringKey("log.file.name_resolved");
-
-    /** The full path to the file. */
-    public static final AttributeKey<String> LOG_FILE_PATH = stringKey("log.file.path");
-
-    /** The full path to the file, with symlinks resolved. */
-    public static final AttributeKey<String> LOG_FILE_PATH_RESOLVED =
-        stringKey("log.file.path_resolved");
-
-    /**
-     * The name of the connection pool; unique within the instrumented application. In case the
-     * connection pool implementation does not provide a name, then the <a
-     * href="/docs/database/database-spans.md#connection-level-attributes">db.connection_string</a>
-     * should be used
-     */
-    public static final AttributeKey<String> POOL_NAME = stringKey("pool.name");
-
-    /** The state of a connection in the pool */
-    public static final AttributeKey<String> STATE = stringKey("state");
-
-    /**
-     * Name of the buffer pool.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>Pool names are generally obtained via <a
-     *       href="https://docs.oracle.com/en/java/javase/11/docs/api/java.management/java/lang/management/BufferPoolMXBean.html#getName()">BufferPoolMXBean#getName()</a>.
-     * </ul>
-     */
-    public static final AttributeKey<String> JVM_BUFFER_POOL_NAME = stringKey("jvm.buffer.pool.name");
-
-    /**
-     * Name of the memory pool.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>Pool names are generally obtained via <a
-     *       href="https://docs.oracle.com/en/java/javase/11/docs/api/java.management/java/lang/management/MemoryPoolMXBean.html#getName()">MemoryPoolMXBean#getName()</a>.
-     * </ul>
-     */
-    public static final AttributeKey<String> JVM_MEMORY_POOL_NAME = stringKey("jvm.memory.pool.name");
-
-    /** The type of memory. */
-    public static final AttributeKey<String> JVM_MEMORY_TYPE = stringKey("jvm.memory.type");
-
-    /** The device identifier */
-    public static final AttributeKey<String> SYSTEM_DEVICE = stringKey("system.device");
-
-    /** The logical CPU number [0..n-1] */
-    public static final AttributeKey<Long> SYSTEM_CPU_LOGICAL_NUMBER =
-        longKey("system.cpu.logical_number");
-
-    /** The state of the CPU */
-    public static final AttributeKey<String> SYSTEM_CPU_STATE = stringKey("system.cpu.state");
-
-    /** The memory state */
-    public static final AttributeKey<String> SYSTEM_MEMORY_STATE = stringKey("system.memory.state");
-
-    /** The paging access direction */
-    public static final AttributeKey<String> SYSTEM_PAGING_DIRECTION =
-        stringKey("system.paging.direction");
-
-    /** The memory paging state */
-    public static final AttributeKey<String> SYSTEM_PAGING_STATE = stringKey("system.paging.state");
-
-    /** The memory paging type */
-    public static final AttributeKey<String> SYSTEM_PAGING_TYPE = stringKey("system.paging.type");
-
-    /** The disk operation direction */
-    public static final AttributeKey<String> SYSTEM_DISK_DIRECTION =
-        stringKey("system.disk.direction");
-
-    /** The filesystem mode */
-    public static final AttributeKey<String> SYSTEM_FILESYSTEM_MODE =
-        stringKey("system.filesystem.mode");
-
-    /** The filesystem mount path */
-    public static final AttributeKey<String> SYSTEM_FILESYSTEM_MOUNTPOINT =
-        stringKey("system.filesystem.mountpoint");
-
-    /** The filesystem state */
-    public static final AttributeKey<String> SYSTEM_FILESYSTEM_STATE =
-        stringKey("system.filesystem.state");
-
-    /** The filesystem type */
-    public static final AttributeKey<String> SYSTEM_FILESYSTEM_TYPE =
-        stringKey("system.filesystem.type");
-
-    /** */
-    public static final AttributeKey<String> SYSTEM_NETWORK_DIRECTION =
-        stringKey("system.network.direction");
-
-    /** A stateless protocol MUST NOT set this attribute */
-    public static final AttributeKey<String> SYSTEM_NETWORK_STATE = stringKey("system.network.state");
-
-    /**
-     * The process state, e.g., <a
-     * href="https://man7.org/linux/man-pages/man1/ps.1.html#PROCESS_STATE_CODES">Linux Process State
-     * Codes</a>
-     */
-    public static final AttributeKey<String> SYSTEM_PROCESSES_STATUS =
-        stringKey("system.processes.status");
-
-    /** Local address of the network connection - IP address or Unix domain socket name. */
-    public static final AttributeKey<String> NETWORK_LOCAL_ADDRESS =
-        stringKey("network.local.address");
-
-    /** Local port number of the network connection. */
-    public static final AttributeKey<Long> NETWORK_LOCAL_PORT = longKey("network.local.port");
-
-    /** Peer address of the network connection - IP address or Unix domain socket name. */
-    public static final AttributeKey<String> NETWORK_PEER_ADDRESS = stringKey("network.peer.address");
-
-    /** Peer port number of the network connection. */
-    public static final AttributeKey<Long> NETWORK_PEER_PORT = longKey("network.peer.port");
-
-    /**
-     * <a href="https://osi-model.com/application-layer/">OSI application layer</a> or non-OSI
-     * equivalent.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>The value SHOULD be normalized to lowercase.
-     * </ul>
-     */
-    public static final AttributeKey<String> NETWORK_PROTOCOL_NAME =
-        stringKey("network.protocol.name");
-
-    /**
-     * Version of the protocol specified in {@code network.protocol.name}.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>{@code network.protocol.version} refers to the version of the protocol used and might be
-     *       different from the protocol client's version. If the HTTP client used has a version of
-     *       {@code 0.27.2}, but sends HTTP version {@code 1.1}, this attribute should be set to
-     *       {@code 1.1}.
-     * </ul>
-     */
-    public static final AttributeKey<String> NETWORK_PROTOCOL_VERSION =
-        stringKey("network.protocol.version");
-
-    /**
-     * <a href="https://osi-model.com/transport-layer/">OSI transport layer</a> or <a
-     * href="https://en.wikipedia.org/wiki/Inter-process_communication">inter-process communication
-     * method</a>.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>The value SHOULD be normalized to lowercase.
-     *   <li>Consider always setting the transport when setting a port number, since a port number is
-     *       ambiguous without knowing the transport, for example different processes could be
-     *       listening on TCP port 12345 and UDP port 12345.
-     * </ul>
-     */
-    public static final AttributeKey<String> NETWORK_TRANSPORT = stringKey("network.transport");
-
-    /**
-     * <a href="https://osi-model.com/network-layer/">OSI network layer</a> or non-OSI equivalent.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>The value SHOULD be normalized to lowercase.
-     * </ul>
-     */
-    public static final AttributeKey<String> NETWORK_TYPE = stringKey("network.type");
-
-    /** The ISO 3166-1 alpha-2 2-character country code associated with the mobile carrier network. */
-    public static final AttributeKey<String> NETWORK_CARRIER_ICC = stringKey("network.carrier.icc");
-
-    /** The mobile carrier country code. */
-    public static final AttributeKey<String> NETWORK_CARRIER_MCC = stringKey("network.carrier.mcc");
-
-    /** The mobile carrier network code. */
-    public static final AttributeKey<String> NETWORK_CARRIER_MNC = stringKey("network.carrier.mnc");
-
-    /** The name of the mobile carrier. */
-    public static final AttributeKey<String> NETWORK_CARRIER_NAME = stringKey("network.carrier.name");
-
-    /**
-     * This describes more details regarding the connection.type. It may be the type of cell
-     * technology connection, but it could be used for describing details about a wifi connection.
-     */
-    public static final AttributeKey<String> NETWORK_CONNECTION_SUBTYPE =
-        stringKey("network.connection.subtype");
-
-    /** The internet connection type. */
-    public static final AttributeKey<String> NETWORK_CONNECTION_TYPE =
-        stringKey("network.connection.type");
-
-    /**
-     * Deprecated, use {@code http.request.method} instead.
-     *
-     * @deprecated Deprecated, use `http.request.method` instead.
-     */
-    @Deprecated public static final AttributeKey<String> HTTP_METHOD = stringKey("http.method");
-
-    /**
-     * Deprecated, use {@code http.request.body.size} instead.
-     *
-     * @deprecated Deprecated, use `http.request.body.size` instead.
-     */
-    @Deprecated
-    public static final AttributeKey<Long> HTTP_REQUEST_CONTENT_LENGTH =
-        longKey("http.request_content_length");
-
-    /**
-     * Deprecated, use {@code http.response.body.size} instead.
-     *
-     * @deprecated Deprecated, use `http.response.body.size` instead.
-     */
-    @Deprecated
-    public static final AttributeKey<Long> HTTP_RESPONSE_CONTENT_LENGTH =
-        longKey("http.response_content_length");
-
-    /**
-     * Deprecated, use {@code url.scheme} instead.
-     *
-     * @deprecated Deprecated, use `url.scheme` instead.
-     */
-    @Deprecated public static final AttributeKey<String> HTTP_SCHEME = stringKey("http.scheme");
-
-    /**
-     * Deprecated, use {@code http.response.status_code} instead.
-     *
-     * @deprecated Deprecated, use `http.response.status_code` instead.
-     */
-    @Deprecated public static final AttributeKey<Long> HTTP_STATUS_CODE = longKey("http.status_code");
-
-    /**
-     * Deprecated, use {@code url.path} and {@code url.query} instead.
-     *
-     * @deprecated Deprecated, use `url.path` and `url.query` instead.
-     */
-    @Deprecated public static final AttributeKey<String> HTTP_TARGET = stringKey("http.target");
-
-    /**
-     * Deprecated, use {@code url.full} instead.
-     *
-     * @deprecated Deprecated, use `url.full` instead.
-     */
-    @Deprecated public static final AttributeKey<String> HTTP_URL = stringKey("http.url");
-
-    /**
      * The size of the request payload body in bytes. This is the number of bytes transferred
      * excluding headers and is often, but not always, present as the <a
      * href="https://www.rfc-editor.org/rfc/rfc9110.html#field.content-length">Content-Length</a>
@@ -652,7 +616,8 @@ public final class SemanticAttributes {
      *       failure, 503 Server Unavailable, network issues, or any other).
      * </ul>
      */
-    public static final AttributeKey<Long> HTTP_RESEND_COUNT = longKey("http.resend_count");
+    public static final AttributeKey<Long> HTTP_REQUEST_RESEND_COUNT =
+        longKey("http.request.resend_count");
 
     /**
      * The size of the response payload body in bytes. This is the number of bytes transferred
@@ -668,8 +633,8 @@ public final class SemanticAttributes {
         longKey("http.response.status_code");
 
     /**
-     * The matched route (path template in the format used by the respective server framework). See
-     * note below
+     * The matched route, that is, the path template in the format used by the respective server
+     * framework.
      *
      * <p>Notes:
      *
@@ -683,15 +648,444 @@ public final class SemanticAttributes {
     public static final AttributeKey<String> HTTP_ROUTE = stringKey("http.route");
 
     /**
-     * Server address - domain name if available without reverse DNS lookup, otherwise IP address or
-     * Unix domain socket name.
+     * The number of messages sent, received, or processed in the scope of the batching operation.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Instrumentations SHOULD NOT set {@code messaging.batch.message_count} on spans that
+     *       operate with a single message. When a messaging client library supports both batch and
+     *       single-message API for the same operation, instrumentations SHOULD use {@code
+     *       messaging.batch.message_count} for batching APIs and SHOULD NOT use it for single-message
+     *       APIs.
+     * </ul>
+     */
+    public static final AttributeKey<Long> MESSAGING_BATCH_MESSAGE_COUNT =
+        longKey("messaging.batch.message_count");
+
+    /** A unique identifier for the client that consumes or produces a message. */
+    public static final AttributeKey<String> MESSAGING_CLIENT_ID = stringKey("messaging.client_id");
+
+    /**
+     * A boolean that is true if the message destination is anonymous (could be unnamed or have
+     * auto-generated name).
+     */
+    public static final AttributeKey<Boolean> MESSAGING_DESTINATION_ANONYMOUS =
+        booleanKey("messaging.destination.anonymous");
+
+    /**
+     * The message destination name
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Destination name SHOULD uniquely identify a specific queue, topic or other entity within
+     *       the broker. If the broker doesn't have such notion, the destination name SHOULD uniquely
+     *       identify the broker.
+     * </ul>
+     */
+    public static final AttributeKey<String> MESSAGING_DESTINATION_NAME =
+        stringKey("messaging.destination.name");
+
+    /**
+     * Low cardinality representation of the messaging destination name
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Destination names could be constructed from templates. An example would be a destination
+     *       name involving a user name or product id. Although the destination name in this case is
+     *       of high cardinality, the underlying template is of low cardinality and can be effectively
+     *       used for grouping and aggregation.
+     * </ul>
+     */
+    public static final AttributeKey<String> MESSAGING_DESTINATION_TEMPLATE =
+        stringKey("messaging.destination.template");
+
+    /**
+     * A boolean that is true if the message destination is temporary and might not exist anymore
+     * after messages are processed.
+     */
+    public static final AttributeKey<Boolean> MESSAGING_DESTINATION_TEMPORARY =
+        booleanKey("messaging.destination.temporary");
+
+    /**
+     * A boolean that is true if the publish message destination is anonymous (could be unnamed or
+     * have auto-generated name).
+     */
+    public static final AttributeKey<Boolean> MESSAGING_DESTINATION_PUBLISH_ANONYMOUS =
+        booleanKey("messaging.destination_publish.anonymous");
+
+    /**
+     * The name of the original destination the message was published to
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>The name SHOULD uniquely identify a specific queue, topic, or other entity within the
+     *       broker. If the broker doesn't have such notion, the original destination name SHOULD
+     *       uniquely identify the broker.
+     * </ul>
+     */
+    public static final AttributeKey<String> MESSAGING_DESTINATION_PUBLISH_NAME =
+        stringKey("messaging.destination_publish.name");
+
+    /**
+     * Name of the Kafka Consumer Group that is handling the message. Only applies to consumers, not
+     * producers.
+     */
+    public static final AttributeKey<String> MESSAGING_KAFKA_CONSUMER_GROUP =
+        stringKey("messaging.kafka.consumer.group");
+
+    /** Partition the message is sent to. */
+    public static final AttributeKey<Long> MESSAGING_KAFKA_DESTINATION_PARTITION =
+        longKey("messaging.kafka.destination.partition");
+
+    /**
+     * Message keys in Kafka are used for grouping alike messages to ensure they're processed on the
+     * same partition. They differ from {@code messaging.message.id} in that they're not unique. If
+     * the key is {@code null}, the attribute MUST NOT be set.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>If the key type is not string, it's string representation has to be supplied for the
+     *       attribute. If the key has no unambiguous, canonical string form, don't include its value.
+     * </ul>
+     */
+    public static final AttributeKey<String> MESSAGING_KAFKA_MESSAGE_KEY =
+        stringKey("messaging.kafka.message.key");
+
+    /** The offset of a record in the corresponding Kafka partition. */
+    public static final AttributeKey<Long> MESSAGING_KAFKA_MESSAGE_OFFSET =
+        longKey("messaging.kafka.message.offset");
+
+    /** A boolean that is true if the message is a tombstone. */
+    public static final AttributeKey<Boolean> MESSAGING_KAFKA_MESSAGE_TOMBSTONE =
+        booleanKey("messaging.kafka.message.tombstone");
+
+    /**
+     * The size of the message body in bytes.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>This can refer to both the compressed or uncompressed body size. If both sizes are known,
+     *       the uncompressed body size should be used.
+     * </ul>
+     */
+    public static final AttributeKey<Long> MESSAGING_MESSAGE_BODY_SIZE =
+        longKey("messaging.message.body.size");
+
+    /**
+     * The conversation ID identifying the conversation to which the message belongs, represented as a
+     * string. Sometimes called &quot;Correlation ID&quot;.
+     */
+    public static final AttributeKey<String> MESSAGING_MESSAGE_CONVERSATION_ID =
+        stringKey("messaging.message.conversation_id");
+
+    /**
+     * The size of the message body and metadata in bytes.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>This can refer to both the compressed or uncompressed size. If both sizes are known, the
+     *       uncompressed size should be used.
+     * </ul>
+     */
+    public static final AttributeKey<Long> MESSAGING_MESSAGE_ENVELOPE_SIZE =
+        longKey("messaging.message.envelope.size");
+
+    /**
+     * A value used by the messaging system as an identifier for the message, represented as a string.
+     */
+    public static final AttributeKey<String> MESSAGING_MESSAGE_ID = stringKey("messaging.message.id");
+
+    /**
+     * A string identifying the kind of messaging operation.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>If a custom value is used, it MUST be of low cardinality.
+     * </ul>
+     */
+    public static final AttributeKey<String> MESSAGING_OPERATION = stringKey("messaging.operation");
+
+    /** RabbitMQ message routing key. */
+    public static final AttributeKey<String> MESSAGING_RABBITMQ_DESTINATION_ROUTING_KEY =
+        stringKey("messaging.rabbitmq.destination.routing_key");
+
+    /**
+     * Name of the RocketMQ producer/consumer group that is handling the message. The client type is
+     * identified by the SpanKind.
+     */
+    public static final AttributeKey<String> MESSAGING_ROCKETMQ_CLIENT_GROUP =
+        stringKey("messaging.rocketmq.client_group");
+
+    /** Model of message consumption. This only applies to consumer spans. */
+    public static final AttributeKey<String> MESSAGING_ROCKETMQ_CONSUMPTION_MODEL =
+        stringKey("messaging.rocketmq.consumption_model");
+
+    /** The delay time level for delay message, which determines the message delay time. */
+    public static final AttributeKey<Long> MESSAGING_ROCKETMQ_MESSAGE_DELAY_TIME_LEVEL =
+        longKey("messaging.rocketmq.message.delay_time_level");
+
+    /**
+     * The timestamp in milliseconds that the delay message is expected to be delivered to consumer.
+     */
+    public static final AttributeKey<Long> MESSAGING_ROCKETMQ_MESSAGE_DELIVERY_TIMESTAMP =
+        longKey("messaging.rocketmq.message.delivery_timestamp");
+
+    /**
+     * It is essential for FIFO message. Messages that belong to the same message group are always
+     * processed one by one within the same consumer group.
+     */
+    public static final AttributeKey<String> MESSAGING_ROCKETMQ_MESSAGE_GROUP =
+        stringKey("messaging.rocketmq.message.group");
+
+    /** Key(s) of message, another way to mark message besides message id. */
+    public static final AttributeKey<List<String>> MESSAGING_ROCKETMQ_MESSAGE_KEYS =
+        stringArrayKey("messaging.rocketmq.message.keys");
+
+    /** The secondary classifier of message besides topic. */
+    public static final AttributeKey<String> MESSAGING_ROCKETMQ_MESSAGE_TAG =
+        stringKey("messaging.rocketmq.message.tag");
+
+    /** Type of message. */
+    public static final AttributeKey<String> MESSAGING_ROCKETMQ_MESSAGE_TYPE =
+        stringKey("messaging.rocketmq.message.type");
+
+    /** Namespace of RocketMQ resources, resources in different namespaces are individual. */
+    public static final AttributeKey<String> MESSAGING_ROCKETMQ_NAMESPACE =
+        stringKey("messaging.rocketmq.namespace");
+
+    /** A string identifying the messaging system. */
+    public static final AttributeKey<String> MESSAGING_SYSTEM = stringKey("messaging.system");
+
+    /** The ISO 3166-1 alpha-2 2-character country code associated with the mobile carrier network. */
+    public static final AttributeKey<String> NETWORK_CARRIER_ICC = stringKey("network.carrier.icc");
+
+    /** The mobile carrier country code. */
+    public static final AttributeKey<String> NETWORK_CARRIER_MCC = stringKey("network.carrier.mcc");
+
+    /** The mobile carrier network code. */
+    public static final AttributeKey<String> NETWORK_CARRIER_MNC = stringKey("network.carrier.mnc");
+
+    /** The name of the mobile carrier. */
+    public static final AttributeKey<String> NETWORK_CARRIER_NAME = stringKey("network.carrier.name");
+
+    /**
+     * This describes more details regarding the connection.type. It may be the type of cell
+     * technology connection, but it could be used for describing details about a wifi connection.
+     */
+    public static final AttributeKey<String> NETWORK_CONNECTION_SUBTYPE =
+        stringKey("network.connection.subtype");
+
+    /** The internet connection type. */
+    public static final AttributeKey<String> NETWORK_CONNECTION_TYPE =
+        stringKey("network.connection.type");
+
+    /** Local address of the network connection - IP address or Unix domain socket name. */
+    public static final AttributeKey<String> NETWORK_LOCAL_ADDRESS =
+        stringKey("network.local.address");
+
+    /** Local port number of the network connection. */
+    public static final AttributeKey<Long> NETWORK_LOCAL_PORT = longKey("network.local.port");
+
+    /** Peer address of the network connection - IP address or Unix domain socket name. */
+    public static final AttributeKey<String> NETWORK_PEER_ADDRESS = stringKey("network.peer.address");
+
+    /** Peer port number of the network connection. */
+    public static final AttributeKey<Long> NETWORK_PEER_PORT = longKey("network.peer.port");
+
+    /**
+     * <a href="https://osi-model.com/application-layer/">OSI application layer</a> or non-OSI
+     * equivalent.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>The value SHOULD be normalized to lowercase.
+     * </ul>
+     */
+    public static final AttributeKey<String> NETWORK_PROTOCOL_NAME =
+        stringKey("network.protocol.name");
+
+    /**
+     * Version of the protocol specified in {@code network.protocol.name}.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>{@code network.protocol.version} refers to the version of the protocol used and might be
+     *       different from the protocol client's version. If the HTTP client has a version of {@code
+     *       0.27.2}, but sends HTTP version {@code 1.1}, this attribute should be set to {@code 1.1}.
+     * </ul>
+     */
+    public static final AttributeKey<String> NETWORK_PROTOCOL_VERSION =
+        stringKey("network.protocol.version");
+
+    /**
+     * <a href="https://osi-model.com/transport-layer/">OSI transport layer</a> or <a
+     * href="https://wikipedia.org/wiki/Inter-process_communication">inter-process communication
+     * method</a>.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>The value SHOULD be normalized to lowercase.
+     *   <li>Consider always setting the transport when setting a port number, since a port number is
+     *       ambiguous without knowing the transport. For example different processes could be
+     *       listening on TCP port 12345 and UDP port 12345.
+     * </ul>
+     */
+    public static final AttributeKey<String> NETWORK_TRANSPORT = stringKey("network.transport");
+
+    /**
+     * <a href="https://osi-model.com/network-layer/">OSI network layer</a> or non-OSI equivalent.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>The value SHOULD be normalized to lowercase.
+     * </ul>
+     */
+    public static final AttributeKey<String> NETWORK_TYPE = stringKey("network.type");
+
+    /**
+     * The <a href="https://connect.build/docs/protocol/#error-codes">error codes</a> of the Connect
+     * request. Error codes are always string values.
+     */
+    public static final AttributeKey<String> RPC_CONNECT_RPC_ERROR_CODE =
+        stringKey("rpc.connect_rpc.error_code");
+
+    /**
+     * The <a href="https://github.com/grpc/grpc/blob/v1.33.2/doc/statuscodes.md">numeric status
+     * code</a> of the gRPC request.
+     */
+    public static final AttributeKey<Long> RPC_GRPC_STATUS_CODE = longKey("rpc.grpc.status_code");
+
+    /** {@code error.code} property of response if it is an error response. */
+    public static final AttributeKey<Long> RPC_JSONRPC_ERROR_CODE = longKey("rpc.jsonrpc.error_code");
+
+    /** {@code error.message} property of response if it is an error response. */
+    public static final AttributeKey<String> RPC_JSONRPC_ERROR_MESSAGE =
+        stringKey("rpc.jsonrpc.error_message");
+
+    /**
+     * {@code id} property of request or response. Since protocol allows id to be int, string, {@code
+     * null} or missing (for notifications), value is expected to be cast to string for simplicity.
+     * Use empty string in case of {@code null} value. Omit entirely if this is a notification.
+     */
+    public static final AttributeKey<String> RPC_JSONRPC_REQUEST_ID =
+        stringKey("rpc.jsonrpc.request_id");
+
+    /**
+     * Protocol version as in {@code jsonrpc} property of request/response. Since JSON-RPC 1.0 doesn't
+     * specify this, the value can be omitted.
+     */
+    public static final AttributeKey<String> RPC_JSONRPC_VERSION = stringKey("rpc.jsonrpc.version");
+
+    /**
+     * The name of the (logical) method being called, must be equal to the $method part in the span
+     * name.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>This is the logical name of the method from the RPC interface perspective, which can be
+     *       different from the name of any implementing method/function. The {@code code.function}
+     *       attribute may be used to store the latter (e.g., method actually executing the call on
+     *       the server side, RPC client stub method on the client side).
+     * </ul>
+     */
+    public static final AttributeKey<String> RPC_METHOD = stringKey("rpc.method");
+
+    /**
+     * The full (logical) name of the service being called, including its package name, if applicable.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>This is the logical name of the service from the RPC interface perspective, which can be
+     *       different from the name of any implementing class. The {@code code.namespace} attribute
+     *       may be used to store the latter (despite the attribute name, it may include a class name;
+     *       e.g., class with method actually executing the call on the server side, RPC client stub
+     *       class on the client side).
+     * </ul>
+     */
+    public static final AttributeKey<String> RPC_SERVICE = stringKey("rpc.service");
+
+    /** A string identifying the remoting system. See below for a list of well-known identifiers. */
+    public static final AttributeKey<String> RPC_SYSTEM = stringKey("rpc.system");
+
+    /** Current &quot;managed&quot; thread ID (as opposed to OS thread ID). */
+    public static final AttributeKey<Long> THREAD_ID = longKey("thread.id");
+
+    /** Current thread name. */
+    public static final AttributeKey<String> THREAD_NAME = stringKey("thread.name");
+
+    /** The <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.5">URI fragment</a> component */
+    public static final AttributeKey<String> URL_FRAGMENT = stringKey("url.fragment");
+
+    /**
+     * Absolute URL describing a network resource according to <a
+     * href="https://www.rfc-editor.org/rfc/rfc3986">RFC3986</a>
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>For network calls, URL usually has {@code scheme://host[:port][path][?query][#fragment]}
+     *       format, where the fragment is not transmitted over HTTP, but if it is known, it SHOULD be
+     *       included nevertheless. {@code url.full} MUST NOT contain credentials passed via URL in
+     *       form of {@code https://username:password@www.example.com/}. In such case username and
+     *       password SHOULD be redacted and attribute's value SHOULD be {@code
+     *       https://REDACTED:REDACTED@www.example.com/}. {@code url.full} SHOULD capture the absolute
+     *       URL when it is available (or can be reconstructed) and SHOULD NOT be validated or
+     *       modified except for sanitizing purposes.
+     * </ul>
+     */
+    public static final AttributeKey<String> URL_FULL = stringKey("url.full");
+
+    /** The <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.3">URI path</a> component */
+    public static final AttributeKey<String> URL_PATH = stringKey("url.path");
+
+    /**
+     * The <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.4">URI query</a> component
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Sensitive content provided in query string SHOULD be scrubbed when instrumentations can
+     *       identify it.
+     * </ul>
+     */
+    public static final AttributeKey<String> URL_QUERY = stringKey("url.query");
+
+    /**
+     * The <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.1">URI scheme</a> component
+     * identifying the used protocol.
+     */
+    public static final AttributeKey<String> URL_SCHEME = stringKey("url.scheme");
+
+    /**
+     * Value of the <a href="https://www.rfc-editor.org/rfc/rfc9110.html#field.user-agent">HTTP
+     * User-Agent</a> header sent by the client.
+     */
+    public static final AttributeKey<String> USER_AGENT_ORIGINAL = stringKey("user_agent.original");
+
+    /**
+     * Server domain name if available without reverse DNS lookup; otherwise, IP address or Unix
+     * domain socket name.
      *
      * <p>Notes:
      *
      * <ul>
      *   <li>When observed from the client side, and when communicating through an intermediary,
-     *       {@code server.address} SHOULD represent the server address behind any intermediaries
-     *       (e.g. proxies) if it's available.
+     *       {@code server.address} SHOULD represent the server address behind any intermediaries, for
+     *       example proxies, if it's available.
      * </ul>
      */
     public static final AttributeKey<String> SERVER_ADDRESS = stringKey("server.address");
@@ -703,8 +1097,8 @@ public final class SemanticAttributes {
      *
      * <ul>
      *   <li>When observed from the client side, and when communicating through an intermediary,
-     *       {@code server.port} SHOULD represent the server port behind any intermediaries (e.g.
-     *       proxies) if it's available.
+     *       {@code server.port} SHOULD represent the server port behind any intermediaries, for
+     *       example proxies, if it's available.
      * </ul>
      */
     public static final AttributeKey<Long> SERVER_PORT = longKey("server.port");
@@ -712,16 +1106,19 @@ public final class SemanticAttributes {
     /** A unique id to identify a session. */
     public static final AttributeKey<String> SESSION_ID = stringKey("session.id");
 
+    /** The previous {@code session.id} for this user, when known. */
+    public static final AttributeKey<String> SESSION_PREVIOUS_ID = stringKey("session.previous_id");
+
     /**
-     * Source address - domain name if available without reverse DNS lookup, otherwise IP address or
+     * Source address - domain name if available without reverse DNS lookup; otherwise, IP address or
      * Unix domain socket name.
      *
      * <p>Notes:
      *
      * <ul>
      *   <li>When observed from the destination side, and when communicating through an intermediary,
-     *       {@code source.address} SHOULD represent the source address behind any intermediaries
-     *       (e.g. proxies) if it's available.
+     *       {@code source.address} SHOULD represent the source address behind any intermediaries, for
+     *       example proxies, if it's available.
      * </ul>
      */
     public static final AttributeKey<String> SOURCE_ADDRESS = stringKey("source.address");
@@ -852,7 +1249,7 @@ public final class SemanticAttributes {
 
     /**
      * The Microsoft SQL Server <a
-     * href="https://docs.microsoft.com/en-us/sql/connect/jdbc/building-the-connection-url?view=sql-server-ver15">instance
+     * href="https://docs.microsoft.com/sql/connect/jdbc/building-the-connection-url?view=sql-server-ver15">instance
      * name</a> connecting to. This name is used to determine the port of a named instance.
      *
      * <p>Notes:
@@ -1305,284 +1702,6 @@ public final class SemanticAttributes {
     public static final AttributeKey<String> GRAPHQL_OPERATION_TYPE =
         stringKey("graphql.operation.type");
 
-    /**
-     * The size of the message body in bytes.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>This can refer to both the compressed or uncompressed body size. If both sizes are known,
-     *       the uncompressed body size should be used.
-     * </ul>
-     */
-    public static final AttributeKey<Long> MESSAGING_MESSAGE_BODY_SIZE =
-        longKey("messaging.message.body.size");
-
-    /**
-     * The <a href="#conversations">conversation ID</a> identifying the conversation to which the
-     * message belongs, represented as a string. Sometimes called &quot;Correlation ID&quot;.
-     */
-    public static final AttributeKey<String> MESSAGING_MESSAGE_CONVERSATION_ID =
-        stringKey("messaging.message.conversation_id");
-
-    /**
-     * The size of the message body and metadata in bytes.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>This can refer to both the compressed or uncompressed size. If both sizes are known, the
-     *       uncompressed size should be used.
-     * </ul>
-     */
-    public static final AttributeKey<Long> MESSAGING_MESSAGE_ENVELOPE_SIZE =
-        longKey("messaging.message.envelope.size");
-
-    /**
-     * A value used by the messaging system as an identifier for the message, represented as a string.
-     */
-    public static final AttributeKey<String> MESSAGING_MESSAGE_ID = stringKey("messaging.message.id");
-
-    /**
-     * A boolean that is true if the message destination is anonymous (could be unnamed or have
-     * auto-generated name).
-     */
-    public static final AttributeKey<Boolean> MESSAGING_DESTINATION_ANONYMOUS =
-        booleanKey("messaging.destination.anonymous");
-
-    /**
-     * The message destination name
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>Destination name SHOULD uniquely identify a specific queue, topic or other entity within
-     *       the broker. If the broker does not have such notion, the destination name SHOULD uniquely
-     *       identify the broker.
-     * </ul>
-     */
-    public static final AttributeKey<String> MESSAGING_DESTINATION_NAME =
-        stringKey("messaging.destination.name");
-
-    /**
-     * Low cardinality representation of the messaging destination name
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>Destination names could be constructed from templates. An example would be a destination
-     *       name involving a user name or product id. Although the destination name in this case is
-     *       of high cardinality, the underlying template is of low cardinality and can be effectively
-     *       used for grouping and aggregation.
-     * </ul>
-     */
-    public static final AttributeKey<String> MESSAGING_DESTINATION_TEMPLATE =
-        stringKey("messaging.destination.template");
-
-    /**
-     * A boolean that is true if the message destination is temporary and might not exist anymore
-     * after messages are processed.
-     */
-    public static final AttributeKey<Boolean> MESSAGING_DESTINATION_TEMPORARY =
-        booleanKey("messaging.destination.temporary");
-
-    /**
-     * A boolean that is true if the publish message destination is anonymous (could be unnamed or
-     * have auto-generated name).
-     */
-    public static final AttributeKey<Boolean> MESSAGING_DESTINATION_PUBLISH_ANONYMOUS =
-        booleanKey("messaging.destination_publish.anonymous");
-
-    /**
-     * The name of the original destination the message was published to
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>The name SHOULD uniquely identify a specific queue, topic, or other entity within the
-     *       broker. If the broker does not have such notion, the original destination name SHOULD
-     *       uniquely identify the broker.
-     * </ul>
-     */
-    public static final AttributeKey<String> MESSAGING_DESTINATION_PUBLISH_NAME =
-        stringKey("messaging.destination_publish.name");
-
-    /**
-     * The number of messages sent, received, or processed in the scope of the batching operation.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>Instrumentations SHOULD NOT set {@code messaging.batch.message_count} on spans that
-     *       operate with a single message. When a messaging client library supports both batch and
-     *       single-message API for the same operation, instrumentations SHOULD use {@code
-     *       messaging.batch.message_count} for batching APIs and SHOULD NOT use it for single-message
-     *       APIs.
-     * </ul>
-     */
-    public static final AttributeKey<Long> MESSAGING_BATCH_MESSAGE_COUNT =
-        longKey("messaging.batch.message_count");
-
-    /** A unique identifier for the client that consumes or produces a message. */
-    public static final AttributeKey<String> MESSAGING_CLIENT_ID = stringKey("messaging.client_id");
-
-    /**
-     * A string identifying the kind of messaging operation as defined in the <a
-     * href="#operation-names">Operation names</a> section above.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>If a custom value is used, it MUST be of low cardinality.
-     * </ul>
-     */
-    public static final AttributeKey<String> MESSAGING_OPERATION = stringKey("messaging.operation");
-
-    /** A string identifying the messaging system. */
-    public static final AttributeKey<String> MESSAGING_SYSTEM = stringKey("messaging.system");
-
-    /** RabbitMQ message routing key. */
-    public static final AttributeKey<String> MESSAGING_RABBITMQ_DESTINATION_ROUTING_KEY =
-        stringKey("messaging.rabbitmq.destination.routing_key");
-
-    /**
-     * Name of the Kafka Consumer Group that is handling the message. Only applies to consumers, not
-     * producers.
-     */
-    public static final AttributeKey<String> MESSAGING_KAFKA_CONSUMER_GROUP =
-        stringKey("messaging.kafka.consumer.group");
-
-    /** Partition the message is sent to. */
-    public static final AttributeKey<Long> MESSAGING_KAFKA_DESTINATION_PARTITION =
-        longKey("messaging.kafka.destination.partition");
-
-    /**
-     * Message keys in Kafka are used for grouping alike messages to ensure they're processed on the
-     * same partition. They differ from {@code messaging.message.id} in that they're not unique. If
-     * the key is {@code null}, the attribute MUST NOT be set.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>If the key type is not string, it's string representation has to be supplied for the
-     *       attribute. If the key has no unambiguous, canonical string form, don't include its value.
-     * </ul>
-     */
-    public static final AttributeKey<String> MESSAGING_KAFKA_MESSAGE_KEY =
-        stringKey("messaging.kafka.message.key");
-
-    /** The offset of a record in the corresponding Kafka partition. */
-    public static final AttributeKey<Long> MESSAGING_KAFKA_MESSAGE_OFFSET =
-        longKey("messaging.kafka.message.offset");
-
-    /** A boolean that is true if the message is a tombstone. */
-    public static final AttributeKey<Boolean> MESSAGING_KAFKA_MESSAGE_TOMBSTONE =
-        booleanKey("messaging.kafka.message.tombstone");
-
-    /**
-     * Name of the RocketMQ producer/consumer group that is handling the message. The client type is
-     * identified by the SpanKind.
-     */
-    public static final AttributeKey<String> MESSAGING_ROCKETMQ_CLIENT_GROUP =
-        stringKey("messaging.rocketmq.client_group");
-
-    /** Model of message consumption. This only applies to consumer spans. */
-    public static final AttributeKey<String> MESSAGING_ROCKETMQ_CONSUMPTION_MODEL =
-        stringKey("messaging.rocketmq.consumption_model");
-
-    /** The delay time level for delay message, which determines the message delay time. */
-    public static final AttributeKey<Long> MESSAGING_ROCKETMQ_MESSAGE_DELAY_TIME_LEVEL =
-        longKey("messaging.rocketmq.message.delay_time_level");
-
-    /**
-     * The timestamp in milliseconds that the delay message is expected to be delivered to consumer.
-     */
-    public static final AttributeKey<Long> MESSAGING_ROCKETMQ_MESSAGE_DELIVERY_TIMESTAMP =
-        longKey("messaging.rocketmq.message.delivery_timestamp");
-
-    /**
-     * It is essential for FIFO message. Messages that belong to the same message group are always
-     * processed one by one within the same consumer group.
-     */
-    public static final AttributeKey<String> MESSAGING_ROCKETMQ_MESSAGE_GROUP =
-        stringKey("messaging.rocketmq.message.group");
-
-    /** Key(s) of message, another way to mark message besides message id. */
-    public static final AttributeKey<List<String>> MESSAGING_ROCKETMQ_MESSAGE_KEYS =
-        stringArrayKey("messaging.rocketmq.message.keys");
-
-    /** The secondary classifier of message besides topic. */
-    public static final AttributeKey<String> MESSAGING_ROCKETMQ_MESSAGE_TAG =
-        stringKey("messaging.rocketmq.message.tag");
-
-    /** Type of message. */
-    public static final AttributeKey<String> MESSAGING_ROCKETMQ_MESSAGE_TYPE =
-        stringKey("messaging.rocketmq.message.type");
-
-    /** Namespace of RocketMQ resources, resources in different namespaces are individual. */
-    public static final AttributeKey<String> MESSAGING_ROCKETMQ_NAMESPACE =
-        stringKey("messaging.rocketmq.namespace");
-
-    /**
-     * The name of the (logical) method being called, must be equal to the $method part in the span
-     * name.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>This is the logical name of the method from the RPC interface perspective, which can be
-     *       different from the name of any implementing method/function. The {@code code.function}
-     *       attribute may be used to store the latter (e.g., method actually executing the call on
-     *       the server side, RPC client stub method on the client side).
-     * </ul>
-     */
-    public static final AttributeKey<String> RPC_METHOD = stringKey("rpc.method");
-
-    /**
-     * The full (logical) name of the service being called, including its package name, if applicable.
-     *
-     * <p>Notes:
-     *
-     * <ul>
-     *   <li>This is the logical name of the service from the RPC interface perspective, which can be
-     *       different from the name of any implementing class. The {@code code.namespace} attribute
-     *       may be used to store the latter (despite the attribute name, it may include a class name;
-     *       e.g., class with method actually executing the call on the server side, RPC client stub
-     *       class on the client side).
-     * </ul>
-     */
-    public static final AttributeKey<String> RPC_SERVICE = stringKey("rpc.service");
-
-    /** A string identifying the remoting system. See below for a list of well-known identifiers. */
-    public static final AttributeKey<String> RPC_SYSTEM = stringKey("rpc.system");
-
-    /**
-     * The <a href="https://github.com/grpc/grpc/blob/v1.33.2/doc/statuscodes.md">numeric status
-     * code</a> of the gRPC request.
-     */
-    public static final AttributeKey<Long> RPC_GRPC_STATUS_CODE = longKey("rpc.grpc.status_code");
-
-    /** {@code error.code} property of response if it is an error response. */
-    public static final AttributeKey<Long> RPC_JSONRPC_ERROR_CODE = longKey("rpc.jsonrpc.error_code");
-
-    /** {@code error.message} property of response if it is an error response. */
-    public static final AttributeKey<String> RPC_JSONRPC_ERROR_MESSAGE =
-        stringKey("rpc.jsonrpc.error_message");
-
-    /**
-     * {@code id} property of request or response. Since protocol allows id to be int, string, {@code
-     * null} or missing (for notifications), value is expected to be cast to string for simplicity.
-     * Use empty string in case of {@code null} value. Omit entirely if this is a notification.
-     */
-    public static final AttributeKey<String> RPC_JSONRPC_REQUEST_ID =
-        stringKey("rpc.jsonrpc.request_id");
-
-    /**
-     * Protocol version as in {@code jsonrpc} property of request/response. Since JSON-RPC 1.0 does
-     * not specify this, the value can be omitted.
-     */
-    public static final AttributeKey<String> RPC_JSONRPC_VERSION = stringKey("rpc.jsonrpc.version");
-
     /** Compressed size of the message in bytes. */
     public static final AttributeKey<Long> MESSAGE_COMPRESSED_SIZE =
         longKey("message.compressed_size");
@@ -1608,13 +1727,6 @@ public final class SemanticAttributes {
         longKey("message.uncompressed_size");
 
     /**
-     * The <a href="https://connect.build/docs/protocol/#error-codes">error codes</a> of the Connect
-     * request. Error codes are always string values.
-     */
-    public static final AttributeKey<String> RPC_CONNECT_RPC_ERROR_CODE =
-        stringKey("rpc.connect_rpc.error_code");
-
-    /**
      * SHOULD be set to true if the exception event is recorded at a point where it is known that the
      * exception is escaping the scope of the span.
      *
@@ -1637,100 +1749,125 @@ public final class SemanticAttributes {
      */
     public static final AttributeKey<Boolean> EXCEPTION_ESCAPED = booleanKey("exception.escaped");
 
-    /** The <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.5">URI fragment</a> component */
-    public static final AttributeKey<String> URL_FRAGMENT = stringKey("url.fragment");
-
     /**
-     * Absolute URL describing a network resource according to <a
-     * href="https://www.rfc-editor.org/rfc/rfc3986">RFC3986</a>
+     * HTTP request headers, {@code <key>} being the normalized HTTP Header name (lowercase), the
+     * value being the header values.
      *
      * <p>Notes:
      *
      * <ul>
-     *   <li>For network calls, URL usually has {@code scheme://host[:port][path][?query][#fragment]}
-     *       format, where the fragment is not transmitted over HTTP, but if it is known, it should be
-     *       included nevertheless. {@code url.full} MUST NOT contain credentials passed via URL in
-     *       form of {@code https://username:password@www.example.com/}. In such case username and
-     *       password should be redacted and attribute's value should be {@code
-     *       https://REDACTED:REDACTED@www.example.com/}. {@code url.full} SHOULD capture the absolute
-     *       URL when it is available (or can be reconstructed) and SHOULD NOT be validated or
-     *       modified except for sanitizing purposes.
+     *   <li>Instrumentations SHOULD require an explicit configuration of which headers are to be
+     *       captured. Including all request headers can be a security risk - explicit configuration
+     *       helps avoid leaking sensitive information. The {@code User-Agent} header is already
+     *       captured in the {@code user_agent.original} attribute. Users MAY explicitly configure
+     *       instrumentations to capture them even though it is not recommended. The attribute value
+     *       MUST consist of either multiple header values as an array of strings or a single-item
+     *       array containing a possibly comma-concatenated string, depending on the way the HTTP
+     *       library provides access to headers.
      * </ul>
      */
-    public static final AttributeKey<String> URL_FULL = stringKey("url.full");
+    public static final AttributeKeyTemplate<List<String>> HTTP_REQUEST_HEADER =
+        stringArrayKeyTemplate("http.request.header");
 
     /**
-     * The <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.3">URI path</a> component
+     * HTTP response headers, {@code <key>} being the normalized HTTP Header name (lowercase), the
+     * value being the header values.
      *
      * <p>Notes:
      *
      * <ul>
-     *   <li>When missing, the value is assumed to be {@code /}
+     *   <li>Instrumentations SHOULD require an explicit configuration of which headers are to be
+     *       captured. Including all response headers can be a security risk - explicit configuration
+     *       helps avoid leaking sensitive information. Users MAY explicitly configure
+     *       instrumentations to capture them even though it is not recommended. The attribute value
+     *       MUST consist of either multiple header values as an array of strings or a single-item
+     *       array containing a possibly comma-concatenated string, depending on the way the HTTP
+     *       library provides access to headers.
      * </ul>
      */
-    public static final AttributeKey<String> URL_PATH = stringKey("url.path");
+    public static final AttributeKeyTemplate<List<String>> HTTP_RESPONSE_HEADER =
+        stringArrayKeyTemplate("http.response.header");
 
     /**
-     * The <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.4">URI query</a> component
+     * Connect request metadata, {@code <key>} being the normalized Connect Metadata key (lowercase),
+     * the value being the metadata values.
      *
      * <p>Notes:
      *
      * <ul>
-     *   <li>Sensitive content provided in query string SHOULD be scrubbed when instrumentations can
-     *       identify it.
+     *   <li>Instrumentations SHOULD require an explicit configuration of which metadata values are to
+     *       be captured. Including all request metadata values can be a security risk - explicit
+     *       configuration helps avoid leaking sensitive information.
      * </ul>
      */
-    public static final AttributeKey<String> URL_QUERY = stringKey("url.query");
+    public static final AttributeKeyTemplate<List<String>> RPC_CONNECT_RPC_REQUEST_METADATA =
+        stringArrayKeyTemplate("rpc.connect_rpc.request.metadata");
 
     /**
-     * The <a href="https://www.rfc-editor.org/rfc/rfc3986#section-3.1">URI scheme</a> component
-     * identifying the used protocol.
+     * Connect response metadata, {@code <key>} being the normalized Connect Metadata key (lowercase),
+     * the value being the metadata values.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Instrumentations SHOULD require an explicit configuration of which metadata values are to
+     *       be captured. Including all response metadata values can be a security risk - explicit
+     *       configuration helps avoid leaking sensitive information.
+     * </ul>
      */
-    public static final AttributeKey<String> URL_SCHEME = stringKey("url.scheme");
+    public static final AttributeKeyTemplate<List<String>> RPC_CONNECT_RPC_RESPONSE_METADATA =
+        stringArrayKeyTemplate("rpc.connect_rpc.response.metadata");
 
     /**
-     * Value of the <a href="https://www.rfc-editor.org/rfc/rfc9110.html#field.user-agent">HTTP
-     * User-Agent</a> header sent by the client.
+     * gRPC request metadata, {@code <key>} being the normalized gRPC Metadata key (lowercase), the
+     * value being the metadata values.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Instrumentations SHOULD require an explicit configuration of which metadata values are to
+     *       be captured. Including all request metadata values can be a security risk - explicit
+     *       configuration helps avoid leaking sensitive information.
+     * </ul>
      */
-    public static final AttributeKey<String> USER_AGENT_ORIGINAL = stringKey("user_agent.original");
+    public static final AttributeKeyTemplate<List<String>> RPC_GRPC_REQUEST_METADATA =
+        stringArrayKeyTemplate("rpc.grpc.request.metadata");
+
+    /**
+     * gRPC response metadata, {@code <key>} being the normalized gRPC Metadata key (lowercase), the
+     * value being the metadata values.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Instrumentations SHOULD require an explicit configuration of which metadata values are to
+     *       be captured. Including all response metadata values can be a security risk - explicit
+     *       configuration helps avoid leaking sensitive information.
+     * </ul>
+     */
+    public static final AttributeKeyTemplate<List<String>> RPC_GRPC_RESPONSE_METADATA =
+        stringArrayKeyTemplate("rpc.grpc.response.metadata");
+
+    /**
+     * A dynamic value in the url path.
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>Many Elasticsearch url paths allow dynamic values. These SHOULD be recorded in span
+     *       attributes in the format {@code db.elasticsearch.path_parts.<key>}, where {@code <key>}
+     *       is the url path part name. The implementation SHOULD reference the <a
+     *       href="https://raw.githubusercontent.com/elastic/elasticsearch-specification/main/output/schema/schema.json">elasticsearch
+     *       schema</a> in order to map the path part values to their names.
+     * </ul>
+     */
+    public static final AttributeKeyTemplate<String> DB_ELASTICSEARCH_PATH_PARTS =
+        stringKeyTemplate("db.elasticsearch.path_parts");
 
     // Enum definitions
-    public static final class NetSockFamilyValues {
-        /** IPv4 address. */
-        public static final String INET = "inet";
-
-        /** IPv6 address. */
-        public static final String INET6 = "inet6";
-
-        /** Unix domain socket path. */
-        public static final String UNIX = "unix";
-
-        private NetSockFamilyValues() {}
-    }
-
-    public static final class NetTransportValues {
-        /** ip_tcp. */
-        public static final String IP_TCP = "ip_tcp";
-
-        /** ip_udp. */
-        public static final String IP_UDP = "ip_udp";
-
-        /** Named or anonymous pipe. */
-        public static final String PIPE = "pipe";
-
-        /** In-process communication. */
-        public static final String INPROC = "inproc";
-
-        /** Something else (non IP-based). */
-        public static final String OTHER = "other";
-
-        private NetTransportValues() {}
-    }
-
     public static final class ErrorTypeValues {
         /**
-         * A fallback error value to be used when the instrumentation does not define a custom value for
-         * it.
+         * A fallback error value to be used when the instrumentation doesn&#39;t define a custom value.
          */
         public static final String OTHER = "_OTHER";
 
@@ -1798,6 +1935,59 @@ public final class SemanticAttributes {
         private LogIostreamValues() {}
     }
 
+    public static final class IosStateValues {
+        /**
+         * The app has become `active`. Associated with UIKit notification `applicationDidBecomeActive`.
+         */
+        public static final String ACTIVE = "active";
+
+        /**
+         * The app is now `inactive`. Associated with UIKit notification `applicationWillResignActive`.
+         */
+        public static final String INACTIVE = "inactive";
+
+        /**
+         * The app is now in the background. This value is associated with UIKit notification
+         * `applicationDidEnterBackground`.
+         */
+        public static final String BACKGROUND = "background";
+
+        /**
+         * The app is now in the foreground. This value is associated with UIKit notification
+         * `applicationWillEnterForeground`.
+         */
+        public static final String FOREGROUND = "foreground";
+
+        /**
+         * The app is about to terminate. Associated with UIKit notification `applicationWillTerminate`.
+         */
+        public static final String TERMINATE = "terminate";
+
+        private IosStateValues() {}
+    }
+
+    public static final class AndroidStateValues {
+        /**
+         * Any time before Activity.onResume() or, if the app has no Activity, Context.startService()
+         * has been called in the app for the first time.
+         */
+        public static final String CREATED = "created";
+
+        /**
+         * Any time after Activity.onPause() or, if the app has no Activity, Context.stopService() has
+         * been called when the app was in the foreground state.
+         */
+        public static final String BACKGROUND = "background";
+
+        /**
+         * Any time after Activity.onResume() or, if the app has no Activity, Context.startService() has
+         * been called when the app was in either the created or background states.
+         */
+        public static final String FOREGROUND = "foreground";
+
+        private AndroidStateValues() {}
+    }
+
     public static final class StateValues {
         /** idle. */
         public static final String IDLE = "idle";
@@ -1816,6 +2006,34 @@ public final class SemanticAttributes {
         public static final String NON_HEAP = "non_heap";
 
         private JvmMemoryTypeValues() {}
+    }
+
+    public static final class JvmThreadStateValues {
+        /** A thread that has not yet started is in this state. */
+        public static final String NEW = "new";
+
+        /** A thread executing in the Java virtual machine is in this state. */
+        public static final String RUNNABLE = "runnable";
+
+        /** A thread that is blocked waiting for a monitor lock is in this state. */
+        public static final String BLOCKED = "blocked";
+
+        /**
+         * A thread that is waiting indefinitely for another thread to perform a particular action is in
+         * this state.
+         */
+        public static final String WAITING = "waiting";
+
+        /**
+         * A thread that is waiting for another thread to perform an action for up to a specified
+         * waiting time is in this state.
+         */
+        public static final String TIMED_WAITING = "timed_waiting";
+
+        /** A thread that has exited is in this state. */
+        public static final String TERMINATED = "terminated";
+
+        private JvmThreadStateValues() {}
     }
 
     public static final class SystemCpuStateValues {
@@ -1844,9 +2062,6 @@ public final class SemanticAttributes {
     }
 
     public static final class SystemMemoryStateValues {
-        /** total. */
-        public static final String TOTAL = "total";
-
         /** used. */
         public static final String USED = "used";
 
@@ -1861,6 +2076,13 @@ public final class SemanticAttributes {
 
         /** cached. */
         public static final String CACHED = "cached";
+
+        /**
+         * total.
+         *
+         * @deprecated this value has been removed as of 1.23.1 of the semantic conventions.
+         */
+        @Deprecated public static final String TOTAL = "total";
 
         private SystemMemoryStateValues() {}
     }
@@ -2006,30 +2228,132 @@ public final class SemanticAttributes {
         private SystemProcessesStatusValues() {}
     }
 
-    public static final class NetworkTransportValues {
-        /** TCP. */
-        public static final String TCP = "tcp";
+    public static final class NetSockFamilyValues {
+        /** IPv4 address. */
+        public static final String INET = "inet";
 
-        /** UDP. */
-        public static final String UDP = "udp";
+        /** IPv6 address. */
+        public static final String INET6 = "inet6";
 
-        /** Named or anonymous pipe. See note below. */
-        public static final String PIPE = "pipe";
-
-        /** Unix domain socket. */
+        /** Unix domain socket path. */
         public static final String UNIX = "unix";
 
-        private NetworkTransportValues() {}
+        private NetSockFamilyValues() {}
     }
 
-    public static final class NetworkTypeValues {
-        /** IPv4. */
-        public static final String IPV4 = "ipv4";
+    public static final class NetTransportValues {
+        /** ip_tcp. */
+        public static final String IP_TCP = "ip_tcp";
 
-        /** IPv6. */
-        public static final String IPV6 = "ipv6";
+        /** ip_udp. */
+        public static final String IP_UDP = "ip_udp";
 
-        private NetworkTypeValues() {}
+        /** Named or anonymous pipe. */
+        public static final String PIPE = "pipe";
+
+        /** In-process communication. */
+        public static final String INPROC = "inproc";
+
+        /** Something else (non IP-based). */
+        public static final String OTHER = "other";
+
+        private NetTransportValues() {}
+    }
+
+    public static final class HttpRequestMethodValues {
+        /** CONNECT method. */
+        public static final String CONNECT = "CONNECT";
+
+        /** DELETE method. */
+        public static final String DELETE = "DELETE";
+
+        /** GET method. */
+        public static final String GET = "GET";
+
+        /** HEAD method. */
+        public static final String HEAD = "HEAD";
+
+        /** OPTIONS method. */
+        public static final String OPTIONS = "OPTIONS";
+
+        /** PATCH method. */
+        public static final String PATCH = "PATCH";
+
+        /** POST method. */
+        public static final String POST = "POST";
+
+        /** PUT method. */
+        public static final String PUT = "PUT";
+
+        /** TRACE method. */
+        public static final String TRACE = "TRACE";
+
+        /** Any HTTP method that the instrumentation has no prior knowledge of. */
+        public static final String OTHER = "_OTHER";
+
+        private HttpRequestMethodValues() {}
+    }
+
+    public static final class MessagingOperationValues {
+        /**
+         * One or more messages are provided for publishing to an intermediary. If a single message is
+         * published, the context of the &#34;Publish&#34; span can be used as the creation context and
+         * no &#34;Create&#34; span needs to be created.
+         */
+        public static final String PUBLISH = "publish";
+
+        /**
+         * A message is created. &#34;Create&#34; spans always refer to a single message and are used to
+         * provide a unique creation context for messages in batch publishing scenarios.
+         */
+        public static final String CREATE = "create";
+
+        /**
+         * One or more messages are requested by a consumer. This operation refers to pull-based
+         * scenarios, where consumers explicitly call methods of messaging SDKs to receive messages.
+         */
+        public static final String RECEIVE = "receive";
+
+        /**
+         * One or more messages are passed to a consumer. This operation refers to push-based scenarios,
+         * where consumer register callbacks which get called by messaging SDKs.
+         */
+        public static final String DELIVER = "deliver";
+
+        /**
+         * process.
+         *
+         * @deprecated this value has been removed as of 1.23.1 of the semantic conventions.
+         */
+        @Deprecated public static final String PROCESS = "process";
+
+        private MessagingOperationValues() {}
+    }
+
+    public static final class MessagingRocketmqConsumptionModelValues {
+        /** Clustering consumption model. */
+        public static final String CLUSTERING = "clustering";
+
+        /** Broadcasting consumption model. */
+        public static final String BROADCASTING = "broadcasting";
+
+        private MessagingRocketmqConsumptionModelValues() {}
+    }
+
+    public static final class MessagingRocketmqMessageTypeValues {
+        /** Normal message. */
+        public static final String NORMAL = "normal";
+
+        /** FIFO message. */
+        public static final String FIFO = "fifo";
+
+        /** Delay message. */
+        public static final String DELAY = "delay";
+
+        /** Transaction message. */
+        public static final String TRANSACTION = "transaction";
+
+        private MessagingRocketmqMessageTypeValues() {}
     }
 
     public static final class NetworkConnectionSubtypeValues {
@@ -2118,45 +2442,163 @@ public final class SemanticAttributes {
         private NetworkConnectionTypeValues() {}
     }
 
-    public static final class HttpRequestMethodValues {
-        /** CONNECT method. */
-        public static final String CONNECT = "CONNECT";
+    public static final class NetworkTransportValues {
+        /** TCP. */
+        public static final String TCP = "tcp";
 
-        /** DELETE method. */
-        public static final String DELETE = "DELETE";
+        /** UDP. */
+        public static final String UDP = "udp";
 
-        /** GET method. */
-        public static final String GET = "GET";
+        /** Named or anonymous pipe. */
+        public static final String PIPE = "pipe";
 
-        /** HEAD method. */
-        public static final String HEAD = "HEAD";
+        /** Unix domain socket. */
+        public static final String UNIX = "unix";
 
-        /** OPTIONS method. */
-        public static final String OPTIONS = "OPTIONS";
+        private NetworkTransportValues() {}
+    }
 
-        /** PATCH method. */
-        public static final String PATCH = "PATCH";
+    public static final class NetworkTypeValues {
+        /** IPv4. */
+        public static final String IPV4 = "ipv4";
 
-        /** POST method. */
-        public static final String POST = "POST";
+        /** IPv6. */
+        public static final String IPV6 = "ipv6";
 
-        /** PUT method. */
-        public static final String PUT = "PUT";
+        private NetworkTypeValues() {}
+    }
 
-        /** TRACE method. */
-        public static final String TRACE = "TRACE";
+    public static final class RpcConnectRpcErrorCodeValues {
+        /** cancelled. */
+        public static final String CANCELLED = "cancelled";
 
-        /** Any HTTP method that the instrumentation has no prior knowledge of. */
-        public static final String OTHER = "_OTHER";
+        /** unknown. */
+        public static final String UNKNOWN = "unknown";
 
-        private HttpRequestMethodValues() {}
+        /** invalid_argument. */
+        public static final String INVALID_ARGUMENT = "invalid_argument";
+
+        /** deadline_exceeded. */
+        public static final String DEADLINE_EXCEEDED = "deadline_exceeded";
+
+        /** not_found. */
+        public static final String NOT_FOUND = "not_found";
+
+        /** already_exists. */
+        public static final String ALREADY_EXISTS = "already_exists";
+
+        /** permission_denied. */
+        public static final String PERMISSION_DENIED = "permission_denied";
+
+        /** resource_exhausted. */
+        public static final String RESOURCE_EXHAUSTED = "resource_exhausted";
+
+        /** failed_precondition. */
+        public static final String FAILED_PRECONDITION = "failed_precondition";
+
+        /** aborted. */
+        public static final String ABORTED = "aborted";
+
+        /** out_of_range. */
+        public static final String OUT_OF_RANGE = "out_of_range";
+
+        /** unimplemented. */
+        public static final String UNIMPLEMENTED = "unimplemented";
+
+        /** internal. */
+        public static final String INTERNAL = "internal";
+
+        /** unavailable. */
+        public static final String UNAVAILABLE = "unavailable";
+
+        /** data_loss. */
+        public static final String DATA_LOSS = "data_loss";
+
+        /** unauthenticated. */
+        public static final String UNAUTHENTICATED = "unauthenticated";
+
+        private RpcConnectRpcErrorCodeValues() {}
+    }
+
+    public static final class RpcGrpcStatusCodeValues {
+        /** OK. */
+        public static final long OK = 0;
+
+        /** CANCELLED. */
+        public static final long CANCELLED = 1;
+
+        /** UNKNOWN. */
+        public static final long UNKNOWN = 2;
+
+        /** INVALID_ARGUMENT. */
+        public static final long INVALID_ARGUMENT = 3;
+
+        /** DEADLINE_EXCEEDED. */
+        public static final long DEADLINE_EXCEEDED = 4;
+
+        /** NOT_FOUND. */
+        public static final long NOT_FOUND = 5;
+
+        /** ALREADY_EXISTS. */
+        public static final long ALREADY_EXISTS = 6;
+
+        /** PERMISSION_DENIED. */
+        public static final long PERMISSION_DENIED = 7;
+
+        /** RESOURCE_EXHAUSTED. */
+        public static final long RESOURCE_EXHAUSTED = 8;
+
+        /** FAILED_PRECONDITION. */
+        public static final long FAILED_PRECONDITION = 9;
+
+        /** ABORTED. */
+        public static final long ABORTED = 10;
+
+        /** OUT_OF_RANGE. */
+        public static final long OUT_OF_RANGE = 11;
+
+        /** UNIMPLEMENTED. */
+        public static final long UNIMPLEMENTED = 12;
+
+        /** INTERNAL. */
+        public static final long INTERNAL = 13;
+
+        /** UNAVAILABLE. */
+        public static final long UNAVAILABLE = 14;
+
+        /** DATA_LOSS. */
+        public static final long DATA_LOSS = 15;
+
+        /** UNAUTHENTICATED. */
+        public static final long UNAUTHENTICATED = 16;
+
+        private RpcGrpcStatusCodeValues() {}
+    }
+
+    public static final class RpcSystemValues {
+        /** gRPC. */
+        public static final String GRPC = "grpc";
+
+        /** Java RMI. */
+        public static final String JAVA_RMI = "java_rmi";
+
+        /** .NET WCF. */
+        public static final String DOTNET_WCF = "dotnet_wcf";
+
+        /** Apache Dubbo. */
+        public static final String APACHE_DUBBO = "apache_dubbo";
+
+        /** Connect RPC. */
+        public static final String CONNECT_RPC = "connect_rpc";
+
+        private RpcSystemValues() {}
     }
 
     public static final class OpentracingRefTypeValues {
         /** The parent Span depends on the child Span in some capacity. */
         public static final String CHILD_OF = "child_of";
 
-        /** The parent Span does not depend in any way on the result of the child Span. */
+        /** The parent Span doesn&#39;t depend in any way on the result of the child Span. */
         public static final String FOLLOWS_FROM = "follows_from";
 
         private OpentracingRefTypeValues() {}
@@ -2457,119 +2899,6 @@ public final class SemanticAttributes {
         private GraphqlOperationTypeValues() {}
     }
 
-    public static final class MessagingOperationValues {
-        /** publish. */
-        public static final String PUBLISH = "publish";
-
-        /** receive. */
-        public static final String RECEIVE = "receive";
-
-        /** process. */
-        public static final String PROCESS = "process";
-
-        private MessagingOperationValues() {}
-    }
-
-    public static final class MessagingRocketmqConsumptionModelValues {
-        /** Clustering consumption model. */
-        public static final String CLUSTERING = "clustering";
-
-        /** Broadcasting consumption model. */
-        public static final String BROADCASTING = "broadcasting";
-
-        private MessagingRocketmqConsumptionModelValues() {}
-    }
-
-    public static final class MessagingRocketmqMessageTypeValues {
-        /** Normal message. */
-        public static final String NORMAL = "normal";
-
-        /** FIFO message. */
-        public static final String FIFO = "fifo";
-
-        /** Delay message. */
-        public static final String DELAY = "delay";
-
-        /** Transaction message. */
-        public static final String TRANSACTION = "transaction";
-
-        private MessagingRocketmqMessageTypeValues() {}
-    }
-
-    public static final class RpcSystemValues {
-        /** gRPC. */
-        public static final String GRPC = "grpc";
-
-        /** Java RMI. */
-        public static final String JAVA_RMI = "java_rmi";
-
-        /** .NET WCF. */
-        public static final String DOTNET_WCF = "dotnet_wcf";
-
-        /** Apache Dubbo. */
-        public static final String APACHE_DUBBO = "apache_dubbo";
-
-        /** Connect RPC. */
-        public static final String CONNECT_RPC = "connect_rpc";
-
-        private RpcSystemValues() {}
-    }
-
-    public static final class RpcGrpcStatusCodeValues {
-        /** OK. */
-        public static final long OK = 0;
-
-        /** CANCELLED. */
-        public static final long CANCELLED = 1;
-
-        /** UNKNOWN. */
-        public static final long UNKNOWN = 2;
-
-        /** INVALID_ARGUMENT. */
-        public static final long INVALID_ARGUMENT = 3;
-
-        /** DEADLINE_EXCEEDED. */
-        public static final long DEADLINE_EXCEEDED = 4;
-
-        /** NOT_FOUND. */
-        public static final long NOT_FOUND = 5;
-
-        /** ALREADY_EXISTS. */
-        public static final long ALREADY_EXISTS = 6;
-
-        /** PERMISSION_DENIED. */
-        public static final long PERMISSION_DENIED = 7;
-
-        /** RESOURCE_EXHAUSTED. */
-        public static final long RESOURCE_EXHAUSTED = 8;
-
-        /** FAILED_PRECONDITION. */
-        public static final long FAILED_PRECONDITION = 9;
-
-        /** ABORTED. */
-        public static final long ABORTED = 10;
-
-        /** OUT_OF_RANGE. */
-        public static final long OUT_OF_RANGE = 11;
-
-        /** UNIMPLEMENTED. */
-        public static final long UNIMPLEMENTED = 12;
-
-        /** INTERNAL. */
-        public static final long INTERNAL = 13;
-
-        /** UNAVAILABLE. */
-        public static final long UNAVAILABLE = 14;
-
-        /** DATA_LOSS. */
-        public static final long DATA_LOSS = 15;
-
-        /** UNAUTHENTICATED. */
-        public static final long UNAUTHENTICATED = 16;
-
-        private RpcGrpcStatusCodeValues() {}
-    }
-
     public static final class MessageTypeValues {
         /** sent. */
         public static final String SENT = "SENT";
@@ -2578,58 +2907,6 @@ public final class SemanticAttributes {
         public static final String RECEIVED = "RECEIVED";
 
         private MessageTypeValues() {}
-    }
-
-    public static final class RpcConnectRpcErrorCodeValues {
-        /** cancelled. */
-        public static final String CANCELLED = "cancelled";
-
-        /** unknown. */
-        public static final String UNKNOWN = "unknown";
-
-        /** invalid_argument. */
-        public static final String INVALID_ARGUMENT = "invalid_argument";
-
-        /** deadline_exceeded. */
-        public static final String DEADLINE_EXCEEDED = "deadline_exceeded";
-
-        /** not_found. */
-        public static final String NOT_FOUND = "not_found";
-
-        /** already_exists. */
-        public static final String ALREADY_EXISTS = "already_exists";
-
-        /** permission_denied. */
-        public static final String PERMISSION_DENIED = "permission_denied";
-
-        /** resource_exhausted. */
-        public static final String RESOURCE_EXHAUSTED = "resource_exhausted";
-
-        /** failed_precondition. */
-        public static final String FAILED_PRECONDITION = "failed_precondition";
-
-        /** aborted. */
-        public static final String ABORTED = "aborted";
-
-        /** out_of_range. */
-        public static final String OUT_OF_RANGE = "out_of_range";
-
-        /** unimplemented. */
-        public static final String UNIMPLEMENTED = "unimplemented";
-
-        /** internal. */
-        public static final String INTERNAL = "internal";
-
-        /** unavailable. */
-        public static final String UNAVAILABLE = "unavailable";
-
-        /** data_loss. */
-        public static final String DATA_LOSS = "data_loss";
-
-        /** unauthenticated. */
-        public static final String UNAUTHENTICATED = "unauthenticated";
-
-        private RpcConnectRpcErrorCodeValues() {}
     }
 
     // Manually defined and not YET in the YAML
@@ -2823,8 +3100,8 @@ public final class SemanticAttributes {
     /**
      * The name of the instrumentation scope - ({@code InstrumentationScope.Name} in OTLP).
      *
-     * @deprecated This item has been moved, use {@link
-     *     io.opentelemetry.semconv.ResourceAttributes#OTEL_SCOPE_NAME} instead.
+     * @deprecated This item has been moved, use
+     *     io.opentelemetry.semconv.ResourceAttributes#OTEL_SCOPE_NAME instead.
      */
     @Deprecated
     public static final AttributeKey<String> OTEL_SCOPE_NAME = stringKey("otel.scope.name");
@@ -2832,8 +3109,8 @@ public final class SemanticAttributes {
     /**
      * The version of the instrumentation scope - ({@code InstrumentationScope.Version} in OTLP).
      *
-     * @deprecated This item has been moved, use {@link
-     *     io.opentelemetry.semconv.ResourceAttributes#OTEL_SCOPE_VERSION} instead.
+     * @deprecated This item has been moved, use
+     *     io.opentelemetry.semconv.ResourceAttributes#OTEL_SCOPE_VERSION instead.
      */
     @Deprecated
     public static final AttributeKey<String> OTEL_SCOPE_VERSION = stringKey("otel.scope.version");
@@ -2859,8 +3136,8 @@ public final class SemanticAttributes {
     /**
      * Deprecated.
      *
-     * @deprecated Deprecated, use the {@link
-     *     io.opentelemetry.semconv.ResourceAttributes#OTEL_SCOPE_NAME} attribute.
+     * @deprecated Deprecated, use
+     *     io.opentelemetry.semconv.ResourceAttributes#OTEL_SCOPE_NAME attribute.
      */
     @Deprecated
     public static final AttributeKey<String> OTEL_LIBRARY_NAME = stringKey("otel.library.name");
@@ -2868,8 +3145,8 @@ public final class SemanticAttributes {
     /**
      * Deprecated.
      *
-     * @deprecated Deprecated, use the {@link
-     *     io.opentelemetry.semconv.ResourceAttributes#OTEL_SCOPE_VERSION} attribute.
+     * @deprecated Deprecated, use
+     *     io.opentelemetry.semconv.ResourceAttributes#OTEL_SCOPE_VERSION attribute.
      */
     @Deprecated
     public static final AttributeKey<String> OTEL_LIBRARY_VERSION = stringKey("otel.library.version");
@@ -3404,6 +3681,31 @@ public final class SemanticAttributes {
 
         private TypeValues() {}
     }
+
+    /**
+     * Whether the thread is daemon or not.
+     *
+     * @deprecated This item has been renamed in 1.23.1 of the semantic conventions. Use {@link
+     *     SemanticAttributes#JVM_THREAD_DAEMON} instead.
+     */
+    @Deprecated public static final AttributeKey<Boolean> THREAD_DAEMON = booleanKey("thread.daemon");
+
+    /**
+     * The ordinal number of request resending attempt (for any reason, including redirects).
+     *
+     * <p>Notes:
+     *
+     * <ul>
+     *   <li>The resend count SHOULD be updated each time an HTTP request gets resent by the client,
+     *       regardless of what was the cause of the resending (e.g. redirection, authorization
+     *       failure, 503 Server Unavailable, network issues, or any other).
+     * </ul>
+     *
+     * @deprecated This item has been renamed in 1.23.1 of the semantic conventions. Use {@link
+     *     SemanticAttributes#HTTP_REQUEST_RESEND_COUNT} instead.
+     */
+    @Deprecated
+    public static final AttributeKey<Long> HTTP_RESEND_COUNT = longKey("http.resend_count");
 
     private SemanticAttributes() {}
 }

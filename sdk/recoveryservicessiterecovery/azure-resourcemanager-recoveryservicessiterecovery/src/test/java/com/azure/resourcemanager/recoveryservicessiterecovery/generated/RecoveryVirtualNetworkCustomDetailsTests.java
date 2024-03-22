@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryVir
 public final class RecoveryVirtualNetworkCustomDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryVirtualNetworkCustomDetails model =
-            BinaryData
-                .fromString("{\"resourceType\":\"RecoveryVirtualNetworkCustomDetails\"}")
+        RecoveryVirtualNetworkCustomDetails model
+            = BinaryData.fromString("{\"resourceType\":\"RecoveryVirtualNetworkCustomDetails\"}")
                 .toObject(RecoveryVirtualNetworkCustomDetails.class);
     }
 

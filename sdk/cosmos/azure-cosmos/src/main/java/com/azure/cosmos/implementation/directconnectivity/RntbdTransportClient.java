@@ -501,9 +501,6 @@ public class RntbdTransportClient extends TransportClient {
         private final int bufferPageSize;
 
         @JsonProperty()
-        private final Duration connectionAcquisitionTimeout;
-
-        @JsonProperty()
         private final boolean connectionEndpointRediscoveryEnabled;
 
         @JsonProperty()
@@ -659,7 +656,6 @@ public class RntbdTransportClient extends TransportClient {
         private Options(final Builder builder) {
 
             this.bufferPageSize = builder.bufferPageSize;
-            this.connectionAcquisitionTimeout = builder.connectionAcquisitionTimeout;
             this.connectionEndpointRediscoveryEnabled = builder.connectionEndpointRediscoveryEnabled;
             this.idleChannelTimeout = builder.idleChannelTimeout;
             this.idleChannelTimerResolution = builder.idleChannelTimerResolution;
@@ -699,7 +695,6 @@ public class RntbdTransportClient extends TransportClient {
 
         private Options(final ConnectionPolicy connectionPolicy) {
             this.bufferPageSize = 8192;
-            this.connectionAcquisitionTimeout = Duration.ofSeconds(5L);
             this.connectionEndpointRediscoveryEnabled = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
             this.connectTimeout = connectionPolicy.getConnectTimeout();
             this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
@@ -743,10 +738,6 @@ public class RntbdTransportClient extends TransportClient {
 
         public int bufferPageSize() {
             return this.bufferPageSize;
-        }
-
-        public Duration connectionAcquisitionTimeout() {
-            return this.connectionAcquisitionTimeout;
         }
 
         public Duration connectTimeout() {
@@ -1023,7 +1014,6 @@ public class RntbdTransportClient extends TransportClient {
             }
 
             private int bufferPageSize;
-            private Duration connectionAcquisitionTimeout;
             private boolean connectionEndpointRediscoveryEnabled;
             private Duration connectTimeout;
             private Duration idleChannelTimeout;
@@ -1064,7 +1054,6 @@ public class RntbdTransportClient extends TransportClient {
             public Builder(ConnectionPolicy connectionPolicy) {
 
                 this.bufferPageSize = DEFAULT_OPTIONS.bufferPageSize;
-                this.connectionAcquisitionTimeout = DEFAULT_OPTIONS.connectionAcquisitionTimeout;
                 this.connectionEndpointRediscoveryEnabled = connectionPolicy.isTcpConnectionEndpointRediscoveryEnabled();
                 this.connectTimeout = connectionPolicy.getConnectTimeout();
                 this.idleChannelTimeout = connectionPolicy.getIdleTcpConnectionTimeout();
@@ -1120,12 +1109,6 @@ public class RntbdTransportClient extends TransportClient {
                     this.bufferPageSize,
                     this.maxBufferCapacity);
                 return new Options(this);
-            }
-
-            public Builder connectionAcquisitionTimeout(final Duration value) {
-                checkNotNull(value, "expected non-null value");
-                this.connectionAcquisitionTimeout = value.compareTo(Duration.ZERO) < 0 ? Duration.ZERO : value;
-                return this;
             }
 
             public Builder connectionEndpointRediscoveryEnabled(final boolean value) {

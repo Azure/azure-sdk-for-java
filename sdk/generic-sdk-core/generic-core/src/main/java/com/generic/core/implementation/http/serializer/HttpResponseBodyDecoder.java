@@ -3,14 +3,13 @@
 
 package com.generic.core.implementation.http.serializer;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpMethod;
+import com.generic.core.http.models.Response;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.DateTimeRfc1123;
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
@@ -72,7 +71,7 @@ public final class HttpResponseBodyDecoder {
                     // - IOException is thrown when the deserializer cannot read the response body.
                     //
                     // Return the exception as the body type, RestProxyBase will handle this later.
-                    LOGGER.atWarning().log(() -> "Failed to deserialize the error entity.", e);
+                    LOGGER.atWarning().log("Failed to deserialize the error entity.", e);
 
                     return e;
                 } else {
@@ -150,8 +149,7 @@ public final class HttpResponseBodyDecoder {
     }
 
     private static Object deserialize(byte[] value, Type type, ObjectSerializer serializer) {
-        return serializer.deserializeFromBytes(value == null ? new byte[0] : value,
-            TypeReference.createInstance(TypeUtil.getRawClass(type)));
+        return serializer.deserializeFromBytes(value == null ? new byte[0] : value, type);
     }
 
     /**

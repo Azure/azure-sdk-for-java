@@ -5,21 +5,21 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.annotation.ServiceInterface;
 import com.generic.core.http.MockHttpResponse;
-import com.generic.core.http.Response;
+import com.generic.core.http.RestProxy;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.client.HttpClient;
+import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
+import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.Context;
-import com.generic.core.models.HeaderName;
+import com.generic.core.util.Context;
+import com.generic.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -86,7 +86,7 @@ public class RestProxyImplTests {
             boolean success = request.getUrl().getPath().equals("/my/url/path");
 
             if (request.getHttpMethod().equals(HttpMethod.POST)) {
-                success &= "application/json".equals(request.getHeaders().getValue(HeaderName.CONTENT_TYPE));
+                success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
             } else {
                 success &= request.getHttpMethod().equals(HttpMethod.GET);
             }

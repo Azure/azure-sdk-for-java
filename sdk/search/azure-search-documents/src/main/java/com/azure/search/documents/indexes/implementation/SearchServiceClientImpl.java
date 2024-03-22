@@ -26,8 +26,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.RequestOptions;
-import com.azure.search.documents.indexes.implementation.models.SearchErrorException;
 import com.azure.search.documents.indexes.models.SearchServiceStatistics;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
@@ -236,14 +236,14 @@ public final class SearchServiceClientImpl {
     public interface SearchServiceClientService {
         @Get("/servicestats")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<SearchServiceStatistics>> getServiceStatistics(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/servicestats")
         @ExpectedResponses({ 200 })
-        @UnexpectedResponseExceptionType(SearchErrorException.class)
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Response<SearchServiceStatistics> getServiceStatisticsSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -254,7 +254,7 @@ public final class SearchServiceClientImpl {
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service level statistics for a search service along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -278,7 +278,7 @@ public final class SearchServiceClientImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service level statistics for a search service along with {@link Response} on successful completion of
      * {@link Mono}.
@@ -301,7 +301,7 @@ public final class SearchServiceClientImpl {
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service level statistics for a search service on successful completion of {@link Mono}.
      */
@@ -316,7 +316,7 @@ public final class SearchServiceClientImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service level statistics for a search service on successful completion of {@link Mono}.
      */
@@ -332,7 +332,7 @@ public final class SearchServiceClientImpl {
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service level statistics for a search service along with {@link Response}.
      */
@@ -354,7 +354,7 @@ public final class SearchServiceClientImpl {
      * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws SearchErrorException thrown if the request is rejected by server.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service level statistics for a search service.
      */

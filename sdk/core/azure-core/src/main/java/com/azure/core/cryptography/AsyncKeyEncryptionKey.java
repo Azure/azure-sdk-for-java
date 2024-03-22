@@ -6,7 +6,8 @@ package com.azure.core.cryptography;
 import reactor.core.publisher.Mono;
 
 /**
- * A key which is used to asynchronously encrypt, or wrap, another key.
+ * The AsyncKeyEncryptionKey defines asynchronous methods for encrypting and decrypting keys, also
+ * known as key wrapping and unwrapping. It also supports signing and verifying data using the configured key.
  */
 public interface AsyncKeyEncryptionKey {
 
@@ -16,7 +17,7 @@ public interface AsyncKeyEncryptionKey {
      * @return A {@link Mono} containing key identifier.
      */
     Mono<String> getKeyId();
-    
+
     /**
      * Encrypts the specified key using the specified algorithm.
      *

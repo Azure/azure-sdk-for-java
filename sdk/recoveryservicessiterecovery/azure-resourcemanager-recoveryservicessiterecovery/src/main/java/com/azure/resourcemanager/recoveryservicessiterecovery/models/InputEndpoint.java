@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The InputEndpoint model. */
+/**
+ * The InputEndpoint model.
+ */
 @Fluent
 public final class InputEndpoint {
     /*
@@ -34,13 +36,15 @@ public final class InputEndpoint {
     @JsonProperty(value = "protocol")
     private String protocol;
 
-    /** Creates an instance of InputEndpoint class. */
+    /**
+     * Creates an instance of InputEndpoint class.
+     */
     public InputEndpoint() {
     }
 
     /**
      * Get the endpointName property: The endpointName property.
-     *
+     * 
      * @return the endpointName value.
      */
     public String endpointName() {
@@ -49,7 +53,7 @@ public final class InputEndpoint {
 
     /**
      * Set the endpointName property: The endpointName property.
-     *
+     * 
      * @param endpointName the endpointName value to set.
      * @return the InputEndpoint object itself.
      */
@@ -60,7 +64,7 @@ public final class InputEndpoint {
 
     /**
      * Get the privatePort property: The privatePort property.
-     *
+     * 
      * @return the privatePort value.
      */
     public Integer privatePort() {
@@ -69,7 +73,7 @@ public final class InputEndpoint {
 
     /**
      * Set the privatePort property: The privatePort property.
-     *
+     * 
      * @param privatePort the privatePort value to set.
      * @return the InputEndpoint object itself.
      */
@@ -80,7 +84,7 @@ public final class InputEndpoint {
 
     /**
      * Get the publicPort property: The publicPort property.
-     *
+     * 
      * @return the publicPort value.
      */
     public Integer publicPort() {
@@ -89,7 +93,7 @@ public final class InputEndpoint {
 
     /**
      * Set the publicPort property: The publicPort property.
-     *
+     * 
      * @param publicPort the publicPort value to set.
      * @return the InputEndpoint object itself.
      */
@@ -100,7 +104,7 @@ public final class InputEndpoint {
 
     /**
      * Get the protocol property: The protocol property.
-     *
+     * 
      * @return the protocol value.
      */
     public String protocol() {
@@ -109,7 +113,7 @@ public final class InputEndpoint {
 
     /**
      * Set the protocol property: The protocol property.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the InputEndpoint object itself.
      */
@@ -120,7 +124,7 @@ public final class InputEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

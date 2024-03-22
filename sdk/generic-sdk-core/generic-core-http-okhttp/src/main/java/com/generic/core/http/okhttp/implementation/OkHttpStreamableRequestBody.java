@@ -3,7 +3,7 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.models.BinaryData;
+import com.generic.core.util.binarydata.BinaryData;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 

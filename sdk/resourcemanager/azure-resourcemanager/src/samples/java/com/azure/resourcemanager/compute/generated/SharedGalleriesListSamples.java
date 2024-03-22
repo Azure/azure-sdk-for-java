@@ -10,7 +10,7 @@ package com.azure.resourcemanager.compute.generated;
 public final class SharedGalleriesListSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/
      * sharedGalleryExamples/SharedGallery_List.json
      */
     /**

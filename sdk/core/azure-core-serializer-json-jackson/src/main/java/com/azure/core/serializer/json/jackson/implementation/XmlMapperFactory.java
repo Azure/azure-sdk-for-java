@@ -48,8 +48,8 @@ public final class XmlMapperFactory {
             Class<?> fromXmlParser = Class.forName(FROM_XML_PARSER);
             Class<?> toXmlGenerator = Class.forName(TO_XML_GENERATOR);
 
-            createXmlMapperBuilder = ReflectionUtils.getMethodInvoker(xmlMapper,
-                xmlMapper.getDeclaredMethod("builder"), false);
+            createXmlMapperBuilder
+                = ReflectionUtils.getMethodInvoker(xmlMapper, xmlMapper.getDeclaredMethod("builder"), false);
             defaultUseWrapper = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
                 xmlMapperBuilder.getDeclaredMethod("defaultUseWrapper", boolean.class), false);
 
@@ -104,7 +104,7 @@ public final class XmlMapperFactory {
             enableEmptyElementAsNull.invokeWithArguments(xmlMapperBuilder, emptyElementAsNull);
 
             xmlMapper = xmlMapperBuilder.build();
-        }  catch (Exception ex) {
+        } catch (Exception ex) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.", ex));
         }
 

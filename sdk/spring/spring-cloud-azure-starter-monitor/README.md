@@ -30,7 +30,7 @@ by [following the OpenTelemetry documentation](https://opentelemetry.io/docs/ins
 <dependency>
   <groupId>com.azure.spring</groupId>
   <artifactId>spring-cloud-azure-starter-monitor</artifactId>
-  <version>1.0.0-beta.3</version>
+  <version>1.0.0-beta.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -62,7 +62,7 @@ You can then configure the connection string in two different ways:
 
 The [Application Map](https://learn.microsoft.com/azure/azure-monitor/app/app-map?tabs=net#set-or-override-cloud-role-name) uses the cloud role name to identify components on the map.
 
-You can set the cloud role name with the `spring.application.name` or `otel.springboot.resource.attributes.service.name` property.
+You can set the cloud role name with the `spring.application.name` property. You have other options to set the cloud role role: see how to set the service name in the [OpenTelemetry documentation](https://opentelemetry.io/docs/languages/java/automatic/spring-boot/).
 
 ### Build your Spring native application
 At this step, you can build your Spring Boot native image application and start it:

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for Provider specific details for policies. */
+/**
+ * Base class for Provider specific details for policies.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -27,17 +29,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "InMage", value = InMagePolicyDetails.class),
     @JsonSubTypes.Type(name = "InMageRcmFailback", value = InMageRcmFailbackPolicyDetails.class),
     @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmPolicyDetails.class),
-    @JsonSubTypes.Type(name = "VMwareCbt", value = VmwareCbtPolicyDetails.class)
-})
+    @JsonSubTypes.Type(name = "VMwareCbt", value = VmwareCbtPolicyDetails.class) })
 @Immutable
 public class PolicyProviderSpecificDetails {
-    /** Creates an instance of PolicyProviderSpecificDetails class. */
+    /**
+     * Creates an instance of PolicyProviderSpecificDetails class.
+     */
     public PolicyProviderSpecificDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

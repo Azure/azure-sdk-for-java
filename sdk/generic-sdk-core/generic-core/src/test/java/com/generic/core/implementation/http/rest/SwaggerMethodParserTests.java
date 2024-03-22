@@ -4,7 +4,6 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.annotation.ServiceInterface;
-import com.generic.core.http.Response;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.FormParam;
 import com.generic.core.http.annotation.HeaderParam;
@@ -14,20 +13,21 @@ import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.exception.HttpExceptionType;
+import com.generic.core.http.models.HttpHeader;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
+import com.generic.core.http.models.Response;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.DateTimeRfc1123;
 import com.generic.core.implementation.util.UrlBuilder;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.Context;
-import com.generic.core.models.Header;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
 import com.generic.core.models.SimpleClass;
+import com.generic.core.util.Context;
+import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -183,28 +183,28 @@ public class SwaggerMethodParserTests {
 
     @ParameterizedTest
     @MethodSource("headersSupplier")
-    public void headers(Method method, Headers expectedHeaders) {
+    public void headers(Method method, HttpHeaders expectedHeaders) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        Headers actual = new Headers();
+        HttpHeaders actual = new HttpHeaders();
         swaggerMethodParser.setHeaders(null, actual, DEFAULT_SERIALIZER);
 
-        for (Header header : actual) {
-            assertEquals(expectedHeaders.getValue(HeaderName.fromString(header.getName())), header.getValue());
+        for (HttpHeader header : actual) {
+            assertEquals(expectedHeaders.getValue(HttpHeaderName.fromString(header.getName())), header.getValue());
         }
     }
 
     private static Stream<Arguments> headersSupplier() throws NoSuchMethodException {
         Class<HeaderMethods> clazz = HeaderMethods.class;
         return Stream.of(
-            Arguments.of(clazz.getDeclaredMethod("noHeaders"), new Headers()),
-            Arguments.of(clazz.getDeclaredMethod("malformedHeaders"), new Headers()),
-            Arguments.of(clazz.getDeclaredMethod("headers"), new Headers()
-                .set(HeaderName.fromString("name1"), "value1")
-                .set(HeaderName.fromString("name2"), "value2")
-                .set(HeaderName.fromString("name3"), "value3")),
-            Arguments.of(clazz.getDeclaredMethod("sameKeyTwiceLastWins"), new Headers()
-                .set(HeaderName.fromString("name"), "value2"))
+            Arguments.of(clazz.getDeclaredMethod("noHeaders"), new HttpHeaders()),
+            Arguments.of(clazz.getDeclaredMethod("malformedHeaders"), new HttpHeaders()),
+            Arguments.of(clazz.getDeclaredMethod("headers"), new HttpHeaders()
+                .set(HttpHeaderName.fromString("name1"), "value1")
+                .set(HttpHeaderName.fromString("name2"), "value2")
+                .set(HttpHeaderName.fromString("name3"), "value3")),
+            Arguments.of(clazz.getDeclaredMethod("sameKeyTwiceLastWins"), new HttpHeaders()
+                .set(HttpHeaderName.fromString("name"), "value2"))
         );
     }
 
@@ -407,10 +407,10 @@ public class SwaggerMethodParserTests {
     public void headerSubstitution(Method method, Object[] arguments, Map<String, String> expectedHeaders) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        Headers actual = new Headers();
+        HttpHeaders actual = new HttpHeaders();
         swaggerMethodParser.setHeaders(arguments, actual, DEFAULT_SERIALIZER);
 
-        for (Header header : actual) {
+        for (HttpHeader header : actual) {
             assertEquals(expectedHeaders.get(header.getName()), header.getValue());
         }
     }
@@ -424,9 +424,9 @@ public class SwaggerMethodParserTests {
         Map<String, String> simpleHeaderMap = Collections.singletonMap("key", "value");
         Map<String, String> expectedSimpleHeadersMap = Collections.singletonMap("x-ms-meta-key", "value");
 
-        Map<String, String> complexHeaderMap = new Headers()
-            .set(HeaderName.fromString("key1"), (String) null)
-            .set(HeaderName.fromString("key2"), "value2")
+        Map<String, String> complexHeaderMap = new HttpHeaders()
+            .set(HttpHeaderName.fromString("key1"), (String) null)
+            .set(HttpHeaderName.fromString("key2"), "value2")
             .toMap();
         Map<String, String> expectedComplexHeaderMap = Collections.singletonMap("x-ms-meta-key2", "value2");
 
@@ -467,8 +467,8 @@ public class SwaggerMethodParserTests {
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void formBodyEnum(@FormParam("enum1") HttpMethod enum1, @FormParam("enum2") HttpMethod enum2,
-                          @FormParam("expandableEnum1") HeaderName expandableEnum1,
-                          @FormParam("expandableEnum2") HeaderName expandableEnum2);
+                          @FormParam("expandableEnum1") HttpHeaderName expandableEnum1,
+                          @FormParam("expandableEnum2") HttpHeaderName expandableEnum2);
     }
 
     @ParameterizedTest
@@ -489,7 +489,7 @@ public class SwaggerMethodParserTests {
         Method formBody =
             clazz.getDeclaredMethod("formBody", String.class, Integer.class, OffsetDateTime.class, List.class);
         Method formBodyEnum =
-            clazz.getDeclaredMethod("formBodyEnum", HttpMethod.class, HttpMethod.class, HeaderName.class, HeaderName.class);
+            clazz.getDeclaredMethod("formBodyEnum", HttpMethod.class, HttpMethod.class, HttpHeaderName.class, HttpHeaderName.class);
         Method encodedFormBody =
             clazz.getDeclaredMethod("encodedFormBody", String.class, Integer.class, OffsetDateTime.class, List.class);
         Method encodedFormKey = clazz.getDeclaredMethod("encodedFormKey", String.class);
@@ -509,9 +509,9 @@ public class SwaggerMethodParserTests {
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=blue&favoriteColors=green"),
             Arguments.of(formBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=green"),
-            Arguments.of(formBodyEnum, toObjectArray(HttpMethod.GET, null, HeaderName.ACCEPT, HeaderName.fromString("MyHeader")),
+            Arguments.of(formBodyEnum, toObjectArray(HttpMethod.GET, null, HttpHeaderName.ACCEPT, HttpHeaderName.fromString("MyHeader")),
                 APPLICATION_X_WWW_FORM_URLENCODED, "enum1=GET&expandableEnum1=Accept&expandableEnum2=MyHeader"),
-            Arguments.of(formBodyEnum, toObjectArray(HttpMethod.GET, null, HeaderName.ACCEPT, HeaderName.fromString(null)),
+            Arguments.of(formBodyEnum, toObjectArray(HttpMethod.GET, null, HttpHeaderName.ACCEPT, HttpHeaderName.fromString(null)),
                 APPLICATION_X_WWW_FORM_URLENCODED, "enum1=GET&expandableEnum1=Accept"),
             Arguments.of(encodedFormBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
             Arguments.of(encodedFormBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
@@ -560,7 +560,7 @@ public class SwaggerMethodParserTests {
             .setBody(BinaryData.fromString("{\"id\":\"123\"}"));
 
         RequestOptions headerQueryOptions = new RequestOptions()
-            .addHeader(HeaderName.fromString("x-ms-foo"), "bar")
+            .addHeader(HttpHeaderName.fromString("x-ms-foo"), "bar")
             .addQueryParam("foo", "bar");
 
         RequestOptions urlOptions = new RequestOptions()

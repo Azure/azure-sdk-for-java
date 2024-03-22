@@ -33,7 +33,7 @@ import java.util.Arrays;
 public final class GalleryImageVersionsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithShallowReplicationMode.json
      */
     /**
@@ -60,7 +60,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithVHD.json
      */
     /**
@@ -104,7 +104,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithVmAsSource.json
      */
     /**
@@ -142,8 +142,8 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
                                     "/subscriptions/{subscriptionId}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/diskEncryptionSet/myEastUSDiskEncryptionSet")
                                     .withLun(1))))
                         .withExcludeFromLatest(false))))
-                .withStorageProfile(
-                    new GalleryImageVersionStorageProfile().withSource(new GalleryArtifactVersionFullSource().withId(
+                .withStorageProfile(new GalleryImageVersionStorageProfile()
+                    .withSource(new GalleryArtifactVersionFullSource().withVirtualMachineId(
                         "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/virtualMachines/{vmName}")))
                 .withSafetyProfile(
                     new GalleryImageVersionSafetyProfile().withAllowDeletionOfReplicatedLocations(false)),
@@ -152,7 +152,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithImageVersionAsSource.json
      */
     /**
@@ -200,7 +200,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithVHD_UefiSettings.json
      */
     /**
@@ -254,7 +254,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithSnapshotsAsSource.json
      */
     /**
@@ -301,7 +301,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithSnapshotsAsSource.json
      */
     /**
@@ -348,7 +348,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithTargetExtendedLocations.json
      */
     /**
@@ -396,7 +396,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Create_WithCommunityImageVersionAsSource.json
      */
     /**
@@ -444,7 +444,7 @@ public final class GalleryImageVersionsCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2022-08-03/examples/galleryExamples/
+     * specification/compute/resource-manager/Microsoft.Compute/GalleryRP/stable/2023-07-03/examples/galleryExamples/
      * GalleryImageVersion_Create.json
      */
     /**

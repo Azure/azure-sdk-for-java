@@ -4,7 +4,7 @@
 package com.generic.core.shared;
 
 import com.generic.core.annotation.ServiceInterface;
-import com.generic.core.http.Response;
+import com.generic.core.http.RestProxy;
 import com.generic.core.http.annotation.BodyParam;
 import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HostParam;
@@ -14,24 +14,23 @@ import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.exception.HttpResponseException;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpLogOptions;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
+import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.policy.HttpLoggingPolicy;
 import com.generic.core.implementation.http.ContentType;
-import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.UrlBuilder;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.Context;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
-import com.generic.core.models.TypeReference;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.Context;
+import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
@@ -46,6 +45,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.ByteBuffer;
@@ -56,6 +56,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -305,7 +307,7 @@ public abstract class HttpClientTests {
 
         try (Response<?> response = createHttpClient().send(request)) {
             // Validate getHeaders type is Headers (not instanceof)
-            assertEquals(Headers.class, response.getHeaders().getClass());
+            assertEquals(HttpHeaders.class, response.getHeaders().getClass());
         }
     }
 
@@ -438,12 +440,12 @@ public abstract class HttpClientTests {
 
     private static class ByteArraySerializer implements ObjectSerializer {
         @Override
-        public <T> T deserializeFromBytes(byte[] data, TypeReference<T> typeReference) {
+        public <T> T deserializeFromBytes(byte[] data, Type type) {
             return null;
         }
 
         @Override
-        public <T> T deserializeFromStream(InputStream stream, TypeReference<T> typeReference) {
+        public <T> T deserializeFromStream(InputStream stream, Type type) {
             return null;
         }
 
@@ -658,8 +660,8 @@ public abstract class HttpClientTests {
 
     }
 
-    private static final HeaderName HEADER_A = HeaderName.fromString("A");
-    private static final HeaderName HEADER_B = HeaderName.fromString("B");
+    private static final HttpHeaderName HEADER_A = HttpHeaderName.fromString("A");
+    private static final HttpHeaderName HEADER_B = HttpHeaderName.fromString("B");
 
     @Test
     public void getRequestWithHeaderParametersAndAnythingReturn() {
@@ -669,26 +671,26 @@ public abstract class HttpClientTests {
         assertMatchWithHttpOrHttps("localhost/anything", json.url());
         assertNotNull(json.headers());
 
-        final Headers headers = new Headers().setAll(json.headers());
+        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
 
         assertEquals("A", headers.getValue(HEADER_A));
-        assertArrayEquals(new String[]{"A"}, headers.getValues(HEADER_A));
+        assertListEquals(Collections.singletonList("A"), headers.getValues(HEADER_A));
 
         assertEquals("15", headers.getValue(HEADER_B));
-        assertArrayEquals(new String[]{"15"}, headers.getValues(HEADER_B));
+        assertListEquals(Collections.singletonList("15"), headers.getValues(HEADER_B));
     }
 
     @Test
     public void getRequestWithNullHeader() {
         final HttpBinJSON json = createService(Service7.class).getAnything(getRequestUri(), null, 15);
 
-        final Headers headers = new Headers().setAll(json.headers());
+        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
 
         assertNull(headers.getValue(HEADER_A));
-        assertArrayEquals(null, headers.getValues(HEADER_A));
+        assertListEquals(null, headers.getValues(HEADER_A));
 
         assertEquals("15", headers.getValue(HEADER_B));
-        assertArrayEquals(new String[]{"15"}, headers.getValues(HEADER_B));
+        assertListEquals(Collections.singletonList("15"), headers.getValues(HEADER_B));
     }
 
     @ServiceInterface(name = "Service8", host = "{url}")
@@ -877,8 +879,8 @@ public abstract class HttpClientTests {
         HttpBinJSON get(@HostParam("url") String url);
     }
 
-    private static final HeaderName MY_HEADER = HeaderName.fromString("MyHeader");
-    private static final HeaderName MY_OTHER_HEADER = HeaderName.fromString("MyOtherHeader");
+    private static final HttpHeaderName MY_HEADER = HttpHeaderName.fromString("MyHeader");
+    private static final HttpHeaderName MY_OTHER_HEADER = HttpHeaderName.fromString("MyOtherHeader");
 
     @Test
     public void headersRequest() {
@@ -888,12 +890,12 @@ public abstract class HttpClientTests {
         assertMatchWithHttpOrHttps("localhost/anything", json.url());
         assertNotNull(json.headers());
 
-        final Headers headers = new Headers().setAll(json.headers());
+        final HttpHeaders headers = new HttpHeaders().setAll(json.headers());
 
         assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
-        assertArrayEquals(new String[]{"MyHeaderValue"}, headers.getValues(MY_HEADER));
+        assertListEquals(Collections.singletonList("MyHeaderValue"), headers.getValues(MY_HEADER));
         assertEquals("My,Header,Value", headers.getValue(MY_OTHER_HEADER));
-        assertArrayEquals(new String[]{"My", "Header", "Value"}, headers.getValues(MY_OTHER_HEADER));
+        assertListEquals(Arrays.asList("My", "Header", "Value"), headers.getValues(MY_OTHER_HEADER));
     }
 
     @ServiceInterface(name = "Service14", host = "{url}")
@@ -1402,7 +1404,7 @@ public abstract class HttpClientTests {
         assertMatchWithHttpOrHttps("localhost/put", body.url());
         assertEquals("body string", body.data());
 
-        final Headers headers = response.getHeaders();
+        final HttpHeaders headers = response.getHeaders();
 
         assertNotNull(headers);
     }
@@ -1461,7 +1463,7 @@ public abstract class HttpClientTests {
         byte[] bytes = otherByteArrayOutputStream.toByteArray();
 
         String contentHash = HttpClientTestsServer.md5(bytes);
-        String eTag = otherResponse.getHeaders().getValue(HeaderName.ETAG);
+        String eTag = otherResponse.getHeaders().getValue(HttpHeaderName.ETAG);
 
         assertEquals(eTag, contentHash);
     }
@@ -1545,10 +1547,10 @@ public abstract class HttpClientTests {
 
         assertNotNull(result.headers());
 
-        final Headers resultHeaders = new Headers().setAll(result.headers());
+        final HttpHeaders resultHeaders = new HttpHeaders().setAll(result.headers());
 
-        assertEquals("GHIJ", resultHeaders.getValue(HeaderName.fromString("ABCDEF")));
-        assertEquals("45", resultHeaders.getValue(HeaderName.fromString("ABC123")));
+        assertEquals("GHIJ", resultHeaders.getValue(HttpHeaderName.fromString("ABCDEF")));
+        assertEquals("45", resultHeaders.getValue(HttpHeaderName.fromString("ABC123")));
     }
 
     /*@ServiceInterface(name = "Service26", host = "{url}")
@@ -1629,7 +1631,7 @@ public abstract class HttpClientTests {
     public void requestOptionsChangesBodyAndContentLength() {
         Service27 service = createService(Service27.class);
         HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
-            new RequestOptions().setBody(BinaryData.fromString("4242")).setHeader(HeaderName.CONTENT_LENGTH, "4"));
+            new RequestOptions().setBody(BinaryData.fromString("4242")).setHeader(HttpHeaderName.CONTENT_LENGTH, "4"));
 
         assertNotNull(response);
         assertNotNull(response.data());
@@ -1638,7 +1640,7 @@ public abstract class HttpClientTests {
         assertEquals("4", response.getHeaderValue("Content-Length"));
     }
 
-    private static final HeaderName RANDOM_HEADER = HeaderName.fromString("randomHeader");
+    private static final HttpHeaderName RANDOM_HEADER = HttpHeaderName.fromString("randomHeader");
 
     @Test
     public void requestOptionsAddAHeader() {
@@ -1758,6 +1760,18 @@ public abstract class HttpClientTests {
 
         while ((length = source.read(buf)) != -1) {
             target.write(buf, 0, length);
+        }
+    }
+
+    public static void assertListEquals(List<?> source, List<?> target) {
+        if (source != null && target != null) {
+            assertEquals(source.size(), target.size());
+
+            for (int i = 0; i < source.size(); i++) {
+                assertEquals(source.get(i), target.get(i));
+            }
+        } else if (source != null || target != null) {
+            fail("One list is null but the other is not.");
         }
     }
 }

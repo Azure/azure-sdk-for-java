@@ -47,40 +47,17 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
         service = None
         module = None
         try:
-            def remove_prefix(text, prefix):
-                if text.startswith(prefix):
-                    return text[len(prefix):]
-                return text
-
-            def find_sdk_folder():
-                cmd = ['git', 'add', '.']
-                check_call(cmd, sdk_root)
-
-                cmd = ['git', 'status', '--porcelain', '**/tsp-location.yaml']
-                logging.info('Command line: ' + ' '.join(cmd))
-                output = subprocess.check_output(cmd, cwd=sdk_root)
-                output_str = str(output, 'utf-8')
-                git_items = output_str.splitlines()
-                sdk_folder = None
-                if len(git_items) > 0:
-                    tsp_location_item: str = git_items[0]
-                    sdk_folder = tsp_location_item[1:].strip()[0:-len('/tsp-location.yaml')]
-
-                cmd = ['git', 'reset', '.']
-                check_call(cmd, sdk_root)
-
-                return sdk_folder
-
-            repo = remove_prefix(repo_url, 'https://github.com/')
-            cmd = ['npx', 'tsp-client', 'init', '--debug', '--tsp-config', tsp_dir, '--commit', head_sha, '--repo', repo]
-            check_call(cmd, sdk_root)
-
-            sdk_folder = find_sdk_folder()
+            cmd = ['pwsh', './eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
+            logging.info('Command line: ' + ' '.join(cmd))
+            output = subprocess.check_output(cmd, cwd=sdk_root)
+            output_str = str(output, 'utf-8')
+            script_return = output_str.splitlines()[-1] # the path to sdk folder
+            sdk_folder = os.path.relpath(script_return, sdk_root)
             logging.info('SDK folder: ' + sdk_folder)
             if sdk_folder:
                 succeeded = True
         except subprocess.CalledProcessError as error:
-            logging.error(f'tsp-client init fail: {error}')
+            logging.error(f'TypeSpec-Project-Process.ps1 fail: {error}')
 
         if succeeded:
             # check require_sdk_integration

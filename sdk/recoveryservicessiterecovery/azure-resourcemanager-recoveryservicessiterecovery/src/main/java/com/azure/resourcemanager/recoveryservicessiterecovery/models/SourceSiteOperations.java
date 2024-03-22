@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A value indicating whether source site operations are required. */
+/**
+ * A value indicating whether source site operations are required.
+ */
 public final class SourceSiteOperations extends ExpandableStringEnum<SourceSiteOperations> {
-    /** Static value Required for SourceSiteOperations. */
+    /**
+     * Static value Required for SourceSiteOperations.
+     */
     public static final SourceSiteOperations REQUIRED = fromString("Required");
 
-    /** Static value NotRequired for SourceSiteOperations. */
+    /**
+     * Static value NotRequired for SourceSiteOperations.
+     */
     public static final SourceSiteOperations NOT_REQUIRED = fromString("NotRequired");
 
     /**
      * Creates a new instance of SourceSiteOperations value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class SourceSiteOperations extends ExpandableStringEnum<SourceSiteO
 
     /**
      * Creates or finds a SourceSiteOperations from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SourceSiteOperations.
      */
@@ -38,7 +44,7 @@ public final class SourceSiteOperations extends ExpandableStringEnum<SourceSiteO
 
     /**
      * Gets known SourceSiteOperations values.
-     *
+     * 
      * @return known SourceSiteOperations values.
      */
     public static Collection<SourceSiteOperations> values() {

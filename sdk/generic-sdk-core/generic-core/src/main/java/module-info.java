@@ -15,9 +15,9 @@ module com.generic.core {
     exports com.generic.core.http.models;
     exports com.generic.core.http.pipeline;
     exports com.generic.core.http.policy;
-    exports com.generic.core.models;
     exports com.generic.core.models.traits;
     exports com.generic.core.util;
+    exports com.generic.core.util.binarydata;
     exports com.generic.core.util.configuration;
     exports com.generic.core.util.serializer;
 
