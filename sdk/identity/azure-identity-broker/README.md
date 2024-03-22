@@ -95,7 +95,7 @@ When this option is enabled, the credential will attempt to silently use the def
 
 ```java com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.useinteractivebrowserbroker.defaultaccount
 InteractiveBrowserCredential cred = new InteractiveBrowserBrokerCredentialBuilder()
-    .useDefaultBrokerAccount(true)
+    .useDefaultBrokerAccount()
     .build();
 ```
 
