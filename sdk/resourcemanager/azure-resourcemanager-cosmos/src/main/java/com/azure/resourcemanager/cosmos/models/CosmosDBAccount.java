@@ -41,7 +41,7 @@ public interface CosmosDBAccount
      *
      * @return whether the cosmos db can be accessed from public network.
      */
-    boolean isPublicNetworkAccessEnabled();
+    PublicNetworkAccess publicNetworkAccess();
 
     /**
      * @return specifies the set of IP addresses or IP address ranges in CIDR form.
@@ -407,12 +407,6 @@ public interface CosmosDBAccount
 
         /** The stage of cosmos db definition allowing to configure network access settings. */
         interface WithPublicNetworkAccess {
-            /**
-             * Enables public network access for the cosmos db.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate enablePublicNetworkAccess();
             /**
              * Disables public network access for the cosmos db.
              *

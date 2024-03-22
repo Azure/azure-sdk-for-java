@@ -286,24 +286,6 @@ public class WebAppsTests extends AppServiceTest {
     }
 
     @Test
-    public void canCreateWebAppWithEnablePublicNetworkAccess() {
-        resourceManager.resourceGroups().define(rgName1).withRegion(Region.US_WEST).create();
-        resourceManager.resourceGroups().define(rgName2).withRegion(Region.US_WEST).create();
-        WebApp webApp =
-            appServiceManager
-                .webApps()
-                .define(webappName1)
-                .withRegion(Region.US_WEST)
-                .withExistingResourceGroup(rgName1)
-                .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
-                .enablePublicNetworkAccess()
-                .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
-                .create();
-        webApp.refresh();
-        Assertions.assertTrue(webApp.isPublicNetworkAccessEnabled());
-    }
-
-    @Test
     public void canCreateWebAppWithDisablePublicNetworkAccess() {
         resourceManager.resourceGroups().define(rgName1).withRegion(Region.US_WEST).create();
         resourceManager.resourceGroups().define(rgName2).withRegion(Region.US_WEST).create();
@@ -318,7 +300,7 @@ public class WebAppsTests extends AppServiceTest {
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
                 .create();
         webApp.refresh();
-        Assertions.assertFalse(webApp.isPublicNetworkAccessEnabled());
+        Assertions.assertTrue("Disabled".equalsIgnoreCase(webApp.publicNetworkAccess()));
     }
 
     @Test
@@ -332,16 +314,15 @@ public class WebAppsTests extends AppServiceTest {
                 .withRegion(Region.US_WEST)
                 .withExistingResourceGroup(rgName1)
                 .withNewWindowsPlan(appServicePlanName1, PricingTier.BASIC_B1)
-                .enablePublicNetworkAccess()
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
                 .create();
 
         webApp.update().disablePublicNetworkAccess().apply();
         webApp.refresh();
-        Assertions.assertFalse(webApp.isPublicNetworkAccessEnabled());
+        Assertions.assertTrue("Disabled".equalsIgnoreCase(webApp.publicNetworkAccess()));
 
         webApp.update().enablePublicNetworkAccess().apply();
         webApp.refresh();
-        Assertions.assertTrue(webApp.isPublicNetworkAccessEnabled());
+        Assertions.assertTrue("Enabled".equalsIgnoreCase(webApp.publicNetworkAccess()));
     }
 }

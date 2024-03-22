@@ -13,6 +13,7 @@ import com.azure.resourcemanager.cosmos.models.ConnectorOffer;
 import com.azure.resourcemanager.cosmos.models.CosmosDBAccount;
 import com.azure.resourcemanager.cosmos.models.DatabaseAccountKind;
 import com.azure.resourcemanager.cosmos.models.DefaultConsistencyLevel;
+import com.azure.resourcemanager.cosmos.models.PublicNetworkAccess;
 import com.azure.resourcemanager.cosmos.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PrivateEndpoint;
@@ -281,27 +282,6 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
     }
 
     @Test
-    public void canCreateCosmosDBAccountWithEnablePublicNetworkAccess() {
-        final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
-
-        CosmosDBAccount cosmosDBAccount =
-            cosmosManager
-                .databaseAccounts()
-                .define(cosmosDbAccountName)
-                .withRegion(Region.US_WEST_CENTRAL)
-                .withNewResourceGroup(rgName)
-                .withDataModelAzureTable()
-                .withEventualConsistency()
-                .withWriteReplication(Region.US_EAST)
-                .withReadReplication(Region.US_WEST)
-                .withTag("tag1", "value1")
-                .enablePublicNetworkAccess()
-                .create();
-
-        Assertions.assertTrue(cosmosDBAccount.isPublicNetworkAccessEnabled());
-    }
-
-    @Test
     public void canCreateCosmosDBAccountWithDisablePublicNetworkAccess() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
@@ -319,7 +299,7 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
                 .disablePublicNetworkAccess()
                 .create();
 
-        Assertions.assertFalse(cosmosDBAccount.isPublicNetworkAccessEnabled());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, cosmosDBAccount.publicNetworkAccess());
     }
 
     @Test
@@ -340,9 +320,9 @@ public class CosmosDBTests extends ResourceManagerTestProxyTestBase {
                 .create();
 
         cosmosDBAccount.update().disablePublicNetworkAccess().apply();
-        Assertions.assertFalse(cosmosDBAccount.isPublicNetworkAccessEnabled());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, cosmosDBAccount.publicNetworkAccess());
 
         cosmosDBAccount.update().enablePublicNetworkAccess().apply();
-        Assertions.assertTrue(cosmosDBAccount.isPublicNetworkAccessEnabled());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, cosmosDBAccount.publicNetworkAccess());
     }
 }

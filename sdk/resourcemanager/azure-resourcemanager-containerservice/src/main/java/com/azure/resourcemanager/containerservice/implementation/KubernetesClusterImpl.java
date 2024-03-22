@@ -60,6 +60,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
@@ -301,8 +302,8 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public boolean isPublicNetworkAccessEnabled() {
-        return PublicNetworkAccess.ENABLED.equals(this.innerModel().publicNetworkAccess());
+    public PublicNetworkAccess publicNetworkAccess() {
+        return Objects.isNull(this.innerModel().publicNetworkAccess()) ? null : this.innerModel().publicNetworkAccess();
     }
 
     @Override

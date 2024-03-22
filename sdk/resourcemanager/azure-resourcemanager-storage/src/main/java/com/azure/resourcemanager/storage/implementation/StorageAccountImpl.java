@@ -55,6 +55,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -282,8 +283,8 @@ class StorageAccountImpl
     }
 
     @Override
-    public boolean isPublicNetworkAccessEnabled() {
-        return PublicNetworkAccess.ENABLED.equals(this.innerModel().publicNetworkAccess());
+    public PublicNetworkAccess publicNetworkAccess() {
+        return Objects.isNull(this.innerModel().publicNetworkAccess()) ? null : this.innerModel().publicNetworkAccess();
     }
 
     @Override

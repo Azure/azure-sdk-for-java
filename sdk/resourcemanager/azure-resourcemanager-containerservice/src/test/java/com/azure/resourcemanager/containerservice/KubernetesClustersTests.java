@@ -25,6 +25,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertie
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuTier;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfile;
+import com.azure.resourcemanager.containerservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
 import com.azure.resourcemanager.containerservice.models.ScaleSetPriority;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
@@ -628,50 +629,6 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
     }
 
     @Test
-    public void canCreateKubernetesClusterWithEnablePublicNetworkAccess() {
-        String aksName = generateRandomResourceName("aks", 15);
-        String dnsPrefix = generateRandomResourceName("dns", 10);
-        String agentPoolName = generateRandomResourceName("ap0", 10);
-        String agentPoolName1 = generateRandomResourceName("ap1", 10);
-
-        String agentPoolResourceGroupName = generateRandomResourceName("pool", 15);
-
-        // create
-        KubernetesCluster kubernetesCluster =
-            containerServiceManager
-                .kubernetesClusters()
-                .define(aksName)
-                .withRegion(Region.US_WEST2)
-                .withExistingResourceGroup(rgName)
-                .withDefaultVersion()
-                .withRootUsername("testaks")
-                .withSshKey(SSH_KEY)
-                .withSystemAssignedManagedServiceIdentity()
-                .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withOSDiskSizeInGB(30)
-                .withOSDiskType(OSDiskType.EPHEMERAL)
-                .withKubeletDiskType(KubeletDiskType.TEMPORARY)
-                .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
-                .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .withTag("pool.name", agentPoolName)
-                .attach()
-                .defineAgentPool(agentPoolName1)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withTag("pool.name", agentPoolName1)
-                .attach()
-                .withDnsPrefix("mp1" + dnsPrefix)
-                .withTag("tag1", "value1")
-                .withAgentPoolResourceGroup(agentPoolResourceGroupName)
-                .enablePublicNetworkAccess()
-                .create();
-
-        Assertions.assertTrue(kubernetesCluster.isPublicNetworkAccessEnabled());
-    }
-
-    @Test
     public void canCreateKubernetesClusterWithDisablePublicNetworkAccess() {
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
@@ -712,7 +669,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .disablePublicNetworkAccess()
                 .create();
 
-        Assertions.assertFalse(kubernetesCluster.isPublicNetworkAccessEnabled());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, kubernetesCluster.publicNetworkAccess());
     }
 
     @Test
@@ -753,13 +710,12 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
                 .withDnsPrefix("mp1" + dnsPrefix)
                 .withTag("tag1", "value1")
                 .withAgentPoolResourceGroup(agentPoolResourceGroupName)
-                .enablePublicNetworkAccess()
                 .create();
 
         kubernetesCluster.update().disablePublicNetworkAccess().apply();
-        Assertions.assertFalse(kubernetesCluster.isPublicNetworkAccessEnabled());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, kubernetesCluster.publicNetworkAccess());
 
         kubernetesCluster.update().enablePublicNetworkAccess().apply();
-        Assertions.assertTrue(kubernetesCluster.isPublicNetworkAccessEnabled());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, kubernetesCluster.publicNetworkAccess());
     }
 }

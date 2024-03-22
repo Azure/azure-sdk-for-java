@@ -208,7 +208,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
      *
      * @return whether the web app can be accessed from public network.
      */
-    boolean isPublicNetworkAccessEnabled();
+    String publicNetworkAccess();
 
     /**
      * Verifies the ownership of the domain for a certificate order by verifying a hostname of the domain is bound to
@@ -948,12 +948,6 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
              */
             WithCreate<FluentT> withAccessRule(IpSecurityRestriction ipSecurityRule);
 
-            /**
-             * Enables public network access for the web app.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate<FluentT> enablePublicNetworkAccess();
             /**
              * Disables public network access for the web app.
              *

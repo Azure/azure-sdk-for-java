@@ -109,7 +109,7 @@ public interface RedisCache
      *
      * @return whether the redis cache can be accessed from public network.
      */
-    boolean isPublicNetworkAccessEnabled();
+    PublicNetworkAccess publicNetworkAccess();
 
     /**************************************************************
      * Fluent interfaces to provision a RedisCache
@@ -297,12 +297,6 @@ public interface RedisCache
              */
             WithCreate withRedisVersion(RedisVersion redisVersion);
 
-            /**
-             * Enables public network access for the redis cache.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate enablePublicNetworkAccess();
             /**
              * Disables public network access for the redis cache.
              *

@@ -257,7 +257,7 @@ public interface StorageAccount
      *
      * @return whether the storage can be accessed from public network.
      */
-    boolean isPublicNetworkAccessEnabled();
+    PublicNetworkAccess publicNetworkAccess();
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
@@ -565,12 +565,6 @@ public interface StorageAccount
 
         /** The stage of storage definition allowing to configure network access settings. */
         interface WithNetworkAccess {
-            /**
-             * Enables public network access for the storage.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate enablePublicNetworkAccess();
             /**
              * Disables public network access for the storage.
              *

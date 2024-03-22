@@ -129,7 +129,7 @@ public interface KubernetesCluster
      *
      * @return whether the kubernetes cluster can be accessed from public network.
      */
-    boolean isPublicNetworkAccessEnabled();
+    PublicNetworkAccess publicNetworkAccess();
 
     // Actions
 
@@ -606,12 +606,6 @@ public interface KubernetesCluster
 
         /** The stage of Kubernetes cluster  definition allowing to configure network access settings. */
         interface WithPublicNetworkAccess {
-            /**
-             * Enables public network access for the kubernetes cluster.
-             *
-             * @return the next stage of the definition
-             */
-            WithCreate enablePublicNetworkAccess();
             /**
              * Disables public network access for the kubernetes cluster.
              *

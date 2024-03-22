@@ -7,6 +7,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
+import com.azure.resourcemanager.redis.models.PublicNetworkAccess;
 import com.azure.resourcemanager.redis.models.RebootType;
 import com.azure.resourcemanager.redis.models.RedisAccessKeys;
 import com.azure.resourcemanager.redis.models.RedisCache;
@@ -370,22 +371,6 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
     }
 
     @Test
-    public void canCreateRedisCacheWithEnablePublicNetworkAccess() {
-        resourceManager.resourceGroups().define(rgNameSecond).withRegion(Region.US_CENTRAL);
-
-        RedisCache redisCache =
-            redisManager
-                .redisCaches()
-                .define(rrName)
-                .withRegion(Region.ASIA_EAST)
-                .withNewResourceGroup(rgName)
-                .withBasicSku()
-                .enablePublicNetworkAccess()
-                .create();
-        Assertions.assertTrue(redisCache.isPublicNetworkAccessEnabled());
-    }
-
-    @Test
     public void canCreateRedisCacheWithDisablePublicNetworkAccess() {
         resourceManager.resourceGroups().define(rgNameSecond).withRegion(Region.US_CENTRAL);
 
@@ -398,7 +383,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withBasicSku()
                 .disablePublicNetworkAccess()
                 .create();
-        Assertions.assertFalse(redisCache.isPublicNetworkAccessEnabled());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, redisCache.publicNetworkAccess());
     }
 
     @Test
@@ -412,14 +397,13 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
                 .withRegion(Region.ASIA_EAST)
                 .withNewResourceGroup(rgName)
                 .withBasicSku()
-                .enablePublicNetworkAccess()
                 .create();
 
         redisCache.update().disablePublicNetworkAccess().apply();
-        Assertions.assertFalse(redisCache.isPublicNetworkAccessEnabled());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, redisCache.publicNetworkAccess());
 
         redisCache.update().enablePublicNetworkAccess().apply();
-        Assertions.assertTrue(redisCache.isPublicNetworkAccessEnabled());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, redisCache.publicNetworkAccess());
     }
 
     // e.g 6.xxxx
