@@ -150,7 +150,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
         FeedOperationState state = pagedFluxOptions.getFeedOperationState();
         DiagnosticsProvider tracerProvider = state != null ? state.getDiagnosticsProvider() : null;
         Object lockHolder = new Object();
-        if (tracerProvider == null || !tracerProvider.isEnabled()) {
+        if (tracerProvider == null) {
 
             return publisher
                 .doOnEach(signal -> {
@@ -166,6 +166,10 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
                         }
                     }
                 });
+        }
+
+        if (!tracerProvider.isEnabled()) {
+            pagedFluxOptions.setSamplingRateSnapshot(0, true);
         }
 
         final boolean isSampledOut = tracerProvider.shouldSampleOutOperation(pagedFluxOptions);

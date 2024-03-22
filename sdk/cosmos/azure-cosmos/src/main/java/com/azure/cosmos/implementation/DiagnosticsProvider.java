@@ -673,12 +673,7 @@ public final class DiagnosticsProvider {
       Function<T, Double> requestChargeFunc,
       BiFunction<T, Double, CosmosDiagnostics> diagnosticsFunc
     ) {
-
-        if (!isEnabled()) {
-            return resultPublisher;
-        }
-
-        final double samplingRateSnapshot = clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig);
+        final double samplingRateSnapshot =  isEnabled() ? clientTelemetryConfigAccessor.getSamplingRate(this.telemetryConfig) : 0;
         final boolean isSampledOut = this.shouldSampleOutOperation(samplingRateSnapshot);
         if (cosmosCtx != null) {
             ctxAccessor.setSamplingRateSnapshot(cosmosCtx, samplingRateSnapshot, isSampledOut);
