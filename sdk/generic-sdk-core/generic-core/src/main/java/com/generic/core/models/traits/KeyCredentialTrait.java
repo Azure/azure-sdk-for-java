@@ -17,7 +17,7 @@ import com.generic.core.credential.KeyCredential;
  * @see com.generic.core.models.traits
  * @see KeyCredential
  */
-public interface KeyCredentialTrait<T> {
+public interface KeyCredentialTrait<T extends KeyCredentialTrait<T>> {
     /**
      * Sets the {@link KeyCredential} used for authentication. Refer to the SDK for Java
      * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a> documentation for more details
