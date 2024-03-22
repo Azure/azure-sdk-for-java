@@ -1048,7 +1048,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
         }).addListener(closed -> {
             if (!closed.isSuccess()) {
-                logger.error("[{}] close failed due to ", this, closed.cause());
+                logger.info("[{}] close failed due to ", this, closed.cause());
             } else {
                 logger.debug("[{}] closed", this);
             }
@@ -1644,7 +1644,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                         this.originalPromise.setSuccess(channel);
                     } else {
                         final Throwable cause = completed.cause();
-                        logger.warn("Channel({}) health check request failed due to:", channel, cause);
+                        logger.info("Channel({}) health check request failed due to:", channel, cause);
                         this.fail(cause);
                     }
                 });

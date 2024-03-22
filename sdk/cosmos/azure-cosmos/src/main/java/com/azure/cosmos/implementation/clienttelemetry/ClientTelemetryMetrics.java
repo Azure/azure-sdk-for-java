@@ -342,9 +342,9 @@ public final class ClientTelemetryMetrics {
             String containerTagValue =
                 escape(accountTagValue)
                 + "/"
-                + databaseId != null ? escape(databaseId) : "NONE"
+                + (databaseId != null ? escape(databaseId) : "NONE")
                 + "/"
-                + containerId != null ? escape(containerId) : "NONE";
+                + (containerId != null ? escape(containerId) : "NONE");
 
             effectiveTags.add(Tag.of(TagName.Container.toString(), containerTagValue));
         }
