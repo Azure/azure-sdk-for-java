@@ -15,7 +15,7 @@ import java.util.Map;
 public class ExtendedBindingHandlerMappingsProviderConfiguration {
 
     @Bean
-    public BindingHandlerAdvise.MappingsProvider EventHubsExtendedPropertiesDefaultMappingsProvider() {
+    public BindingHandlerAdvise.MappingsProvider eventHubsExtendedPropertiesDefaultMappingsProvider() {
         return () -> {
             Map<ConfigurationPropertyName, ConfigurationPropertyName> mappings = new HashMap<>();
             mappings.put(
