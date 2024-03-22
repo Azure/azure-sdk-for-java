@@ -24,7 +24,7 @@ public class OpenInputStream extends DataLakeScenarioBase<StorageStressOptions> 
         super(options);
         String fileName = generateFileName();
         this.syncClient = getSyncFileSystemClient().getFileClient(fileName);
-        this.asyncNoFaultClient = getAsyncFileSystemAsyncClientNoFault().getFileAsyncClient(fileName);
+        this.asyncNoFaultClient = getAsyncFileSystemClientNoFault().getFileAsyncClient(fileName);
     }
 
     @Override

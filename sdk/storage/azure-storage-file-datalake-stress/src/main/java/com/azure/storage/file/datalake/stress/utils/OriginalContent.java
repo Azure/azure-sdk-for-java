@@ -2,15 +2,12 @@
 // Licensed under the MIT License.
 
 package com.azure.storage.file.datalake.stress.utils;
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
-import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
 import com.azure.storage.stress.ContentInfo;
@@ -90,5 +87,9 @@ public class OriginalContent {
         } catch (Throwable e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
+    }
+
+    public BinaryData getContentHead() {
+        return FILE_CONTENT_HEAD;
     }
 }

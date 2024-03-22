@@ -32,7 +32,7 @@ public class ReadToFile extends DataLakeScenarioBase<StorageStressOptions> {
         String fileName = generateFileName();
         this.syncClient = getSyncFileSystemClient().getFileClient(fileName);
         this.asyncClient = getAsyncFileSystemClient().getFileAsyncClient(fileName);
-        this.asyncNoFaultClient = getAsyncFileSystemAsyncClientNoFault().getFileAsyncClient(fileName);
+        this.asyncNoFaultClient = getAsyncFileSystemClientNoFault().getFileAsyncClient(fileName);
     }
 
     @Override

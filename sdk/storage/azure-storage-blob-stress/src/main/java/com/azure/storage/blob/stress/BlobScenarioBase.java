@@ -25,10 +25,10 @@ import java.util.UUID;
 public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> extends PerfStressTest<TOptions> {
     private static final String CONTAINER_NAME = "stress-" + UUID.randomUUID();
     protected final TelemetryHelper telemetryHelper = new TelemetryHelper(this.getClass());
-    private final BlobServiceClient noFaultServiceClient;
     private final BlobContainerClient syncContainerClient;
     private final BlobContainerAsyncClient asyncContainerClient;
     private final BlobContainerAsyncClient asyncNoFaultContainerClient;
+    private final BlobContainerClient syncNoFaultContainerClient;
     private Instant startTime;
 
     public BlobScenarioBase(TOptions options) {
@@ -43,7 +43,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
             .httpLogOptions(getLogOptions());
 
         BlobServiceAsyncClient asyncNoFaultClient = clientBuilder.buildAsyncClient();
-        noFaultServiceClient = clientBuilder.buildClient();
+        BlobServiceClient syncNoFaultClient = clientBuilder.buildClient();
 
         if (options.isFaultInjectionEnabled()) {
             clientBuilder.addPolicy(new FaultInjectingHttpPolicy(false, getFaultProbabilities(),
@@ -53,6 +53,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
         BlobServiceClient syncClient = clientBuilder.buildClient();
         BlobServiceAsyncClient asyncClient = clientBuilder.buildAsyncClient();
         asyncNoFaultContainerClient = asyncNoFaultClient.getBlobContainerAsyncClient(CONTAINER_NAME);
+        syncNoFaultContainerClient = syncNoFaultClient.getBlobContainerClient(CONTAINER_NAME);
         syncContainerClient = syncClient.getBlobContainerClient(CONTAINER_NAME);
         asyncContainerClient = asyncClient.getBlobContainerAsyncClient(CONTAINER_NAME);
     }
@@ -102,7 +103,7 @@ public abstract class BlobScenarioBase<TOptions extends StorageStressOptions> ex
     }
 
     protected BlobContainerClient getSyncContainerClientNoFault() {
-        return noFaultServiceClient.getBlobContainerClient(CONTAINER_NAME);
+        return syncNoFaultContainerClient;
     }
 
 
