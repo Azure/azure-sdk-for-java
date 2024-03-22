@@ -57,6 +57,7 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public DocumentServiceRequestContext requestContext;
     public FaultInjectionRequestContext faultInjectionRequestContext;
+    public RegionLevelCircuitBreakerRequestContext regionLevelCircuitBreakerRequestContext;
 
     // has the non serialized value of the partition-key
     private PartitionKeyInternal partitionKeyInternal;
@@ -174,6 +175,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.authorizationTokenType = authorizationTokenType;
         this.requestContext = new DocumentServiceRequestContext();
         this.faultInjectionRequestContext = new FaultInjectionRequestContext();
+        this.regionLevelCircuitBreakerRequestContext = new RegionLevelCircuitBreakerRequestContext(false);
         if (StringUtils.isNotEmpty(this.headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID)))
             this.partitionKeyRangeIdentity = PartitionKeyRangeIdentity.fromHeader(this.headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID));
     }
@@ -194,6 +196,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.clientContext = clientContext;
         this.requestContext = new DocumentServiceRequestContext();
         this.faultInjectionRequestContext = new FaultInjectionRequestContext();
+        this.regionLevelCircuitBreakerRequestContext = new RegionLevelCircuitBreakerRequestContext(false);
         this.operationType = operationType;
         this.resourceType = resourceType;
         this.requestContext.sessionToken = null;
