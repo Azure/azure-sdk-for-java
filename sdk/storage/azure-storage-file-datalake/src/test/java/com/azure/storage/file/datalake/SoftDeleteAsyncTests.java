@@ -17,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.ResourceLock;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.List;
@@ -65,19 +66,16 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
     @Test
     public void restorePath() {
         DataLakeDirectoryAsyncClient dir = fileSystemClient.getDirectoryAsyncClient(generatePathName());
-        dir.create().block();
-        dir.delete().block();
+        Mono<Void> dirStep = dir.create().then(dir.delete());
 
         DataLakeFileAsyncClient file = fileSystemClient.getFileAsyncClient(generatePathName());
-        file.create().block();
-        file.delete().block();
+        Mono<Void> fileStep = file.create().then(file.delete());
 
-        List<PathDeletedItem> paths = fileSystemClient.listDeletedPaths().collectList().block();
+        Mono<List<PathDeletedItem>> paths = fileSystemClient.listDeletedPaths().collectList();
 
-        String dirDeletionId = paths.get(0).getDeletionId();
-        String fileDeletionId = paths.get(1).getDeletionId();
-
-        StepVerifier.create(fileSystemClient.undeletePath(dir.getDirectoryName(), dirDeletionId))
+        Mono<DataLakePathAsyncClient> response1 = dirStep.then(fileStep).then(paths)
+            .flatMap(r -> fileSystemClient.undeletePath(dir.getDirectoryName(), r.get(0).getDeletionId()));
+        StepVerifier.create(response1)
             .assertNext(r -> {
                 assertInstanceOf(DataLakeDirectoryAsyncClient.class, r);
                 assertEquals(dir.getPathUrl(), r.getPathUrl());
@@ -88,7 +86,9 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
-        StepVerifier.create(fileSystemClient.undeletePath(file.getFileName(), fileDeletionId))
+        Mono<DataLakePathAsyncClient> response2 = paths
+            .flatMap(r -> fileSystemClient.undeletePath(file.getFileName(), r.get(0).getDeletionId()));
+        StepVerifier.create(response2)
             .assertNext(r -> {
                 assertInstanceOf(DataLakeFileAsyncClient.class, r);
                 assertEquals(file.getPathUrl(), r.getPathUrl());
@@ -106,19 +106,16 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
         " my cool directory ", "directory"})
     public void restorePathSpecialCharacters(String name) {
         DataLakeDirectoryAsyncClient dir = fileSystemClient.getDirectoryAsyncClient("dir" + name);
-        dir.create().block();
-        dir.delete().block();
+        Mono<Void> dirStep = dir.create().then(dir.delete());
 
         DataLakeFileAsyncClient file = fileSystemClient.getFileAsyncClient("file" + name);
-        file.create().block();
-        file.delete().block();
+        Mono<Void> fileStep = file.create().then(file.delete());
 
-        List<PathDeletedItem> paths = fileSystemClient.listDeletedPaths().collectList().block();
+        Mono<List<PathDeletedItem>> paths = fileSystemClient.listDeletedPaths().collectList();
 
-        String dirDeletionId = paths.get(0).getDeletionId();
-        String fileDeletionId = paths.get(1).getDeletionId();
-
-        StepVerifier.create(fileSystemClient.undeletePath(dir.getDirectoryName(), dirDeletionId))
+        Mono<DataLakePathAsyncClient> response1 = dirStep.then(fileStep).then(paths)
+            .flatMap(r -> fileSystemClient.undeletePath(dir.getDirectoryName(), r.get(0).getDeletionId()));
+        StepVerifier.create(response1)
             .assertNext(r -> assertInstanceOf(DataLakeDirectoryAsyncClient.class, r))
             .verifyComplete();
 
@@ -126,7 +123,9 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
-        StepVerifier.create(fileSystemClient.undeletePath(file.getFileName(), fileDeletionId))
+        Mono<DataLakePathAsyncClient> response2 = paths
+            .flatMap(r -> fileSystemClient.undeletePath(file.getFileName(), r.get(0).getDeletionId()));
+        StepVerifier.create(response2)
             .assertNext(r -> assertInstanceOf(DataLakeFileAsyncClient.class, r))
             .verifyComplete();
 
@@ -146,25 +145,28 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
     @Test
     public void listDeletedPathsOptionsMaxResultsByPage() {
         DataLakeDirectoryAsyncClient dir = fileSystemClient.getDirectoryAsyncClient(generatePathName());
-        dir.create().block();
-        DataLakeFileAsyncClient fc1 = dir.getFileAsyncClient(generatePathName());
-        fc1.create(true).block();
-        fc1.delete().block();
 
-        DataLakeFileAsyncClient fc2 = dir.getFileAsyncClient(generatePathName());
-        fc2.create(true).block();
-        fc2.delete().block();
+        Mono<Void> step = dir.create()
+            .flatMap(r -> {
+                DataLakeFileAsyncClient fc1 = dir.getFileAsyncClient(generatePathName());
+                return fc1.create(true).then(fc1.delete());
+            })
+            .flatMap(r -> {
+                DataLakeFileAsyncClient fc2 = dir.getFileAsyncClient(generatePathName());
+                return fc2.create(true).then(fc2.delete());
+            })
+            .flatMap(r -> {
+                DataLakeFileAsyncClient fc3 = fileSystemClient.getFileAsyncClient(generatePathName());
+                return fc3.create().then(fc3.delete());
+            });
 
-        DataLakeFileAsyncClient fc3 = fileSystemClient.getFileAsyncClient(generatePathName());
-        fc3.create().block();
-        fc3.delete().block();
-
-        StepVerifier.create(fileSystemClient.listDeletedPaths().byPage(1))
+        StepVerifier.create(step.thenMany(fileSystemClient.listDeletedPaths().byPage(1)))
             .thenConsumeWhile(r -> {
                 assertEquals(1, r.getValue().size());
                 return true;
             })
             .verifyComplete();
+
     }
 
     @Test
@@ -179,16 +181,15 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
     @Test
     public void listDeletedPathsPath() {
         DataLakeDirectoryAsyncClient dir = fileSystemClient.getDirectoryAsyncClient(generatePathName());
-        dir.create().block();
         DataLakeFileAsyncClient fc1 = dir.getFileAsyncClient(generatePathName()); // Create one file under the path
-        fc1.create(true).block();
-        fc1.delete().block();
+        Mono<Void> step = dir.create()
+            .flatMap(r -> fc1.create(true).then(fc1.delete()))
+            .flatMap(r -> {
+                DataLakeFileAsyncClient fc2 = fileSystemClient.getFileAsyncClient(generatePathName()); // Create another file not under the path
+                return fc2.create().then(fc2.delete());
+            });
 
-        DataLakeFileAsyncClient fc2 = fileSystemClient.getFileAsyncClient(generatePathName()); // Create another file not under the path
-        fc2.create().block();
-        fc2.delete().block();
-
-        StepVerifier.create(fileSystemClient.listDeletedPaths(dir.getDirectoryName()))
+        StepVerifier.create(step.thenMany(fileSystemClient.listDeletedPaths(dir.getDirectoryName())))
             .assertNext(r -> {
                 assertFalse(r.isPrefix());
                 assertEquals(dir.getDirectoryName() + "/" + fc1.getFileName(), r.getPath());
@@ -201,10 +202,10 @@ public class SoftDeleteAsyncTests extends DataLakeTestBase {
     @Test
     public void listDeletedPaths() {
         DataLakeFileAsyncClient fc1 = fileSystemClient.getFileAsyncClient(generatePathName());
-        fc1.create(true).block();
-        fc1.delete().block();
 
-        StepVerifier.create(fileSystemClient.listDeletedPaths())
+        Mono<Void> step = fc1.create(true).then(fc1.delete());
+
+        StepVerifier.create(step.thenMany(fileSystemClient.listDeletedPaths()))
             .assertNext(r -> {
                 assertFalse(r.isPrefix());
                 assertEquals(fc1.getFileName(), r.getPath());

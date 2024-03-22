@@ -1,6 +1,6 @@
 # Release History
 
-## 2.37.0-beta.2 (Unreleased)
+## 2.38.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.37.0 (2024-03-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.37.0-beta.1 (2024-03-07)
 
