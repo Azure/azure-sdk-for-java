@@ -17,7 +17,7 @@ import java.time.format.DateTimeFormatter;
  * event.
  */
 @Fluent
-public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsAdvancedMessageEventBaseProperties {
+public final class AcsAdvancedMessageDeliveryStatusUpdatedEventData extends AcsAdvancedMessageEventData {
     /*
      * The message id
      */
