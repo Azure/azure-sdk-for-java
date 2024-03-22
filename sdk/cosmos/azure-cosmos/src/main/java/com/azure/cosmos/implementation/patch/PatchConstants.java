@@ -18,6 +18,7 @@ final class PatchConstants {
     static final String OperationTypeNames_Move = "move";
     static final String OperationTypeNames_Set = "set";
     static final String OperationTypeNames_Increment = "incr";
+    static final String OperationTypeNames_CreateIfNotExists = "createIfNotExists";
 
     static final String CONDITION = "condition";
     static final String OPERATIONS = "operations";

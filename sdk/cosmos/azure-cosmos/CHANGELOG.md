@@ -79,6 +79,7 @@
 
 #### Features Added
 * Integrate `ThroughputControl` with ChangeFeedProcessor - See [PR 38052](https://github.com/Azure/azure-sdk-for-java/pull/38052)
+* Added `CreateIfNotExists` operator in PatchOperations - See [PR 38173](https://github.com/Azure/azure-sdk-for-java/pull/38173)
 
 #### Bugs Fixed
 * Fixed issue where AAD/Entra ID related exceptions are not fully propagated to the caller when CosmosAsyncClient is created, causing ambiguity for user on the root cause of the error - See [PR 37977](https://github.com/Azure/azure-sdk-for-java/pull/37977) 

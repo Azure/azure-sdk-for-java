@@ -10,6 +10,7 @@ import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -315,6 +316,50 @@ public class PatchTest extends TestSuiteBase {
         assert(patchedItem.get(stringColumnName2)).isNull();
     }
 
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void itemPatchCreateIfNotExists() {
+        String pk = "TBD" + UUID.randomUUID();
+        String id = UUID.randomUUID().toString();
+        int oldTaskNum = 42;
+        int newTaskNum = 52;
+        // create an item without nestedChild
+        ToDoActivity testItem = new ToDoActivity(id, "createRandomToDoActivity", pk, oldTaskNum, Double.MAX_VALUE, "camelCase", null, true, null);
+        CosmosItemResponse<ToDoActivity> response = container.createItem(testItem, new PartitionKey(testItem.status), null);
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.CREATED.code());
+
+        ToDoActivity item = response.getItem();
+        assertThat(item).isNotNull();
+        assertThat(item.nestedChild).isNull();
+
+        // adding a child when parent / ancestor does not exist - using createIfNotExists operator
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        cosmosPatchOperations.createIfNotExists("/nestedChild/id", "child1");
+
+        CosmosItemResponse<ToDoActivity> patchResponse = this.container.patchItem(
+            testItem.id,
+            new PartitionKey(testItem.status),
+            cosmosPatchOperations,
+            ToDoActivity.class);
+        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+
+        ToDoActivity patchedItem = patchResponse.getItem();
+        assertThat(patchedItem).isNotNull();
+        assertThat(patchedItem.nestedChild).isNotNull();
+        assertThat(patchedItem.nestedChild.id).isEqualTo("child1");
+
+        // using createIfNotExists on existing field - should be a no-op
+        cosmosPatchOperations = CosmosPatchOperations.create();
+        cosmosPatchOperations.createIfNotExists("/taskNum", newTaskNum);
+
+        patchResponse = this.container.patchItem(
+            testItem.id,
+            new PartitionKey(testItem.status),
+            cosmosPatchOperations,
+            ToDoActivity.class);
+        assertThat(patchResponse.getStatusCode()).isEqualTo(HttpResponseStatus.NOT_MODIFIED.code());
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class ToDoActivity {
 
         public String id;
