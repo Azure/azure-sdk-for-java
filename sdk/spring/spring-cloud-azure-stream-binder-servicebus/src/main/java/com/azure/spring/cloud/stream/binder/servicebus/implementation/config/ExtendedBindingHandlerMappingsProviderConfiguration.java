@@ -15,7 +15,7 @@ import java.util.Map;
 public class ExtendedBindingHandlerMappingsProviderConfiguration {
 
     @Bean
-    public BindingHandlerAdvise.MappingsProvider kafkaExtendedPropertiesDefaultMappingsProvider() {
+    public BindingHandlerAdvise.MappingsProvider ServiceBusExtendedPropertiesDefaultMappingsProvider() {
         return () -> {
             Map<ConfigurationPropertyName, ConfigurationPropertyName> mappings = new HashMap<>();
             mappings.put(
