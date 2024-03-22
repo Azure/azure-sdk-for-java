@@ -4,7 +4,7 @@
 package com.generic.core.util;
 
 /**
- * Base implementation for expandable, single object enums.
+ * Interface for expandable enums.
  *
  * @param <T> The type of objects to be listed in the expandable enum.
  */
