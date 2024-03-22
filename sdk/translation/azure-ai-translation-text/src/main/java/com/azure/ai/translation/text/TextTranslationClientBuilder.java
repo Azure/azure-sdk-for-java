@@ -357,7 +357,6 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
-
             if (this.region != null && this.azureResourceId != null) {
                 policies.add(new TranslatorRegionAuthenticationPolicy(this.region));
                 policies.add(new TranslatorResourceIdAuthenticationPolicy(this.azureResourceId));
