@@ -17,6 +17,7 @@ import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.IntBinaryOperator;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -193,6 +193,9 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             Duration backoffTime = Duration.ofSeconds(0);
             Duration timeout;
             boolean forceRefreshAddressCache;
+
+            bookmarkException(this.request, exception);
+
             if (isNonRetryableException(exception)) {
                 logger.debug("Operation will NOT be retried. Current attempt {}, Exception: ", this.attemptCount,
                     exception);
@@ -309,6 +312,23 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
             this.request.forceNameCacheRefresh = true;
 
             return Pair.of(null, false);
+        }
+
+        private static boolean bookmarkException(RxDocumentServiceRequest request, Exception exception) {
+
+            if (exception instanceof CosmosException) {
+                CosmosException cosmosException = Utils.as(exception, CosmosException.class);
+
+                if (request.requestContext == null) {
+                    return false;
+                }
+
+                if (request.locationLevelCircuitBreakerRequestContext != null) {
+                    return request.locationLevelCircuitBreakerRequestContext.tryRecordRegionScopedFailure(request.requestContext.locationEndpointToRoute, cosmosException.getStatusCode(), cosmosException.getSubStatusCode());
+                }
+            }
+
+            return false;
         }
     }
 

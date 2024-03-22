@@ -62,7 +62,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                 partitionKeyRangeFailoverInfoAsVal = new PartitionLevelFailoverInfo();
             }
 
-            isFailureThresholdBreached.set(partitionKeyRangeFailoverInfoAsVal.isFailureThresholdBreachedForLocation(failedLocation, request.isReadOnlyRequest()));
+            isFailureThresholdBreached.set(partitionKeyRangeFailoverInfoAsVal.isFailureThresholdBreachedForLocation(request));
 
             if (isFailureThresholdBreached.get()) {
 
@@ -70,9 +70,8 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                     this.globalEndpointManager.getApplicableReadEndpoints(request.requestContext.getExcludeRegions()) :
                     this.globalEndpointManager.getApplicableWriteEndpoints(request.requestContext.getExcludeRegions());
 
-                isFailoverPossible.set(partitionKeyRangeFailoverInfoAsVal.areLocationsAvailableForPartitionKeyRange(
-                    applicableEndpoints,
-                    request.isReadOnlyRequest()));
+                isFailoverPossible.set(
+                    partitionKeyRangeFailoverInfoAsVal.areLocationsAvailableForPartitionKeyRange(applicableEndpoints));
             }
 
             return partitionKeyRangeFailoverInfoAsVal;
@@ -122,7 +121,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                     partitionKeyRangeFailoverInfoAsVal = new PartitionLevelFailoverInfo();
                 }
 
-                partitionKeyRangeFailoverInfoAsVal.bookmarkSuccess(succeededLocation, request.isReadOnlyRequest());
+                partitionKeyRangeFailoverInfoAsVal.bookmarkSuccess(succeededLocation);
                 return partitionKeyRangeFailoverInfoAsVal;
             });
         }
@@ -165,10 +164,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
 
             if (partitionLevelFailoverInfo.partitionLevelFailureMetadata.containsKey(locationWithUndeterminedAvailability)) {
 
-                LocationLevelFailureMetadata locationLevelFailureMetadata
+                LocationLevelMetrics locationLevelMetrics
                     = partitionLevelFailoverInfo.partitionLevelFailureMetadata.get(locationWithUndeterminedAvailability);
 
-                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.FreshUnavailable) {
+                if (locationLevelMetrics.partitionScopedRegionUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.FreshUnavailable) {
                     return false;
                 }
             }
@@ -207,10 +206,10 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                 if (partitionKeyRangeToFailoverInfo.containsKey(partitionKeyRange)) {
                     PartitionLevelFailoverInfo partitionLevelFailoverInfo
                         = partitionKeyRangeToFailoverInfo.get(partitionKeyRange);
-                    LocationLevelFailureMetadata locationLevelFailureMetadata
+                    LocationLevelMetrics locationLevelMetrics
                         = partitionLevelFailoverInfo.partitionLevelFailureMetadata.get(unavailableLocation);
 
-                    locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.set(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
+                    locationLevelMetrics.partitionScopedRegionUnavailabilityStatus.set(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
                 }
 
                 return Mono.empty();
@@ -218,146 +217,98 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
             .subscribe();
     }
 
-    // what is the point of an inner class?
-    // at a high-level, the below class needs:
-    //  1. consecutive failure count tracker
-    //  2. unavailable since
-    //  3. regions unavailable in
-    //  4. failure type
     static class PartitionLevelFailoverInfo {
 
-        private final ConcurrentHashMap<URI, LocationLevelFailureMetadata> partitionLevelFailureMetadata;
-        // points to the current location a request will be routed to
+        private final ConcurrentHashMap<URI, LocationLevelMetrics> partitionLevelFailureMetadata;
 
         PartitionLevelFailoverInfo() {
             this.partitionLevelFailureMetadata = new ConcurrentHashMap<>();
         }
 
-        // bookmark failure
-        // method purpose:
-        // 1. increment consecutive failure count
-        // 2. if failure count crosses threshold for
-        public boolean isFailureThresholdBreachedForLocation(URI failedLocation, boolean isReadRequest) {
+        public boolean isFailureThresholdBreachedForLocation(RxDocumentServiceRequest request) {
 
             AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
 
-            this.partitionLevelFailureMetadata.compute(failedLocation, (locationAsKey, locationLevelFailureMetadataAsVal) -> {
+            if (request.locationLevelCircuitBreakerRequestContext == null) {
+                return false;
+            }
 
-                if (locationLevelFailureMetadataAsVal == null) {
-                    locationLevelFailureMetadataAsVal = new LocationLevelFailureMetadata();
+            if (!request.locationLevelCircuitBreakerRequestContext.getFailuresForAllLocations().isEmpty()) {
+
+                ConcurrentHashMap<URI, ConcurrentHashMap<ErrorKey, Integer>> failuresForAllLocations
+                    = request.locationLevelCircuitBreakerRequestContext.getFailuresForAllLocations();
+
+                for (Map.Entry<URI, ConcurrentHashMap<ErrorKey, Integer>> failuresPerLocation : failuresForAllLocations.entrySet()) {
+
+                    URI location = failuresPerLocation.getKey();
+                    ConcurrentHashMap<ErrorKey, Integer> errorCounts = failuresPerLocation.getValue();
+
+                    this.partitionLevelFailureMetadata.compute(location, (locationAsKey, locationLevelMetricsAsVal) -> {
+
+                        if (locationLevelMetricsAsVal == null) {
+                            locationLevelMetricsAsVal = new LocationLevelMetrics();
+                        }
+
+                        for (Map.Entry<ErrorKey, Integer> countForError : errorCounts.entrySet()) {
+                            locationLevelMetricsAsVal.handleFailure(countForError.getValue());
+                        }
+
+                        isFailureThresholdBreached.set(locationLevelMetricsAsVal.isFailureThresholdBreached());
+                        return locationLevelMetricsAsVal;
+                    });
                 }
-
-                // todo : make threshold for marking a location as failed more comprehensive
-
-                if (isReadRequest) {
-                    if (locationLevelFailureMetadataAsVal.consecutiveFailureCountForReads.incrementAndGet() > 5) {
-                        locationLevelFailureMetadataAsVal.unavailableForReadsSince.set(Instant.now());
-                        locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.set(PartitionScopedRegionUnavailabilityStatus.FreshUnavailable);
-                        isFailureThresholdBreached.set(true);
-                    }
-                } else {
-                    if (locationLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.incrementAndGet() > 5) {
-                        locationLevelFailureMetadataAsVal.unavailableForWritesSince.set(Instant.now());
-                        locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.set(PartitionScopedRegionUnavailabilityStatus.FreshUnavailable);
-                        isFailureThresholdBreached.set(true);
-                    }
-                }
-
-                return locationLevelFailureMetadataAsVal;
-            });
+            }
 
             return isFailureThresholdBreached.get();
         }
 
-        // bookmark success
-        public void bookmarkSuccess(URI succeededLocation, boolean isReadRequest) {
-            this.partitionLevelFailureMetadata.compute(succeededLocation, (locationAsKey, locationLevelFailureMetadataAsVal) -> {
+        public void bookmarkSuccess(URI succeededLocation) {
+            this.partitionLevelFailureMetadata.compute(succeededLocation, (locationAsKey, locationLevelMetricsAsVal) -> {
 
-                if (locationLevelFailureMetadataAsVal == null) {
-                    return new LocationLevelFailureMetadata();
+                if (locationLevelMetricsAsVal == null) {
+                    return new LocationLevelMetrics();
                 }
 
-                if (isReadRequest) {
-                    if (locationLevelFailureMetadataAsVal.consecutiveFailureCountForReads.get() > 1) {
-                        switch (locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.get()) {
-                            case StaleUnavailable:
-                                locationLevelFailureMetadataAsVal = new LocationLevelFailureMetadata();
-                            case Available:
-                                locationLevelFailureMetadataAsVal.consecutiveFailureCountForReads.decrementAndGet();
-                        }
-                    }
-                } else {
-                    if (locationLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.get() > 1) {
-                        switch (locationLevelFailureMetadataAsVal.partitionKeyRangeUnavailabilityStatus.get()) {
-                            case StaleUnavailable:
-                                locationLevelFailureMetadataAsVal = new LocationLevelFailureMetadata();
-                            case Available:
-                                locationLevelFailureMetadataAsVal.consecutiveFailureCountForWrites.decrementAndGet();
-                        }                    }
-                }
-
-                return locationLevelFailureMetadataAsVal;
+                locationLevelMetricsAsVal.handleSuccess();
+                return locationLevelMetricsAsVal;
             });
         }
 
-        // method purpose - choose the next possible region for this partition
-        // 1. if current == failedLocation - try using a different location
-        //      a) iterate through the list of read / write locations
-        //      b) if location in iteration loop not part of locationUnavailabilityInfos, then assign location to current
-        // 2. if current != failedLocation - a different thread has updated it
-        // 3.
-        public boolean areLocationsAvailableForPartitionKeyRange(
-            List<URI> availableLocationsAtAccountLevel,
-            boolean isReadRequest) {
+        public boolean areLocationsAvailableForPartitionKeyRange(List<URI> availableLocationsAtAccountLevel) {
 
             for (URI availableLocation : availableLocationsAtAccountLevel) {
                 if (!this.partitionLevelFailureMetadata.containsKey(availableLocation)) {
                     return true;
                 } else {
-                    LocationLevelFailureMetadata locationLevelFailureMetadata = this.partitionLevelFailureMetadata.get(availableLocation);
+                    LocationLevelMetrics locationLevelMetrics = this.partitionLevelFailureMetadata.get(availableLocation);
 
-                    if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.Available) {
+                    if (locationLevelMetrics.isRegionAvailableToProcessRequests()) {
                         return true;
                     }
                 }
             }
 
             Instant mostStaleUnavailableTimeAcrossRegions = Instant.MAX;
-            LocationLevelFailureMetadata locationLevelFailureMetadataForMostStaleLocation = null;
+            LocationLevelMetrics locationLevelFailureMetadataForMostStaleLocation = null;
 
             // find region with most 'stale' unavailability
-            for (Map.Entry<URI, LocationLevelFailureMetadata> uriToLocationLevelFailureMetadata : this.partitionLevelFailureMetadata.entrySet()) {
-                LocationLevelFailureMetadata locationLevelFailureMetadata = uriToLocationLevelFailureMetadata.getValue();
+            for (Map.Entry<URI, LocationLevelMetrics> uriToLocationLevelFailureMetadata : this.partitionLevelFailureMetadata.entrySet()) {
+                LocationLevelMetrics locationLevelMetrics = uriToLocationLevelFailureMetadata.getValue();
 
-                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.Available) {
+                if (locationLevelMetrics.isRegionAvailableToProcessRequests()) {
                     return true;
                 }
 
-                if (locationLevelFailureMetadata.partitionKeyRangeUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.StaleUnavailable) {
-                    return true;
-                }
+                Instant unavailableSinceSnapshot = locationLevelMetrics.unavailableSince.get();
 
-                if (isReadRequest) {
-
-                    Instant unavailableSince = locationLevelFailureMetadata.unavailableForReadsSince.get();
-
-                    if (mostStaleUnavailableTimeAcrossRegions.isAfter(unavailableSince)) {
-                        mostStaleUnavailableTimeAcrossRegions = unavailableSince;
-                        locationLevelFailureMetadataForMostStaleLocation = locationLevelFailureMetadata;
-                    }
-                } else {
-
-                    Instant unavailableSince = locationLevelFailureMetadata.unavailableForWritesSince.get();
-
-                    if (mostStaleUnavailableTimeAcrossRegions.isAfter(locationLevelFailureMetadata.unavailableForWritesSince.get())) {
-                        mostStaleUnavailableTimeAcrossRegions = unavailableSince;
-                        locationLevelFailureMetadataForMostStaleLocation = locationLevelFailureMetadata;
-                    }
+                if (mostStaleUnavailableTimeAcrossRegions.isAfter(unavailableSinceSnapshot)) {
+                    mostStaleUnavailableTimeAcrossRegions = unavailableSinceSnapshot;
+                    locationLevelFailureMetadataForMostStaleLocation = locationLevelMetrics;
                 }
             }
 
             if (locationLevelFailureMetadataForMostStaleLocation != null) {
-                locationLevelFailureMetadataForMostStaleLocation.partitionKeyRangeUnavailabilityStatus.set(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
+                locationLevelFailureMetadataForMostStaleLocation.handleSuccess();
                 return true;
             }
 
@@ -365,13 +316,140 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         }
     }
 
-    private static class LocationLevelFailureMetadata {
-        private final AtomicInteger consecutiveFailureCountForWrites = new AtomicInteger();
-        private final AtomicInteger consecutiveFailureCountForReads = new AtomicInteger();
-        private final AtomicReference<Instant> unavailableForWritesSince = new AtomicReference<>(Instant.MIN);
-        private final AtomicReference<Instant> unavailableForReadsSince = new AtomicReference<>(Instant.MIN);
-        private final AtomicReference<PartitionScopedRegionUnavailabilityStatus> partitionKeyRangeUnavailabilityStatus = new AtomicReference<>(PartitionScopedRegionUnavailabilityStatus.Available);
+    private static class LocationLevelMetrics {
+        private final AtomicInteger failureCount = new AtomicInteger(0);
+        private final AtomicInteger successCount = new AtomicInteger(0);
+        private final AtomicReference<Instant> unavailableSince = new AtomicReference<>(Instant.MAX);
+        private final AtomicReference<PartitionScopedRegionUnavailabilityStatus> partitionScopedRegionUnavailabilityStatus = new AtomicReference<>(PartitionScopedRegionUnavailabilityStatus.Available);
+        private final AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
 
+        public void handleSuccess() {
+
+            PartitionScopedRegionUnavailabilityStatus currentStatusSnapshot = this.partitionScopedRegionUnavailabilityStatus.get();
+
+            double allowedFailureRatio = getAllowedFailureRatioByStatus(currentStatusSnapshot);
+
+            switch (currentStatusSnapshot) {
+                case Available:
+                    if (failureCount.get() > 0) {
+                        failureCount.decrementAndGet();
+                    }
+                    break;
+                case StaleUnavailable:
+                    if (successCount.get() < 10) {
+                        successCount.incrementAndGet();
+                    } else {
+                        if ((double) failureCount.get() / (double) successCount.get() < allowedFailureRatio) {
+                            this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.Available);
+                        }
+                    }
+                    break;
+                case FreshUnavailable:
+                    this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
+                    break;
+                default:
+                    throw new IllegalStateException("Unsupported health status: " + currentStatusSnapshot);
+            }
+        }
+
+        public void handleFailure(int errorCount) {
+
+            PartitionScopedRegionUnavailabilityStatus currentStatusSnapshot = this.partitionScopedRegionUnavailabilityStatus.get();
+
+            int allowedFailureCount = getAllowedFailureCountByStatus(currentStatusSnapshot);
+
+            switch (currentStatusSnapshot) {
+                case Available:
+                    if (failureCount.get() < allowedFailureCount) {
+                        failureCount.addAndGet(errorCount);
+                    } else {
+                        this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.FreshUnavailable);
+                    }
+                case StaleUnavailable:
+                    if (failureCount.get() < allowedFailureCount) {
+                        failureCount.addAndGet(errorCount);
+                    } else {
+                        this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.FreshUnavailable);
+                    }
+                default:
+                    throw new IllegalStateException("Unsupported health status: " + currentStatusSnapshot);
+            }
+        }
+
+        public void setHealthStatus(PartitionScopedRegionUnavailabilityStatus status) {
+            this.partitionScopedRegionUnavailabilityStatus.updateAndGet(previousStatus -> {
+
+                PartitionScopedRegionUnavailabilityStatus newStatus;
+
+                switch (status) {
+                    case Available:
+                        if (previousStatus == PartitionScopedRegionUnavailabilityStatus.StaleUnavailable) {
+                            this.failureCount.set(0);
+                            this.successCount.set(0);
+                            this.unavailableSince.set(Instant.MAX);
+                            this.isFailureThresholdBreached.set(false);
+                        }
+                        newStatus = status;
+                        break;
+                    case FreshUnavailable:
+                        if (previousStatus == PartitionScopedRegionUnavailabilityStatus.Available) {
+                            this.failureCount.set(0);
+                            this.successCount.set(0);
+                            this.unavailableSince.set(Instant.now());
+                            this.isFailureThresholdBreached.set(true);
+                        }
+                        newStatus = status;
+                        break;
+                    case StaleUnavailable:
+                        this.failureCount.set(0);
+                        this.successCount.set(0);
+                        this.unavailableSince.set(Instant.MAX);
+                        this.isFailureThresholdBreached.set(false);
+                        newStatus = status;
+                        break;
+                    default:
+                        throw new IllegalStateException("Unsupported health status: " + status);
+                }
+
+                return newStatus;
+            });
+        }
+
+        private static double getAllowedFailureRatioByStatus(PartitionScopedRegionUnavailabilityStatus status) {
+            switch (status) {
+                case Available:
+                    return 0.3d;
+                case StaleUnavailable:
+                    return 0.1d;
+                default:
+                    throw new IllegalStateException("Unsupported health status: " + status);
+            }
+        }
+
+        private static int getAllowedFailureCountByStatus(PartitionScopedRegionUnavailabilityStatus status) {
+            switch (status) {
+                case Available:
+                    return 10;
+                case StaleUnavailable:
+                    return 5;
+                default:
+                    throw new IllegalStateException("Unsupported health status: " + status);
+            }
+        }
+
+        public boolean isFailureThresholdBreached() {
+            return this.isFailureThresholdBreached.get();
+        }
+
+        public boolean isRegionAvailableToProcessRequests() {
+            return this.partitionScopedRegionUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.Available ||
+                this.partitionScopedRegionUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.StaleUnavailable;
+        }
+
+        public boolean isRegionUnavailableToProcessRequest() {
+            return this.partitionScopedRegionUnavailabilityStatus.get() == PartitionScopedRegionUnavailabilityStatus.FreshUnavailable;
+
+        }
     }
 
     enum PartitionScopedRegionUnavailabilityStatus {

@@ -4,22 +4,41 @@
 package com.azure.cosmos.implementation;
 
 import java.net.URI;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class RegionLevelCircuitBreakerRequestContext {
+public class LocationLevelCircuitBreakerRequestContext {
 
-    private final Map<URI, String> failuresPerRegion;
+    private final ConcurrentHashMap<URI, ConcurrentHashMap<ErrorKey, Integer>> failuresForAllLocations;
     private final boolean isRegionLevelCircuitBreakerEnabled;
 
-    public RegionLevelCircuitBreakerRequestContext(boolean isRegionLevelCircuitBreakerEnabled) {
-        this.failuresPerRegion = new ConcurrentHashMap<>();
+    public LocationLevelCircuitBreakerRequestContext(boolean isRegionLevelCircuitBreakerEnabled) {
+        this.failuresForAllLocations = new ConcurrentHashMap<>();
         this.isRegionLevelCircuitBreakerEnabled = isRegionLevelCircuitBreakerEnabled;
     }
 
     public boolean tryRecordRegionScopedFailure(URI locationEndpointToRoute, int statusCode, int subStatusCode) {
         if (isRegionScopedFailure(statusCode, subStatusCode)) {
-            // add to map
+            failuresForAllLocations.compute(locationEndpointToRoute, ((uri, errorKeyToCount) -> {
+
+                if (errorKeyToCount == null) {
+                    errorKeyToCount = new ConcurrentHashMap<>();
+                    errorKeyToCount.put(new ErrorKey(statusCode, subStatusCode), 1);
+                    return errorKeyToCount;
+                }
+
+                errorKeyToCount.compute(new ErrorKey(statusCode, subStatusCode), (errorKey, count) -> {
+
+                    if (count == null) {
+                        count = 1;
+                        return count;
+                    }
+
+                    return count + 1;
+                });
+
+                return errorKeyToCount;
+            }));
+
             return true;
         }
         return false;
@@ -53,5 +72,9 @@ public class RegionLevelCircuitBreakerRequestContext {
         }
 
         return false;
+    }
+
+    public ConcurrentHashMap<URI, ConcurrentHashMap<ErrorKey, Integer>> getFailuresForAllLocations() {
+        return this.failuresForAllLocations;
     }
 }

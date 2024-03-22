@@ -163,6 +163,8 @@ public class ProactiveOpenConnectionsProcessorTest extends BatchTestBase {
 
         try {
 
+            Thread.sleep(10_000);
+
             int totalRequests = 200;
 
             List<String> preferredRegions = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
