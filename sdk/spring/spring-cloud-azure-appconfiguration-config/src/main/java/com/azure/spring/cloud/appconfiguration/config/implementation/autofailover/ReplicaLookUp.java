@@ -18,6 +18,8 @@ import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.InitialDirContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -28,6 +30,8 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 
 @Component
 public class ReplicaLookUp {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ReplicaLookUp.class);
 
     private static final String ORIGIN_PREFIX = "dns:/_origin._tcp.";
 
@@ -63,7 +67,7 @@ public class ReplicaLookUp {
     public void updateAutoFailoverEndpoints() {
         if (semaphore.tryAcquire()) {
             for (ConfigStore configStore : properties.getStores()) {
-                if (!configStore.isEnabled()) {
+                if (!configStore.isEnabled() || !configStore.isReplicaDiscoveryEnabled()) {
                     continue;
                 }
                 String mainEndpoint = configStore.getEndpoint();
@@ -88,6 +92,7 @@ public class ReplicaLookUp {
                     records.put(mainEndpoint, srvRecords);
                     wait.put(mainEndpoint, Instant.now().plus(FALLBACK_CLIENT_REFRESH_EXPIRED_INTERVAL));
                 } catch (AppConfigurationReplicaException e) {
+                    LOGGER.warn("Failed to finde replicas due to: " + e.getMessage());
                     wait.put(mainEndpoint, Instant.now().plus(MINIMAL_CLIENT_REFRESH_INTERVAL));
                 }
 
