@@ -393,9 +393,8 @@ public interface Tracer {
      *     <li>{@code double}</li>
      *     <li>{@code boolean}</li>
      *     <li>{@code long}</li>
-     *     <li>Arrays of the above</li>
      * </ul>
-     * @param context tracing context
+     * @param context context containing span to which attribute is added.
      */
     default void setAttribute(String key, Object value, Context context) {
         Objects.requireNonNull(value, "'value' cannot be null.");
