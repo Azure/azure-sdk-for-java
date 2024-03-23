@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /**
@@ -35,9 +36,9 @@ public final class EmbeddingsOptions {
     private String model;
 
     /*
-     * Input texts to get embeddings for, encoded as a an array of strings.
+     * Input texts to get embeddings for, encoded as an array of strings.
      * Each input must not exceed 2048 tokens in length.
-     * 
+     *
      * Unless you are embedding code, we suggest replacing newlines (\n) in your input with a single space,
      * as we have observed inferior results when newlines are present.
      */
@@ -109,7 +110,7 @@ public final class EmbeddingsOptions {
     /**
      * Get the input property: Input texts to get embeddings for, encoded as a an array of strings.
      * Each input must not exceed 2048 tokens in length.
-     *
+     * <p>
      * Unless you are embedding code, we suggest replacing newlines (\n) in your input with a single space,
      * as we have observed inferior results when newlines are present.
      *
@@ -146,6 +147,37 @@ public final class EmbeddingsOptions {
     @Generated
     public EmbeddingsOptions setInputType(String inputType) {
         this.inputType = inputType;
+        return this;
+    }
+
+    /*
+     * When using NonAzure OpenAI, specifies the desired dimensions of returned Embeddings.
+     */
+    @Generated
+    @JsonProperty(value = "dimensions")
+    private Integer dimensions;
+
+    /**
+     * Get the dimensions property: When using NonAzure OpenAI, specifies the number of dimensions the resulting output
+     * embeddings should have. Only supported in `text-embedding-3` and later models.
+     *
+     * @return the dimensions value.
+     */
+    @Generated
+    public Integer getDimensions() {
+        return this.dimensions;
+    }
+
+    /**
+     * Set the dimensions property: When using NonAzure OpenAI, specifies the number of dimensions the resulting output
+     * embeddings should have. Only supported in `text-embedding-3` and later models.
+     *
+     * @param dimensions the dimensions value to set.
+     * @return the EmbeddingsOptions object itself.
+     */
+    @Generated
+    public EmbeddingsOptions setDimensions(Integer dimensions) {
+        this.dimensions = dimensions;
         return this;
     }
 }
