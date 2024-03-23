@@ -94,6 +94,7 @@ public abstract class CosmosItemSerializer {
          * @param <T> The type of the POJO
          */
         @Override
+        @SuppressWarnings("unchecked")
         public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
             if (jsonNodeMap == null) {
                 return null;
@@ -105,6 +106,10 @@ public abstract class CosmosItemSerializer {
                     jsonNode = ((ObjectNodeMap)jsonNodeMap).getObjectNode();
                 } else {
                     jsonNode = objectMapper.convertValue(jsonNodeMap, ObjectNode.class);
+                }
+
+                if (JsonSerializable.class.isAssignableFrom(classType)) {
+                    return (T)JsonSerializable.instantiateFromObjectNodeAndType(jsonNode, classType);
                 }
 
                 return objectMapper.treeToValue(jsonNode, classType);
