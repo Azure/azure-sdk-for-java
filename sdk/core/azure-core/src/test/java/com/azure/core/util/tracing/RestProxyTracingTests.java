@@ -56,13 +56,32 @@ public class RestProxyTracingTests {
 
     @SyncAsyncTest
     public void restProxySuccess() throws Exception {
-        SyncAsyncExtension.execute(() -> testInterface.testMethodReturnsMonoVoidSync(),
-            () -> testInterface.testMethodReturnsMonoVoid().block());
+        SyncAsyncExtension.execute(() -> testInterface.testMethodReturnsMonoVoidSync(Context.NONE),
+            () -> testInterface.testMethodReturnsMonoVoid(Context.NONE).block());
 
         assertEquals(2, tracer.getSpans().size());
         Span restProxy = tracer.getSpans().get(0);
         Span http = tracer.getSpans().get(1);
 
+        assertEquals(getSpan(http.getStartContext()), restProxy);
+        assertTrue(restProxy.getName().startsWith("myService.testMethodReturnsMonoVoid"));
+        assertNull(restProxy.getThrowable());
+        assertNull(restProxy.getErrorMessage());
+    }
+
+    @SyncAsyncTest
+    public void restProxyNested() throws Exception {
+        Context outerSpan = tracer.start("outer", Context.NONE);
+        SyncAsyncExtension.execute(() -> testInterface.testMethodReturnsMonoVoidSync(outerSpan),
+            () -> testInterface.testMethodReturnsMonoVoid(outerSpan).block());
+        tracer.end(null, null, outerSpan);
+
+        assertEquals(3, tracer.getSpans().size());
+        Span outer = tracer.getSpans().get(0);
+        Span restProxy = tracer.getSpans().get(1);
+        Span http = tracer.getSpans().get(2);
+
+        assertEquals(getSpan(restProxy.getStartContext()), outer);
         assertEquals(getSpan(http.getStartContext()), restProxy);
         assertTrue(restProxy.getName().startsWith("myService.testMethodReturnsMonoVoid"));
         assertNull(restProxy.getThrowable());
@@ -235,11 +254,11 @@ public class RestProxyTracingTests {
     interface TestInterface {
         @Get("my/url/path")
         @ExpectedResponses({ 200 })
-        Mono<Void> testMethodReturnsMonoVoid();
+        Mono<Void> testMethodReturnsMonoVoid(Context context);
 
         @Get("my/url/path")
         @ExpectedResponses({ 200 })
-        Response<Void> testMethodReturnsMonoVoidSync();
+        Response<Void> testMethodReturnsMonoVoidSync(Context context);
 
         @Post("my/url/path")
         @ExpectedResponses({ 500 })

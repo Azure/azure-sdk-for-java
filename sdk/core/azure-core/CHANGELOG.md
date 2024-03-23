@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added new methods on `com.azure.core.uril.tracing.Tracer` - `isRecording` and `addAttribute(String, Object, Context)`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
