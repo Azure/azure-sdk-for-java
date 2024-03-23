@@ -138,7 +138,7 @@ public final class CosmosEncryptionAsyncContainer {
         if (requestOptions == null) {
             requestOptions = new CosmosItemRequestOptions();
         }
-        byte[] streamPayload = cosmosSerializerToStream(item);
+        byte[] streamPayload = cosmosSerializerToStream(item, getEffectiveItemSerializer(requestOptions));
         return createItemHelper(streamPayload, requestOptions,(Class<T>) item.getClass(), false );
 
     }
@@ -168,7 +168,7 @@ public final class CosmosEncryptionAsyncContainer {
         Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using "
             + "EncryptionContainer.");
 
-        byte[] streamPayload = cosmosSerializerToStream(item);
+        byte[] streamPayload = cosmosSerializerToStream(item, getEffectiveItemSerializer(requestOptions));
         return  createItemHelper(streamPayload, partitionKey, requestOptions, (Class<T>) item.getClass(), false);
     }
 
@@ -367,7 +367,7 @@ public final class CosmosEncryptionAsyncContainer {
             requestOptions = new CosmosItemRequestOptions();
         }
 
-        byte[] streamPayload = cosmosSerializerToStream(item);
+        byte[] streamPayload = cosmosSerializerToStream(item, getEffectiveItemSerializer(requestOptions));
         return upsertItemHelper(streamPayload, requestOptions, (Class<T>) item.getClass(), false);
     }
 
@@ -397,7 +397,7 @@ public final class CosmosEncryptionAsyncContainer {
             + "EncryptionContainer.");
 
 
-        byte[] streamPayload = cosmosSerializerToStream(item);
+        byte[] streamPayload = cosmosSerializerToStream(item, getEffectiveItemSerializer(requestOptions));
         return upsertItemHelper(streamPayload, partitionKey, requestOptions, (Class<T>) item.getClass(), false);
     }
 
@@ -443,8 +443,7 @@ public final class CosmosEncryptionAsyncContainer {
         Preconditions.checkArgument(partitionKey != null, "partitionKey cannot be null for operations using "
             + "EncryptionContainer.");
 
-
-        byte[] streamPayload = cosmosSerializerToStream(item);
+        byte[] streamPayload = cosmosSerializerToStream(item, getEffectiveItemSerializer(requestOptions));
         return replaceItemHelper(streamPayload, itemId, partitionKey, requestOptions, (Class<T>) item.getClass(), false);
     }
 
@@ -767,12 +766,22 @@ public final class CosmosEncryptionAsyncContainer {
         return container;
     }
 
-    <T> byte[] cosmosSerializerToStream(T item) {
-        return EncryptionUtils.serializeJsonToByteArray(getItemSerializer(), item);
+    <T> byte[] cosmosSerializerToStream(T item, CosmosItemSerializer effectiveSerializer) {
+        return EncryptionUtils.serializeJsonToByteArray(effectiveSerializer, item);
     }
 
-    CosmosItemSerializer getItemSerializer() {
-        return CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase()).getItemSerializer();
+    CosmosItemSerializer getEffectiveItemSerializer(CosmosItemRequestOptions requestOptions) {
+        CosmosItemSerializer candidate = requestOptions.getCustomSerializer();
+        if (candidate != null) {
+            return candidate;
+        }
+
+        candidate = CosmosBridgeInternal.getAsyncDocumentClient(container.getDatabase()).getItemSerializer();
+        if (candidate != null) {
+            return candidate;
+        }
+
+        return CosmosItemSerializer.DEFAULT_SERIALIZER;
     }
 
     Mono<JsonNode> decryptResponseNode(

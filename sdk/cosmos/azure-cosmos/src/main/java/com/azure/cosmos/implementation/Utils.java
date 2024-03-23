@@ -565,6 +565,7 @@ public class Utils {
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(CosmosItemSerializer serializer, Object object) {
+        checkNotNull(serializer, "Argument 'serializer' must not be null.");
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             Map<String, Object> jsonTreeMap = serializer.serialize(object);
