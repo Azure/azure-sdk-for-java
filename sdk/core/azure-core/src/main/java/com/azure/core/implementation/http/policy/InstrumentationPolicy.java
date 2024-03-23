@@ -84,7 +84,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             return next.process()
                 .doOnSuccess(response -> onResponseCode(response, span))
                 // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
-                .map(response -> new TraceableResponse(response, span))
+                .map(response -> TraceableResponse.create(response, tracer, span))
                 .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
                 .doOnError(exception -> tracer.end(null, exception, span));
         });
@@ -102,7 +102,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             HttpResponse response = next.processSync();
             onResponseCode(response, span);
             // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
-            return new TraceableResponse(response, span);
+            return TraceableResponse.create(response, tracer, span);
         } catch (RuntimeException ex) {
             tracer.end(null, ex, span);
             throw ex;
@@ -152,7 +152,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     }
 
     private void onResponseCode(HttpResponse response, Context span) {
-        if (response != null) {
+        if (response != null && tracer.isRecording(span)) {
             int statusCode = response.getStatusCode();
             tracer.setAttribute(HTTP_STATUS_CODE, statusCode, span);
             String requestId = response.getHeaderValue(X_MS_REQUEST_ID);
@@ -166,14 +166,26 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         return tracer != null && tracer.isEnabled() && !((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false));
     }
 
-    private final class TraceableResponse extends HttpResponse {
+    private static final class TraceableResponse extends HttpResponse {
         private final HttpResponse response;
         private final Context span;
+        private final Tracer tracer;
 
-        TraceableResponse(HttpResponse response, Context span) {
+        private TraceableResponse(HttpResponse response, Tracer tracer, Context span) {
             super(response.getRequest());
             this.response = response;
             this.span = span;
+            this.tracer = tracer;
+        }
+
+        public static HttpResponse create(HttpResponse response, Tracer tracer, Context span) {
+            if (tracer.isRecording(span)) {
+                return new TraceableResponse(response, tracer, span);
+            }
+
+            // OTel does not need to end sampled-out spans, but let's do it just in case
+            tracer.end(null, null, span);
+            return response;
         }
 
         @Override

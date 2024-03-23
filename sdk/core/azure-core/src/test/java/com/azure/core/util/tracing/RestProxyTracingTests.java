@@ -90,7 +90,10 @@ public class RestProxyTracingTests {
 
     @Test
     public void restProxyCancelAsync() {
-        testInterface.testMethodDelays().timeout(Duration.ofMillis(10)).toFuture().cancel(true);
+        StepVerifier.create(testInterface.testMethodDelays())
+                .expectSubscription()
+                .thenCancel()
+                .verify();
 
         assertEquals(2, tracer.getSpans().size());
         Span restProxy = tracer.getSpans().get(0);
