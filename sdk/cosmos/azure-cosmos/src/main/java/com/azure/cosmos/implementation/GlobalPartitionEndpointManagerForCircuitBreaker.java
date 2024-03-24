@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
@@ -25,9 +26,14 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
     private final GlobalEndpointManager globalEndpointManager;
     private final ConcurrentHashMap<PartitionKeyRange, PartitionLevelFailoverInfo> partitionKeyRangeToFailoverInfo;
 
+
     public GlobalPartitionEndpointManagerForCircuitBreaker(GlobalEndpointManager globalEndpointManager) {
         this.partitionKeyRangeToFailoverInfo = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
+    }
+
+    public void init() {
+
     }
 
     @Override
@@ -81,7 +87,6 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         // and if failover is possible
         // a failover is only possible when there are available regions left to fail over to
         if (isFailoverPossible.get()) {
-            this.updateStaleLocationInfo(request);
             return true;
         }
 
@@ -181,40 +186,22 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         return true;
     }
 
-    public void updateStaleLocationInfo(RxDocumentServiceRequest request) {
-        Mono.delay(Duration.ofSeconds(60))
-            .flatMap(ignore -> {
-                Map<PartitionKeyRange, PartitionLevelFailoverInfo> partitionKeyRangeToFailoverInfo
-                    = this.partitionKeyRangeToFailoverInfo;
+    private Flux<Object> updateStaleLocationInfo() {
+        return Mono.just(1).repeat().delayElements(Duration.ofSeconds(60)).flatMap(ignore -> {
 
-                if (request.requestContext == null) {
-                    return Mono.empty();
+            for (Map.Entry<PartitionKeyRange, PartitionLevelFailoverInfo> pkRangeToFailoverInfo : this.partitionKeyRangeToFailoverInfo.entrySet()) {
+
+                PartitionLevelFailoverInfo partitionLevelFailoverInfo = pkRangeToFailoverInfo.getValue();
+
+                for (Map.Entry<URI, LocationLevelMetrics> locationToLocationLevelMetrics : partitionLevelFailoverInfo.partitionLevelFailureMetadata.entrySet()) {
+
+                    LocationLevelMetrics locationLevelMetrics = locationToLocationLevelMetrics.getValue();
+                    locationLevelMetrics.handleSuccess(false);
                 }
+            }
 
-                PartitionKeyRange partitionKeyRange = request.requestContext.resolvedPartitionKeyRange;
-
-                if (partitionKeyRange == null) {
-                    return Mono.empty();
-                }
-
-                URI unavailableLocation = request.requestContext.locationEndpointToRoute;
-
-                if (unavailableLocation == null) {
-                    return Mono.empty();
-                }
-
-                if (partitionKeyRangeToFailoverInfo.containsKey(partitionKeyRange)) {
-                    PartitionLevelFailoverInfo partitionLevelFailoverInfo
-                        = partitionKeyRangeToFailoverInfo.get(partitionKeyRange);
-                    LocationLevelMetrics locationLevelMetrics
-                        = partitionLevelFailoverInfo.partitionLevelFailureMetadata.get(unavailableLocation);
-
-                    locationLevelMetrics.partitionScopedRegionUnavailabilityStatus.set(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
-                }
-
-                return Mono.empty();
-            }).subscribeOn(CosmosSchedulers.COSMOS_PARALLEL)
-            .subscribe();
+            return Mono.empty();
+        });
     }
 
     static class PartitionLevelFailoverInfo {
@@ -269,7 +256,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
                     return new LocationLevelMetrics();
                 }
 
-                locationLevelMetricsAsVal.handleSuccess();
+                locationLevelMetricsAsVal.handleSuccess(false);
                 return locationLevelMetricsAsVal;
             });
         }
@@ -308,7 +295,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
             }
 
             if (locationLevelFailureMetadataForMostStaleLocation != null) {
-                locationLevelFailureMetadataForMostStaleLocation.handleSuccess();
+                locationLevelFailureMetadataForMostStaleLocation.handleSuccess(true);
                 return true;
             }
 
@@ -323,7 +310,7 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
         private final AtomicReference<PartitionScopedRegionUnavailabilityStatus> partitionScopedRegionUnavailabilityStatus = new AtomicReference<>(PartitionScopedRegionUnavailabilityStatus.Available);
         private final AtomicBoolean isFailureThresholdBreached = new AtomicBoolean(false);
 
-        public void handleSuccess() {
+        public void handleSuccess(boolean forceStateChange) {
 
             PartitionScopedRegionUnavailabilityStatus currentStatusSnapshot = this.partitionScopedRegionUnavailabilityStatus.get();
 
@@ -331,21 +318,31 @@ public class GlobalPartitionEndpointManagerForCircuitBreaker implements IGlobalP
 
             switch (currentStatusSnapshot) {
                 case Available:
-                    if (failureCount.get() > 0) {
-                        failureCount.decrementAndGet();
+                    if (!forceStateChange) {
+                        if (failureCount.get() > 0) {
+                            failureCount.decrementAndGet();
+                        }
                     }
                     break;
                 case StaleUnavailable:
-                    if (successCount.get() < 10) {
-                        successCount.incrementAndGet();
-                    } else {
-                        if ((double) failureCount.get() / (double) successCount.get() < allowedFailureRatio) {
-                            this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.Available);
+                    if (!forceStateChange) {
+                        if (successCount.get() < 10) {
+                            successCount.incrementAndGet();
+                        } else {
+                            if ((double) failureCount.get() / (double) successCount.get() < allowedFailureRatio) {
+                                this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.Available);
+                            }
                         }
                     }
                     break;
                 case FreshUnavailable:
-                    this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
+                    if (!forceStateChange) {
+                        if (Duration.between(this.unavailableSince.get(), Instant.now()).compareTo(Duration.ofSeconds(120)) == 1) {
+                            this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
+                        }
+                    } else {
+                        this.setHealthStatus(PartitionScopedRegionUnavailabilityStatus.StaleUnavailable);
+                    }
                     break;
                 default:
                     throw new IllegalStateException("Unsupported health status: " + currentStatusSnapshot);
