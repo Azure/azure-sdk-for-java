@@ -31,7 +31,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.HashSet;
 
 /** Implementation for NicIPConfiguration and its create and update interfaces. */
 class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterfaceImpl, NetworkInterface>
@@ -260,14 +259,14 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         return natRefs;
     }
 
-    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations, Map<DeleteOptions, HashSet<String>> specifiedIpConfigNames) {
+    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations, Map<String, DeleteOptions> specifiedIpConfigNames) {
         for (NicIpConfiguration nicIPConfiguration : nicIPConfigurations) {
             NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIPConfiguration;
             config.innerModel().withSubnet(config.subnetToAssociate());
             PublicIpAddressInner publicIpAddressInner = config.publicIPToAssociate();
-            for (Map.Entry<DeleteOptions, HashSet<String>> entry : specifiedIpConfigNames.entrySet()) {
-                if (entry.getValue().contains(nicIPConfiguration.name())) {
-                    publicIpAddressInner = config.publicIPToAssociate(entry.getKey());
+            for (Map.Entry<String, DeleteOptions> entry : specifiedIpConfigNames.entrySet()) {
+                if (entry.getKey().equalsIgnoreCase(nicIPConfiguration.name())) {
+                    publicIpAddressInner = config.publicIPToAssociate(entry.getValue());
                     break;
                 }
             }
