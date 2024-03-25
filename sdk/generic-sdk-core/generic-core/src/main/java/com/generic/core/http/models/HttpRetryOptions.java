@@ -3,7 +3,7 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.http.policy.HttpRequestRetryCondition;
+import com.generic.core.http.pipeline.HttpRequestRetryCondition;
 import com.generic.core.util.ClientLogger;
 
 import java.time.Duration;
