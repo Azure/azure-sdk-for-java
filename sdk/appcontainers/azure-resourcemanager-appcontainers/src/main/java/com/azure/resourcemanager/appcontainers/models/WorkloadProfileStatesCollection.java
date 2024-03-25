@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appcontainers.fluent.models.WorkloadProfileStat
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of workloadProfileStates. */
+/**
+ * Collection of workloadProfileStates.
+ */
 @Fluent
 public final class WorkloadProfileStatesCollection {
     /*
@@ -25,13 +27,15 @@ public final class WorkloadProfileStatesCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of WorkloadProfileStatesCollection class. */
+    /**
+     * Creates an instance of WorkloadProfileStatesCollection class.
+     */
     public WorkloadProfileStatesCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<WorkloadProfileStatesInner> value() {
@@ -40,7 +44,7 @@ public final class WorkloadProfileStatesCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the WorkloadProfileStatesCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class WorkloadProfileStatesCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class WorkloadProfileStatesCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model WorkloadProfileStatesCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model WorkloadProfileStatesCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

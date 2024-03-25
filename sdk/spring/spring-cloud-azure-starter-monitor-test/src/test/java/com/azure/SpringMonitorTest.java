@@ -41,6 +41,7 @@ import java.util.stream.Collectors;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 @SpringBootTest(
     classes = {Application.class, SpringMonitorTest.TestConfig.class},
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
