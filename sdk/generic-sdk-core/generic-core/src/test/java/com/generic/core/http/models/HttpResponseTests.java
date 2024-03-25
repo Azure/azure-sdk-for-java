@@ -4,9 +4,7 @@
 package com.generic.core.http.models;
 
 import com.generic.core.implementation.http.HttpResponseAccessHelper;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
+import com.generic.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -23,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class HttpResponseTests {
     private static final int STATUS_CODE = 200;
-    private static final Headers HEADERS = new Headers().add(HeaderName.CONTENT_TYPE, "application/text");
+    private static final HttpHeaders HEADERS = new HttpHeaders().add(HttpHeaderName.CONTENT_TYPE, "application/text");
     private static final String VALUE = "Response body";
     private static final BinaryData BODY = BinaryData.fromString(VALUE);
     private static final HttpRequest HTTP_REQUEST;

@@ -3,9 +3,7 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.policy.HttpRequestRedirectCondition;
-import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
 
 import java.util.EnumSet;
@@ -18,7 +16,7 @@ public final class HttpRedirectOptions {
     private static final ClientLogger LOGGER = new ClientLogger(HttpRedirectOptions.class);
     private final int maxAttempts;
     private final EnumSet<HttpMethod> allowedRedirectHttpMethods;
-    private final HeaderName locationHeader;
+    private final HttpHeaderName locationHeader;
     private Predicate<HttpRequestRedirectCondition> shouldRedirectCondition;
 
     /**
@@ -29,7 +27,7 @@ public final class HttpRedirectOptions {
      * @param locationHeader The header name containing the redirect URL.
      * @throws IllegalArgumentException if {@code maxAttempts} is less than 0.
      */
-    public HttpRedirectOptions(int maxAttempts, HeaderName locationHeader, EnumSet<HttpMethod> allowedRedirectHttpMethods) {
+    public HttpRedirectOptions(int maxAttempts, HttpHeaderName locationHeader, EnumSet<HttpMethod> allowedRedirectHttpMethods) {
         if (maxAttempts < 0) {
             throw LOGGER.atError().log(null,
                 new IllegalArgumentException("Max attempts cannot be less than 0."));
@@ -92,7 +90,7 @@ public final class HttpRedirectOptions {
      *
      * @return The header name containing the redirect URL.
      */
-    public HeaderName getLocationHeader() {
+    public HttpHeaderName getLocationHeader() {
         return locationHeader;
     }
 }

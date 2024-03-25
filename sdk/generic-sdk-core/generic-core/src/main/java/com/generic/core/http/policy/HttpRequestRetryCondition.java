@@ -3,7 +3,7 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.Response;
+import com.generic.core.http.models.Response;
 
 import java.util.Collections;
 import java.util.List;

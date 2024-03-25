@@ -3,9 +3,9 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.Response;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.models.Headers;
+import com.generic.core.http.models.Response;
 import com.generic.core.util.ClientLogger;
 
 import java.lang.reflect.Constructor;
@@ -46,7 +46,7 @@ class ResponseConstructorsNoCacheReflection {
                        final Object bodyAsObject) {
         final HttpRequest httpRequest = response.getRequest();
         final int responseStatusCode = response.getStatusCode();
-        final Headers responseHeaders = response.getHeaders();
+        final HttpHeaders responseHeaders = response.getHeaders();
         final int paramCount = constructor.getParameterCount();
 
         try {

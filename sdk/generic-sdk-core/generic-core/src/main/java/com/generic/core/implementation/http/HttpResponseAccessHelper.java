@@ -4,7 +4,7 @@
 package com.generic.core.implementation.http;
 
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.models.BinaryData;
+import com.generic.core.util.binarydata.BinaryData;
 
 import java.util.function.Function;
 import java.util.function.Supplier;

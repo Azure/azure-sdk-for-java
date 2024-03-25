@@ -3,9 +3,6 @@
 
 package com.azure.sdk.template.stress.util;
 
-import com.azure.core.util.CoreUtils;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
-import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
 import com.azure.sdk.template.stress.StressOptions;
 import com.generic.core.util.ClientLogger;
@@ -40,10 +37,7 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
-import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.JDK;
-import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.NETTY;
 import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.OKHTTP;
-import static com.azure.perf.test.core.PerfStressOptions.HttpClientType.VERTX;
 
 /**
  * Telemetry helper is used to monitor test execution and record stats.
@@ -143,7 +137,7 @@ public class TelemetryHelper {
 
     private void trackSuccess(Instant start, Span span) {
         logger.atInfo()
-            .log(() -> "run ended");
+            .log("run ended");
 
         runDuration.record(getDuration(start), commonAttributes);
         span.end();
@@ -152,7 +146,7 @@ public class TelemetryHelper {
     private void trackCancellation(Instant start, Span span) {
         logger.atWarning()
             .addKeyValue("error.type", "cancelled")
-            .log(() -> "run ended");
+            .log("run ended");
 
         runDuration.record(getDuration(start), canceledAttributes);
         span.setAttribute(ERROR_TYPE_ATTRIBUTE, "cancelled");
@@ -172,10 +166,10 @@ public class TelemetryHelper {
         String errorType = unwrapped.getClass().getName();
         logger.atError()
             .addKeyValue("error.type", errorType)
-            .log(() -> "run ended", unwrapped);
+            .log("run ended", unwrapped);
 
-        Attributes attributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, errorType);
-        runDuration.record(getDuration(start), canceledAttributes, io.opentelemetry.context.Context.current().with(span));
+        Attributes errorAttributes = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, errorType);
+        runDuration.record(getDuration(start), errorAttributes, io.opentelemetry.context.Context.current().with(span));
         span.end();
     }
 
@@ -188,39 +182,16 @@ public class TelemetryHelper {
         before.setAttribute(AttributeKey.longKey("durationSec"), options.getDuration());
         before.setAttribute(AttributeKey.stringKey("scenarioName"), scenarioName);
         before.setAttribute(AttributeKey.longKey("concurrency"), options.getParallel());
-        before.setAttribute(AttributeKey.stringKey("azureCoreVersion"), getPackageVersionInUberJar("azure-core"));
-
-        String httpClientPackageName = getHttpClientPackageName(options.getHttpClient());
-        before.setAttribute(AttributeKey.stringKey("httpClientPackage"), httpClientPackageName);
-        before.setAttribute(AttributeKey.stringKey("httpClientPackageVersion"), getPackageVersionInUberJar(httpClientPackageName));
 
         before.setAttribute(AttributeKey.booleanKey("sync"), options.isSync());
         before.setAttribute(AttributeKey.longKey("size"), options.getSize());
         before.setAttribute(AttributeKey.stringKey("hostname"), System.getenv().get("HOSTNAME"));
         before.setAttribute(AttributeKey.stringKey("serviceEndpoint"), options.getServiceEndpoint());
-        before.setAttribute(AttributeKey.stringKey("httpClient"), options.getHttpClient().toString());
+        before.setAttribute(AttributeKey.stringKey("httpClient"), options.getHttpClient() == OKHTTP ? "okhttp" : "default");
         before.setAttribute(AttributeKey.stringKey("jreVersion"), System.getProperty("java.version"));
         before.setAttribute(AttributeKey.stringKey("jreVendor"), System.getProperty("java.vendor"));
         before.setAttribute(AttributeKey.stringKey("gitCommit"), System.getenv("GIT_COMMIT"));
         before.end();
-    }
-
-    private static String getPackageVersionInUberJar(String packageName) {
-        String fullPath = String.format("META-INF/maven/com.azure/%s/pom.properties", packageName);
-        return CoreUtils.getProperties(fullPath).get("version");
-    }
-
-    private static String getHttpClientPackageName(PerfStressOptions.HttpClientType httpClientType) {
-        if (httpClientType.equals(NETTY)) {
-            return "azure-core-http-netty";
-        } else if (httpClientType.equals(OKHTTP)) {
-            return "azure-core-http-okhttp";
-        } else if (httpClientType.equals(VERTX)) {
-            return "azure-core-http-vertx";
-        } else if (httpClientType.equals(JDK)) {
-            return "azure-core-http-jdk-httpclient";
-        }
-        return "unknown";
     }
 
     /**

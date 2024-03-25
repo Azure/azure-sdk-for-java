@@ -3,16 +3,16 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
+import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.util.Base64Url;
-import com.generic.core.models.BinaryData;
+import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;

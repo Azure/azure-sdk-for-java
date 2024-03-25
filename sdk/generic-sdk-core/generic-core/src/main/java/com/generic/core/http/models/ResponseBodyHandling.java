@@ -4,7 +4,6 @@
 package com.generic.core.http.models;
 
 import com.generic.core.annotation.ServiceInterface;
-import com.generic.core.http.Response;
 
 /**
  * Enum that defines how to handle the body of an HTTP response.

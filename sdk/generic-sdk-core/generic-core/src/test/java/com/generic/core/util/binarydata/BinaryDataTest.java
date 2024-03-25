@@ -1,10 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.models;
+package com.generic.core.util.binarydata;
 
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.IterableOfByteBuffersInputStream;
+import com.generic.core.models.MockFile;
+import com.generic.core.models.MockPath;
+import com.generic.core.models.Person;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonReader;
 import com.generic.json.JsonSerializable;

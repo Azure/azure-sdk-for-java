@@ -3,11 +3,11 @@
 
 package com.generic.core.http;
 
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.Headers;
+import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayOutputStream;
@@ -37,7 +37,7 @@ public class MockHttpResponse extends HttpResponse<BinaryData> {
      * @param bodyBytes Contents of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, byte[] bodyBytes) {
-        this(request, statusCode, new Headers(), bodyBytes);
+        this(request, statusCode, new HttpHeaders(), bodyBytes);
     }
 
     /**
@@ -47,7 +47,7 @@ public class MockHttpResponse extends HttpResponse<BinaryData> {
      * @param statusCode Status code of the response.
      * @param headers Headers of the response.
      */
-    public MockHttpResponse(HttpRequest request, int statusCode, Headers headers) {
+    public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers) {
         this(request, statusCode, headers, new byte[0]);
     }
 
@@ -60,7 +60,7 @@ public class MockHttpResponse extends HttpResponse<BinaryData> {
      * @param headers HttpHeaders of the response.
      * @param bodyBytes Contents of the response.
      */
-    public MockHttpResponse(HttpRequest request, int statusCode, Headers headers, byte[] bodyBytes) {
+    public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, byte[] bodyBytes) {
         super(request, statusCode, headers, bodyBytes == null ? null : BinaryData.fromBytes(cloneByteArray(bodyBytes)));
     }
 
@@ -73,7 +73,7 @@ public class MockHttpResponse extends HttpResponse<BinaryData> {
      * @param serializable Contents to be serialized into JSON for the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, Object serializable) {
-        this(request, statusCode, new Headers(), serialize(serializable));
+        this(request, statusCode, new HttpHeaders(), serialize(serializable));
     }
 
     /**
@@ -85,7 +85,7 @@ public class MockHttpResponse extends HttpResponse<BinaryData> {
      * @param statusCode Status code of the response.
      * @param serializable Contents to be serialized into JSON for the response.
      */
-    public MockHttpResponse(HttpRequest request, int statusCode, Headers headers, Object serializable) {
+    public MockHttpResponse(HttpRequest request, int statusCode, HttpHeaders headers, Object serializable) {
         this(request, statusCode, headers, serialize(serializable));
     }
 

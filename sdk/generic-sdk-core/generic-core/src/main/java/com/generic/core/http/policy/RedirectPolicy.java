@@ -3,14 +3,14 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.http.Response;
+import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRedirectOptions;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.implementation.util.LoggingKeys;
-import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
 
 import java.io.IOException;
@@ -38,7 +38,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
     private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
     private final EnumSet<HttpMethod> allowedRedirectHttpMethods;
-    private final HeaderName locationHeader;
+    private final HttpHeaderName locationHeader;
 
     /**
      * Creates {@link RedirectPolicy} with default with a maximum number of redirect attempts 3,
@@ -48,7 +48,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
      * should be redirected.
      */
     public RedirectPolicy() {
-        this(new HttpRedirectOptions(DEFAULT_MAX_REDIRECT_ATTEMPTS, HeaderName.LOCATION,
+        this(new HttpRedirectOptions(DEFAULT_MAX_REDIRECT_ATTEMPTS, HttpHeaderName.LOCATION,
             DEFAULT_REDIRECT_ALLOWED_METHODS));
     }
 
@@ -68,7 +68,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
             ? DEFAULT_REDIRECT_ALLOWED_METHODS
             : redirectOptions.getAllowedRedirectHttpMethods();
         this.locationHeader = redirectOptions.getLocationHeader() == null
-            ? HeaderName.LOCATION
+            ? HttpHeaderName.LOCATION
             : redirectOptions.getLocationHeader();
     }
 
@@ -201,7 +201,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
     private void createRedirectRequest(Response<?> redirectResponse) {
         // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
         // causing it to leak your authorization token to.
-        redirectResponse.getRequest().getHeaders().remove(HeaderName.AUTHORIZATION);
+        redirectResponse.getRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
         redirectResponse.getRequest().setUrl(redirectResponse.getHeaders().getValue(this.locationHeader));
 
         try {

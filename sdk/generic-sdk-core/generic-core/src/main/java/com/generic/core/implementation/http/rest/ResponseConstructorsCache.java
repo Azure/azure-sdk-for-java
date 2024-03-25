@@ -3,11 +3,11 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.http.Response;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.Response;
 import com.generic.core.implementation.ReflectionUtils;
 import com.generic.core.implementation.ReflectiveInvoker;
-import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
 import java.lang.reflect.Constructor;
@@ -103,7 +103,7 @@ public final class ResponseConstructorsCache {
     public Response<?> invoke(ReflectiveInvoker reflectiveInvoker, Response<?> response, Object bodyAsObject) {
         final HttpRequest httpRequest = response.getRequest();
         final int responseStatusCode = response.getStatusCode();
-        final Headers responseHeaders = response.getHeaders();
+        final HttpHeaders responseHeaders = response.getHeaders();
 
         final int paramCount = reflectiveInvoker.getParameterCount();
         switch (paramCount) {

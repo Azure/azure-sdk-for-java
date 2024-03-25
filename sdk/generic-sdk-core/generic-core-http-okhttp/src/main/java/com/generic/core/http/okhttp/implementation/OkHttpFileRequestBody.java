@@ -3,7 +3,7 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.models.FileBinaryData;
+import com.generic.core.util.binarydata.FileBinaryData;
 import okhttp3.MediaType;
 import okio.BufferedSink;
 

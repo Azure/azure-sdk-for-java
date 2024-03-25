@@ -3,12 +3,12 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.models.HeaderName;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.Headers;
 import com.generic.core.http.models.RequestOptions;
+import com.generic.core.util.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.net.MalformedURLException;
@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class RequestOptionsTests {
-    private static final HeaderName X_MS_FOO = HeaderName.fromString("x-ms-foo");
+    private static final HttpHeaderName X_MS_FOO = HttpHeaderName.fromString("x-ms-foo");
 
     @Test
     public void addQueryParam() throws MalformedURLException {
@@ -40,12 +40,12 @@ public class RequestOptionsTests {
 
         RequestOptions options = new RequestOptions()
             .addHeader(X_MS_FOO, "bar")
-            .addHeader(HeaderName.CONTENT_TYPE, "application/json");
+            .addHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
         options.getRequestCallback().accept(request);
 
-        Headers headers = request.getHeaders();
+        HttpHeaders headers = request.getHeaders();
         assertEquals("bar", headers.getValue(X_MS_FOO));
-        assertEquals("application/json", headers.getValue(HeaderName.CONTENT_TYPE));
+        assertEquals("application/json", headers.getValue(HttpHeaderName.CONTENT_TYPE));
     }
 
     @Test
@@ -77,7 +77,7 @@ public class RequestOptionsTests {
 
         options.getRequestCallback().accept(request);
 
-        Headers headers = request.getHeaders();
+        HttpHeaders headers = request.getHeaders();
         assertEquals("baz", headers.getValue(X_MS_FOO));
         assertEquals(HttpMethod.GET, request.getHttpMethod());
         assertEquals("https://request.url?%24skipToken=1", request.getUrl().toString());

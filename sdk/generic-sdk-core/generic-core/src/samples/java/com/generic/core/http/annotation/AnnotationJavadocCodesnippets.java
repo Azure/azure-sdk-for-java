@@ -4,8 +4,8 @@
 package com.generic.core.http.annotation;
 
 import com.generic.core.annotation.ServiceInterface;
-import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
+import com.generic.core.http.models.Response;
 
 import java.io.FileInputStream;
 import java.util.List;

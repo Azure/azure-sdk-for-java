@@ -3,7 +3,7 @@
 
 package com.generic.core.util;
 
-import com.generic.core.http.Response;
+import com.generic.core.http.models.Response;
 
 import java.io.File;
 import java.io.IOException;

@@ -3,8 +3,8 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.models.Context;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.Context;
 
 import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
 
