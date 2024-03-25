@@ -4,7 +4,16 @@
 
 ### Features Added
 
+- Observability improvements
+  - Added span for update checkpoint call.
+  - Added partitionId and consumer group (when available) to span and metric attributes.
+
 ### Breaking Changes
+
+- Updated distributed traces and metrics to follow OpenTelemetry semantic conventions vTBD (future).
+  Please refer to [OpenTelemetry messaging semantic conventions](https://github.com/open-telemetry/semantic-conventions/tree/main/docs/messaging) for more details.
+  - Span names now follow `{entity name} {operaiton name}` pattern
+  - Updated metric names and attributes 
 
 ### Bugs Fixed
 
