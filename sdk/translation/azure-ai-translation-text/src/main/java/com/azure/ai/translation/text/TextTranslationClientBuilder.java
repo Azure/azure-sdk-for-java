@@ -63,7 +63,13 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
 
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
 
+    private static final String OCP_APIM_SUBSCRIPTION_REGION = "Ocp-Apim-Subscription-Region";
+
+    private static final String OCP_APIM_RESOURCE_ID_KEY = "Ocp-Apim-ResourceId";
+
     private String region;
+
+    private String azureResourceId;
 
     private KeyCredential credential;
 
@@ -266,11 +272,24 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
      *
      * @param region where the Translator resource is created.
      * @return The updated {@link TextTranslationClientBuilder} object.
-     * @throws NullPointerException If {@code tokenCredential} is null.
+     * @throws NullPointerException If {@code region} is null.
      */
     public TextTranslationClientBuilder region(String region) {
         Objects.requireNonNull(region, "'region' cannot be null.");
         this.region = region;
+        return this;
+    }
+
+    /**
+     * Sets the Azure Resource Id used to authorize requests sent to the service.
+     *
+     * @param azureResourceId Id of the Translator Resource.
+     * @return The updated {@link TextTranslationClientBuilder} object.
+     * @throws NullPointerException If {@code azureResourceId} is null.
+     */
+    public TextTranslationClientBuilder azureResourceId(String azureResourceId) {
+        Objects.requireNonNull(azureResourceId, "'azureResourceId' cannot be null.");
+        this.azureResourceId = azureResourceId;
         return this;
     }
 
@@ -342,11 +361,19 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
+            if (this.region != null && this.azureResourceId != null) {
+                HttpHeaders aadHeaders = new HttpHeaders();
+                aadHeaders.put(OCP_APIM_RESOURCE_ID_KEY, this.azureResourceId);
+                aadHeaders.put(OCP_APIM_SUBSCRIPTION_REGION, this.region);
+                policies.add(new AddHeadersPolicy(aadHeaders));
+            }
         }
         if (this.credential != null) {
             policies.add(new KeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
             if (this.region != null) {
-                policies.add(new TranslatorRegionAuthenticationPolicy(this.region));
+                HttpHeaders regionHeaders = new HttpHeaders();
+                regionHeaders.put(OCP_APIM_SUBSCRIPTION_REGION, this.region);
+                policies.add(new AddHeadersPolicy(regionHeaders));
             }
         }
         this.pipelinePolicies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)

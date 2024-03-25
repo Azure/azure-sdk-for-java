@@ -258,4 +258,21 @@ public class TranslateTests extends TextTranslationClientBase {
         assertEquals(1, response.get(0).getTranslations().size());
         assertNotNull(response.get(0).getTranslations().get(0).getText());
     }
+
+    @Test
+    public void translateWithAad() throws Exception {
+        ArrayList<String> targetLanguages = new ArrayList<>();
+        targetLanguages.add("cs");
+
+        ArrayList<InputTextItem> content = new ArrayList<>();
+        content.add(new InputTextItem("This is a test."));
+
+        List<TranslatedTextItem> response = getTranslationClientWithAadAuth().translate(targetLanguages, content);
+
+        assertNotNull(response.get(0).getTranslations().get(0).getText());
+        assertEquals("en", response.get(0).getDetectedLanguage().getLanguage());
+        assertEquals(1, response.get(0).getDetectedLanguage().getScore());
+        assertEquals(1, response.get(0).getTranslations().size());
+        assertNotNull(response.get(0).getTranslations().get(0).getText());
+    }
 }

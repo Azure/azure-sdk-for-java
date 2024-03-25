@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for AAD authentication.
+
 ### Breaking Changes
 
 ### Bugs Fixed
