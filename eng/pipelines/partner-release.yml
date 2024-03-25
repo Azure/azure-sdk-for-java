@@ -89,7 +89,10 @@ extends:
               New-Item -Path $DestinationFolder -ItemType Directory -Force
               Copy-Item -Path $(Pipeline.Workspace)/packages-signed/* -Destination $DestinationFolder -Recurse -Force
               Get-ChildItem -R -Path $(EsrpArtifacts)
-            displayName: Copy Elements + Dump ESRP Folder
+
+              $finalPlace = Resolve-Path -Path $(EsrpArtifacts)
+              Write-Host "##vso[task.setvariable variable=EsrpArtifacts]$finalPlace"
+            displayName: Copy Elements + Dump ESRP Folder + Resolve Path
 
           - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
             parameters:
