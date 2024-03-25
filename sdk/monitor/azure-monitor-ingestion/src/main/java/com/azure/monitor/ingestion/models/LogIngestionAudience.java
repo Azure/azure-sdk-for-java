@@ -26,7 +26,7 @@ public class LogIngestionAudience {
      * Creates an instance of LogIngestionAudience for Azure Public Cloud.
      * @return LogIngestionAudience for Azure Public Cloud.
      */
-    public static LogIngestionAudience AzurePublic() {
+    public static LogIngestionAudience azurePublic() {
         return new LogIngestionAudience(AZURE_PUBLIC);
     }
 
@@ -34,7 +34,7 @@ public class LogIngestionAudience {
      * Creates an instance of LogIngestionAudience for Azure US Government Cloud.
      * @return LogIngestionAudience for Azure US Government Cloud.
      */
-    public static LogIngestionAudience AzureUSGovernment() {
+    public static LogIngestionAudience azureUSGovernment() {
         return new LogIngestionAudience(AZURE_US_GOV);
     }
 
@@ -42,7 +42,7 @@ public class LogIngestionAudience {
      * Creates an instance of LogIngestionAudience for Azure China Cloud.
      * @return LogIngestionAudience for Azure China Cloud.
      */
-    public static LogIngestionAudience AzureChina() {
+    public static LogIngestionAudience azureChina() {
         return new LogIngestionAudience(AZURE_CHINA);
     }
 
