@@ -570,11 +570,11 @@ public class Utils {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
             Map<String, Object> jsonTreeMap = serializer.serialize(object);
 
-            ObjectNode jsonNode;
+            JsonNode jsonNode;
             if (jsonTreeMap instanceof ObjectNodeMap) {
                 jsonNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
             } else {
-                jsonNode = simpleObjectMapper.convertValue(object, ObjectNode.class);
+                jsonNode = simpleObjectMapper.convertValue(object, JsonNode.class);
             }
             simpleObjectMapper.writeValue(byteBufferOutputStream, jsonNode);
             return byteBufferOutputStream.asByteBuffer();
