@@ -75,7 +75,7 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @Tag("integration")
 @Execution(ExecutionMode.SAME_THREAD)
-class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
+public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClientIntegrationTest.class);
     private static final AmqpRetryOptions DEFAULT_RETRY_OPTIONS = null;
     private final boolean isSessionEnabled = false;
@@ -86,7 +86,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusSessionReceiverAsyncClient sessionReceiver;
 
-    ServiceBusReceiverAsyncClientIntegrationTest() {
+    public ServiceBusReceiverAsyncClientIntegrationTest() {
         super(LOGGER);
     }
 
@@ -132,7 +132,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         final String messageId = UUID.randomUUID().toString();
         final ServiceBusMessage message = getMessage(messageId, isSessionEnabled);
 
-        sendMessage(message).block(OPERATION_TIMEOUT);
+        sendMessage(message).block();
 
         setReceiver(entityType, TestUtils.USE_CASE_DEFAULT, isSessionEnabled);
 
@@ -502,7 +502,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
             })
             .repeat(() -> countDownLatch.getCount() > 0)
             .next()
-            .block(OPERATION_TIMEOUT);
+            .block();
         assertNotNull(peekMessage);
         final long sequenceNumber = peekMessage.getSequenceNumber();
 
@@ -533,7 +533,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
      */
     @MethodSource("com.azure.messaging.servicebus.IntegrationTestBase#messagingEntityWithSessions")
     @ParameterizedTest
-    void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
+    public void peekMessages(MessagingEntityType entityType, boolean isSessionEnabled) throws InterruptedException {
         // Arrange
         setSender(entityType, USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
@@ -554,12 +554,16 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         setReceiver(entityType, USE_CASE_PEEK_BATCH_MESSAGES, isSessionEnabled);
 
         // Assert & Act
-        CountDownLatch latchAll = new CountDownLatch(messages.size());
-        toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions).subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
-        toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions).subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
-        toClose(peekMessages(messages.size(), latchAll, messageId, receivedPositions).subscribe(receivedMessage -> receivedMessages.add(receivedMessage)));
+        for (int i = 0; i < 5 && receivedPositions.size() < messages.size(); i ++) {
+            peekMessages(messages.size(), messageId, receivedPositions)
+                    .doOnNext(receivedMessage -> receivedMessages.add(receivedMessage))
+                    .blockLast();
+            if (receivedPositions.size() < messages.size()) {
+                Thread.sleep(1000);
+            }
+        }
 
-        assertTrue(latchAll.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS));
+        assertEquals(receivedMessages.size(), messages.size());
 
         final AtomicInteger messageCount = new AtomicInteger();
 
@@ -575,7 +579,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
         }
     }
 
-    private Flux<ServiceBusReceivedMessage> peekMessages(int count, CountDownLatch latch, String messageIdFilter, Set<Integer> receivedPositions) {
+    private Flux<ServiceBusReceivedMessage> peekMessages(int count, String messageIdFilter, Set<Integer> receivedPositions) {
         return receiver.peekMessages(count)
             // maxMessages are not always guaranteed, sometime, we get less than asked for, so we will try many times.
             .filter(receivedMessage -> {
@@ -583,8 +587,7 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
                 Integer position = (Integer) receivedMessage.getApplicationProperties().get(MESSAGE_POSITION_ID);
                 boolean filtered = messageIdFilter.equals(receivedMessage.getMessageId()) && receivedPositions.add(position);
                 if (filtered) {
-                    latch.countDown();
-                    logMessage(receivedMessage, receiver.getEntityPath(), "filtered message, a few more to go " + latch.getCount());
+                    logMessage(receivedMessage, receiver.getEntityPath(), "filtered message, a few more to go");
                 }
                 return filtered;
             });
