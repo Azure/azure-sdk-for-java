@@ -16,43 +16,65 @@ public class ExtendedBindingHandlerMappingsProviderAutoConfigurationTests {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(ServiceBusBinderConfiguration.class))
-        .withUserConfiguration(TestApp.class)
-        .withPropertyValues(
-            "spring.cloud.stream.servicebus.default.consumer.entity-type=topic",
-            "spring.cloud.stream.servicebus.default.consumer.requeue-rejected=true",
-            "spring.cloud.stream.servicebus.default.consumer.auto-complete=false",
-            "spring.cloud.stream.servicebus.default.producer.entity-type=topic",
-            "spring.cloud.stream.servicebus.default.producer.sync=true");
+        .withUserConfiguration(TestApp.class);
 
     @Test
-    void defaultsUseWhenNoCustomBindingProperties() {
-        this.contextRunner.run(context -> {
-            assertThat(context).hasNotFailed().hasSingleBean(ServiceBusExtendedBindingProperties.class);
-            ServiceBusExtendedBindingProperties properties = context.getBean(ServiceBusExtendedBindingProperties.class);
-            assertThat(properties.getExtendedConsumerProperties("process-in-0"))
-                .hasFieldOrPropertyWithValue("entityType", ServiceBusEntityType.TOPIC)
-                .hasFieldOrPropertyWithValue("requeueRejected", true)
-                .hasFieldOrPropertyWithValue("autoComplete", false);
-            assertThat(properties.getExtendedProducerProperties("process-out-0"))
-                .hasFieldOrPropertyWithValue("entityType", ServiceBusEntityType.TOPIC)
-                .hasFieldOrPropertyWithValue("sync", true);
-        });
+    void testDefaultsConsumerBindingPropertiesWithNoCustom() {
+        this.contextRunner
+            .withPropertyValues("spring.cloud.stream.servicebus.default.consumer.entity-type=topic",
+                "spring.cloud.stream.servicebus.default.consumer.requeue-rejected=true",
+                "spring.cloud.stream.servicebus.default.consumer.auto-complete=false")
+            .run(context -> {
+                ServiceBusExtendedBindingProperties properties = context.getBean(ServiceBusExtendedBindingProperties.class);
+
+                assertThat(properties.getExtendedConsumerProperties("process-in-0"))
+                    .hasFieldOrPropertyWithValue("entityType", ServiceBusEntityType.TOPIC)
+                    .hasFieldOrPropertyWithValue("requeueRejected", true)
+                    .hasFieldOrPropertyWithValue("autoComplete", false);
+            });
     }
 
     @Test
-    void defaultsRespectedWhenCustomBindingProperties() {
+    void testDefaultsConsumerBindingPropertiesWithCustom() {
         this.contextRunner
-                .withPropertyValues(
-                    "spring.cloud.stream.servicebus.bindings.process-in-1.consumer.entity-type=queue",
-            "spring.cloud.stream.servicebus.bindings.process-out-1.producer.entity-type=queue")
+            .withPropertyValues("spring.cloud.stream.servicebus.default.consumer.entity-type=topic",
+                "spring.cloud.stream.servicebus.default.consumer.requeue-rejected=true",
+                "spring.cloud.stream.servicebus.default.consumer.auto-complete=false",
+                "spring.cloud.stream.servicebus.bindings.process-in-0.consumer.entity-type=queue")
             .run(context -> {
-                assertThat(context).hasNotFailed().hasSingleBean(ServiceBusExtendedBindingProperties.class);
-                ServiceBusExtendedBindingProperties properties = context.getBean(ServiceBusExtendedBindingProperties.class);
-                assertThat(properties.getExtendedConsumerProperties("process-in-1"))
+                ServiceBusExtendedBindingProperties properties =
+                    context.getBean(ServiceBusExtendedBindingProperties.class);
+                assertThat(properties.getExtendedConsumerProperties("process-in-0"))
                     .hasFieldOrPropertyWithValue("entityType", ServiceBusEntityType.QUEUE)
                     .hasFieldOrPropertyWithValue("requeueRejected", true)
                     .hasFieldOrPropertyWithValue("autoComplete", false);
-                assertThat(properties.getExtendedProducerProperties("process-out-1"))
+            });
+    }
+
+    @Test
+    void testDefaultsProducerBindingPropertiesWithNoCustom() {
+        this.contextRunner
+            .withPropertyValues("spring.cloud.stream.servicebus.default.producer.entity-type=topic",
+                "spring.cloud.stream.servicebus.default.producer.sync=true")
+            .run(context -> {
+                ServiceBusExtendedBindingProperties properties =
+                    context.getBean(ServiceBusExtendedBindingProperties.class);
+                assertThat(properties.getExtendedProducerProperties("process-out-0"))
+                    .hasFieldOrPropertyWithValue("entityType", ServiceBusEntityType.TOPIC)
+                    .hasFieldOrPropertyWithValue("sync", true);
+            });
+    }
+
+    @Test
+    void testDefaultsProducerBindingPropertiesWithCustom() {
+        this.contextRunner
+            .withPropertyValues("spring.cloud.stream.servicebus.default.producer.entity-type=topic",
+                "spring.cloud.stream.servicebus.default.producer.sync=true",
+                "spring.cloud.stream.servicebus.bindings.process-out-0.producer.entity-type=queue")
+            .run(context -> {
+                ServiceBusExtendedBindingProperties properties =
+                    context.getBean(ServiceBusExtendedBindingProperties.class);
+                assertThat(properties.getExtendedProducerProperties("process-out-0"))
                     .hasFieldOrPropertyWithValue("entityType", ServiceBusEntityType.QUEUE)
                     .hasFieldOrPropertyWithValue("sync", true);
             });
