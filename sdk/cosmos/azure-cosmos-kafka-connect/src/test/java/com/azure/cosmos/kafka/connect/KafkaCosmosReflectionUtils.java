@@ -4,12 +4,10 @@
 package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.kafka.connect.implementation.sink.CosmosSinkTask;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataMonitorThread;
 import org.apache.commons.lang3.reflect.FieldUtils;
-import org.apache.kafka.connect.sink.SinkTaskContext;
 import org.apache.kafka.connect.storage.OffsetStorageReader;
 
 public class KafkaCosmosReflectionUtils {
@@ -60,13 +58,5 @@ public class KafkaCosmosReflectionUtils {
 
     public static OffsetStorageReader getOffsetStorageReader(CosmosSourceOffsetStorageReader sourceOffsetStorageReader) {
         return get(sourceOffsetStorageReader,"offsetStorageReader");
-    }
-
-    public static void setSinkTaskContext(CosmosSinkTask sinkTask, SinkTaskContext sinkTaskContext) {
-        set(sinkTask, sinkTaskContext, "context");
-    }
-
-    public static CosmosAsyncClient getSinkTaskCosmosClient(CosmosSinkTask sinkTask) {
-        return get(sinkTask,"cosmosClient");
     }
 }

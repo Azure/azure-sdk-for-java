@@ -11,7 +11,7 @@ import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.routing.Range;
-import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -140,7 +140,7 @@ public class MetadataMonitorThread extends Thread {
             .byPage()
             .flatMapIterable(response -> response.getResults())
             .collectList()
-            .onErrorMap(throwable -> KafkaCosmosExceptionsHelper.convertToConnectException(throwable, "getAllContainers failed."));
+            .onErrorMap(throwable -> CosmosExceptionsHelper.convertToConnectException(throwable, "getAllContainers failed."));
     }
 
     public List<String> getContainerRidsFromOffset() {
