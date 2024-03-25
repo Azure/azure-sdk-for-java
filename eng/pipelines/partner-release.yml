@@ -87,7 +87,7 @@ extends:
           - pwsh: |
               $DestinationFolder = Join-Path -Path $(EsrpArtifacts) -ChildPath "original"
               New-Item -Path $DestinationFolder -ItemType Directory -Force
-              Copy-Item -Path packages-signed/* -Destination $DestinationFolder -Recurse -Force
+              Copy-Item -Path $(Pipeline.Workspace)/packages-signed/* -Destination $DestinationFolder -Recurse -Force
               Get-ChildItem -R -Path $(EsrpArtifacts)
             displayName: Copy Elements + Dump ESRP Folder
 
