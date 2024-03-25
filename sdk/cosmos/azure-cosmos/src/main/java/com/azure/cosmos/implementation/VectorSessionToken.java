@@ -264,7 +264,7 @@ public class VectorSessionToken implements ISessionToken {
         globalLsn.v = -1L;
 
         if (Strings.isNullOrEmpty(sessionToken)) {
-            logger.warn("SESSION token is empty");
+            logger.info("SESSION token is empty");
             return false;
         }
 
