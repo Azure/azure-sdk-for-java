@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Scaling rule. */
+/**
+ * Scaling rule.
+ */
 @Fluent
 public final class JobScaleRule {
     /*
@@ -36,13 +38,15 @@ public final class JobScaleRule {
     @JsonProperty(value = "auth")
     private List<ScaleRuleAuth> auth;
 
-    /** Creates an instance of JobScaleRule class. */
+    /**
+     * Creates an instance of JobScaleRule class.
+     */
     public JobScaleRule() {
     }
 
     /**
      * Get the name property: Scale Rule Name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +55,7 @@ public final class JobScaleRule {
 
     /**
      * Set the name property: Scale Rule Name.
-     *
+     * 
      * @param name the name value to set.
      * @return the JobScaleRule object itself.
      */
@@ -61,8 +65,9 @@ public final class JobScaleRule {
     }
 
     /**
-     * Get the type property: Type of the scale rule eg: azure-servicebus, redis etc.
-     *
+     * Get the type property: Type of the scale rule
+     * eg: azure-servicebus, redis etc.
+     * 
      * @return the type value.
      */
     public String type() {
@@ -70,8 +75,9 @@ public final class JobScaleRule {
     }
 
     /**
-     * Set the type property: Type of the scale rule eg: azure-servicebus, redis etc.
-     *
+     * Set the type property: Type of the scale rule
+     * eg: azure-servicebus, redis etc.
+     * 
      * @param type the type value to set.
      * @return the JobScaleRule object itself.
      */
@@ -82,7 +88,7 @@ public final class JobScaleRule {
 
     /**
      * Get the metadata property: Metadata properties to describe the scale rule.
-     *
+     * 
      * @return the metadata value.
      */
     public Object metadata() {
@@ -91,7 +97,7 @@ public final class JobScaleRule {
 
     /**
      * Set the metadata property: Metadata properties to describe the scale rule.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the JobScaleRule object itself.
      */
@@ -102,7 +108,7 @@ public final class JobScaleRule {
 
     /**
      * Get the auth property: Authentication secrets for the scale rule.
-     *
+     * 
      * @return the auth value.
      */
     public List<ScaleRuleAuth> auth() {
@@ -111,7 +117,7 @@ public final class JobScaleRule {
 
     /**
      * Set the auth property: Authentication secrets for the scale rule.
-     *
+     * 
      * @param auth the auth value to set.
      * @return the JobScaleRule object itself.
      */
@@ -122,7 +128,7 @@ public final class JobScaleRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

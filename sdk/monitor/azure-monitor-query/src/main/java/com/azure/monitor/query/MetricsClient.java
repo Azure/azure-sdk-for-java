@@ -16,8 +16,8 @@ import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsR
 import com.azure.monitor.query.implementation.metricsbatch.models.MetricResultsResponseValuesItem;
 import com.azure.monitor.query.implementation.metricsbatch.models.ResourceIdList;
 import com.azure.monitor.query.models.AggregationType;
-import com.azure.monitor.query.models.MetricsBatchQueryResult;
-import com.azure.monitor.query.models.MetricsBatchQueryOptions;
+import com.azure.monitor.query.models.MetricsQueryResourcesOptions;
+import com.azure.monitor.query.models.MetricsQueryResourcesResult;
 import com.azure.monitor.query.models.MetricsQueryResult;
 
 import java.time.Duration;
@@ -45,34 +45,34 @@ public final class MetricsClient {
     /**
      * Returns all the Azure Monitor metrics requested for the batch of resources.
      *
-     * @param resourceUris The resource URIs for which the metrics is requested.
+     * @param resourceIds The resource ids for which the metrics is requested.
      * @param metricsNames The names of the metrics to query.
      * @param metricsNamespace The namespace of the metrics to query.
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricsBatchQueryResult queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
-        return this.queryBatchWithResponse(resourceUris, metricsNames, metricsNamespace, new MetricsBatchQueryOptions(),
+    public MetricsQueryResourcesResult queryResources(List<String> resourceIds, List<String> metricsNames, String metricsNamespace) {
+        return this.queryResourcesWithResponse(resourceIds, metricsNames, metricsNamespace, new MetricsQueryResourcesOptions(),
             Context.NONE).getValue();
     }
 
     /**
      * Returns all the Azure Monitor metrics requested for the batch of resources.
      *
-     * @param resourceUris The resource URIs for which the metrics is requested.
+     * @param resourceIds The resource ids for which the metrics is requested.
      * @param metricsNames The names of the metrics to query.
      * @param metricsNamespace The namespace of the metrics to query.
-     * @param options The {@link MetricsBatchQueryOptions} to include for the request.
+     * @param options The {@link MetricsQueryResourcesOptions} to include for the request.
      * @param context The context to associate with this operation.
      * @return A time-series metrics result for the requested metric names.
-     * @throws IllegalArgumentException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are empty.
-     * @throws NullPointerException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are null.
+     * @throws IllegalArgumentException thrown if {@code resourceIds}, {@code metricsNames} or {@code metricsNamespace} are empty.
+     * @throws NullPointerException thrown if {@code resourceIds}, {@code metricsNames} or {@code metricsNamespace} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricsBatchQueryResult> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
-                                                                    String metricsNamespace, MetricsBatchQueryOptions options, Context context) {
-        if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceUris, "'resourceUris cannot be null."))) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("resourceUris cannot be empty"));
+    public Response<MetricsQueryResourcesResult> queryResourcesWithResponse(List<String> resourceIds, List<String> metricsNames,
+                                                                            String metricsNamespace, MetricsQueryResourcesOptions options, Context context) {
+        if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceIds, "'resourceIds cannot be null."))) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("resourceIds cannot be empty"));
         }
 
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(metricsNames, "metricsNames cannot be null"))) {
@@ -118,9 +118,9 @@ public final class MetricsClient {
             top = options.getTop();
             orderBy = options.getOrderBy();
         }
-        String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
+        String subscriptionId = getSubscriptionFromResourceId(resourceIds.get(0));
         ResourceIdList resourceIdList = new ResourceIdList();
-        resourceIdList.setResourceids(resourceUris);
+        resourceIdList.setResourceids(resourceIds);
         Response<MetricResultsResponse> response = this.serviceClient.getMetricsBatches()
             .batchWithResponse(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
                 endTime, granularity, aggregations, top, orderBy, filter, rollupBy, context);
@@ -129,10 +129,10 @@ public final class MetricsClient {
         List<MetricsQueryResult> metricsQueryResults = values.stream()
             .map(result -> mapToMetricsQueryResult(result))
             .collect(Collectors.toList());
-        MetricsBatchQueryResult metricsBatchQueryResult = new MetricsBatchQueryResult(metricsQueryResults);
+        MetricsQueryResourcesResult metricsQueryResourcesResult = new MetricsQueryResourcesResult(metricsQueryResults);
 
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), metricsBatchQueryResult);
+            response.getHeaders(), metricsQueryResourcesResult);
 
     }
 

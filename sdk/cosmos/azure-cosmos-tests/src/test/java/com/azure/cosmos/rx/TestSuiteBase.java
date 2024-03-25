@@ -229,6 +229,44 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
     }
 
+    protected static void cleanUpContainer(CosmosAsyncContainer cosmosContainer) {
+        CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
+        String cosmosContainerId = cosmosContainerProperties.getId();
+        logger.info("Truncating collection {} ...", cosmosContainerId);
+        List<String> paths = cosmosContainerProperties.getPartitionKeyDefinition().getPaths();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(
+            new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                .build()
+        );
+        options.setMaxDegreeOfParallelism(-1);
+        int maxItemCount = 100;
+
+        cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
+            .byPage(maxItemCount)
+            .publishOn(Schedulers.parallel())
+            .flatMap(page -> Flux.fromIterable(page.getResults()))
+            .flatMap(doc -> {
+
+                PartitionKey partitionKey = null;
+
+                Object propertyValue = null;
+                if (paths != null && !paths.isEmpty()) {
+                    List<String> pkPath = PathParser.getPathParts(paths.get(0));
+                    propertyValue = ModelBridgeInternal.getObjectByPathFromJsonSerializable(doc, pkPath);
+                    if (propertyValue == null) {
+                        partitionKey = PartitionKey.NONE;
+                    } else {
+                        partitionKey = new PartitionKey(propertyValue);
+                    }
+                } else {
+                    partitionKey = new PartitionKey(null);
+                }
+
+                return cosmosContainer.deleteItem(doc.getId(), partitionKey);
+            }).then().block();
+    }
+
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
         CosmosContainerProperties cosmosContainerProperties = cosmosContainer.read().block().getProperties();
         String cosmosContainerId = cosmosContainerProperties.getId();

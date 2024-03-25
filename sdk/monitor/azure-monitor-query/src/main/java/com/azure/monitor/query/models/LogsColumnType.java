@@ -40,6 +40,11 @@ public final class LogsColumnType extends ExpandableStringEnum<LogsColumnType> {
     public static final LogsColumnType TIMESPAN = fromString("timespan");
 
     /**
+     * Creates an instance of LogsColumnType.
+     */
+    public LogsColumnType() { }
+
+    /**
      * Creates or finds a LogsColumnType from its string representation.
      *
      * @param name a name to look for.
@@ -50,7 +55,11 @@ public final class LogsColumnType extends ExpandableStringEnum<LogsColumnType> {
         return fromString(name, LogsColumnType.class);
     }
 
-    /** @return known LogsColumnType values. */
+    /**
+     * Returns known LogsColumnType values.
+     *
+     * @return The {@link Collection} of known LogsColumnType values.
+     */
     public static Collection<LogsColumnType> values() {
         return values(LogsColumnType.class);
     }

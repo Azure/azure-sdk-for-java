@@ -9,7 +9,9 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.MobileNetworkInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for mobile networks API service call. */
+/**
+ * Response for mobile networks API service call.
+ */
 @Fluent
 public final class MobileNetworkListResult {
     /*
@@ -24,13 +26,15 @@ public final class MobileNetworkListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of MobileNetworkListResult class. */
+    /**
+     * Creates an instance of MobileNetworkListResult class.
+     */
     public MobileNetworkListResult() {
     }
 
     /**
      * Get the value property: A list of mobile networks in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<MobileNetworkInner> value() {
@@ -39,7 +43,7 @@ public final class MobileNetworkListResult {
 
     /**
      * Set the value property: A list of mobile networks in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the MobileNetworkListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class MobileNetworkListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class MobileNetworkListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -199,6 +199,24 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsWithResponseRunner(deploymentId -> chatMessages -> requestOptions -> {
+            StepVerifier.create(client.getChatCompletionsStreamWithResponse(deploymentId,
+                            new ChatCompletionsOptions(chatMessages), requestOptions))
+                    .recordWith(ArrayList::new)
+                    .thenConsumeWhile(response -> {
+                        assertResponseRequestHeader(response.getRequest());
+                        assertChatCompletionsStream(response.getValue());
+                        return true;
+                    })
+                    .consumeRecordedWith(messageList -> assertTrue(messageList.size() > 1))
+                    .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
@@ -415,7 +433,6 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     for (Iterator<Completions> it = messageList.iterator(); it.hasNext();) {
                         Completions completions = it.next();
                         if (i == 0) {
-                            System.out.println("First stream message");
                             assertEquals(1, completions.getPromptFilterResults().size());
                             assertSafePromptContentFilterResults(completions.getPromptFilterResults().get(0));
                         } else if (i == messageList.size() - 1) {

@@ -45,7 +45,7 @@ public final class VolumesResyncReplicationMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.volumes().resyncReplication("yhsgz", "czbgomfgbeg", "qgleohibetnluank", "rfxeeebtij",
+        manager.volumes().resyncReplication("ifzmpjwyivqi", "f", "cvhrfsp", "uagrttikteusqc",
             com.azure.core.util.Context.NONE);
 
     }

@@ -7,56 +7,74 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import java.util.List;
 
-/** Container App init container definition. */
+/**
+ * Container App init container definition.
+ */
 @Fluent
 public final class InitContainer extends BaseContainer {
-    /** Creates an instance of InitContainer class. */
+    /**
+     * Creates an instance of InitContainer class.
+     */
     public InitContainer() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InitContainer withImage(String image) {
         super.withImage(image);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InitContainer withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InitContainer withCommand(List<String> command) {
         super.withCommand(command);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InitContainer withArgs(List<String> args) {
         super.withArgs(args);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InitContainer withEnv(List<EnvironmentVar> env) {
         super.withEnv(env);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InitContainer withResources(ContainerResources resources) {
         super.withResources(resources);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InitContainer withVolumeMounts(List<VolumeMount> volumeMounts) {
         super.withVolumeMounts(volumeMounts);
@@ -65,7 +83,7 @@ public final class InitContainer extends BaseContainer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

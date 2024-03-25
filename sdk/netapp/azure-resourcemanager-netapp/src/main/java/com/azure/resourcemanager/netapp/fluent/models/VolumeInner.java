@@ -462,7 +462,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Get the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @return the volumeType value.
      */
@@ -472,7 +472,7 @@ public final class VolumeInner extends Resource {
 
     /**
      * Set the volumeType property: What type of volume is this. For destination volumes in Cross Region Replication,
-     * set type to DataProtection. For creating clone volume, set type to ShortTermClone.
+     * set type to DataProtection.
      * 
      * @param volumeType the volumeType value to set.
      * @return the VolumeInner object itself.
@@ -1279,17 +1279,6 @@ public final class VolumeInner extends Resource {
      */
     public String originatingResourceId() {
         return this.innerProperties() == null ? null : this.innerProperties().originatingResourceId();
-    }
-
-    /**
-     * Get the inheritedSizeInBytes property: inheritedSizeInBytes
-     * 
-     * Space shared by short term clone volume with parent volume in bytes.
-     * 
-     * @return the inheritedSizeInBytes value.
-     */
-    public Long inheritedSizeInBytes() {
-        return this.innerProperties() == null ? null : this.innerProperties().inheritedSizeInBytes();
     }
 
     /**

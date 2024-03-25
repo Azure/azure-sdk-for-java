@@ -55,6 +55,9 @@ parameters:
   - name: IgnoreVerifyTypeSpecCodeGenerationError
     type: boolean
     default: false
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
 
 jobs:
   - job: 'Build'
@@ -152,6 +155,7 @@ jobs:
 
       - task: PowerShell@2
         displayName: Setup Dev versioning
+        condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         inputs:
           pwsh: true
           filePath: eng/pipelines/scripts/Set-Dev-Versioning.ps1
@@ -399,3 +403,4 @@ jobs:
         TestParallelization: ${{ parameters.TestParallelization }}
         BuildParallelization: ${{ parameters.BuildParallelization }}
         AdditionalLintingOptions: ${{ parameters.AdditionalLintingOptions }}
+        TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}

@@ -12,8 +12,8 @@ public final class CheckNameAvailabilityOutputImpl implements CheckNameAvailabil
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    CheckNameAvailabilityOutputImpl(
-        CheckNameAvailabilityOutputInner innerObject, com.azure.resourcemanager.support.SupportManager serviceManager) {
+    CheckNameAvailabilityOutputImpl(CheckNameAvailabilityOutputInner innerObject,
+        com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

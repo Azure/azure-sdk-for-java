@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Sticky Session Affinity. */
+/**
+ * Sticky Session Affinity.
+ */
 public final class Affinity extends ExpandableStringEnum<Affinity> {
-    /** Static value sticky for Affinity. */
+    /**
+     * Static value sticky for Affinity.
+     */
     public static final Affinity STICKY = fromString("sticky");
 
-    /** Static value none for Affinity. */
+    /**
+     * Static value none for Affinity.
+     */
     public static final Affinity NONE = fromString("none");
 
     /**
      * Creates a new instance of Affinity value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class Affinity extends ExpandableStringEnum<Affinity> {
 
     /**
      * Creates or finds a Affinity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Affinity.
      */
@@ -38,7 +44,7 @@ public final class Affinity extends ExpandableStringEnum<Affinity> {
 
     /**
      * Gets known Affinity values.
-     *
+     * 
      * @return known Affinity values.
      */
     public static Collection<Affinity> values() {
