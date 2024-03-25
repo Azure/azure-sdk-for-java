@@ -3,6 +3,9 @@
 
 package com.azure.monitor.ingestion.models;
 
+/**
+ * The audience indicating the authorization scope of log ingestion clients.
+ */
 public class LogIngestionAudience {
 
     private final String audience;
@@ -19,18 +22,34 @@ public class LogIngestionAudience {
         this.audience = audience;
     }
 
+    /**
+     * Creates an instance of LogIngestionAudience for Azure Public Cloud.
+     * @return LogIngestionAudience for Azure Public Cloud.
+     */
     public static LogIngestionAudience AzurePublic() {
         return new LogIngestionAudience(AZURE_PUBLIC);
     }
 
+    /**
+     * Creates an instance of LogIngestionAudience for Azure US Government Cloud.
+     * @return LogIngestionAudience for Azure US Government Cloud.
+     */
     public static LogIngestionAudience AzureUSGovernment() {
         return new LogIngestionAudience(AZURE_US_GOV);
     }
 
+    /**
+     * Creates an instance of LogIngestionAudience for Azure China Cloud.
+     * @return LogIngestionAudience for Azure China Cloud.
+     */
     public static LogIngestionAudience AzureChina() {
         return new LogIngestionAudience(AZURE_CHINA);
     }
 
+    /**
+     * Gets the audience for the log ingestion.
+     * @return The audience for the log ingestion.
+     */
     public String[] getAudience() {
         return new String[]{audience};
     }
