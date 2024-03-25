@@ -8,6 +8,18 @@ This section includes changes in `spring-cloud-azure-starter-appconfiguration-co
 #### Features Added
 - Add telemetry schema[#38933](https://github.com/Azure/azure-sdk-for-java/pull/38933).
 
+### Spring Cloud Stream Event Hubs Binder
+This section includes changes in `spring-cloud-azure-stream-binder-eventhubs` module.
+
+#### Features Added
+- Support setting values for all channels by using the `spring.cloud.stream.eventhubs.default.consumer.<property>=<value>` and `spring.cloud.stream.eventhubs.default.producer.<property>=<value>` properties [#39317](https://github.com/Azure/azure-sdk-for-java/pull/39317).
+
+### Spring Cloud Stream Service Bus Binder
+This section includes changes in `spring-cloud-azure-stream-binder-servicebus` module.
+
+#### Features Added
+- Support setting values for all channels by using the `spring.cloud.stream.servicebus.default.consumer.<property>=<value>` and `spring.cloud.stream.servicebus.default.producer.<property>=<value>` properties [#39317](https://github.com/Azure/azure-sdk-for-java/pull/39317).
+
 ## 5.10.0 (2024-03-01)
 - This release is compatible with Spring Boot 3.0.0-3.0.13, 3.1.0-3.1.8, 3.2.0-3.2.3. (Note: 3.0.x (x>13), 3.1.y (y>8) and 3.2.z (z>3) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.5, 2023.0.0-2023.0.0. (Note: 2022.0.x (x>5) and 2023.0.y (y>0) should be supported, but they aren't tested with this release.)
