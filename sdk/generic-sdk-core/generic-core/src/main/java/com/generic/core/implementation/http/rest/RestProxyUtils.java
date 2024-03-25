@@ -111,18 +111,19 @@ public final class RestProxyUtils {
      * @return The merged {@link Context}.
      */
     private static Context mergeContexts(Context into, Context from) {
-        Objects.requireNonNull(into, "'into' cannot be null.");
-        Objects.requireNonNull(from, "'from' cannot be null.");
-
         // If the 'into' Context is the NONE Context just return the 'from' Context.
         // This is safe as Context is immutable and prevents needing to create any new Contexts and temporary arrays.
-        if (into == Context.NONE) {
+        if (into == null || into == Context.NONE) {
             return from;
         }
 
         // Same goes the other way, where if the 'from' Context is the NONE Context just return the 'into' Context.
-        if (from == Context.NONE) {
+        if (from == null || from == Context.NONE) {
             return into;
+        }
+
+        if (from.getContextCount() == 1) {
+            return into.addData(from.getKey(), from.getValue());
         }
 
         Context[] contextChain = getContextChain(from);
