@@ -140,7 +140,6 @@
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
-    "sdk/core/azure-json/**",
     "sdk/deviceupdate/azure-iot-deviceupdate/**",
     "sdk/e2e/src/**",
     "sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/**",
