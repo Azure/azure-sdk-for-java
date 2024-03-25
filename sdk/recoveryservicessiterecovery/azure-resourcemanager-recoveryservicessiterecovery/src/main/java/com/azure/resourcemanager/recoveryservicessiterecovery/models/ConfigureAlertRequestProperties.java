@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a configure alert request. */
+/**
+ * Properties of a configure alert request.
+ */
 @Fluent
 public final class ConfigureAlertRequestProperties {
     /*
@@ -29,13 +31,15 @@ public final class ConfigureAlertRequestProperties {
     @JsonProperty(value = "locale")
     private String locale;
 
-    /** Creates an instance of ConfigureAlertRequestProperties class. */
+    /**
+     * Creates an instance of ConfigureAlertRequestProperties class.
+     */
     public ConfigureAlertRequestProperties() {
     }
 
     /**
      * Get the sendToOwners property: A value indicating whether to send email to subscription administrator.
-     *
+     * 
      * @return the sendToOwners value.
      */
     public String sendToOwners() {
@@ -44,7 +48,7 @@ public final class ConfigureAlertRequestProperties {
 
     /**
      * Set the sendToOwners property: A value indicating whether to send email to subscription administrator.
-     *
+     * 
      * @param sendToOwners the sendToOwners value to set.
      * @return the ConfigureAlertRequestProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class ConfigureAlertRequestProperties {
 
     /**
      * Get the customEmailAddresses property: The custom email address for sending emails.
-     *
+     * 
      * @return the customEmailAddresses value.
      */
     public List<String> customEmailAddresses() {
@@ -64,7 +68,7 @@ public final class ConfigureAlertRequestProperties {
 
     /**
      * Set the customEmailAddresses property: The custom email address for sending emails.
-     *
+     * 
      * @param customEmailAddresses the customEmailAddresses value to set.
      * @return the ConfigureAlertRequestProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class ConfigureAlertRequestProperties {
 
     /**
      * Get the locale property: The locale for the email notification.
-     *
+     * 
      * @return the locale value.
      */
     public String locale() {
@@ -84,7 +88,7 @@ public final class ConfigureAlertRequestProperties {
 
     /**
      * Set the locale property: The locale for the email notification.
-     *
+     * 
      * @param locale the locale value to set.
      * @return the ConfigureAlertRequestProperties object itself.
      */
@@ -95,7 +99,7 @@ public final class ConfigureAlertRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

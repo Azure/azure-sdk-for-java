@@ -35,7 +35,7 @@ public final class GlobalParametersCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"ymmsimbesg\":{\"type\":\"String\",\"value\":\"dataoyawgpsx\"}},\"name\":\"ynwjowgdw\",\"type\":\"eyyzmxuelplbbsei\",\"etag\":\"dmfln\",\"id\":\"tltxfobyqq\"}";
+            = "{\"properties\":{\"pwvbrtwc\":{\"type\":\"String\",\"value\":\"dataetiydlrjtb\"},\"rkjepdfsg\":{\"type\":\"Int\",\"value\":\"datamjgjlshshva\"},\"bgslllcwf\":{\"type\":\"Int\",\"value\":\"datarfltgbbxghxaqdsi\"}},\"name\":\"bqqu\",\"type\":\"txmg\",\"etag\":\"bcoguerwmljbtytd\",\"id\":\"gpjewqgyex\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -52,15 +52,17 @@ public final class GlobalParametersCreateOrUpdateWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GlobalParameterResource response = manager.globalParameters().define("fmkf").withExistingFactory("del", "ecjmf")
-            .withProperties(mapOf("amosii",
-                new GlobalParameterSpecification().withType(GlobalParameterType.OBJECT).withValue("datafthsaf"), "mdt",
-                new GlobalParameterSpecification().withType(GlobalParameterType.FLOAT).withValue("datac"), "jzphfprf",
-                new GlobalParameterSpecification().withType(GlobalParameterType.OBJECT).withValue("datadynug")))
-            .create();
+        GlobalParameterResource response
+            = manager.globalParameters().define("fzuxzyrzq").withExistingFactory("wvmmy", "rqlpeyi")
+                .withProperties(mapOf("pq",
+                    new GlobalParameterSpecification().withType(GlobalParameterType.FLOAT)
+                        .withValue("dataabouerncgvjmk"),
+                    "jhspy",
+                    new GlobalParameterSpecification().withType(GlobalParameterType.FLOAT).withValue("dataolmumz")))
+                .create();
 
-        Assertions.assertEquals("tltxfobyqq", response.id());
-        Assertions.assertEquals(GlobalParameterType.STRING, response.properties().get("ymmsimbesg").type());
+        Assertions.assertEquals("gpjewqgyex", response.id());
+        Assertions.assertEquals(GlobalParameterType.STRING, response.properties().get("pwvbrtwc").type());
     }
 
     // Use "Map.of" if available

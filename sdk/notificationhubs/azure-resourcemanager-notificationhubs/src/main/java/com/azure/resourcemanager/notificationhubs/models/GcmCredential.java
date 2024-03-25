@@ -7,23 +7,28 @@ package com.azure.resourcemanager.notificationhubs.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.fluent.models.GcmCredentialProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of a NotificationHub GcmCredential. */
+/**
+ * Description of a NotificationHub GcmCredential.
+ */
 @Fluent
 public final class GcmCredential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GcmCredential.class);
-
     /*
-     * Properties of NotificationHub GcmCredential.
+     * Description of a NotificationHub GcmCredential.
      */
-    @JsonProperty(value = "properties")
-    private GcmCredentialProperties innerProperties;
+    @JsonProperty(value = "properties", required = true)
+    private GcmCredentialProperties innerProperties = new GcmCredentialProperties();
 
     /**
-     * Get the innerProperties property: Properties of NotificationHub GcmCredential.
-     *
+     * Creates an instance of GcmCredential class.
+     */
+    public GcmCredential() {
+    }
+
+    /**
+     * Get the innerProperties property: Description of a NotificationHub GcmCredential.
+     * 
      * @return the innerProperties value.
      */
     private GcmCredentialProperties innerProperties() {
@@ -31,8 +36,8 @@ public final class GcmCredential {
     }
 
     /**
-     * Get the gcmEndpoint property: The FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'.
-     *
+     * Get the gcmEndpoint property: Gets or sets the GCM endpoint.
+     * 
      * @return the gcmEndpoint value.
      */
     public String gcmEndpoint() {
@@ -40,8 +45,8 @@ public final class GcmCredential {
     }
 
     /**
-     * Set the gcmEndpoint property: The FCM legacy endpoint. Default value is 'https://fcm.googleapis.com/fcm/send'.
-     *
+     * Set the gcmEndpoint property: Gets or sets the GCM endpoint.
+     * 
      * @param gcmEndpoint the gcmEndpoint value to set.
      * @return the GcmCredential object itself.
      */
@@ -54,8 +59,8 @@ public final class GcmCredential {
     }
 
     /**
-     * Get the googleApiKey property: The Google API key.
-     *
+     * Get the googleApiKey property: Gets or sets the Google API key.
+     * 
      * @return the googleApiKey value.
      */
     public String googleApiKey() {
@@ -63,8 +68,8 @@ public final class GcmCredential {
     }
 
     /**
-     * Set the googleApiKey property: The Google API key.
-     *
+     * Set the googleApiKey property: Gets or sets the Google API key.
+     * 
      * @param googleApiKey the googleApiKey value to set.
      * @return the GcmCredential object itself.
      */
@@ -78,12 +83,17 @@ public final class GcmCredential {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model GcmCredential"));
+        } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GcmCredential.class);
 }

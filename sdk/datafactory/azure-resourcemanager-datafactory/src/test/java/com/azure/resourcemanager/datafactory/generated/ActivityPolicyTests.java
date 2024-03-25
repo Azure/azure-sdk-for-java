@@ -14,21 +14,21 @@ public final class ActivityPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ActivityPolicy model = BinaryData.fromString(
-            "{\"timeout\":\"datajsaoggd\",\"retry\":\"datajkoxlccjdooy\",\"retryIntervalInSeconds\":975110556,\"secureInput\":false,\"secureOutput\":true,\"\":{\"bwidsbdftbxruuu\":\"datajhqq\",\"wnpwgchl\":\"dataaarrrgjnqkuca\",\"hflnlutacsslel\":\"databttxfittheaxq\"}}")
+            "{\"timeout\":\"datab\",\"retry\":\"dataqwwtevfeugc\",\"retryIntervalInSeconds\":67435770,\"secureInput\":true,\"secureOutput\":true,\"\":{\"dleohysdgkb\":\"datavfrymqqfksqfc\",\"jqztrpjme\":\"dataxygwvtkrqiyuqds\"}}")
             .toObject(ActivityPolicy.class);
-        Assertions.assertEquals(975110556, model.retryIntervalInSeconds());
-        Assertions.assertEquals(false, model.secureInput());
+        Assertions.assertEquals(67435770, model.retryIntervalInSeconds());
+        Assertions.assertEquals(true, model.secureInput());
         Assertions.assertEquals(true, model.secureOutput());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActivityPolicy model = new ActivityPolicy().withTimeout("datajsaoggd").withRetry("datajkoxlccjdooy")
-            .withRetryIntervalInSeconds(975110556).withSecureInput(false).withSecureOutput(true)
+        ActivityPolicy model = new ActivityPolicy().withTimeout("datab").withRetry("dataqwwtevfeugc")
+            .withRetryIntervalInSeconds(67435770).withSecureInput(true).withSecureOutput(true)
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ActivityPolicy.class);
-        Assertions.assertEquals(975110556, model.retryIntervalInSeconds());
-        Assertions.assertEquals(false, model.secureInput());
+        Assertions.assertEquals(67435770, model.retryIntervalInSeconds());
+        Assertions.assertEquals(true, model.secureInput());
         Assertions.assertEquals(true, model.secureOutput());
     }
 

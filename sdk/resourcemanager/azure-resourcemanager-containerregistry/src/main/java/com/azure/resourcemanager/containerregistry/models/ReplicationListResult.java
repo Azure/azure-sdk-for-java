@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.ReplicationInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a request to list replications for a container registry. */
+/**
+ * The result of a request to list replications for a container registry.
+ */
 @Fluent
 public final class ReplicationListResult {
     /*
@@ -25,14 +27,16 @@ public final class ReplicationListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ReplicationListResult class. */
+    /**
+     * Creates an instance of ReplicationListResult class.
+     */
     public ReplicationListResult() {
     }
 
     /**
-     * Get the value property: The list of replications. Since this list may be incomplete, the nextLink field should be
-     * used to request the next list of replications.
-     *
+     * Get the value property: The list of replications. Since this list may be incomplete, the nextLink field should
+     * be used to request the next list of replications.
+     * 
      * @return the value value.
      */
     public List<ReplicationInner> value() {
@@ -40,9 +44,9 @@ public final class ReplicationListResult {
     }
 
     /**
-     * Set the value property: The list of replications. Since this list may be incomplete, the nextLink field should be
-     * used to request the next list of replications.
-     *
+     * Set the value property: The list of replications. Since this list may be incomplete, the nextLink field should
+     * be used to request the next list of replications.
+     * 
      * @param value the value value to set.
      * @return the ReplicationListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class ReplicationListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next list of replications.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class ReplicationListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next list of replications.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ReplicationListResult object itself.
      */
@@ -73,7 +77,7 @@ public final class ReplicationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

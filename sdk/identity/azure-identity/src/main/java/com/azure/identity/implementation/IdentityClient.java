@@ -349,7 +349,6 @@ public class IdentityClient extends IdentityClientBase {
                 ? LoggingUtil.logCredentialUnavailableException(LOGGER, options, (CredentialUnavailableException) e)
                 : LOGGER.logExceptionAsError(e));
         }
-
     }
 
     /**
@@ -611,48 +610,42 @@ public class IdentityClient extends IdentityClientBase {
     @SuppressWarnings("deprecation")
     public Mono<MsalToken> authenticateWithPublicClientCache(TokenRequestContext request, IAccount account) {
         return getPublicClientInstance(request).getValue()
-            .flatMap(pc -> Mono.fromFuture(() -> {
-                SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
-                    new HashSet<>(request.getScopes()));
-
-                if (request.isCaeEnabled() && request.getClaims() != null) {
-                    ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
-                    parametersBuilder.claims(customClaimRequest);
-                    parametersBuilder.forceRefresh(true);
-                }
-                if (account != null) {
-                    parametersBuilder = parametersBuilder.account(account);
-                }
-                parametersBuilder.tenant(
-                    IdentityUtil.resolveTenantId(tenantId, request, options));
-                try {
-                    return pc.acquireTokenSilently(parametersBuilder.build());
-                } catch (MalformedURLException e) {
-                    return getFailedCompletableFuture(LOGGER.logExceptionAsError(new RuntimeException(e)));
-                }
-            }).map(MsalToken::new)
+            .flatMap(pc -> Mono.fromFuture(() ->
+                acquireTokenFromPublicClientSilently(request, pc, account, false)
+            ).map(MsalToken::new)
                 .filter(t -> OffsetDateTime.now().isBefore(t.getExpiresAt().minus(REFRESH_OFFSET)))
-                .switchIfEmpty(Mono.fromFuture(() -> {
-                    SilentParameters.SilentParametersBuilder forceParametersBuilder = SilentParameters.builder(
-                        new HashSet<>(request.getScopes())).forceRefresh(true);
+                .switchIfEmpty(Mono.fromFuture(() ->
+                    acquireTokenFromPublicClientSilently(request, pc, account, true)
+                ).map(MsalToken::new))
+            );
+    }
 
-                    if (request.getClaims() != null) {
-                        ClaimsRequest customClaimRequest = CustomClaimRequest
-                                                               .formatAsClaimsRequest(request.getClaims());
-                        forceParametersBuilder.claims(customClaimRequest);
-                    }
+    private CompletableFuture<IAuthenticationResult> acquireTokenFromPublicClientSilently(TokenRequestContext request,
+        PublicClientApplication pc,
+        IAccount account,
+        boolean forceRefresh
+    ) {
+        SilentParameters.SilentParametersBuilder parametersBuilder = SilentParameters.builder(
+            new HashSet<>(request.getScopes()));
 
-                    if (account != null) {
-                        forceParametersBuilder = forceParametersBuilder.account(account);
-                    }
-                    forceParametersBuilder.tenant(
-                        IdentityUtil.resolveTenantId(tenantId, request, options));
-                    try {
-                        return pc.acquireTokenSilently(forceParametersBuilder.build());
-                    } catch (MalformedURLException e) {
-                        return getFailedCompletableFuture(LOGGER.logExceptionAsError(new RuntimeException(e)));
-                    }
-                }).map(MsalToken::new)));
+        if (forceRefresh) {
+            parametersBuilder.forceRefresh(true);
+        }
+        if (request.isCaeEnabled() && request.getClaims() != null) {
+            ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
+            parametersBuilder.claims(customClaimRequest);
+            parametersBuilder.forceRefresh(true);
+        }
+        if (account != null) {
+            parametersBuilder = parametersBuilder.account(account);
+        }
+        parametersBuilder.tenant(
+            IdentityUtil.resolveTenantId(tenantId, request, options));
+        try {
+            return pc.acquireTokenSilently(parametersBuilder.build());
+        } catch (MalformedURLException e) {
+            return getFailedCompletableFuture(LOGGER.logExceptionAsError(new RuntimeException(e)));
+        }
     }
 
     private SynchronizedAccessor<PublicClientApplication> getPublicClientInstance(TokenRequestContext request) {
@@ -829,16 +822,37 @@ public class IdentityClient extends IdentityClientBase {
         } catch (URISyntaxException e) {
             return Mono.error(LOGGER.logExceptionAsError(new RuntimeException(e)));
         }
-        InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
-            buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
-        SynchronizedAccessor<PublicClientApplication> publicClient = getPublicClientInstance(request);
+        // If the broker is enabled, try to get the token for the default account by passing
+        // a null account to MSAL. If that fails, show the dialog.
 
-        Mono<IAuthenticationResult> acquireToken = publicClient.getValue()
-                               .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(builder.build())));
+        return getPublicClientInstance(request).getValue().flatMap(pc -> {
+            if (options.isBrokerEnabled() && options.useDefaultBrokerAccount()) {
+                return Mono.fromFuture(() ->
+                    acquireTokenFromPublicClientSilently(request, pc, null, false))
+                    // The error case here represents the silent acquisition failing. There's nothing actionable and
+                    // in this case the fallback path of showing the dialog will capture any meaningful error and share it.
+                    .onErrorResume(e -> Mono.empty());
+            } else {
+                return Mono.empty();
+            }
+        })
+        .switchIfEmpty(Mono.defer(() -> {
+            InteractiveRequestParameters.InteractiveRequestParametersBuilder builder =
+                buildInteractiveRequestParameters(request, loginHint, redirectUri);
 
-        return acquireToken.onErrorMap(t -> new ClientAuthenticationException(
-            "Failed to acquire token with Interactive Browser Authentication.", null, t)).map(MsalToken::new);
+            SynchronizedAccessor<PublicClientApplication> publicClient = getPublicClientInstance(request);
+
+            return publicClient.getValue()
+                .flatMap(pc -> Mono.fromFuture(() -> pc.acquireToken(builder.build())));
+
+        }))
+        // If we're already throwing a ClientAuthenticationException we don't need to wrap it again.
+        .onErrorMap(t -> !(t instanceof ClientAuthenticationException),
+                        t -> {
+                throw new ClientAuthenticationException("Failed to acquire token with Interactive Browser Authentication.", null, t);
+            })
+        .map(MsalToken::new);
     }
 
     /**
@@ -946,7 +960,7 @@ public class IdentityClient extends IdentityClientBase {
                 String secretKeyPath = realm.substring(separatorIndex + 1);
                 secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)), StandardCharsets.UTF_8);
 
-            
+
                 if (connection != null) {
                     connection.disconnect();
                 }

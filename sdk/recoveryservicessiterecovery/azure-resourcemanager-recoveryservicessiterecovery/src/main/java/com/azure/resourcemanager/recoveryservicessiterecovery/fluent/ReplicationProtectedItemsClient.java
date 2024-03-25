@@ -28,13 +28,15 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateAppli
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateMobilityServiceRequest;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateReplicationProtectedItemInput;
 
-/** An instance of this class provides access to all the operations defined in ReplicationProtectedItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationProtectedItemsClient.
+ */
 public interface ReplicationProtectedItemsClient {
     /**
      * Gets the list of Replication protected items.
-     *
-     * <p>Gets the list of ASR replication protected items in the protection container.
-     *
+     * 
+     * Gets the list of ASR replication protected items in the protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -42,18 +44,18 @@ public interface ReplicationProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ASR replication protected items in the protection container as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of ASR replication protected items in the protection container as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReplicationProtectedItemInner> listByReplicationProtectionContainers(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName);
+    PagedIterable<ReplicationProtectedItemInner> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName);
 
     /**
      * Gets the list of Replication protected items.
-     *
-     * <p>Gets the list of ASR replication protected items in the protection container.
-     *
+     * 
+     * Gets the list of ASR replication protected items in the protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -62,22 +64,18 @@ public interface ReplicationProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ASR replication protected items in the protection container as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of ASR replication protected items in the protection container as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReplicationProtectedItemInner> listByReplicationProtectionContainers(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        Context context);
+    PagedIterable<ReplicationProtectedItemInner> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName, Context context);
 
     /**
      * Gets the details of a Replication protected item.
-     *
-     * <p>Gets the details of an ASR replication protected item.
-     *
+     * 
+     * Gets the details of an ASR replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric unique name.
@@ -90,19 +88,14 @@ public interface ReplicationProtectedItemsClient {
      * @return the details of an ASR replication protected item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReplicationProtectedItemInner> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        Context context);
+    Response<ReplicationProtectedItemInner> getWithResponse(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String replicatedProtectedItemName, Context context);
 
     /**
      * Gets the details of a Replication protected item.
-     *
-     * <p>Gets the details of an ASR replication protected item.
-     *
+     * 
+     * Gets the details of an ASR replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric unique name.
@@ -114,18 +107,14 @@ public interface ReplicationProtectedItemsClient {
      * @return the details of an ASR replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner get(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName);
+    ReplicationProtectedItemInner get(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName);
 
     /**
      * Enables protection.
-     *
-     * <p>The operation to create an ASR replication protected item (Enable replication).
-     *
+     * 
+     * The operation to create an ASR replication protected item (Enable replication).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric.
@@ -139,18 +128,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        EnableProtectionInput input);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, EnableProtectionInput input);
 
     /**
      * Enables protection.
-     *
-     * <p>The operation to create an ASR replication protected item (Enable replication).
-     *
+     * 
+     * The operation to create an ASR replication protected item (Enable replication).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric.
@@ -165,19 +150,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        EnableProtectionInput input,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, EnableProtectionInput input, Context context);
 
     /**
      * Enables protection.
-     *
-     * <p>The operation to create an ASR replication protected item (Enable replication).
-     *
+     * 
+     * The operation to create an ASR replication protected item (Enable replication).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric.
@@ -190,19 +170,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        EnableProtectionInput input);
+    ReplicationProtectedItemInner create(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, EnableProtectionInput input);
 
     /**
      * Enables protection.
-     *
-     * <p>The operation to create an ASR replication protected item (Enable replication).
-     *
+     * 
+     * The operation to create an ASR replication protected item (Enable replication).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric.
@@ -216,22 +191,17 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        EnableProtectionInput input,
+    ReplicationProtectedItemInner create(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, EnableProtectionInput input,
         Context context);
 
     /**
      * Purges protection.
-     *
-     * <p>The operation to delete or purge a replication protected item. This operation will force delete the
-     * replication protected item. Use the remove operation on replication protected item to perform a clean disable
-     * replication for the item.
-     *
+     * 
+     * The operation to delete or purge a replication protected item. This operation will force delete the replication
+     * protected item. Use the remove operation on replication protected item to perform a clean disable replication for
+     * the item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -243,20 +213,16 @@ public interface ReplicationProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName);
+    SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName);
 
     /**
      * Purges protection.
-     *
-     * <p>The operation to delete or purge a replication protected item. This operation will force delete the
-     * replication protected item. Use the remove operation on replication protected item to perform a clean disable
-     * replication for the item.
-     *
+     * 
+     * The operation to delete or purge a replication protected item. This operation will force delete the replication
+     * protected item. Use the remove operation on replication protected item to perform a clean disable replication for
+     * the item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -269,21 +235,16 @@ public interface ReplicationProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginPurge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, Context context);
 
     /**
      * Purges protection.
-     *
-     * <p>The operation to delete or purge a replication protected item. This operation will force delete the
-     * replication protected item. Use the remove operation on replication protected item to perform a clean disable
-     * replication for the item.
-     *
+     * 
+     * The operation to delete or purge a replication protected item. This operation will force delete the replication
+     * protected item. Use the remove operation on replication protected item to perform a clean disable replication for
+     * the item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -294,20 +255,16 @@ public interface ReplicationProtectedItemsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void purge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
+    void purge(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName);
 
     /**
      * Purges protection.
-     *
-     * <p>The operation to delete or purge a replication protected item. This operation will force delete the
-     * replication protected item. Use the remove operation on replication protected item to perform a clean disable
-     * replication for the item.
-     *
+     * 
+     * The operation to delete or purge a replication protected item. This operation will force delete the replication
+     * protected item. Use the remove operation on replication protected item to perform a clean disable replication for
+     * the item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -319,19 +276,14 @@ public interface ReplicationProtectedItemsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void purge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        Context context);
+    void purge(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, Context context);
 
     /**
      * Updates the replication protected item settings.
-     *
-     * <p>The operation to update the recovery settings of an ASR replication protected item.
-     *
+     * 
+     * The operation to update the recovery settings of an ASR replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -345,18 +297,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UpdateReplicationProtectedItemInput updateProtectionInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, UpdateReplicationProtectedItemInput updateProtectionInput);
 
     /**
      * Updates the replication protected item settings.
-     *
-     * <p>The operation to update the recovery settings of an ASR replication protected item.
-     *
+     * 
+     * The operation to update the recovery settings of an ASR replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -371,19 +319,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UpdateReplicationProtectedItemInput updateProtectionInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, UpdateReplicationProtectedItemInput updateProtectionInput, Context context);
 
     /**
      * Updates the replication protected item settings.
-     *
-     * <p>The operation to update the recovery settings of an ASR replication protected item.
-     *
+     * 
+     * The operation to update the recovery settings of an ASR replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -396,19 +339,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
+    ReplicationProtectedItemInner update(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName,
         UpdateReplicationProtectedItemInput updateProtectionInput);
 
     /**
      * Updates the replication protected item settings.
-     *
-     * <p>The operation to update the recovery settings of an ASR replication protected item.
-     *
+     * 
+     * The operation to update the recovery settings of an ASR replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -422,20 +361,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UpdateReplicationProtectedItemInput updateProtectionInput,
-        Context context);
+    ReplicationProtectedItemInner update(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName,
+        UpdateReplicationProtectedItemInput updateProtectionInput, Context context);
 
     /**
      * Add disk(s) for protection.
-     *
-     * <p>Operation to add disks(s) to the replication protected item.
-     *
+     * 
+     * Operation to add disks(s) to the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -449,18 +383,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginAddDisks(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        AddDisksInput addDisksInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, AddDisksInput addDisksInput);
 
     /**
      * Add disk(s) for protection.
-     *
-     * <p>Operation to add disks(s) to the replication protected item.
-     *
+     * 
+     * Operation to add disks(s) to the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -475,19 +405,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginAddDisks(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        AddDisksInput addDisksInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, AddDisksInput addDisksInput, Context context);
 
     /**
      * Add disk(s) for protection.
-     *
-     * <p>Operation to add disks(s) to the replication protected item.
-     *
+     * 
+     * Operation to add disks(s) to the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -500,19 +425,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner addDisks(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        AddDisksInput addDisksInput);
+    ReplicationProtectedItemInner addDisks(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, AddDisksInput addDisksInput);
 
     /**
      * Add disk(s) for protection.
-     *
-     * <p>Operation to add disks(s) to the replication protected item.
-     *
+     * 
+     * Operation to add disks(s) to the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -526,20 +446,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner addDisks(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        AddDisksInput addDisksInput,
+    ReplicationProtectedItemInner addDisks(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, AddDisksInput addDisksInput,
         Context context);
 
     /**
      * Change or apply recovery point.
-     *
-     * <p>The operation to change the recovery point of a failed over replication protected item.
-     *
+     * 
+     * The operation to change the recovery point of a failed over replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The ARM fabric name.
@@ -553,18 +468,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginApplyRecoveryPoint(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        ApplyRecoveryPointInput applyRecoveryPointInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, ApplyRecoveryPointInput applyRecoveryPointInput);
 
     /**
      * Change or apply recovery point.
-     *
-     * <p>The operation to change the recovery point of a failed over replication protected item.
-     *
+     * 
+     * The operation to change the recovery point of a failed over replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The ARM fabric name.
@@ -579,19 +490,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginApplyRecoveryPoint(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        ApplyRecoveryPointInput applyRecoveryPointInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, ApplyRecoveryPointInput applyRecoveryPointInput, Context context);
 
     /**
      * Change or apply recovery point.
-     *
-     * <p>The operation to change the recovery point of a failed over replication protected item.
-     *
+     * 
+     * The operation to change the recovery point of a failed over replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The ARM fabric name.
@@ -604,19 +510,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner applyRecoveryPoint(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
+    ReplicationProtectedItemInner applyRecoveryPoint(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName,
         ApplyRecoveryPointInput applyRecoveryPointInput);
 
     /**
      * Change or apply recovery point.
-     *
-     * <p>The operation to change the recovery point of a failed over replication protected item.
-     *
+     * 
+     * The operation to change the recovery point of a failed over replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The ARM fabric name.
@@ -630,20 +532,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner applyRecoveryPoint(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        ApplyRecoveryPointInput applyRecoveryPointInput,
-        Context context);
+    ReplicationProtectedItemInner applyRecoveryPoint(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName,
+        ApplyRecoveryPointInput applyRecoveryPointInput, Context context);
 
     /**
      * Execute cancel failover.
-     *
-     * <p>Operation to cancel the failover of the replication protected item.
-     *
+     * 
+     * Operation to cancel the failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -656,17 +553,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCancel(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName);
 
     /**
      * Execute cancel failover.
-     *
-     * <p>Operation to cancel the failover of the replication protected item.
-     *
+     * 
+     * Operation to cancel the failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -680,18 +574,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCancel(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, Context context);
 
     /**
      * Execute cancel failover.
-     *
-     * <p>Operation to cancel the failover of the replication protected item.
-     *
+     * 
+     * Operation to cancel the failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -703,18 +593,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner failoverCancel(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName);
+    ReplicationProtectedItemInner failoverCancel(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName);
 
     /**
      * Execute cancel failover.
-     *
-     * <p>Operation to cancel the failover of the replication protected item.
-     *
+     * 
+     * Operation to cancel the failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -727,19 +613,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner failoverCancel(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        Context context);
+    ReplicationProtectedItemInner failoverCancel(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, Context context);
 
     /**
      * Execute commit failover.
-     *
-     * <p>Operation to commit the failover of the replication protected item.
-     *
+     * 
+     * Operation to commit the failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -752,17 +633,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCommit(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName);
 
     /**
      * Execute commit failover.
-     *
-     * <p>Operation to commit the failover of the replication protected item.
-     *
+     * 
+     * Operation to commit the failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -776,18 +654,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginFailoverCommit(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, Context context);
 
     /**
      * Execute commit failover.
-     *
-     * <p>Operation to commit the failover of the replication protected item.
-     *
+     * 
+     * Operation to commit the failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -799,18 +673,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner failoverCommit(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName);
+    ReplicationProtectedItemInner failoverCommit(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName);
 
     /**
      * Execute commit failover.
-     *
-     * <p>Operation to commit the failover of the replication protected item.
-     *
+     * 
+     * Operation to commit the failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -823,19 +693,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner failoverCommit(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        Context context);
+    ReplicationProtectedItemInner failoverCommit(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, Context context);
 
     /**
      * Execute planned failover.
-     *
-     * <p>Operation to initiate a planned failover of the replication protected item.
-     *
+     * 
+     * Operation to initiate a planned failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -849,18 +714,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginPlannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        PlannedFailoverInput failoverInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, PlannedFailoverInput failoverInput);
 
     /**
      * Execute planned failover.
-     *
-     * <p>Operation to initiate a planned failover of the replication protected item.
-     *
+     * 
+     * Operation to initiate a planned failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -875,19 +736,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginPlannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        PlannedFailoverInput failoverInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, PlannedFailoverInput failoverInput, Context context);
 
     /**
      * Execute planned failover.
-     *
-     * <p>Operation to initiate a planned failover of the replication protected item.
-     *
+     * 
+     * Operation to initiate a planned failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -900,19 +756,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner plannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        PlannedFailoverInput failoverInput);
+    ReplicationProtectedItemInner plannedFailover(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, PlannedFailoverInput failoverInput);
 
     /**
      * Execute planned failover.
-     *
-     * <p>Operation to initiate a planned failover of the replication protected item.
-     *
+     * 
+     * Operation to initiate a planned failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -926,20 +777,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner plannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        PlannedFailoverInput failoverInput,
+    ReplicationProtectedItemInner plannedFailover(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, PlannedFailoverInput failoverInput,
         Context context);
 
     /**
      * Disables protection.
-     *
-     * <p>The operation to disable replication on a replication protected item. This will also remove the item.
-     *
+     * 
+     * The operation to disable replication on a replication protected item. This will also remove the item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -952,19 +798,15 @@ public interface ReplicationProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName,
         DisableProtectionInput disableProtectionInput);
 
     /**
      * Disables protection.
-     *
-     * <p>The operation to disable replication on a replication protected item. This will also remove the item.
-     *
+     * 
+     * The operation to disable replication on a replication protected item. This will also remove the item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -978,20 +820,15 @@ public interface ReplicationProtectedItemsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        DisableProtectionInput disableProtectionInput,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName,
+        DisableProtectionInput disableProtectionInput, Context context);
 
     /**
      * Disables protection.
-     *
-     * <p>The operation to disable replication on a replication protected item. This will also remove the item.
-     *
+     * 
+     * The operation to disable replication on a replication protected item. This will also remove the item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1003,19 +840,14 @@ public interface ReplicationProtectedItemsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        DisableProtectionInput disableProtectionInput);
+    void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, DisableProtectionInput disableProtectionInput);
 
     /**
      * Disables protection.
-     *
-     * <p>The operation to disable replication on a replication protected item. This will also remove the item.
-     *
+     * 
+     * The operation to disable replication on a replication protected item. This will also remove the item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1028,20 +860,14 @@ public interface ReplicationProtectedItemsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        DisableProtectionInput disableProtectionInput,
-        Context context);
+    void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, DisableProtectionInput disableProtectionInput, Context context);
 
     /**
      * Removes disk(s).
-     *
-     * <p>Operation to remove disk(s) from the replication protected item.
-     *
+     * 
+     * Operation to remove disk(s) from the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1055,18 +881,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRemoveDisks(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        RemoveDisksInput removeDisksInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, RemoveDisksInput removeDisksInput);
 
     /**
      * Removes disk(s).
-     *
-     * <p>Operation to remove disk(s) from the replication protected item.
-     *
+     * 
+     * Operation to remove disk(s) from the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1081,19 +903,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRemoveDisks(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        RemoveDisksInput removeDisksInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, RemoveDisksInput removeDisksInput, Context context);
 
     /**
      * Removes disk(s).
-     *
-     * <p>Operation to remove disk(s) from the replication protected item.
-     *
+     * 
+     * Operation to remove disk(s) from the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1106,19 +923,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner removeDisks(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        RemoveDisksInput removeDisksInput);
+    ReplicationProtectedItemInner removeDisks(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, RemoveDisksInput removeDisksInput);
 
     /**
      * Removes disk(s).
-     *
-     * <p>Operation to remove disk(s) from the replication protected item.
-     *
+     * 
+     * Operation to remove disk(s) from the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1132,21 +944,16 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner removeDisks(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        RemoveDisksInput removeDisksInput,
+    ReplicationProtectedItemInner removeDisks(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, RemoveDisksInput removeDisksInput,
         Context context);
 
     /**
      * Resynchronize or repair replication.
-     *
-     * <p>The operation to start resynchronize/repair replication for a replication protected item requiring
+     * 
+     * The operation to start resynchronize/repair replication for a replication protected item requiring
      * resynchronization.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric.
@@ -1159,18 +966,15 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRepairReplication(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String replicatedProtectedItemName);
 
     /**
      * Resynchronize or repair replication.
-     *
-     * <p>The operation to start resynchronize/repair replication for a replication protected item requiring
+     * 
+     * The operation to start resynchronize/repair replication for a replication protected item requiring
      * resynchronization.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric.
@@ -1184,19 +988,15 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginRepairReplication(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, Context context);
 
     /**
      * Resynchronize or repair replication.
-     *
-     * <p>The operation to start resynchronize/repair replication for a replication protected item requiring
+     * 
+     * The operation to start resynchronize/repair replication for a replication protected item requiring
      * resynchronization.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric.
@@ -1208,19 +1008,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner repairReplication(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName);
+    ReplicationProtectedItemInner repairReplication(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName);
 
     /**
      * Resynchronize or repair replication.
-     *
-     * <p>The operation to start resynchronize/repair replication for a replication protected item requiring
+     * 
+     * The operation to start resynchronize/repair replication for a replication protected item requiring
      * resynchronization.
-     *
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric.
@@ -1233,19 +1029,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner repairReplication(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        Context context);
+    ReplicationProtectedItemInner repairReplication(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, Context context);
 
     /**
      * Execute Reverse Replication\Reprotect.
-     *
-     * <p>Operation to reprotect or reverse replicate a failed over replication protected item.
-     *
+     * 
+     * Operation to reprotect or reverse replicate a failed over replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1259,18 +1050,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginReprotect(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        ReverseReplicationInput reprotectInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, ReverseReplicationInput reprotectInput);
 
     /**
      * Execute Reverse Replication\Reprotect.
-     *
-     * <p>Operation to reprotect or reverse replicate a failed over replication protected item.
-     *
+     * 
+     * Operation to reprotect or reverse replicate a failed over replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1285,19 +1072,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginReprotect(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        ReverseReplicationInput reprotectInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, ReverseReplicationInput reprotectInput, Context context);
 
     /**
      * Execute Reverse Replication\Reprotect.
-     *
-     * <p>Operation to reprotect or reverse replicate a failed over replication protected item.
-     *
+     * 
+     * Operation to reprotect or reverse replicate a failed over replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1310,19 +1092,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner reprotect(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        ReverseReplicationInput reprotectInput);
+    ReplicationProtectedItemInner reprotect(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, ReverseReplicationInput reprotectInput);
 
     /**
      * Execute Reverse Replication\Reprotect.
-     *
-     * <p>Operation to reprotect or reverse replicate a failed over replication protected item.
-     *
+     * 
+     * Operation to reprotect or reverse replicate a failed over replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1336,20 +1113,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner reprotect(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        ReverseReplicationInput reprotectInput,
+    ReplicationProtectedItemInner reprotect(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, ReverseReplicationInput reprotectInput,
         Context context);
 
     /**
      * Resolve health errors.
-     *
-     * <p>Operation to resolve health issues of the replication protected item.
-     *
+     * 
+     * Operation to resolve health issues of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1363,18 +1135,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginResolveHealthErrors(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        ResolveHealthInput resolveHealthInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, ResolveHealthInput resolveHealthInput);
 
     /**
      * Resolve health errors.
-     *
-     * <p>Operation to resolve health issues of the replication protected item.
-     *
+     * 
+     * Operation to resolve health issues of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1389,19 +1157,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginResolveHealthErrors(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        ResolveHealthInput resolveHealthInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, ResolveHealthInput resolveHealthInput, Context context);
 
     /**
      * Resolve health errors.
-     *
-     * <p>Operation to resolve health issues of the replication protected item.
-     *
+     * 
+     * Operation to resolve health issues of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1414,19 +1177,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner resolveHealthErrors(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        ResolveHealthInput resolveHealthInput);
+    ReplicationProtectedItemInner resolveHealthErrors(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, ResolveHealthInput resolveHealthInput);
 
     /**
      * Resolve health errors.
-     *
-     * <p>Operation to resolve health issues of the replication protected item.
-     *
+     * 
+     * Operation to resolve health issues of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1440,20 +1198,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner resolveHealthErrors(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        ResolveHealthInput resolveHealthInput,
+    ReplicationProtectedItemInner resolveHealthErrors(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, ResolveHealthInput resolveHealthInput,
         Context context);
 
     /**
      * Execute switch provider.
-     *
-     * <p>Operation to initiate a switch provider of the replication protected item.
-     *
+     * 
+     * Operation to initiate a switch provider of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1467,18 +1220,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginSwitchProvider(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        SwitchProviderInput switchProviderInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, SwitchProviderInput switchProviderInput);
 
     /**
      * Execute switch provider.
-     *
-     * <p>Operation to initiate a switch provider of the replication protected item.
-     *
+     * 
+     * Operation to initiate a switch provider of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1493,19 +1242,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginSwitchProvider(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        SwitchProviderInput switchProviderInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, SwitchProviderInput switchProviderInput, Context context);
 
     /**
      * Execute switch provider.
-     *
-     * <p>Operation to initiate a switch provider of the replication protected item.
-     *
+     * 
+     * Operation to initiate a switch provider of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1518,19 +1262,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner switchProvider(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        SwitchProviderInput switchProviderInput);
+    ReplicationProtectedItemInner switchProvider(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, SwitchProviderInput switchProviderInput);
 
     /**
      * Execute switch provider.
-     *
-     * <p>Operation to initiate a switch provider of the replication protected item.
-     *
+     * 
+     * Operation to initiate a switch provider of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1544,20 +1283,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner switchProvider(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        SwitchProviderInput switchProviderInput,
+    ReplicationProtectedItemInner switchProvider(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, SwitchProviderInput switchProviderInput,
         Context context);
 
     /**
      * Execute test failover.
-     *
-     * <p>Operation to perform a test failover of the replication protected item.
-     *
+     * 
+     * Operation to perform a test failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1571,18 +1305,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginTestFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        TestFailoverInput testfailoverInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, TestFailoverInput testfailoverInput);
 
     /**
      * Execute test failover.
-     *
-     * <p>Operation to perform a test failover of the replication protected item.
-     *
+     * 
+     * Operation to perform a test failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1597,19 +1327,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginTestFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        TestFailoverInput testfailoverInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, TestFailoverInput testfailoverInput, Context context);
 
     /**
      * Execute test failover.
-     *
-     * <p>Operation to perform a test failover of the replication protected item.
-     *
+     * 
+     * Operation to perform a test failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1622,19 +1347,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner testFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        TestFailoverInput testfailoverInput);
+    ReplicationProtectedItemInner testFailover(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, TestFailoverInput testfailoverInput);
 
     /**
      * Execute test failover.
-     *
-     * <p>Operation to perform a test failover of the replication protected item.
-     *
+     * 
+     * Operation to perform a test failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1648,20 +1368,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner testFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        TestFailoverInput testfailoverInput,
+    ReplicationProtectedItemInner testFailover(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, TestFailoverInput testfailoverInput,
         Context context);
 
     /**
      * Execute test failover cleanup.
-     *
-     * <p>Operation to clean up the test failover of a replication protected item.
-     *
+     * 
+     * Operation to clean up the test failover of a replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1675,18 +1390,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginTestFailoverCleanup(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        TestFailoverCleanupInput cleanupInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, TestFailoverCleanupInput cleanupInput);
 
     /**
      * Execute test failover cleanup.
-     *
-     * <p>Operation to clean up the test failover of a replication protected item.
-     *
+     * 
+     * Operation to clean up the test failover of a replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1701,19 +1412,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginTestFailoverCleanup(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        TestFailoverCleanupInput cleanupInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, TestFailoverCleanupInput cleanupInput, Context context);
 
     /**
      * Execute test failover cleanup.
-     *
-     * <p>Operation to clean up the test failover of a replication protected item.
-     *
+     * 
+     * Operation to clean up the test failover of a replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1726,19 +1432,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner testFailoverCleanup(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        TestFailoverCleanupInput cleanupInput);
+    ReplicationProtectedItemInner testFailoverCleanup(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, TestFailoverCleanupInput cleanupInput);
 
     /**
      * Execute test failover cleanup.
-     *
-     * <p>Operation to clean up the test failover of a replication protected item.
-     *
+     * 
+     * Operation to clean up the test failover of a replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1752,20 +1453,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner testFailoverCleanup(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        TestFailoverCleanupInput cleanupInput,
+    ReplicationProtectedItemInner testFailoverCleanup(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, TestFailoverCleanupInput cleanupInput,
         Context context);
 
     /**
      * Execute unplanned failover.
-     *
-     * <p>Operation to initiate a failover of the replication protected item.
-     *
+     * 
+     * Operation to initiate a failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1779,18 +1475,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUnplannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UnplannedFailoverInput failoverInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, UnplannedFailoverInput failoverInput);
 
     /**
      * Execute unplanned failover.
-     *
-     * <p>Operation to initiate a failover of the replication protected item.
-     *
+     * 
+     * Operation to initiate a failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1805,19 +1497,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUnplannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UnplannedFailoverInput failoverInput,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, UnplannedFailoverInput failoverInput, Context context);
 
     /**
      * Execute unplanned failover.
-     *
-     * <p>Operation to initiate a failover of the replication protected item.
-     *
+     * 
+     * Operation to initiate a failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1830,19 +1517,14 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner unplannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UnplannedFailoverInput failoverInput);
+    ReplicationProtectedItemInner unplannedFailover(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, UnplannedFailoverInput failoverInput);
 
     /**
      * Execute unplanned failover.
-     *
-     * <p>Operation to initiate a failover of the replication protected item.
-     *
+     * 
+     * Operation to initiate a failover of the replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Unique fabric name.
@@ -1856,20 +1538,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner unplannedFailover(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UnplannedFailoverInput failoverInput,
+    ReplicationProtectedItemInner unplannedFailover(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName, UnplannedFailoverInput failoverInput,
         Context context);
 
     /**
      * Updates appliance for replication protected Item.
-     *
-     * <p>The operation to update appliance of an ASR replication protected item.
-     *
+     * 
+     * The operation to update appliance of an ASR replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1883,18 +1560,14 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdateAppliance(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput);
 
     /**
      * Updates appliance for replication protected Item.
-     *
-     * <p>The operation to update appliance of an ASR replication protected item.
-     *
+     * 
+     * The operation to update appliance of an ASR replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1909,19 +1582,15 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdateAppliance(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput,
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput,
         Context context);
 
     /**
      * Updates appliance for replication protected Item.
-     *
-     * <p>The operation to update appliance of an ASR replication protected item.
-     *
+     * 
+     * The operation to update appliance of an ASR replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1934,19 +1603,15 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner updateAppliance(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
+    ReplicationProtectedItemInner updateAppliance(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName,
         UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput);
 
     /**
      * Updates appliance for replication protected Item.
-     *
-     * <p>The operation to update appliance of an ASR replication protected item.
-     *
+     * 
+     * The operation to update appliance of an ASR replication protected item.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1960,21 +1625,16 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner updateAppliance(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput,
-        Context context);
+    ReplicationProtectedItemInner updateAppliance(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String replicatedProtectedItemName,
+        UpdateApplianceForReplicationProtectedItemInput applianceUpdateInput, Context context);
 
     /**
      * Update the mobility service on a protected item.
-     *
-     * <p>The operation to update(push update) the installed mobility service software on a replication protected item
-     * to the latest available version.
-     *
+     * 
+     * The operation to update(push update) the installed mobility service software on a replication protected item to
+     * the latest available version.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the protected item.
@@ -1988,19 +1648,15 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdateMobilityService(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UpdateMobilityServiceRequest updateMobilityServiceRequest);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest);
 
     /**
      * Update the mobility service on a protected item.
-     *
-     * <p>The operation to update(push update) the installed mobility service software on a replication protected item
-     * to the latest available version.
-     *
+     * 
+     * The operation to update(push update) the installed mobility service software on a replication protected item to
+     * the latest available version.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the protected item.
@@ -2015,20 +1671,15 @@ public interface ReplicationProtectedItemsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ReplicationProtectedItemInner>, ReplicationProtectedItemInner> beginUpdateMobilityService(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UpdateMobilityServiceRequest updateMobilityServiceRequest,
-        Context context);
+        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String replicatedProtectedItemName, UpdateMobilityServiceRequest updateMobilityServiceRequest, Context context);
 
     /**
      * Update the mobility service on a protected item.
-     *
-     * <p>The operation to update(push update) the installed mobility service software on a replication protected item
-     * to the latest available version.
-     *
+     * 
+     * The operation to update(push update) the installed mobility service software on a replication protected item to
+     * the latest available version.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the protected item.
@@ -2041,20 +1692,16 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner updateMobilityService(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
+    ReplicationProtectedItemInner updateMobilityService(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String replicatedProtectedItemName,
         UpdateMobilityServiceRequest updateMobilityServiceRequest);
 
     /**
      * Update the mobility service on a protected item.
-     *
-     * <p>The operation to update(push update) the installed mobility service software on a replication protected item
-     * to the latest available version.
-     *
+     * 
+     * The operation to update(push update) the installed mobility service software on a replication protected item to
+     * the latest available version.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the protected item.
@@ -2068,36 +1715,31 @@ public interface ReplicationProtectedItemsClient {
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationProtectedItemInner updateMobilityService(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String replicatedProtectedItemName,
-        UpdateMobilityServiceRequest updateMobilityServiceRequest,
-        Context context);
+    ReplicationProtectedItemInner updateMobilityService(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String replicatedProtectedItemName,
+        UpdateMobilityServiceRequest updateMobilityServiceRequest, Context context);
 
     /**
      * Gets the list of replication protected items.
-     *
-     * <p>Gets the list of ASR replication protected items in the vault.
-     *
+     * 
+     * Gets the list of ASR replication protected items in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ASR replication protected items in the vault as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of ASR replication protected items in the vault as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReplicationProtectedItemInner> list(String resourceName, String resourceGroupName);
 
     /**
      * Gets the list of replication protected items.
-     *
-     * <p>Gets the list of ASR replication protected items in the vault.
-     *
+     * 
+     * Gets the list of ASR replication protected items in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param skipToken The pagination token. Possible values: "FabricId" or "FabricId_CloudId" or null.
@@ -2106,10 +1748,10 @@ public interface ReplicationProtectedItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ASR replication protected items in the vault as paginated response with {@link
-     *     PagedIterable}.
+     * @return the list of ASR replication protected items in the vault as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ReplicationProtectedItemInner> list(
-        String resourceName, String resourceGroupName, String skipToken, String filter, Context context);
+    PagedIterable<ReplicationProtectedItemInner> list(String resourceName, String resourceGroupName, String skipToken,
+        String filter, Context context);
 }

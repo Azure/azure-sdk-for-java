@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Hyper-V Managed disk details. */
+/**
+ * Hyper-V Managed disk details.
+ */
 @Fluent
 public final class HyperVReplicaAzureManagedDiskDetails {
     /*
@@ -34,13 +36,15 @@ public final class HyperVReplicaAzureManagedDiskDetails {
     @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
-    /** Creates an instance of HyperVReplicaAzureManagedDiskDetails class. */
+    /**
+     * Creates an instance of HyperVReplicaAzureManagedDiskDetails class.
+     */
     public HyperVReplicaAzureManagedDiskDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -49,7 +53,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the HyperVReplicaAzureManagedDiskDetails object itself.
      */
@@ -60,7 +64,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Get the seedManagedDiskId property: Seed managed disk Id.
-     *
+     * 
      * @return the seedManagedDiskId value.
      */
     public String seedManagedDiskId() {
@@ -69,7 +73,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Set the seedManagedDiskId property: Seed managed disk Id.
-     *
+     * 
      * @param seedManagedDiskId the seedManagedDiskId value to set.
      * @return the HyperVReplicaAzureManagedDiskDetails object itself.
      */
@@ -80,7 +84,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Get the replicaDiskType property: The replica disk type.
-     *
+     * 
      * @return the replicaDiskType value.
      */
     public String replicaDiskType() {
@@ -89,7 +93,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Set the replicaDiskType property: The replica disk type.
-     *
+     * 
      * @param replicaDiskType the replicaDiskType value to set.
      * @return the HyperVReplicaAzureManagedDiskDetails object itself.
      */
@@ -100,7 +104,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Get the diskEncryptionSetId property: The disk encryption set ARM Id.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -109,7 +113,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Set the diskEncryptionSetId property: The disk encryption set ARM Id.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the HyperVReplicaAzureManagedDiskDetails object itself.
      */
@@ -120,7 +124,7 @@ public final class HyperVReplicaAzureManagedDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

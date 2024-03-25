@@ -45,7 +45,8 @@ public final class PipelineRunsCancelWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.pipelineRuns().cancelWithResponse("tkze", "poxdwoxp", "qtzbs", true, com.azure.core.util.Context.NONE);
+        manager.pipelineRuns().cancelWithResponse("vrfkxiixnxx", "vyizya", "xwegij", true,
+            com.azure.core.util.Context.NONE);
 
     }
 }

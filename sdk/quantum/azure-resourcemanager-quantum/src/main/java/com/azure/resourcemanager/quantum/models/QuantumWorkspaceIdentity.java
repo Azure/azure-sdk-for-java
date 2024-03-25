@@ -7,7 +7,9 @@ package com.azure.resourcemanager.quantum.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Managed Identity information. */
+/**
+ * Managed Identity information.
+ */
 @Fluent
 public final class QuantumWorkspaceIdentity {
     /*
@@ -28,13 +30,15 @@ public final class QuantumWorkspaceIdentity {
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
-    /** Creates an instance of QuantumWorkspaceIdentity class. */
+    /**
+     * Creates an instance of QuantumWorkspaceIdentity class.
+     */
     public QuantumWorkspaceIdentity() {
     }
 
     /**
      * Get the principalId property: The principal ID of resource identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -43,7 +47,7 @@ public final class QuantumWorkspaceIdentity {
 
     /**
      * Get the tenantId property: The tenant ID of resource.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -52,7 +56,7 @@ public final class QuantumWorkspaceIdentity {
 
     /**
      * Get the type property: The identity type.
-     *
+     * 
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -61,7 +65,7 @@ public final class QuantumWorkspaceIdentity {
 
     /**
      * Set the type property: The identity type.
-     *
+     * 
      * @param type the type value to set.
      * @return the QuantumWorkspaceIdentity object itself.
      */
@@ -72,7 +76,7 @@ public final class QuantumWorkspaceIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

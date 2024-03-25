@@ -52,8 +52,8 @@ public class HttpResponseDrainsBufferTests {
     private static final String URL = NettyHttpClientLocalTestServer.getServer().getHttpUri() + LONG_BODY_PATH;
 
     private ResourceLeakDetectorFactory originalLeakDetectorFactory;
-    private final TestResourceLeakDetectorFactory testResourceLeakDetectorFactory =
-        new TestResourceLeakDetectorFactory();
+    private final TestResourceLeakDetectorFactory testResourceLeakDetectorFactory
+        = new TestResourceLeakDetectorFactory();
 
     @BeforeAll
     public static void startTestServer() {
@@ -221,12 +221,11 @@ public class HttpResponseDrainsBufferTests {
     public void closingHttpResponseIsIdempotent() {
         HttpClient httpClient = new NettyAsyncHttpClientProvider().createInstance();
         StepVerifier.create(httpClient.send(new HttpRequest(HttpMethod.GET, URL))
-                .flatMap(response -> Mono.fromRunnable(response::close).thenReturn(response))
-                .delayElement(Duration.ofSeconds(1))
-                .flatMap(response -> Mono.fromRunnable(response::close))
-                .delayElement(Duration.ofSeconds(1))
-                .then())
-            .verifyComplete();
+            .flatMap(response -> Mono.fromRunnable(response::close).thenReturn(response))
+            .delayElement(Duration.ofSeconds(1))
+            .flatMap(response -> Mono.fromRunnable(response::close))
+            .delayElement(Duration.ofSeconds(1))
+            .then()).verifyComplete();
     }
 
     private static final class TestResourceLeakDetectorFactory extends ResourceLeakDetectorFactory {
@@ -236,8 +235,8 @@ public class HttpResponseDrainsBufferTests {
         @SuppressWarnings("deprecation") // API is deprecated but abstract
         public <T> ResourceLeakDetector<T> newResourceLeakDetector(Class<T> resource, int samplingInterval,
             long maxActive) {
-            TestResourceLeakDetector<T> leakDetector = new TestResourceLeakDetector<>(resource, samplingInterval,
-                maxActive);
+            TestResourceLeakDetector<T> leakDetector
+                = new TestResourceLeakDetector<>(resource, samplingInterval, maxActive);
             createdDetectors.add(leakDetector);
             return leakDetector;
         }

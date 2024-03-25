@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.CacheRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a request to list cache rules for a container registry. */
+/**
+ * The result of a request to list cache rules for a container registry.
+ */
 @Fluent
 public final class CacheRulesListResult {
     /*
@@ -24,13 +26,15 @@ public final class CacheRulesListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of CacheRulesListResult class. */
+    /**
+     * Creates an instance of CacheRulesListResult class.
+     */
     public CacheRulesListResult() {
     }
 
     /**
      * Get the value property: The list of cache rules.
-     *
+     * 
      * @return the value value.
      */
     public List<CacheRuleInner> value() {
@@ -39,7 +43,7 @@ public final class CacheRulesListResult {
 
     /**
      * Set the value property: The list of cache rules.
-     *
+     * 
      * @param value the value value to set.
      * @return the CacheRulesListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class CacheRulesListResult {
 
     /**
      * Get the nextLink property: If provided, client must use NextLink URI to request next list of cache rules.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class CacheRulesListResult {
 
     /**
      * Set the nextLink property: If provided, client must use NextLink URI to request next list of cache rules.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CacheRulesListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class CacheRulesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.CreateProte
 public final class CreateProtectionIntentProviderSpecificDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateProtectionIntentProviderSpecificDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"CreateProtectionIntentProviderSpecificDetails\"}")
+        CreateProtectionIntentProviderSpecificDetails model
+            = BinaryData.fromString("{\"instanceType\":\"CreateProtectionIntentProviderSpecificDetails\"}")
                 .toObject(CreateProtectionIntentProviderSpecificDetails.class);
     }
 

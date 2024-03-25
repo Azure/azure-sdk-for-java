@@ -19,20 +19,20 @@ public final class ApplicationsImpl implements Applications {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public ApplicationsImpl(
-        ApplicationsClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public ApplicationsImpl(ApplicationsClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Application> list() {
         PagedIterable<ApplicationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Application> list(Context context) {
         PagedIterable<ApplicationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplicationImpl(inner1, this.manager()));
     }
 
     private ApplicationsClient serviceClient() {

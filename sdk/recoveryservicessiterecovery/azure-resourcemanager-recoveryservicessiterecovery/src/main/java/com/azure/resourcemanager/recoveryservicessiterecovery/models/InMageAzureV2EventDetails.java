@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Model class for event details of a VMwareAzureV2 event. */
+/**
+ * Model class for event details of a VMwareAzureV2 event.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageAzureV2")
 @Fluent
@@ -56,14 +58,16 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
     @JsonProperty(value = "siteName")
     private String siteName;
 
-    /** Creates an instance of InMageAzureV2EventDetails class. */
+    /**
+     * Creates an instance of InMageAzureV2EventDetails class.
+     */
     public InMageAzureV2EventDetails() {
     }
 
     /**
      * Get the eventType property: InMage Event type. Takes one of the values of
      * InMageDataContract.InMageMonitoringEventType.
-     *
+     * 
      * @return the eventType value.
      */
     public String eventType() {
@@ -73,7 +77,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
     /**
      * Set the eventType property: InMage Event type. Takes one of the values of
      * InMageDataContract.InMageMonitoringEventType.
-     *
+     * 
      * @param eventType the eventType value to set.
      * @return the InMageAzureV2EventDetails object itself.
      */
@@ -84,7 +88,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Get the category property: InMage Event Category.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -93,7 +97,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Set the category property: InMage Event Category.
-     *
+     * 
      * @param category the category value to set.
      * @return the InMageAzureV2EventDetails object itself.
      */
@@ -104,7 +108,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Get the component property: InMage Event Component.
-     *
+     * 
      * @return the component value.
      */
     public String component() {
@@ -113,7 +117,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Set the component property: InMage Event Component.
-     *
+     * 
      * @param component the component value to set.
      * @return the InMageAzureV2EventDetails object itself.
      */
@@ -124,7 +128,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Get the correctiveAction property: Corrective Action string for the event.
-     *
+     * 
      * @return the correctiveAction value.
      */
     public String correctiveAction() {
@@ -133,7 +137,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Set the correctiveAction property: Corrective Action string for the event.
-     *
+     * 
      * @param correctiveAction the correctiveAction value to set.
      * @return the InMageAzureV2EventDetails object itself.
      */
@@ -144,7 +148,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Get the details property: InMage Event Details.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -153,7 +157,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Set the details property: InMage Event Details.
-     *
+     * 
      * @param details the details value to set.
      * @return the InMageAzureV2EventDetails object itself.
      */
@@ -164,7 +168,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Get the summary property: InMage Event Summary.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -173,7 +177,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Set the summary property: InMage Event Summary.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the InMageAzureV2EventDetails object itself.
      */
@@ -184,7 +188,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Get the siteName property: VMware Site name.
-     *
+     * 
      * @return the siteName value.
      */
     public String siteName() {
@@ -193,7 +197,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Set the siteName property: VMware Site name.
-     *
+     * 
      * @param siteName the siteName value to set.
      * @return the InMageAzureV2EventDetails object itself.
      */
@@ -204,7 +208,7 @@ public final class InMageAzureV2EventDetails extends EventProviderSpecificDetail
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

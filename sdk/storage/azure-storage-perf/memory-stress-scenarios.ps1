@@ -1,3 +1,8 @@
+# Setting $PSNativeCommandArgumentPassing to 'Legacy' to use PowerShell
+# 7.2 behavior for command argument passing. Newer behaviors will result
+# in errors from git.exe.
+$PSNativeCommandArgumentPassing = 'Legacy'
+
 $JavaPath = Join-Path -Path $Env:JAVA_HOME -ChildPath "bin" | Join-Path -ChildPath "java"
 $TargetDirPath = Join-Path -Path $PSScriptRoot -ChildPath "target"
 $PerfJarPath = Get-ChildItem -Path (Join-Path -Path $TargetDirPath -ChildPath "*") -Include azure-storage-perf-*-jar-with-dependencies.jar -File

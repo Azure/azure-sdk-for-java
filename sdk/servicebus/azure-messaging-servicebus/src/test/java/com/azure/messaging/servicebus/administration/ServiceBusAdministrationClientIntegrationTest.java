@@ -6,7 +6,6 @@ package com.azure.messaging.servicebus.administration;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
@@ -45,7 +44,6 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
 import java.time.Clock;
@@ -72,8 +70,6 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 
 /**
  * Tests {@link ServiceBusAdministrationClient}.
@@ -95,10 +91,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         final String fullyQualifiedDomainName = TestUtils.getFullyQualifiedDomainName();
         final TokenCredential tokenCredential;
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = mock(TokenCredential.class);
-            Mockito.when(tokenCredential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.fromCallable(() -> {
-                return new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5)));
-            }));
+            tokenCredential = request -> Mono.fromCallable(() ->
+                new AccessToken("foo-bar", OffsetDateTime.now().plus(Duration.ofMinutes(5))));
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
         }
@@ -121,15 +115,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
         // Assert
         assertNotNull(properties);
 
-        final String expectedName;
-        if (interceptorManager.isPlaybackMode()) {
-            expectedName = TestUtils.TEST_NAMESPACE;
-        } else {
+        if (!interceptorManager.isPlaybackMode()) {
             final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
-            expectedName = split[0];
+            assertEquals(split[0], properties.getName());
         }
-
-        assertEquals(expectedName, properties.getName());
     }
 
     /**
@@ -512,17 +501,13 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     @Test
     void getNamespace() {
         final ServiceBusAdministrationClient client = getClient();
-        final String expectedName;
-        if (interceptorManager.isPlaybackMode()) {
-            expectedName = TestUtils.TEST_NAMESPACE;
-        } else {
-            final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
-            expectedName = split[0];
-        }
 
         final NamespaceProperties namespaceProperties = client.getNamespaceProperties();
         assertEquals(NamespaceType.MESSAGING, namespaceProperties.getNamespaceType());
-        assertEquals(expectedName, namespaceProperties.getName());
+        if (!interceptorManager.isPlaybackMode()) {
+            final String[] split = TestUtils.getFullyQualifiedDomainName().split("\\.", 2);
+            assertEquals(split[0], namespaceProperties.getName());
+        }
     }
 
     @Test
@@ -794,8 +779,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     @Test
     void deleteQueue() {
         final ServiceBusAdministrationClient client = getClient();
-        final String queueName = getEntityName(getQueueBaseName(), 9);
+        final String queueName = testResourceNamer.randomName("queue", 10);
 
+        client.createQueue(queueName);
         client.deleteQueue(queueName);
     }
 
@@ -861,8 +847,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestProxyTest
     @Test
     void deleteTopic() {
         final ServiceBusAdministrationClient client = getClient();
-        final String topicName = getEntityName(getTopicBaseName(), 9);
+        final String topicName = testResourceNamer.randomName("topic", 10);
 
+        client.createTopic(topicName);
         client.deleteTopic(topicName);
     }
 

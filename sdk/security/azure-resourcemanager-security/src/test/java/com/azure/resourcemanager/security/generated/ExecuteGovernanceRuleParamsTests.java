@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ExecuteGovernanceRuleParamsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExecuteGovernanceRuleParams model =
-            BinaryData.fromString("{\"override\":true}").toObject(ExecuteGovernanceRuleParams.class);
+        ExecuteGovernanceRuleParams model
+            = BinaryData.fromString("{\"override\":true}").toObject(ExecuteGovernanceRuleParams.class);
         Assertions.assertEquals(true, model.override());
     }
 

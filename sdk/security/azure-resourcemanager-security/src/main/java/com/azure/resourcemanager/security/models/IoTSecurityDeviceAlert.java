@@ -7,7 +7,9 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Statistical information about the number of alerts per alert type during last set number of days. */
+/**
+ * Statistical information about the number of alerts per alert type during last set number of days.
+ */
 @Immutable
 public final class IoTSecurityDeviceAlert {
     /*
@@ -28,13 +30,15 @@ public final class IoTSecurityDeviceAlert {
     @JsonProperty(value = "alertsCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long alertsCount;
 
-    /** Creates an instance of IoTSecurityDeviceAlert class. */
+    /**
+     * Creates an instance of IoTSecurityDeviceAlert class.
+     */
     public IoTSecurityDeviceAlert() {
     }
 
     /**
      * Get the alertDisplayName property: Display name of the alert.
-     *
+     * 
      * @return the alertDisplayName value.
      */
     public String alertDisplayName() {
@@ -43,7 +47,7 @@ public final class IoTSecurityDeviceAlert {
 
     /**
      * Get the reportedSeverity property: Assessed Alert severity.
-     *
+     * 
      * @return the reportedSeverity value.
      */
     public ReportedSeverity reportedSeverity() {
@@ -52,7 +56,7 @@ public final class IoTSecurityDeviceAlert {
 
     /**
      * Get the alertsCount property: Number of alerts raised for this alert type.
-     *
+     * 
      * @return the alertsCount value.
      */
     public Long alertsCount() {
@@ -61,7 +65,7 @@ public final class IoTSecurityDeviceAlert {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

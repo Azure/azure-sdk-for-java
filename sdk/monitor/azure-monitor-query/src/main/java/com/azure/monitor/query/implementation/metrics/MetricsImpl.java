@@ -4,12 +4,14 @@
 
 package com.azure.monitor.query.implementation.metrics;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -19,9 +21,12 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.monitor.query.implementation.metrics.models.ErrorContractException;
 import com.azure.monitor.query.implementation.metrics.models.ErrorResponseException;
+import com.azure.monitor.query.implementation.metrics.models.MetricResultType;
 import com.azure.monitor.query.implementation.metrics.models.MetricsResponse;
 import com.azure.monitor.query.implementation.metrics.models.ResultType;
+import com.azure.monitor.query.implementation.metrics.models.SubscriptionScopeMetricsRequestBodyParameters;
 import java.time.Duration;
 import reactor.core.publisher.Mono;
 
@@ -50,12 +55,74 @@ public final class MetricsImpl {
     }
 
     /**
-     * The interface defining all the services for MonitorManagementClientMetrics to be used by the proxy service to
+     * The interface defining all the services for AzureMonitorMetricsDataAPIMetrics to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "MonitorManagementCli")
+    @ServiceInterface(name = "AzureMonitorMetricsD")
     public interface MetricsService {
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metrics")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Mono<Response<MetricsResponse>> listAtSubscriptionScope(@HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("region") String region, @QueryParam("timespan") String timespan,
+            @QueryParam("interval") Duration interval, @QueryParam("metricnames") String metricnames,
+            @QueryParam("aggregation") String aggregation, @QueryParam("top") Integer top,
+            @QueryParam("orderby") String orderBy, @QueryParam("$filter") String filter,
+            @QueryParam("resultType") MetricResultType resultType,
+            @QueryParam("metricnamespace") String metricnamespace,
+            @QueryParam("AutoAdjustTimegrain") Boolean autoAdjustTimegrain,
+            @QueryParam("ValidateDimensions") Boolean validateDimensions, @QueryParam("rollupby") String rollupby,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metrics")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Response<MetricsResponse> listAtSubscriptionScopeSync(@HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("region") String region, @QueryParam("timespan") String timespan,
+            @QueryParam("interval") Duration interval, @QueryParam("metricnames") String metricnames,
+            @QueryParam("aggregation") String aggregation, @QueryParam("top") Integer top,
+            @QueryParam("orderby") String orderBy, @QueryParam("$filter") String filter,
+            @QueryParam("resultType") MetricResultType resultType,
+            @QueryParam("metricnamespace") String metricnamespace,
+            @QueryParam("AutoAdjustTimegrain") Boolean autoAdjustTimegrain,
+            @QueryParam("ValidateDimensions") Boolean validateDimensions, @QueryParam("rollupby") String rollupby,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metrics")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Mono<Response<MetricsResponse>> listAtSubscriptionScopePost(@HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("region") String region, @QueryParam("timespan") String timespan,
+            @QueryParam("interval") Duration interval, @QueryParam("metricnames") String metricnames,
+            @QueryParam("aggregation") String aggregation, @QueryParam("top") Integer top,
+            @QueryParam("orderby") String orderBy, @QueryParam("$filter") String filter,
+            @QueryParam("resultType") MetricResultType resultType,
+            @QueryParam("metricnamespace") String metricnamespace,
+            @QueryParam("AutoAdjustTimegrain") Boolean autoAdjustTimegrain,
+            @QueryParam("ValidateDimensions") Boolean validateDimensions, @QueryParam("rollupby") String rollupby,
+            @BodyParam("application/json") SubscriptionScopeMetricsRequestBodyParameters body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Insights/metrics")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ErrorContractException.class)
+        Response<MetricsResponse> listAtSubscriptionScopePostSync(@HostParam("$host") String host,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("region") String region, @QueryParam("timespan") String timespan,
+            @QueryParam("interval") Duration interval, @QueryParam("metricnames") String metricnames,
+            @QueryParam("aggregation") String aggregation, @QueryParam("top") Integer top,
+            @QueryParam("orderby") String orderBy, @QueryParam("$filter") String filter,
+            @QueryParam("resultType") MetricResultType resultType,
+            @QueryParam("metricnamespace") String metricnamespace,
+            @QueryParam("AutoAdjustTimegrain") Boolean autoAdjustTimegrain,
+            @QueryParam("ValidateDimensions") Boolean validateDimensions, @QueryParam("rollupby") String rollupby,
+            @BodyParam("application/json") SubscriptionScopeMetricsRequestBodyParameters body,
+            @HeaderParam("Accept") String accept, Context context);
+
         @Get("/{resourceUri}/providers/Microsoft.Insights/metrics")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -65,8 +132,10 @@ public final class MetricsImpl {
             @QueryParam("metricnames") String metricnames, @QueryParam("aggregation") String aggregation,
             @QueryParam("top") Integer top, @QueryParam("orderby") String orderBy, @QueryParam("$filter") String filter,
             @QueryParam("resultType") ResultType resultType, @QueryParam("api-version") String apiVersion,
-            @QueryParam("metricnamespace") String metricnamespace, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("metricnamespace") String metricnamespace,
+            @QueryParam("AutoAdjustTimegrain") Boolean autoAdjustTimegrain,
+            @QueryParam("ValidateDimensions") Boolean validateDimensions, @QueryParam("rollupby") String rollupby,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{resourceUri}/providers/Microsoft.Insights/metrics")
         @ExpectedResponses({ 200 })
@@ -77,8 +146,640 @@ public final class MetricsImpl {
             @QueryParam("metricnames") String metricnames, @QueryParam("aggregation") String aggregation,
             @QueryParam("top") Integer top, @QueryParam("orderby") String orderBy, @QueryParam("$filter") String filter,
             @QueryParam("resultType") ResultType resultType, @QueryParam("api-version") String apiVersion,
-            @QueryParam("metricnamespace") String metricnamespace, @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("metricnamespace") String metricnamespace,
+            @QueryParam("AutoAdjustTimegrain") Boolean autoAdjustTimegrain,
+            @QueryParam("ValidateDimensions") Boolean validateDimensions, @QueryParam("rollupby") String rollupby,
+            @HeaderParam("Accept") String accept, Context context);
+    }
+
+    /**
+     * **Lists the metric data for a subscription**.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MetricsResponse>> listAtSubscriptionScopeWithResponseAsync(String region, String timespan,
+        Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
+        MetricResultType resultType, String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions,
+        String rollupby) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.listAtSubscriptionScope(this.client.getHost(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), region, timespan, interval, metricnames, aggregation, top, orderBy, filter,
+                resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, accept, context));
+    }
+
+    /**
+     * **Lists the metric data for a subscription**.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MetricsResponse>> listAtSubscriptionScopeWithResponseAsync(String region, String timespan,
+        Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
+        MetricResultType resultType, String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions,
+        String rollupby, Context context) {
+        final String accept = "application/json";
+        return service.listAtSubscriptionScope(this.client.getHost(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), region, timespan, interval, metricnames, aggregation, top, orderBy, filter,
+            resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, accept, context);
+    }
+
+    /**
+     * **Lists the metric data for a subscription**.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MetricsResponse> listAtSubscriptionScopeAsync(String region, String timespan, Duration interval,
+        String metricnames, String aggregation, Integer top, String orderBy, String filter, MetricResultType resultType,
+        String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
+        return listAtSubscriptionScopeWithResponseAsync(region, timespan, interval, metricnames, aggregation, top,
+            orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * **Lists the metric data for a subscription**.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MetricsResponse> listAtSubscriptionScopeAsync(String region, String timespan, Duration interval,
+        String metricnames, String aggregation, Integer top, String orderBy, String filter, MetricResultType resultType,
+        String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby,
+        Context context) {
+        return listAtSubscriptionScopeWithResponseAsync(region, timespan, interval, metricnames, aggregation, top,
+            orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * **Lists the metric data for a subscription**.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MetricsResponse> listAtSubscriptionScopeWithResponse(String region, String timespan,
+        Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
+        MetricResultType resultType, String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions,
+        String rollupby, Context context) {
+        final String accept = "application/json";
+        return service.listAtSubscriptionScopeSync(this.client.getHost(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), region, timespan, interval, metricnames, aggregation, top, orderBy, filter,
+            resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, accept, context);
+    }
+
+    /**
+     * **Lists the metric data for a subscription**.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetricsResponse listAtSubscriptionScope(String region, String timespan, Duration interval,
+        String metricnames, String aggregation, Integer top, String orderBy, String filter, MetricResultType resultType,
+        String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
+        return listAtSubscriptionScopeWithResponse(region, timespan, interval, metricnames, aggregation, top, orderBy,
+            filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * **Lists the metric data for a subscription**. Parameters can be specified on either query params or the body.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @param body Parameters serialized in the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MetricsResponse>> listAtSubscriptionScopePostWithResponseAsync(String region, String timespan,
+        Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
+        MetricResultType resultType, String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions,
+        String rollupby, SubscriptionScopeMetricsRequestBodyParameters body) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+            context -> service.listAtSubscriptionScopePost(this.client.getHost(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), region, timespan, interval, metricnames, aggregation, top, orderBy, filter,
+                resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, body, accept, context));
+    }
+
+    /**
+     * **Lists the metric data for a subscription**. Parameters can be specified on either query params or the body.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @param body Parameters serialized in the body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<MetricsResponse>> listAtSubscriptionScopePostWithResponseAsync(String region, String timespan,
+        Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
+        MetricResultType resultType, String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions,
+        String rollupby, SubscriptionScopeMetricsRequestBodyParameters body, Context context) {
+        final String accept = "application/json";
+        return service.listAtSubscriptionScopePost(this.client.getHost(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), region, timespan, interval, metricnames, aggregation, top, orderBy, filter,
+            resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, body, accept, context);
+    }
+
+    /**
+     * **Lists the metric data for a subscription**. Parameters can be specified on either query params or the body.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @param body Parameters serialized in the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MetricsResponse> listAtSubscriptionScopePostAsync(String region, String timespan, Duration interval,
+        String metricnames, String aggregation, Integer top, String orderBy, String filter, MetricResultType resultType,
+        String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby,
+        SubscriptionScopeMetricsRequestBodyParameters body) {
+        return listAtSubscriptionScopePostWithResponseAsync(region, timespan, interval, metricnames, aggregation, top,
+            orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, body)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * **Lists the metric data for a subscription**. Parameters can be specified on either query params or the body.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @param body Parameters serialized in the body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<MetricsResponse> listAtSubscriptionScopePostAsync(String region, String timespan, Duration interval,
+        String metricnames, String aggregation, Integer top, String orderBy, String filter, MetricResultType resultType,
+        String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby,
+        SubscriptionScopeMetricsRequestBodyParameters body, Context context) {
+        return listAtSubscriptionScopePostWithResponseAsync(region, timespan, interval, metricnames, aggregation, top,
+            orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, body,
+            context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * **Lists the metric data for a subscription**. Parameters can be specified on either query params or the body.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @param body Parameters serialized in the body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<MetricsResponse> listAtSubscriptionScopePostWithResponse(String region, String timespan,
+        Duration interval, String metricnames, String aggregation, Integer top, String orderBy, String filter,
+        MetricResultType resultType, String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions,
+        String rollupby, SubscriptionScopeMetricsRequestBodyParameters body, Context context) {
+        final String accept = "application/json";
+        return service.listAtSubscriptionScopePostSync(this.client.getHost(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), region, timespan, interval, metricnames, aggregation, top, orderBy, filter,
+            resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, body, accept, context);
+    }
+
+    /**
+     * **Lists the metric data for a subscription**. Parameters can be specified on either query params or the body.
+     * 
+     * @param region The region where the metrics you want reside.
+     * @param timespan The timespan of the query. It is a string with the following format
+     * 'startDateTime_ISO/endDateTime_ISO'.
+     * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
+     * case for 'FULL' value that returns single datapoint for entire time span requested.
+     * *Examples: PT15M, PT1H, P1D, FULL*.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
+     * @param aggregation The list of aggregation types (comma separated) to retrieve.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
+     * Defaults to 10.
+     * @param orderBy The aggregation to use for sorting results and the direction of the sort.
+     * Only one order can be specified.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
+     * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
+     * operation's description for details.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
+     * @param body Parameters serialized in the body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a metrics query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MetricsResponse listAtSubscriptionScopePost(String region, String timespan, Duration interval,
+        String metricnames, String aggregation, Integer top, String orderBy, String filter, MetricResultType resultType,
+        String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby,
+        SubscriptionScopeMetricsRequestBodyParameters body) {
+        return listAtSubscriptionScopePostWithResponse(region, timespan, interval, metricnames, aggregation, top,
+            orderBy, filter, resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, body,
+            Context.NONE).getValue();
     }
 
     /**
@@ -90,28 +791,33 @@ public final class MetricsImpl {
      * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
      * case for 'FULL' value that returns single datapoint for entire time span requested.
      * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
-     * has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * @param top The maximum number of records to retrieve.
-     * Valid only if $filter is specified.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
      * Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort.
      * Only one order can be specified.
-     * Examples: sum asc.
-     * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
-     * metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
-     * 'b1' or B eq 'b2' and C eq '*'** - Invalid variant: **$filter=A eq 'a1' and B eq 'b1' and C eq '*' or B = 'b2'**
-     * This is invalid because the logical or operator cannot separate two different metadata names. - Return all time
-     * series where A = a1, B = b1 and C = c1: **$filter=A eq 'a1' and B eq 'b1' and C eq 'c1'** - Return all time
-     * series where A = a1 **$filter=A eq 'a1' and B eq '*' and C eq '*'**. Special case: When dimension name or
-     * dimension value uses round brackets. Eg: When dimension name is **dim (test) 1** Instead of using $filter= "dim
-     * (test) 1 eq '*' " use **$filter= "dim %2528test%2529 1 eq '*' "** When dimension name is **dim (test) 3** and
-     * dimension value is **dim3 (test) val** Instead of using $filter= "dim (test) 3 eq 'dim3 (test) val' " use
-     * **$filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "**.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
      * operation's description for details.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -120,11 +826,11 @@ public final class MetricsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricsResponse>> listWithResponseAsync(String resourceUri, String timespan, Duration interval,
         String metricnames, String aggregation, Integer top, String orderBy, String filter, ResultType resultType,
-        String metricnamespace) {
+        String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
         final String accept = "application/json";
-        return FluxUtil.withContext(
-            context -> service.list(this.client.getHost(), resourceUri, timespan, interval, metricnames, aggregation,
-                top, orderBy, filter, resultType, this.client.getApiVersion(), metricnamespace, accept, context));
+        return FluxUtil.withContext(context -> service.list(this.client.getHost(), resourceUri, timespan, interval,
+            metricnames, aggregation, top, orderBy, filter, resultType, this.client.getApiVersion(), metricnamespace,
+            autoAdjustTimegrain, validateDimensions, rollupby, accept, context));
     }
 
     /**
@@ -136,28 +842,33 @@ public final class MetricsImpl {
      * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
      * case for 'FULL' value that returns single datapoint for entire time span requested.
      * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
-     * has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * @param top The maximum number of records to retrieve.
-     * Valid only if $filter is specified.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
      * Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort.
      * Only one order can be specified.
-     * Examples: sum asc.
-     * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
-     * metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
-     * 'b1' or B eq 'b2' and C eq '*'** - Invalid variant: **$filter=A eq 'a1' and B eq 'b1' and C eq '*' or B = 'b2'**
-     * This is invalid because the logical or operator cannot separate two different metadata names. - Return all time
-     * series where A = a1, B = b1 and C = c1: **$filter=A eq 'a1' and B eq 'b1' and C eq 'c1'** - Return all time
-     * series where A = a1 **$filter=A eq 'a1' and B eq '*' and C eq '*'**. Special case: When dimension name or
-     * dimension value uses round brackets. Eg: When dimension name is **dim (test) 1** Instead of using $filter= "dim
-     * (test) 1 eq '*' " use **$filter= "dim %2528test%2529 1 eq '*' "** When dimension name is **dim (test) 3** and
-     * dimension value is **dim3 (test) val** Instead of using $filter= "dim (test) 3 eq 'dim3 (test) val' " use
-     * **$filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "**.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
      * operation's description for details.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -167,10 +878,12 @@ public final class MetricsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricsResponse>> listWithResponseAsync(String resourceUri, String timespan, Duration interval,
         String metricnames, String aggregation, Integer top, String orderBy, String filter, ResultType resultType,
-        String metricnamespace, Context context) {
+        String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby,
+        Context context) {
         final String accept = "application/json";
         return service.list(this.client.getHost(), resourceUri, timespan, interval, metricnames, aggregation, top,
-            orderBy, filter, resultType, this.client.getApiVersion(), metricnamespace, accept, context);
+            orderBy, filter, resultType, this.client.getApiVersion(), metricnamespace, autoAdjustTimegrain,
+            validateDimensions, rollupby, accept, context);
     }
 
     /**
@@ -182,28 +895,33 @@ public final class MetricsImpl {
      * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
      * case for 'FULL' value that returns single datapoint for entire time span requested.
      * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
-     * has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * @param top The maximum number of records to retrieve.
-     * Valid only if $filter is specified.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
      * Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort.
      * Only one order can be specified.
-     * Examples: sum asc.
-     * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
-     * metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
-     * 'b1' or B eq 'b2' and C eq '*'** - Invalid variant: **$filter=A eq 'a1' and B eq 'b1' and C eq '*' or B = 'b2'**
-     * This is invalid because the logical or operator cannot separate two different metadata names. - Return all time
-     * series where A = a1, B = b1 and C = c1: **$filter=A eq 'a1' and B eq 'b1' and C eq 'c1'** - Return all time
-     * series where A = a1 **$filter=A eq 'a1' and B eq '*' and C eq '*'**. Special case: When dimension name or
-     * dimension value uses round brackets. Eg: When dimension name is **dim (test) 1** Instead of using $filter= "dim
-     * (test) 1 eq '*' " use **$filter= "dim %2528test%2529 1 eq '*' "** When dimension name is **dim (test) 3** and
-     * dimension value is **dim3 (test) val** Instead of using $filter= "dim (test) 3 eq 'dim3 (test) val' " use
-     * **$filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "**.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
      * operation's description for details.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -211,9 +929,11 @@ public final class MetricsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetricsResponse> listAsync(String resourceUri, String timespan, Duration interval, String metricnames,
-        String aggregation, Integer top, String orderBy, String filter, ResultType resultType, String metricnamespace) {
+        String aggregation, Integer top, String orderBy, String filter, ResultType resultType, String metricnamespace,
+        Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
         return listWithResponseAsync(resourceUri, timespan, interval, metricnames, aggregation, top, orderBy, filter,
-            resultType, metricnamespace).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -225,28 +945,33 @@ public final class MetricsImpl {
      * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
      * case for 'FULL' value that returns single datapoint for entire time span requested.
      * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
-     * has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * @param top The maximum number of records to retrieve.
-     * Valid only if $filter is specified.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
      * Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort.
      * Only one order can be specified.
-     * Examples: sum asc.
-     * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
-     * metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
-     * 'b1' or B eq 'b2' and C eq '*'** - Invalid variant: **$filter=A eq 'a1' and B eq 'b1' and C eq '*' or B = 'b2'**
-     * This is invalid because the logical or operator cannot separate two different metadata names. - Return all time
-     * series where A = a1, B = b1 and C = c1: **$filter=A eq 'a1' and B eq 'b1' and C eq 'c1'** - Return all time
-     * series where A = a1 **$filter=A eq 'a1' and B eq '*' and C eq '*'**. Special case: When dimension name or
-     * dimension value uses round brackets. Eg: When dimension name is **dim (test) 1** Instead of using $filter= "dim
-     * (test) 1 eq '*' " use **$filter= "dim %2528test%2529 1 eq '*' "** When dimension name is **dim (test) 3** and
-     * dimension value is **dim3 (test) val** Instead of using $filter= "dim (test) 3 eq 'dim3 (test) val' " use
-     * **$filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "**.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
      * operation's description for details.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -256,9 +981,10 @@ public final class MetricsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetricsResponse> listAsync(String resourceUri, String timespan, Duration interval, String metricnames,
         String aggregation, Integer top, String orderBy, String filter, ResultType resultType, String metricnamespace,
-        Context context) {
+        Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby, Context context) {
         return listWithResponseAsync(resourceUri, timespan, interval, metricnames, aggregation, top, orderBy, filter,
-            resultType, metricnamespace, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, context)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -270,28 +996,33 @@ public final class MetricsImpl {
      * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
      * case for 'FULL' value that returns single datapoint for entire time span requested.
      * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
-     * has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * @param top The maximum number of records to retrieve.
-     * Valid only if $filter is specified.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
      * Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort.
      * Only one order can be specified.
-     * Examples: sum asc.
-     * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
-     * metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
-     * 'b1' or B eq 'b2' and C eq '*'** - Invalid variant: **$filter=A eq 'a1' and B eq 'b1' and C eq '*' or B = 'b2'**
-     * This is invalid because the logical or operator cannot separate two different metadata names. - Return all time
-     * series where A = a1, B = b1 and C = c1: **$filter=A eq 'a1' and B eq 'b1' and C eq 'c1'** - Return all time
-     * series where A = a1 **$filter=A eq 'a1' and B eq '*' and C eq '*'**. Special case: When dimension name or
-     * dimension value uses round brackets. Eg: When dimension name is **dim (test) 1** Instead of using $filter= "dim
-     * (test) 1 eq '*' " use **$filter= "dim %2528test%2529 1 eq '*' "** When dimension name is **dim (test) 3** and
-     * dimension value is **dim3 (test) val** Instead of using $filter= "dim (test) 3 eq 'dim3 (test) val' " use
-     * **$filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "**.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
      * operation's description for details.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -301,10 +1032,12 @@ public final class MetricsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetricsResponse> listWithResponse(String resourceUri, String timespan, Duration interval,
         String metricnames, String aggregation, Integer top, String orderBy, String filter, ResultType resultType,
-        String metricnamespace, Context context) {
+        String metricnamespace, Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby,
+        Context context) {
         final String accept = "application/json";
         return service.listSync(this.client.getHost(), resourceUri, timespan, interval, metricnames, aggregation, top,
-            orderBy, filter, resultType, this.client.getApiVersion(), metricnamespace, accept, context);
+            orderBy, filter, resultType, this.client.getApiVersion(), metricnamespace, autoAdjustTimegrain,
+            validateDimensions, rollupby, accept, context);
     }
 
     /**
@@ -316,28 +1049,33 @@ public final class MetricsImpl {
      * @param interval The interval (i.e. timegrain) of the query in ISO 8601 duration format. Defaults to PT1M. Special
      * case for 'FULL' value that returns single datapoint for entire time span requested.
      * *Examples: PT15M, PT1H, P1D, FULL*.
-     * @param metricnames The names of the metrics (comma separated) to retrieve. Special case: If a metricname itself
-     * has a comma in it then use %2 to indicate it. Eg: 'Metric,Name1' should be **'Metric%2Name1'**.
+     * @param metricnames The names of the metrics (comma separated) to retrieve.
      * @param aggregation The list of aggregation types (comma separated) to retrieve.
-     * @param top The maximum number of records to retrieve.
-     * Valid only if $filter is specified.
+     * *Examples: average, minimum, maximum*.
+     * @param top The maximum number of records to retrieve per resource ID in the request.
+     * Valid only if filter is specified.
      * Defaults to 10.
      * @param orderBy The aggregation to use for sorting results and the direction of the sort.
      * Only one order can be specified.
-     * Examples: sum asc.
-     * @param filter The **$filter** is used to reduce the set of metric data returned. Example: Metric contains
-     * metadata A, B and C. - Return all time series of C where A = a1 and B = b1 or b2 **$filter=A eq 'a1' and B eq
-     * 'b1' or B eq 'b2' and C eq '*'** - Invalid variant: **$filter=A eq 'a1' and B eq 'b1' and C eq '*' or B = 'b2'**
-     * This is invalid because the logical or operator cannot separate two different metadata names. - Return all time
-     * series where A = a1, B = b1 and C = c1: **$filter=A eq 'a1' and B eq 'b1' and C eq 'c1'** - Return all time
-     * series where A = a1 **$filter=A eq 'a1' and B eq '*' and C eq '*'**. Special case: When dimension name or
-     * dimension value uses round brackets. Eg: When dimension name is **dim (test) 1** Instead of using $filter= "dim
-     * (test) 1 eq '*' " use **$filter= "dim %2528test%2529 1 eq '*' "** When dimension name is **dim (test) 3** and
-     * dimension value is **dim3 (test) val** Instead of using $filter= "dim (test) 3 eq 'dim3 (test) val' " use
-     * **$filter= "dim %2528test%2529 3 eq 'dim3 %2528test%2529 val' "**.
+     * *Examples: sum asc*.
+     * @param filter The **$filter** is used to reduce the set of metric data
+     * returned.&lt;br&gt;Example:&lt;br&gt;Metric contains metadata A, B and C.&lt;br&gt;- Return all time series of C
+     * where A = a1 and B = b1 or b2&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ or B eq ‘b2’ and C eq ‘*’**&lt;br&gt;-
+     * Invalid variant:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘*’ or B = ‘b2’**&lt;br&gt;This is invalid
+     * because the logical or operator cannot separate two different metadata names.&lt;br&gt;- Return all time series
+     * where A = a1, B = b1 and C = c1:&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘b1’ and C eq ‘c1’**&lt;br&gt;- Return all
+     * time series where A = a1&lt;br&gt;**$filter=A eq ‘a1’ and B eq ‘*’ and C eq ‘*’**.
      * @param resultType Reduces the set of data collected. The syntax allowed depends on the operation. See the
      * operation's description for details.
-     * @param metricnamespace Metric namespace to query metric definitions for.
+     * @param metricnamespace Metric namespace where the metrics you want reside.
+     * @param autoAdjustTimegrain When set to true, if the timespan passed in is not supported by this metric, the API
+     * will return the result using the closest supported timespan. When set to false, an error is returned for invalid
+     * timespan parameters. Defaults to false.
+     * @param validateDimensions When set to false, invalid filter parameter values will be ignored. When set to true,
+     * an error is returned for invalid filter parameters. Defaults to true.
+     * @param rollupby Dimension name(s) to rollup results by. For example if you only want to see metric values with a
+     * filter like 'City eq Seattle or City eq Tacoma' but don't want to see separate values for each city, you can
+     * specify 'RollUpBy=City' to see the results for Seattle and Tacoma rolled up into one timeseries.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -345,8 +1083,9 @@ public final class MetricsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MetricsResponse list(String resourceUri, String timespan, Duration interval, String metricnames,
-        String aggregation, Integer top, String orderBy, String filter, ResultType resultType, String metricnamespace) {
+        String aggregation, Integer top, String orderBy, String filter, ResultType resultType, String metricnamespace,
+        Boolean autoAdjustTimegrain, Boolean validateDimensions, String rollupby) {
         return listWithResponse(resourceUri, timespan, interval, metricnames, aggregation, top, orderBy, filter,
-            resultType, metricnamespace, Context.NONE).getValue();
+            resultType, metricnamespace, autoAdjustTimegrain, validateDimensions, rollupby, Context.NONE).getValue();
     }
 }

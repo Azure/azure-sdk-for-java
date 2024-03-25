@@ -240,4 +240,13 @@ class InteractiveBrowserBrokerCredentialBuilderTest {
             builder.proxyOptions(null);
         });
     }
+
+    @Test
+    void setDefaultBrokerAccount() {
+        assertDoesNotThrow(() -> {
+            InteractiveBrowserBrokerCredentialBuilder builder = new InteractiveBrowserBrokerCredentialBuilder();
+            builder.useDefaultBrokerAccount();
+            builder.build();
+        });
+    }
 }

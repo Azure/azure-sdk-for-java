@@ -31,40 +31,29 @@ public final class FilesNoSubscriptionsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"createdOn\":\"2021-03-19T15:15:46Z\",\"chunkSize\":0.89277625,\"fileSize\":75.17896,\"numberOfChunks\":26.893425},\"id\":\"qxihhrmooi\",\"name\":\"qseypxiutcxa\",\"type\":\"zhyrpeto\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"createdOn\":\"2021-11-01T10:21:35Z\",\"chunkSize\":879044854,\"fileSize\":1565634168,\"numberOfChunks\":1988738388},\"id\":\"gorqjbttzh\",\"name\":\"aglkafhon\",\"type\":\"juj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SupportManager manager =
-            SupportManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SupportManager manager = SupportManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<FileDetails> response =
-            manager.filesNoSubscriptions().list("brta", com.azure.core.util.Context.NONE);
+        PagedIterable<FileDetails> response
+            = manager.filesNoSubscriptions().list("wcrojphslhcaw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(0.89277625F, response.iterator().next().chunkSize());
-        Assertions.assertEquals(75.17896F, response.iterator().next().fileSize());
-        Assertions.assertEquals(26.893425F, response.iterator().next().numberOfChunks());
+        Assertions.assertEquals(879044854, response.iterator().next().chunkSize());
+        Assertions.assertEquals(1565634168, response.iterator().next().fileSize());
+        Assertions.assertEquals(1988738388, response.iterator().next().numberOfChunks());
     }
 }

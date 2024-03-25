@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The export policy for a container registry. */
+/**
+ * The export policy for a container registry.
+ */
 @Fluent
 public final class ExportPolicy {
     /*
@@ -16,13 +18,15 @@ public final class ExportPolicy {
     @JsonProperty(value = "status")
     private ExportPolicyStatus status;
 
-    /** Creates an instance of ExportPolicy class. */
+    /**
+     * Creates an instance of ExportPolicy class.
+     */
     public ExportPolicy() {
     }
 
     /**
      * Get the status property: The value that indicates whether the policy is enabled or not.
-     *
+     * 
      * @return the status value.
      */
     public ExportPolicyStatus status() {
@@ -31,7 +35,7 @@ public final class ExportPolicy {
 
     /**
      * Set the status property: The value that indicates whether the policy is enabled or not.
-     *
+     * 
      * @param status the status value to set.
      * @return the ExportPolicy object itself.
      */
@@ -42,7 +46,7 @@ public final class ExportPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

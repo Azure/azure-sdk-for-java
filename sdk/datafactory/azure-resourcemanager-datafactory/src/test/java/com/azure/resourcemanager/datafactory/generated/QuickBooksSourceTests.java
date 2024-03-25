@@ -11,16 +11,16 @@ public final class QuickBooksSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         QuickBooksSource model = BinaryData.fromString(
-            "{\"type\":\"QuickBooksSource\",\"query\":\"databj\",\"queryTimeout\":\"datalboiojpjnhwwyhxz\",\"additionalColumns\":\"datahx\",\"sourceRetryCount\":\"datavjfsmfkdhhwfrm\",\"sourceRetryWait\":\"dataokefdgfexa\",\"maxConcurrentConnections\":\"datat\",\"disableMetricsCollection\":\"datapszdn\",\"\":{\"oyiheheim\":\"datauuqxmdievkmrso\"}}")
+            "{\"type\":\"QuickBooksSource\",\"query\":\"datagw\",\"queryTimeout\":\"dataujshcsnk\",\"additionalColumns\":\"datagpqxqevt\",\"sourceRetryCount\":\"datavyy\",\"sourceRetryWait\":\"datakjirvjogsalvjl\",\"maxConcurrentConnections\":\"dataimua\",\"disableMetricsCollection\":\"datakympwquu\",\"\":{\"iqeftgunropdpuf\":\"dataofuzthszjyanhs\"}}")
             .toObject(QuickBooksSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         QuickBooksSource model
-            = new QuickBooksSource().withSourceRetryCount("datavjfsmfkdhhwfrm").withSourceRetryWait("dataokefdgfexa")
-                .withMaxConcurrentConnections("datat").withDisableMetricsCollection("datapszdn")
-                .withQueryTimeout("datalboiojpjnhwwyhxz").withAdditionalColumns("datahx").withQuery("databj");
+            = new QuickBooksSource().withSourceRetryCount("datavyy").withSourceRetryWait("datakjirvjogsalvjl")
+                .withMaxConcurrentConnections("dataimua").withDisableMetricsCollection("datakympwquu")
+                .withQueryTimeout("dataujshcsnk").withAdditionalColumns("datagpqxqevt").withQuery("datagw");
         model = BinaryData.fromObject(model).toObject(QuickBooksSource.class);
     }
 }

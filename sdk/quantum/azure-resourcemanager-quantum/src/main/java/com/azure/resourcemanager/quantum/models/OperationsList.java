@@ -10,7 +10,9 @@ import com.azure.resourcemanager.quantum.fluent.models.OperationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Lists the operations available. */
+/**
+ * Lists the operations available.
+ */
 @Fluent
 public final class OperationsList {
     /*
@@ -25,13 +27,15 @@ public final class OperationsList {
     @JsonProperty(value = "value", required = true)
     private List<OperationInner> value;
 
-    /** Creates an instance of OperationsList class. */
+    /**
+     * Creates an instance of OperationsList class.
+     */
     public OperationsList() {
     }
 
     /**
      * Get the nextLink property: Url to follow for getting next page of operations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -40,7 +44,7 @@ public final class OperationsList {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of operations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the OperationsList object itself.
      */
@@ -51,7 +55,7 @@ public final class OperationsList {
 
     /**
      * Get the value property: Array of operations.
-     *
+     * 
      * @return the value value.
      */
     public List<OperationInner> value() {
@@ -60,7 +64,7 @@ public final class OperationsList {
 
     /**
      * Set the value property: Array of operations.
-     *
+     * 
      * @param value the value value to set.
      * @return the OperationsList object itself.
      */
@@ -71,14 +75,13 @@ public final class OperationsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model OperationsList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model OperationsList"));
         } else {
             value().forEach(e -> e.validate());
         }

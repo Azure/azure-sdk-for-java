@@ -31,7 +31,7 @@ public final class DataFlowsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"rstannmjp\",\"annotations\":[\"datatlupzshgsidkzi\",\"dataarpsr\"],\"folder\":{\"name\":\"huokjwvsacwdu\"}},\"name\":\"zuykly\",\"type\":\"skelevard\",\"etag\":\"drtjakezorhjh\",\"id\":\"qh\"}";
+            = "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"wvdmwaam\",\"annotations\":[\"dataqsb\"],\"folder\":{\"name\":\"nckeqxtqaomihr\"}},\"name\":\"ksdpc\",\"type\":\"wficzzoxnlvi\",\"etag\":\"dsi\",\"id\":\"zaolzkoyn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,11 +49,11 @@ public final class DataFlowsGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataFlowResource response = manager.dataFlows()
-            .getWithResponse("gjsj", "lhwbypvpd", "vycjuxa", "puphgogmggkkjc", com.azure.core.util.Context.NONE)
+            .getWithResponse("lruxjqqozx", "nowvpdfypd", "syym", "uueeokvq", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("qh", response.id());
-        Assertions.assertEquals("rstannmjp", response.properties().description());
-        Assertions.assertEquals("huokjwvsacwdu", response.properties().folder().name());
+        Assertions.assertEquals("zaolzkoyn", response.id());
+        Assertions.assertEquals("wvdmwaam", response.properties().description());
+        Assertions.assertEquals("nckeqxtqaomihr", response.properties().folder().name());
     }
 }

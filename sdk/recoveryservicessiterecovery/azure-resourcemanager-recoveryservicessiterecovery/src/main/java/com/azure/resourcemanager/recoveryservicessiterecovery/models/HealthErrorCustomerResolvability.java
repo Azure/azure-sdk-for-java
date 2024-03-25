@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Value indicating whether the health error is customer resolvable. */
+/**
+ * Value indicating whether the health error is customer resolvable.
+ */
 public final class HealthErrorCustomerResolvability extends ExpandableStringEnum<HealthErrorCustomerResolvability> {
-    /** Static value Allowed for HealthErrorCustomerResolvability. */
+    /**
+     * Static value Allowed for HealthErrorCustomerResolvability.
+     */
     public static final HealthErrorCustomerResolvability ALLOWED = fromString("Allowed");
 
-    /** Static value NotAllowed for HealthErrorCustomerResolvability. */
+    /**
+     * Static value NotAllowed for HealthErrorCustomerResolvability.
+     */
     public static final HealthErrorCustomerResolvability NOT_ALLOWED = fromString("NotAllowed");
 
     /**
      * Creates a new instance of HealthErrorCustomerResolvability value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class HealthErrorCustomerResolvability extends ExpandableStringEnum
 
     /**
      * Creates or finds a HealthErrorCustomerResolvability from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HealthErrorCustomerResolvability.
      */
@@ -38,7 +44,7 @@ public final class HealthErrorCustomerResolvability extends ExpandableStringEnum
 
     /**
      * Gets known HealthErrorCustomerResolvability values.
-     *
+     * 
      * @return known HealthErrorCustomerResolvability values.
      */
     public static Collection<HealthErrorCustomerResolvability> values() {

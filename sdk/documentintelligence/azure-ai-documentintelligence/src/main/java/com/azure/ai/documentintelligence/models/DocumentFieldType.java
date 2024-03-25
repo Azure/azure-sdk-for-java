@@ -98,6 +98,12 @@ public final class DocumentFieldType extends ExpandableStringEnum<DocumentFieldT
     public static final DocumentFieldType BOOLEAN = fromString("boolean");
 
     /**
+     * Array of selected string values.
+     */
+    @Generated
+    public static final DocumentFieldType SELECTION_GROUP = fromString("selectionGroup");
+
+    /**
      * Creates a new instance of DocumentFieldType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.

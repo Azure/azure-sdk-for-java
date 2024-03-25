@@ -14,8 +14,8 @@ public final class FileWorkspaceDetailsImpl implements FileWorkspaceDetails {
 
     private final com.azure.resourcemanager.support.SupportManager serviceManager;
 
-    FileWorkspaceDetailsImpl(
-        FileWorkspaceDetailsInner innerObject, com.azure.resourcemanager.support.SupportManager serviceManager) {
+    FileWorkspaceDetailsImpl(FileWorkspaceDetailsInner innerObject,
+        com.azure.resourcemanager.support.SupportManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

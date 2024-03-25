@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for text log files. */
+/**
+ * Settings for text log files.
+ */
 @Fluent
 public class LogFileTextSettings {
     /*
@@ -17,13 +19,15 @@ public class LogFileTextSettings {
     @JsonProperty(value = "recordStartTimestampFormat", required = true)
     private KnownLogFileTextSettingsRecordStartTimestampFormat recordStartTimestampFormat;
 
-    /** Creates an instance of LogFileTextSettings class. */
+    /**
+     * Creates an instance of LogFileTextSettings class.
+     */
     public LogFileTextSettings() {
     }
 
     /**
      * Get the recordStartTimestampFormat property: One of the supported timestamp formats.
-     *
+     * 
      * @return the recordStartTimestampFormat value.
      */
     public KnownLogFileTextSettingsRecordStartTimestampFormat recordStartTimestampFormat() {
@@ -32,27 +36,25 @@ public class LogFileTextSettings {
 
     /**
      * Set the recordStartTimestampFormat property: One of the supported timestamp formats.
-     *
+     * 
      * @param recordStartTimestampFormat the recordStartTimestampFormat value to set.
      * @return the LogFileTextSettings object itself.
      */
-    public LogFileTextSettings withRecordStartTimestampFormat(
-        KnownLogFileTextSettingsRecordStartTimestampFormat recordStartTimestampFormat) {
+    public LogFileTextSettings
+        withRecordStartTimestampFormat(KnownLogFileTextSettingsRecordStartTimestampFormat recordStartTimestampFormat) {
         this.recordStartTimestampFormat = recordStartTimestampFormat;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recordStartTimestampFormat() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recordStartTimestampFormat in model LogFileTextSettings"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recordStartTimestampFormat in model LogFileTextSettings"));
         }
     }
 

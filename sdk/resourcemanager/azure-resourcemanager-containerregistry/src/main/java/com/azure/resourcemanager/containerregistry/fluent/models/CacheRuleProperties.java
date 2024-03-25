@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The properties of a cache rule. */
+/**
+ * The properties of a cache rule.
+ */
 @Fluent
 public final class CacheRuleProperties {
     /*
@@ -43,14 +45,16 @@ public final class CacheRuleProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of CacheRuleProperties class. */
+    /**
+     * Creates an instance of CacheRuleProperties class.
+     */
     public CacheRuleProperties() {
     }
 
     /**
      * Get the credentialSetResourceId property: The ARM resource ID of the credential store which is associated with
      * the cache rule.
-     *
+     * 
      * @return the credentialSetResourceId value.
      */
     public String credentialSetResourceId() {
@@ -60,7 +64,7 @@ public final class CacheRuleProperties {
     /**
      * Set the credentialSetResourceId property: The ARM resource ID of the credential store which is associated with
      * the cache rule.
-     *
+     * 
      * @param credentialSetResourceId the credentialSetResourceId value to set.
      * @return the CacheRuleProperties object itself.
      */
@@ -71,7 +75,7 @@ public final class CacheRuleProperties {
 
     /**
      * Get the sourceRepository property: Source repository pulled from upstream.
-     *
+     * 
      * @return the sourceRepository value.
      */
     public String sourceRepository() {
@@ -80,7 +84,7 @@ public final class CacheRuleProperties {
 
     /**
      * Set the sourceRepository property: Source repository pulled from upstream.
-     *
+     * 
      * @param sourceRepository the sourceRepository value to set.
      * @return the CacheRuleProperties object itself.
      */
@@ -90,9 +94,9 @@ public final class CacheRuleProperties {
     }
 
     /**
-     * Get the targetRepository property: Target repository specified in docker pull command. Eg: docker pull
-     * myregistry.azurecr.io/{targetRepository}:{tag}.
-     *
+     * Get the targetRepository property: Target repository specified in docker pull command.
+     * Eg: docker pull myregistry.azurecr.io/{targetRepository}:{tag}.
+     * 
      * @return the targetRepository value.
      */
     public String targetRepository() {
@@ -100,9 +104,9 @@ public final class CacheRuleProperties {
     }
 
     /**
-     * Set the targetRepository property: Target repository specified in docker pull command. Eg: docker pull
-     * myregistry.azurecr.io/{targetRepository}:{tag}.
-     *
+     * Set the targetRepository property: Target repository specified in docker pull command.
+     * Eg: docker pull myregistry.azurecr.io/{targetRepository}:{tag}.
+     * 
      * @param targetRepository the targetRepository value to set.
      * @return the CacheRuleProperties object itself.
      */
@@ -113,7 +117,7 @@ public final class CacheRuleProperties {
 
     /**
      * Get the creationDate property: The creation date of the cache rule.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -122,7 +126,7 @@ public final class CacheRuleProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -131,7 +135,7 @@ public final class CacheRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

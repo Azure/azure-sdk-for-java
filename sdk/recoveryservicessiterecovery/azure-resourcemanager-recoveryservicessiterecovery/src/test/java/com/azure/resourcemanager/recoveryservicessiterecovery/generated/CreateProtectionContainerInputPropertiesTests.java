@@ -12,23 +12,17 @@ import java.util.Arrays;
 public final class CreateProtectionContainerInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CreateProtectionContainerInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"providerSpecificInput\":[{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"},{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"},{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"}]}")
-                .toObject(CreateProtectionContainerInputProperties.class);
+        CreateProtectionContainerInputProperties model = BinaryData.fromString(
+            "{\"providerSpecificInput\":[{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"},{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"},{\"instanceType\":\"ReplicationProviderSpecificContainerCreationInput\"}]}")
+            .toObject(CreateProtectionContainerInputProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CreateProtectionContainerInputProperties model =
-            new CreateProtectionContainerInputProperties()
-                .withProviderSpecificInput(
-                    Arrays
-                        .asList(
-                            new ReplicationProviderSpecificContainerCreationInput(),
-                            new ReplicationProviderSpecificContainerCreationInput(),
-                            new ReplicationProviderSpecificContainerCreationInput()));
+        CreateProtectionContainerInputProperties model = new CreateProtectionContainerInputProperties()
+            .withProviderSpecificInput(Arrays.asList(new ReplicationProviderSpecificContainerCreationInput(),
+                new ReplicationProviderSpecificContainerCreationInput(),
+                new ReplicationProviderSpecificContainerCreationInput()));
         model = BinaryData.fromObject(model).toObject(CreateProtectionContainerInputProperties.class);
     }
 }

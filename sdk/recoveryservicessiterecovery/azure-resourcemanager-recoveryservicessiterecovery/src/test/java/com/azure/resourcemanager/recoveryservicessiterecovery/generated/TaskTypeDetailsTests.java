@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.TaskTypeDet
 public final class TaskTypeDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TaskTypeDetails model =
-            BinaryData.fromString("{\"instanceType\":\"TaskTypeDetails\"}").toObject(TaskTypeDetails.class);
+        TaskTypeDetails model
+            = BinaryData.fromString("{\"instanceType\":\"TaskTypeDetails\"}").toObject(TaskTypeDetails.class);
     }
 
     @org.junit.jupiter.api.Test

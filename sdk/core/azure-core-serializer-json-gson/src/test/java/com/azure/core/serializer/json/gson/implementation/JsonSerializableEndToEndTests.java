@@ -25,15 +25,16 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * {@link JsonSerializable} within a {@link Gson} context.
  */
 public class JsonSerializableEndToEndTests {
-    private static final Gson GSON = new GsonBuilder()
-        .registerTypeAdapterFactory(GsonJsonProvider.getJsonSerializableTypeAdapterFactory())
-        .create();
+    private static final Gson GSON
+        = new GsonBuilder().registerTypeAdapterFactory(GsonJsonProvider.getJsonSerializableTypeAdapterFactory())
+            .create();
 
     @Test
     public void serialization() {
-        JsonSerializableWrapper wrapper = new JsonSerializableWrapper()
-            .setGeneralProperties(new GeneralProperties(42, true, "hello world", -0.0D));
-        String expected = "{\"jsonserializable\":{\"anInt\":42,\"aBoolean\":true,\"aString\":\"hello world\",\"aNullableDecimal\":-0.0}}";
+        JsonSerializableWrapper wrapper
+            = new JsonSerializableWrapper().setGeneralProperties(new GeneralProperties(42, true, "hello world", -0.0D));
+        String expected
+            = "{\"jsonserializable\":{\"anInt\":42,\"aBoolean\":true,\"aString\":\"hello world\",\"aNullableDecimal\":-0.0}}";
 
         String actual = GSON.toJson(wrapper);
         assertEquals(expected, actual);
@@ -41,9 +42,10 @@ public class JsonSerializableEndToEndTests {
 
     @Test
     public void deserialization() {
-        String json = "{\"jsonserializable\":{\"anInt\":42,\"aBoolean\":true,\"aString\":\"hello world\",\"aNullableDecimal\":-0.0}}";
-        JsonSerializableWrapper expected = new JsonSerializableWrapper()
-            .setGeneralProperties(new GeneralProperties(42, true, "hello world", -0.0D));
+        String json
+            = "{\"jsonserializable\":{\"anInt\":42,\"aBoolean\":true,\"aString\":\"hello world\",\"aNullableDecimal\":-0.0}}";
+        JsonSerializableWrapper expected
+            = new JsonSerializableWrapper().setGeneralProperties(new GeneralProperties(42, true, "hello world", -0.0D));
 
         JsonSerializableWrapper actual = GSON.fromJson(json, JsonSerializableWrapper.class);
         assertEquals(expected, actual);

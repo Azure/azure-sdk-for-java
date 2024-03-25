@@ -13,18 +13,17 @@ public final class RestResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RestResourceDatasetTypeProperties model = BinaryData.fromString(
-            "{\"relativeUrl\":\"datauwdvolxt\",\"requestMethod\":\"dataricdsflzbkiumj\",\"requestBody\":\"dataoxedrmrazhvch\",\"additionalHeaders\":{\"ntnwzruzso\":\"datayiog\",\"lcappnvcebspci\":\"datawxcsmx\",\"mzkwhjjsqwhae\":\"datayomhkdwuwedupb\"},\"paginationRules\":{\"a\":\"datavvkxdbnmc\"}}")
+            "{\"relativeUrl\":\"dataklgerxactsawv\",\"requestMethod\":\"dataimpthj\",\"requestBody\":\"dataplzmslubnk\",\"additionalHeaders\":{\"lfswarmybwmro\":\"datauysjhvrr\",\"cbfnxiajuv\":\"datageysyqnipehfw\"},\"paginationRules\":{\"zguaxfhvjixgofqd\":\"datafjisosfzlnraxnf\",\"jmi\":\"dataw\",\"ntlydprpensbmzj\":\"datauvrqpbxdoicqp\",\"hbfexmizz\":\"dataitukoy\"}}")
             .toObject(RestResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RestResourceDatasetTypeProperties model = new RestResourceDatasetTypeProperties()
-            .withRelativeUrl("datauwdvolxt").withRequestMethod("dataricdsflzbkiumj")
-            .withRequestBody("dataoxedrmrazhvch")
-            .withAdditionalHeaders(
-                mapOf("ntnwzruzso", "datayiog", "lcappnvcebspci", "datawxcsmx", "mzkwhjjsqwhae", "datayomhkdwuwedupb"))
-            .withPaginationRules(mapOf("a", "datavvkxdbnmc"));
+            .withRelativeUrl("dataklgerxactsawv").withRequestMethod("dataimpthj").withRequestBody("dataplzmslubnk")
+            .withAdditionalHeaders(mapOf("lfswarmybwmro", "datauysjhvrr", "cbfnxiajuv", "datageysyqnipehfw"))
+            .withPaginationRules(mapOf("zguaxfhvjixgofqd", "datafjisosfzlnraxnf", "jmi", "dataw", "ntlydprpensbmzj",
+                "datauvrqpbxdoicqp", "hbfexmizz", "dataitukoy"));
         model = BinaryData.fromObject(model).toObject(RestResourceDatasetTypeProperties.class);
     }
 

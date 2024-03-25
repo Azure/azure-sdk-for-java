@@ -46,7 +46,7 @@ To take dependency on a particular version of the library that isn't present in 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity-broker</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -86,6 +86,16 @@ ms-appx-web://Microsoft.AAD.BrokerPlugin/{client_id}
 long windowHandle = getWindowHandle(); // Samples below
 InteractiveBrowserCredential cred = new InteractiveBrowserBrokerCredentialBuilder()
     .setWindowHandle(windowHandle)
+    .build();
+```
+
+#### Use the default account for sign-in
+
+When this option is enabled, the credential will attempt to silently use the default broker account. If using the default account fails, the credential will fall back to interactive authentication.
+
+```java com.azure.identity.broker.interactivebrowserbrokercredentialbuilder.useinteractivebrowserbroker.defaultaccount
+InteractiveBrowserCredential cred = new InteractiveBrowserBrokerCredentialBuilder()
+    .useDefaultBrokerAccount()
     .build();
 ```
 

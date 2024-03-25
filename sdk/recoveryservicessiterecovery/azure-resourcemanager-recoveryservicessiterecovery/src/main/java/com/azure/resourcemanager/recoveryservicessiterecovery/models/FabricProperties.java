@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Fabric properties. */
+/**
+ * Fabric properties.
+ */
 @Fluent
 public final class FabricProperties {
     /*
@@ -59,13 +61,15 @@ public final class FabricProperties {
     @JsonProperty(value = "health")
     private String health;
 
-    /** Creates an instance of FabricProperties class. */
+    /**
+     * Creates an instance of FabricProperties class.
+     */
     public FabricProperties() {
     }
 
     /**
      * Get the friendlyName property: Friendly name of the fabric.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -74,7 +78,7 @@ public final class FabricProperties {
 
     /**
      * Set the friendlyName property: Friendly name of the fabric.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the FabricProperties object itself.
      */
@@ -85,7 +89,7 @@ public final class FabricProperties {
 
     /**
      * Get the encryptionDetails property: Encryption details for the fabric.
-     *
+     * 
      * @return the encryptionDetails value.
      */
     public EncryptionDetails encryptionDetails() {
@@ -94,7 +98,7 @@ public final class FabricProperties {
 
     /**
      * Set the encryptionDetails property: Encryption details for the fabric.
-     *
+     * 
      * @param encryptionDetails the encryptionDetails value to set.
      * @return the FabricProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class FabricProperties {
 
     /**
      * Get the rolloverEncryptionDetails property: Rollover encryption details for the fabric.
-     *
+     * 
      * @return the rolloverEncryptionDetails value.
      */
     public EncryptionDetails rolloverEncryptionDetails() {
@@ -114,7 +118,7 @@ public final class FabricProperties {
 
     /**
      * Set the rolloverEncryptionDetails property: Rollover encryption details for the fabric.
-     *
+     * 
      * @param rolloverEncryptionDetails the rolloverEncryptionDetails value to set.
      * @return the FabricProperties object itself.
      */
@@ -125,7 +129,7 @@ public final class FabricProperties {
 
     /**
      * Get the internalIdentifier property: Dra Registration Id.
-     *
+     * 
      * @return the internalIdentifier value.
      */
     public String internalIdentifier() {
@@ -134,7 +138,7 @@ public final class FabricProperties {
 
     /**
      * Set the internalIdentifier property: Dra Registration Id.
-     *
+     * 
      * @param internalIdentifier the internalIdentifier value to set.
      * @return the FabricProperties object itself.
      */
@@ -145,7 +149,7 @@ public final class FabricProperties {
 
     /**
      * Get the bcdrState property: BCDR state of the fabric.
-     *
+     * 
      * @return the bcdrState value.
      */
     public String bcdrState() {
@@ -154,7 +158,7 @@ public final class FabricProperties {
 
     /**
      * Set the bcdrState property: BCDR state of the fabric.
-     *
+     * 
      * @param bcdrState the bcdrState value to set.
      * @return the FabricProperties object itself.
      */
@@ -165,7 +169,7 @@ public final class FabricProperties {
 
     /**
      * Get the customDetails property: Fabric specific settings.
-     *
+     * 
      * @return the customDetails value.
      */
     public FabricSpecificDetails customDetails() {
@@ -174,7 +178,7 @@ public final class FabricProperties {
 
     /**
      * Set the customDetails property: Fabric specific settings.
-     *
+     * 
      * @param customDetails the customDetails value to set.
      * @return the FabricProperties object itself.
      */
@@ -185,7 +189,7 @@ public final class FabricProperties {
 
     /**
      * Get the healthErrorDetails property: Fabric health error details.
-     *
+     * 
      * @return the healthErrorDetails value.
      */
     public List<HealthError> healthErrorDetails() {
@@ -194,7 +198,7 @@ public final class FabricProperties {
 
     /**
      * Set the healthErrorDetails property: Fabric health error details.
-     *
+     * 
      * @param healthErrorDetails the healthErrorDetails value to set.
      * @return the FabricProperties object itself.
      */
@@ -205,7 +209,7 @@ public final class FabricProperties {
 
     /**
      * Get the health property: Health of fabric.
-     *
+     * 
      * @return the health value.
      */
     public String health() {
@@ -214,7 +218,7 @@ public final class FabricProperties {
 
     /**
      * Set the health property: Health of fabric.
-     *
+     * 
      * @param health the health value to set.
      * @return the FabricProperties object itself.
      */
@@ -225,7 +229,7 @@ public final class FabricProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

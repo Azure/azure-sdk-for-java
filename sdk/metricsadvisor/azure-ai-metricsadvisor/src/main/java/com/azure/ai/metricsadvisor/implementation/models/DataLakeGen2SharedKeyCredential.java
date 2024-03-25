@@ -9,7 +9,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -70,7 +69,8 @@ public final class DataLakeGen2SharedKeyCredential extends DataSourceCredential 
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("dataSourceCredentialType",
-            Objects.toString(DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY, null));
+            DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY == null ? null
+                : DataSourceCredentialType.DATA_LAKE_GEN2SHARED_KEY.toString());
         jsonWriter.writeStringField("dataSourceCredentialName", getDataSourceCredentialName());
         jsonWriter.writeStringField("dataSourceCredentialDescription", getDataSourceCredentialDescription());
         jsonWriter.writeJsonField("parameters", this.parameters);

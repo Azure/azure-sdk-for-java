@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AlertInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AlertInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"sendToOwners\":\"lzydehojwyahux\",\"customEmailAddresses\":[\"mqnjaqw\",\"xj\"],\"locale\":\"r\"},\"location\":\"vcputegj\",\"id\":\"wmfdatscmdvpjhul\",\"name\":\"uuvmkjozkrwfnd\",\"type\":\"odjpslwejd\"}")
-                .toObject(AlertInner.class);
+        AlertInner model = BinaryData.fromString(
+            "{\"properties\":{\"sendToOwners\":\"lzydehojwyahux\",\"customEmailAddresses\":[\"mqnjaqw\",\"xj\"],\"locale\":\"r\"},\"location\":\"vcputegj\",\"id\":\"wmfdatscmdvpjhul\",\"name\":\"uuvmkjozkrwfnd\",\"type\":\"odjpslwejd\"}")
+            .toObject(AlertInner.class);
         Assertions.assertEquals("lzydehojwyahux", model.properties().sendToOwners());
         Assertions.assertEquals("mqnjaqw", model.properties().customEmailAddresses().get(0));
         Assertions.assertEquals("r", model.properties().locale());
@@ -26,14 +24,8 @@ public final class AlertInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AlertInner model =
-            new AlertInner()
-                .withProperties(
-                    new AlertProperties()
-                        .withSendToOwners("lzydehojwyahux")
-                        .withCustomEmailAddresses(Arrays.asList("mqnjaqw", "xj"))
-                        .withLocale("r"))
-                .withLocation("vcputegj");
+        AlertInner model = new AlertInner().withProperties(new AlertProperties().withSendToOwners("lzydehojwyahux")
+            .withCustomEmailAddresses(Arrays.asList("mqnjaqw", "xj")).withLocale("r")).withLocation("vcputegj");
         model = BinaryData.fromObject(model).toObject(AlertInner.class);
         Assertions.assertEquals("lzydehojwyahux", model.properties().sendToOwners());
         Assertions.assertEquals("mqnjaqw", model.properties().customEmailAddresses().get(0));

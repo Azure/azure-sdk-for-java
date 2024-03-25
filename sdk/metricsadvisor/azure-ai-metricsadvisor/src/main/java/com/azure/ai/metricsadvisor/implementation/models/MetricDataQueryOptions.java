@@ -11,9 +11,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * The MetricDataQueryOptions model.
@@ -110,8 +110,10 @@ public final class MetricDataQueryOptions implements JsonSerializable<MetricData
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
-        jsonWriter.writeStringField("endTime", Objects.toString(this.endTime, null));
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
         jsonWriter.writeArrayField("series", this.series,
             (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeString(element1)));
         return jsonWriter.writeEndObject();

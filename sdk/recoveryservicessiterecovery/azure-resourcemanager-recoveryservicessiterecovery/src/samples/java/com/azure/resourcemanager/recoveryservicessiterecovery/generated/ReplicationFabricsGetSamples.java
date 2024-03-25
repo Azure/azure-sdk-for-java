@@ -4,20 +4,23 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-/** Samples for ReplicationFabrics Get. */
+/**
+ * Samples for ReplicationFabrics Get.
+ */
 public final class ReplicationFabricsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationFabrics_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * /ReplicationFabrics_Get.json
      */
     /**
      * Sample code: Gets the details of an ASR fabric.
-     *
+     * 
      * @param manager Entry point to SiteRecoveryManager.
      */
     public static void getsTheDetailsOfAnASRFabric(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager
-            .replicationFabrics()
-            .getWithResponse("vault1", "resourceGroupPS1", "cloud1", null, com.azure.core.util.Context.NONE);
+        manager.replicationFabrics().getWithResponse("vault1", "resourceGroupPS1", "cloud1", null,
+            com.azure.core.util.Context.NONE);
     }
 }

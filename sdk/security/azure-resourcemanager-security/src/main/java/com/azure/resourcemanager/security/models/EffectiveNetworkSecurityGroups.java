@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the Network Security Groups effective on a network interface. */
+/**
+ * Describes the Network Security Groups effective on a network interface.
+ */
 @Fluent
 public final class EffectiveNetworkSecurityGroups {
     /*
@@ -23,13 +25,15 @@ public final class EffectiveNetworkSecurityGroups {
     @JsonProperty(value = "networkSecurityGroups")
     private List<String> networkSecurityGroups;
 
-    /** Creates an instance of EffectiveNetworkSecurityGroups class. */
+    /**
+     * Creates an instance of EffectiveNetworkSecurityGroups class.
+     */
     public EffectiveNetworkSecurityGroups() {
     }
 
     /**
      * Get the networkInterface property: The Azure resource ID of the network interface.
-     *
+     * 
      * @return the networkInterface value.
      */
     public String networkInterface() {
@@ -38,7 +42,7 @@ public final class EffectiveNetworkSecurityGroups {
 
     /**
      * Set the networkInterface property: The Azure resource ID of the network interface.
-     *
+     * 
      * @param networkInterface the networkInterface value to set.
      * @return the EffectiveNetworkSecurityGroups object itself.
      */
@@ -49,7 +53,7 @@ public final class EffectiveNetworkSecurityGroups {
 
     /**
      * Get the networkSecurityGroups property: The Network Security Groups effective on the network interface.
-     *
+     * 
      * @return the networkSecurityGroups value.
      */
     public List<String> networkSecurityGroups() {
@@ -58,7 +62,7 @@ public final class EffectiveNetworkSecurityGroups {
 
     /**
      * Set the networkSecurityGroups property: The Network Security Groups effective on the network interface.
-     *
+     * 
      * @param networkSecurityGroups the networkSecurityGroups value to set.
      * @return the EffectiveNetworkSecurityGroups object itself.
      */
@@ -69,7 +73,7 @@ public final class EffectiveNetworkSecurityGroups {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

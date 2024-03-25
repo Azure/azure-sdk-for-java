@@ -10,7 +10,9 @@ import com.azure.resourcemanager.newrelicobservability.models.SendMetricsStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Set of rules for sending metrics for the Monitor resource. */
+/**
+ * Set of rules for sending metrics for the Monitor resource.
+ */
 @Fluent
 public final class MetricRulesInner {
     /*
@@ -31,13 +33,15 @@ public final class MetricRulesInner {
     @JsonProperty(value = "userEmail")
     private String userEmail;
 
-    /** Creates an instance of MetricRulesInner class. */
+    /**
+     * Creates an instance of MetricRulesInner class.
+     */
     public MetricRulesInner() {
     }
 
     /**
      * Get the sendMetrics property: Flag specifying if metrics should be sent for the Monitor resource.
-     *
+     * 
      * @return the sendMetrics value.
      */
     public SendMetricsStatus sendMetrics() {
@@ -46,7 +50,7 @@ public final class MetricRulesInner {
 
     /**
      * Set the sendMetrics property: Flag specifying if metrics should be sent for the Monitor resource.
-     *
+     * 
      * @param sendMetrics the sendMetrics value to set.
      * @return the MetricRulesInner object itself.
      */
@@ -57,7 +61,7 @@ public final class MetricRulesInner {
 
     /**
      * Get the filteringTags property: List of filtering tags to be used for capturing metrics.
-     *
+     * 
      * @return the filteringTags value.
      */
     public List<FilteringTag> filteringTags() {
@@ -66,7 +70,7 @@ public final class MetricRulesInner {
 
     /**
      * Set the filteringTags property: List of filtering tags to be used for capturing metrics.
-     *
+     * 
      * @param filteringTags the filteringTags value to set.
      * @return the MetricRulesInner object itself.
      */
@@ -77,7 +81,7 @@ public final class MetricRulesInner {
 
     /**
      * Get the userEmail property: User Email.
-     *
+     * 
      * @return the userEmail value.
      */
     public String userEmail() {
@@ -86,7 +90,7 @@ public final class MetricRulesInner {
 
     /**
      * Set the userEmail property: User Email.
-     *
+     * 
      * @param userEmail the userEmail value to set.
      * @return the MetricRulesInner object itself.
      */
@@ -97,7 +101,7 @@ public final class MetricRulesInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

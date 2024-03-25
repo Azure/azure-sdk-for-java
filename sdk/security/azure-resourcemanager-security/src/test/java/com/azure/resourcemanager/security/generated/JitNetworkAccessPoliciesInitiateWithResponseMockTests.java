@@ -12,9 +12,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.security.SecurityManager;
+import com.azure.resourcemanager.security.models.JitNetworkAccessPolicyInitiatePort;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicyInitiateRequest;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicyInitiateVirtualMachine;
 import com.azure.resourcemanager.security.models.JitNetworkAccessRequest;
+import com.azure.resourcemanager.security.models.Status;
+import com.azure.resourcemanager.security.models.StatusReason;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -33,65 +36,66 @@ public final class JitNetworkAccessPoliciesInitiateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"virtualMachines\":[{\"id\":\"xyrujmt\",\"ports\":[]}],\"startTimeUtc\":\"2021-06-08T04:38:24Z\",\"requestor\":\"s\",\"justification\":\"kyohzix\"}";
+        String responseStr
+            = "{\"virtualMachines\":[{\"id\":\"eba\",\"ports\":[{\"number\":750483107,\"allowedSourceAddressPrefix\":\"fv\",\"allowedSourceAddressPrefixes\":[\"magbahdbtjmkuzon\",\"klbizrxhu\",\"fvpanloqovvcxgq\"],\"endTimeUtc\":\"2021-03-01T17:24:31Z\",\"status\":\"Initiated\",\"statusReason\":\"Expired\",\"mappedPort\":249201847}]}],\"startTimeUtc\":\"2021-11-09T23:04:32Z\",\"requestor\":\"pgzatu\",\"justification\":\"jtjuz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(202);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SecurityManager manager =
-            SecurityManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SecurityManager manager = SecurityManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        JitNetworkAccessRequest response =
-            manager
-                .jitNetworkAccessPolicies()
-                .initiateWithResponse(
-                    "xfqzkvemyzd",
-                    "czaqpqifdbmpt",
-                    "wtxzuisam",
-                    new JitNetworkAccessPolicyInitiateRequest()
-                        .withVirtualMachines(
-                            Arrays
-                                .asList(
-                                    new JitNetworkAccessPolicyInitiateVirtualMachine()
-                                        .withId("at")
-                                        .withPorts(Arrays.asList()),
-                                    new JitNetworkAccessPolicyInitiateVirtualMachine()
-                                        .withId("zexroqsqjgh")
-                                        .withPorts(Arrays.asList()),
-                                    new JitNetworkAccessPolicyInitiateVirtualMachine()
-                                        .withId("thsplwsttxsr")
-                                        .withPorts(Arrays.asList()),
-                                    new JitNetworkAccessPolicyInitiateVirtualMachine()
-                                        .withId("fq")
-                                        .withPorts(Arrays.asList())))
-                        .withJustification("iceovxgzw"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        JitNetworkAccessRequest response = manager.jitNetworkAccessPolicies()
+            .initiateWithResponse("rcbajxjr", "vyrkbuatxkznlwl", "bxogkevdayv",
+                new JitNetworkAccessPolicyInitiateRequest()
+                    .withVirtualMachines(Arrays.asList(
+                        new JitNetworkAccessPolicyInitiateVirtualMachine().withId("kxiymzgrg")
+                            .withPorts(Arrays.asList(
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(2093813143)
+                                    .withAllowedSourceAddressPrefix("rjwaez")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-10-25T21:44:05Z")),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(1162522787)
+                                    .withAllowedSourceAddressPrefix("spsbomtcep")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-08-02T16:09:54Z")),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(1857306385)
+                                    .withAllowedSourceAddressPrefix("fsuiwexpas")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-10-05T16:05:42Z")))),
+                        new JitNetworkAccessPolicyInitiateVirtualMachine().withId("pgbmlyxbwslxg")
+                            .withPorts(Arrays.asList(
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(160522597)
+                                    .withAllowedSourceAddressPrefix("oejtqvqctmli")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-06-24T07:55:05Z")),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(1179665677)
+                                    .withAllowedSourceAddressPrefix("xoluzntbpcad")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-01-16T10:22:43Z")),
+                                new JitNetworkAccessPolicyInitiatePort().withNumber(199450034)
+                                    .withAllowedSourceAddressPrefix("rxiperrplfm")
+                                    .withEndTimeUtc(OffsetDateTime.parse("2021-04-30T22:37:25Z"))))))
+                    .withJustification("jjfzizxlbi"),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("xyrujmt", response.virtualMachines().get(0).id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-08T04:38:24Z"), response.startTimeUtc());
-        Assertions.assertEquals("s", response.requestor());
-        Assertions.assertEquals("kyohzix", response.justification());
+        Assertions.assertEquals("eba", response.virtualMachines().get(0).id());
+        Assertions.assertEquals(750483107, response.virtualMachines().get(0).ports().get(0).number());
+        Assertions.assertEquals("fv", response.virtualMachines().get(0).ports().get(0).allowedSourceAddressPrefix());
+        Assertions.assertEquals("magbahdbtjmkuzon",
+            response.virtualMachines().get(0).ports().get(0).allowedSourceAddressPrefixes().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-01T17:24:31Z"),
+            response.virtualMachines().get(0).ports().get(0).endTimeUtc());
+        Assertions.assertEquals(Status.INITIATED, response.virtualMachines().get(0).ports().get(0).status());
+        Assertions.assertEquals(StatusReason.EXPIRED, response.virtualMachines().get(0).ports().get(0).statusReason());
+        Assertions.assertEquals(249201847, response.virtualMachines().get(0).ports().get(0).mappedPort());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T23:04:32Z"), response.startTimeUtc());
+        Assertions.assertEquals("pgzatu", response.requestor());
+        Assertions.assertEquals("jtjuz", response.justification());
     }
 }
