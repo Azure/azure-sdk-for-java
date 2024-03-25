@@ -12,9 +12,9 @@ import com.generic.core.http.pipeline.HttpPipelinePolicy;
 
 /**
  * A {@link com.generic.core.models.traits trait} providing a consistent interface for configuration of HTTP-specific
- * settings. Refer to the SDK for Java
+ * settings. Refer to the
  * <a href="https://aka.ms/azsdk/java/docs/http-client-pipeline">HTTP clients and pipelines</a> documentation for more
- * details on proper usage and configuration of the SDK for Javan HTTP clients.
+ * details on proper usage and configuration of HTTP clients.
  *
  * <p>It is important to understand the precedence order of the {@link HttpTrait} APIs. In particular, if an
  * {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and they will be ignored.

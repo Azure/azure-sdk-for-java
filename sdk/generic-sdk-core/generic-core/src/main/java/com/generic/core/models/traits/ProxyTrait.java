@@ -8,9 +8,7 @@ import com.generic.core.http.models.ProxyOptions;
 
 /**
  * A {@link com.generic.core.models.traits trait} providing a consistent interface for configuration of proxy-specific
- * settings. Refer to the SDK for Java
- * <a href="https://aka.ms/azsdk/java/docs/http-client-pipeline">HTTP clients and pipelines</a> documentation for more
- * details on proper usage and configuration of the SDK for Javan HTTP clients.
+ * settings.
  *
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue to
  * return the concrete type, rather than the trait type.

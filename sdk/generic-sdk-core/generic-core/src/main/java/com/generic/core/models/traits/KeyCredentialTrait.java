@@ -7,7 +7,7 @@ import com.generic.core.credential.KeyCredential;
 
 /**
  * A {@link com.generic.core.models.traits trait} providing a consistent interface for setting {@link KeyCredential}.
- * Refer to the SDK for Java
+ * Refer to the
  * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a> documentation for more details on
  * proper usage of the {@link KeyCredential} type.
  *
