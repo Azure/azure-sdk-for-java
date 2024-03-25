@@ -55,7 +55,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(2);
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
 
         // validate span
         TelemetryItem spanTelemetryItem =
@@ -85,7 +85,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(2);
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
 
         // validate metric
         TelemetryItem metricTelemetryItem =
@@ -116,7 +116,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(2);
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(1);
 
         // validate log
         TelemetryItem logTelemetryItem =
@@ -149,7 +149,7 @@ public class AzureMonitorExportersEndToEndTest extends MonitorExporterClientTest
         countDownLatch.await(10, SECONDS);
         assertThat(customValidationPolicy.getUrl())
             .isEqualTo(new URL("https://test.in.applicationinsights.azure.com/v2.1/track"));
-        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(6);
+        assertThat(customValidationPolicy.getActualTelemetryItems().size()).isEqualTo(3);
 
         // validate telemetry
         TelemetryItem spanTelemetryItem =
