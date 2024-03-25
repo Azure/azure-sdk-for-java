@@ -35,7 +35,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
     private final String method;
     private final URI uri;
     private final HttpHeaders headers;
-    private final Duration responseTimeout;
+    private final Optional<Duration> responseTimeout;
 
     /**
      * Creates a new instance of the JDK HttpRequest.
@@ -66,7 +66,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
         this.headers = HttpHeaders
             .of(new HeaderFilteringMap(HttpHeadersAccessHelper.getRawHeaderMap(azureCoreRequest.getHeaders()),
                 restrictedHeaders, logger), (ignored1, ignored2) -> true);
-        this.responseTimeout = responseTimeout;
+        this.responseTimeout = Optional.ofNullable(responseTimeout);
     }
 
     @Override
@@ -81,7 +81,7 @@ public final class AzureJdkHttpRequest extends HttpRequest {
 
     @Override
     public Optional<Duration> timeout() {
-        return Optional.ofNullable(responseTimeout);
+        return responseTimeout;
     }
 
     @Override

@@ -41,6 +41,7 @@ class JdkHttpClient implements HttpClient {
     private final Duration writeTimeout;
     private final Duration responseTimeout;
     private final Duration readTimeout;
+    private final boolean hasReadTimeout;
 
     JdkHttpClient(java.net.http.HttpClient httpClient, Set<String> restrictedHeaders, Duration writeTimeout,
         Duration responseTimeout, Duration readTimeout) {
@@ -54,9 +55,21 @@ class JdkHttpClient implements HttpClient {
         this.restrictedHeaders = restrictedHeaders;
         LOGGER.verbose("Effective restricted headers: {}", restrictedHeaders);
 
-        this.writeTimeout = writeTimeout;
-        this.responseTimeout = responseTimeout;
+        // Set the write and response timeouts to null if they are negative or zero.
+        // The writeTimeout is used with 'Flux.timeout(Duration)' which uses thread switching, always. When the timeout
+        // is zero or negative it's treated as an infinite timeout. So, setting this to null will prevent that thread
+        // switching with the same runtime behavior.
+        this.writeTimeout
+            = (writeTimeout != null && !writeTimeout.isNegative() && !writeTimeout.isZero()) ? writeTimeout : null;
+
+        // The responseTimeout is used by JDK 'HttpRequest.timeout()' which will throw an exception when the timeout
+        // is non-null and is zero or negative. We treat zero or negative as an infinite timeout, so reset to null to
+        // prevent the exception from being thrown and have the behavior we want.
+        this.responseTimeout = (responseTimeout != null && !responseTimeout.isNegative() && !responseTimeout.isZero())
+            ? responseTimeout
+            : null;
         this.readTimeout = readTimeout;
+        this.hasReadTimeout = readTimeout != null && !readTimeout.isNegative() && !readTimeout.isZero();
     }
 
     @Override
@@ -72,7 +85,7 @@ class JdkHttpClient implements HttpClient {
         Mono<java.net.http.HttpRequest> jdkRequestMono = Mono.fromCallable(() -> toJdkHttpRequest(request, context));
 
         if (eagerlyReadResponse || ignoreResponseBody) {
-            java.net.http.HttpResponse.BodyHandler<byte[]> bodyHandler = getResponseHandler(readTimeout,
+            java.net.http.HttpResponse.BodyHandler<byte[]> bodyHandler = getResponseHandler(hasReadTimeout, readTimeout,
                 java.net.http.HttpResponse.BodyHandlers::ofByteArray, ByteArrayTimeoutResponseSubscriber::new);
 
             return jdkRequestMono
@@ -92,7 +105,7 @@ class JdkHttpClient implements HttpClient {
             return jdkRequestMono
                 .flatMap(jdkRequest -> Mono.fromCompletionStage(
                     jdkHttpClient.sendAsync(jdkRequest, java.net.http.HttpResponse.BodyHandlers.ofPublisher())))
-                .map(jdkResponse -> new JdkHttpResponseAsync(request, jdkResponse, readTimeout));
+                .map(jdkResponse -> new JdkHttpResponseAsync(request, readTimeout, hasReadTimeout, jdkResponse));
         }
     }
 
@@ -112,15 +125,17 @@ class JdkHttpClient implements HttpClient {
             // }
 
             if (eagerlyReadResponse || ignoreResponseBody) {
-                java.net.http.HttpResponse.BodyHandler<byte[]> bodyHandler = getResponseHandler(readTimeout,
-                    java.net.http.HttpResponse.BodyHandlers::ofByteArray, ByteArrayTimeoutResponseSubscriber::new);
+                java.net.http.HttpResponse.BodyHandler<byte[]> bodyHandler
+                    = getResponseHandler(hasReadTimeout, readTimeout,
+                        java.net.http.HttpResponse.BodyHandlers::ofByteArray, ByteArrayTimeoutResponseSubscriber::new);
 
                 java.net.http.HttpResponse<byte[]> jdKResponse = jdkHttpClient.send(jdkRequest, bodyHandler);
                 return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
                     fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
             } else {
-                java.net.http.HttpResponse.BodyHandler<InputStream> bodyHandler = getResponseHandler(readTimeout,
-                    java.net.http.HttpResponse.BodyHandlers::ofInputStream, InputStreamTimeoutResponseSubscriber::new);
+                java.net.http.HttpResponse.BodyHandler<InputStream> bodyHandler = getResponseHandler(hasReadTimeout,
+                    readTimeout, java.net.http.HttpResponse.BodyHandlers::ofInputStream,
+                    InputStreamTimeoutResponseSubscriber::new);
 
                 return new JdkHttpResponseSync(request, jdkHttpClient.send(jdkRequest, bodyHandler));
             }
@@ -156,17 +171,16 @@ class JdkHttpClient implements HttpClient {
      * When a read timeout is configured our custom handler is used that tracks the time taken between each read
      * operation to pull the body from the network. If a timeout isn't configured the built-in JDK handler is used.
      *
+     * @param hasReadTimeout Flag indicating if a read timeout is configured.
      * @param readTimeout The configured read timeout.
      * @param jdkBodyHandler The JDK body handler to use when no read timeout is configured.
      * @param timeoutSubscriber The supplier for the custom body subscriber to use when a read timeout is configured.
      * @return The response body handler to use.
      * @param <T> The type of the response body.
      */
-    private static <T> java.net.http.HttpResponse.BodyHandler<T> getResponseHandler(Duration readTimeout,
-        Supplier<java.net.http.HttpResponse.BodyHandler<T>> jdkBodyHandler,
+    private static <T> java.net.http.HttpResponse.BodyHandler<T> getResponseHandler(boolean hasReadTimeout,
+        Duration readTimeout, Supplier<java.net.http.HttpResponse.BodyHandler<T>> jdkBodyHandler,
         Function<Long, java.net.http.HttpResponse.BodySubscriber<T>> timeoutSubscriber) {
-        return (readTimeout != null && !readTimeout.isNegative() && !readTimeout.isZero())
-            ? responseInfo -> timeoutSubscriber.apply(readTimeout.toMillis())
-            : jdkBodyHandler.get();
+        return hasReadTimeout ? responseInfo -> timeoutSubscriber.apply(readTimeout.toMillis()) : jdkBodyHandler.get();
     }
 }

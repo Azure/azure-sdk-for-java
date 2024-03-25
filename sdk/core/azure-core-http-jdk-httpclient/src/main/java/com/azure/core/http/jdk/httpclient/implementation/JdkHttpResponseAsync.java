@@ -30,16 +30,19 @@ public final class JdkHttpResponseAsync extends JdkHttpResponseBase {
      * Creates an instance of {@link JdkHttpResponseAsync}.
      *
      * @param request the request which resulted in this response.
-     * @param response the JDK HttpClient response.
      * @param readTimeout the read timeout for the response.
+     * @param hasReadTimeout flag indicating if the read timeout is set.
+     * @param response the JDK HttpClient response.
      */
-    public JdkHttpResponseAsync(final HttpRequest request,
-        java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> response, Duration readTimeout) {
+    public JdkHttpResponseAsync(HttpRequest request, Duration readTimeout, boolean hasReadTimeout,
+        java.net.http.HttpResponse<Flow.Publisher<List<ByteBuffer>>> response) {
         super(request, response.statusCode(), fromJdkHttpHeaders(response.headers()));
-        if (readTimeout != null && !readTimeout.isNegative() && !readTimeout.isZero()) {
+        if (hasReadTimeout) {
             this.contentFlux = JdkFlowAdapter.flowPublisherToFlux(response.body())
                 .timeout(readTimeout)
                 .onErrorMap(TimeoutException.class, e -> {
+                    // Map the TimeoutException to HttpTimeoutException to be consistent with all other handling in
+                    // JDK HttpClient which uses HttpTimeoutException rather than TimeoutException.
                     HttpTimeoutException ex = new HttpTimeoutException("Read timed out");
                     ex.addSuppressed(e);
                     return ex;

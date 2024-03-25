@@ -87,6 +87,8 @@ public final class ByteArrayTimeoutResponseSubscriber implements HttpResponse.Bo
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
+                // Complete the future first. Cancelling the subscription causes an error to be emitted about the
+                // subscription being cancelled which we don't want to propagate as we are explicitly doing it.
                 future.completeExceptionally(new HttpTimeoutException("Timeout reading response body."));
                 subscription.cancel();
             }

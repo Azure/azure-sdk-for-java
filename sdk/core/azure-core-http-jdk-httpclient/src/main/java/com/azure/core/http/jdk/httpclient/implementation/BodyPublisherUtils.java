@@ -62,6 +62,8 @@ public final class BodyPublisherUtils {
             fluxBody = Flux.defer(() -> {
                 AtomicInteger position = new AtomicInteger(0);
 
+                // This is used over the built-in JDK HttpClient method to send a byte array body as that performs a
+                // deep duplication of data, whereas this creates read-only ByteBuffers over the byte array content.
                 return Flux.generate(sink -> {
                     int remaining = bytes.length - position.get();
                     if (remaining == 0) {

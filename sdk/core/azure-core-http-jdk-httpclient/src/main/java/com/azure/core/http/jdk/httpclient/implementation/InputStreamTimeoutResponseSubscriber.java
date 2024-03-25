@@ -298,6 +298,9 @@ public final class InputStreamTimeoutResponseSubscriber extends InputStream
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
+                // Set the failed exception before cancelling. Cancelling the subscription causes an error to be emitted
+                // about the subscription being cancelled which we don't want to propagate as we are explicitly doing
+                // it.
                 failed = new HttpTimeoutException("Timeout reading response body.");
                 subscription.cancel();
             }
