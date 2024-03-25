@@ -1,11 +1,9 @@
 ## Release History
 
-### 4.57.0-beta.1 (Unreleased)
+### 4.57.0 (2024-03-25)
 
 #### Features Added
 * Added public APIs `setMaxMicroBatchSize` and `getMaxMicroBatchSize` in `CosmosBulkExecutionOptions` - See [PR 39335](https://github.com/Azure/azure-sdk-for-java/pull/39335)
-
-#### Breaking Changes
 
 #### Bugs Fixed
 * Suppress exceptions when calling diagnostics handlers. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
