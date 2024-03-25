@@ -14,6 +14,8 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.core.util.tracing.TracingLink;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -85,7 +87,7 @@ public class LoggingTracerProvider implements TracerProvider {
             if (options.getAttributes() != null) {
                 options.getAttributes().forEach((k, v) -> span.addKeyValue(k, v));
             }
-            span.addKeyValue("startTimestamp", options.getStartTimestamp());
+            span.start(options.getStartTimestamp());
 
             if (options.getLinks() != null) {
                 for (int i = 0; i < options.getLinks().size(); i++) {
@@ -159,6 +161,7 @@ public class LoggingTracerProvider implements TracerProvider {
         private final String spanId;
         private final LoggingEventBuilder log;
         private final boolean enabled;
+        private Instant startTimestamp;
 
         private LoggingSpan() {
             this.traceId = null;
@@ -200,8 +203,15 @@ public class LoggingTracerProvider implements TracerProvider {
             return this;
         }
 
+        public void start(Instant timestamp) {
+            this.startTimestamp = timestamp == null ? Instant.now() : timestamp;
+        }
+
         public void end(Throwable throwable) {
             if (enabled) {
+                log.addKeyValue("startTimestamp", startTimestamp)
+                    .addKeyValue("durationMs", Duration.between(startTimestamp, Instant.now()).toMillis());
+
                 if (throwable != null) {
                     log.log("span ended", throwable);
                 } else {

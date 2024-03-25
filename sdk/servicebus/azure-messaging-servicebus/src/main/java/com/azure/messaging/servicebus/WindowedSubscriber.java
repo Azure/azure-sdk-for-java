@@ -697,7 +697,17 @@ final class WindowedSubscriber<T> extends BaseSubscriber<T> {
             if (isInitialized.getAndSet(true)) {
                 return false;
             }
-            this.timers.add(beginTimeoutTimer());
+            try {
+                this.timers.add(beginTimeoutTimer());
+            } catch (RuntimeException ex) {
+                logger.atError().log("!!!!!!!!!!!!!!!!!!!!!", ex);
+                Throwable e = ex;
+                while (e.getCause() != null) {
+                    e = ex.getCause();
+                    logger.atError().log("!!!!!!!!!!!!!!!!!!!!!", e);
+                }
+                throw ex;
+            }
             this.timers.add(beginNextItemTimeoutTimer());
             return true;
         }
