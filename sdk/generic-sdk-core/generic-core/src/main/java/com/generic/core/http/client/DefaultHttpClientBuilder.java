@@ -4,6 +4,7 @@
 package com.generic.core.http.client;
 
 import com.generic.core.http.models.ProxyOptions;
+import com.generic.core.implementation.http.client.DefaultHttpClient;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.configuration.Configuration;
 
@@ -146,7 +147,7 @@ public class DefaultHttpClientBuilder {
      */
     public HttpClient build() {
         if (httpClientProvider != null) {
-            return httpClientProvider.createInstance();
+            return httpClientProvider.getInstance();
         }
 
         Configuration buildConfiguration =

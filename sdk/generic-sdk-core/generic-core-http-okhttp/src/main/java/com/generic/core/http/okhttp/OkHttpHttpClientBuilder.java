@@ -302,7 +302,7 @@ public class OkHttpHttpClientBuilder {
      */
     public HttpClient build() {
         if (this.httpClientProvider != null) {
-            return this.httpClientProvider.createInstance();
+            return this.httpClientProvider.getInstance();
         }
 
         OkHttpClient.Builder httpClientBuilder = this.okHttpClient == null

@@ -3,8 +3,10 @@
 
 package com.generic.core.http.client;
 
+import com.generic.core.annotation.ServiceClient;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
+import com.generic.core.implementation.http.client.DefaultHttpClientProvider;
 import com.generic.core.implementation.util.Providers;
 import com.generic.core.util.configuration.Configuration;
 
@@ -22,30 +24,34 @@ public interface HttpClient {
     Response<?> send(HttpRequest request);
 
     /**
-     * Creates an instance of the default {@link HttpClient} implementation, entirely unrelated to all other instances
-     * that were created previously.
+     * Get an instance of the default {@link HttpClient} implementation.
      *
-     * @return An instance of the default {@link HttpClient} implementation, entirely unrelated to all other instances
-     * that were created previously.
+     * @return A new {@link HttpClient} instance, entirely unrelated to all other instances that were created previously
+     * If {@code ENABLE_HTTP_CLIENT_SHARING} is not specified or set to {@code false}. Otherwise, return a singleton
+     * {@link HttpClient} that can be shared amongst different {@link ServiceClient} instances.
      */
     static HttpClient getDefault() {
+        if (Configuration.getGlobalConfiguration().get("ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE)) {
+            return DefaultHttpClientProvider.GlobalHttpUrlConnectionHttpClient.HTTP_CLIENT.getHttpClient();
+        }
+
         return new DefaultHttpClientBuilder().build();
     }
 
     /**
-     * Returns a new instance of the {@link HttpClient} that the default {@link HttpClientProvider} is configured to
+     * Get a new instance of the {@link HttpClient} that the default {@link HttpClientProvider} is configured to
      * create. If no {@link HttpClientProvider} can be found on the classpath, an instance of the default
-     * {@link HttpClient} implementation will be created instead, in which it would effectively be the same as calling
+     * {@link HttpClient} implementation will be returned instead, in which it would effectively be the same as calling
      * {@link #getDefault()}.
      *
-     * @return A new {@link HttpClient} instance, entirely unrelated to all other instances that were created
-     * previously.
+     * @return A new {@link HttpClient} instance, entirely unrelated to all other instances that were created previously
+     * If {@code ENABLE_HTTP_CLIENT_SHARING} is not specified or set to {@code false}. Otherwise, return a singleton
+     * {@link HttpClient} that can be shared amongst different {@link ServiceClient} instances.
      */
     static HttpClient getInstance() {
         final String NO_DEFAULT_PROVIDER_MESSAGE = "A request was made to load the default HttpClient provider "
             + "but one could not be found on the classpath. If you are using a dependency manager, consider including "
-            + "a dependency on azure-core-http-netty or azure-core-http-okhttp. Depending on your existing "
-            + "dependencies, you have the choice of Netty or OkHttp implementations. Additionally, refer to "
+            + "a dependency on io.clientcore:http-okhttp. Additionally, refer to "
             + "https://aka.ms/azsdk/java/docs/custom-httpclient to learn about writing your own implementation.";
 
         final Providers<HttpClientProvider, HttpClient> HTTP_CLIENT_PROVIDERS =
@@ -53,7 +59,6 @@ public interface HttpClient {
                 Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_HTTP_CLIENT_IMPLEMENTATION),
                 NO_DEFAULT_PROVIDER_MESSAGE);
 
-        return HTTP_CLIENT_PROVIDERS.create(HttpClientProvider::createInstance, new DefaultHttpClientBuilder().build(),
-            null);
+        return HTTP_CLIENT_PROVIDERS.create(HttpClientProvider::getInstance, getDefault(), null);
     }
 }

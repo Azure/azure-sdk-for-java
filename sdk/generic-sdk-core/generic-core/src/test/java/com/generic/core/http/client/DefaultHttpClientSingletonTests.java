@@ -3,6 +3,7 @@
 
 package com.generic.core.http.client;
 
+import com.generic.core.implementation.http.client.DefaultHttpClientProvider;
 import com.generic.core.shared.TestConfigurationSource;
 import com.generic.core.util.configuration.Configuration;
 import com.generic.core.util.configuration.ConfigurationBuilder;
@@ -21,16 +22,16 @@ public class DefaultHttpClientSingletonTests {
     @Test
     public void testSingletonClientInstanceCreation() {
         Configuration configuration = getConfiguration(true);
-        HttpClient client1 = new DefaultHttpClientProvider(configuration).createInstance();
-        HttpClient client2 = new DefaultHttpClientProvider(configuration).createInstance();
+        HttpClient client1 = new DefaultHttpClientProvider(configuration).getInstance();
+        HttpClient client2 = new DefaultHttpClientProvider(configuration).getInstance();
         assertEquals(client1, client2);
     }
 
     @Test
     public void testNonDefaultClientInstanceCreation() {
         Configuration configuration = getConfiguration(false);
-        HttpClient client1 = new DefaultHttpClientProvider(configuration).createInstance();
-        HttpClient client2 = new DefaultHttpClientProvider(configuration).createInstance();
+        HttpClient client1 = new DefaultHttpClientProvider(configuration).getInstance();
+        HttpClient client2 = new DefaultHttpClientProvider(configuration).getInstance();
         assertNotEquals(client1, client2);
     }
 

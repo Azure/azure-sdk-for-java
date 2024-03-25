@@ -3,6 +3,7 @@
 
 package com.generic.core.http.client;
 
+import com.generic.core.implementation.http.client.DefaultHttpClientProvider;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -27,7 +28,7 @@ public class DefaultHttpClientTests extends HttpClientTests {
     }
     @Override
     protected HttpClient createHttpClient() {
-        return new DefaultHttpClientProvider().createInstance();
+        return new DefaultHttpClientProvider().getInstance();
     }
 
     @Override

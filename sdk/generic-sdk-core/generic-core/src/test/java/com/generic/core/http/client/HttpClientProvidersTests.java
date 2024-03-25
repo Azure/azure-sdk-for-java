@@ -3,6 +3,7 @@
 
 package com.generic.core.http.client;
 
+import com.generic.core.implementation.http.client.DefaultHttpClient;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;

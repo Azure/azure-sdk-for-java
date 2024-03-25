@@ -43,7 +43,7 @@ public final class OkHttpHttpClientProvider implements HttpClientProvider {
     }
 
     @Override
-    public HttpClient createInstance() {
+    public HttpClient getInstance() {
         if (enableHttpClientSharing) {
             return GlobalOkHttpClient.HTTP_CLIENT.getHttpClient();
         }

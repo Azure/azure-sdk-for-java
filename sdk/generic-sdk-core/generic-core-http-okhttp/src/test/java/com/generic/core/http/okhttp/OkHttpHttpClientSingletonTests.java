@@ -22,8 +22,8 @@ public class OkHttpHttpClientSingletonTests {
     @Test
     public void testSingletonClientInstanceCreation() {
         Configuration configuration = getConfiguration(true);
-        HttpClient client1 = new OkHttpHttpClientProvider(configuration).createInstance();
-        HttpClient client2 = new OkHttpHttpClientProvider(configuration).createInstance();
+        HttpClient client1 = new OkHttpHttpClientProvider(configuration).getInstance();
+        HttpClient client2 = new OkHttpHttpClientProvider(configuration).getInstance();
 
         assertEquals(client1, client2);
     }
@@ -31,8 +31,8 @@ public class OkHttpHttpClientSingletonTests {
     @Test
     public void testNonDefaultClientInstanceCreation() {
         Configuration configuration = getConfiguration(false);
-        HttpClient client1 = new OkHttpHttpClientProvider(configuration).createInstance();
-        HttpClient client2 = new OkHttpHttpClientProvider(configuration).createInstance();
+        HttpClient client1 = new OkHttpHttpClientProvider(configuration).getInstance();
+        HttpClient client2 = new OkHttpHttpClientProvider(configuration).getInstance();
 
         assertNotEquals(client1, client2);
     }

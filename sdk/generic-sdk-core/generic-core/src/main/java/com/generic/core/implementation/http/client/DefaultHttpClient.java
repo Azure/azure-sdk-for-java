@@ -1,8 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client;
+package com.generic.core.implementation.http.client;
 
+import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpHeader;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
@@ -48,7 +49,7 @@ import java.util.regex.Pattern;
 /**
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
-class DefaultHttpClient implements HttpClient {
+public class DefaultHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
     private final long connectionTimeout;
     private final long readTimeout;
@@ -57,7 +58,7 @@ class DefaultHttpClient implements HttpClient {
     private static final String DEFAULT_EVENT = "message";
     private static final Pattern DIGITS_ONLY = Pattern.compile("^[\\d]*$");
 
-    DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions) {
+    public DefaultHttpClient(Duration connectionTimeout, Duration readTimeout, ProxyOptions proxyOptions) {
         this.connectionTimeout = connectionTimeout == null ? -1 : connectionTimeout.toMillis();
         this.readTimeout = readTimeout == null ? -1 : readTimeout.toMillis();
         this.proxyOptions = proxyOptions;
