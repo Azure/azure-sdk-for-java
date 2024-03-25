@@ -3,8 +3,8 @@
 
 package com.generic.core.http.pipeline;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.Response;
 
 /**
  * A policy within the {@link HttpPipeline}.

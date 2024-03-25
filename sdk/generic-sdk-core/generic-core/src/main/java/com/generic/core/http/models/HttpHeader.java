@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.models;
+package com.generic.core.http.models;
 
 import com.generic.core.implementation.util.CoreUtils;
 
@@ -15,9 +15,9 @@ import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
  * Represents a single header to be set on a request.
  * <p>
  * If multiple header values are added to a request with the same name (case-insensitive), then the values will be
- * appended at the end of the same {@link Header} with commas separating them.
+ * appended at the end of the same {@link HttpHeader} with commas separating them.
  */
-public class Header {
+public class HttpHeader {
     private static final String[] EMPTY_HEADER_ARRAY = new String[0];
 
     private final String name;
@@ -30,8 +30,8 @@ public class Header {
 
     // but we also cache it to faster serve our public API
     private volatile String cachedStringValue;
-    private static final AtomicReferenceFieldUpdater<Header, String> CACHED_STRING_VALUE_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(Header.class, String.class, "cachedStringValue");
+    private static final AtomicReferenceFieldUpdater<HttpHeader, String> CACHED_STRING_VALUE_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(HttpHeader.class, String.class, "cachedStringValue");
 
     /**
      * Create a Header instance using the provided name and value.
@@ -40,7 +40,7 @@ public class Header {
      * @param value the value of the header.
      * @throws NullPointerException if {@code name} is null.
      */
-    public Header(String name, String value) {
+    public HttpHeader(String name, String value) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
         this.value = value;
@@ -53,7 +53,7 @@ public class Header {
      * @param values the values of the header.
      * @throws NullPointerException if {@code name} is null.
      */
-    public Header(String name, String... values) {
+    public HttpHeader(String name, String... values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
         int length = values.length;
@@ -72,7 +72,7 @@ public class Header {
      * @param values the values of the header.
      * @throws NullPointerException if {@code name} is null.
      */
-    public Header(String name, List<String> values) {
+    public HttpHeader(String name, List<String> values) {
         Objects.requireNonNull(name, "'name' cannot be null.");
         this.name = name;
         int size = values.size();
@@ -87,14 +87,14 @@ public class Header {
     /**
      * Gets the header name.
      *
-     * @return the name of this {@link Header}
+     * @return the name of this {@link HttpHeader}
      */
     public String getName() {
         return name;
     }
 
     /**
-     * Gets the combined, comma-separated value of this {@link Header}, taking into account all values provided.
+     * Gets the combined, comma-separated value of this {@link HttpHeader}, taking into account all values provided.
      *
      * @return the value of this Header
      */
@@ -112,7 +112,7 @@ public class Header {
     /**
      * Gets the comma separated value as an array. Changes made to this array will not be reflected in the headers.
      *
-     * @return the values of this {@link Header} that are separated by a comma
+     * @return the values of this {@link HttpHeader} that are separated by a comma
      */
     String[] getValuesArray() {
         if (value != null) {

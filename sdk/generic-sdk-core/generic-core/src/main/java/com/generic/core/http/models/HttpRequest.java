@@ -4,11 +4,8 @@
 package com.generic.core.http.models;
 
 import com.generic.core.annotation.Metadata;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.Header;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.binarydata.BinaryData;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -17,7 +14,7 @@ import static com.generic.core.annotation.TypeConditions.FLUENT;
 
 /**
  * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
- * {@link Header} and request body.
+ * {@link HttpHeader} and request body.
  */
 @Metadata(conditions = FLUENT)
 public class HttpRequest {
@@ -26,7 +23,7 @@ public class HttpRequest {
 
     private HttpMethod httpMethod;
     private URL url;
-    private Headers headers;
+    private HttpHeaders headers;
     private BinaryData body;
     private HttpRequestMetadata metadata;
     private ServerSentEventListener serverSentEventListener;
@@ -40,7 +37,7 @@ public class HttpRequest {
     public HttpRequest(HttpMethod httpMethod, URL url) {
         this.httpMethod = httpMethod;
         this.url = url;
-        this.headers = new Headers();
+        this.headers = new HttpHeaders();
         this.metadata = new HttpRequestMetadata();
     }
 
@@ -57,7 +54,7 @@ public class HttpRequest {
 
         setUrl(url);
 
-        this.headers = new Headers();
+        this.headers = new HttpHeaders();
         this.metadata = new HttpRequestMetadata();
     }
 
@@ -130,7 +127,7 @@ public class HttpRequest {
      *
      * @return The Headers to be sent.
      */
-    public Headers getHeaders() {
+    public HttpHeaders getHeaders() {
         return headers;
     }
 
@@ -141,7 +138,7 @@ public class HttpRequest {
      *
      * @return This HttpRequest.
      */
-    public HttpRequest setHeaders(Headers headers) {
+    public HttpRequest setHeaders(HttpHeaders headers) {
         this.headers = headers;
 
         return this;
@@ -173,7 +170,7 @@ public class HttpRequest {
 
         // TODO (alzimmer): should the Content-Length header be removed if content is null?
         if (content != null && content.getLength() != null) {
-            headers.set(HeaderName.CONTENT_LENGTH, String.valueOf(content.getLength()));
+            headers.set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(content.getLength()));
         }
 
         return this;
@@ -210,7 +207,7 @@ public class HttpRequest {
      */
     public HttpRequest copy() {
         return new HttpRequest(httpMethod, url)
-            .setHeaders(new Headers(headers))
+            .setHeaders(new HttpHeaders(headers))
             .setBody(body)
             .setMetadata(metadata.copy());
     }

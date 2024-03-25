@@ -3,21 +3,21 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.Response;
+import com.generic.core.http.models.HttpHeader;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
+import com.generic.core.http.models.Response;
 import com.generic.core.http.models.ServerSentEvent;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.util.ServerSentEventHelper;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.Header;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.binarydata.BinaryData;
 
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
@@ -143,7 +143,7 @@ class DefaultHttpClient implements HttpClient {
                 throw LOGGER.logThrowableAsError(new RuntimeException(e));
             }
 
-            for (Header header : httpRequest.getHeaders()) {
+            for (HttpHeader header : httpRequest.getHeaders()) {
                 for (String value : header.getValues()) {
                     connection.addRequestProperty(header.getName(), value);
                 }
@@ -204,7 +204,7 @@ class DefaultHttpClient implements HttpClient {
     private Response<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
         try {
             int responseCode = connection.getResponseCode();
-            Headers responseHeaders = getResponseHeaders(connection);
+            HttpHeaders responseHeaders = getResponseHeaders(connection);
 
             ServerSentEventListener listener = httpRequest.getServerSentEventListener();
             if (connection.getErrorStream() == null && isTextEventStream(responseHeaders)) {
@@ -242,8 +242,8 @@ class DefaultHttpClient implements HttpClient {
         }
     }
 
-    private static boolean isTextEventStream(Headers responseHeaders) {
-        return Objects.equals(ContentType.TEXT_EVENT_STREAM, responseHeaders.getValue(HeaderName.CONTENT_TYPE));
+    private static boolean isTextEventStream(HttpHeaders responseHeaders) {
+        return Objects.equals(ContentType.TEXT_EVENT_STREAM, responseHeaders.getValue(HttpHeaderName.CONTENT_TYPE));
     }
 
     /**
@@ -351,7 +351,7 @@ class DefaultHttpClient implements HttpClient {
 
         if (retrySSEResult.getLastEventId() != -1) {
             httpRequest.getHeaders()
-                .add(HeaderName.fromString(LAST_EVENT_ID), String.valueOf(retrySSEResult.getLastEventId()));
+                .add(HttpHeaderName.fromString(LAST_EVENT_ID), String.valueOf(retrySSEResult.getLastEventId()));
         }
 
         try {
@@ -367,12 +367,12 @@ class DefaultHttpClient implements HttpClient {
         }
     }
 
-    private Headers getResponseHeaders(HttpURLConnection connection) {
+    private HttpHeaders getResponseHeaders(HttpURLConnection connection) {
         Map<String, List<String>> hucHeaders = connection.getHeaderFields();
-        Headers responseHeaders = new Headers(hucHeaders.size());
+        HttpHeaders responseHeaders = new HttpHeaders(hucHeaders.size());
         for (Map.Entry<String, List<String>> entry : hucHeaders.entrySet()) {
             if (entry.getKey() != null) {
-                responseHeaders.add(HeaderName.fromString(entry.getKey()), entry.getValue());
+                responseHeaders.add(HttpHeaderName.fromString(entry.getKey()), entry.getValue());
             }
         }
         return responseHeaders;
@@ -466,9 +466,9 @@ class DefaultHttpClient implements HttpClient {
          */
         @SuppressWarnings("deprecation")
         private static Response<?> doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
-            httpRequest.getHeaders().set(HeaderName.HOST, httpRequest.getUrl().getHost());
-            if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HeaderName.CONNECTION))) {
-                httpRequest.getHeaders().set(HeaderName.CONNECTION, "close");
+            httpRequest.getHeaders().set(HttpHeaderName.HOST, httpRequest.getUrl().getHost());
+            if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HttpHeaderName.CONNECTION))) {
+                httpRequest.getHeaders().set(HttpHeaderName.CONNECTION, "close");
             }
 
             try (BufferedReader in = new BufferedReader(
@@ -478,7 +478,7 @@ class DefaultHttpClient implements HttpClient {
                 buildAndSend(httpRequest, out);
 
                 Response<?> response = buildResponse(httpRequest, in);
-                Header locationHeader = response.getHeaders().get(HeaderName.LOCATION);
+                HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
                 String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
 
                 if (redirectLocation != null) {
@@ -506,7 +506,7 @@ class DefaultHttpClient implements HttpClient {
             request.append("PATCH ").append(httpRequest.getUrl().getPath()).append(HTTP_VERSION).append("\r\n");
 
             if (httpRequest.getHeaders().getSize() > 0) {
-                for (Header header : httpRequest.getHeaders()) {
+                for (HttpHeader header : httpRequest.getHeaders()) {
                     header.getValues()
                         .forEach(value -> request.append(header.getName()).append(':').append(value).append("\r\n"));
                 }
@@ -533,7 +533,7 @@ class DefaultHttpClient implements HttpClient {
             int dotIndex = statusLine.indexOf('.');
             int statusCode = Integer.parseInt(statusLine.substring(dotIndex + 3, dotIndex + 6));
 
-            Headers headers = new Headers();
+            HttpHeaders headers = new HttpHeaders();
             String line;
             while ((line = reader.readLine()) != null && !line.isEmpty()) {
                 // Headers may have optional leading and trailing whitespace around the header value.
@@ -542,7 +542,7 @@ class DefaultHttpClient implements HttpClient {
                 int split = line.indexOf(':'); // Find ':' to split the header name and value.
                 String key = line.substring(0, split); // Get the header name.
                 String value = line.substring(split + 1).trim(); // Get the header value and trim whitespace.
-                headers.add(HeaderName.fromString(key), value);
+                headers.add(HttpHeaderName.fromString(key), value);
             }
 
             StringBuilder bodyString = new StringBuilder();

@@ -3,11 +3,11 @@
 
 package com.generic.core.http.okhttp;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.ProxyOptions;
+import com.generic.core.http.models.Response;
 import com.generic.core.shared.LocalTestServer;
 import com.generic.core.shared.TestConfigurationSource;
 import com.generic.core.util.configuration.Configuration;

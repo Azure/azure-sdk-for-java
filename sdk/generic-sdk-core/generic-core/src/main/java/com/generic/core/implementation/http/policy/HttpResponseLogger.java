@@ -3,7 +3,7 @@
 
 package com.generic.core.implementation.http.policy;
 
-import com.generic.core.http.Response;
+import com.generic.core.http.models.Response;
 import com.generic.core.http.policy.HttpLoggingPolicy;
 import com.generic.core.util.ClientLogger;
 

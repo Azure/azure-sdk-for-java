@@ -5,9 +5,8 @@ package com.generic.core.http.models;
 
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.implementation.http.rest.UrlEscapers;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.Context;
-import com.generic.core.models.HeaderName;
+import com.generic.core.util.Context;
+import com.generic.core.util.binarydata.BinaryData;
 
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -152,7 +151,7 @@ public final class RequestOptions {
      *
      * @return the modified RequestOptions object
      */
-    public RequestOptions addHeader(HeaderName header, String value) {
+    public RequestOptions addHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
 
         return this;
@@ -168,7 +167,7 @@ public final class RequestOptions {
      *
      * @return the modified RequestOptions object
      */
-    public RequestOptions setHeader(HeaderName header, String value) {
+    public RequestOptions setHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
 
         return this;
