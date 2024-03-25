@@ -25,12 +25,6 @@
       "TestFromSource": false
     },
     {
-      "Agent": { "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" } },
-      "JavaTestVersion": "1.21",
-      "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false
-    },
-    {
       "Agent": {
         "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },

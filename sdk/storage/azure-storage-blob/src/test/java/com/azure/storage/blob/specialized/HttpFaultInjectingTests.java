@@ -140,12 +140,15 @@ public class HttpFaultInjectingTests {
                     null, Context.NONE);
                 byte[] actualFileBytes = Files.readAllBytes(it.toPath());
                 TestUtils.assertArraysEqual(realFileBytes, actualFileBytes);
-                LOGGER.atVerbose().log(() -> "Successful complete count: " + successCount.incrementAndGet());
+                LOGGER.atVerbose()
+                    .addKeyValue("successCount", successCount.incrementAndGet())
+                    .log("Download completed successfully.");
                 Files.deleteIfExists(it.toPath());
             } catch (Exception ex) {
                 // Don't let network exceptions fail the download
                 LOGGER.atWarning()
-                    .log(() -> "Failed to complete download, target download file: " + it.getAbsolutePath(), ex);
+                    .addKeyValue("downloadFile", it.getAbsolutePath())
+                    .log("Failed to complete download.", ex);
             }
 
             return null;
@@ -160,7 +163,9 @@ public class HttpFaultInjectingTests {
             try {
                 Files.deleteIfExists(it.toPath());
             } catch (IOException e) {
-                LOGGER.atWarning().log(() -> "Failed to delete file: " + it.getAbsolutePath(), e);
+                LOGGER.atWarning()
+                    .addKeyValue("file", it.getAbsolutePath())
+                    .log("Failed to delete file.", e);
             }
         });
     }
