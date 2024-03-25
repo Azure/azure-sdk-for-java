@@ -100,7 +100,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.6.1</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.6.2</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
     </dependency>
   </dependencies>
 
