@@ -12,6 +12,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.guava27.Strings;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -85,7 +86,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
     }
 
     static {
-        credential = new AzureKeyCredential(KafkaCosmosTestConfigurations.MASTER_KEY);
+        credential = new AzureKeyCredential(TestConfigurations.MASTER_KEY);
     }
 
     @BeforeSuite(groups = { "kafka" }, timeOut = SUITE_SETUP_TIMEOUT)
@@ -94,7 +95,6 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         logger.info("beforeSuite Started");
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             databaseName = createDatabase(houseKeepingClient);
-
             CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
             multiPartitionContainerName =
                 createCollection(
@@ -135,7 +135,7 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         ThrottlingRetryOptions options = new ThrottlingRetryOptions();
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-        return new CosmosClientBuilder().endpoint(KafkaCosmosTestConfigurations.HOST)
+        return new CosmosClientBuilder().endpoint(TestConfigurations.HOST)
             .credential(credential)
             .gatewayMode(gatewayConnectionConfig)
             .throttlingRetryOptions(options)

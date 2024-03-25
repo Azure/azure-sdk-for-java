@@ -61,8 +61,6 @@ public class CosmosSourceTask extends SourceTask {
 
         this.taskUnitsQueue.addAll(this.taskConfig.getFeedRangeTaskUnits());
         LOGGER.info("Creating the cosmos client");
-
-        // TODO[GA]: optimize the client creation, client metadata cache?
         this.cosmosClient = CosmosClientStore.getCosmosClient(this.taskConfig.getAccountConfig());
     }
 
@@ -97,7 +95,7 @@ public class CosmosSourceTask extends SourceTask {
                 }
 
                 stopwatch.stop();
-                LOGGER.debug(
+                LOGGER.info(
                     "Return {} records, databaseName {}, containerName {}, containerRid {}, feedRange {}, durationInMs {}",
                     results.size(),
                     ((FeedRangeTaskUnit) taskUnit).getDatabaseName(),
