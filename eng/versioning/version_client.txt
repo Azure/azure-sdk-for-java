@@ -463,6 +463,7 @@ com.azure.tools:azure-sdk-build-tool;1.0.0;1.1.0-beta.1
 
 unreleased_com.azure:azure-xml;1.0.0-beta.4
 unreleased_com.azure:azure-core;1.48.0-beta.1
+unreleased_com.azure:azure-core-http-jdk-httpclient;1.0.0-beta.12
 unreleased_com.azure:azure-core-http-vertx;1.0.0-beta.17
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
