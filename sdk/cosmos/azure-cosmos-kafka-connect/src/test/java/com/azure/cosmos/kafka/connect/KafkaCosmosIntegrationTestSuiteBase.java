@@ -33,6 +33,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
 
     protected static Network network;
     protected static KafkaContainer kafkaContainer;
+    protected static KafkaSchemaRegistryContainer schemaRegistryContainer;
     protected static KafkaCosmosConnectContainer kafkaCosmosConnectContainer;
 
     @BeforeSuite(groups = { "kafka-integration" }, timeOut = 10 * SUITE_SETUP_TIMEOUT)
@@ -69,26 +70,37 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
         kafkaContainer = new KafkaContainer(getDockerImageName("confluentinc/cp-kafka:"))
             .withNetwork(network)
             .withNetworkAliases("broker")
-            .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT);
+            .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
+            .withLogConsumer(new Slf4jLogConsumer(logger));
+
+        schemaRegistryContainer = new KafkaSchemaRegistryContainer(getDockerImageName("confluentinc/cp-schema-registry:"))
+            .withNetwork(network)
+            .dependsOn(kafkaContainer)
+            .withLocalKafkaContainer(kafkaContainer)
+            .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
+            .withLogConsumer(new Slf4jLogConsumer(logger));
 
         kafkaCosmosConnectContainer = new KafkaCosmosConnectContainer(getDockerImageName("confluentinc/cp-kafka-connect:"))
             .withNetwork(network)
-            .dependsOn(kafkaContainer)
+            .dependsOn(kafkaContainer, schemaRegistryContainer)
             .withLocalKafkaContainer(kafkaContainer)
             .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
             .withFileSystemBind("src/test/connectorPlugins", "/kafka/connect/cosmos-connector")
             .withLogConsumer(new Slf4jLogConsumer(logger));
 
-        Startables.deepStart(Stream.of(kafkaContainer, kafkaCosmosConnectContainer)).join();
+        Startables.deepStart(Stream.of(kafkaContainer, schemaRegistryContainer, kafkaCosmosConnectContainer)).join();
 
         // the mapped bootstrap server port can only be obtained after the container started
-        kafkaCosmosConnectContainer.withLocalBootstrapServer(kafkaContainer.getBootstrapServers());
+        kafkaCosmosConnectContainer.withLocalBootstrapServer(
+            kafkaContainer.getBootstrapServers(),
+            schemaRegistryContainer.getSchemaRegistryUrl());
     }
 
     private static void setupDockerContainersForCloud() {
         logger.info("Setting up docker containers with self-managed cloud clusters...");
         kafkaCosmosConnectContainer = new KafkaCosmosConnectContainer(getDockerImageName("confluentinc/cp-kafka-connect:"))
             .withCloudKafkaContainer()
+            .withCloudSchemaRegistryContainer()
             .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
             .withFileSystemBind("src/test/connectorPlugins", "/kafka/connect/cosmos-connector")
             .withLogConsumer(new Slf4jLogConsumer(logger));

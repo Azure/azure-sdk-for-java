@@ -4,16 +4,9 @@
 package com.azure.cosmos.kafka.connect;
 
 import com.azure.core.exception.ResourceNotFoundException;
-import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.NewTopic;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
-import org.apache.kafka.connect.json.JsonDeserializer;
-import org.apache.kafka.connect.json.JsonSerializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sourcelab.kafka.connect.apiclient.Configuration;
@@ -31,8 +24,8 @@ import java.util.Properties;
 public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosConnectContainer> {
     private static final Logger logger = LoggerFactory.getLogger(KafkaCosmosConnectContainer.class);
     private static final int KAFKA_CONNECT_PORT = 8083;
-    private KafkaConsumer<String, JsonNode> kafkaConsumer;
-    private KafkaProducer<String, JsonNode> kafkaProducer;
+    private Properties producerProperties;
+    private Properties consumerProperties;
     private AdminClient adminClient;
     private int replicationFactor = 1;
 
@@ -62,8 +55,6 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
     private Properties defaultConsumerConfig() {
         Properties kafkaConsumerProperties = new Properties();
         kafkaConsumerProperties.put("group.id", "IntegrationTest-Consumer");
-        kafkaConsumerProperties.put("value.deserializer", JsonDeserializer.class.getName());
-        kafkaConsumerProperties.put("key.deserializer", StringDeserializer.class.getName());
         kafkaConsumerProperties.put("sasl.mechanism", "PLAIN");
         kafkaConsumerProperties.put("client.dns.lookup", "use_all_dns_ips");
         kafkaConsumerProperties.put("session.timeout.ms", "45000");
@@ -74,8 +65,6 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         Properties kafkaProducerProperties = new Properties();
 
         kafkaProducerProperties.put(ProducerConfig.CLIENT_ID_CONFIG, "IntegrationTest-producer");
-        kafkaProducerProperties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-        kafkaProducerProperties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, JsonSerializer.class.getName());
         kafkaProducerProperties.put(ProducerConfig.MAX_BLOCK_MS_CONFIG, 2000L);
         kafkaProducerProperties.put(ProducerConfig.ACKS_CONFIG, "all");
         kafkaProducerProperties.put("sasl.mechanism", "PLAIN");
@@ -108,14 +97,25 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         return self();
     }
 
-    public KafkaCosmosConnectContainer withLocalBootstrapServer(String localBootstrapServer) {
+    public KafkaCosmosConnectContainer withCloudSchemaRegistryContainer() {
+        withEnv("CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
+        withEnv("CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
+        return self();
+    }
+
+    public KafkaCosmosConnectContainer withLocalBootstrapServer(String localBootstrapServer, String schemaRegistryUrl) {
+        withEnv("CONNECT_KEY_CONVERTER_SCHEMA_REGISTRY_URL", schemaRegistryUrl);
+        withEnv("CONNECT_VALUE_CONVERTER_SCHEMA_REGISTRY_URL", schemaRegistryUrl);
+
         Properties consumerProperties = defaultConsumerConfig();
         consumerProperties.put("bootstrap.servers", localBootstrapServer);
-        this.kafkaConsumer = new KafkaConsumer<>(consumerProperties);
+        consumerProperties.put("schema.registry.url", schemaRegistryUrl);
+        this.consumerProperties = consumerProperties;
 
         Properties producerProperties = defaultProducerConfig();
         producerProperties.put("bootstrap.servers", localBootstrapServer);
-        this.kafkaProducer = new KafkaProducer<>(producerProperties);
+        producerProperties.put("schema.registry.url", schemaRegistryUrl);
+        this.producerProperties = producerProperties;
 
         this.adminClient = this.getAdminClient(localBootstrapServer);
         return self();
@@ -127,15 +127,21 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         consumerProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
         consumerProperties.put("security.protocol", "SASL_SSL");
         consumerProperties.put("sasl.mechanism", "PLAIN");
+        consumerProperties.put("schema.registry.url", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
+        consumerProperties.put("basic.auth.credentials.source", "USER_INFO");
+        consumerProperties.put("basic.auth.user.info", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO);
 
-        this.kafkaConsumer = new KafkaConsumer<>(consumerProperties);
+        this.consumerProperties = consumerProperties;
 
         Properties producerProperties = defaultProducerConfig();
         producerProperties.put("bootstrap.servers", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
         producerProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
         producerProperties.put("security.protocol", "SASL_SSL");
         producerProperties.put("sasl.mechanism", "PLAIN");
-        this.kafkaProducer = new KafkaProducer<>(producerProperties);
+        producerProperties.put("schema.registry.url", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_URL);
+        producerProperties.put("basic.auth.credentials.source", "USER_INFO");
+        producerProperties.put("basic.auth.user.info", KafkaCosmosTestConfigurations.SCHEMA_REGISTRY_BASIC_AUTH_USER_INFO);
+        this.producerProperties = producerProperties;
 
         this.adminClient = this.getAdminClient(KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
         this.replicationFactor = 3;
@@ -171,16 +177,16 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         }
     }
 
-    public KafkaConsumer<String, JsonNode> getConsumer() {
-        return this.kafkaConsumer;
-    }
-
-    public KafkaProducer<String, JsonNode> getProducer() {
-        return this.kafkaProducer;
-    }
-
     public String getTarget() {
         return "http://" + getContainerIpAddress() + ":" + getMappedPort(KAFKA_CONNECT_PORT);
+    }
+
+    public Properties getProducerProperties() {
+        return producerProperties;
+    }
+
+    public Properties getConsumerProperties() {
+        return consumerProperties;
     }
 
     public void createTopic(String topicName, int numPartitions) {

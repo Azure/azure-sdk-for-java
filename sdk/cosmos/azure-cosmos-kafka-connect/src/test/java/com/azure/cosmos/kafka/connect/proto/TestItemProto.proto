@@ -1,0 +1,9 @@
+syntax = "proto3";
+
+package com.azure.cosmos.kafka.connect.proto;
+
+message TestItem {
+	string id = 1;
+	string mypk = 2;
+	string prop = 3;
+}
