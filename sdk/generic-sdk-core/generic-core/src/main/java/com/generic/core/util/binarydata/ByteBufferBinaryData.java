@@ -1,13 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.models;
+package com.generic.core.util.binarydata;
 
+import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -15,33 +17,33 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
- * A {@link BinaryData} implementation backed by a String.
+ * A {@link BinaryData} implementation backed by a {@link ByteBuffer}.
  */
-public final class StringBinaryData extends BinaryData {
-    private final String content;
+public final class ByteBufferBinaryData extends BinaryData {
+    private final ByteBuffer content;
 
     private volatile byte[] bytes;
-    private static final AtomicReferenceFieldUpdater<StringBinaryData, byte[]> BYTES_UPDATER
-        = AtomicReferenceFieldUpdater.newUpdater(StringBinaryData.class, byte[].class, "bytes");
+    private static final AtomicReferenceFieldUpdater<ByteBufferBinaryData, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(ByteBufferBinaryData.class, byte[].class, "bytes");
 
     /**
-     * Creates a new instance of {@link StringBinaryData}.
+     * Creates a new instance of {@link ByteBufferBinaryData}.
      *
-     * @param content The string content.
-     * @throws NullPointerException if {@code content} is null.
+     * @param content The {@link ByteBuffer} content.
+     * @throws NullPointerException If {@code content} is null.
      */
-    public StringBinaryData(String content) {
+    public ByteBufferBinaryData(ByteBuffer content) {
         this.content = Objects.requireNonNull(content, "'content' cannot be null.");
     }
 
     @Override
     public Long getLength() {
-        return (long) toBytes().length;
+        return (long) content.remaining();
     }
 
     @Override
     public String toString() {
-        return this.content;
+        return new String(toBytes(), StandardCharsets.UTF_8);
     }
 
     @Override
@@ -61,7 +63,13 @@ public final class StringBinaryData extends BinaryData {
 
     @Override
     public ByteBuffer toByteBuffer() {
-        return ByteBuffer.wrap(toBytes()).asReadOnlyBuffer();
+        return content.asReadOnlyBuffer();
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        ByteBuffer buffer = toByteBuffer();
+        ImplUtils.writeByteBufferToStream(buffer, outputStream);
     }
 
     @Override
@@ -75,7 +83,13 @@ public final class StringBinaryData extends BinaryData {
     }
 
     private byte[] getBytes() {
-        return this.content.getBytes(StandardCharsets.UTF_8);
+        byte[] bytes = new byte[content.remaining()];
+
+        content.mark();
+        content.get(bytes);
+        content.flip();
+
+        return bytes;
     }
 
     @Override

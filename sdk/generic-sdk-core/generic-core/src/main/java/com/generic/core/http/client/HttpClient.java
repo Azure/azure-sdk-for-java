@@ -3,8 +3,8 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.Response;
 import com.generic.core.implementation.util.Providers;
 import com.generic.core.util.configuration.Configuration;
 

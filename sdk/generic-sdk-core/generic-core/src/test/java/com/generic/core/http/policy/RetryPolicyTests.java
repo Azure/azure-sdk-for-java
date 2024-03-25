@@ -5,15 +5,15 @@ package com.generic.core.http.policy;
 
 import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.NoOpHttpClient;
-import com.generic.core.http.Response;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpRetryOptions;
+import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.implementation.util.DateTimeRfc1123;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -223,7 +223,7 @@ public class RetryPolicyTests {
     @Test
     public void retryConsumesBody() {
         AtomicInteger closeCalls = new AtomicInteger();
-        Response<?> closeTrackingHttpResponse = new MockHttpResponse(null, 503, new Headers()) {
+        Response<?> closeTrackingHttpResponse = new MockHttpResponse(null, 503, new HttpHeaders()) {
             @Override
             public void close() throws IOException {
                 closeCalls.incrementAndGet();
@@ -280,7 +280,7 @@ public class RetryPolicyTests {
     }
     @ParameterizedTest
     @MethodSource("getWellKnownRetryDelaySupplier")
-    public void retryWellKnownRetryHeaders(Headers responseHeaders) {
+    public void retryWellKnownRetryHeaders(HttpHeaders responseHeaders) {
         HttpRetryOptions retryOptions = new HttpRetryOptions(1, Duration.ofMillis(1));
 
         AtomicInteger attemptCount = new AtomicInteger();
@@ -355,10 +355,10 @@ public class RetryPolicyTests {
     @Test
     public void retryOptionsCanConfigureRetryHeaders() {
         HttpRetryOptions retryOptions = new HttpRetryOptions(1, Duration.ofMillis(1)).setDelayFromHeaders(headers -> {
-            String retryAfter = headers.getValue(HeaderName.RETRY_AFTER);
+            String retryAfter = headers.getValue(HttpHeaderName.RETRY_AFTER);
             return retryAfter == null ? null : Duration.ofSeconds(10);
         });
-        Headers headers = new Headers().set(HeaderName.RETRY_AFTER, "10");
+        HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, "10");
 
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RetryPolicy(retryOptions))
@@ -405,43 +405,43 @@ public class RetryPolicyTests {
                     .anyMatch(retriableErrorCode -> requestRetryCondition.getResponse().getStatusCode() == retriableErrorCode));
     }
 
-    private static final HeaderName X_MS_RETRY_AFTER_MS = HeaderName.fromString("x-ms-retry-after-ms");
-    private static final HeaderName RETRY_AFTER_MS = HeaderName.fromString("retry-after-ms");
+    private static final HttpHeaderName X_MS_RETRY_AFTER_MS = HttpHeaderName.fromString("x-ms-retry-after-ms");
+    private static final HttpHeaderName RETRY_AFTER_MS = HttpHeaderName.fromString("retry-after-ms");
 
     static Stream<Arguments> getWellKnownRetryDelaySupplier() {
 
         return Stream.of(
             // No well-known headers, fallback to the default.
-            Arguments.of(new Headers()),
+            Arguments.of(new HttpHeaders()),
 
             // x-ms-retry-after-ms should be respected as milliseconds.
-            Arguments.of(new Headers().set(X_MS_RETRY_AFTER_MS, "10")),
+            Arguments.of(new HttpHeaders().set(X_MS_RETRY_AFTER_MS, "10")),
 
             // x-ms-retry-after-ms wasn't a valid number, fallback to the default.
-            Arguments.of(new Headers().set(X_MS_RETRY_AFTER_MS, "-10")),
-            Arguments.of(new Headers().set(X_MS_RETRY_AFTER_MS, "ten")),
+            Arguments.of(new HttpHeaders().set(X_MS_RETRY_AFTER_MS, "-10")),
+            Arguments.of(new HttpHeaders().set(X_MS_RETRY_AFTER_MS, "ten")),
 
             // retry-after-ms should be respected as milliseconds.
-            Arguments.of(new Headers().set(RETRY_AFTER_MS, "64")),
+            Arguments.of(new HttpHeaders().set(RETRY_AFTER_MS, "64")),
 
             // retry-after-ms wasn't a valid number, fallback to the default.
-            Arguments.of(new Headers().set(RETRY_AFTER_MS, "-10")),
-            Arguments.of(new Headers().set(RETRY_AFTER_MS, "ten")),
+            Arguments.of(new HttpHeaders().set(RETRY_AFTER_MS, "-10")),
+            Arguments.of(new HttpHeaders().set(RETRY_AFTER_MS, "ten")),
 
             // Retry-After should be respected as seconds.
-            Arguments.of(new Headers().set(HeaderName.RETRY_AFTER, "10")),
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, "10")),
 
             // Retry-After wasn't a valid number, fallback to the default.
-            Arguments.of(new Headers().set(HeaderName.RETRY_AFTER, "-10")),
-            Arguments.of(new Headers().set(HeaderName.RETRY_AFTER, "ten")),
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, "-10")),
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, "ten")),
 
             // Retry-After was before the current time, fallback to the default.
-            Arguments.of(new Headers().set(HeaderName.RETRY_AFTER, OffsetDateTime.now()
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.RETRY_AFTER, OffsetDateTime.now()
                 .minusMinutes(1)
                 .atZoneSameInstant(ZoneOffset.UTC)
                 .format(DateTimeFormatter.RFC_1123_DATE_TIME))),
 
-            Arguments.of(new Headers().set(HeaderName.RETRY_AFTER,
+            Arguments.of(new HttpHeaders().set(HttpHeaderName.RETRY_AFTER,
                 new DateTimeRfc1123(OffsetDateTime.now().withNano(0).plusSeconds(30)).toString())));
     }
 }

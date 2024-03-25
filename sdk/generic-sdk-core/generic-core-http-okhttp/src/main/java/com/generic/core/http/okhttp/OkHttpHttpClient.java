@@ -3,20 +3,20 @@
 
 package com.generic.core.http.okhttp;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.client.HttpClient;
+import com.generic.core.http.models.HttpHeader;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.Response;
 import com.generic.core.http.okhttp.implementation.OkHttpFileRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpResponse;
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.FileBinaryData;
-import com.generic.core.models.Header;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
-import com.generic.core.models.InputStreamBinaryData;
 import com.generic.core.util.ClientLogger;
+import com.generic.core.util.binarydata.BinaryData;
+import com.generic.core.util.binarydata.FileBinaryData;
+import com.generic.core.util.binarydata.InputStreamBinaryData;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -71,7 +71,7 @@ class OkHttpHttpClient implements HttpClient {
             .url(request.getUrl());
 
         if (request.getHeaders() != null) {
-            for (Header hdr : request.getHeaders()) {
+            for (HttpHeader hdr : request.getHeaders()) {
                 // OkHttp allows for headers with multiple values, but it treats them as separate headers,
                 // therefore, we must call rb.addHeader for each value, using the same key for all of them
                 hdr.getValues().forEach(value -> requestBuilder.addHeader(hdr.getName(), value));
@@ -97,12 +97,12 @@ class OkHttpHttpClient implements HttpClient {
      *
      * @return The Mono emitting okhttp request
      */
-    private RequestBody toOkHttpRequestBody(BinaryData bodyContent, Headers headers) {
+    private RequestBody toOkHttpRequestBody(BinaryData bodyContent, HttpHeaders headers) {
         if (bodyContent == null) {
             return EMPTY_REQUEST_BODY;
         }
 
-        String contentType = headers.getValue(HeaderName.CONTENT_TYPE);
+        String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
         MediaType mediaType = (contentType == null) ? null : MediaType.parse(contentType);
 
         if (bodyContent instanceof InputStreamBinaryData) {
@@ -121,11 +121,11 @@ class OkHttpHttpClient implements HttpClient {
         }
     }
 
-    private static long getRequestContentLength(BinaryData content, Headers headers) {
+    private static long getRequestContentLength(BinaryData content, HttpHeaders headers) {
         Long contentLength = content.getLength();
 
         if (contentLength == null) {
-            String contentLengthHeaderValue = headers.getValue(HeaderName.CONTENT_LENGTH);
+            String contentLengthHeaderValue = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
 
             if (contentLengthHeaderValue != null) {
                 contentLength = Long.parseLong(contentLengthHeaderValue);

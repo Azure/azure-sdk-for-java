@@ -4,12 +4,12 @@
 package com.generic.core.http.policy;
 
 import com.generic.core.credential.KeyCredential;
-import com.generic.core.http.Response;
+import com.generic.core.http.models.HttpHeaderName;
+import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.Response;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
-import com.generic.core.models.HeaderName;
-import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
 import java.util.Objects;
@@ -22,7 +22,7 @@ import java.util.Objects;
  */
 public class KeyCredentialPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(KeyCredentialPolicy.class);
-    private final HeaderName name;
+    private final HttpHeaderName name;
     private final KeyCredential credential;
     private final String prefix;
 
@@ -56,17 +56,17 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
         this(validateName(name), Objects.requireNonNull(credential, "'credential' cannot be null."), prefix);
     }
 
-    private static HeaderName validateName(String name) {
+    private static HttpHeaderName validateName(String name) {
         Objects.requireNonNull(name, "'name' cannot be null.");
 
         if (name.isEmpty()) {
             throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be empty."));
         }
 
-        return HeaderName.fromString(name);
+        return HttpHeaderName.fromString(name);
     }
 
-    KeyCredentialPolicy(HeaderName name, KeyCredential credential, String prefix) {
+    KeyCredentialPolicy(HttpHeaderName name, KeyCredential credential, String prefix) {
         this.name = name;
         this.credential = credential;
         this.prefix = prefix != null ? prefix.trim() : null;
@@ -78,7 +78,7 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
         return next.process();
     }
 
-    void setCredential(Headers headers) {
+    void setCredential(HttpHeaders headers) {
         String credential = this.credential.getKey();
         headers.set(name, (prefix == null) ? credential : prefix + " " + credential);
     }

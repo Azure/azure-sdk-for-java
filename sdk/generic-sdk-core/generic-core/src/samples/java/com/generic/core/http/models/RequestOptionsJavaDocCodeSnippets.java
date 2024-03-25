@@ -3,8 +3,7 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.models.BinaryData;
-import com.generic.core.models.HeaderName;
+import com.generic.core.util.binarydata.BinaryData;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -23,7 +22,7 @@ public class RequestOptionsJavaDocCodeSnippets {
         // BEGIN: com.generic.core.http.rest.requestoptions.instantiation
         RequestOptions options = new RequestOptions()
             .setBody(BinaryData.fromString("{\"name\":\"Fluffy\"}"))
-            .addHeader(HeaderName.fromString("x-ms-pet-version"), "2021-06-01");
+            .addHeader(HttpHeaderName.fromString("x-ms-pet-version"), "2021-06-01");
         // END: com.generic.core.http.rest.requestoptions.instantiation
         return options;
     }
@@ -69,7 +68,7 @@ public class RequestOptionsJavaDocCodeSnippets {
                 .setUrl("https://petstore.example.com/pet")
                 .setHttpMethod(HttpMethod.POST)
                 .setBody(BinaryData.fromString(requestBodyStr))
-                .getHeaders().set(HeaderName.CONTENT_TYPE, "application/json"));
+                .getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"));
         // END: com.generic.core.http.rest.requestoptions.postrequest
         return options;
     }
