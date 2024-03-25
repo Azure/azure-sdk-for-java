@@ -37,7 +37,6 @@ import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnect
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -941,11 +940,6 @@ public class ImplementationBridgeHelpers {
                 Class<T> classType);
 
             Mono<List<FeedRange>> getFeedRanges(CosmosAsyncContainer cosmosAsyncContainer, boolean forceRefresh);
-
-            Mono<List<FeedRangeEpkImpl>> trySplitFeedRange(
-                CosmosAsyncContainer cosmosAsyncContainer,
-                FeedRange feedRange,
-                int targetedCountAfterSplit);
         }
     }
 
