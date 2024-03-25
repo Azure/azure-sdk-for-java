@@ -11,7 +11,7 @@
 * Fixed incorrect container tag value in metrics. - See [PR 39322](https://github.com/Azure/azure-sdk-for-java/pull/39322)
 * Fixed issue where CosmosDiagnosticsContext is null when diagnostics are sampled out. - See [PR 39352](https://github.com/Azure/azure-sdk-for-java/pull/39352)
 #### Other Changes
-* Changed logic to only call `System.exit()` in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
+* Changed logic to only call `System.exit()` in `DiagnosticsProvider` for `Error` scenario. Also added `System.err` for `Error` cases. - See [PR 39077](https://github.com/Azure/azure-sdk-for-java/pull/39077)
 
 ### 4.53.4-hotfix (2024-03-15)
 
