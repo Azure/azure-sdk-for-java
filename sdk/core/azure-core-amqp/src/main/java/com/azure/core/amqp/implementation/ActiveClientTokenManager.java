@@ -85,7 +85,10 @@ public class ActiveClientTokenManager implements TokenManager {
 
             // If this is the first time authorize is called, the task will not have been scheduled yet.
             if (!hasScheduled.getAndSet(true)) {
-                LOGGER.atInfo().addKeyValue("scopes", scopes).log("Scheduling refresh token task.");
+                LOGGER.atInfo().addKeyValue("scopes", scopes)
+                    .addKeyValue("between", between)
+                    .addKeyValue("expiresOn", expiresOn)
+                    .log("Scheduling refresh token task.");
 
                 final Duration firstInterval = Duration.ofMillis(refreshIntervalMS);
                 lastRefreshInterval.set(firstInterval);
