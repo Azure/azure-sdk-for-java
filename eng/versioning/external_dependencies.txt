@@ -232,8 +232,8 @@ org.assertj:assertj-core;3.24.2
 org.bouncycastle:bcprov-jdk15to18;1.77
 org.bouncycastle:bcprov-jdk18on;1.77
 org.bouncycastle:bcpkix-lts8on;2.73.3
-org.eclipse.jetty:jetty-http;12.0.7
-org.eclipse.jetty:jetty-server;12.0.7
+org.eclipse.jetty:jetty-http;9.4.54.v20240208
+org.eclipse.jetty:jetty-server;9.4.54.v20240208
 org.eclipse.jetty:jetty-servlet;9.4.54.v20240208
 org.glassfish:javax.json;1.1.4
 org.glassfish:jakarta.el;3.0.4
