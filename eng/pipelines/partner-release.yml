@@ -92,9 +92,10 @@ extends:
 
               $finalPlace = Resolve-Path -Path $(EsrpArtifacts)
               Write-Host "##vso[task.setvariable variable=EsrpArtifacts]$finalPlace"
+              Copy-Item -R -Path $(EsrpArtifacts)/* -Destination $(Build.SourcesDirectory)/packages-esrp -Force
             displayName: Copy Elements + Dump ESRP Folder + Resolve Path
 
           - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
             parameters:
               ArtifactName: packages-esrp-$(System.JobAttempt)
-              ArtifactPath: $(EsrpArtifacts)
+              ArtifactPath: $(Build.SourcesDirectory)/packages-esrp
