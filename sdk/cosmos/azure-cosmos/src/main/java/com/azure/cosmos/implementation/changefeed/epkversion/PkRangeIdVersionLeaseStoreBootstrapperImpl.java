@@ -161,9 +161,6 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
             .getAllLeases(1)
             // pick one lease corresponding to a lease prefix (lease prefix denotes a unique feed)
             .next()
-            // composing flatMap with an operator publishing an empty sequence causes it to hang
-            // defaulting to a skeletal lease is necessary to prevent such a hang
-            .defaultIfEmpty(this.defaultLeaseFactory.createServiceItemLeaseV1())
             .flatMap(lease -> {
 
                 if (lease.getVersion() == LeaseVersion.EPK_RANGE_BASED_LEASE) {
