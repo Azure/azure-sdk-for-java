@@ -146,7 +146,7 @@ class OkHttpHttpClient implements HttpClient {
             ServerSentEventListener listener = request.getServerSentEventListener();
             if (listener != null) {
                 processTextEventStream(request,
-                    httpRequestConsumer -> this.send(request), response.body().byteStream(), listener, LOGGER);
+                    httpRequest -> this.send(httpRequest), response.body().byteStream(), listener, LOGGER);
             } else {
                 throw LOGGER.logThrowableAsError(new RuntimeException(ServerSentEventUtil.NO_LISTENER_ERROR_MESSAGE));
             }
