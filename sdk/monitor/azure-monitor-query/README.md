@@ -545,7 +545,7 @@ MetricsQueryResourcesResult metricsQueryResourcesResult = metricsClient.queryRes
     "{metricNamespace}");
 
 for (MetricsQueryResult metricsQueryResult : metricsQueryResourcesResult.getMetricsQueryResults()) {
-    // Each MetricsQueryResult corresponds to one of the resourceIds in the request.
+    // Each MetricsQueryResult corresponds to one of the resourceIds in the batch request.
     List<MetricResult> metrics = metricsQueryResult.getMetrics();
     metrics.forEach(metric -> {
         System.out.println(metric.getMetricName());
