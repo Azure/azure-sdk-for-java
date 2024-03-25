@@ -3,7 +3,7 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.models.ExpandableStringEnum;
+import com.generic.core.util.ExpandableEnum;
 
 import java.util.Collection;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * Represents common header names.
  */
 @SuppressWarnings("unused")
-public final class HttpHeaderName implements ExpandableStringEnum<HttpHeaderName> {
+public final class HttpHeaderName implements ExpandableEnum<String> {
     private static final Map<String, HttpHeaderName> VALUES = new ConcurrentHashMap<>();
     private final String caseSensitive;
     private final String caseInsensitive;
@@ -22,6 +22,11 @@ public final class HttpHeaderName implements ExpandableStringEnum<HttpHeaderName
     private HttpHeaderName(String name) {
         this.caseSensitive = name;
         this.caseInsensitive = name.toLowerCase();
+    }
+
+    @Override
+    public String getValue() {
+        return caseSensitive;
     }
 
     /**
