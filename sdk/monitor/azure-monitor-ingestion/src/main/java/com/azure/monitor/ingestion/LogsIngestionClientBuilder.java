@@ -20,7 +20,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesClientBuilder;
 import com.azure.monitor.ingestion.implementation.IngestionUsingDataCollectionRulesServiceVersion;
-import com.azure.monitor.ingestion.models.LogIngestionAudience;
+import com.azure.monitor.ingestion.models.LogsIngestionAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -180,7 +180,7 @@ public final class LogsIngestionClientBuilder implements ConfigurationTrait<Logs
      * @param audience the audience value.
      * @return the updated {@link LogsIngestionClientBuilder}.
      */
-    public LogsIngestionClientBuilder audience(LogIngestionAudience audience) {
+    public LogsIngestionClientBuilder audience(LogsIngestionAudience audience) {
         innerLogBuilder.audience(audience);
         return this;
     }
