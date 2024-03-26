@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RequestTimeoutException;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -264,6 +265,9 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
 
     public boolean expire() {
         final CosmosException error;
+
+        RxDocumentServiceRequest serviceRequest = this.args().serviceRequest();
+
         if ((this.args.serviceRequest().isReadOnly() || !this.hasSendingRequestStarted()) ||
             this.args.serviceRequest().getNonIdempotentWriteRetriesEnabled()){
             // Convert from requestTimeoutException to GoneException for the following two scenarios so they can be safely retried:

@@ -2206,8 +2206,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private <T> Mono<T> handleRegionFeedbackForPointOperation(Mono<T> response, AtomicReference<RxDocumentServiceRequest> requestReference) {
+
+        if (requestReference.get()) {
+
+        }
+
         return response.doOnError(throwable -> {
             if (throwable instanceof OperationCancelledException) {
+                this.globalPartitionEndpointManager.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get());
+            } else if (throwable instanceof ServiceUnavailableException) {
                 this.globalPartitionEndpointManager.tryMarkRegionAsUnavailableForPartitionKeyRange(requestReference.get());
             }
         });
