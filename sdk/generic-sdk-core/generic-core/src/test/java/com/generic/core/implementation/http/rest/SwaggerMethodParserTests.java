@@ -50,8 +50,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
-import static com.generic.core.implementation.http.ContentType.APPLICATION_JSON;
-import static com.generic.core.implementation.http.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
+import static com.generic.core.http.models.ContentType.APPLICATION_JSON;
+import static com.generic.core.http.models.ContentType.APPLICATION_X_WWW_FORM_URLENCODED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -464,6 +464,11 @@ public class SwaggerMethodParserTests {
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "test")
         void encodedFormKey2(@FormParam(value = "x:ms:value", encoded = true) String value);
+
+        @HttpRequestInformation(method = HttpMethod.GET, path = "test")
+        void formBodyEnum(@FormParam("enum1") HttpMethod enum1, @FormParam("enum2") HttpMethod enum2,
+                          @FormParam("expandableEnum1") HttpHeaderName expandableEnum1,
+                          @FormParam("expandableEnum2") HttpHeaderName expandableEnum2);
     }
 
     @ParameterizedTest
@@ -483,6 +488,8 @@ public class SwaggerMethodParserTests {
         Method jsonBody = clazz.getDeclaredMethod("applicationJsonBody", String.class);
         Method formBody =
             clazz.getDeclaredMethod("formBody", String.class, Integer.class, OffsetDateTime.class, List.class);
+        Method formBodyEnum =
+            clazz.getDeclaredMethod("formBodyEnum", HttpMethod.class, HttpMethod.class, HttpHeaderName.class, HttpHeaderName.class);
         Method encodedFormBody =
             clazz.getDeclaredMethod("encodedFormBody", String.class, Integer.class, OffsetDateTime.class, List.class);
         Method encodedFormKey = clazz.getDeclaredMethod("encodedFormKey", String.class);
@@ -502,6 +509,10 @@ public class SwaggerMethodParserTests {
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=blue&favoriteColors=green"),
             Arguments.of(formBody, toObjectArray("John Doe", 40, null, badFavoriteColors),
                 APPLICATION_X_WWW_FORM_URLENCODED, "name=John+Doe&age=40&favoriteColors=green"),
+            Arguments.of(formBodyEnum, toObjectArray(HttpMethod.GET, null, HttpHeaderName.ACCEPT, HttpHeaderName.fromString("MyHeader")),
+                APPLICATION_X_WWW_FORM_URLENCODED, "enum1=GET&expandableEnum1=Accept&expandableEnum2=MyHeader"),
+            Arguments.of(formBodyEnum, toObjectArray(HttpMethod.GET, null, HttpHeaderName.ACCEPT, HttpHeaderName.fromString(null)),
+                APPLICATION_X_WWW_FORM_URLENCODED, "enum1=GET&expandableEnum1=Accept"),
             Arguments.of(encodedFormBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
             Arguments.of(encodedFormBody, toObjectArray("John Doe", null, dob, null), APPLICATION_X_WWW_FORM_URLENCODED,
                 "name=John Doe&dob=1980-01-01T00%3A00%3A00Z"),
