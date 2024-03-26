@@ -4,7 +4,7 @@
 package com.generic.core.shared;
 
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.implementation.http.ContentType;
+import com.generic.core.http.models.ContentType;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.DateTimeRfc1123;
 import com.generic.core.util.serializer.ObjectSerializer;
@@ -53,6 +53,7 @@ public class HttpClientTestsServer {
     private static final byte[] UTF_32LE_BOM = {(byte) 0xFF, (byte) 0xFE, (byte) 0x00, (byte) 0x00};
 
     private static final byte[] RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
+    private static final String SSE_RESPONSE = "/serversentevent";
 
     public static LocalTestServer getHttpClientTestsServer() {
         return new LocalTestServer((req, resp, requestBody) -> {
@@ -115,10 +116,50 @@ public class HttpClientTestsServer {
                 handleRequest(resp, "charset=UTF-16", addBom(UTF_8_BOM));
             } else if (put && ECHO_RESPONSE.equals(path)) {
                 handleRequest(resp, "application/octet-stream", requestBody);
+            } else if (get && SSE_RESPONSE.equals(path)) {
+                if (req.getHeader("Last-Event-Id") != null) {
+                    sendSSELastEventIdResponse(resp);
+                } else {
+                    sendSSEResponseWithRetry(resp);
+                }
+            } else if (post && SSE_RESPONSE.equals(path)) {
+                sendSSEResponseWithDataOnly(resp);
+            } else if (put && SSE_RESPONSE.equals(path)) {
+                resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+                resp.setStatus(200);
+                resp.getOutputStream().write(("msg hello world \n\n").getBytes());
+                resp.flushBuffer();
             } else {
-                throw new ServletException("Unexpected method: " + req.getMethod());
+                throw new ServletException("Unexpected request " + req.getMethod() + " " + path);
             }
         }, 100);
+    }
+
+    private static void sendSSEResponseWithDataOnly(Response resp) throws IOException {
+        resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+        resp.getOutputStream().write(("data: YHOO\n" + "data: +2\n" + "data: 10\n" + "\n").getBytes());
+        resp.flushBuffer();
+    }
+
+    private static String addServerSentEventWithRetry() {
+        return ": test stream\n" + "data: first event\n" + "id: 1\n" + "retry: 100\n\n"
+            + "data: This is the second message, it\n" + "data: has two lines.\n" + "id: 2\n\n" + "data:  third event";
+    }
+
+    private static void sendSSEResponseWithRetry(Response resp) throws IOException {
+        resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+        resp.getOutputStream().write(addServerSentEventWithRetry().getBytes());
+        resp.flushBuffer();
+    }
+
+    private static String addServerSentEventLast() {
+        return "data: This is the second message, it\n" + "data: has two lines.\n" + "id: 2\n\n" + "data:  third event";
+    }
+
+    private static void sendSSELastEventIdResponse(Response resp) throws IOException {
+        resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
+        resp.getOutputStream().write(addServerSentEventLast().getBytes());
+        resp.flushBuffer();
     }
 
     private static byte[] addBom(byte[] arr1) {

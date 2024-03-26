@@ -13,6 +13,7 @@ import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.exception.HttpExceptionType;
+import com.generic.core.http.models.ContentType;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
@@ -20,16 +21,15 @@ import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
 import com.generic.core.http.models.ResponseBodyHandling;
 import com.generic.core.implementation.TypeUtil;
-import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.DateTimeRfc1123;
 import com.generic.core.implementation.util.UrlBuilder;
-import com.generic.core.models.ExpandableStringEnum;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.Context;
+import com.generic.core.util.ExpandableEnum;
 import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
 
@@ -567,9 +567,14 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return null;
         }
 
+        if (value instanceof ExpandableEnum) {
+            value = serialize(serializer, ((ExpandableEnum<?>) value).getValue());
+        }
+
         if (value instanceof String) {
             return (String) value;
         } else if (value.getClass().isPrimitive()
+            || value.getClass().isEnum()
             || value instanceof Number
             || value instanceof Boolean
             || value instanceof Character
@@ -578,12 +583,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return String.valueOf(value);
         } else if (value instanceof OffsetDateTime) {
             return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
-        } else if (value instanceof ExpandableStringEnum<?> || value.getClass().isEnum()) {
-            // Enum and ExpandableStringEnum need special handling as these could be wrapping a null String which would
-            // be "null" is serialized with JacksonAdapter.
-            String stringValue = String.valueOf(value);
-
-            return (stringValue == null) ? "null" : stringValue;
         } else {
             try (OutputStream outputStream = new ByteArrayOutputStream()) {
                 serializer.serializeToStream(outputStream, value);

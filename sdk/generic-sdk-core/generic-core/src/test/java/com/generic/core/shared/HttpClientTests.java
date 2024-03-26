@@ -14,6 +14,7 @@ import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.exception.HttpResponseException;
+import com.generic.core.http.models.ContentType;
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpLogOptions;
@@ -21,10 +22,11 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.models.Response;
+import com.generic.core.http.models.ServerSentEvent;
+import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.policy.HttpLoggingPolicy;
-import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.UrlBuilder;
@@ -32,6 +34,7 @@ import com.generic.core.util.ClientLogger;
 import com.generic.core.util.Context;
 import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
@@ -55,6 +58,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -76,6 +80,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -95,6 +100,7 @@ public abstract class HttpClientTests {
     private static final String UTF_32BE_BOM_RESPONSE = "utf32BeBomBytes";
     private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
+    private static final String SSE_RESPONSE = "serversentevent";
 
     protected static final String ECHO_RESPONSE = "echo";
 
@@ -1716,6 +1722,114 @@ public abstract class HttpClientTests {
             () -> executable.accept(getServerUri(isSecure()), createService(Service29.class)));
 
         assertTrue(exception.getMessage().contains("void exception body thrown"));
+    }
+
+    @Test
+    public void canReceiveServerSentEvents() {
+        final int[] i = { 0 };
+        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(SSE_RESPONSE)).setServerSentEventListener(
+            sse -> {
+                String expected;
+                Long id;
+                if (i[0] == 0) {
+                    expected = "first event";
+                    id = 1L;
+                    Assertions.assertEquals("test stream", sse.getComment());
+                } else {
+                    expected = "This is the second message, it";
+                    String line2 = "has two lines.";
+
+                    id = 2L;
+                    Assertions.assertEquals(line2, sse.getData().get(1));
+                }
+                Assertions.assertEquals(expected, sse.getData().get(0));
+                Assertions.assertEquals(id, sse.getId());
+                if (++i[0] > 2) {
+                    fail("Should not have received more than two messages.");
+                }
+            });
+
+        createHttpClient().send(request);
+        assertEquals(2, i[0]);
+    }
+
+    /**
+     * Tests that eagerly converting implementation HTTP headers to azure-core Headers is done.
+     */
+    @Test
+    public void canRecognizeServerSentEvent() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(HttpMethod.POST, getRequestUrl(SSE_RESPONSE)).setBody(requestBody);
+        request.getMetadata().setEagerlyConvertHeaders(false);
+        List<String> expected = Arrays.asList("YHOO", "+2", "10");
+        createHttpClient().send(request.setServerSentEventListener(sse -> assertEquals(expected, sse.getData())));
+    }
+
+    @Test
+    public void onErrorServerSentEvents() {
+        final int[] i = { 0 };
+        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(SSE_RESPONSE)).setServerSentEventListener(
+            new ServerSentEventListener() {
+                @Override
+                public void onEvent(ServerSentEvent sse) throws IOException {
+                    throw new IOException("test exception");
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    assertEquals("test exception", throwable.getMessage());
+                    i[0]++;
+                }
+            });
+
+        createHttpClient().send(request);
+        assertEquals(1, i[0]);
+    }
+
+    @Test
+    public void onRetryWithLastEventIdReceiveServerSentEvents() {
+        final int[] i = { 0 };
+        HttpRequest request = new HttpRequest(HttpMethod.GET, getRequestUrl(SSE_RESPONSE)).setServerSentEventListener(
+            new ServerSentEventListener() {
+                @Override
+                public void onEvent(ServerSentEvent sse) throws IOException {
+                    if (++i[0] == 1) {
+                        assertEquals("test stream", sse.getComment());
+                        assertEquals("first event", sse.getData().get(0));
+                        assertEquals(1, sse.getId());
+                        throw new IOException("test exception");
+                    } else {
+                        assertTimeout(Duration.ofMillis(100L), () -> assertEquals(2, sse.getId()));
+                        assertEquals("This is the second message, it", sse.getData().get(0));
+                        assertEquals("has two lines.", sse.getData().get(1));
+                    }
+                    if (++i[0] > 3) {
+                        fail("Should not have received more than two messages.");
+                    }
+                }
+
+                @Override
+                public boolean shouldRetry(Throwable throwable, Duration retryAfter, long lastEventId) {
+                    assertEquals("test exception", throwable.getMessage());
+                    assertEquals(100, retryAfter.toMillis());
+                    assertEquals(1, lastEventId);
+                    return true;
+                }
+            });
+
+        createHttpClient().send(request);
+        assertEquals(3, i[0]);
+    }
+
+    /**
+     * Test throws Runtime exception for no listener attached.
+     */
+    @Test
+    public void throwsExceptionForNoListener() {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(SSE_RESPONSE)).setBody(requestBody);
+
+        assertThrows(RuntimeException.class, () -> createHttpClient().send(request));
     }
 
     private static Stream<BiConsumer<String, Service29>> voidErrorReturnsErrorBodySupplier() {

@@ -15,7 +15,6 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 @Execution(ExecutionMode.SAME_THREAD)
 public class OkHttpHttpClientHttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
-
     @BeforeAll
     public static void startTestServer() {
         server = HttpClientTestsServer.getHttpClientTestsServer();
