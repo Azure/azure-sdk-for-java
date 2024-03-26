@@ -6,12 +6,10 @@ package com.azure.cosmos.implementation.changefeed.epkversion;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.changefeed.Bootstrapper;
-import com.azure.cosmos.implementation.changefeed.LeaseFactory;
 import com.azure.cosmos.implementation.changefeed.LeaseStore;
 import com.azure.cosmos.implementation.changefeed.LeaseStoreManager;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
-import com.azure.cosmos.implementation.changefeed.common.DefaultLeaseFactory;
 import com.azure.cosmos.implementation.changefeed.common.LeaseVersion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +37,6 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
     private final LeaseStoreManager epkRangeVersionLeaseStoreManager;
     private final Duration lockTime;
     private final Duration sleepTime;
-    private final LeaseFactory defaultLeaseFactory;
     private final ChangeFeedMode changeFeedModeToStart;
 
     private volatile boolean isInitialized;
@@ -66,7 +63,6 @@ public class PkRangeIdVersionLeaseStoreBootstrapperImpl implements Bootstrapper 
         this.leaseStore = leaseStore;
         this.pkRangeIdVersionLeaseStoreManager = pkRangeIdVersionLeaseStoreManager;
         this.epkRangeVersionLeaseStoreManager = epkRangeVersionLeaseStoreManager;
-        this.defaultLeaseFactory = new DefaultLeaseFactory();
         this.changeFeedModeToStart = changeFeedModeToStart;
         this.lockTime = lockTime;
         this.sleepTime = sleepTime;
