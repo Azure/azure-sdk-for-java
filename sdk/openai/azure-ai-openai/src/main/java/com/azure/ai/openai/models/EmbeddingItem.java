@@ -21,9 +21,8 @@ import java.util.List;
 public final class EmbeddingItem {
 
     /*
-     * List of embeddings value for the input prompt in base64 encoded string format. These represent a measurement of
-     * the
-     * vector-based relatedness of the provided input.
+     * List of embeddings value for the input prompt in base64 encoded string format. These represent
+     * a measurement of the vector-based relatedness of the provided input.
      */
     @Generated
     @JsonProperty(value = "embedding")
@@ -33,8 +32,8 @@ public final class EmbeddingItem {
 
     /**
      * Get the embedding property: List of embeddings value for the input prompt in base64 encoded string format. These
-     * represent a measurement of the
-     * vector-based relatedness of the provided input.
+     * represent
+     * a measurement of the vector-based relatedness of the provided input.
      *
      * @return the embedding value.
      */
