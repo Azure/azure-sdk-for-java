@@ -393,7 +393,7 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
                 final EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
                 rRef.set(r);
                 return r.getWindowFlux();
-            } catch (RejectedExecutionException e) {
+            } catch (RuntimeException e) {
                 LOGGER.warning("Can't enqueue request", e);
                 LOGGER.warning("cause", e.getCause());
             }
