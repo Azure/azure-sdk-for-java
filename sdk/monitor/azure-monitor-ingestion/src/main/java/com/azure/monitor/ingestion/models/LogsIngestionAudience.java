@@ -38,6 +38,7 @@ public class LogsIngestionAudience extends ExpandableStringEnum<LogsIngestionAud
      * Creates an instance of LogsIngestionAudience.
      *
      * @param name the string value.
+     * @return the LogsIngestionAudience.
      */
     public static LogsIngestionAudience fromString(String name) {
         return fromString(name, LogsIngestionAudience.class);
