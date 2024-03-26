@@ -59,6 +59,13 @@ public final class MessageFile {
         this.messageId = messageId;
     }
 
+    @Generated
+    @JsonCreator
+    private MessageFile(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "message_id") String messageId) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), messageId);
+    }
+
     /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
      *
@@ -97,12 +104,5 @@ public final class MessageFile {
     @Generated
     public String getMessageId() {
         return this.messageId;
-    }
-
-    @Generated
-    @JsonCreator
-    private MessageFile(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "message_id") String messageId) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), messageId);
     }
 }

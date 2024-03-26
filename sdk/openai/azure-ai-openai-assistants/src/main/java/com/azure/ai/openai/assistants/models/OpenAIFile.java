@@ -77,6 +77,14 @@ public final class OpenAIFile {
         this.purpose = purpose;
     }
 
+    @Generated
+    @JsonCreator
+    private OpenAIFile(@JsonProperty(value = "id") String id, @JsonProperty(value = "bytes") int bytes,
+        @JsonProperty(value = "filename") String filename, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "purpose") FilePurpose purpose) {
+        this(id, bytes, filename, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), purpose);
+    }
+
     /**
      * Get the object property: The object type, which is always 'file'.
      *
@@ -135,13 +143,5 @@ public final class OpenAIFile {
     @Generated
     public FilePurpose getPurpose() {
         return this.purpose;
-    }
-
-    @Generated
-    @JsonCreator
-    private OpenAIFile(@JsonProperty(value = "id") String id, @JsonProperty(value = "bytes") int bytes,
-        @JsonProperty(value = "filename") String filename, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "purpose") FilePurpose purpose) {
-        this(id, bytes, filename, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), purpose);
     }
 }

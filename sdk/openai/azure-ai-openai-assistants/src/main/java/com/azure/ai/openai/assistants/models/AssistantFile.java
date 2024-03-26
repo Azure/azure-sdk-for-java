@@ -59,6 +59,13 @@ public final class AssistantFile {
         this.assistantId = assistantId;
     }
 
+    @Generated
+    @JsonCreator
+    private AssistantFile(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
+        @JsonProperty(value = "assistant_id") String assistantId) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), assistantId);
+    }
+
     /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
      *
@@ -97,12 +104,5 @@ public final class AssistantFile {
     @Generated
     public String getAssistantId() {
         return this.assistantId;
-    }
-
-    @Generated
-    @JsonCreator
-    private AssistantFile(@JsonProperty(value = "id") String id, @JsonProperty(value = "created_at") long createdAt,
-        @JsonProperty(value = "assistant_id") String assistantId) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), assistantId);
     }
 }
