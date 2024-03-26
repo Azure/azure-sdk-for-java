@@ -70,14 +70,14 @@ public final class BatchPoolResourceStatistics {
      */
     @Generated
     @JsonProperty(value = "diskReadIOps")
-    private int diskReadIOps;
+    private long diskReadIOps;
 
     /*
      * The total number of disk write operations across all Compute Nodes in the Pool.
      */
     @Generated
     @JsonProperty(value = "diskWriteIOps")
-    private int diskWriteIOps;
+    private long diskWriteIOps;
 
     /*
      * The total amount of data in GiB of disk reads across all Compute Nodes in the Pool.
@@ -106,52 +106,6 @@ public final class BatchPoolResourceStatistics {
     @Generated
     @JsonProperty(value = "networkWriteGiB")
     private double networkWriteGiB;
-
-    /**
-     * Creates an instance of BatchPoolResourceStatistics class.
-     *
-     * @param startTime the startTime value to set.
-     * @param lastUpdateTime the lastUpdateTime value to set.
-     * @param avgCpuPercentage the avgCpuPercentage value to set.
-     * @param avgMemoryGiB the avgMemoryGiB value to set.
-     * @param peakMemoryGiB the peakMemoryGiB value to set.
-     * @param avgDiskGiB the avgDiskGiB value to set.
-     * @param peakDiskGiB the peakDiskGiB value to set.
-     * @param diskReadIOps the diskReadIOps value to set.
-     * @param diskWriteIOps the diskWriteIOps value to set.
-     * @param diskReadGiB the diskReadGiB value to set.
-     * @param diskWriteGiB the diskWriteGiB value to set.
-     * @param networkReadGiB the networkReadGiB value to set.
-     * @param networkWriteGiB the networkWriteGiB value to set.
-     */
-    @Generated
-    @JsonCreator
-    private BatchPoolResourceStatistics(@JsonProperty(value = "startTime") OffsetDateTime startTime,
-        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-        @JsonProperty(value = "avgCPUPercentage") double avgCpuPercentage,
-        @JsonProperty(value = "avgMemoryGiB") double avgMemoryGiB,
-        @JsonProperty(value = "peakMemoryGiB") double peakMemoryGiB,
-        @JsonProperty(value = "avgDiskGiB") double avgDiskGiB, @JsonProperty(value = "peakDiskGiB") double peakDiskGiB,
-        @JsonProperty(value = "diskReadIOps") int diskReadIOps,
-        @JsonProperty(value = "diskWriteIOps") int diskWriteIOps,
-        @JsonProperty(value = "diskReadGiB") double diskReadGiB,
-        @JsonProperty(value = "diskWriteGiB") double diskWriteGiB,
-        @JsonProperty(value = "networkReadGiB") double networkReadGiB,
-        @JsonProperty(value = "networkWriteGiB") double networkWriteGiB) {
-        this.startTime = startTime;
-        this.lastUpdateTime = lastUpdateTime;
-        this.avgCpuPercentage = avgCpuPercentage;
-        this.avgMemoryGiB = avgMemoryGiB;
-        this.peakMemoryGiB = peakMemoryGiB;
-        this.avgDiskGiB = avgDiskGiB;
-        this.peakDiskGiB = peakDiskGiB;
-        this.diskReadIOps = diskReadIOps;
-        this.diskWriteIOps = diskWriteIOps;
-        this.diskReadGiB = diskReadGiB;
-        this.diskWriteGiB = diskWriteGiB;
-        this.networkReadGiB = networkReadGiB;
-        this.networkWriteGiB = networkWriteGiB;
-    }
 
     /**
      * Get the startTime property: The start time of the time range covered by the statistics.
@@ -231,7 +185,7 @@ public final class BatchPoolResourceStatistics {
      * @return the diskReadIOps value.
      */
     @Generated
-    public int getDiskReadIOps() {
+    public long getDiskReadIOps() {
         return this.diskReadIOps;
     }
 
@@ -241,7 +195,7 @@ public final class BatchPoolResourceStatistics {
      * @return the diskWriteIOps value.
      */
     @Generated
-    public int getDiskWriteIOps() {
+    public long getDiskWriteIOps() {
         return this.diskWriteIOps;
     }
 
@@ -287,5 +241,51 @@ public final class BatchPoolResourceStatistics {
     @Generated
     public double getNetworkWriteGiB() {
         return this.networkWriteGiB;
+    }
+
+    /**
+     * Creates an instance of BatchPoolResourceStatistics class.
+     *
+     * @param startTime the startTime value to set.
+     * @param lastUpdateTime the lastUpdateTime value to set.
+     * @param avgCpuPercentage the avgCpuPercentage value to set.
+     * @param avgMemoryGiB the avgMemoryGiB value to set.
+     * @param peakMemoryGiB the peakMemoryGiB value to set.
+     * @param avgDiskGiB the avgDiskGiB value to set.
+     * @param peakDiskGiB the peakDiskGiB value to set.
+     * @param diskReadIOps the diskReadIOps value to set.
+     * @param diskWriteIOps the diskWriteIOps value to set.
+     * @param diskReadGiB the diskReadGiB value to set.
+     * @param diskWriteGiB the diskWriteGiB value to set.
+     * @param networkReadGiB the networkReadGiB value to set.
+     * @param networkWriteGiB the networkWriteGiB value to set.
+     */
+    @Generated
+    @JsonCreator
+    private BatchPoolResourceStatistics(@JsonProperty(value = "startTime") OffsetDateTime startTime,
+        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
+        @JsonProperty(value = "avgCPUPercentage") double avgCpuPercentage,
+        @JsonProperty(value = "avgMemoryGiB") double avgMemoryGiB,
+        @JsonProperty(value = "peakMemoryGiB") double peakMemoryGiB,
+        @JsonProperty(value = "avgDiskGiB") double avgDiskGiB, @JsonProperty(value = "peakDiskGiB") double peakDiskGiB,
+        @JsonProperty(value = "diskReadIOps") long diskReadIOps,
+        @JsonProperty(value = "diskWriteIOps") long diskWriteIOps,
+        @JsonProperty(value = "diskReadGiB") double diskReadGiB,
+        @JsonProperty(value = "diskWriteGiB") double diskWriteGiB,
+        @JsonProperty(value = "networkReadGiB") double networkReadGiB,
+        @JsonProperty(value = "networkWriteGiB") double networkWriteGiB) {
+        this.startTime = startTime;
+        this.lastUpdateTime = lastUpdateTime;
+        this.avgCpuPercentage = avgCpuPercentage;
+        this.avgMemoryGiB = avgMemoryGiB;
+        this.peakMemoryGiB = peakMemoryGiB;
+        this.avgDiskGiB = avgDiskGiB;
+        this.peakDiskGiB = peakDiskGiB;
+        this.diskReadIOps = diskReadIOps;
+        this.diskWriteIOps = diskWriteIOps;
+        this.diskReadGiB = diskReadGiB;
+        this.diskWriteGiB = diskWriteGiB;
+        this.networkReadGiB = networkReadGiB;
+        this.networkWriteGiB = networkWriteGiB;
     }
 }

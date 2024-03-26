@@ -37,32 +37,19 @@ public final class BatchPoolCreateContent {
 
     /*
      * The size of virtual machines in the Pool. All virtual machines in a Pool are the same size. For information
-     * about available sizes of virtual machines for Cloud Services Pools (pools created with
-     * cloudServiceConfiguration), see Sizes for Cloud Services
-     * (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all Cloud
-     * Services VM sizes except ExtraSmall, A1V2 and A2V2. For information about available VM sizes for Pools using
-     * Images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes for
-     * Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or
-     * Sizes for Virtual Machines (Windows)
-     * (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure
-     * VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
+     * about available VM sizes for Pools using Images from the Virtual Machines Marketplace (pools created with
+     * virtualMachineConfiguration), see Sizes for Virtual Machines (Linux)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines
+     * (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
+     * all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and
+     * STANDARD_DSV2 series).
      */
     @Generated
     @JsonProperty(value = "vmSize")
     private String vmSize;
 
     /*
-     * The cloud service configuration for the Pool. This property and virtualMachineConfiguration are mutually
-     * exclusive and one of the properties must be specified. This property cannot be specified if the Batch Account
-     * was created with its poolAllocationMode property set to 'UserSubscription'.
-     */
-    @Generated
-    @JsonProperty(value = "cloudServiceConfiguration")
-    private CloudServiceConfiguration cloudServiceConfiguration;
-
-    /*
-     * The virtual machine configuration for the Pool. This property and cloudServiceConfiguration are mutually
-     * exclusive and one of the properties must be specified.
+     * The virtual machine configuration for the Pool. This property must be specified.
      */
     @Generated
     @JsonProperty(value = "virtualMachineConfiguration")
@@ -187,15 +174,6 @@ public final class BatchPoolCreateContent {
     private List<BatchApplicationPackageReference> applicationPackageReferences;
 
     /*
-     * The list of application licenses the Batch service will make available on each Compute Node in the Pool. The
-     * list of application licenses must be a subset of available Batch service application licenses. If a license is
-     * requested which is not supported, Pool creation will fail.
-     */
-    @Generated
-    @JsonProperty(value = "applicationLicenses")
-    private List<String> applicationLicenses;
-
-    /*
      * The number of task slots that can be used to run concurrent tasks on a single compute node in the pool. The
      * default value is 1. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or
      * 256.
@@ -301,15 +279,12 @@ public final class BatchPoolCreateContent {
 
     /**
      * Get the vmSize property: The size of virtual machines in the Pool. All virtual machines in a Pool are the same
-     * size. For information about available sizes of virtual machines for Cloud Services Pools (pools created with
-     * cloudServiceConfiguration), see Sizes for Cloud Services
-     * (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). Batch supports all Cloud
-     * Services VM sizes except ExtraSmall, A1V2 and A2V2. For information about available VM sizes for Pools using
-     * Images from the Virtual Machines Marketplace (pools created with virtualMachineConfiguration) see Sizes for
-     * Virtual Machines (Linux) (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or
-     * Sizes for Virtual Machines (Windows)
-     * (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports all Azure
-     * VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and STANDARD_DSV2 series).
+     * size. For information about available VM sizes for Pools using Images from the Virtual Machines Marketplace
+     * (pools created with virtualMachineConfiguration), see Sizes for Virtual Machines (Linux)
+     * (https://azure.microsoft.com/documentation/articles/virtual-machines-linux-sizes/) or Sizes for Virtual Machines
+     * (Windows) (https://azure.microsoft.com/documentation/articles/virtual-machines-windows-sizes/). Batch supports
+     * all Azure VM sizes except STANDARD_A0 and those with premium storage (STANDARD_GS, STANDARD_DS, and
+     * STANDARD_DSV2 series).
      *
      * @return the vmSize value.
      */
@@ -319,36 +294,8 @@ public final class BatchPoolCreateContent {
     }
 
     /**
-     * Get the cloudServiceConfiguration property: The cloud service configuration for the Pool. This property and
-     * virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property
-     * cannot be specified if the Batch Account was created with its poolAllocationMode property set to
-     * 'UserSubscription'.
-     *
-     * @return the cloudServiceConfiguration value.
-     */
-    @Generated
-    public CloudServiceConfiguration getCloudServiceConfiguration() {
-        return this.cloudServiceConfiguration;
-    }
-
-    /**
-     * Set the cloudServiceConfiguration property: The cloud service configuration for the Pool. This property and
-     * virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property
-     * cannot be specified if the Batch Account was created with its poolAllocationMode property set to
-     * 'UserSubscription'.
-     *
-     * @param cloudServiceConfiguration the cloudServiceConfiguration value to set.
-     * @return the BatchPoolCreateContent object itself.
-     */
-    @Generated
-    public BatchPoolCreateContent setCloudServiceConfiguration(CloudServiceConfiguration cloudServiceConfiguration) {
-        this.cloudServiceConfiguration = cloudServiceConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the virtualMachineConfiguration property: The virtual machine configuration for the Pool. This property and
-     * cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
+     * Get the virtualMachineConfiguration property: The virtual machine configuration for the Pool. This property must
+     * be specified.
      *
      * @return the virtualMachineConfiguration value.
      */
@@ -358,8 +305,8 @@ public final class BatchPoolCreateContent {
     }
 
     /**
-     * Set the virtualMachineConfiguration property: The virtual machine configuration for the Pool. This property and
-     * cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
+     * Set the virtualMachineConfiguration property: The virtual machine configuration for the Pool. This property must
+     * be specified.
      *
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the BatchPoolCreateContent object itself.
@@ -705,32 +652,6 @@ public final class BatchPoolCreateContent {
     public BatchPoolCreateContent
         setApplicationPackageReferences(List<BatchApplicationPackageReference> applicationPackageReferences) {
         this.applicationPackageReferences = applicationPackageReferences;
-        return this;
-    }
-
-    /**
-     * Get the applicationLicenses property: The list of application licenses the Batch service will make available on
-     * each Compute Node in the Pool. The list of application licenses must be a subset of available Batch service
-     * application licenses. If a license is requested which is not supported, Pool creation will fail.
-     *
-     * @return the applicationLicenses value.
-     */
-    @Generated
-    public List<String> getApplicationLicenses() {
-        return this.applicationLicenses;
-    }
-
-    /**
-     * Set the applicationLicenses property: The list of application licenses the Batch service will make available on
-     * each Compute Node in the Pool. The list of application licenses must be a subset of available Batch service
-     * application licenses. If a license is requested which is not supported, Pool creation will fail.
-     *
-     * @param applicationLicenses the applicationLicenses value to set.
-     * @return the BatchPoolCreateContent object itself.
-     */
-    @Generated
-    public BatchPoolCreateContent setApplicationLicenses(List<String> applicationLicenses) {
-        this.applicationLicenses = applicationLicenses;
         return this;
     }
 

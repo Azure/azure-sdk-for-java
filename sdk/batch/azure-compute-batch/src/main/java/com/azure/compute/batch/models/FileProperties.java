@@ -34,7 +34,7 @@ public final class FileProperties {
      */
     @Generated
     @JsonProperty(value = "contentLength")
-    private int contentLength;
+    private long contentLength;
 
     /*
      * The content type of the file.
@@ -49,20 +49,6 @@ public final class FileProperties {
     @Generated
     @JsonProperty(value = "fileMode")
     private String fileMode;
-
-    /**
-     * Creates an instance of FileProperties class.
-     *
-     * @param lastModified the lastModified value to set.
-     * @param contentLength the contentLength value to set.
-     */
-    @Generated
-    @JsonCreator
-    private FileProperties(@JsonProperty(value = "lastModified") OffsetDateTime lastModified,
-        @JsonProperty(value = "contentLength") int contentLength) {
-        this.lastModified = lastModified;
-        this.contentLength = contentLength;
-    }
 
     /**
      * Get the creationTime property: The file creation time. The creation time is not returned for files on Linux
@@ -91,7 +77,7 @@ public final class FileProperties {
      * @return the contentLength value.
      */
     @Generated
-    public int getContentLength() {
+    public long getContentLength() {
         return this.contentLength;
     }
 
@@ -114,5 +100,19 @@ public final class FileProperties {
     @Generated
     public String getFileMode() {
         return this.fileMode;
+    }
+
+    /**
+     * Creates an instance of FileProperties class.
+     *
+     * @param lastModified the lastModified value to set.
+     * @param contentLength the contentLength value to set.
+     */
+    @Generated
+    @JsonCreator
+    private FileProperties(@JsonProperty(value = "lastModified") OffsetDateTime lastModified,
+        @JsonProperty(value = "contentLength") long contentLength) {
+        this.lastModified = lastModified;
+        this.contentLength = contentLength;
     }
 }

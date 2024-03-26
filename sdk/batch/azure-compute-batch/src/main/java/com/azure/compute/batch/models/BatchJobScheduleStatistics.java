@@ -53,14 +53,14 @@ public final class BatchJobScheduleStatistics {
      */
     @Generated
     @JsonProperty(value = "readIOps")
-    private int readIOps;
+    private long readIOps;
 
     /*
      * The total number of disk write operations made by all Tasks in all Jobs created under the schedule.
      */
     @Generated
     @JsonProperty(value = "writeIOps")
-    private int writeIOps;
+    private long writeIOps;
 
     /*
      * The total gibibytes read from disk by all Tasks in all Jobs created under the schedule.
@@ -82,7 +82,7 @@ public final class BatchJobScheduleStatistics {
      */
     @Generated
     @JsonProperty(value = "numSucceededTasks")
-    private int numSucceededTasks;
+    private long numSucceededTasks;
 
     /*
      * The total number of Tasks that failed during the given time range in Jobs created under the schedule. A Task
@@ -90,14 +90,14 @@ public final class BatchJobScheduleStatistics {
      */
     @Generated
     @JsonProperty(value = "numFailedTasks")
-    private int numFailedTasks;
+    private long numFailedTasks;
 
     /*
      * The total number of retries during the given time range on all Tasks in all Jobs created under the schedule.
      */
     @Generated
     @JsonProperty(value = "numTaskRetries")
-    private int numTaskRetries;
+    private long numTaskRetries;
 
     /*
      * The total wait time of all Tasks in all Jobs created under the schedule. The wait time for a Task is defined as
@@ -108,54 +108,6 @@ public final class BatchJobScheduleStatistics {
     @Generated
     @JsonProperty(value = "waitTime")
     private Duration waitTime;
-
-    /**
-     * Creates an instance of BatchJobScheduleStatistics class.
-     *
-     * @param url the url value to set.
-     * @param startTime the startTime value to set.
-     * @param lastUpdateTime the lastUpdateTime value to set.
-     * @param userCpuTime the userCpuTime value to set.
-     * @param kernelCpuTime the kernelCpuTime value to set.
-     * @param wallClockTime the wallClockTime value to set.
-     * @param readIOps the readIOps value to set.
-     * @param writeIOps the writeIOps value to set.
-     * @param readIOGiB the readIOGiB value to set.
-     * @param writeIOGiB the writeIOGiB value to set.
-     * @param numSucceededTasks the numSucceededTasks value to set.
-     * @param numFailedTasks the numFailedTasks value to set.
-     * @param numTaskRetries the numTaskRetries value to set.
-     * @param waitTime the waitTime value to set.
-     */
-    @Generated
-    @JsonCreator
-    private BatchJobScheduleStatistics(@JsonProperty(value = "url") String url,
-        @JsonProperty(value = "startTime") OffsetDateTime startTime,
-        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-        @JsonProperty(value = "userCPUTime") Duration userCpuTime,
-        @JsonProperty(value = "kernelCPUTime") Duration kernelCpuTime,
-        @JsonProperty(value = "wallClockTime") Duration wallClockTime, @JsonProperty(value = "readIOps") int readIOps,
-        @JsonProperty(value = "writeIOps") int writeIOps, @JsonProperty(value = "readIOGiB") double readIOGiB,
-        @JsonProperty(value = "writeIOGiB") double writeIOGiB,
-        @JsonProperty(value = "numSucceededTasks") int numSucceededTasks,
-        @JsonProperty(value = "numFailedTasks") int numFailedTasks,
-        @JsonProperty(value = "numTaskRetries") int numTaskRetries,
-        @JsonProperty(value = "waitTime") Duration waitTime) {
-        this.url = url;
-        this.startTime = startTime;
-        this.lastUpdateTime = lastUpdateTime;
-        this.userCpuTime = userCpuTime;
-        this.kernelCpuTime = kernelCpuTime;
-        this.wallClockTime = wallClockTime;
-        this.readIOps = readIOps;
-        this.writeIOps = writeIOps;
-        this.readIOGiB = readIOGiB;
-        this.writeIOGiB = writeIOGiB;
-        this.numSucceededTasks = numSucceededTasks;
-        this.numFailedTasks = numFailedTasks;
-        this.numTaskRetries = numTaskRetries;
-        this.waitTime = waitTime;
-    }
 
     /**
      * Get the url property: The URL of the statistics.
@@ -208,7 +160,7 @@ public final class BatchJobScheduleStatistics {
      * @return the readIOps value.
      */
     @Generated
-    public int getReadIOps() {
+    public long getReadIOps() {
         return this.readIOps;
     }
 
@@ -219,7 +171,7 @@ public final class BatchJobScheduleStatistics {
      * @return the writeIOps value.
      */
     @Generated
-    public int getWriteIOps() {
+    public long getWriteIOps() {
         return this.writeIOps;
     }
 
@@ -252,7 +204,7 @@ public final class BatchJobScheduleStatistics {
      * @return the numSucceededTasks value.
      */
     @Generated
-    public int getNumSucceededTasks() {
+    public long getNumSucceededTasks() {
         return this.numSucceededTasks;
     }
 
@@ -263,7 +215,7 @@ public final class BatchJobScheduleStatistics {
      * @return the numFailedTasks value.
      */
     @Generated
-    public int getNumFailedTasks() {
+    public long getNumFailedTasks() {
         return this.numFailedTasks;
     }
 
@@ -274,7 +226,7 @@ public final class BatchJobScheduleStatistics {
      * @return the numTaskRetries value.
      */
     @Generated
-    public int getNumTaskRetries() {
+    public long getNumTaskRetries() {
         return this.numTaskRetries;
     }
 
@@ -327,5 +279,53 @@ public final class BatchJobScheduleStatistics {
     @Generated
     public Duration getUserCpuTime() {
         return this.userCpuTime;
+    }
+
+    /**
+     * Creates an instance of BatchJobScheduleStatistics class.
+     *
+     * @param url the url value to set.
+     * @param startTime the startTime value to set.
+     * @param lastUpdateTime the lastUpdateTime value to set.
+     * @param userCpuTime the userCpuTime value to set.
+     * @param kernelCpuTime the kernelCpuTime value to set.
+     * @param wallClockTime the wallClockTime value to set.
+     * @param readIOps the readIOps value to set.
+     * @param writeIOps the writeIOps value to set.
+     * @param readIOGiB the readIOGiB value to set.
+     * @param writeIOGiB the writeIOGiB value to set.
+     * @param numSucceededTasks the numSucceededTasks value to set.
+     * @param numFailedTasks the numFailedTasks value to set.
+     * @param numTaskRetries the numTaskRetries value to set.
+     * @param waitTime the waitTime value to set.
+     */
+    @Generated
+    @JsonCreator
+    private BatchJobScheduleStatistics(@JsonProperty(value = "url") String url,
+        @JsonProperty(value = "startTime") OffsetDateTime startTime,
+        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
+        @JsonProperty(value = "userCPUTime") Duration userCpuTime,
+        @JsonProperty(value = "kernelCPUTime") Duration kernelCpuTime,
+        @JsonProperty(value = "wallClockTime") Duration wallClockTime, @JsonProperty(value = "readIOps") long readIOps,
+        @JsonProperty(value = "writeIOps") long writeIOps, @JsonProperty(value = "readIOGiB") double readIOGiB,
+        @JsonProperty(value = "writeIOGiB") double writeIOGiB,
+        @JsonProperty(value = "numSucceededTasks") long numSucceededTasks,
+        @JsonProperty(value = "numFailedTasks") long numFailedTasks,
+        @JsonProperty(value = "numTaskRetries") long numTaskRetries,
+        @JsonProperty(value = "waitTime") Duration waitTime) {
+        this.url = url;
+        this.startTime = startTime;
+        this.lastUpdateTime = lastUpdateTime;
+        this.userCpuTime = userCpuTime;
+        this.kernelCpuTime = kernelCpuTime;
+        this.wallClockTime = wallClockTime;
+        this.readIOps = readIOps;
+        this.writeIOps = writeIOps;
+        this.readIOGiB = readIOGiB;
+        this.writeIOGiB = writeIOGiB;
+        this.numSucceededTasks = numSucceededTasks;
+        this.numFailedTasks = numFailedTasks;
+        this.numTaskRetries = numTaskRetries;
+        this.waitTime = waitTime;
     }
 }
