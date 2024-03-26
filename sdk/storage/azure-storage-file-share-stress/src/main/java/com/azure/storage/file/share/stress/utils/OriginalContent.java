@@ -88,4 +88,8 @@ public class OriginalContent {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
+
+    public BinaryData getContentHead() {
+        return FILE_CONTENT_HEAD;
+    }
 }

@@ -4,23 +4,25 @@
 package com.azure.storage.file.share.stress;
 
 import com.azure.core.util.Context;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.Utility;
 import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.file.share.ShareFileClient;
+import com.azure.storage.file.share.models.ShareFileUploadRangeOptions;
 import com.azure.storage.file.share.stress.utils.OriginalContent;
-import com.azure.storage.stress.CrcOutputStream;
+import com.azure.storage.stress.CrcInputStream;
 import com.azure.storage.stress.StorageStressOptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
+import java.nio.ByteBuffer;
 
-public class Download extends ShareScenarioBase<StorageStressOptions> {
+public class UploadRange extends ShareScenarioBase<StorageStressOptions> {
     private final OriginalContent originalContent = new OriginalContent();
     private final ShareFileClient syncClient;
     private final ShareFileAsyncClient asyncClient;
     private final ShareFileAsyncClient asyncNoFaultClient;
 
-    public Download(StorageStressOptions options) {
+    public UploadRange(StorageStressOptions options) {
         super(options);
         String fileName = generateFileName();
         this.syncClient = getSyncShareClient().getFileClient(fileName);
@@ -29,24 +31,23 @@ public class Download extends ShareScenarioBase<StorageStressOptions> {
     }
 
     @Override
-    protected void runInternal(Context span) throws IOException {
-        try (CrcOutputStream outputStream = new CrcOutputStream()) {
-            syncClient.downloadWithResponse(outputStream, null, null, null, span);
-            outputStream.close();
-            originalContent.checkMatch(outputStream.getContentInfo(), span).block();
+    protected void runInternal(Context span) {
+        try (CrcInputStream inputStream = new CrcInputStream(originalContent.getContentHead(), options.getSize())) {
+            syncClient.uploadRangeWithResponse(new ShareFileUploadRangeOptions(inputStream, options.getSize()), null, span);
+            originalContent.checkMatch(inputStream.getContentInfo(), span).block();
         }
     }
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
-        return asyncClient.downloadWithResponse(null, null)
-            .flatMap(response -> originalContent.checkMatch(response.getValue(), span));
+        Flux<ByteBuffer> byteBufferFlux = Utility.convertStreamToByteBuffer(new CrcInputStream(
+            originalContent.getContentHead(), options.getSize()), options.getSize(), 4 * 1024 * 1024);
+        return asyncClient.uploadRange(byteBufferFlux, options.getSize())
+            .then(originalContent.checkMatch(byteBufferFlux, span));
     }
 
     @Override
     public Mono<Void> setupAsync() {
-        // setup is called for each instance of scenario. Number of instances equals options.getParallel()
-        // so we're setting up options.getParallel() blobs to scale beyond service limits for 1 blob.
         return super.setupAsync()
             .then(originalContent.setupFile(asyncNoFaultClient, options.getSize()));
     }
