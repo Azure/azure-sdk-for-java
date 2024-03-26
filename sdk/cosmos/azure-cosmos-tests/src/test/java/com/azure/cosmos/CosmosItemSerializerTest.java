@@ -7,7 +7,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
@@ -17,6 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -32,7 +32,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.fail;
 
 public class CosmosItemSerializerTest extends TestSuiteBase {
     private final static ObjectMapper objectMapper = new ObjectMapper()
@@ -44,57 +43,84 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
     private CosmosClient client;
     private CosmosContainer container;
     private final boolean isContentOnWriteEnabled;
+    private final boolean nonIdempotentWriteRetriesEnabled;
+    private final boolean useTrackingIdForCreateAndReplace;
 
     @Factory(dataProvider = "clientBuildersWithDirectSessionIncludeComputeGatewayAndDifferentItemSerializers")
-    public CosmosItemSerializerTest(CosmosClientBuilder clientBuilder, boolean inContentOnWriteEnabled) {
+    public CosmosItemSerializerTest(
+        CosmosClientBuilder clientBuilder,
+        boolean inContentOnWriteEnabled,
+        boolean nonIdempotentWriteRetriesEnabled,
+        boolean useTrackingIdForCreateAndReplace) {
         super(clientBuilder);
 
         this.isContentOnWriteEnabled = inContentOnWriteEnabled;
+        this.nonIdempotentWriteRetriesEnabled = nonIdempotentWriteRetriesEnabled;
+        this.useTrackingIdForCreateAndReplace = useTrackingIdForCreateAndReplace;
     }
 
     @DataProvider
     public static Object[][] clientBuildersWithDirectSessionIncludeComputeGatewayAndDifferentItemSerializers() {
         boolean[] contentResponseOnWriteValues = new boolean[] { true, false };
+        boolean[] nonIdempotentWriteRetriesEnabledValues = new boolean[] { true, false };
+        boolean[] trackingIdUsageForWriteRetriesEnabledValues = new boolean[] { true, false };
+
         CosmosItemSerializer[] itemSerializers = new CosmosItemSerializer[] {
             null,
             CosmosItemSerializer.DEFAULT_SERIALIZER,
-            EnvelopWrappingItemSerializer.INSTANCE
+            EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
         };
 
         List<Object[]> providers = new ArrayList<>();
         for (CosmosItemSerializer serializer: itemSerializers) {
             for (boolean isContentResponseOnWriteEnabled : contentResponseOnWriteValues) {
-                Object[][] originalProviders = clientBuildersWithDirectSession(
-                    isContentResponseOnWriteEnabled,
-                    true,
-                    toArray(protocols));
-                List<Object[]> providersCurrentTestCase = new ArrayList<>();
+                for (boolean nonIdempotentWriteRetriesEnabled : nonIdempotentWriteRetriesEnabledValues) {
+                    for (boolean trackingIdUsageForWriteRetriesEnabled : trackingIdUsageForWriteRetriesEnabledValues) {
+                        if (!nonIdempotentWriteRetriesEnabled && trackingIdUsageForWriteRetriesEnabled) {
+                            continue;
+                        }
 
-                for(Object[] current : originalProviders) {
-                    Object[] injectedProviderParameters = new Object[2];
-                    injectedProviderParameters[0] = current[0];
-                    injectedProviderParameters[1] = isContentResponseOnWriteEnabled;
-                    providersCurrentTestCase.add(injectedProviderParameters);
+                        Object[][] originalProviders = clientBuildersWithDirectSession(
+                            isContentResponseOnWriteEnabled,
+                            true,
+                            toArray(protocols));
+                        List<Object[]> providersCurrentTestCase = new ArrayList<>();
+
+                        for (Object[] current : originalProviders) {
+                            Object[] injectedProviderParameters = new Object[4];
+                            injectedProviderParameters[0] = current[0];
+
+                            injectedProviderParameters[1] = isContentResponseOnWriteEnabled;
+                            injectedProviderParameters[2] = nonIdempotentWriteRetriesEnabled;
+                            injectedProviderParameters[3] = trackingIdUsageForWriteRetriesEnabled;
+                            providersCurrentTestCase.add(injectedProviderParameters);
+                        }
+
+                        CosmosClientBuilder builder = createGatewayRxDocumentClient(
+                            TestConfigurations.HOST.replace(ROUTING_GATEWAY_EMULATOR_PORT, COMPUTE_GATEWAY_EMULATOR_PORT),
+                            ConsistencyLevel.SESSION,
+                            false,
+                            null,
+                            isContentResponseOnWriteEnabled,
+                            true);
+                        Object[] injectedProviderParameters = new Object[4];
+                        injectedProviderParameters[0] = builder;
+                        injectedProviderParameters[1] = isContentResponseOnWriteEnabled;
+                        injectedProviderParameters[2] = nonIdempotentWriteRetriesEnabled;
+                        injectedProviderParameters[3] = trackingIdUsageForWriteRetriesEnabled;
+                        providersCurrentTestCase.add(injectedProviderParameters);
+
+                        for (Object[] wrappedProvider : providersCurrentTestCase) {
+                            CosmosClientBuilder clientBuilder = (CosmosClientBuilder) wrappedProvider[0];
+                            clientBuilder.setCustomSerializer(serializer);
+                            clientBuilder.setNonIdempotentWriteRetryPolicy(
+                                nonIdempotentWriteRetriesEnabled,
+                                trackingIdUsageForWriteRetriesEnabled);
+                        }
+
+                        providers.addAll(providersCurrentTestCase);
+                    }
                 }
-
-                CosmosClientBuilder builder = createGatewayRxDocumentClient(
-                    TestConfigurations.HOST.replace(ROUTING_GATEWAY_EMULATOR_PORT, COMPUTE_GATEWAY_EMULATOR_PORT),
-                    ConsistencyLevel.SESSION,
-                    false,
-                    null,
-                    isContentResponseOnWriteEnabled,
-                    true);
-                Object[] injectedProviderParameters = new Object[2];
-                injectedProviderParameters[0] = builder;
-                injectedProviderParameters[1] = isContentResponseOnWriteEnabled;
-                providersCurrentTestCase.add(injectedProviderParameters);
-
-                for (Object[] wrappedProvider : providersCurrentTestCase) {
-                    CosmosClientBuilder clientBuilder = (CosmosClientBuilder) wrappedProvider[0];
-                    clientBuilder.setCustomSerializer(serializer);
-                }
-
-                providers.addAll(providersCurrentTestCase);
             }
         }
 
@@ -106,38 +132,14 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
     @BeforeClass(groups = {"fast", "emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        CosmosContainerProperties containerProperties = getCollectionDefinitionWithRangeRangeIndex();
-        logger.info("Creating separate container {} for ItemIdEncoding tests to prevent leaving " +
-            "any left-overs with weird encoded ids in the shared container.", containerProperties.getId());
-        try {
-            this.client = getClientBuilder().buildClient();
-            getSharedCosmosDatabase(this.client.asyncClient()).createContainer(containerProperties).block();
-            CosmosAsyncContainer asyncContainer =
-                getSharedCosmosDatabase(this.client.asyncClient()).getContainer(containerProperties.getId());
-            this.container = client
-                .getDatabase(asyncContainer.getDatabase().getId())
-                .getContainer(asyncContainer.getId());
-        } catch (Exception error) {
-            String message = String.format(
-                "Failed creating separate container %s for ItemIdEncoding tests to prevent leaving " +
-                    "any left-overs with weird encoded ids in the shared container.",
-                containerProperties.getId());
-
-            logger.error(message, error);
-
-            fail(message);
-        }
-
-        logger.info("Finished creating separate container {} for ItemIdEncoding tests to prevent leaving " +
-            "any left-overs with weird encoded ids in the shared container.", containerProperties.getId());
+        this.client = getClientBuilder().buildClient();
+        CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(this.client.asyncClient());
+        container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
     @AfterClass(groups = {"fast", "emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
-        if (this.container != null) {
-            container.delete();
-        }
         this.client.close();
     }
 
@@ -149,7 +151,7 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             },
 
             new Object[] {
-                EnvelopWrappingItemSerializer.INSTANCE
+                EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
             },
 
             new Object[] {
@@ -160,37 +162,62 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
 
     @Override
     public String resolveTestNameSuffix(Object[] row) {
-        String prefix = "";
+        String prefix = nonIdempotentWriteRetriesEnabled
+            ? useTrackingIdForCreateAndReplace ? "WriteRetriesWithTrackingId|" : "WriteRetriesNoTrackingId|"
+            : "NoWriteRetries|";
+
         CosmosItemSerializer requestOptionsSerializer = (CosmosItemSerializer)row[0];
         if (requestOptionsSerializer == CosmosItemSerializer.DEFAULT_SERIALIZER) {
-            return prefix + "RequestOptions_DEFAULT";
+            prefix += "RequestOptions_DEFAULT";
+        } else if (requestOptionsSerializer == null) {
+            prefix += "RequestOptions_NULL";
+        } else {
+            prefix += "RequestOptions_" + requestOptionsSerializer.getClass().getSimpleName();
         }
 
-        if (requestOptionsSerializer == null) {
-            if (this.getClientBuilder().getCustomSerializer() == null) {
-                return prefix + "NONE";
-            }
-
-            if (this.getClientBuilder().getCustomSerializer() == CosmosItemSerializer.DEFAULT_SERIALIZER) {
-                return prefix + "Client_DEFAULT";
-            }
-
-            return prefix + "Client_" +  this.getClientBuilder().getCustomSerializer().getClass().getSimpleName();
+        if (this.getClientBuilder().getCustomSerializer() == null) {
+            return prefix + "|Client_NULL";
+        } else if (this.getClientBuilder().getCustomSerializer() == CosmosItemSerializer.DEFAULT_SERIALIZER) {
+            return prefix + "|Client_DEFAULT";
         }
 
-        return prefix + "RequestOptions_" +  requestOptionsSerializer.getClass().getSimpleName();
+        return prefix + "|Client_" +  this.getClientBuilder().getCustomSerializer().getClass().getSimpleName();
     }
 
-    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT)
-    public void pointOperationsWithItemSerializer(CosmosItemSerializer requestLevelSerializer) {
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    public void pointOperationsWithPojo(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
         TestDocument doc = TestDocument.create(id);
-        ObjectNode docNode = TestDocument.createAsObjectNode(id);
-        assertSameDocument(doc, docNode);
+
+        runPointOperationTestCase(doc, id, requestLevelSerializer, TestDocument.class);
+    }
+
+    @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
+    public void pointOperationsWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
+        String id = UUID.randomUUID().toString();
+        ObjectNode doc = TestDocument.createAsObjectNode(id);
+
+        runPointOperationTestCase(doc, id, requestLevelSerializer, ObjectNode.class);
+    }
+
+    private <T> void runPointOperationTestCase(
+        T doc,
+        String id,
+        CosmosItemSerializer requestLevelSerializer,
+        Class<T> classType) {
 
         CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+
+        if (requestLevelSerializer == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
+            && isContentOnWriteEnabled
+            && nonIdempotentWriteRetriesEnabled
+            && useTrackingIdForCreateAndReplace) {
+
+            requestLevelSerializer = EnvelopWrappingItemSerializer.INSTANCE_WITH_TRACKING_ID_VALIDATION;
+        }
+
         requestOptions.setCustomSerializer(requestLevelSerializer);
-        CosmosItemResponse<TestDocument> pojoResponse = container.createItem(doc, new PartitionKey(id), requestOptions);
+        CosmosItemResponse<T> pojoResponse = container.createItem(doc, new PartitionKey(id), requestOptions);
 
         if (this.isContentOnWriteEnabled) {
             assertSameDocument(doc, pojoResponse.getItem());
@@ -198,8 +225,12 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             assertThat(pojoResponse.getItem()).isNull();
         }
 
+        pojoResponse = container.readItem(id, new PartitionKey(id), requestOptions, classType);
+        assertSameDocument(doc, pojoResponse.getItem());
+
         // TODO @fabianm - add missing test cases
-        // Read
+
+        // INternalObjectNode.serializeJsonToByteBuffer - make sure TrackingId stays at top level
 
         // Replace
 
@@ -274,20 +305,33 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
 
             return node;
         }
+
+        public static TestDocument parse(ObjectNode node) {
+            try {
+                return objectMapper.treeToValue(node, TestDocument.class);
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
-    private static void assertSameDocument(TestDocument doc, ObjectNode node) {
+    private static void assertSameDocument(Object doc, Object deserializedDoc) {
         assertThat(doc).isNotNull();
-        assertThat(node).isNotNull();
+        assertThat(deserializedDoc).isNotNull();
 
-        TestDocument deserializedDoc;
-        try {
-            deserializedDoc = objectMapper.treeToValue(node, TestDocument.class);
-            assertSameDocument(doc, deserializedDoc);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+        if (doc instanceof TestDocument) {
+            assertSameDocument((TestDocument)doc, (TestDocument)deserializedDoc);
+            return;
         }
 
+        assertSameDocument((ObjectNode)doc, (ObjectNode)deserializedDoc);
+    }
+
+    private static void assertSameDocument(ObjectNode doc, ObjectNode deserializedDoc) {
+        assertThat(doc).isNotNull();
+        assertThat(deserializedDoc).isNotNull();
+
+       assertSameDocument(TestDocument.parse(doc), TestDocument.parse(deserializedDoc));
     }
 
     private static void assertSameDocument(TestDocument doc, TestDocument deserializedDoc) {
@@ -342,8 +386,14 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
     }
 
     private static class EnvelopWrappingItemSerializer extends CosmosItemSerializer {
-        public static final CosmosItemSerializer INSTANCE = new EnvelopWrappingItemSerializer();
+        public static final CosmosItemSerializer INSTANCE_NO_TRACKING_ID_VALIDATION = new EnvelopWrappingItemSerializer(false);
+        public static final CosmosItemSerializer INSTANCE_WITH_TRACKING_ID_VALIDATION = new EnvelopWrappingItemSerializer(true);
         private final static Class<?> mapClass = new ConcurrentHashMap<String, Object>().getClass();
+
+        private final boolean shouldValidateTrackingId;
+        public EnvelopWrappingItemSerializer(boolean enabledTrackingIdValidation) {
+            this.shouldValidateTrackingId = enabledTrackingIdValidation;
+        }
 
         @Override
         public <T> Map<String, Object> serialize(T item) {
@@ -365,6 +415,11 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
         public <T> T deserialize(Map<String, Object> jsonNodeMap, Class<T> classType) {
             if (jsonNodeMap == null) {
                 return null;
+            }
+
+            if (shouldValidateTrackingId) {
+                assertThat(jsonNodeMap.containsKey("_trackingId")).isEqualTo(true);
+                assertThat(jsonNodeMap.get("_trackingId")).isNotNull();
             }
 
             TestDocumentWrappedInEnvelope envelope =

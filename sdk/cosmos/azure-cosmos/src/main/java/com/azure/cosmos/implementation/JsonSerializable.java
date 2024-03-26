@@ -46,6 +46,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -638,9 +639,9 @@ public class JsonSerializable {
         }
     }
 
-    public ByteBuffer serializeJsonToByteBuffer(CosmosItemSerializer itemSerializer) {
+    public ByteBuffer serializeJsonToByteBuffer(CosmosItemSerializer itemSerializer, Consumer<Map<String, Object>> onAfterSerialization) {
         this.populatePropertyBag();
-        return Utils.serializeJsonToByteBuffer(itemSerializer, propertyBag);
+        return Utils.serializeJsonToByteBuffer(itemSerializer, propertyBag, onAfterSerialization);
     }
 
     private String toJson(Object object) {

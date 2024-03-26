@@ -46,8 +46,10 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -564,11 +566,17 @@ public class Utils {
         return effectiveItemSerializer.deserialize(new ObjectNodeMap(jsonNode), itemClassType);
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(CosmosItemSerializer serializer, Object object) {
-        checkNotNull(serializer, "Argument 'serializer' must not be null.");
+    public static ByteBuffer serializeJsonToByteBuffer(CosmosItemSerializer serializer, Object object, Consumer<Map<String, Object>> onAfterSerialization) {
+        checkArgument(serializer != null || object instanceof Map<?, ?>, "Argument 'serializer' must not be null.");
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
-            Map<String, Object> jsonTreeMap = serializer.serialize(object);
+            Map<String, Object> jsonTreeMap = (object instanceof Map<?, ?> && serializer == null)
+                ? (Map<String, Object>) object
+                : serializer.serialize(object);
+
+            if (onAfterSerialization != null) {
+                onAfterSerialization.accept(jsonTreeMap);
+            }
 
             JsonNode jsonNode;
             if (jsonTreeMap instanceof ObjectNodeMap) {

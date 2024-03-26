@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -110,37 +111,38 @@ public class InternalObjectNode extends Resource {
         checkNotNull(itemSerializer, "Argument 'itemSerializer' must not be null.");
         if (cosmosItem instanceof InternalObjectNode) {
             InternalObjectNode internalObjectNode = ((InternalObjectNode) cosmosItem);
+            Consumer<Map<String, Object>> onAfterSerialization = null;
             if (trackingId != null) {
-                internalObjectNode.set(Constants.Properties.TRACKING_ID, trackingId, CosmosItemSerializer.DEFAULT_SERIALIZER);
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
-            return internalObjectNode.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+            return internalObjectNode.serializeJsonToByteBuffer(itemSerializer, onAfterSerialization);
         } else if (cosmosItem instanceof Document) {
             Document doc = (Document) cosmosItem;
+            Consumer<Map<String, Object>> onAfterSerialization = null;
             if (trackingId != null) {
-                doc.set(Constants.Properties.TRACKING_ID, trackingId, CosmosItemSerializer.DEFAULT_SERIALIZER);
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
-            return doc.serializeJsonToByteBuffer(itemSerializer);
+            return doc.serializeJsonToByteBuffer(itemSerializer, onAfterSerialization);
         } else if (cosmosItem instanceof ObjectNode) {
             ObjectNode objectNode = (ObjectNode)cosmosItem;
+            Consumer<Map<String, Object>> onAfterSerialization = null;
             if (trackingId != null) {
-                objectNode.put(Constants.Properties.TRACKING_ID, trackingId);
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
-            return (new InternalObjectNode(objectNode).serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER));
+            return (new InternalObjectNode(objectNode).serializeJsonToByteBuffer(itemSerializer, onAfterSerialization));
         } else if (cosmosItem instanceof byte[]) {
             if (trackingId != null) {
                 InternalObjectNode internalObjectNode = new InternalObjectNode((byte[]) cosmosItem);
-                internalObjectNode.set(Constants.Properties.TRACKING_ID, trackingId, CosmosItemSerializer.DEFAULT_SERIALIZER);
-                return internalObjectNode.serializeJsonToByteBuffer(CosmosItemSerializer.DEFAULT_SERIALIZER);
+                return internalObjectNode.serializeJsonToByteBuffer(itemSerializer, (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId));
             }
             return ByteBuffer.wrap((byte[]) cosmosItem);
         } else {
-            Object effectivePayload = cosmosItem;
+            Consumer<Map<String, Object>> onAfterSerialization = null;
             if (trackingId != null) {
-                Map<String, Object> node = itemSerializer.serialize(cosmosItem);
-                node.put(Constants.Properties.TRACKING_ID, trackingId);
-                effectivePayload = node;
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
             }
-            return Utils.serializeJsonToByteBuffer(itemSerializer, effectivePayload);
+
+            return Utils.serializeJsonToByteBuffer(itemSerializer, cosmosItem, onAfterSerialization);
         }
     }
 

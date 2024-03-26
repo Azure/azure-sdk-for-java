@@ -67,6 +67,7 @@ public class CosmosItemRequestOptions {
         useTrackingIds = options.useTrackingIds;
         endToEndOperationLatencyPolicyConfig = options.endToEndOperationLatencyPolicyConfig;
         excludeRegions = options.excludeRegions;
+        customSerializer = options.customSerializer;
         if (options.customOptions != null) {
             this.customOptions = new HashMap<>(options.customOptions);
         }
