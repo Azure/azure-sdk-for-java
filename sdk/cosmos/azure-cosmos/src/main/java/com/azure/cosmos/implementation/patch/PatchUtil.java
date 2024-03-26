@@ -65,7 +65,7 @@ public final class PatchUtil {
                     operationJsonSerializable.set(
                         PatchConstants.PropertyNames_Value,
                         ((PatchOperationCore)patchOperation).getResource(),
-                        requestOptions.getEffectiveItemSerializer());
+                        CosmosItemSerializer.DEFAULT_SERIALIZER);
                 }
             } else {
                 throw new IllegalArgumentException("Invalid patch operation type");

@@ -7,8 +7,11 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonParser;
@@ -16,12 +19,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.util.function.Tuple2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +32,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -188,26 +194,72 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
     public void pointOperationsWithPojo(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
         TestDocument doc = TestDocument.create(id);
+        Consumer<TestDocument> onBeforeReplace = item -> item.someNumber = 999;
+        BiFunction<TestDocument,Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
 
-        runPointOperationTestCase(doc, id, requestLevelSerializer, TestDocument.class);
+            doc.someNumber = 555;
+            if (!isEnvelopeWrapped) {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/someNumber", 555);
+            } else {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/wrappedContent/someNumber", 555);
+            }
+        };
+
+        runPointOperationTestCase(
+            doc,
+            id,
+            onBeforeReplace,
+            onBeforePatch,
+            requestLevelSerializer,
+            TestDocument.class);
     }
 
     @Test(groups = { "fast", "emulator" }, dataProvider = "testConfigs_requestLevelSerializer", timeOut = TIMEOUT * 1000000)
     public void pointOperationsWithObjectNode(CosmosItemSerializer requestLevelSerializer) {
         String id = UUID.randomUUID().toString();
         ObjectNode doc = TestDocument.createAsObjectNode(id);
+        Consumer<ObjectNode> onBeforeReplace = item -> item.put("someNumber", 999);
+        BiFunction<ObjectNode, Boolean, CosmosPatchOperations> onBeforePatch = (item, isEnvelopeWrapped) -> {
 
-        runPointOperationTestCase(doc, id, requestLevelSerializer, ObjectNode.class);
+            item.put("someNumber", 555);
+
+            if (!isEnvelopeWrapped) {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/someNumber", 555);
+            } else {
+                return CosmosPatchOperations
+                    .create()
+                    .add("/wrappedContent/someNumber", 555);
+            }
+        };
+
+        runPointOperationTestCase(
+            doc,
+            id,
+            onBeforeReplace,
+            onBeforePatch,
+            requestLevelSerializer,
+            ObjectNode.class);
     }
 
     private <T> void runPointOperationTestCase(
         T doc,
         String id,
+        Consumer<T> beforeReplace,
+        BiFunction<T, Boolean, CosmosPatchOperations> beforePatch,
         CosmosItemSerializer requestLevelSerializer,
         Class<T> classType) {
 
-        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
-
+        boolean useEnvelopeWrapper =
+            requestLevelSerializer == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
+            || (requestLevelSerializer == null
+                && this.getClientBuilder()
+                       .getCustomSerializer() == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION);
         if (requestLevelSerializer == EnvelopWrappingItemSerializer.INSTANCE_NO_TRACKING_ID_VALIDATION
             && isContentOnWriteEnabled
             && nonIdempotentWriteRetriesEnabled
@@ -216,9 +268,36 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
             requestLevelSerializer = EnvelopWrappingItemSerializer.INSTANCE_WITH_TRACKING_ID_VALIDATION;
         }
 
-        requestOptions.setCustomSerializer(requestLevelSerializer);
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions()
+            .setCustomSerializer(requestLevelSerializer);
         CosmosItemResponse<T> pojoResponse = container.createItem(doc, new PartitionKey(id), requestOptions);
 
+        if (this.isContentOnWriteEnabled) {
+            assertSameDocument(doc, pojoResponse.getItem());
+        } else {
+            assertThat(pojoResponse.getItem()).isNull();
+        }
+
+        pojoResponse = container.readItem(id, new PartitionKey(id), requestOptions, classType);
+        assertSameDocument(doc, pojoResponse.getItem());
+
+        beforeReplace.accept(doc);
+        pojoResponse = container.replaceItem(doc, id, new PartitionKey(id), requestOptions);
+        if (this.isContentOnWriteEnabled) {
+            assertSameDocument(doc, pojoResponse.getItem());
+        } else {
+            assertThat(pojoResponse.getItem()).isNull();
+        }
+
+        CosmosPatchOperations patchOperations = beforePatch.apply(  doc, useEnvelopeWrapper);
+        CosmosPatchItemRequestOptions patchRequestOptions = new CosmosPatchItemRequestOptions();
+        if (useEnvelopeWrapper) {
+            patchRequestOptions.setCustomSerializer(EnvelopWrappingItemSerializer.INSTANCE_FOR_PATCH);
+        } else {
+            patchRequestOptions.setCustomSerializer(requestLevelSerializer);
+        }
+
+        pojoResponse = container.patchItem(id, new PartitionKey(id), patchOperations, patchRequestOptions, classType);
         if (this.isContentOnWriteEnabled) {
             assertSameDocument(doc, pojoResponse.getItem());
         } else {
@@ -386,19 +465,28 @@ public class CosmosItemSerializerTest extends TestSuiteBase {
     }
 
     private static class EnvelopWrappingItemSerializer extends CosmosItemSerializer {
-        public static final CosmosItemSerializer INSTANCE_NO_TRACKING_ID_VALIDATION = new EnvelopWrappingItemSerializer(false);
-        public static final CosmosItemSerializer INSTANCE_WITH_TRACKING_ID_VALIDATION = new EnvelopWrappingItemSerializer(true);
+        public static final CosmosItemSerializer INSTANCE_NO_TRACKING_ID_VALIDATION = new EnvelopWrappingItemSerializer(false, false);
+        public static final CosmosItemSerializer INSTANCE_WITH_TRACKING_ID_VALIDATION = new EnvelopWrappingItemSerializer(true, false);
+        public static final CosmosItemSerializer INSTANCE_FOR_PATCH = new EnvelopWrappingItemSerializer(false, true);
+
         private final static Class<?> mapClass = new ConcurrentHashMap<String, Object>().getClass();
 
         private final boolean shouldValidateTrackingId;
-        public EnvelopWrappingItemSerializer(boolean enabledTrackingIdValidation) {
+        private final boolean passThroughOnSerialize;
+
+        public EnvelopWrappingItemSerializer(boolean enabledTrackingIdValidation, boolean passThroughOnSerialize) {
             this.shouldValidateTrackingId = enabledTrackingIdValidation;
+            this.passThroughOnSerialize = passThroughOnSerialize;
         }
 
         @Override
         public <T> Map<String, Object> serialize(T item) {
             if (item == null) {
                 return null;
+            }
+
+            if (passThroughOnSerialize) {
+                return CosmosItemSerializer.DEFAULT_SERIALIZER.serialize(item);
             }
 
             Map<String, Object> unwrappedJsonTree = CosmosItemSerializer.DEFAULT_SERIALIZER.serialize(item);
