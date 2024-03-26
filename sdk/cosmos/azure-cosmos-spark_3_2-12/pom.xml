@@ -220,7 +220,7 @@
                 <include>org.apache.spark:spark-sql_2.12:[3.2.0]</include> <!-- {x-include-update;cosmos-spark_3-2_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.3.0]</include> <!-- {x-include-update;cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>org.apache.spark:spark-sql_2.12:[3.4.0]</include> <!-- {x-include-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
-                <include>org.apache.spark:spark-sql_2.12:[3.5.0]</include> <!-- {x-include-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
+                <include>org.apache.spark:spark-sql_2.12:[3.5.0]</include> <!-- {x-include-update;cosmos-spark_3-5_org.apache.spark:spark-sql_2.12;external_dependency} -->
                 <include>commons-io:commons-io:[2.4]</include> <!-- {x-include-update;cosmos_commons-io:commons-io;external_dependency} -->
                 <include>org.scala-lang:scala-library:[2.12.10]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
                 <include>org.scala-lang:scala-library:[2.12.15]</include> <!-- {x-include-update;cosmos_org.scala-lang:scala-library;external_dependency} -->
