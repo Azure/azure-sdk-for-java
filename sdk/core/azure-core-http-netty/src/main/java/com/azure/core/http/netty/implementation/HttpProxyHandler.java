@@ -139,6 +139,7 @@ public final class HttpProxyHandler extends ProxyHandler {
         this.codec.removeInboundHandler();
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected Object newInitialMessage(ChannelHandlerContext ctx) {
         // This needs to handle no authorization proxying.

@@ -30,6 +30,11 @@ public final class MetricDefinition {
         MetricsHelper.setMetricDefinitionAccessor(MetricDefinition::setMetricDefinitionProperties);
     }
 
+    /**
+     * Creates an instance of MetricDefinition.
+     */
+    public MetricDefinition() { }
+
     private void setMetricDefinitionProperties(Boolean dimensionRequired,
                                                String resourceId,
                                                String namespace,
