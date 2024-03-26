@@ -528,24 +528,6 @@ public class SwaggerMethodParserTests {
     }
 
     @ParameterizedTest
-    @MethodSource("setContextSupplier")
-    public void setContext(SwaggerMethodParser swaggerMethodParser, Object[] arguments, Context expectedContext) {
-        assertEquals(expectedContext, swaggerMethodParser.setContext(arguments));
-    }
-
-    private static Stream<Arguments> setContextSupplier() throws NoSuchMethodException {
-        Method method = OperationMethods.class.getDeclaredMethod("getMethodWithContext", Context.class);
-        SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
-        Context context = new Context("key", "value");
-
-        return Stream.of(
-            Arguments.of(swaggerMethodParser, toObjectArray(Context.NONE), Context.NONE),
-            Arguments.of(swaggerMethodParser, toObjectArray((Object) null), Context.NONE),
-            Arguments.of(swaggerMethodParser, toObjectArray(context), context)
-        );
-    }
-
-    @ParameterizedTest
     @MethodSource("setRequestOptionsSupplier")
     public void setRequestOptions(SwaggerMethodParser swaggerMethodParser, Object[] arguments,
                                   RequestOptions expectedRequestOptions) {

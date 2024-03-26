@@ -5,10 +5,8 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.RequestOptions;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.util.ClientLogger;
-import com.generic.core.util.Context;
 import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.binarydata.InputStreamBinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
@@ -77,28 +75,6 @@ public final class RestProxyUtils {
 
     static String bodyTooSmall(long length, long expectedLength) {
         return "Request body emitted " + length + " bytes, less than the expected " + expectedLength + " bytes.";
-    }
-
-    /**
-     * Merges the Context with the Context provided with Options.
-     *
-     * @param context the Context to merge
-     * @param options the options holding the context to merge with
-     *
-     * @return the merged context.
-     */
-    public static Context mergeRequestOptionsContext(Context context, RequestOptions options) {
-        if (options == null) {
-            return context;
-        }
-
-        Context optionsContext = options.getContext();
-
-        if (optionsContext != null && optionsContext != Context.NONE) {
-            context = Context.mergeContexts(context, optionsContext);
-        }
-
-        return context;
     }
 
     /**

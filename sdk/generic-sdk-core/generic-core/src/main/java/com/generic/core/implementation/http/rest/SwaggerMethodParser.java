@@ -408,24 +408,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     /**
-     * Get the {@link Context} passed into the proxy method.
-     *
-     * @param swaggerMethodArguments the arguments passed to the proxy method.
-     *
-     * @return The {@link Context}, or {@link Context#NONE} if no context was provided.
-     */
-    public Context setContext(Object[] swaggerMethodArguments) {
-        // Context was never found as a parameter in the Method, therefore always return Context.NONE.
-        if (contextPosition < 0) {
-            return Context.NONE;
-        }
-
-        Context context = (Context) swaggerMethodArguments[contextPosition];
-
-        return (context != null) ? context : Context.NONE;
-    }
-
-    /**
      * Get the {@link RequestOptions} passed into the proxy method.
      *
      * @param swaggerMethodArguments The arguments passed to the proxy method.
