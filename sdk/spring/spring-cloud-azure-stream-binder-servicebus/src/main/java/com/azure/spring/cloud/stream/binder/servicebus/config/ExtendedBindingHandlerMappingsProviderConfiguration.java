@@ -15,14 +15,14 @@ import java.util.Map;
  * Configuration for ServiceBus extended binding metadata.
  */
 @Configuration
-public class ExtendedBindingHandlerMappingsProviderConfiguration {
+class ExtendedBindingHandlerMappingsProviderConfiguration {
 
     /**
      * Provide mappings for ServiceBus extended properties.
      * @return the mappings for ServiceBus extended properties.
      */
     @Bean
-    public BindingHandlerAdvise.MappingsProvider serviceBusExtendedPropertiesDefaultMappingsProvider() {
+    BindingHandlerAdvise.MappingsProvider serviceBusExtendedPropertiesDefaultMappingsProvider() {
         return () -> {
             Map<ConfigurationPropertyName, ConfigurationPropertyName> mappings = new HashMap<>();
             mappings.put(

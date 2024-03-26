@@ -15,14 +15,14 @@ import java.util.Map;
  * Configuration for EventHubs extended binding metadata.
  */
 @Configuration
-public class ExtendedBindingHandlerMappingsProviderConfiguration {
+class ExtendedBindingHandlerMappingsProviderConfiguration {
 
     /**
      * Provide mappings for EventHubs extended properties.
      * @return the mappings for EventHubs extended properties.
      */
     @Bean
-    public BindingHandlerAdvise.MappingsProvider eventHubsExtendedPropertiesDefaultMappingsProvider() {
+    BindingHandlerAdvise.MappingsProvider eventHubsExtendedPropertiesDefaultMappingsProvider() {
         return () -> {
             Map<ConfigurationPropertyName, ConfigurationPropertyName> mappings = new HashMap<>();
             mappings.put(
