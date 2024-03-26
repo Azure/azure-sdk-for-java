@@ -19,25 +19,59 @@ public class MonitorIngestionCustomizations extends Customization {
 
     /**
      * Customizes the generated code.
+     *
+     * <br/>
+     *
+     * The following customizations are applied:
+     *
+     * <ol>
+     *     <li>The package customization for the package `com.azure.monitor.ingestion.implementation`.</li>
+     * </ol>
+     *
      * @param libraryCustomization The library customization.
      * @param logger The logger.
      */
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
-        packageCustomization(libraryCustomization.getPackage("com.azure.monitor.ingestion.implementation"), logger);
+        monitorIngestionImplementation(libraryCustomization.getPackage("com.azure.monitor.ingestion.implementation"), logger);
     }
 
     /**
-     * Customizes the generated code for a package within the library.
+     * Customizes the generated code for the package com.azure.monitor.ingestion.implementation.
+     *
+     * <br/>
+     *
+     * The following classes are customized:
+     * <ol>
+     *     <li>IngestionUsingDataCollectionRulesClientBuilder</li>
+     * </ol>
+     *
      * @param packageCustomization The package customization.
      * @param logger The logger.
      */
-    private void packageCustomization(PackageCustomization packageCustomization, Logger logger) {
+    private void monitorIngestionImplementation(PackageCustomization packageCustomization, Logger logger) {
         IngestionUsingDataCollectionRulesClientBuilderCustomization(packageCustomization.getClass("IngestionUsingDataCollectionRulesClientBuilder"), logger);
     }
 
     /**
      * Customizes the generated code for `IngestionUsingDataCollectionRulesClientBuilder`.
+     *
+     * <br/>
+     *
+     * The following customizations are applied:
+     *
+     * <ol>
+     *     <li>Adds an import statement for the class `LogsIngestionAudience`.</li>
+     *     <li>Adds a field `audience` of type `LogsIngestionAudience` to the class.</li>
+     *     <li>Adds a Javadoc for the field `audience`.</li>
+     *     <li>Adds the generated annotation to the field `audience`.</li>
+     *     <li>Adds a setter for the field `audience`.</li>
+     *     <li>Adds a Javadoc for the setter.</li>
+     *     <li>Adds the generated annotation to the setter.</li>
+     *     <li>Replaces the body of the method `createHttpPipeline()` with a custom implementation that sets the
+     *     audience in the `BearerTokenAuthenticationPolicy`.</li>
+     * </ol>
+     *
      * @param classCustomization The class customization.
      * @param logger The logger.
      */
@@ -88,7 +122,7 @@ public class MonitorIngestionCustomizations extends Customization {
             "        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));\n" +
             "        policies.add(new AddDatePolicy());\n" +
             "        if (tokenCredential != null) {\n" +
-            "            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience == null ? DEFAULT_SCOPES : audience.getAudience()));\n" +
+            "            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, audience == null ? DEFAULT_SCOPES : new String[] { audience.toString() }));\n" +
             "        }\n" +
             "        this.pipelinePolicies.stream()\n" +
             "            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)\n" +
