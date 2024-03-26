@@ -33,7 +33,7 @@ public interface HttpClient {
      */
     static HttpClient getDefault() {
         if (Configuration.getGlobalConfiguration().get("ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE)) {
-            return DefaultHttpClientProvider.GlobalHttpUrlConnectionHttpClient.HTTP_CLIENT.getHttpClient();
+            return DefaultHttpClientProvider.GlobalDefaultHttpClient.HTTP_CLIENT.getHttpClient();
         }
 
         return new DefaultHttpClientBuilder().build();

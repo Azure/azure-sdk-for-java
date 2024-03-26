@@ -17,12 +17,12 @@ public class DefaultHttpClientProvider implements HttpClientProvider {
     private final boolean enableHttpClientSharing;
 
     // Enum Singleton Pattern
-    public enum GlobalHttpUrlConnectionHttpClient {
+    public enum GlobalDefaultHttpClient {
         HTTP_CLIENT(new DefaultHttpClientBuilder().build());
 
         private final HttpClient httpClient;
 
-        GlobalHttpUrlConnectionHttpClient(HttpClient httpClient) {
+        GlobalDefaultHttpClient(HttpClient httpClient) {
             this.httpClient = httpClient;
         }
 
@@ -46,7 +46,7 @@ public class DefaultHttpClientProvider implements HttpClientProvider {
     @Override
     public HttpClient getInstance() {
         if (enableHttpClientSharing) {
-            return GlobalHttpUrlConnectionHttpClient.HTTP_CLIENT.getHttpClient();
+            return GlobalDefaultHttpClient.HTTP_CLIENT.getHttpClient();
         }
 
         return new DefaultHttpClientBuilder().build();
