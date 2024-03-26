@@ -263,14 +263,7 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         for (NicIpConfiguration nicIPConfiguration : nicIPConfigurations) {
             NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIPConfiguration;
             config.innerModel().withSubnet(config.subnetToAssociate());
-            PublicIpAddressInner publicIpAddressInner = config.publicIPToAssociate();
-            for (Map.Entry<String, DeleteOptions> entry : specifiedIpConfigNames.entrySet()) {
-                if (entry.getKey().equalsIgnoreCase(nicIPConfiguration.name())) {
-                    publicIpAddressInner = config.publicIPToAssociate(entry.getValue());
-                    break;
-                }
-            }
-            config.innerModel().withPublicIpAddress(publicIpAddressInner);
+            config.innerModel().withPublicIpAddress(config.publicIPToAssociate(specifiedIpConfigNames.getOrDefault(config.name(), null)));
         }
     }
 
@@ -340,33 +333,6 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
      * public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is not specified then existing
      * associated (if any) public IP will be returned.
      *
-     * @return public IP SubResource
-     */
-    private PublicIpAddressInner publicIPToAssociate() {
-        String pipId = null;
-        if (this.removePrimaryPublicIPAssociation) {
-            return null;
-        } else if (this.creatablePublicIPKey != null) {
-            pipId = ((PublicIpAddress) this.parent().createdDependencyResource(this.creatablePublicIPKey)).id();
-        } else if (this.existingPublicIPAddressIdToAssociate != null) {
-            pipId = this.existingPublicIPAddressIdToAssociate;
-        }
-
-        if (pipId != null) {
-            return new PublicIpAddressInner().withId(pipId);
-        } else if (!this.isInCreateMode) {
-            return this.innerModel().publicIpAddress();
-        } else {
-            return null;
-        }
-    }
-
-    /**
-     * Get the SubResource instance representing a public IP that needs to be associated with the IP configuration.
-     *
-     * <p>null will be returned if withoutPublicIP() is specified in the update fluent chain or user did't opt for
-     * public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is not specified then existing
-     * associated (if any) public IP will be returned.
      * @param deleteOptions what happens to the public IP address when the VM using it is deleted
      * @return public IP SubResource
      */
@@ -381,9 +347,12 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         }
 
         if (pipId != null) {
-            return new PublicIpAddressInner().withId(pipId).withDeleteOption(deleteOptions);
+            if (Objects.nonNull(deleteOptions)) {
+                return new PublicIpAddressInner().withId(pipId).withDeleteOption(deleteOptions);
+            }
+            return new PublicIpAddressInner().withId(pipId);
         } else if (!this.isInCreateMode) {
-            if (Objects.nonNull(this.innerModel().publicIpAddress())) {
+            if (Objects.nonNull(this.innerModel().publicIpAddress()) && Objects.nonNull(deleteOptions)) {
                 return this.innerModel().publicIpAddress().withDeleteOption(deleteOptions);
             }
             return this.innerModel().publicIpAddress();
