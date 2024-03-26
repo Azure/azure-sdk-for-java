@@ -82,11 +82,6 @@ public class MockHttpResponseDecodeData implements HttpResponseDecodeData {
     }
 
     @Override
-    public ResponseBodyHandling getResponseBodyHandling() {
-        return HttpResponseDecodeData.super.getResponseBodyHandling();
-    }
-
-    @Override
     public boolean isHeadersEagerlyConverted() {
         return false;
     }

@@ -69,10 +69,13 @@ public abstract class RestProxyBase {
             context = RestProxyUtils.mergeRequestOptionsContext(context, options);
 
             request.getMetadata().setContext(context);
-            request.getMetadata().setRequestLogger(methodParser.getMethodLogger());;
-            request.getMetadata().setResponseBodyHandling(options != null
-                ? options.getResponseBodyHandling()
-                : methodParser.getResponseBodyHandling());
+            request.getMetadata().setRequestLogger(methodParser.getMethodLogger());
+
+            if (options != null && options.getResponseBodyHandling() != null) {
+                request.getMetadata().setResponseBodyHandling(options.getResponseBodyHandling());
+            } else {
+                request.getMetadata().setResponseBodyHandling(methodParser.getResponseBodyHandling());
+            }
 
             return invoke(proxy, method, options, requestCallback, methodParser, request);
         } catch (IOException e) {

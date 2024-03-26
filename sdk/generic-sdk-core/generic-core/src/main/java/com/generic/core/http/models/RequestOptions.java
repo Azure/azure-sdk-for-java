@@ -118,7 +118,7 @@ public final class RequestOptions {
     };
     private Context context;
 
-    private ResponseBodyHandling responseBodyHandling = BUFFER;
+    private ResponseBodyHandling responseBodyHandling;
 
     /**
      * Creates a new instance of {@link RequestOptions}.

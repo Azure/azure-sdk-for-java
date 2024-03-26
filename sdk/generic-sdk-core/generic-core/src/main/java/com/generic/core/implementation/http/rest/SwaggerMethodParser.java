@@ -57,6 +57,7 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
+import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
 import static com.generic.core.http.models.ResponseBodyHandling.STREAM;
 import static com.generic.core.implementation.TypeUtil.typeImplementsInterface;
 
@@ -252,7 +253,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(Response.class, returnType);
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodable = isReturnTypeDecodable(unwrappedReturnType);
-        this.responseBodyHandling = getResponseBodyHandling(unwrappedReturnType);
+        this.responseBodyHandling = getResponseBodyHandling(httpMethod, unwrappedReturnType);
         this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
     }
 
@@ -713,7 +714,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return headersEagerlyConverted;
     }
 
-    @Override
     public ResponseBodyHandling getResponseBodyHandling() {
         return responseBodyHandling;
     }
@@ -740,8 +740,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             && !TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, Void.class);
     }
 
-    public static ResponseBodyHandling getResponseBodyHandling(Type unwrappedReturnType) {
-        if (unwrappedReturnType != null && TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, InputStream.class)) {
+    public static ResponseBodyHandling getResponseBodyHandling(HttpMethod httpMethod, Type unwrappedReturnType) {
+        if (httpMethod == HttpMethod.HEAD) {
+            return IGNORE;
+        } else if (unwrappedReturnType != null && TypeUtil.isTypeOrSubTypeOf(unwrappedReturnType, InputStream.class)) {
             return STREAM;
         } else {
             return BUFFER;

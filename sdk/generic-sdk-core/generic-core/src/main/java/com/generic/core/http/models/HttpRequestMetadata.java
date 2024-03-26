@@ -19,7 +19,7 @@ public final class HttpRequestMetadata {
     private int retryCount;
     private ClientLogger requestLogger;
     private boolean eagerlyConvertHeaders;
-    private ResponseBodyHandling responseBodyHandling = BUFFER;
+    private ResponseBodyHandling responseBodyHandling;
 
     /**
      * Creates an instance of {@link HttpRequestMetadata}.
@@ -40,6 +40,7 @@ public final class HttpRequestMetadata {
      * Sets the {@link Context} associated with the request.
      *
      * @param context The {@link Context} associated with the request.
+     *
      * @return The updated {@link HttpRequestMetadata} object.
      */
     public HttpRequestMetadata setContext(Context context) {
@@ -60,6 +61,7 @@ public final class HttpRequestMetadata {
      * Sets the number of times the request has been retried.
      *
      * @param retryCount The number of times the request has been retried.
+     *
      * @return The updated {@link HttpRequestMetadata} object.
      */
     public HttpRequestMetadata setRetryCount(int retryCount) {
@@ -80,6 +82,7 @@ public final class HttpRequestMetadata {
      * Sets the {@link ClientLogger} used to log during the request and response.
      *
      * @param requestLogger The {@link ClientLogger} used to log during the request and response.
+     *
      * @return The updated {@link HttpRequestMetadata} object.
      */
     public HttpRequestMetadata setRequestLogger(ClientLogger requestLogger) {
@@ -100,6 +103,7 @@ public final class HttpRequestMetadata {
      * Sets whether the response headers should be eagerly converted.
      *
      * @param eagerlyConvertHeaders Whether the response headers should be eagerly converted.
+     *
      * @return The updated {@link HttpRequestMetadata} object.
      */
     public HttpRequestMetadata setEagerlyConvertHeaders(boolean eagerlyConvertHeaders) {
@@ -108,11 +112,12 @@ public final class HttpRequestMetadata {
     }
 
     /**
-     * Gets a {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
-     * handled.
+     * Gets the configuration indicating how the body of the resulting HTTP response should be handled.
      *
-     * @return A {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
-     * handled.
+     * <p>For more information about the options for handling an HTTP response body see
+     * {@link ResponseBodyHandling}.</p>
+     *
+     * @return The configuration indicating how the body of the resulting HTTP response should be handled.
      */
     public ResponseBodyHandling getResponseBodyHandling() {
         return responseBodyHandling;

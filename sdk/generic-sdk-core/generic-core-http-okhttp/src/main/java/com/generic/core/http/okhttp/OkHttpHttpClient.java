@@ -27,6 +27,7 @@ import okhttp3.ResponseBody;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
+import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
 import static com.generic.core.http.models.ResponseBodyHandling.DESERIALIZE;
 import static com.generic.core.http.models.ResponseBodyHandling.IGNORE;
 
@@ -55,6 +56,7 @@ class OkHttpHttpClient implements HttpClient {
         Request okHttpRequest = toOkHttpRequest(request);
         try {
             okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
+
             return toResponse(request, okHttpResponse, responseBodyHandling, eagerlyConvertHeaders);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
@@ -143,14 +145,20 @@ class OkHttpHttpClient implements HttpClient {
     private static Response<?> toResponse(HttpRequest request, okhttp3.Response response,
                                           ResponseBodyHandling responseBodyHandling, boolean eagerlyConvertHeaders) throws IOException {
         if (responseBodyHandling == IGNORE) {
+            if (response.body() != null) {
+                response.body().close();
+            }
+
             return new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
-        } else if (responseBodyHandling == DESERIALIZE) {
+        } else if (responseBodyHandling == BUFFER || responseBodyHandling == DESERIALIZE) {
             try (ResponseBody body = response.body()) {
-                byte[] bytes = body == null
-                    ? null
-                    : body.contentLength() == 0
-                        ? null
-                        : body.bytes();
+                byte[] bytes = null;
+
+                if (body != null && body.contentLength() != 0) {
+                    bytes = body.bytes();
+
+                    body.close();
+                }
 
                 return new OkHttpResponse(response, request, eagerlyConvertHeaders, bytes);
             }

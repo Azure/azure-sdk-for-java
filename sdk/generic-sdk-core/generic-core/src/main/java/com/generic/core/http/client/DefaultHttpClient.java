@@ -222,12 +222,12 @@ class DefaultHttpClient implements HttpClient {
 
             if (metadata != null && metadata.getResponseBodyHandling() != null) {
                 switch (metadata.getResponseBodyHandling()) {
-                    case STREAM:
-                        setResponseBodySupplier(httpResponse, connection);
-
-                        break;
                     case IGNORE:
                         ignoreResponseBody(httpResponse, connection);
+
+                        break;
+                    case STREAM:
+                        setResponseBodySupplier(httpResponse, connection);
 
                         break;
                     case BUFFER:
@@ -236,6 +236,8 @@ class DefaultHttpClient implements HttpClient {
                         eagerlyBufferResponseBody(httpResponse, connection);
                 }
             } else {
+                // The metadata can only be null if intentionally set through HttpRequest.setMetadata()
+                // TODO (vcolin7): Should we ensure the metadata is not null when users call HttpRequest.setMetadata()?
                 eagerlyBufferResponseBody(httpResponse, connection);
             }
         }
@@ -275,11 +277,9 @@ class DefaultHttpClient implements HttpClient {
     private void setResponseBodySupplier(HttpResponse<?> httpResponse, HttpURLConnection connection) {
         HttpResponseAccessHelper.setBodySupplier(httpResponse, () -> {
             try {
-                return BinaryData.fromByteBuffer(getAccessibleByteArrayOutputStream(connection).toByteBuffer());
+                return BinaryData.fromStream(connection.getInputStream());
             } catch (IOException e) {
                 throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            } finally {
-                connection.disconnect();
             }
         });
     }
