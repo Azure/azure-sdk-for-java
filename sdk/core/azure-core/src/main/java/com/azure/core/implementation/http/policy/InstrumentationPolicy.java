@@ -170,12 +170,14 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         private final HttpResponse response;
         private final Context span;
         private final Tracer tracer;
+        private volatile boolean ended;
 
         private TraceableResponse(HttpResponse response, Tracer tracer, Context span) {
             super(response.getRequest());
             this.response = response;
             this.span = span;
             this.tracer = tracer;
+            this.ended = false;
         }
 
         public static HttpResponse create(HttpResponse response, Tracer tracer, Context span) {
@@ -213,8 +215,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         public Flux<ByteBuffer> getBody() {
             return Flux.using(() -> span,
                 s -> response.getBody()
-                    .doOnError(e -> tracer.end(null, e, s))
-                    .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, s)),
+                    .doOnError(e -> onError(null, e))
+                    .doOnCancel(() -> onError(CANCELLED_ERROR_TYPE, null)),
                 s -> endNoError());
         }
 
@@ -233,7 +235,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             try {
                 return response.getBodyAsBinaryData();
             } catch (Exception e) {
-                tracer.end(null, e, span);
+                onError(null, e);
                 throw e;
             } finally {
                 endNoError();
@@ -257,11 +259,25 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         private <T> Mono<T> endSpanWhen(Mono<T> publisher) {
-            return Mono.using(() -> span, s -> publisher.doOnError(e -> tracer.end(null, e, s))
-                .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, s)), s -> endNoError());
+            return Mono.using(() -> span,
+                s -> publisher.doOnError(e -> onError(null, e)).doOnCancel(() -> onError(CANCELLED_ERROR_TYPE, null)),
+                s -> endNoError());
+        }
+
+        private void onError(String errorType, Throwable error) {
+            if (ended) {
+                return;
+            }
+            ended = true;
+            tracer.end(errorType, error, span);
         }
 
         private void endNoError() {
+            if (ended) {
+                return;
+            }
+            ended = true;
+
             String errorType = null;
             if (response == null) {
                 errorType = OTHER_ERROR_TYPE;
