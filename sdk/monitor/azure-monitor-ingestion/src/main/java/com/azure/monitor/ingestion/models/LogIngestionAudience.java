@@ -10,7 +10,7 @@ public class LogsIngestionAudience {
 
     private final String audience;
 
-    private static final String AZURE_PUBLIC = "https://monitor.azure.com//.default";
+    private static final String AZURE_PUBLIC_CLOUD = "https://monitor.azure.com//.default";
     private static final String AZURE_GOVERNMENT = "https://monitor.azure.us//.default";
     private static final String AZURE_CHINA = "https://monitor.azure.cn//.default";
 
