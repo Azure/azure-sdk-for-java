@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appcontainers.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container App registry information. */
+/**
+ * Container App registry information.
+ */
 @Fluent
 public final class RegistryInfo {
     /*
@@ -28,13 +30,15 @@ public final class RegistryInfo {
     @JsonProperty(value = "registryPassword")
     private String registryPassword;
 
-    /** Creates an instance of RegistryInfo class. */
+    /**
+     * Creates an instance of RegistryInfo class.
+     */
     public RegistryInfo() {
     }
 
     /**
      * Get the registryUrl property: registry server Url.
-     *
+     * 
      * @return the registryUrl value.
      */
     public String registryUrl() {
@@ -43,7 +47,7 @@ public final class RegistryInfo {
 
     /**
      * Set the registryUrl property: registry server Url.
-     *
+     * 
      * @param registryUrl the registryUrl value to set.
      * @return the RegistryInfo object itself.
      */
@@ -54,7 +58,7 @@ public final class RegistryInfo {
 
     /**
      * Get the registryUsername property: registry username.
-     *
+     * 
      * @return the registryUsername value.
      */
     public String registryUsername() {
@@ -63,7 +67,7 @@ public final class RegistryInfo {
 
     /**
      * Set the registryUsername property: registry username.
-     *
+     * 
      * @param registryUsername the registryUsername value to set.
      * @return the RegistryInfo object itself.
      */
@@ -74,7 +78,7 @@ public final class RegistryInfo {
 
     /**
      * Get the registryPassword property: registry secret.
-     *
+     * 
      * @return the registryPassword value.
      */
     public String registryPassword() {
@@ -83,7 +87,7 @@ public final class RegistryInfo {
 
     /**
      * Set the registryPassword property: registry secret.
-     *
+     * 
      * @param registryPassword the registryPassword value to set.
      * @return the RegistryInfo object itself.
      */
@@ -94,7 +98,7 @@ public final class RegistryInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

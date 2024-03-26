@@ -64,6 +64,9 @@ parameters:
   - name: IgnoreVerifyTypeSpecCodeGenerationError
     type: boolean
     default: false
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml
@@ -87,6 +90,7 @@ extends:
               TestPipeline: ${{ parameters.TestPipeline }}
               SDKType: ${{ parameters.SDKType }}
               Artifacts: ${{ parameters.Artifacts }}
+              TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
               IgnoreVerifyTypeSpecCodeGenerationError: ${{ parameters.IgnoreVerifyTypeSpecCodeGenerationError }}
               ReleaseArtifacts:
                 - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:

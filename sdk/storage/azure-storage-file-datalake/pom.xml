@@ -53,6 +53,11 @@
       --add-reads com.azure.storage.file.datalake=com.azure.core.http.okhttp
     </javaModulesSurefireArgLine>
     <parallelizeLiveTests>concurrent</parallelizeLiveTests>
+
+    <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+
+    <spotbugs.skip>false</spotbugs.skip>
+    <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
   </properties>
 
   <dependencies>
@@ -111,7 +116,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.34</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.36</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
