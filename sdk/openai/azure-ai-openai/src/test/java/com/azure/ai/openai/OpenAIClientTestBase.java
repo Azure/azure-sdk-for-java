@@ -148,7 +148,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     private void addCustomMatchers() {
-        interceptorManager.addMatchers(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
+        interceptorManager.setMatcher(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Cookie", "Set-Cookie")));
     }
 
     protected String getAzureCognitiveSearchKey() {

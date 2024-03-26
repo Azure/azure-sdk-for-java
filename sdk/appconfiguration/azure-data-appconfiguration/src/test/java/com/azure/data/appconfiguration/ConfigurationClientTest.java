@@ -85,7 +85,7 @@ public class ConfigurationClientTest extends ConfigurationClientTestBase {
             if (interceptorManager.isRecordMode()) {
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             } else if (interceptorManager.isPlaybackMode()) {
-                interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
+                interceptorManager.setMatcher(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token")));
             }
             return builder.buildClient();
         });

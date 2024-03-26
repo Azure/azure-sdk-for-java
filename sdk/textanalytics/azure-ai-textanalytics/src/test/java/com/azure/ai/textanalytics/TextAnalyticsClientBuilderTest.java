@@ -409,8 +409,8 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isPlaybackMode()) {
             // since running in playback mode won't have the token credential, so skipping matching it.
-            interceptorManager.addMatchers(Arrays.asList(
-                new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization"))));
+            interceptorManager.setMatcher(
+                new CustomMatcher().setExcludedHeaders(Arrays.asList("Authorization")));
 
             clientBuilder.credential(new MockTokenCredential());
         }

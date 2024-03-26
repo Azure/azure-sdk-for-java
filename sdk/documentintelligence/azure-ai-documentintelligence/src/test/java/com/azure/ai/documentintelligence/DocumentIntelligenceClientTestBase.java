@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Assertions;
 
 import java.time.Duration;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -90,7 +89,7 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
     }
 
     private void setMatchers() {
-        interceptorManager.addMatchers(Collections.singletonList(new BodilessMatcher()));
+        interceptorManager.setMatcher(new BodilessMatcher());
     }
     public DocumentIntelligenceAdministrationClientBuilder getDocumentModelAdminClientBuilder(HttpClient httpClient,
                                                                                               DocumentIntelligenceServiceVersion serviceVersion,
@@ -106,7 +105,6 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new AzureKeyCredential(INVALID_KEY));
-                setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_DOCUMENTINTELLIGENCE_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
@@ -116,7 +114,6 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         } else {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new MockTokenCredential());
-                setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new DefaultAzureCredentialBuilder().build());
                 builder.addPolicy(interceptorManager.getRecordPolicy());

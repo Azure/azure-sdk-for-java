@@ -79,9 +79,9 @@ public class SmsTestBase extends TestProxyTestBase {
 
     private void addTestProxyMatcher() {
         if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+            interceptorManager.setMatcher(new CustomMatcher()
                 .setHeadersKeyOnlyMatch(Arrays.asList("x-ms-content-sha256", "x-ms-hmac-string-to-sign-base64"))
-                .setComparingBodies(false)));
+                .setComparingBodies(false));
         }
     }
 

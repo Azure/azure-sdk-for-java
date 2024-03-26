@@ -104,8 +104,8 @@ public class CommunicationRelayClientTestBase extends TestProxyTestBase {
     }
 
     private void addSanitizersAndMatchers() {
-        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(
-            Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha", "x-ms-content-sha256"))));
+        interceptorManager.setMatcher(new CustomMatcher().setHeadersKeyOnlyMatch(
+            Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha", "x-ms-content-sha256")));
         interceptorManager.addSanitizers(addBodyKeySanitizer());
     }
 

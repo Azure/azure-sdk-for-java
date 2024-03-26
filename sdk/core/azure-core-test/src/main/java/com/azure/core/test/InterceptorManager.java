@@ -486,9 +486,24 @@ public class InterceptorManager implements AutoCloseable {
     /**
      * Add matcher rules to match recorded data in playback.
      * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
-     * @param testProxyMatchers the list of matcher rules when playing back recorded data.
+     * @param testProxyMatcher the matcher rules when playing back recorded data.
      * @throws RuntimeException Playback has not started.
      */
+    public void setMatcher(TestProxyRequestMatcher testProxyMatcher) {
+        if (testProxyMatcher != null) {
+            addMatchers(Arrays.asList(testProxyMatcher));
+        }
+    }
+
+    /**
+     * Add matcher rules to match recorded data in playback.
+     * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
+     * @param testProxyMatchers the list of matcher rules when playing back recorded data.
+     * @throws RuntimeException Playback has not started.
+     * @deprecated Use {@link #setMatcher(TestProxyRequestMatcher)} instead. Test proxy does not support setting
+     * multiple matchers.
+     */
+    @Deprecated
     public void addMatchers(List<TestProxyRequestMatcher> testProxyMatchers) {
         if (CoreUtils.isNullOrEmpty(testProxyMatchers)) {
             return;
@@ -508,7 +523,10 @@ public class InterceptorManager implements AutoCloseable {
      * Add matcher rules to match recorded data in playback.
      * Matchers are only applied for playback session and so this will be a noop when invoked in RECORD/LIVE mode.
      * @param testProxyRequestMatchers the list of matcher rules when playing back recorded data.
+     * @deprecated Use {@link #setMatcher(TestProxyRequestMatcher)} instead. Test proxy does not support setting
+     * multiple matchers.
      */
+    @Deprecated
     public void addMatchers(TestProxyRequestMatcher... testProxyRequestMatchers) {
         if (testProxyRequestMatchers != null) {
             addMatchers(Arrays.asList(testProxyRequestMatchers));

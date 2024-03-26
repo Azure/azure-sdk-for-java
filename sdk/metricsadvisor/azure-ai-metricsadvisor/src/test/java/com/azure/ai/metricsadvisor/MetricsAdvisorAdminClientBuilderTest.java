@@ -179,7 +179,7 @@ public class MetricsAdvisorAdminClientBuilderTest extends TestProxyTestBase {
         if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (interceptorManager.isPlaybackMode()) {
-            interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key"))));
+            interceptorManager.setMatcher(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-api-key")));
         }
 
         return clientBuilder;

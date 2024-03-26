@@ -234,7 +234,7 @@ public class TestProxyPlaybackClient implements HttpClient {
     public void addMatcherRequests(List<TestProxyRequestMatcher> matchers) {
         if (isPlayingBack()) {
             List<HttpRequest> matcherRequests = getMatcherRequests(matchers, proxyUrl);
-            if (skipRecordingRequestBody) {
+            if (skipRecordingRequestBody && !matcherRequests.contains(TestProxyUtils.setCompareBodiesMatcher())) {
                 matcherRequests.add(TestProxyUtils.setCompareBodiesMatcher());
             }
             matcherRequests.forEach(request -> {
