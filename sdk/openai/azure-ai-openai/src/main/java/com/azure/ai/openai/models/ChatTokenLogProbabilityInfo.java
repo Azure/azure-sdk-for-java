@@ -20,21 +20,23 @@ public final class ChatTokenLogProbabilityInfo {
      */
     @Generated
     @JsonProperty(value = "token")
-    private final String token;
+    private String token;
 
     /*
      * The log probability of the message content token.
      */
     @Generated
     @JsonProperty(value = "logprob")
-    private final double logprob;
+    private double logprob;
 
     /*
-     * A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be null if there is no bytes representation for the token.
+     * A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where
+     * characters are represented by multiple tokens and their byte representations must be combined to generate the
+     * correct text representation. Can be null if there is no bytes representation for the token.
      */
     @Generated
     @JsonProperty(value = "bytes")
-    private final List<Integer> bytes;
+    private List<Integer> bytes;
 
     /**
      * Creates an instance of ChatTokenLogProbabilityInfo class.
@@ -73,7 +75,9 @@ public final class ChatTokenLogProbabilityInfo {
     }
 
     /**
-     * Get the bytes property: A list of integers representing the UTF-8 bytes representation of the token. Useful in instances where characters are represented by multiple tokens and their byte representations must be combined to generate the correct text representation. Can be null if there is no bytes representation for the token.
+     * Get the bytes property: A list of integers representing the UTF-8 bytes representation of the token. Useful in
+     * instances where characters are represented by multiple tokens and their byte representations must be combined to
+     * generate the correct text representation. Can be null if there is no bytes representation for the token.
      *
      * @return the bytes value.
      */

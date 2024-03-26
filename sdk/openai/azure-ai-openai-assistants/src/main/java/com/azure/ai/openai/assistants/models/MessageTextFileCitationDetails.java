@@ -19,14 +19,14 @@ public final class MessageTextFileCitationDetails {
      */
     @Generated
     @JsonProperty(value = "file_id")
-    private final String fileId;
+    private String fileId;
 
     /*
      * The specific quote cited in the associated file.
      */
     @Generated
     @JsonProperty(value = "quote")
-    private final String quote;
+    private String quote;
 
     /**
      * Creates an instance of MessageTextFileCitationDetails class.

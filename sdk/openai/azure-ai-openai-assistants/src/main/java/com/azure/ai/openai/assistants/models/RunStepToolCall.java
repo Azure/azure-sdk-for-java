@@ -8,14 +8,17 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * An abstract representation of a detailed tool call as recorded within a run step for an existing run.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = RunStepToolCall.class, visible = true)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = RunStepToolCall.class)
 @JsonTypeName("RunStepToolCall")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "code_interpreter", value = RunStepCodeInterpreterToolCall.class),
@@ -29,7 +32,7 @@ public class RunStepToolCall {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /**
      * Creates an instance of RunStepToolCall class.
@@ -39,7 +42,6 @@ public class RunStepToolCall {
     @Generated
     @JsonCreator
     protected RunStepToolCall(@JsonProperty(value = "id") String id) {
-        this.type = "RunStepToolCall";
         this.id = id;
     }
 
@@ -51,23 +53,5 @@ public class RunStepToolCall {
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type;
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public String getType() {
-        return this.type;
     }
 }

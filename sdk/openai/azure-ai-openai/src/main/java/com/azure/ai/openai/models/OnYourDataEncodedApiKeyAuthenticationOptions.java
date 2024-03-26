@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The authentication options for Azure OpenAI On Your Data when using an Elasticsearch encoded API key.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = OnYourDataEncodedApiKeyAuthenticationOptions.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("encoded_api_key")
 @Immutable
 public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDataAuthenticationOptions {
@@ -28,7 +23,7 @@ public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDa
      */
     @Generated
     @JsonProperty(value = "encoded_api_key")
-    private final String encodedApiKey;
+    private String encodedApiKey;
 
     /**
      * Creates an instance of OnYourDataEncodedApiKeyAuthenticationOptions class.
@@ -49,24 +44,5 @@ public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDa
     @Generated
     public String getEncodedApiKey() {
         return this.encodedApiKey;
-    }
-
-    /*
-     * The authentication type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.ENCODED_API_KEY;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
     }
 }

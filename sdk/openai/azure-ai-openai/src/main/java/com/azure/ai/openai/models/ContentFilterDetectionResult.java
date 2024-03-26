@@ -19,14 +19,14 @@ public final class ContentFilterDetectionResult {
      */
     @Generated
     @JsonProperty(value = "filtered")
-    private final boolean filtered;
+    private boolean filtered;
 
     /*
      * A value indicating whether detection occurred, irrespective of severity or whether the content was filtered.
      */
     @Generated
     @JsonProperty(value = "detected")
-    private final boolean detected;
+    private boolean detected;
 
     /**
      * Creates an instance of ContentFilterDetectionResult class.
@@ -53,7 +53,8 @@ public final class ContentFilterDetectionResult {
     }
 
     /**
-     * Get the detected property: A value indicating whether detection occurred, irrespective of severity or whether the content was filtered.
+     * Get the detected property: A value indicating whether detection occurred, irrespective of severity or whether
+     * the content was filtered.
      *
      * @return the detected value.
      */

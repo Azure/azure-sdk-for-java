@@ -21,28 +21,28 @@ public final class Choice {
      */
     @Generated
     @JsonProperty(value = "text")
-    private final String text;
+    private String text;
 
     /*
      * The ordered index associated with this completions choice.
      */
     @Generated
     @JsonProperty(value = "index")
-    private final int index;
+    private int index;
 
     /*
      * The log probabilities model for tokens associated with this completions choice.
      */
     @Generated
     @JsonProperty(value = "logprobs")
-    private final CompletionsLogProbabilityModel logprobs;
+    private CompletionsLogProbabilityModel logprobs;
 
     /*
      * Reason for finishing
      */
     @Generated
     @JsonProperty(value = "finish_reason")
-    private final CompletionsFinishReason finishReason;
+    private CompletionsFinishReason finishReason;
 
     /**
      * Creates an instance of Choice class.
@@ -113,7 +113,8 @@ public final class Choice {
     private ContentFilterResultsForChoice contentFilterResults;
 
     /**
-     * Get the contentFilterResults property: Information about the content filtering category (hate, sexual, violence, self_harm), if it
+     * Get the contentFilterResults property: Information about the content filtering category (hate, sexual, violence,
+     * self_harm), if it
      * has been detected, as well as the severity level (very_low, low, medium, high-scale that
      * determines the intensity and risk level of harmful content) and if it has been filtered or not.
      *

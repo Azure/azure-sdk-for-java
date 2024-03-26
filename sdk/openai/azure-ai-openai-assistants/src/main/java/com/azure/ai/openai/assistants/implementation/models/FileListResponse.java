@@ -21,14 +21,14 @@ public final class FileListResponse {
      */
     @Generated
     @JsonProperty(value = "object")
-    private final String object = "list";
+    private String object = "list";
 
     /*
      * The files returned for the request.
      */
     @Generated
     @JsonProperty(value = "data")
-    private final List<OpenAIFile> data;
+    private List<OpenAIFile> data;
 
     /**
      * Creates an instance of FileListResponse class.

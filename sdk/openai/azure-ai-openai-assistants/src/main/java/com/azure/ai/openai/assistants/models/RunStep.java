@@ -23,105 +23,107 @@ public final class RunStep {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /*
      * The object type, which is always 'thread.run.step'.
      */
     @Generated
     @JsonProperty(value = "object")
-    private final String object = "thread.run.step";
+    private String object = "thread.run.step";
 
     /*
      * The type of run step, which can be either message_creation or tool_calls.
      */
     @Generated
     @JsonProperty(value = "type")
-    private final RunStepType type;
+    private RunStepType type;
 
     /*
      * The ID of the assistant associated with the run step.
      */
     @Generated
     @JsonProperty(value = "assistant_id")
-    private final String assistantId;
+    private String assistantId;
 
     /*
      * The ID of the thread that was run.
      */
     @Generated
     @JsonProperty(value = "thread_id")
-    private final String threadId;
+    private String threadId;
 
     /*
      * The ID of the run that this run step is a part of.
      */
     @Generated
     @JsonProperty(value = "run_id")
-    private final String runId;
+    private String runId;
 
     /*
      * The status of this run step.
      */
     @Generated
     @JsonProperty(value = "status")
-    private final RunStepStatus status;
+    private RunStepStatus status;
 
     /*
      * The details for this run step.
      */
     @Generated
     @JsonProperty(value = "step_details")
-    private final RunStepDetails stepDetails;
+    private RunStepDetails stepDetails;
 
     /*
      * If applicable, information about the last error encountered by this run step.
      */
     @Generated
     @JsonProperty(value = "last_error")
-    private final RunStepError lastError;
+    private RunStepError lastError;
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
     @JsonProperty(value = "created_at")
-    private final long createdAt;
+    private long createdAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this item expired.
      */
     @Generated
     @JsonProperty(value = "expired_at")
-    private final OffsetDateTime expiredAt;
+    private OffsetDateTime expiredAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this completed.
      */
     @Generated
     @JsonProperty(value = "completed_at")
-    private final OffsetDateTime completedAt;
+    private OffsetDateTime completedAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this was cancelled.
      */
     @Generated
     @JsonProperty(value = "cancelled_at")
-    private final OffsetDateTime cancelledAt;
+    private OffsetDateTime cancelledAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this failed.
      */
     @Generated
     @JsonProperty(value = "failed_at")
-    private final OffsetDateTime failedAt;
+    private OffsetDateTime failedAt;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
-    private final Map<String, String> metadata;
+    private Map<String, String> metadata;
 
     /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
@@ -264,7 +266,9 @@ public final class RunStep {
     }
 
     /**
-     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */

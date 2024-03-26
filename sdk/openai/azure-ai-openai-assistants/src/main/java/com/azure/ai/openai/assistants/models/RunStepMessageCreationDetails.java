@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The detailed information associated with a message creation run step.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = RunStepMessageCreationDetails.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("message_creation")
 @Immutable
 public final class RunStepMessageCreationDetails extends RunStepDetails {
@@ -28,7 +23,7 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
      */
     @Generated
     @JsonProperty(value = "message_creation")
-    private final RunStepMessageCreationReference messageCreation;
+    private RunStepMessageCreationReference messageCreation;
 
     /**
      * Creates an instance of RunStepMessageCreationDetails class.
@@ -50,24 +45,5 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
     @Generated
     public RunStepMessageCreationReference getMessageCreation() {
         return this.messageCreation;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private RunStepType type = RunStepType.MESSAGE_CREATION;
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public RunStepType getType() {
-        return this.type;
     }
 }

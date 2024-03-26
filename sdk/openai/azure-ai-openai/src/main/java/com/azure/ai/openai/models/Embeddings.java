@@ -22,14 +22,14 @@ public final class Embeddings {
      */
     @Generated
     @JsonProperty(value = "data")
-    private final List<EmbeddingItem> data;
+    private List<EmbeddingItem> data;
 
     /*
      * Usage counts for tokens input using the embeddings API.
      */
     @Generated
     @JsonProperty(value = "usage")
-    private final EmbeddingsUsage usage;
+    private EmbeddingsUsage usage;
 
     /**
      * Creates an instance of Embeddings class.

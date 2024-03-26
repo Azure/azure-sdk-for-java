@@ -21,7 +21,7 @@ public final class CompletionsLogProbabilityModel {
      */
     @Generated
     @JsonProperty(value = "tokens")
-    private final List<String> tokens;
+    private List<String> tokens;
 
     /**
      * Creates an instance of CompletionsLogProbabilityModel class.
@@ -58,24 +58,25 @@ public final class CompletionsLogProbabilityModel {
      */
     @Generated
     @JsonProperty(value = "token_logprobs")
-    private final List<Double> tokenLogProbabilities;
+    private List<Double> tokenLogProbabilities;
 
     /*
      * A mapping of tokens to maximum log probability values in this completions data.
      */
     @Generated
     @JsonProperty(value = "top_logprobs")
-    private final List<Map<String, Double>> topLogProbabilities;
+    private List<Map<String, Double>> topLogProbabilities;
 
     /*
      * The text offsets associated with tokens in this completions data.
      */
     @Generated
     @JsonProperty(value = "text_offset")
-    private final List<Integer> textOffsets;
+    private List<Integer> textOffsets;
 
     /**
-     * Get the tokenLogProbabilities property: A collection of log probability values for the tokens in this completions data.
+     * Get the tokenLogProbabilities property: A collection of log probability values for the tokens in this
+     * completions data.
      *
      * @return the tokenLogProbabilities value.
      */
@@ -85,7 +86,8 @@ public final class CompletionsLogProbabilityModel {
     }
 
     /**
-     * Get the topLogProbabilities property: A mapping of tokens to maximum log probability values in this completions data.
+     * Get the topLogProbabilities property: A mapping of tokens to maximum log probability values in this completions
+     * data.
      *
      * @return the topLogProbabilities value.
      */

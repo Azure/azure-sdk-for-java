@@ -26,13 +26,15 @@ public final class SpeechGenerationResponseFormat extends ExpandableStringEnum<S
     public static final SpeechGenerationResponseFormat OPUS = fromString("opus");
 
     /**
-     * Use AAC as the audio output format. AAC is optimized for digital audio compression and is preferred by YouTube, Android, and iOS.
+     * Use AAC as the audio output format. AAC is optimized for digital audio compression and is preferred by YouTube,
+     * Android, and iOS.
      */
     @Generated
     public static final SpeechGenerationResponseFormat AAC = fromString("aac");
 
     /**
-     * Use FLAC as the audio output format. FLAC is a fully lossless format optimized for maximum quality at the expense of size.
+     * Use FLAC as the audio output format. FLAC is a fully lossless format optimized for maximum quality at the expense
+     * of size.
      */
     @Generated
     public static final SpeechGenerationResponseFormat FLAC = fromString("flac");

@@ -9,14 +9,16 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for the Azure Machine Learning vector index chat extension. The supported authentication types are AccessToken, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
+ * Parameters for the Azure Machine Learning vector index chat extension. The supported authentication types are
+ * AccessToken, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
  */
 @Fluent
 public final class AzureMachineLearningIndexChatExtensionParameters {
 
     /*
      * The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
@@ -40,14 +42,17 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     private Boolean inScope;
 
     /*
-     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
+     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the
+     * precision but lower recall of the answer.
      */
     @Generated
     @JsonProperty(value = "strictness")
     private Integer strictness;
 
     /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
+     * Give the model instructions about how it should behave and any context it should reference when generating a
+     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
+     * limit for it, and it counts against the overall token limit.
      */
     @Generated
     @JsonProperty(value = "role_information")
@@ -58,21 +63,21 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
      */
     @Generated
     @JsonProperty(value = "project_resource_id")
-    private final String projectResourceId;
+    private String projectResourceId;
 
     /*
      * The Azure Machine Learning vector index name.
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String name;
+    private String name;
 
     /*
      * The version of the Azure Machine Learning vector index.
      */
     @Generated
     @JsonProperty(value = "version")
-    private final String version;
+    private String version;
 
     /*
      * Search filter. Only supported if the Azure Machine Learning vector index is of type AzureSearch.
@@ -100,7 +105,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
 
     /**
      * Get the authentication property: The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
@@ -114,7 +120,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
 
     /**
      * Set the authentication property: The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
@@ -174,7 +181,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Get the strictness property: The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
+     * Get the strictness property: The configured strictness of the search relevance filtering. The higher of
+     * strictness, the higher of the precision but lower recall of the answer.
      *
      * @return the strictness value.
      */
@@ -184,7 +192,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Set the strictness property: The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
+     * Set the strictness property: The configured strictness of the search relevance filtering. The higher of
+     * strictness, the higher of the precision but lower recall of the answer.
      *
      * @param strictness the strictness value to set.
      * @return the AzureMachineLearningIndexChatExtensionParameters object itself.
@@ -196,7 +205,9 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Get the roleInformation property: Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
+     * Get the roleInformation property: Give the model instructions about how it should behave and any context it
+     * should reference when generating a response. You can describe the assistant's personality and tell it how to
+     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      *
      * @return the roleInformation value.
      */
@@ -206,7 +217,9 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Set the roleInformation property: Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
+     * Set the roleInformation property: Give the model instructions about how it should behave and any context it
+     * should reference when generating a response. You can describe the assistant's personality and tell it how to
+     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      *
      * @param roleInformation the roleInformation value to set.
      * @return the AzureMachineLearningIndexChatExtensionParameters object itself.
@@ -248,7 +261,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Get the filter property: Search filter. Only supported if the Azure Machine Learning vector index is of type AzureSearch.
+     * Get the filter property: Search filter. Only supported if the Azure Machine Learning vector index is of type
+     * AzureSearch.
      *
      * @return the filter value.
      */
@@ -258,7 +272,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     }
 
     /**
-     * Set the filter property: Search filter. Only supported if the Azure Machine Learning vector index is of type AzureSearch.
+     * Set the filter property: Search filter. Only supported if the Azure Machine Learning vector index is of type
+     * AzureSearch.
      *
      * @param filter the filter value to set.
      * @return the AzureMachineLearningIndexChatExtensionParameters object itself.

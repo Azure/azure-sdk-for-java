@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A representation of image file content in a thread message.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = MessageImageFileContent.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("image_file")
 @Immutable
 public final class MessageImageFileContent extends MessageContent {
@@ -28,7 +23,7 @@ public final class MessageImageFileContent extends MessageContent {
      */
     @Generated
     @JsonProperty(value = "image_file")
-    private final MessageImageFileDetails imageFile;
+    private MessageImageFileDetails imageFile;
 
     /**
      * Creates an instance of MessageImageFileContent class.
@@ -49,24 +44,5 @@ public final class MessageImageFileContent extends MessageContent {
     @Generated
     public MessageImageFileDetails getImageFile() {
         return this.imageFile;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "image_file";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

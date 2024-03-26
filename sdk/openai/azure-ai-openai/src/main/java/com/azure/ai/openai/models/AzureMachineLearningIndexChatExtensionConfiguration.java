@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,11 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A specific representation of configurable options for Azure Machine Learning vector index when using it as an Azure
  * OpenAI chat extension.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = AzureMachineLearningIndexChatExtensionConfiguration.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("azure_ml_index")
 @Immutable
 public final class AzureMachineLearningIndexChatExtensionConfiguration extends AzureChatExtensionConfiguration {
@@ -29,7 +24,7 @@ public final class AzureMachineLearningIndexChatExtensionConfiguration extends A
      */
     @Generated
     @JsonProperty(value = "parameters")
-    private final AzureMachineLearningIndexChatExtensionParameters parameters;
+    private AzureMachineLearningIndexChatExtensionParameters parameters;
 
     /**
      * Get the parameters property: The parameters for the Azure Machine Learning vector index chat extension.
@@ -51,26 +46,5 @@ public final class AzureMachineLearningIndexChatExtensionConfiguration extends A
     public AzureMachineLearningIndexChatExtensionConfiguration(
         @JsonProperty(value = "parameters") AzureMachineLearningIndexChatExtensionParameters parameters) {
         this.parameters = parameters;
-    }
-
-    /*
-     *   The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
-     *   Azure chat extensions are only compatible with Azure OpenAI.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private AzureChatExtensionType type = AzureChatExtensionType.AZURE_MACHINE_LEARNING_INDEX;
-
-    /**
-     * Get the type property:   The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
-     *   Azure chat extensions are only compatible with Azure OpenAI.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public AzureChatExtensionType getType() {
-        return this.type;
     }
 }

@@ -24,35 +24,35 @@ public final class ThreadRun {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /*
      * The object type, which is always 'thread.run'.
      */
     @Generated
     @JsonProperty(value = "object")
-    private final String object = "thread.run";
+    private String object = "thread.run";
 
     /*
      * The ID of the thread associated with this run.
      */
     @Generated
     @JsonProperty(value = "thread_id")
-    private final String threadId;
+    private String threadId;
 
     /*
      * The ID of the assistant associated with the thread this run was performed against.
      */
     @Generated
     @JsonProperty(value = "assistant_id")
-    private final String assistantId;
+    private String assistantId;
 
     /*
      * The status of the assistant thread run.
      */
     @Generated
     @JsonProperty(value = "status")
-    private final RunStatus status;
+    private RunStatus status;
 
     /*
      * The details of the action required for the assistant thread run to continue.
@@ -66,84 +66,86 @@ public final class ThreadRun {
      */
     @Generated
     @JsonProperty(value = "last_error")
-    private final RunError lastError;
+    private RunError lastError;
 
     /*
      * The ID of the model to use.
      */
     @Generated
     @JsonProperty(value = "model")
-    private final String model;
+    private String model;
 
     /*
      * The overridden system instructions used for this assistant thread run.
      */
     @Generated
     @JsonProperty(value = "instructions")
-    private final String instructions;
+    private String instructions;
 
     /*
      * The overridden enabled tools used for this assistant thread run.
      */
     @Generated
     @JsonProperty(value = "tools")
-    private final List<ToolDefinition> tools;
+    private List<ToolDefinition> tools;
 
     /*
      * A list of attached file IDs, ordered by creation date in ascending order.
      */
     @Generated
     @JsonProperty(value = "file_ids")
-    private final List<String> fileIds;
+    private List<String> fileIds;
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
     @JsonProperty(value = "created_at")
-    private final long createdAt;
+    private long createdAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this item expires.
      */
     @Generated
     @JsonProperty(value = "expires_at")
-    private final OffsetDateTime expiresAt;
+    private OffsetDateTime expiresAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this item was started.
      */
     @Generated
     @JsonProperty(value = "started_at")
-    private final OffsetDateTime startedAt;
+    private OffsetDateTime startedAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this completed.
      */
     @Generated
     @JsonProperty(value = "completed_at")
-    private final OffsetDateTime completedAt;
+    private OffsetDateTime completedAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this was cancelled.
      */
     @Generated
     @JsonProperty(value = "cancelled_at")
-    private final OffsetDateTime cancelledAt;
+    private OffsetDateTime cancelledAt;
 
     /*
      * The Unix timestamp, in seconds, representing when this failed.
      */
     @Generated
     @JsonProperty(value = "failed_at")
-    private final OffsetDateTime failedAt;
+    private OffsetDateTime failedAt;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
-    private final Map<String, String> metadata;
+    private Map<String, String> metadata;
 
     /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
@@ -316,7 +318,9 @@ public final class ThreadRun {
     }
 
     /**
-     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */

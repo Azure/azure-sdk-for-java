@@ -22,28 +22,28 @@ public final class AssistantFile {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /*
      * The object type, which is always 'assistant.file'.
      */
     @Generated
     @JsonProperty(value = "object")
-    private final String object = "assistant.file";
+    private String object = "assistant.file";
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
     @JsonProperty(value = "created_at")
-    private final long createdAt;
+    private long createdAt;
 
     /*
      * The assistant ID that the file is attached to.
      */
     @Generated
     @JsonProperty(value = "assistant_id")
-    private final String assistantId;
+    private String assistantId;
 
     /**
      * Creates an instance of AssistantFile class.

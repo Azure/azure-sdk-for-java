@@ -8,14 +8,17 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * An abstract representation of an annotation to text thread message content.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = MessageTextAnnotation.class, visible = true)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = MessageTextAnnotation.class)
 @JsonTypeName("MessageTextAnnotation")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "file_citation", value = MessageTextFileCitationAnnotation.class),
@@ -28,21 +31,21 @@ public class MessageTextAnnotation {
      */
     @Generated
     @JsonProperty(value = "text")
-    private final String text;
+    private String text;
 
     /*
      * The first text index associated with this text annotation.
      */
     @Generated
     @JsonProperty(value = "start_index")
-    private final int startIndex;
+    private int startIndex;
 
     /*
      * The last text index associated with this text annotation.
      */
     @Generated
     @JsonProperty(value = "end_index")
-    private final int endIndex;
+    private int endIndex;
 
     /**
      * Creates an instance of MessageTextAnnotation class.
@@ -55,7 +58,6 @@ public class MessageTextAnnotation {
     @JsonCreator
     protected MessageTextAnnotation(@JsonProperty(value = "text") String text,
         @JsonProperty(value = "start_index") int startIndex, @JsonProperty(value = "end_index") int endIndex) {
-        this.type = "MessageTextAnnotation";
         this.text = text;
         this.startIndex = startIndex;
         this.endIndex = endIndex;
@@ -89,23 +91,5 @@ public class MessageTextAnnotation {
     @Generated
     public int getEndIndex() {
         return this.endIndex;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type;
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public String getType() {
-        return this.type;
     }
 }

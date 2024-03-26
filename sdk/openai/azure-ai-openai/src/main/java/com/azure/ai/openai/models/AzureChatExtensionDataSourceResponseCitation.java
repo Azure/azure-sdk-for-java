@@ -21,7 +21,7 @@ public final class AzureChatExtensionDataSourceResponseCitation {
      */
     @Generated
     @JsonProperty(value = "content")
-    private final String content;
+    private String content;
 
     /*
      * The title of the citation.

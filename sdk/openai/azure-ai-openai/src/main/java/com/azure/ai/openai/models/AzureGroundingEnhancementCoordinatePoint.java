@@ -19,14 +19,14 @@ public final class AzureGroundingEnhancementCoordinatePoint {
      */
     @Generated
     @JsonProperty(value = "x")
-    private final double x;
+    private double x;
 
     /*
      * The y-coordinate (vertical axis) of the point.
      */
     @Generated
     @JsonProperty(value = "y")
-    private final double y;
+    private double y;
 
     /**
      * Creates an instance of AzureGroundingEnhancementCoordinatePoint class.

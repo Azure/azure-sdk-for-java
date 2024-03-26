@@ -19,7 +19,7 @@ public final class CreateAssistantFileRequest {
      */
     @Generated
     @JsonProperty(value = "file_id")
-    private final String fileId;
+    private String fileId;
 
     /**
      * Creates an instance of CreateAssistantFileRequest class.

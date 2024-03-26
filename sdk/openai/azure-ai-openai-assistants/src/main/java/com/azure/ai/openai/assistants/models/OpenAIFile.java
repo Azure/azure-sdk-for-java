@@ -22,42 +22,42 @@ public final class OpenAIFile {
      */
     @Generated
     @JsonProperty(value = "object")
-    private final String object = "file";
+    private String object = "file";
 
     /*
      * The identifier, which can be referenced in API endpoints.
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /*
      * The size of the file, in bytes.
      */
     @Generated
     @JsonProperty(value = "bytes")
-    private final int bytes;
+    private int bytes;
 
     /*
      * The name of the file.
      */
     @Generated
     @JsonProperty(value = "filename")
-    private final String filename;
+    private String filename;
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
     @JsonProperty(value = "created_at")
-    private final long createdAt;
+    private long createdAt;
 
     /*
      * The intended purpose of a file.
      */
     @Generated
     @JsonProperty(value = "purpose")
-    private final FilePurpose purpose;
+    private FilePurpose purpose;
 
     /**
      * Creates an instance of OpenAIFile class.

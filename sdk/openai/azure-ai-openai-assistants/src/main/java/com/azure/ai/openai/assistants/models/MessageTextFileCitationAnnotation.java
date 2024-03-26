@@ -7,18 +7,14 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A citation within the message that points to a specific quote from a specific File associated with the assistant or the message. Generated when the assistant uses the 'retrieval' tool to search files.
+ * A citation within the message that points to a specific quote from a specific File associated with the assistant or
+ * the message. Generated when the assistant uses the 'retrieval' tool to search files.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = MessageTextFileCitationAnnotation.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("file_citation")
 @Immutable
 public final class MessageTextFileCitationAnnotation extends MessageTextAnnotation {
@@ -29,7 +25,7 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
      */
     @Generated
     @JsonProperty(value = "file_citation")
-    private final MessageTextFileCitationDetails fileCitation;
+    private MessageTextFileCitationDetails fileCitation;
 
     /**
      * Creates an instance of MessageTextFileCitationAnnotation class.
@@ -49,7 +45,8 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
     }
 
     /**
-     * Get the fileCitation property: A citation within the message that points to a specific quote from a specific file.
+     * Get the fileCitation property: A citation within the message that points to a specific quote from a specific
+     * file.
      * Generated when the assistant uses the "retrieval" tool to search files.
      *
      * @return the fileCitation value.
@@ -57,24 +54,5 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
     @Generated
     public MessageTextFileCitationDetails getFileCitation() {
         return this.fileCitation;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "file_citation";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

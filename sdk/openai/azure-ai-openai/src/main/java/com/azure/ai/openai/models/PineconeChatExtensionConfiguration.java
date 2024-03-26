@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,11 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A specific representation of configurable options for Pinecone when using it as an Azure OpenAI chat
  * extension.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = PineconeChatExtensionConfiguration.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("pinecone")
 @Immutable
 public final class PineconeChatExtensionConfiguration extends AzureChatExtensionConfiguration {
@@ -29,7 +24,7 @@ public final class PineconeChatExtensionConfiguration extends AzureChatExtension
      */
     @Generated
     @JsonProperty(value = "parameters")
-    private final PineconeChatExtensionParameters parameters;
+    private PineconeChatExtensionParameters parameters;
 
     /**
      * Get the parameters property: The parameters to use when configuring Azure OpenAI chat extensions.
@@ -51,26 +46,5 @@ public final class PineconeChatExtensionConfiguration extends AzureChatExtension
     public PineconeChatExtensionConfiguration(
         @JsonProperty(value = "parameters") PineconeChatExtensionParameters parameters) {
         this.parameters = parameters;
-    }
-
-    /*
-     *   The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
-     *   Azure chat extensions are only compatible with Azure OpenAI.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private AzureChatExtensionType type = AzureChatExtensionType.PINECONE;
-
-    /**
-     * Get the type property:   The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
-     *   Azure chat extensions are only compatible with Azure OpenAI.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public AzureChatExtensionType getType() {
-        return this.type;
     }
 }

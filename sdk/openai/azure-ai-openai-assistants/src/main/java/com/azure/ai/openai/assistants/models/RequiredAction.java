@@ -5,16 +5,18 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * An abstract representation of a required action for an assistant thread run to continue.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = RequiredAction.class, visible = true)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = RequiredAction.class)
 @JsonTypeName("RequiredAction")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "submit_tool_outputs", value = SubmitToolOutputsAction.class) })
 @Immutable
@@ -25,24 +27,5 @@ public class RequiredAction {
      */
     @Generated
     protected RequiredAction() {
-        this.type = "RequiredAction";
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type;
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public String getType() {
-        return this.type;
     }
 }

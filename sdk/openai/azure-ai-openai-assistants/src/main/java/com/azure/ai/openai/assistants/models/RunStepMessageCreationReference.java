@@ -19,7 +19,7 @@ public final class RunStepMessageCreationReference {
      */
     @Generated
     @JsonProperty(value = "message_id")
-    private final String messageId;
+    private String messageId;
 
     /**
      * Creates an instance of RunStepMessageCreationReference class.

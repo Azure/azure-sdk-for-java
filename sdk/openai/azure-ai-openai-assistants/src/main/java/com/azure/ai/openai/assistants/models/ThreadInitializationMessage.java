@@ -17,18 +17,20 @@ import java.util.Map;
 public final class ThreadInitializationMessage {
 
     /*
-     * The role associated with the assistant thread message. Currently, only 'user' is supported when providing initial messages to a new thread.
+     * The role associated with the assistant thread message. Currently, only 'user' is supported when providing
+     * initial messages to a new thread.
      */
     @Generated
     @JsonProperty(value = "role")
-    private final MessageRole role;
+    private MessageRole role;
 
     /*
-     * The textual content of the initial message. Currently, robust input including images and annotated text may only be provided via a separate call to the create message API.
+     * The textual content of the initial message. Currently, robust input including images and annotated text may only
+     * be provided via a separate call to the create message API.
      */
     @Generated
     @JsonProperty(value = "content")
-    private final String content;
+    private String content;
 
     /*
      * A list of file IDs that the assistant should use. Useful for tools like retrieval and code_interpreter that can
@@ -39,7 +41,9 @@ public final class ThreadInitializationMessage {
     private List<String> fileIds;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
@@ -60,7 +64,8 @@ public final class ThreadInitializationMessage {
     }
 
     /**
-     * Get the role property: The role associated with the assistant thread message. Currently, only 'user' is supported when providing initial messages to a new thread.
+     * Get the role property: The role associated with the assistant thread message. Currently, only 'user' is
+     * supported when providing initial messages to a new thread.
      *
      * @return the role value.
      */
@@ -70,7 +75,8 @@ public final class ThreadInitializationMessage {
     }
 
     /**
-     * Get the content property: The textual content of the initial message. Currently, robust input including images and annotated text may only be provided via a separate call to the create message API.
+     * Get the content property: The textual content of the initial message. Currently, robust input including images
+     * and annotated text may only be provided via a separate call to the create message API.
      *
      * @return the content value.
      */
@@ -80,7 +86,8 @@ public final class ThreadInitializationMessage {
     }
 
     /**
-     * Get the fileIds property: A list of file IDs that the assistant should use. Useful for tools like retrieval and code_interpreter that can
+     * Get the fileIds property: A list of file IDs that the assistant should use. Useful for tools like retrieval and
+     * code_interpreter that can
      * access files.
      *
      * @return the fileIds value.
@@ -91,7 +98,8 @@ public final class ThreadInitializationMessage {
     }
 
     /**
-     * Set the fileIds property: A list of file IDs that the assistant should use. Useful for tools like retrieval and code_interpreter that can
+     * Set the fileIds property: A list of file IDs that the assistant should use. Useful for tools like retrieval and
+     * code_interpreter that can
      * access files.
      *
      * @param fileIds the fileIds value to set.
@@ -104,7 +112,9 @@ public final class ThreadInitializationMessage {
     }
 
     /**
-     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */
@@ -114,7 +124,9 @@ public final class ThreadInitializationMessage {
     }
 
     /**
-     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @param metadata the metadata value to set.
      * @return the ThreadInitializationMessage object itself.

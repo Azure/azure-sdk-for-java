@@ -19,14 +19,14 @@ public final class RunStepError {
      */
     @Generated
     @JsonProperty(value = "code")
-    private final RunStepErrorCode code;
+    private RunStepErrorCode code;
 
     /*
      * The human-readable text associated with this error.
      */
     @Generated
     @JsonProperty(value = "message")
-    private final String message;
+    private String message;
 
     /**
      * Creates an instance of RunStepError class.

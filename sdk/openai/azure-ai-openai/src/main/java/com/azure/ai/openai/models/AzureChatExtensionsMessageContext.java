@@ -10,8 +10,8 @@ import java.util.List;
 
 /**
  * A representation of the additional context information available when Azure OpenAI chat extensions are involved
- *   in the generation of a corresponding chat completions response. This context information is only populated when
- *   using an Azure OpenAI request configured to use a matching extension.
+ * in the generation of a corresponding chat completions response. This context information is only populated when
+ * using an Azure OpenAI request configured to use a matching extension.
  */
 @Immutable
 public final class AzureChatExtensionsMessageContext {
@@ -24,10 +24,11 @@ public final class AzureChatExtensionsMessageContext {
     }
 
     /*
-     *   The contextual information associated with the Azure chat extensions used for a chat completions request.
-     *   These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in the
-     *   course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
-     *   extensions.
+     * The contextual information associated with the Azure chat extensions used for a chat completions request.
+     * These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in
+     * the
+     * course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
+     * extensions.
      */
     @Generated
     @JsonProperty(value = "citations")
@@ -41,10 +42,12 @@ public final class AzureChatExtensionsMessageContext {
     private String intent;
 
     /**
-     * Get the citations property:   The contextual information associated with the Azure chat extensions used for a chat completions request.
-     *   These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in the
-     *   course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
-     *   extensions.
+     * Get the citations property: The contextual information associated with the Azure chat extensions used for a
+     * chat completions request.
+     * These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in
+     * the
+     * course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
+     * extensions.
      *
      * @return the citations value.
      */
@@ -54,7 +57,8 @@ public final class AzureChatExtensionsMessageContext {
     }
 
     /**
-     * Get the intent property: The detected intent from the chat history, used to pass to the next turn to carry over the context.
+     * Get the intent property: The detected intent from the chat history, used to pass to the next turn to carry over
+     * the context.
      *
      * @return the intent value.
      */

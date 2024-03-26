@@ -19,7 +19,7 @@ public final class ChatCompletionsFunctionToolSelection {
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String name;
+    private String name;
 
     /**
      * Creates an instance of ChatCompletionsFunctionToolSelection class.

@@ -22,28 +22,28 @@ public final class MessageFile {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /*
      * The object type, which is always 'thread.message.file'.
      */
     @Generated
     @JsonProperty(value = "object")
-    private final String object = "thread.message.file";
+    private String object = "thread.message.file";
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
     @JsonProperty(value = "created_at")
-    private final long createdAt;
+    private long createdAt;
 
     /*
      * The ID of the message that this file is attached to.
      */
     @Generated
     @JsonProperty(value = "message_id")
-    private final String messageId;
+    private String messageId;
 
     /**
      * Creates an instance of MessageFile class.

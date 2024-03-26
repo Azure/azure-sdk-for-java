@@ -24,42 +24,42 @@ public final class ThreadMessage {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /*
      * The object type, which is always 'thread.message'.
      */
     @Generated
     @JsonProperty(value = "object")
-    private final String object = "thread.message";
+    private String object = "thread.message";
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
     @JsonProperty(value = "created_at")
-    private final long createdAt;
+    private long createdAt;
 
     /*
      * The ID of the thread that this message belongs to.
      */
     @Generated
     @JsonProperty(value = "thread_id")
-    private final String threadId;
+    private String threadId;
 
     /*
      * The role associated with the assistant thread message.
      */
     @Generated
     @JsonProperty(value = "role")
-    private final MessageRole role;
+    private MessageRole role;
 
     /*
      * The list of content items associated with the assistant thread message.
      */
     @Generated
     @JsonProperty(value = "content")
-    private final List<MessageContent> content;
+    private List<MessageContent> content;
 
     /*
      * If applicable, the ID of the assistant that authored this message.
@@ -81,14 +81,16 @@ public final class ThreadMessage {
      */
     @Generated
     @JsonProperty(value = "file_ids")
-    private final List<String> fileIds;
+    private List<String> fileIds;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
-    private final Map<String, String> metadata;
+    private Map<String, String> metadata;
 
     /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
@@ -171,7 +173,8 @@ public final class ThreadMessage {
     }
 
     /**
-     * Get the fileIds property: A list of file IDs that the assistant should use. Useful for tools like retrieval and code_interpreter that can
+     * Get the fileIds property: A list of file IDs that the assistant should use. Useful for tools like retrieval and
+     * code_interpreter that can
      * access files.
      *
      * @return the fileIds value.
@@ -182,7 +185,9 @@ public final class ThreadMessage {
     }
 
     /**
-     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */

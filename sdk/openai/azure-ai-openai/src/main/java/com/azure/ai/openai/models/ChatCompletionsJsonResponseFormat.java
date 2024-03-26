@@ -5,19 +5,13 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A response format for Chat Completions that restricts responses to emitting valid JSON objects.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = ChatCompletionsJsonResponseFormat.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("json_object")
 @Immutable
 public final class ChatCompletionsJsonResponseFormat extends ChatCompletionsResponseFormat {
@@ -27,24 +21,5 @@ public final class ChatCompletionsJsonResponseFormat extends ChatCompletionsResp
      */
     @Generated
     public ChatCompletionsJsonResponseFormat() {
-    }
-
-    /*
-     * The discriminated type for the response format.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "json_object";
-
-    /**
-     * Get the type property: The discriminated type for the response format.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

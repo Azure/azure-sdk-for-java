@@ -24,70 +24,72 @@ public final class Assistant {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /*
      * The object type, which is always assistant.
      */
     @Generated
     @JsonProperty(value = "object")
-    private final String object = "assistant";
+    private String object = "assistant";
 
     /*
      * The Unix timestamp, in seconds, representing when this object was created.
      */
     @Generated
     @JsonProperty(value = "created_at")
-    private final long createdAt;
+    private long createdAt;
 
     /*
      * The name of the assistant.
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String name;
+    private String name;
 
     /*
      * The description of the assistant.
      */
     @Generated
     @JsonProperty(value = "description")
-    private final String description;
+    private String description;
 
     /*
      * The ID of the model to use.
      */
     @Generated
     @JsonProperty(value = "model")
-    private final String model;
+    private String model;
 
     /*
      * The system instructions for the assistant to use.
      */
     @Generated
     @JsonProperty(value = "instructions")
-    private final String instructions;
+    private String instructions;
 
     /*
      * The collection of tools enabled for the assistant.
      */
     @Generated
     @JsonProperty(value = "tools")
-    private final List<ToolDefinition> tools;
+    private List<ToolDefinition> tools;
 
     /*
      * A list of attached file IDs, ordered by creation date in ascending order.
      */
     @Generated
     @JsonProperty(value = "file_ids")
-    private final List<String> fileIds;
+    private List<String> fileIds;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
-    private final Map<String, String> metadata;
+    private Map<String, String> metadata;
 
     /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
@@ -180,7 +182,9 @@ public final class Assistant {
     }
 
     /**
-     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */

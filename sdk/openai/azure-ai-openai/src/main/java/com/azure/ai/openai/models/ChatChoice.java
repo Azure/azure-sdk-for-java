@@ -28,14 +28,14 @@ public final class ChatChoice {
      */
     @Generated
     @JsonProperty(value = "index")
-    private final int index;
+    private int index;
 
     /*
      * The reason that this chat completions choice completed its generated.
      */
     @Generated
     @JsonProperty(value = "finish_reason")
-    private final CompletionsFinishReason finishReason;
+    private CompletionsFinishReason finishReason;
 
     /*
      * The delta message content for a streaming response.
@@ -94,7 +94,8 @@ public final class ChatChoice {
     private ContentFilterResultsForChoice contentFilterResults;
 
     /**
-     * Get the contentFilterResults property: Information about the content filtering category (hate, sexual, violence, self_harm), if it
+     * Get the contentFilterResults property: Information about the content filtering category (hate, sexual, violence,
+     * self_harm), if it
      * has been detected, as well as the severity level (very_low, low, medium, high-scale that
      * determines the intensity and risk level of harmful content) and if it has been filtered or not.
      *
@@ -114,8 +115,10 @@ public final class ChatChoice {
     private ChatFinishDetails finishDetails;
 
     /*
-     * Represents the output results of Azure OpenAI enhancements to chat completions, as configured via the matching input
-     * provided in the request. This supplementary information is only available when using Azure OpenAI and only when the
+     * Represents the output results of Azure OpenAI enhancements to chat completions, as configured via the matching
+     * input
+     * provided in the request. This supplementary information is only available when using Azure OpenAI and only when
+     * the
      * request is configured to use enhancements.
      */
     @Generated
@@ -123,7 +126,8 @@ public final class ChatChoice {
     private AzureChatEnhancements enhancements;
 
     /**
-     * Get the finishDetails property: The reason the model stopped generating tokens, together with any applicable details.
+     * Get the finishDetails property: The reason the model stopped generating tokens, together with any applicable
+     * details.
      * This structured representation replaces 'finish_reason' for some models.
      *
      * @return the finishDetails value.
@@ -134,8 +138,10 @@ public final class ChatChoice {
     }
 
     /**
-     * Get the enhancements property: Represents the output results of Azure OpenAI enhancements to chat completions, as configured via the matching input
-     * provided in the request. This supplementary information is only available when using Azure OpenAI and only when the
+     * Get the enhancements property: Represents the output results of Azure OpenAI enhancements to chat completions,
+     * as configured via the matching input
+     * provided in the request. This supplementary information is only available when using Azure OpenAI and only when
+     * the
      * request is configured to use enhancements.
      *
      * @return the enhancements value.
@@ -150,7 +156,7 @@ public final class ChatChoice {
      */
     @Generated
     @JsonProperty(value = "logprobs")
-    private final ChatChoiceLogProbabilityInfo logprobs;
+    private ChatChoiceLogProbabilityInfo logprobs;
 
     /**
      * Creates an instance of ChatChoice class.
@@ -170,7 +176,8 @@ public final class ChatChoice {
     }
 
     /**
-     * Get the logprobs property: The log probability information for this choice, as enabled via the 'logprobs' request option.
+     * Get the logprobs property: The log probability information for this choice, as enabled via the 'logprobs'
+     * request option.
      *
      * @return the logprobs value.
      */

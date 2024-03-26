@@ -20,7 +20,7 @@ public final class FunctionName {
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String name;
+    private String name;
 
     /**
      * Creates an instance of FunctionName class.

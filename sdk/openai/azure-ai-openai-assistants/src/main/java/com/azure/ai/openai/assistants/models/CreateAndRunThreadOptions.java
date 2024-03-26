@@ -21,7 +21,7 @@ public final class CreateAndRunThreadOptions {
      */
     @Generated
     @JsonProperty(value = "assistant_id")
-    private final String assistantId;
+    private String assistantId;
 
     /*
      * The details used to create the new thread.
@@ -52,7 +52,9 @@ public final class CreateAndRunThreadOptions {
     private List<ToolDefinition> tools;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
@@ -168,7 +170,9 @@ public final class CreateAndRunThreadOptions {
     }
 
     /**
-     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */
@@ -178,7 +182,9 @@ public final class CreateAndRunThreadOptions {
     }
 
     /**
-     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @param metadata the metadata value to set.
      * @return the CreateAndRunThreadOptions object itself.

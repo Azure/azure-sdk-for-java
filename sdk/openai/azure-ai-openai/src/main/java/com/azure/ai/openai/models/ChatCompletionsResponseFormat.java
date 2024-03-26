@@ -5,9 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -17,9 +15,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = ChatCompletionsResponseFormat.class,
-    visible = true)
+    defaultImpl = ChatCompletionsResponseFormat.class)
 @JsonTypeName("ChatCompletionsResponseFormat")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "text", value = ChatCompletionsTextResponseFormat.class),
@@ -32,24 +30,5 @@ public class ChatCompletionsResponseFormat {
      */
     @Generated
     public ChatCompletionsResponseFormat() {
-        this.type = "ChatCompletionsResponseFormat";
-    }
-
-    /*
-     * The discriminated type for the response format.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type;
-
-    /**
-     * Get the type property: The discriminated type for the response format.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public String getType() {
-        return this.type;
     }
 }

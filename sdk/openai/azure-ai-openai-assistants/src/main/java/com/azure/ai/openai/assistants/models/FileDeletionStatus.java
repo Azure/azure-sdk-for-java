@@ -19,21 +19,21 @@ public final class FileDeletionStatus {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /*
      * A value indicating whether deletion was successful.
      */
     @Generated
     @JsonProperty(value = "deleted")
-    private final boolean deleted;
+    private boolean deleted;
 
     /*
      * The object type, which is always 'file'.
      */
     @Generated
     @JsonProperty(value = "object")
-    private final String object = "file";
+    private String object = "file";
 
     /**
      * Creates an instance of FileDeletionStatus class.

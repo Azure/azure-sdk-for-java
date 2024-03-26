@@ -19,21 +19,21 @@ public final class AssistantDeletionStatus {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /*
      * A value indicating whether deletion was successful.
      */
     @Generated
     @JsonProperty(value = "deleted")
-    private final boolean deleted;
+    private boolean deleted;
 
     /*
      * The object type, which is always 'assistant.deleted'.
      */
     @Generated
     @JsonProperty(value = "object")
-    private final String object = "assistant.deleted";
+    private String object = "assistant.deleted";
 
     /**
      * Creates an instance of AssistantDeletionStatus class.

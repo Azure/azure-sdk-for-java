@@ -20,14 +20,14 @@ public final class MessageTextDetails {
      */
     @Generated
     @JsonProperty(value = "value")
-    private final String value;
+    private String value;
 
     /*
      * A list of annotations associated with this text.
      */
     @Generated
     @JsonProperty(value = "annotations")
-    private final List<MessageTextAnnotation> annotations;
+    private List<MessageTextAnnotation> annotations;
 
     /**
      * Creates an instance of MessageTextDetails class.

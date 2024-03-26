@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,11 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A record of a call to a code interpreter tool, issued by the model in evaluation of a defined tool, that
  * represents inputs and outputs consumed and emitted by the code interpreter.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = RunStepCodeInterpreterToolCall.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("code_interpreter")
 @Immutable
 public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
@@ -29,7 +24,7 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
      */
     @Generated
     @JsonProperty(value = "code_interpreter")
-    private final RunStepCodeInterpreterToolCallDetails codeInterpreter;
+    private RunStepCodeInterpreterToolCallDetails codeInterpreter;
 
     /**
      * Creates an instance of RunStepCodeInterpreterToolCall class.
@@ -53,24 +48,5 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
     @Generated
     public RunStepCodeInterpreterToolCallDetails getCodeInterpreter() {
         return this.codeInterpreter;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "code_interpreter";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

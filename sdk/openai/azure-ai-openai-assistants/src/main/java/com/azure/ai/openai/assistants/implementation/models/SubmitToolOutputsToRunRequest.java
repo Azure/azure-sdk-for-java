@@ -21,7 +21,7 @@ public final class SubmitToolOutputsToRunRequest {
      */
     @Generated
     @JsonProperty(value = "tool_outputs")
-    private final List<ToolOutput> toolOutputs;
+    private List<ToolOutput> toolOutputs;
 
     /**
      * Creates an instance of SubmitToolOutputsToRunRequest class.

@@ -8,7 +8,8 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents the output results of Azure enhancements to chat completions, as configured via the matching input provided
+ * Represents the output results of Azure enhancements to chat completions, as configured via the matching input
+ * provided
  * in the request.
  */
 @Immutable
@@ -29,7 +30,8 @@ public final class AzureChatEnhancements {
     }
 
     /**
-     * Get the grounding property: The grounding enhancement that returns the bounding box of the objects detected in the image.
+     * Get the grounding property: The grounding enhancement that returns the bounding box of the objects detected in
+     * the image.
      *
      * @return the grounding value.
      */

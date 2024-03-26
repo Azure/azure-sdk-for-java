@@ -22,24 +22,27 @@ public final class CreateMessageRequest {
      */
     @Generated
     @JsonProperty(value = "role")
-    private final MessageRole role;
+    private MessageRole role;
 
     /*
      * The textual content for the new message.
      */
     @Generated
     @JsonProperty(value = "content")
-    private final String content;
+    private String content;
 
     /*
-     * A list of up to 10 file IDs to associate with the message, as used by tools like 'code_interpreter' or 'retrieval' that can read files.
+     * A list of up to 10 file IDs to associate with the message, as used by tools like 'code_interpreter' or
+     * 'retrieval' that can read files.
      */
     @Generated
     @JsonProperty(value = "file_ids")
     private List<String> fileIds;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
@@ -80,7 +83,8 @@ public final class CreateMessageRequest {
     }
 
     /**
-     * Get the fileIds property: A list of up to 10 file IDs to associate with the message, as used by tools like 'code_interpreter' or 'retrieval' that can read files.
+     * Get the fileIds property: A list of up to 10 file IDs to associate with the message, as used by tools like
+     * 'code_interpreter' or 'retrieval' that can read files.
      *
      * @return the fileIds value.
      */
@@ -90,7 +94,8 @@ public final class CreateMessageRequest {
     }
 
     /**
-     * Set the fileIds property: A list of up to 10 file IDs to associate with the message, as used by tools like 'code_interpreter' or 'retrieval' that can read files.
+     * Set the fileIds property: A list of up to 10 file IDs to associate with the message, as used by tools like
+     * 'code_interpreter' or 'retrieval' that can read files.
      *
      * @param fileIds the fileIds value to set.
      * @return the CreateMessageRequest object itself.
@@ -102,7 +107,9 @@ public final class CreateMessageRequest {
     }
 
     /**
-     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */
@@ -112,7 +119,9 @@ public final class CreateMessageRequest {
     }
 
     /**
-     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @param metadata the metadata value to set.
      * @return the CreateMessageRequest object itself.

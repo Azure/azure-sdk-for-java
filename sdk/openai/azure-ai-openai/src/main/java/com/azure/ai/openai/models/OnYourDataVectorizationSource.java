@@ -5,9 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -16,9 +14,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = OnYourDataVectorizationSource.class,
-    visible = true)
+    defaultImpl = OnYourDataVectorizationSource.class)
 @JsonTypeName("OnYourDataVectorizationSource")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "endpoint", value = OnYourDataEndpointVectorizationSource.class),
@@ -32,24 +30,5 @@ public class OnYourDataVectorizationSource {
      */
     @Generated
     public OnYourDataVectorizationSource() {
-        this.type = OnYourDataVectorizationSourceType.fromString("OnYourDataVectorizationSource");
-    }
-
-    /*
-     * The type of vectorization source to use.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private OnYourDataVectorizationSourceType type;
-
-    /**
-     * Get the type property: The type of vectorization source to use.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public OnYourDataVectorizationSourceType getType() {
-        return this.type;
     }
 }

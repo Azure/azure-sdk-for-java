@@ -21,21 +21,21 @@ public final class CompletionsUsage {
      */
     @Generated
     @JsonProperty(value = "completion_tokens")
-    private final int completionTokens;
+    private int completionTokens;
 
     /*
      * The number of tokens in the provided prompts for the completions request.
      */
     @Generated
     @JsonProperty(value = "prompt_tokens")
-    private final int promptTokens;
+    private int promptTokens;
 
     /*
      * The total number of tokens processed for the completions request and response.
      */
     @Generated
     @JsonProperty(value = "total_tokens")
-    private final int totalTokens;
+    private int totalTokens;
 
     /**
      * Creates an instance of CompletionsUsage class.

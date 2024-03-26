@@ -19,7 +19,7 @@ public final class AzureChatGroundingEnhancementConfiguration {
      */
     @Generated
     @JsonProperty(value = "enabled")
-    private final boolean enabled;
+    private boolean enabled;
 
     /**
      * Creates an instance of AzureChatGroundingEnhancementConfiguration class.

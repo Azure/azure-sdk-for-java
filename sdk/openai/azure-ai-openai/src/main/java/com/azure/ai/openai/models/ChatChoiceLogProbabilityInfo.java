@@ -16,11 +16,12 @@ import java.util.List;
 public final class ChatChoiceLogProbabilityInfo {
 
     /*
-     * The list of log probability information entries for the choice's message content tokens, as requested via the 'logprobs' option.
+     * The list of log probability information entries for the choice's message content tokens, as requested via the
+     * 'logprobs' option.
      */
     @Generated
     @JsonProperty(value = "content")
-    private final List<ChatTokenLogProbabilityResult> content;
+    private List<ChatTokenLogProbabilityResult> content;
 
     /**
      * Creates an instance of ChatChoiceLogProbabilityInfo class.
@@ -34,7 +35,8 @@ public final class ChatChoiceLogProbabilityInfo {
     }
 
     /**
-     * Get the content property: The list of log probability information entries for the choice's message content tokens, as requested via the 'logprobs' option.
+     * Get the content property: The list of log probability information entries for the choice's message content
+     * tokens, as requested via the 'logprobs' option.
      *
      * @return the content value.
      */

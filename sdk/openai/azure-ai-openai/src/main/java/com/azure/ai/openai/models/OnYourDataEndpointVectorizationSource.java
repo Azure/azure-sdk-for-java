@@ -7,36 +7,34 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is based
+ * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is
+ * based
  * on a public Azure OpenAI endpoint call for embeddings.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = OnYourDataEndpointVectorizationSource.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("endpoint")
 @Immutable
 public final class OnYourDataEndpointVectorizationSource extends OnYourDataVectorizationSource {
 
     /*
-     * Specifies the resource endpoint URL from which embeddings should be retrieved. It should be in the format of https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings. The api-version query parameter is not allowed.
+     * Specifies the resource endpoint URL from which embeddings should be retrieved. It should be in the format of
+     * https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings. The api-version
+     * query parameter is not allowed.
      */
     @Generated
     @JsonProperty(value = "endpoint")
-    private final String endpoint;
+    private String endpoint;
 
     /*
      * Specifies the authentication options to use when retrieving embeddings from the specified endpoint.
      */
     @Generated
     @JsonProperty(value = "authentication")
-    private final OnYourDataAuthenticationOptions authentication;
+    private OnYourDataAuthenticationOptions authentication;
 
     /**
      * Creates an instance of OnYourDataEndpointVectorizationSource class.
@@ -53,7 +51,10 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
     }
 
     /**
-     * Get the endpoint property: Specifies the resource endpoint URL from which embeddings should be retrieved. It should be in the format of https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings. The api-version query parameter is not allowed.
+     * Get the endpoint property: Specifies the resource endpoint URL from which embeddings should be retrieved. It
+     * should be in the format of
+     * https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings. The api-version
+     * query parameter is not allowed.
      *
      * @return the endpoint value.
      */
@@ -63,31 +64,13 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
     }
 
     /**
-     * Get the authentication property: Specifies the authentication options to use when retrieving embeddings from the specified endpoint.
+     * Get the authentication property: Specifies the authentication options to use when retrieving embeddings from the
+     * specified endpoint.
      *
      * @return the authentication value.
      */
     @Generated
     public OnYourDataAuthenticationOptions getAuthentication() {
         return this.authentication;
-    }
-
-    /*
-     * The type of vectorization source to use.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.ENDPOINT;
-
-    /**
-     * Get the type property: The type of vectorization source to use.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataVectorizationSourceType getType() {
-        return this.type;
     }
 }

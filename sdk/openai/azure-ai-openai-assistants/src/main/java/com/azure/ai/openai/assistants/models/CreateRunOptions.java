@@ -21,7 +21,7 @@ public final class CreateRunOptions {
      */
     @Generated
     @JsonProperty(value = "assistant_id")
-    private final String assistantId;
+    private String assistantId;
 
     /*
      * The overridden model name that the assistant should use to run the thread.
@@ -38,7 +38,8 @@ public final class CreateRunOptions {
     private String instructions;
 
     /*
-     * Additional instructions to append at the end of the instructions for the run. This is useful for modifying the behavior
+     * Additional instructions to append at the end of the instructions for the run. This is useful for modifying the
+     * behavior
      * on a per-run basis without overriding other instructions.
      */
     @Generated
@@ -53,7 +54,9 @@ public final class CreateRunOptions {
     private List<ToolDefinition> tools;
 
     /*
-     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information
+     * about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512
+     * characters in length.
      */
     @Generated
     @JsonProperty(value = "metadata")
@@ -92,7 +95,8 @@ public final class CreateRunOptions {
     }
 
     /**
-     * Get the instructions property: The overridden system instructions that the assistant should use to run the thread.
+     * Get the instructions property: The overridden system instructions that the assistant should use to run the
+     * thread.
      *
      * @return the instructions value.
      */
@@ -102,7 +106,8 @@ public final class CreateRunOptions {
     }
 
     /**
-     * Set the instructions property: The overridden system instructions that the assistant should use to run the thread.
+     * Set the instructions property: The overridden system instructions that the assistant should use to run the
+     * thread.
      *
      * @param instructions the instructions value to set.
      * @return the CreateRunOptions object itself.
@@ -114,7 +119,8 @@ public final class CreateRunOptions {
     }
 
     /**
-     * Get the additionalInstructions property: Additional instructions to append at the end of the instructions for the run. This is useful for modifying the behavior
+     * Get the additionalInstructions property: Additional instructions to append at the end of the instructions for
+     * the run. This is useful for modifying the behavior
      * on a per-run basis without overriding other instructions.
      *
      * @return the additionalInstructions value.
@@ -147,7 +153,9 @@ public final class CreateRunOptions {
     }
 
     /**
-     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Get the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @return the metadata value.
      */
@@ -157,7 +165,9 @@ public final class CreateRunOptions {
     }
 
     /**
-     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing additional information about that object in a structured format. Keys may be up to 64 characters in length and values may be up to 512 characters in length.
+     * Set the metadata property: A set of up to 16 key/value pairs that can be attached to an object, used for storing
+     * additional information about that object in a structured format. Keys may be up to 64 characters in length and
+     * values may be up to 512 characters in length.
      *
      * @param metadata the metadata value to set.
      * @return the CreateRunOptions object itself.
@@ -180,7 +190,8 @@ public final class CreateRunOptions {
     }
 
     /**
-     * Set the additionalInstructions property: Additional instructions to append at the end of the instructions for the run. This is useful for modifying the behavior
+     * Set the additionalInstructions property: Additional instructions to append at the end of the instructions for
+     * the run. This is useful for modifying the behavior
      * on a per-run basis without overriding other instructions.
      *
      * @param additionalInstructions the additionalInstructions value to set.

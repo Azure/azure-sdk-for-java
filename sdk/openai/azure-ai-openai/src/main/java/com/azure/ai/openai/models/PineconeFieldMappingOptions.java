@@ -41,7 +41,7 @@ public final class PineconeFieldMappingOptions {
      */
     @Generated
     @JsonProperty(value = "content_fields")
-    private final List<String> contentFields;
+    private List<String> contentFields;
 
     /*
      * The separator pattern that content fields should use.

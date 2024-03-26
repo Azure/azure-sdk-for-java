@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A request chat message representing requested output from a configured function.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "role",
-    defaultImpl = ChatRequestFunctionMessage.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role")
 @JsonTypeName("function")
 @Immutable
 public final class ChatRequestFunctionMessage extends ChatRequestMessage {
@@ -28,14 +23,14 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String name;
+    private String name;
 
     /*
      * The output of the function as requested by the function call.
      */
     @Generated
     @JsonProperty(value = "content")
-    private final String content;
+    private String content;
 
     /**
      * Creates an instance of ChatRequestFunctionMessage class.
@@ -69,24 +64,5 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
     @Generated
     public String getContent() {
         return this.content;
-    }
-
-    /*
-     * The chat role associated with this message.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "role")
-    private ChatRole role = ChatRole.FUNCTION;
-
-    /**
-     * Get the role property: The chat role associated with this message.
-     *
-     * @return the role value.
-     */
-    @Generated
-    @Override
-    public ChatRole getRole() {
-        return this.role;
     }
 }

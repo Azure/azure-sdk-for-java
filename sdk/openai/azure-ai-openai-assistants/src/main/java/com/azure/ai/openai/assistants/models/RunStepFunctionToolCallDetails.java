@@ -19,21 +19,22 @@ public final class RunStepFunctionToolCallDetails {
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String name;
+    private String name;
 
     /*
      * The arguments that the model requires are provided to the named function.
      */
     @Generated
     @JsonProperty(value = "arguments")
-    private final String arguments;
+    private String arguments;
 
     /*
-     * The output of the function, only populated for function calls that have already have had their outputs submitted.
+     * The output of the function, only populated for function calls that have already have had their outputs
+     * submitted.
      */
     @Generated
     @JsonProperty(value = "output")
-    private final String output;
+    private String output;
 
     /**
      * Creates an instance of RunStepFunctionToolCallDetails class.
@@ -72,7 +73,8 @@ public final class RunStepFunctionToolCallDetails {
     }
 
     /**
-     * Get the output property: The output of the function, only populated for function calls that have already have had their outputs submitted.
+     * Get the output property: The output of the function, only populated for function calls that have already have
+     * had their outputs submitted.
      *
      * @return the output value.
      */

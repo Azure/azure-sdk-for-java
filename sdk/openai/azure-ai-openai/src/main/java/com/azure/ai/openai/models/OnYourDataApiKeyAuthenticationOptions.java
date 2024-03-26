@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The authentication options for Azure OpenAI On Your Data when using an API key.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = OnYourDataApiKeyAuthenticationOptions.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("api_key")
 @Immutable
 public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthenticationOptions {
@@ -28,7 +23,7 @@ public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthe
      */
     @Generated
     @JsonProperty(value = "key")
-    private final String key;
+    private String key;
 
     /**
      * Creates an instance of OnYourDataApiKeyAuthenticationOptions class.
@@ -49,24 +44,5 @@ public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthe
     @Generated
     public String getKey() {
         return this.key;
-    }
-
-    /*
-     * The authentication type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.API_KEY;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
     }
 }

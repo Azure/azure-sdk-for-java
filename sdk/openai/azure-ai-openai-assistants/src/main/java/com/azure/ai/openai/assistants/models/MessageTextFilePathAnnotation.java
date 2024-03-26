@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A citation within the message that points to a file located at a specific path.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = MessageTextFilePathAnnotation.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("file_path")
 @Immutable
 public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
@@ -28,7 +23,7 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
      */
     @Generated
     @JsonProperty(value = "file_path")
-    private final MessageTextFilePathDetails filePath;
+    private MessageTextFilePathDetails filePath;
 
     /**
      * Creates an instance of MessageTextFilePathAnnotation class.
@@ -48,31 +43,13 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
     }
 
     /**
-     * Get the filePath property: A URL for the file that's generated when the assistant used the code_interpreter tool to generate a file.
+     * Get the filePath property: A URL for the file that's generated when the assistant used the code_interpreter tool
+     * to generate a file.
      *
      * @return the filePath value.
      */
     @Generated
     public MessageTextFilePathDetails getFilePath() {
         return this.filePath;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "file_path";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

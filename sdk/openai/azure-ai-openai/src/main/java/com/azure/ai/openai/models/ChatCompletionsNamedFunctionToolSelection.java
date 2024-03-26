@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A tool selection of a specific, named function tool that will limit chat completions to using the named function.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = ChatCompletionsNamedFunctionToolSelection.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("function")
 @Immutable
 public final class ChatCompletionsNamedFunctionToolSelection extends ChatCompletionsNamedToolSelection {
@@ -28,7 +23,7 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
      */
     @Generated
     @JsonProperty(value = "function")
-    private final ChatCompletionsFunctionToolSelection function;
+    private ChatCompletionsFunctionToolSelection function;
 
     /**
      * Creates an instance of ChatCompletionsNamedFunctionToolSelection class.
@@ -50,24 +45,5 @@ public final class ChatCompletionsNamedFunctionToolSelection extends ChatComplet
     @Generated
     public ChatCompletionsFunctionToolSelection getFunction() {
         return this.function;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "function";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A representation of an image output emitted by a code interpreter tool in response to a tool call by the model.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = RunStepCodeInterpreterImageOutput.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("image")
 @Immutable
 public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpreterToolCallOutput {
@@ -28,7 +23,7 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
      */
     @Generated
     @JsonProperty(value = "image")
-    private final RunStepCodeInterpreterImageReference image;
+    private RunStepCodeInterpreterImageReference image;
 
     /**
      * Creates an instance of RunStepCodeInterpreterImageOutput class.
@@ -50,24 +45,5 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
     @Generated
     public RunStepCodeInterpreterImageReference getImage() {
         return this.image;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "image";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

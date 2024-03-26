@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.Map;
@@ -16,11 +15,7 @@ import java.util.Map;
  * A record of a call to a retrieval tool, issued by the model in evaluation of a defined tool, that represents
  * executed retrieval actions.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = RunStepRetrievalToolCall.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("retrieval")
 @Immutable
 public final class RunStepRetrievalToolCall extends RunStepToolCall {
@@ -30,7 +25,7 @@ public final class RunStepRetrievalToolCall extends RunStepToolCall {
      */
     @Generated
     @JsonProperty(value = "retrieval")
-    private final Map<String, String> retrieval;
+    private Map<String, String> retrieval;
 
     /**
      * Creates an instance of RunStepRetrievalToolCall class.
@@ -54,24 +49,5 @@ public final class RunStepRetrievalToolCall extends RunStepToolCall {
     @Generated
     public Map<String, String> getRetrieval() {
         return this.retrieval;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "retrieval";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

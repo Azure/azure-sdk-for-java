@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A representation of a requested call to a function tool, needed by the model to continue evaluation of a run.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = RequiredFunctionToolCall.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("function")
 @Immutable
 public final class RequiredFunctionToolCall extends RequiredToolCall {
@@ -28,10 +23,11 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
      */
     @Generated
     @JsonProperty(value = "function")
-    private final RequiredFunctionToolCallDetails function;
+    private RequiredFunctionToolCallDetails function;
 
     /**
-     * Get the function property: Detailed information about the function to be executed by the tool that includes name and arguments.
+     * Get the function property: Detailed information about the function to be executed by the tool that includes name
+     * and arguments.
      *
      * @return the function value.
      */
@@ -52,24 +48,5 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
         @JsonProperty(value = "function") RequiredFunctionToolCallDetails function) {
         super(id);
         this.function = function;
-    }
-
-    /*
-     * The object type for the required tool call.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "function";
-
-    /**
-     * Get the type property: The object type for the required tool call.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

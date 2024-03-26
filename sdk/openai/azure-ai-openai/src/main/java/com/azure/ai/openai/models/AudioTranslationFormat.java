@@ -39,7 +39,8 @@ public final class AudioTranslationFormat extends ExpandableStringEnum<AudioTran
     public static final AudioTranslationFormat SRT = fromString("srt");
 
     /**
-     * Use a response body that is plain text in Web Video Text Tracks (VTT) format that also includes timing information.
+     * Use a response body that is plain text in Web Video Text Tracks (VTT) format that also includes timing
+     * information.
      */
     @Generated
     public static final AudioTranslationFormat VTT = fromString("vtt");

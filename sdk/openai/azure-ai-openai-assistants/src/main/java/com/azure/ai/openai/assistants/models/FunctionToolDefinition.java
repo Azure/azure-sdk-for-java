@@ -7,14 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The input definition information for a function tool as used to configure an assistant.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = FunctionToolDefinition.class, visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("function")
 @Immutable
 public final class FunctionToolDefinition extends ToolDefinition {
@@ -24,7 +23,7 @@ public final class FunctionToolDefinition extends ToolDefinition {
      */
     @Generated
     @JsonProperty(value = "function")
-    private final FunctionDefinition function;
+    private FunctionDefinition function;
 
     /**
      * Creates an instance of FunctionToolDefinition class.
@@ -45,24 +44,5 @@ public final class FunctionToolDefinition extends ToolDefinition {
     @Generated
     public FunctionDefinition getFunction() {
         return this.function;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "function";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

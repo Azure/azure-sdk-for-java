@@ -5,9 +5,9 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.azure.core.util.BinaryData;
 
 /**
  * The definition of a caller-specified function that chat completions may invoke in response to matching user input.
@@ -20,7 +20,7 @@ public final class FunctionDefinition {
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String name;
+    private String name;
 
     /*
      * A description of what the function does. The model will use this description when selecting the function and
@@ -58,7 +58,8 @@ public final class FunctionDefinition {
     }
 
     /**
-     * Get the description property: A description of what the function does. The model will use this description when selecting the function and
+     * Get the description property: A description of what the function does. The model will use this description when
+     * selecting the function and
      * interpreting its parameters.
      *
      * @return the description value.
@@ -69,7 +70,8 @@ public final class FunctionDefinition {
     }
 
     /**
-     * Set the description property: A description of what the function does. The model will use this description when selecting the function and
+     * Set the description property: A description of what the function does. The model will use this description when
+     * selecting the function and
      * interpreting its parameters.
      *
      * @param description the description value to set.

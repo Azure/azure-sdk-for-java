@@ -5,16 +5,18 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * An abstract representation of the details for a run step.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = RunStepDetails.class, visible = true)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = RunStepDetails.class)
 @JsonTypeName("RunStepDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "message_creation", value = RunStepMessageCreationDetails.class),
@@ -27,24 +29,5 @@ public class RunStepDetails {
      */
     @Generated
     protected RunStepDetails() {
-        this.type = RunStepType.fromString("RunStepDetails");
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private RunStepType type;
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public RunStepType getType() {
-        return this.type;
     }
 }

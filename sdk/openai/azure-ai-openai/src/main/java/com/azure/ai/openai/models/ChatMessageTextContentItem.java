@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A structured chat content item containing plain text.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = ChatMessageTextContentItem.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("text")
 @Immutable
 public final class ChatMessageTextContentItem extends ChatMessageContentItem {
@@ -28,7 +23,7 @@ public final class ChatMessageTextContentItem extends ChatMessageContentItem {
      */
     @Generated
     @JsonProperty(value = "text")
-    private final String text;
+    private String text;
 
     /**
      * Creates an instance of ChatMessageTextContentItem class.
@@ -49,24 +44,5 @@ public final class ChatMessageTextContentItem extends ChatMessageContentItem {
     @Generated
     public String getText() {
         return this.text;
-    }
-
-    /*
-     * The discriminated object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "text";
-
-    /**
-     * Get the type property: The discriminated object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

@@ -7,19 +7,15 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A record of a call to a function tool, issued by the model in evaluation of a defined tool, that represents the inputs
+ * A record of a call to a function tool, issued by the model in evaluation of a defined tool, that represents the
+ * inputs
  * and output consumed and emitted by the specified function.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = RunStepFunctionToolCall.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("function")
 @Immutable
 public final class RunStepFunctionToolCall extends RunStepToolCall {
@@ -29,7 +25,7 @@ public final class RunStepFunctionToolCall extends RunStepToolCall {
      */
     @Generated
     @JsonProperty(value = "function")
-    private final RunStepFunctionToolCallDetails function;
+    private RunStepFunctionToolCallDetails function;
 
     /**
      * Creates an instance of RunStepFunctionToolCall class.
@@ -53,24 +49,5 @@ public final class RunStepFunctionToolCall extends RunStepToolCall {
     @Generated
     public RunStepFunctionToolCallDetails getFunction() {
         return this.function;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "function";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

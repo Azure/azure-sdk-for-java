@@ -19,14 +19,14 @@ public final class SpeechGenerationOptions {
      */
     @Generated
     @JsonProperty(value = "input")
-    private final String input;
+    private String input;
 
     /*
      * The voice to use for text-to-speech.
      */
     @Generated
     @JsonProperty(value = "voice")
-    private final SpeechVoice voice;
+    private SpeechVoice voice;
 
     /*
      * The audio output format for the spoken text. By default, the MP3 format will be used.
@@ -36,7 +36,8 @@ public final class SpeechGenerationOptions {
     private SpeechGenerationResponseFormat responseFormat;
 
     /*
-     * The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0, with 1.0 the default and higher values corresponding to faster speech.
+     * The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0, with 1.0 the default
+     * and higher values corresponding to faster speech.
      */
     @Generated
     @JsonProperty(value = "speed")
@@ -77,7 +78,8 @@ public final class SpeechGenerationOptions {
     }
 
     /**
-     * Get the responseFormat property: The audio output format for the spoken text. By default, the MP3 format will be used.
+     * Get the responseFormat property: The audio output format for the spoken text. By default, the MP3 format will be
+     * used.
      *
      * @return the responseFormat value.
      */
@@ -87,7 +89,8 @@ public final class SpeechGenerationOptions {
     }
 
     /**
-     * Set the responseFormat property: The audio output format for the spoken text. By default, the MP3 format will be used.
+     * Set the responseFormat property: The audio output format for the spoken text. By default, the MP3 format will be
+     * used.
      *
      * @param responseFormat the responseFormat value to set.
      * @return the SpeechGenerationOptions object itself.
@@ -99,7 +102,8 @@ public final class SpeechGenerationOptions {
     }
 
     /**
-     * Get the speed property: The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0, with 1.0 the default and higher values corresponding to faster speech.
+     * Get the speed property: The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0,
+     * with 1.0 the default and higher values corresponding to faster speech.
      *
      * @return the speed value.
      */
@@ -109,7 +113,8 @@ public final class SpeechGenerationOptions {
     }
 
     /**
-     * Set the speed property: The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0, with 1.0 the default and higher values corresponding to faster speech.
+     * Set the speed property: The speed of speech for generated audio. Values are valid in the range from 0.25 to 4.0,
+     * with 1.0 the default and higher values corresponding to faster speech.
      *
      * @param speed the speed value to set.
      * @return the SpeechGenerationOptions object itself.

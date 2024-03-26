@@ -21,35 +21,35 @@ public final class OpenAIPageableListOfThreadRun {
      */
     @Generated
     @JsonProperty(value = "object")
-    private final String object = "list";
+    private String object = "list";
 
     /*
      * The requested list of items.
      */
     @Generated
     @JsonProperty(value = "data")
-    private final List<ThreadRun> data;
+    private List<ThreadRun> data;
 
     /*
      * The first ID represented in this list.
      */
     @Generated
     @JsonProperty(value = "first_id")
-    private final String firstId;
+    private String firstId;
 
     /*
      * The last ID represented in this list.
      */
     @Generated
     @JsonProperty(value = "last_id")
-    private final String lastId;
+    private String lastId;
 
     /*
      * A value indicating whether there are additional values available not captured in this list.
      */
     @Generated
     @JsonProperty(value = "has_more")
-    private final boolean hasMore;
+    private boolean hasMore;
 
     /**
      * Creates an instance of OpenAIPageableListOfThreadRun class.
@@ -111,7 +111,8 @@ public final class OpenAIPageableListOfThreadRun {
     }
 
     /**
-     * Get the hasMore property: A value indicating whether there are additional values available not captured in this list.
+     * Get the hasMore property: A value indicating whether there are additional values available not captured in this
+     * list.
      *
      * @return the hasMore value.
      */

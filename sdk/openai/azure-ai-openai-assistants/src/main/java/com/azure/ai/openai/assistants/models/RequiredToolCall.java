@@ -8,14 +8,17 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * An abstract representation a a tool invocation needed by the model to continue a run.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = RequiredToolCall.class, visible = true)
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "type",
+    defaultImpl = RequiredToolCall.class)
 @JsonTypeName("RequiredToolCall")
 @JsonSubTypes({ @JsonSubTypes.Type(name = "function", value = RequiredFunctionToolCall.class) })
 @Immutable
@@ -26,7 +29,7 @@ public class RequiredToolCall {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     /**
      * Creates an instance of RequiredToolCall class.
@@ -36,7 +39,6 @@ public class RequiredToolCall {
     @Generated
     @JsonCreator
     protected RequiredToolCall(@JsonProperty(value = "id") String id) {
-        this.type = "RequiredToolCall";
         this.id = id;
     }
 
@@ -48,23 +50,5 @@ public class RequiredToolCall {
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /*
-     * The object type for the required tool call.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type;
-
-    /**
-     * Get the type property: The object type for the required tool call.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public String getType() {
-        return this.type;
     }
 }

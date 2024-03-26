@@ -7,14 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A representation of a textual item of thread message content.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = MessageTextContent.class, visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("text")
 @Immutable
 public final class MessageTextContent extends MessageContent {
@@ -24,7 +23,7 @@ public final class MessageTextContent extends MessageContent {
      */
     @Generated
     @JsonProperty(value = "text")
-    private final MessageTextDetails text;
+    private MessageTextDetails text;
 
     /**
      * Creates an instance of MessageTextContent class.
@@ -45,24 +44,5 @@ public final class MessageTextContent extends MessageContent {
     @Generated
     public MessageTextDetails getText() {
         return this.text;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "text";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

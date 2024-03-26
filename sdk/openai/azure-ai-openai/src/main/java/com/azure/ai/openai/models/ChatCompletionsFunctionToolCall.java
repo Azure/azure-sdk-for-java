@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,11 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * A tool call to a function tool, issued by the model in evaluation of a configured function tool, that represents
  * a function invocation needed for a subsequent chat completions request to resolve.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = ChatCompletionsFunctionToolCall.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("function")
 @Immutable
 public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCall {
@@ -29,7 +24,7 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
      */
     @Generated
     @JsonProperty(value = "function")
-    private final FunctionCall function;
+    private FunctionCall function;
 
     /**
      * Creates an instance of ChatCompletionsFunctionToolCall class.
@@ -52,24 +47,5 @@ public final class ChatCompletionsFunctionToolCall extends ChatCompletionsToolCa
     @Generated
     public FunctionCall getFunction() {
         return this.function;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "function";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

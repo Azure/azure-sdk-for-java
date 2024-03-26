@@ -8,7 +8,8 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A representation of a single generated image, provided as either base64-encoded data or as a URL from which the image
+ * A representation of a single generated image, provided as either base64-encoded data or as a URL from which the
+ * image
  * may be retrieved.
  */
 @Immutable
@@ -104,7 +105,8 @@ public final class ImageGenerationData {
     }
 
     /**
-     * Get the promptFilterResults property: Information about the content filtering category (hate, sexual, violence, self_harm), if
+     * Get the promptFilterResults property: Information about the content filtering category (hate, sexual, violence,
+     * self_harm), if
      * it has been detected, as well as the severity level (very_low, low, medium, high-scale
      * that determines the intensity and risk level of harmful content) and if it has been
      * filtered or not. Information about jailbreak content and profanity, if it has been detected,

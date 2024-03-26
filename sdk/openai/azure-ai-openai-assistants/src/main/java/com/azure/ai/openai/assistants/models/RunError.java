@@ -19,14 +19,14 @@ public final class RunError {
      */
     @Generated
     @JsonProperty(value = "code")
-    private final String code;
+    private String code;
 
     /*
      * The human-readable text associated with the error.
      */
     @Generated
     @JsonProperty(value = "message")
-    private final String message;
+    private String message;
 
     /**
      * Creates an instance of RunError class.

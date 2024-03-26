@@ -19,14 +19,14 @@ public final class ContentFilterResultsForPrompt {
      */
     @Generated
     @JsonProperty(value = "prompt_index")
-    private final int promptIndex;
+    private int promptIndex;
 
     /*
      * Content filtering results for this prompt
      */
     @Generated
     @JsonProperty(value = "content_filter_results")
-    private final ContentFilterResultDetailsForPrompt contentFilterResults;
+    private ContentFilterResultDetailsForPrompt contentFilterResults;
 
     /**
      * Get the promptIndex property: The index of this prompt in the set of prompt results.

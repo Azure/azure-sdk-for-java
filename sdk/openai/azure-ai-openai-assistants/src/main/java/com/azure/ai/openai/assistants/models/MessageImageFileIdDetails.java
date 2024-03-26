@@ -9,31 +9,31 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * An image reference emitted by a code interpreter tool in response to a tool call by the model.
+ * An encapsulation of an image file ID, as used by message image content.
  */
 @Immutable
-public final class RunStepCodeInterpreterImageReference {
+public final class MessageImageFileIdDetails {
 
     /*
-     * The ID of the file associated with this image.
+     * The ID of the specific image file.
      */
     @Generated
     @JsonProperty(value = "file_id")
     private String fileId;
 
     /**
-     * Creates an instance of RunStepCodeInterpreterImageReference class.
+     * Creates an instance of MessageImageFileIdDetails class.
      *
      * @param fileId the fileId value to set.
      */
     @Generated
     @JsonCreator
-    private RunStepCodeInterpreterImageReference(@JsonProperty(value = "file_id") String fileId) {
+    private MessageImageFileIdDetails(@JsonProperty(value = "file_id") String fileId) {
         this.fileId = fileId;
     }
 
     /**
-     * Get the fileId property: The ID of the file associated with this image.
+     * Get the fileId property: The ID of the specific image file.
      *
      * @return the fileId value.
      */

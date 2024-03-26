@@ -35,7 +35,8 @@ public final class AzureChatEnhancementConfiguration {
     }
 
     /**
-     * Get the grounding property: A representation of the available options for the Azure OpenAI grounding enhancement.
+     * Get the grounding property: A representation of the available options for the Azure OpenAI grounding
+     * enhancement.
      *
      * @return the grounding value.
      */
@@ -45,7 +46,8 @@ public final class AzureChatEnhancementConfiguration {
     }
 
     /**
-     * Set the grounding property: A representation of the available options for the Azure OpenAI grounding enhancement.
+     * Set the grounding property: A representation of the available options for the Azure OpenAI grounding
+     * enhancement.
      *
      * @param grounding the grounding value to set.
      * @return the AzureChatEnhancementConfiguration object itself.
@@ -57,7 +59,8 @@ public final class AzureChatEnhancementConfiguration {
     }
 
     /**
-     * Get the ocr property: A representation of the available options for the Azure OpenAI optical character recognition (OCR) enhancement.
+     * Get the ocr property: A representation of the available options for the Azure OpenAI optical character
+     * recognition (OCR) enhancement.
      *
      * @return the ocr value.
      */
@@ -67,7 +70,8 @@ public final class AzureChatEnhancementConfiguration {
     }
 
     /**
-     * Set the ocr property: A representation of the available options for the Azure OpenAI optical character recognition (OCR) enhancement.
+     * Set the ocr property: A representation of the available options for the Azure OpenAI optical character
+     * recognition (OCR) enhancement.
      *
      * @param ocr the ocr value to set.
      * @return the AzureChatEnhancementConfiguration object itself.

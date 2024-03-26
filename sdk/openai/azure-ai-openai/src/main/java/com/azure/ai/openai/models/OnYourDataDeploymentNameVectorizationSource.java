@@ -7,29 +7,26 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is based
+ * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is
+ * based
  * on an internal embeddings model deployment name in the same Azure OpenAI resource.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = OnYourDataDeploymentNameVectorizationSource.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("deployment_name")
 @Immutable
 public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDataVectorizationSource {
 
     /*
-     * The embedding model deployment name within the same Azure OpenAI resource. This enables you to use vector search without Azure OpenAI api-key and without Azure OpenAI public network access.
+     * The embedding model deployment name within the same Azure OpenAI resource. This enables you to use vector search
+     * without Azure OpenAI api-key and without Azure OpenAI public network access.
      */
     @Generated
     @JsonProperty(value = "deployment_name")
-    private final String deploymentName;
+    private String deploymentName;
 
     /**
      * Creates an instance of OnYourDataDeploymentNameVectorizationSource class.
@@ -43,31 +40,13 @@ public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDat
     }
 
     /**
-     * Get the deploymentName property: The embedding model deployment name within the same Azure OpenAI resource. This enables you to use vector search without Azure OpenAI api-key and without Azure OpenAI public network access.
+     * Get the deploymentName property: The embedding model deployment name within the same Azure OpenAI resource. This
+     * enables you to use vector search without Azure OpenAI api-key and without Azure OpenAI public network access.
      *
      * @return the deploymentName value.
      */
     @Generated
     public String getDeploymentName() {
         return this.deploymentName;
-    }
-
-    /*
-     * The type of vectorization source to use.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.DEPLOYMENT_NAME;
-
-    /**
-     * Get the type property: The type of vectorization source to use.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataVectorizationSourceType getType() {
-        return this.type;
     }
 }

@@ -12,7 +12,8 @@ import java.util.List;
 
 /**
  * Extended information about a single segment of translated audio data.
- * Segments generally represent roughly 5-10 seconds of speech. Segment boundaries typically occur between words but not
+ * Segments generally represent roughly 5-10 seconds of speech. Segment boundaries typically occur between words but
+ * not
  * necessarily sentences.
  */
 @Immutable
@@ -23,74 +24,75 @@ public final class AudioTranslationSegment {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final int id;
+    private int id;
 
     /*
      * The time at which this segment started relative to the beginning of the translated audio.
      */
     @Generated
     @JsonProperty(value = "start")
-    private final double start;
+    private double start;
 
     /*
      * The time at which this segment ended relative to the beginning of the translated audio.
      */
     @Generated
     @JsonProperty(value = "end")
-    private final double end;
+    private double end;
 
     /*
      * The translated text that was part of this audio segment.
      */
     @Generated
     @JsonProperty(value = "text")
-    private final String text;
+    private String text;
 
     /*
      * The temperature score associated with this audio segment.
      */
     @Generated
     @JsonProperty(value = "temperature")
-    private final double temperature;
+    private double temperature;
 
     /*
      * The average log probability associated with this audio segment.
      */
     @Generated
     @JsonProperty(value = "avg_logprob")
-    private final double avgLogprob;
+    private double avgLogprob;
 
     /*
      * The compression ratio of this audio segment.
      */
     @Generated
     @JsonProperty(value = "compression_ratio")
-    private final double compressionRatio;
+    private double compressionRatio;
 
     /*
      * The probability of no speech detection within this audio segment.
      */
     @Generated
     @JsonProperty(value = "no_speech_prob")
-    private final double noSpeechProb;
+    private double noSpeechProb;
 
     /*
      * The token IDs matching the translated text in this audio segment.
      */
     @Generated
     @JsonProperty(value = "tokens")
-    private final List<Integer> tokens;
+    private List<Integer> tokens;
 
     /*
      * The seek position associated with the processing of this audio segment.
      * Seek positions are expressed as hundredths of seconds.
-     * The model may process several segments from a single seek position, so while the seek position will never represent
+     * The model may process several segments from a single seek position, so while the seek position will never
+     * represent
      * a later time than the segment's start, the segment's start may represent a significantly later time than the
      * segment's associated seek position.
      */
     @Generated
     @JsonProperty(value = "seek")
-    private final int seek;
+    private int seek;
 
     /**
      * Creates an instance of AudioTranslationSegment class.
@@ -144,7 +146,8 @@ public final class AudioTranslationSegment {
     }
 
     /**
-     * Get the start property: The time at which this segment started relative to the beginning of the translated audio.
+     * Get the start property: The time at which this segment started relative to the beginning of the translated
+     * audio.
      *
      * @return the start value.
      */
@@ -226,7 +229,8 @@ public final class AudioTranslationSegment {
     /**
      * Get the seek property: The seek position associated with the processing of this audio segment.
      * Seek positions are expressed as hundredths of seconds.
-     * The model may process several segments from a single seek position, so while the seek position will never represent
+     * The model may process several segments from a single seek position, so while the seek position will never
+     * represent
      * a later time than the segment's start, the segment's start may represent a significantly later time than the
      * segment's associated seek position.
      *

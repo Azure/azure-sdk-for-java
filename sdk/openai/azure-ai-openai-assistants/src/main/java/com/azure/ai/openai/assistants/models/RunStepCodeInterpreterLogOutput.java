@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A representation of a log output emitted by a code interpreter tool in response to a tool call by the model.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = RunStepCodeInterpreterLogOutput.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("logs")
 @Immutable
 public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterpreterToolCallOutput {
@@ -28,7 +23,7 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
      */
     @Generated
     @JsonProperty(value = "logs")
-    private final String logs;
+    private String logs;
 
     /**
      * Creates an instance of RunStepCodeInterpreterLogOutput class.
@@ -49,24 +44,5 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
     @Generated
     public String getLogs() {
         return this.logs;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "logs";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

@@ -20,7 +20,7 @@ public final class SubmitToolOutputsDetails {
      */
     @Generated
     @JsonProperty(value = "tool_calls")
-    private final List<RequiredToolCall> toolCalls;
+    private List<RequiredToolCall> toolCalls;
 
     /**
      * Creates an instance of SubmitToolOutputsDetails class.
@@ -34,7 +34,8 @@ public final class SubmitToolOutputsDetails {
     }
 
     /**
-     * Get the toolCalls property: The list of tool calls that must be resolved for the assistant thread run to continue.
+     * Get the toolCalls property: The list of tool calls that must be resolved for the assistant thread run to
+     * continue.
      *
      * @return the toolCalls value.
      */

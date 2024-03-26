@@ -5,9 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -16,9 +14,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
     property = "type",
-    defaultImpl = OnYourDataAuthenticationOptions.class,
-    visible = true)
+    defaultImpl = OnYourDataAuthenticationOptions.class)
 @JsonTypeName("OnYourDataAuthenticationOptions")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "api_key", value = OnYourDataApiKeyAuthenticationOptions.class),
@@ -40,24 +38,5 @@ public class OnYourDataAuthenticationOptions {
      */
     @Generated
     public OnYourDataAuthenticationOptions() {
-        this.type = OnYourDataAuthenticationType.fromString("OnYourDataAuthenticationOptions");
-    }
-
-    /*
-     * The authentication type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private OnYourDataAuthenticationType type;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
     }
 }

@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The details for required tool calls that must be submitted for an assistant thread run to continue.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = SubmitToolOutputsAction.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("submit_tool_outputs")
 @Immutable
 public final class SubmitToolOutputsAction extends RequiredAction {
@@ -28,7 +23,7 @@ public final class SubmitToolOutputsAction extends RequiredAction {
      */
     @Generated
     @JsonProperty(value = "submit_tool_outputs")
-    private final SubmitToolOutputsDetails submitToolOutputs;
+    private SubmitToolOutputsDetails submitToolOutputs;
 
     /**
      * Creates an instance of SubmitToolOutputsAction class.
@@ -50,24 +45,5 @@ public final class SubmitToolOutputsAction extends RequiredAction {
     @Generated
     public SubmitToolOutputsDetails getSubmitToolOutputs() {
         return this.submitToolOutputs;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private String type = "submit_tool_outputs";
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public String getType() {
-        return this.type;
     }
 }

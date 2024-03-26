@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The detailed information for a function invocation, as provided by a required action invoking a function tool, that includes the name of and arguments to the function.
+ * The detailed information for a function invocation, as provided by a required action invoking a function tool, that
+ * includes the name of and arguments to the function.
  */
 @Immutable
 public final class RequiredFunctionToolCallDetails {
@@ -19,14 +20,15 @@ public final class RequiredFunctionToolCallDetails {
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String name;
+    private String name;
 
     /*
-     * The arguments to use when invoking the named function, as provided by the model. Arguments are presented as a JSON document that should be validated and parsed for evaluation.
+     * The arguments to use when invoking the named function, as provided by the model. Arguments are presented as a
+     * JSON document that should be validated and parsed for evaluation.
      */
     @Generated
     @JsonProperty(value = "arguments")
-    private final String arguments;
+    private String arguments;
 
     /**
      * Creates an instance of RequiredFunctionToolCallDetails class.
@@ -53,7 +55,8 @@ public final class RequiredFunctionToolCallDetails {
     }
 
     /**
-     * Get the arguments property: The arguments to use when invoking the named function, as provided by the model. Arguments are presented as a JSON document that should be validated and parsed for evaluation.
+     * Get the arguments property: The arguments to use when invoking the named function, as provided by the model.
+     * Arguments are presented as a JSON document that should be validated and parsed for evaluation.
      *
      * @return the arguments value.
      */

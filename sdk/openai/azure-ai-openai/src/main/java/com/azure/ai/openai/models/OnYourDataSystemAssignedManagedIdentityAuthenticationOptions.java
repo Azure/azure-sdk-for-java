@@ -5,19 +5,13 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The authentication options for Azure OpenAI On Your Data when using a system-assigned managed identity.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = OnYourDataSystemAssignedManagedIdentityAuthenticationOptions.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("system_assigned_managed_identity")
 @Immutable
 public final class OnYourDataSystemAssignedManagedIdentityAuthenticationOptions
@@ -28,24 +22,5 @@ public final class OnYourDataSystemAssignedManagedIdentityAuthenticationOptions
      */
     @Generated
     public OnYourDataSystemAssignedManagedIdentityAuthenticationOptions() {
-    }
-
-    /*
-     * The authentication type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.SYSTEM_ASSIGNED_MANAGED_IDENTITY;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
     }
 }

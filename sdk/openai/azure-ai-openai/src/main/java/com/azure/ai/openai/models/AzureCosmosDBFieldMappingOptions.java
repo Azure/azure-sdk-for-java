@@ -20,7 +20,7 @@ public final class AzureCosmosDBFieldMappingOptions {
      */
     @Generated
     @JsonProperty(value = "vector_fields")
-    private final List<String> vectorFields;
+    private List<String> vectorFields;
 
     /**
      * Get the vectorFields property: The names of fields that represent vector data.
@@ -58,7 +58,7 @@ public final class AzureCosmosDBFieldMappingOptions {
      */
     @Generated
     @JsonProperty(value = "content_fields")
-    private final List<String> contentFields;
+    private List<String> contentFields;
 
     /*
      * The separator pattern that content fields should use.

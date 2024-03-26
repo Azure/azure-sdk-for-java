@@ -7,18 +7,13 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The authentication options for Azure OpenAI On Your Data when using access token.
  */
-@JsonTypeInfo(
-    use = JsonTypeInfo.Id.NAME,
-    property = "type",
-    defaultImpl = OnYourDataAccessTokenAuthenticationOptions.class,
-    visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("access_token")
 @Immutable
 public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourDataAuthenticationOptions {
@@ -28,7 +23,7 @@ public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourData
      */
     @Generated
     @JsonProperty(value = "access_token")
-    private final String accessToken;
+    private String accessToken;
 
     /**
      * Creates an instance of OnYourDataAccessTokenAuthenticationOptions class.
@@ -49,24 +44,5 @@ public final class OnYourDataAccessTokenAuthenticationOptions extends OnYourData
     @Generated
     public String getAccessToken() {
         return this.accessToken;
-    }
-
-    /*
-     * The authentication type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.ACCESS_TOKEN;
-
-    /**
-     * Get the type property: The authentication type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public OnYourDataAuthenticationType getType() {
-        return this.type;
     }
 }

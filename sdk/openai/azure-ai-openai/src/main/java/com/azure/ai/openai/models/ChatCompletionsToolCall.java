@@ -6,11 +6,11 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonGetter;
 
 /**
  * An abstract representation of a tool call that must be resolved in a subsequent request to perform the requested
@@ -27,7 +27,7 @@ public class ChatCompletionsToolCall {
      */
     @Generated
     @JsonProperty(value = "id")
-    private final String id;
+    private String id;
 
     @JsonProperty("type")
     private String type;

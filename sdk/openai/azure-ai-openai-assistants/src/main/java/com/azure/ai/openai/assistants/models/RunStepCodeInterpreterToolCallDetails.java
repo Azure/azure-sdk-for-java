@@ -20,14 +20,14 @@ public final class RunStepCodeInterpreterToolCallDetails {
      */
     @Generated
     @JsonProperty(value = "input")
-    private final String input;
+    private String input;
 
     /*
      * The outputs produced by the code interpreter tool back to the model in response to the tool call.
      */
     @Generated
     @JsonProperty(value = "outputs")
-    private final List<RunStepCodeInterpreterToolCallOutput> outputs;
+    private List<RunStepCodeInterpreterToolCallOutput> outputs;
 
     /**
      * Creates an instance of RunStepCodeInterpreterToolCallDetails class.
@@ -54,7 +54,8 @@ public final class RunStepCodeInterpreterToolCallDetails {
     }
 
     /**
-     * Get the outputs property: The outputs produced by the code interpreter tool back to the model in response to the tool call.
+     * Get the outputs property: The outputs produced by the code interpreter tool back to the model in response to the
+     * tool call.
      *
      * @return the outputs value.
      */

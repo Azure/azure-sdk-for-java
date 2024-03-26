@@ -35,7 +35,8 @@ public final class ToolOutput {
     }
 
     /**
-     * Get the toolCallId property: The ID of the tool call being resolved, as provided in the tool calls of a required action from a run.
+     * Get the toolCallId property: The ID of the tool call being resolved, as provided in the tool calls of a required
+     * action from a run.
      *
      * @return the toolCallId value.
      */
@@ -45,7 +46,8 @@ public final class ToolOutput {
     }
 
     /**
-     * Set the toolCallId property: The ID of the tool call being resolved, as provided in the tool calls of a required action from a run.
+     * Set the toolCallId property: The ID of the tool call being resolved, as provided in the tool calls of a required
+     * action from a run.
      *
      * @param toolCallId the toolCallId value to set.
      * @return the ToolOutput object itself.

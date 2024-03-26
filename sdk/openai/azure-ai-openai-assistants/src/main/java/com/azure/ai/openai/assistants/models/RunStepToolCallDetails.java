@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -15,7 +14,7 @@ import java.util.List;
 /**
  * The detailed information associated with a run step calling tools.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = RunStepToolCallDetails.class, visible = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("tool_calls")
 @Immutable
 public final class RunStepToolCallDetails extends RunStepDetails {
@@ -25,7 +24,7 @@ public final class RunStepToolCallDetails extends RunStepDetails {
      */
     @Generated
     @JsonProperty(value = "tool_calls")
-    private final List<RunStepToolCall> toolCalls;
+    private List<RunStepToolCall> toolCalls;
 
     /**
      * Creates an instance of RunStepToolCallDetails class.
@@ -46,24 +45,5 @@ public final class RunStepToolCallDetails extends RunStepDetails {
     @Generated
     public List<RunStepToolCall> getToolCalls() {
         return this.toolCalls;
-    }
-
-    /*
-     * The object type.
-     */
-    @Generated
-    @JsonTypeId
-    @JsonProperty(value = "type")
-    private RunStepType type = RunStepType.TOOL_CALLS;
-
-    /**
-     * Get the type property: The object type.
-     *
-     * @return the type value.
-     */
-    @Generated
-    @Override
-    public RunStepType getType() {
-        return this.type;
     }
 }

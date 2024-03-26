@@ -19,7 +19,7 @@ public final class FunctionDefinition {
      */
     @Generated
     @JsonProperty(value = "name")
-    private final String name;
+    private String name;
 
     /*
      * A description of what the function does, used by the model to choose when and how to call the function.
@@ -33,7 +33,7 @@ public final class FunctionDefinition {
      */
     @Generated
     @JsonProperty(value = "parameters")
-    private final Object parameters;
+    private Object parameters;
 
     /**
      * Get the name property: The name of the function to be called.
@@ -46,7 +46,8 @@ public final class FunctionDefinition {
     }
 
     /**
-     * Get the description property: A description of what the function does, used by the model to choose when and how to call the function.
+     * Get the description property: A description of what the function does, used by the model to choose when and how
+     * to call the function.
      *
      * @return the description value.
      */
@@ -80,7 +81,8 @@ public final class FunctionDefinition {
     }
 
     /**
-     * Set the description property: A description of what the function does, used by the model to choose when and how to call the function.
+     * Set the description property: A description of what the function does, used by the model to choose when and how
+     * to call the function.
      *
      * @param description the description value to set.
      * @return the FunctionDefinition object itself.
