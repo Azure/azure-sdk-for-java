@@ -141,6 +141,10 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
             LinkedHashMap<String, Object> ff = (LinkedHashMap<String, Object>) featureValue;
             LinkedHashMap<String, Object> conditions = (LinkedHashMap<String, Object>) ff.get("conditions");
 
+            if (conditions == null) {
+                conditions = new LinkedHashMap<>();
+            }
+
             if (conditions.get("client_filters") instanceof List) {
                 conditions.put("client_filters", null);
             }
