@@ -39,8 +39,8 @@ public final class BatchNodeUserCreateContent {
 
     /*
      * The password of the Account. The password is required for Windows Compute Nodes (those created with
-     * 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows Image reference). For
-     * Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey property.
+     * 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the password can
+     * optionally be specified along with the sshPublicKey property.
      */
     @Generated
     @JsonProperty(value = "password")
@@ -127,9 +127,8 @@ public final class BatchNodeUserCreateContent {
 
     /**
      * Get the password property: The password of the Account. The password is required for Windows Compute Nodes
-     * (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows
-     * Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey
-     * property.
+     * (those created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the
+     * password can optionally be specified along with the sshPublicKey property.
      *
      * @return the password value.
      */
@@ -140,9 +139,8 @@ public final class BatchNodeUserCreateContent {
 
     /**
      * Set the password property: The password of the Account. The password is required for Windows Compute Nodes
-     * (those created with 'cloudServiceConfiguration', or created with 'virtualMachineConfiguration' using a Windows
-     * Image reference). For Linux Compute Nodes, the password can optionally be specified along with the sshPublicKey
-     * property.
+     * (those created with 'virtualMachineConfiguration' using a Windows Image reference). For Linux Compute Nodes, the
+     * password can optionally be specified along with the sshPublicKey property.
      *
      * @param password the password value to set.
      * @return the BatchNodeUserCreateContent object itself.

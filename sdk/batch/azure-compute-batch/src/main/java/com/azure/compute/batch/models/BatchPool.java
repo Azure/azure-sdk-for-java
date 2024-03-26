@@ -105,17 +105,7 @@ public final class BatchPool {
     private String vmSize;
 
     /*
-     * The cloud service configuration for the Pool. This property and virtualMachineConfiguration are mutually
-     * exclusive and one of the properties must be specified. This property cannot be specified if the Batch Account
-     * was created with its poolAllocationMode property set to 'UserSubscription'.
-     */
-    @Generated
-    @JsonProperty(value = "cloudServiceConfiguration", access = JsonProperty.Access.WRITE_ONLY)
-    private CloudServiceConfiguration cloudServiceConfiguration;
-
-    /*
-     * The virtual machine configuration for the Pool. This property and cloudServiceConfiguration are mutually
-     * exclusive and one of the properties must be specified.
+     * The virtual machine configuration for the Pool. This property must be specified.
      */
     @Generated
     @JsonProperty(value = "virtualMachineConfiguration", access = JsonProperty.Access.WRITE_ONLY)
@@ -243,15 +233,6 @@ public final class BatchPool {
     @Generated
     @JsonProperty(value = "applicationPackageReferences", access = JsonProperty.Access.WRITE_ONLY)
     private List<BatchApplicationPackageReference> applicationPackageReferences;
-
-    /*
-     * The list of application licenses the Batch service will make available on each Compute Node in the Pool. The
-     * list of application licenses must be a subset of available Batch service application licenses. If a license is
-     * requested which is not supported, Pool creation will fail.
-     */
-    @Generated
-    @JsonProperty(value = "applicationLicenses", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> applicationLicenses;
 
     /*
      * The number of task slots that can be used to run concurrent tasks on a single compute node in the pool. The
@@ -453,21 +434,8 @@ public final class BatchPool {
     }
 
     /**
-     * Get the cloudServiceConfiguration property: The cloud service configuration for the Pool. This property and
-     * virtualMachineConfiguration are mutually exclusive and one of the properties must be specified. This property
-     * cannot be specified if the Batch Account was created with its poolAllocationMode property set to
-     * 'UserSubscription'.
-     *
-     * @return the cloudServiceConfiguration value.
-     */
-    @Generated
-    public CloudServiceConfiguration getCloudServiceConfiguration() {
-        return this.cloudServiceConfiguration;
-    }
-
-    /**
-     * Get the virtualMachineConfiguration property: The virtual machine configuration for the Pool. This property and
-     * cloudServiceConfiguration are mutually exclusive and one of the properties must be specified.
+     * Get the virtualMachineConfiguration property: The virtual machine configuration for the Pool. This property must
+     * be specified.
      *
      * @return the virtualMachineConfiguration value.
      */
@@ -647,18 +615,6 @@ public final class BatchPool {
     @Generated
     public List<BatchApplicationPackageReference> getApplicationPackageReferences() {
         return this.applicationPackageReferences;
-    }
-
-    /**
-     * Get the applicationLicenses property: The list of application licenses the Batch service will make available on
-     * each Compute Node in the Pool. The list of application licenses must be a subset of available Batch service
-     * application licenses. If a license is requested which is not supported, Pool creation will fail.
-     *
-     * @return the applicationLicenses value.
-     */
-    @Generated
-    public List<String> getApplicationLicenses() {
-        return this.applicationLicenses;
     }
 
     /**

@@ -52,14 +52,14 @@ public final class BatchTaskStatistics {
      */
     @Generated
     @JsonProperty(value = "readIOps")
-    private int readIOps;
+    private long readIOps;
 
     /*
      * The total number of disk write operations made by the Task.
      */
     @Generated
     @JsonProperty(value = "writeIOps")
-    private int writeIOps;
+    private long writeIOps;
 
     /*
      * The total gibibytes read from disk by the Task.
@@ -83,44 +83,6 @@ public final class BatchTaskStatistics {
     @Generated
     @JsonProperty(value = "waitTime")
     private Duration waitTime;
-
-    /**
-     * Creates an instance of BatchTaskStatistics class.
-     *
-     * @param url the url value to set.
-     * @param startTime the startTime value to set.
-     * @param lastUpdateTime the lastUpdateTime value to set.
-     * @param userCpuTime the userCpuTime value to set.
-     * @param kernelCpuTime the kernelCpuTime value to set.
-     * @param wallClockTime the wallClockTime value to set.
-     * @param readIOps the readIOps value to set.
-     * @param writeIOps the writeIOps value to set.
-     * @param readIOGiB the readIOGiB value to set.
-     * @param writeIOGiB the writeIOGiB value to set.
-     * @param waitTime the waitTime value to set.
-     */
-    @Generated
-    @JsonCreator
-    private BatchTaskStatistics(@JsonProperty(value = "url") String url,
-        @JsonProperty(value = "startTime") OffsetDateTime startTime,
-        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
-        @JsonProperty(value = "userCPUTime") Duration userCpuTime,
-        @JsonProperty(value = "kernelCPUTime") Duration kernelCpuTime,
-        @JsonProperty(value = "wallClockTime") Duration wallClockTime, @JsonProperty(value = "readIOps") int readIOps,
-        @JsonProperty(value = "writeIOps") int writeIOps, @JsonProperty(value = "readIOGiB") double readIOGiB,
-        @JsonProperty(value = "writeIOGiB") double writeIOGiB, @JsonProperty(value = "waitTime") Duration waitTime) {
-        this.url = url;
-        this.startTime = startTime;
-        this.lastUpdateTime = lastUpdateTime;
-        this.userCpuTime = userCpuTime;
-        this.kernelCpuTime = kernelCpuTime;
-        this.wallClockTime = wallClockTime;
-        this.readIOps = readIOps;
-        this.writeIOps = writeIOps;
-        this.readIOGiB = readIOGiB;
-        this.writeIOGiB = writeIOGiB;
-        this.waitTime = waitTime;
-    }
 
     /**
      * Get the url property: The URL of the statistics.
@@ -172,7 +134,7 @@ public final class BatchTaskStatistics {
      * @return the readIOps value.
      */
     @Generated
-    public int getReadIOps() {
+    public long getReadIOps() {
         return this.readIOps;
     }
 
@@ -182,7 +144,7 @@ public final class BatchTaskStatistics {
      * @return the writeIOps value.
      */
     @Generated
-    public int getWriteIOps() {
+    public long getWriteIOps() {
         return this.writeIOps;
     }
 
@@ -252,5 +214,43 @@ public final class BatchTaskStatistics {
     @Generated
     public Duration getUserCpuTime() {
         return this.userCpuTime;
+    }
+
+    /**
+     * Creates an instance of BatchTaskStatistics class.
+     *
+     * @param url the url value to set.
+     * @param startTime the startTime value to set.
+     * @param lastUpdateTime the lastUpdateTime value to set.
+     * @param userCpuTime the userCpuTime value to set.
+     * @param kernelCpuTime the kernelCpuTime value to set.
+     * @param wallClockTime the wallClockTime value to set.
+     * @param readIOps the readIOps value to set.
+     * @param writeIOps the writeIOps value to set.
+     * @param readIOGiB the readIOGiB value to set.
+     * @param writeIOGiB the writeIOGiB value to set.
+     * @param waitTime the waitTime value to set.
+     */
+    @Generated
+    @JsonCreator
+    private BatchTaskStatistics(@JsonProperty(value = "url") String url,
+        @JsonProperty(value = "startTime") OffsetDateTime startTime,
+        @JsonProperty(value = "lastUpdateTime") OffsetDateTime lastUpdateTime,
+        @JsonProperty(value = "userCPUTime") Duration userCpuTime,
+        @JsonProperty(value = "kernelCPUTime") Duration kernelCpuTime,
+        @JsonProperty(value = "wallClockTime") Duration wallClockTime, @JsonProperty(value = "readIOps") long readIOps,
+        @JsonProperty(value = "writeIOps") long writeIOps, @JsonProperty(value = "readIOGiB") double readIOGiB,
+        @JsonProperty(value = "writeIOGiB") double writeIOGiB, @JsonProperty(value = "waitTime") Duration waitTime) {
+        this.url = url;
+        this.startTime = startTime;
+        this.lastUpdateTime = lastUpdateTime;
+        this.userCpuTime = userCpuTime;
+        this.kernelCpuTime = kernelCpuTime;
+        this.wallClockTime = wallClockTime;
+        this.readIOps = readIOps;
+        this.writeIOps = writeIOps;
+        this.readIOGiB = readIOGiB;
+        this.writeIOGiB = writeIOGiB;
+        this.waitTime = waitTime;
     }
 }

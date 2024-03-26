@@ -26,13 +26,11 @@ public final class NetworkConfiguration {
      * service to be able to schedule Tasks on the Nodes. This can be verified by checking if the specified VNet has
      * any associated Network Security Groups (NSG). If communication to the Nodes in the specified subnet is denied by
      * an NSG, then the Batch service will set the state of the Compute Nodes to unusable. For Pools created with
-     * virtualMachineConfiguration only ARM virtual networks ('Microsoft.Network/virtualNetworks') are supported, but
-     * for Pools created with cloudServiceConfiguration both ARM and classic virtual networks are supported. If the
-     * specified VNet has any associated Network Security Groups (NSG), then a few reserved system ports must be
+     * virtualMachineConfiguration only ARM virtual networks ('Microsoft.Network/virtualNetworks') are supported. If
+     * the specified VNet has any associated Network Security Groups (NSG), then a few reserved system ports must be
      * enabled for inbound communication. For Pools created with a virtual machine configuration, enable ports 29876
-     * and 29877, as well as port 22 for Linux and port 3389 for Windows. For Pools created with a cloud service
-     * configuration, enable ports 10100, 20100, and 30100. Also enable outbound connections to Azure Storage on port
-     * 443. For more details see:
+     * and 29877, as well as port 22 for Linux and port 3389 for Windows. Also enable outbound connections to Azure
+     * Storage on port 443. For more details see:
      * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      */
     @Generated
@@ -90,13 +88,11 @@ public final class NetworkConfiguration {
      * service to be able to schedule Tasks on the Nodes. This can be verified by checking if the specified VNet has
      * any associated Network Security Groups (NSG). If communication to the Nodes in the specified subnet is denied by
      * an NSG, then the Batch service will set the state of the Compute Nodes to unusable. For Pools created with
-     * virtualMachineConfiguration only ARM virtual networks ('Microsoft.Network/virtualNetworks') are supported, but
-     * for Pools created with cloudServiceConfiguration both ARM and classic virtual networks are supported. If the
-     * specified VNet has any associated Network Security Groups (NSG), then a few reserved system ports must be
+     * virtualMachineConfiguration only ARM virtual networks ('Microsoft.Network/virtualNetworks') are supported. If
+     * the specified VNet has any associated Network Security Groups (NSG), then a few reserved system ports must be
      * enabled for inbound communication. For Pools created with a virtual machine configuration, enable ports 29876
-     * and 29877, as well as port 22 for Linux and port 3389 for Windows. For Pools created with a cloud service
-     * configuration, enable ports 10100, 20100, and 30100. Also enable outbound connections to Azure Storage on port
-     * 443. For more details see:
+     * and 29877, as well as port 22 for Linux and port 3389 for Windows. Also enable outbound connections to Azure
+     * Storage on port 443. For more details see:
      * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @return the subnetId value.
@@ -118,13 +114,11 @@ public final class NetworkConfiguration {
      * service to be able to schedule Tasks on the Nodes. This can be verified by checking if the specified VNet has
      * any associated Network Security Groups (NSG). If communication to the Nodes in the specified subnet is denied by
      * an NSG, then the Batch service will set the state of the Compute Nodes to unusable. For Pools created with
-     * virtualMachineConfiguration only ARM virtual networks ('Microsoft.Network/virtualNetworks') are supported, but
-     * for Pools created with cloudServiceConfiguration both ARM and classic virtual networks are supported. If the
-     * specified VNet has any associated Network Security Groups (NSG), then a few reserved system ports must be
+     * virtualMachineConfiguration only ARM virtual networks ('Microsoft.Network/virtualNetworks') are supported. If
+     * the specified VNet has any associated Network Security Groups (NSG), then a few reserved system ports must be
      * enabled for inbound communication. For Pools created with a virtual machine configuration, enable ports 29876
-     * and 29877, as well as port 22 for Linux and port 3389 for Windows. For Pools created with a cloud service
-     * configuration, enable ports 10100, 20100, and 30100. Also enable outbound connections to Azure Storage on port
-     * 443. For more details see:
+     * and 29877, as well as port 22 for Linux and port 3389 for Windows. Also enable outbound connections to Azure
+     * Storage on port 443. For more details see:
      * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
      *
      * @param subnetId the subnetId value to set.

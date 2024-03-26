@@ -73,17 +73,17 @@ public final class BatchClientImpl {
     }
 
     /**
-     * The BatchApisImpl object to access its operations.
+     * The BatchesImpl object to access its operations.
      */
-    private final BatchApisImpl batchApis;
+    private final BatchesImpl batches;
 
     /**
-     * Gets the BatchApisImpl object to access its operations.
+     * Gets the BatchesImpl object to access its operations.
      * 
-     * @return the BatchApisImpl object.
+     * @return the BatchesImpl object.
      */
-    public BatchApisImpl getBatchApis() {
-        return this.batchApis;
+    public BatchesImpl getBatches() {
+        return this.batches;
     }
 
     /**
@@ -122,6 +122,6 @@ public final class BatchClientImpl {
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.serviceVersion = serviceVersion;
-        this.batchApis = new BatchApisImpl(this);
+        this.batches = new BatchesImpl(this);
     }
 }
