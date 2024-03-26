@@ -8,11 +8,13 @@ import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpHeaders;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpRequestMetadata;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.http.models.Response;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
+import com.generic.core.implementation.http.HttpResponseAccessHelper;
 import com.generic.core.implementation.util.ServerSentEventUtil;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.binarydata.BinaryData;
@@ -47,7 +49,9 @@ import static com.generic.core.implementation.util.ServerSentEventUtil.processTe
  * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
 class DefaultHttpClient implements HttpClient {
+    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
     private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
+
     private final long connectionTimeout;
     private final long readTimeout;
     private final ProxyOptions proxyOptions;
@@ -197,27 +201,61 @@ class DefaultHttpClient implements HttpClient {
      * @return A HttpResponse object
      */
     private Response<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
-        try {
-            int responseCode = connection.getResponseCode();
-            HttpHeaders responseHeaders = getResponseHeaders(connection);
+        HttpHeaders responseHeaders = getResponseHeaders(connection);
+        HttpResponse<?> httpResponse = createHttpResponse(httpRequest, connection);
 
+        if (isTextEventStream(responseHeaders)) {
             ServerSentEventListener listener = httpRequest.getServerSentEventListener();
 
-            if (listener == null && isTextEventStream(responseHeaders)) {
+            if (listener == null) {
                 throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
             }
 
-            if (connection.getErrorStream() == null && isTextEventStream(responseHeaders)) {
-                processTextEventStream(httpRequest, httpRequestConsumer -> this.send(httpRequest), connection.getInputStream(), listener, LOGGER);
-                return new HttpResponse<>(httpRequest, responseCode, responseHeaders, null);
+            if (connection.getErrorStream() == null) {
+                try {
+                    processTextEventStream(httpRequest, httpRequestConsumer ->
+                        this.send(httpRequest), connection.getInputStream(), listener, LOGGER);
+                } catch (IOException e) {
+                    throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+                } finally {
+                    connection.disconnect();
+                }
             }
+        } else {
+            HttpRequestMetadata metadata = httpRequest.getMetadata();
 
-            AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
-            return new HttpResponse<>(httpRequest, responseCode, responseHeaders, BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
+            if (metadata != null && metadata.getResponseBodyHandling() != null) {
+                switch (metadata.getResponseBodyHandling()) {
+                    case IGNORE:
+                        ignoreResponseBody(httpResponse, connection);
+
+                        break;
+                    case STREAM:
+                        setStreamingResponseBody(httpResponse, connection);
+
+                        break;
+                    case BUFFER:
+                    case DESERIALIZE:
+                    default:
+                        eagerlyBufferResponseBody(httpResponse, connection);
+                }
+            } else {
+                // The metadata can only be null if intentionally set through HttpRequest.setMetadata()
+                // TODO (vcolin7): Should we ensure the metadata is not null when users call HttpRequest.setMetadata()?
+                eagerlyBufferResponseBody(httpResponse, connection);
+            }
+        }
+
+        return httpResponse;
+    }
+
+    private HttpResponse<?> createHttpResponse(HttpRequest httpRequest, HttpURLConnection connection) {
+        try {
+            return new HttpResponse<>(httpRequest, connection.getResponseCode(), getResponseHeaders(connection), null);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        } finally {
             connection.disconnect();
+
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -226,6 +264,32 @@ class DefaultHttpClient implements HttpClient {
             return ServerSentEventUtil.isTextEventStreamContentType(responseHeaders.getValue(HttpHeaderName.CONTENT_TYPE));
         }
         return false;
+    }
+
+    private void setStreamingResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
+        try {
+            HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromStream(connection.getInputStream()));
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        }
+    }
+
+    private void ignoreResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
+        HttpResponseAccessHelper.setBody(httpResponse, EMPTY_BODY);
+
+        connection.disconnect();
+    }
+
+    private void eagerlyBufferResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
+        try {
+            AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
+
+            HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        } finally {
+            connection.disconnect();
+        }
     }
 
     private HttpHeaders getResponseHeaders(HttpURLConnection connection) {
@@ -244,7 +308,7 @@ class DefaultHttpClient implements HttpClient {
         AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
 
         try (InputStream errorStream = connection.getErrorStream();
-             InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream) {
+            InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream) {
             byte[] buffer = new byte[8192];
             int length;
             while ((length = inputStream.read(buffer)) != -1) {

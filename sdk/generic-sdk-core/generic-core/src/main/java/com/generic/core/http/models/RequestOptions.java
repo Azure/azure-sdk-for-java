@@ -11,6 +11,8 @@ import com.generic.core.util.binarydata.BinaryData;
 import java.util.Objects;
 import java.util.function.Consumer;
 
+import static com.generic.core.http.models.ResponseBodyHandling.BUFFER;
+
 /**
  * This class contains the options to customize an HTTP request. {@link RequestOptions} can be used to configure the
  * request headers, query params, the request body, or add a callback to modify all aspects of the HTTP request.
@@ -116,6 +118,8 @@ public final class RequestOptions {
     };
     private Context context;
 
+    private ResponseBodyHandling responseBodyHandling;
+
     /**
      * Creates a new instance of {@link RequestOptions}.
      */
@@ -138,6 +142,17 @@ public final class RequestOptions {
      */
     public Context getContext() {
         return context;
+    }
+
+    /**
+     * Gets a {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
+     * handled.
+     *
+     * @return A {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
+     * handled.
+     */
+    public ResponseBodyHandling getResponseBodyHandling() {
+        return responseBodyHandling;
     }
 
     /**
@@ -253,6 +268,21 @@ public final class RequestOptions {
      */
     public RequestOptions setContext(Context context) {
         this.context = context;
+
+        return this;
+    }
+
+    /**
+     * Sets a {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP response should be
+     * handled.
+     *
+     * @param responseBodyHandling A {@link ResponseBodyHandling value} indicating how the body of the resulting HTTP
+     * response should be handled.
+     *
+     * @return The updated {@link RequestOptions} object.
+     */
+    public RequestOptions setResponseBodyHandling(ResponseBodyHandling responseBodyHandling) {
+        this.responseBodyHandling = responseBodyHandling;
 
         return this;
     }
