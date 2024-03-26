@@ -7,7 +7,6 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
@@ -22,18 +21,19 @@ import java.util.List;
 public final class EmbeddingItem {
 
     /*
-     * embeddings value for the input prompt in base64 encoded format. These represent a measurement of the
+     * List of embeddings value for the input prompt in base64 encoded string format. These represent a measurement of
+     * the
      * vector-based relatedness of the provided input.
      */
     @Generated
     @JsonProperty(value = "embedding")
     private String embedding;
 
-    private List<Float> embeddingAsFloat;
+    private List<Float> embeddingAsFloatList;
 
     /**
-     * Get the embedding property: embeddings value for the input prompt in base64 encoded format. These represent a
-     * measurement of the
+     * Get the embedding property: List of embeddings value for the input prompt in base64 encoded string format. These
+     * represent a measurement of the
      * vector-based relatedness of the provided input.
      *
      * @return the embedding value.
@@ -44,13 +44,14 @@ public final class EmbeddingItem {
     }
 
     /**
-     * Get the embeddingAsFloat property: embeddings value for the input prompt in float format. These represent a
+     * Get the getEmbeddingAsFloatList property: embeddings value for the input prompt in float format. These represent
+     * a
      * measurement of the vector-based relatedness of the provided input.
      *
-     * @return the embeddingAsFloat value.
+     * @return the getEmbeddingAsFloatList value.
      */
-    public List<Float> getEmbeddingAsFloat() {
-        return embeddingAsFloat;
+    public List<Float> getEmbeddingAsFloatList() {
+        return embeddingAsFloatList;
     }
 
     /*
@@ -81,23 +82,20 @@ public final class EmbeddingItem {
         @JsonProperty(value = "index") int promptIndex) {
         this.embedding = embedding;
         this.promptIndex = promptIndex;
-        this.embeddingAsFloat = convertToFloatList(this.embedding);
+        this.embeddingAsFloatList = convertToFloatList(this.embedding);
     }
 
     private List<Float> convertToFloatList(String embedding) {
         byte[] bytes = Base64.getDecoder().decode(embedding);
-
         // View the raw binary data as floats (IEEE 754 binary32).
         ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
         byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
         FloatBuffer floatBuffer = byteBuffer.asFloatBuffer();
-
         // Copy the floats in the buffer to a List representing an embedding.
         List<Float> flaotList = new ArrayList<>(floatBuffer.remaining());
         while (floatBuffer.hasRemaining()) {
             flaotList.add(floatBuffer.get());
         }
-
         return flaotList;
     }
 }

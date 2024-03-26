@@ -1097,6 +1097,18 @@ public final class NonAzureOpenAIClientImpl {
         return inputJson;
     }
 
+    public static BinaryData addEncodingFormat(BinaryData inputJson) throws JsonProcessingException {
+        JsonNode jsonNode = JSON_MAPPER.readTree(inputJson.toString());
+        if (jsonNode instanceof ObjectNode) {
+            ObjectNode objectNode = (ObjectNode) jsonNode;
+            objectNode.put("encoding_format", "base64");
+            inputJson = BinaryData.fromBytes(objectNode.toString().getBytes(StandardCharsets.UTF_8));
+        }
+
+        return inputJson;
+    }
+
+
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.

@@ -21,7 +21,6 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
-import com.azure.ai.openai.models.EmbeddingEncodingFormat;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
@@ -234,7 +233,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     .assertNext(resultEmbeddings -> {
                         assertEmbeddings(resultEmbeddings);
                         assertEquals(embeddingsOptions.getDimensions(),
-                                resultEmbeddings.getData().get(0).getEmbeddingAsFloat().size());
+                                resultEmbeddings.getData().get(0).getEmbeddingAsFloatList().size());
                     })
                     .verifyComplete();
         });

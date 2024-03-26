@@ -150,41 +150,12 @@ public final class EmbeddingsOptions {
     }
 
     /*
-     * The response encoding format to use for embedding data.
-     */
-    @Generated
-    @JsonProperty(value = "encoding_format")
-    private EmbeddingEncodingFormat encodingFormat;
-
-    /*
      * The number of dimensions the resulting output embeddings should have. Only supported in `text-embedding-3` and
      * later models.
      */
     @Generated
     @JsonProperty(value = "dimensions")
     private Integer dimensions;
-
-    /**
-     * Get the encodingFormat property: The response encoding format to use for embedding data.
-     *
-     * @return the encodingFormat value.
-     */
-    @Generated
-    public EmbeddingEncodingFormat getEncodingFormat() {
-        return this.encodingFormat;
-    }
-
-    /**
-     * Set the encodingFormat property: The response encoding format to use for embedding data.
-     *
-     * @param encodingFormat the encodingFormat value to set.
-     * @return the EmbeddingsOptions object itself.
-     */
-    @Generated
-    public EmbeddingsOptions setEncodingFormat(EmbeddingEncodingFormat encodingFormat) {
-        this.encodingFormat = encodingFormat;
-        return this;
-    }
 
     /**
      * Get the dimensions property: The number of dimensions the resulting output embeddings should have. Only

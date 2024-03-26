@@ -22,7 +22,6 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
-import com.azure.ai.openai.models.EmbeddingEncodingFormat;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionCallConfig;
@@ -199,7 +198,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getEmbeddingWithSmallerDimensionsRunner((deploymentId, embeddingsOptions) -> {
             Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
             assertEmbeddings(resultEmbeddings);
-            assertEquals(embeddingsOptions.getDimensions(), resultEmbeddings.getData().get(0).getEmbeddingAsFloat().size());
+            assertEquals(embeddingsOptions.getDimensions(), resultEmbeddings.getData().get(0).getEmbeddingAsFloatList().size());
         });
     }
 
