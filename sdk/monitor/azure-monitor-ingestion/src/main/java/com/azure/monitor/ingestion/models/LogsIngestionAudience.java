@@ -28,6 +28,7 @@ public class LogsIngestionAudience extends ExpandableStringEnum<LogsIngestionAud
     private static final LogsIngestionAudience AZURE_CHINA = fromString("https://monitor.azure.cn//.default");
 
     /**
+     * @deprecated
      * Creates an instance of LogsIngestionAudience.
      */
     @Deprecated
