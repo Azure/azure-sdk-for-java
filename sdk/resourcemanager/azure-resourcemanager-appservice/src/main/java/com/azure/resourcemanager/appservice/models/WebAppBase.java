@@ -208,7 +208,7 @@ public interface WebAppBase extends HasName, GroupableResource<AppServiceManager
      *
      * @return whether the web app can be accessed from public network.
      */
-    String publicNetworkAccess();
+    PublicNetworkAccess publicNetworkAccess();
 
     /**
      * Verifies the ownership of the domain for a certificate order by verifying a hostname of the domain is bound to

@@ -15,6 +15,7 @@ import com.azure.resourcemanager.appservice.models.IpSecurityRestriction;
 import com.azure.resourcemanager.appservice.models.LogLevel;
 import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
+import com.azure.resourcemanager.appservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appservice.models.PricingTier;
 import com.azure.resourcemanager.appservice.models.RemoteVisualStudioVersion;
 import com.azure.resourcemanager.appservice.models.WebApp;
@@ -300,7 +301,7 @@ public class WebAppsTests extends AppServiceTest {
                 .withRemoteDebuggingEnabled(RemoteVisualStudioVersion.VS2019)
                 .create();
         webApp.refresh();
-        Assertions.assertTrue("Disabled".equalsIgnoreCase(webApp.publicNetworkAccess()));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, webApp.publicNetworkAccess());
     }
 
     @Test
@@ -319,10 +320,10 @@ public class WebAppsTests extends AppServiceTest {
 
         webApp.update().disablePublicNetworkAccess().apply();
         webApp.refresh();
-        Assertions.assertTrue("Disabled".equalsIgnoreCase(webApp.publicNetworkAccess()));
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, webApp.publicNetworkAccess());
 
         webApp.update().enablePublicNetworkAccess().apply();
         webApp.refresh();
-        Assertions.assertTrue("Enabled".equalsIgnoreCase(webApp.publicNetworkAccess()));
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, webApp.publicNetworkAccess());
     }
 }

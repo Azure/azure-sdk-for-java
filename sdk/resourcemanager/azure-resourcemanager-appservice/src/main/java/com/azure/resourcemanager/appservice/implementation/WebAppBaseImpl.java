@@ -43,6 +43,7 @@ import com.azure.resourcemanager.appservice.models.NetFrameworkVersion;
 import com.azure.resourcemanager.appservice.models.OperatingSystem;
 import com.azure.resourcemanager.appservice.models.PhpVersion;
 import com.azure.resourcemanager.appservice.models.PlatformArchitecture;
+import com.azure.resourcemanager.appservice.models.PublicNetworkAccess;
 import com.azure.resourcemanager.appservice.models.PythonVersion;
 import com.azure.resourcemanager.appservice.models.RedundancyMode;
 import com.azure.resourcemanager.appservice.models.RemoteVisualStudioVersion;
@@ -1857,9 +1858,9 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
 
     @Override
     @SuppressWarnings("unchecked")
-    public String publicNetworkAccess() {
+    public PublicNetworkAccess publicNetworkAccess() {
         return Objects.isNull(innerModel().publicNetworkAccess())
-            && innerModel().publicNetworkAccess().trim().isEmpty() ? null : innerModel().publicNetworkAccess();
+            && innerModel().publicNetworkAccess().trim().isEmpty() ? null : PublicNetworkAccess.fromString(innerModel().publicNetworkAccess());
     }
 
     @Override

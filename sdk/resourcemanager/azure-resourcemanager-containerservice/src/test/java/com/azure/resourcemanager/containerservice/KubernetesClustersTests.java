@@ -633,39 +633,23 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
         String agentPoolName = generateRandomResourceName("ap0", 10);
-        String agentPoolName1 = generateRandomResourceName("ap1", 10);
-
-        String agentPoolResourceGroupName = generateRandomResourceName("pool", 15);
 
         // create
         KubernetesCluster kubernetesCluster =
-            containerServiceManager
-                .kubernetesClusters()
-                .define(aksName)
-                .withRegion(Region.US_WEST2)
+            containerServiceManager.kubernetesClusters().define(aksName)
+                .withRegion(Region.US_SOUTH_CENTRAL)
                 .withExistingResourceGroup(rgName)
                 .withDefaultVersion()
                 .withRootUsername("testaks")
                 .withSshKey(SSH_KEY)
                 .withSystemAssignedManagedServiceIdentity()
                 .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
                 .withAgentPoolVirtualMachineCount(1)
-                .withOSDiskSizeInGB(30)
-                .withOSDiskType(OSDiskType.EPHEMERAL)
-                .withKubeletDiskType(KubeletDiskType.TEMPORARY)
                 .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
                 .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .withTag("pool.name", agentPoolName)
-                .attach()
-                .defineAgentPool(agentPoolName1)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withTag("pool.name", agentPoolName1)
                 .attach()
                 .withDnsPrefix("mp1" + dnsPrefix)
-                .withTag("tag1", "value1")
-                .withAgentPoolResourceGroup(agentPoolResourceGroupName)
                 .disablePublicNetworkAccess()
                 .create();
 
@@ -677,39 +661,23 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         String aksName = generateRandomResourceName("aks", 15);
         String dnsPrefix = generateRandomResourceName("dns", 10);
         String agentPoolName = generateRandomResourceName("ap0", 10);
-        String agentPoolName1 = generateRandomResourceName("ap1", 10);
-
-        String agentPoolResourceGroupName = generateRandomResourceName("pool", 15);
 
         // create
         KubernetesCluster kubernetesCluster =
-            containerServiceManager
-                .kubernetesClusters()
-                .define(aksName)
-                .withRegion(Region.US_WEST2)
+            containerServiceManager.kubernetesClusters().define(aksName)
+                .withRegion(Region.US_SOUTH_CENTRAL)
                 .withExistingResourceGroup(rgName)
                 .withDefaultVersion()
                 .withRootUsername("testaks")
                 .withSshKey(SSH_KEY)
                 .withSystemAssignedManagedServiceIdentity()
                 .defineAgentPool(agentPoolName)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_F4S_V2)
+                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
                 .withAgentPoolVirtualMachineCount(1)
-                .withOSDiskSizeInGB(30)
-                .withOSDiskType(OSDiskType.EPHEMERAL)
-                .withKubeletDiskType(KubeletDiskType.TEMPORARY)
                 .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
                 .withAgentPoolMode(AgentPoolMode.SYSTEM)
-                .withTag("pool.name", agentPoolName)
-                .attach()
-                .defineAgentPool(agentPoolName1)
-                .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_A2_V2)
-                .withAgentPoolVirtualMachineCount(1)
-                .withTag("pool.name", agentPoolName1)
                 .attach()
                 .withDnsPrefix("mp1" + dnsPrefix)
-                .withTag("tag1", "value1")
-                .withAgentPoolResourceGroup(agentPoolResourceGroupName)
                 .create();
 
         kubernetesCluster.update().disablePublicNetworkAccess().apply();
