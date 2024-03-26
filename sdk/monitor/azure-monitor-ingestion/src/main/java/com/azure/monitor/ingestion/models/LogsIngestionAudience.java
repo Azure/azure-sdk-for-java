@@ -3,55 +3,31 @@
 
 package com.azure.monitor.ingestion.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+
+import java.util.Collection;
+
 /**
  * The audience indicating the authorization scope of log ingestion clients.
  */
-public class LogsIngestionAudience {
+public class LogsIngestionAudience extends ExpandableStringEnum<LogsIngestionAudience> {
 
-    private final String audience;
-
-    private static final String AZURE_PUBLIC_CLOUD = "https://monitor.azure.com//.default";
-    private static final String AZURE_GOVERNMENT = "https://monitor.azure.us//.default";
-    private static final String AZURE_CHINA = "https://monitor.azure.cn//.default";
+    public static final LogsIngestionAudience AZURE_PUBLIC_CLOUD = fromString("https://monitor.azure.com//.default");
+    private static final LogsIngestionAudience AZURE_GOVERNMENT = fromString("https://monitor.azure.us//.default");
+    private static final LogsIngestionAudience AZURE_CHINA = fromString("https://monitor.azure.cn//.default");
 
     /**
      * Creates an instance of LogsIngestionAudience.
-     * @param audience The audience for the log ingestion.
      */
-    LogsIngestionAudience(String audience) {
-        this.audience = audience;
+    @Deprecated
+    LogsIngestionAudience() {
     }
 
-    /**
-     * Creates an instance of LogsIngestionAudience for Azure Public Cloud.
-     * @return LogsIngestionAudience for Azure Public Cloud.
-     */
-    public static LogsIngestionAudience azurePublic() {
-        return new LogsIngestionAudience(AZURE_PUBLIC_CLOUD);
+    public static LogsIngestionAudience fromString(String name) {
+        return fromString(name, LogsIngestionAudience.class);
     }
-
-    /**
-     * Creates an instance of LogsIngestionAudience for Azure US Government Cloud.
-     * @return LogsIngestionAudience for Azure US Government Cloud.
-     */
-    public static LogsIngestionAudience azureGovernment() {
-        return new LogsIngestionAudience(AZURE_GOVERNMENT);
-    }
-
-    /**
-     * Creates an instance of LogsIngestionAudience for Azure China Cloud.
-     * @return LogsIngestionAudience for Azure China Cloud.
-     */
-    public static LogsIngestionAudience azureChina() {
-        return new LogsIngestionAudience(AZURE_CHINA);
-    }
-
-    /**
-     * Gets the audience for the log ingestion.
-     * @return The audience for the log ingestion.
-     */
-    public String[] getAudience() {
-        return new String[]{audience};
+    public static Collection<LogsIngestionAudience> values() {
+        return values(LogsIngestionAudience.class);
     }
 
 }

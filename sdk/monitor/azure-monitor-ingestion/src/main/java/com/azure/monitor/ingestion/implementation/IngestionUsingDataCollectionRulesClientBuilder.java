@@ -297,7 +297,7 @@ public final class IngestionUsingDataCollectionRulesClientBuilder
         policies.add(new AddDatePolicy());
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential,
-                audience == null ? DEFAULT_SCOPES : audience.getAudience()));
+                audience == null ? DEFAULT_SCOPES : new String[] { audience.toString() }));
         }
         this.pipelinePolicies.stream()
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
