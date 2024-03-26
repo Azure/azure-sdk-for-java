@@ -94,3 +94,4 @@ extends:
             - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
           TestGoals: 'clean verify'
           TestOptions: '$(ProfileFlag)'
+
