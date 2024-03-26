@@ -5,14 +5,21 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The detailed information associated with a message creation run step.
  */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = RunStepMessageCreationDetails.class,
+    visible = true)
+@JsonTypeName("message_creation")
 @Immutable
 public final class RunStepMessageCreationDetails extends RunStepDetails {
 
@@ -20,6 +27,7 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
      * Information about the message creation associated with this run step.
      */
     @Generated
+    @JsonProperty(value = "message_creation")
     private final RunStepMessageCreationReference messageCreation;
 
     /**
@@ -28,7 +36,9 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
      * @param messageCreation the messageCreation value to set.
      */
     @Generated
-    private RunStepMessageCreationDetails(RunStepMessageCreationReference messageCreation) {
+    @JsonCreator
+    private RunStepMessageCreationDetails(
+        @JsonProperty(value = "message_creation") RunStepMessageCreationReference messageCreation) {
         this.messageCreation = messageCreation;
     }
 
@@ -42,53 +52,12 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
         return this.messageCreation;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("message_creation", this.messageCreation);
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RunStepMessageCreationDetails from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStepMessageCreationDetails if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RunStepMessageCreationDetails.
-     */
-    @Generated
-    public static RunStepMessageCreationDetails fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RunStepMessageCreationReference messageCreation = null;
-            RunStepType type = RunStepType.MESSAGE_CREATION;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("message_creation".equals(fieldName)) {
-                    messageCreation = RunStepMessageCreationReference.fromJson(reader);
-                } else if ("type".equals(fieldName)) {
-                    type = RunStepType.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            RunStepMessageCreationDetails deserializedRunStepMessageCreationDetails
-                = new RunStepMessageCreationDetails(messageCreation);
-            deserializedRunStepMessageCreationDetails.type = type;
-            return deserializedRunStepMessageCreationDetails;
-        });
-    }
-
     /*
      * The object type.
      */
     @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
     private RunStepType type = RunStepType.MESSAGE_CREATION;
 
     /**

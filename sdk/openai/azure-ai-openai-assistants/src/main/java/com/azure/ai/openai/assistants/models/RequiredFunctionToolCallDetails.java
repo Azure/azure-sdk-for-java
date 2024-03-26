@@ -5,28 +5,27 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The detailed information for a function invocation, as provided by a required action invoking a function tool, that includes the name of and arguments to the function.
  */
 @Immutable
-public final class RequiredFunctionToolCallDetails implements JsonSerializable<RequiredFunctionToolCallDetails> {
+public final class RequiredFunctionToolCallDetails {
 
     /*
      * The name of the function.
      */
     @Generated
+    @JsonProperty(value = "name")
     private final String name;
 
     /*
      * The arguments to use when invoking the named function, as provided by the model. Arguments are presented as a JSON document that should be validated and parsed for evaluation.
      */
     @Generated
+    @JsonProperty(value = "arguments")
     private final String arguments;
 
     /**
@@ -36,7 +35,9 @@ public final class RequiredFunctionToolCallDetails implements JsonSerializable<R
      * @param arguments the arguments value to set.
      */
     @Generated
-    private RequiredFunctionToolCallDetails(String name, String arguments) {
+    @JsonCreator
+    private RequiredFunctionToolCallDetails(@JsonProperty(value = "name") String name,
+        @JsonProperty(value = "arguments") String arguments) {
         this.name = name;
         this.arguments = arguments;
     }
@@ -59,45 +60,5 @@ public final class RequiredFunctionToolCallDetails implements JsonSerializable<R
     @Generated
     public String getArguments() {
         return this.arguments;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("arguments", this.arguments);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RequiredFunctionToolCallDetails from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RequiredFunctionToolCallDetails if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RequiredFunctionToolCallDetails.
-     */
-    @Generated
-    public static RequiredFunctionToolCallDetails fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String name = null;
-            String arguments = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("arguments".equals(fieldName)) {
-                    arguments = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new RequiredFunctionToolCallDetails(name, arguments);
-        });
     }
 }

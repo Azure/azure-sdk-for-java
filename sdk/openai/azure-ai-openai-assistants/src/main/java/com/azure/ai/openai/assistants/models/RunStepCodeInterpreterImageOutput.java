@@ -5,14 +5,21 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A representation of an image output emitted by a code interpreter tool in response to a tool call by the model.
  */
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME,
+    property = "type",
+    defaultImpl = RunStepCodeInterpreterImageOutput.class,
+    visible = true)
+@JsonTypeName("image")
 @Immutable
 public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpreterToolCallOutput {
 
@@ -20,6 +27,7 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
      * Referential information for the image associated with this output.
      */
     @Generated
+    @JsonProperty(value = "image")
     private final RunStepCodeInterpreterImageReference image;
 
     /**
@@ -28,7 +36,9 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
      * @param image the image value to set.
      */
     @Generated
-    private RunStepCodeInterpreterImageOutput(RunStepCodeInterpreterImageReference image) {
+    @JsonCreator
+    private RunStepCodeInterpreterImageOutput(
+        @JsonProperty(value = "image") RunStepCodeInterpreterImageReference image) {
         this.image = image;
     }
 
@@ -42,53 +52,12 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
         return this.image;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("image", this.image);
-        jsonWriter.writeStringField("type", this.type);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RunStepCodeInterpreterImageOutput from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStepCodeInterpreterImageOutput if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RunStepCodeInterpreterImageOutput.
-     */
-    @Generated
-    public static RunStepCodeInterpreterImageOutput fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            RunStepCodeInterpreterImageReference image = null;
-            String type = "image";
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("image".equals(fieldName)) {
-                    image = RunStepCodeInterpreterImageReference.fromJson(reader);
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            RunStepCodeInterpreterImageOutput deserializedRunStepCodeInterpreterImageOutput
-                = new RunStepCodeInterpreterImageOutput(image);
-            deserializedRunStepCodeInterpreterImageOutput.type = type;
-            return deserializedRunStepCodeInterpreterImageOutput;
-        });
-    }
-
     /*
      * The object type.
      */
     @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
     private String type = "image";
 
     /**

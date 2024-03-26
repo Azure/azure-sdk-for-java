@@ -6,47 +6,49 @@ package com.azure.ai.openai.assistants.implementation.models;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The response data for a requested list of items.
  */
 @Immutable
-public final class OpenAIPageableListOfThreadMessage implements JsonSerializable<OpenAIPageableListOfThreadMessage> {
+public final class OpenAIPageableListOfThreadMessage {
 
     /*
      * The object type, which is always list.
      */
     @Generated
+    @JsonProperty(value = "object")
     private final String object = "list";
 
     /*
      * The requested list of items.
      */
     @Generated
+    @JsonProperty(value = "data")
     private final List<ThreadMessage> data;
 
     /*
      * The first ID represented in this list.
      */
     @Generated
+    @JsonProperty(value = "first_id")
     private final String firstId;
 
     /*
      * The last ID represented in this list.
      */
     @Generated
+    @JsonProperty(value = "last_id")
     private final String lastId;
 
     /*
      * A value indicating whether there are additional values available not captured in this list.
      */
     @Generated
+    @JsonProperty(value = "has_more")
     private final boolean hasMore;
 
     /**
@@ -58,8 +60,10 @@ public final class OpenAIPageableListOfThreadMessage implements JsonSerializable
      * @param hasMore the hasMore value to set.
      */
     @Generated
-    private OpenAIPageableListOfThreadMessage(List<ThreadMessage> data, String firstId, String lastId,
-        boolean hasMore) {
+    @JsonCreator
+    private OpenAIPageableListOfThreadMessage(@JsonProperty(value = "data") List<ThreadMessage> data,
+        @JsonProperty(value = "first_id") String firstId, @JsonProperty(value = "last_id") String lastId,
+        @JsonProperty(value = "has_more") boolean hasMore) {
         this.data = data;
         this.firstId = firstId;
         this.lastId = lastId;
@@ -114,54 +118,5 @@ public final class OpenAIPageableListOfThreadMessage implements JsonSerializable
     @Generated
     public boolean isHasMore() {
         return this.hasMore;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("object", this.object);
-        jsonWriter.writeArrayField("data", this.data, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("first_id", this.firstId);
-        jsonWriter.writeStringField("last_id", this.lastId);
-        jsonWriter.writeBooleanField("has_more", this.hasMore);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of OpenAIPageableListOfThreadMessage from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of OpenAIPageableListOfThreadMessage if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OpenAIPageableListOfThreadMessage.
-     */
-    @Generated
-    public static OpenAIPageableListOfThreadMessage fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            List<ThreadMessage> data = null;
-            String firstId = null;
-            String lastId = null;
-            boolean hasMore = false;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("data".equals(fieldName)) {
-                    data = reader.readArray(reader1 -> ThreadMessage.fromJson(reader1));
-                } else if ("first_id".equals(fieldName)) {
-                    firstId = reader.getString();
-                } else if ("last_id".equals(fieldName)) {
-                    lastId = reader.getString();
-                } else if ("has_more".equals(fieldName)) {
-                    hasMore = reader.getBoolean();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new OpenAIPageableListOfThreadMessage(data, firstId, lastId, hasMore);
-        });
     }
 }

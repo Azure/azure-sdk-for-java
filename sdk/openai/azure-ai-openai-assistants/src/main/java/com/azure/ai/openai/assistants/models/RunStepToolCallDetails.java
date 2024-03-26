@@ -5,15 +5,18 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
 /**
  * The detailed information associated with a run step calling tools.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = RunStepToolCallDetails.class, visible = true)
+@JsonTypeName("tool_calls")
 @Immutable
 public final class RunStepToolCallDetails extends RunStepDetails {
 
@@ -21,6 +24,7 @@ public final class RunStepToolCallDetails extends RunStepDetails {
      * A list of tool call details for this run step.
      */
     @Generated
+    @JsonProperty(value = "tool_calls")
     private final List<RunStepToolCall> toolCalls;
 
     /**
@@ -29,7 +33,8 @@ public final class RunStepToolCallDetails extends RunStepDetails {
      * @param toolCalls the toolCalls value to set.
      */
     @Generated
-    private RunStepToolCallDetails(List<RunStepToolCall> toolCalls) {
+    @JsonCreator
+    private RunStepToolCallDetails(@JsonProperty(value = "tool_calls") List<RunStepToolCall> toolCalls) {
         this.toolCalls = toolCalls;
     }
 
@@ -43,52 +48,12 @@ public final class RunStepToolCallDetails extends RunStepDetails {
         return this.toolCalls;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RunStepToolCallDetails from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStepToolCallDetails if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RunStepToolCallDetails.
-     */
-    @Generated
-    public static RunStepToolCallDetails fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            List<RunStepToolCall> toolCalls = null;
-            RunStepType type = RunStepType.TOOL_CALLS;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("tool_calls".equals(fieldName)) {
-                    toolCalls = reader.readArray(reader1 -> RunStepToolCall.fromJson(reader1));
-                } else if ("type".equals(fieldName)) {
-                    type = RunStepType.fromString(reader.getString());
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            RunStepToolCallDetails deserializedRunStepToolCallDetails = new RunStepToolCallDetails(toolCalls);
-            deserializedRunStepToolCallDetails.type = type;
-            return deserializedRunStepToolCallDetails;
-        });
-    }
-
     /*
      * The object type.
      */
     @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
     private RunStepType type = RunStepType.TOOL_CALLS;
 
     /**

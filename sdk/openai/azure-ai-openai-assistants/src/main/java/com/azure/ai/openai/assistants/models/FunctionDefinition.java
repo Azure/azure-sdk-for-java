@@ -5,34 +5,34 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The input definition information for a function.
  */
 @Fluent
-public final class FunctionDefinition implements JsonSerializable<FunctionDefinition> {
+public final class FunctionDefinition {
 
     /*
      * The name of the function to be called.
      */
     @Generated
+    @JsonProperty(value = "name")
     private final String name;
 
     /*
      * A description of what the function does, used by the model to choose when and how to call the function.
      */
     @Generated
+    @JsonProperty(value = "description")
     private String description;
 
     /*
      * The parameters the functions accepts, described as a JSON Schema object.
      */
     @Generated
+    @JsonProperty(value = "parameters")
     private final Object parameters;
 
     /**
@@ -72,7 +72,9 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
      * @param parameters the parameters value to set.
      */
     @Generated
-    public FunctionDefinition(String name, Object parameters) {
+    @JsonCreator
+    public FunctionDefinition(@JsonProperty(value = "name") String name,
+        @JsonProperty(value = "parameters") Object parameters) {
         this.name = name;
         this.parameters = parameters;
     }
@@ -87,51 +89,5 @@ public final class FunctionDefinition implements JsonSerializable<FunctionDefini
     public FunctionDefinition setDescription(String description) {
         this.description = description;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeUntypedField("parameters", this.parameters);
-        jsonWriter.writeStringField("description", this.description);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of FunctionDefinition from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of FunctionDefinition if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the FunctionDefinition.
-     */
-    @Generated
-    public static FunctionDefinition fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String name = null;
-            Object parameters = null;
-            String description = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("parameters".equals(fieldName)) {
-                    parameters = reader.readUntyped();
-                } else if ("description".equals(fieldName)) {
-                    description = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            FunctionDefinition deserializedFunctionDefinition = new FunctionDefinition(name, parameters);
-            deserializedFunctionDefinition.description = description;
-            return deserializedFunctionDefinition;
-        });
     }
 }

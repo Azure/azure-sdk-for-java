@@ -5,22 +5,20 @@ package com.azure.ai.openai.assistants.implementation.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The CreateAssistantFileRequest model.
  */
 @Immutable
-public final class CreateAssistantFileRequest implements JsonSerializable<CreateAssistantFileRequest> {
+public final class CreateAssistantFileRequest {
 
     /*
      * The ID of the previously uploaded file to attach.
      */
     @Generated
+    @JsonProperty(value = "file_id")
     private final String fileId;
 
     /**
@@ -29,7 +27,8 @@ public final class CreateAssistantFileRequest implements JsonSerializable<Create
      * @param fileId the fileId value to set.
      */
     @Generated
-    public CreateAssistantFileRequest(String fileId) {
+    @JsonCreator
+    public CreateAssistantFileRequest(@JsonProperty(value = "file_id") String fileId) {
         this.fileId = fileId;
     }
 
@@ -41,41 +40,5 @@ public final class CreateAssistantFileRequest implements JsonSerializable<Create
     @Generated
     public String getFileId() {
         return this.fileId;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("file_id", this.fileId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CreateAssistantFileRequest from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CreateAssistantFileRequest if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CreateAssistantFileRequest.
-     */
-    @Generated
-    public static CreateAssistantFileRequest fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String fileId = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("file_id".equals(fieldName)) {
-                    fileId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new CreateAssistantFileRequest(fileId);
-        });
     }
 }

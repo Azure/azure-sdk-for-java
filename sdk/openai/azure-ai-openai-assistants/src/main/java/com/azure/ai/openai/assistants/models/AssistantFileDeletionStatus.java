@@ -5,34 +5,34 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The status of an assistant file deletion operation.
  */
 @Immutable
-public final class AssistantFileDeletionStatus implements JsonSerializable<AssistantFileDeletionStatus> {
+public final class AssistantFileDeletionStatus {
 
     /*
      * The ID of the resource specified for deletion.
      */
     @Generated
+    @JsonProperty(value = "id")
     private final String id;
 
     /*
      * A value indicating whether deletion was successful.
      */
     @Generated
+    @JsonProperty(value = "deleted")
     private final boolean deleted;
 
     /*
      * The object type, which is always 'assistant.file.deleted'.
      */
     @Generated
+    @JsonProperty(value = "object")
     private final String object = "assistant.file.deleted";
 
     /**
@@ -42,7 +42,9 @@ public final class AssistantFileDeletionStatus implements JsonSerializable<Assis
      * @param deleted the deleted value to set.
      */
     @Generated
-    private AssistantFileDeletionStatus(String id, boolean deleted) {
+    @JsonCreator
+    private AssistantFileDeletionStatus(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "deleted") boolean deleted) {
         this.id = id;
         this.deleted = deleted;
     }
@@ -75,46 +77,5 @@ public final class AssistantFileDeletionStatus implements JsonSerializable<Assis
     @Generated
     public String getObject() {
         return this.object;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeBooleanField("deleted", this.deleted);
-        jsonWriter.writeStringField("object", this.object);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AssistantFileDeletionStatus from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AssistantFileDeletionStatus if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AssistantFileDeletionStatus.
-     */
-    @Generated
-    public static AssistantFileDeletionStatus fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            boolean deleted = false;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("deleted".equals(fieldName)) {
-                    deleted = reader.getBoolean();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new AssistantFileDeletionStatus(id, deleted);
-        });
     }
 }
