@@ -10,7 +10,9 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.models.BlobLeaseRequestConditions;
 import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.LeaseDurationType;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.options.BlobAcquireLeaseOptions;
@@ -24,7 +26,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuple2;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -105,17 +109,26 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         BlobAsyncClientBase bc = createBlobAsyncClient();
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
-        bc.setTags(t).block();
-        match = setupBlobMatchCondition(bc, match);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(bc).acquireLeaseWithResponse(
-            new BlobAcquireLeaseOptions(-1).setRequestConditions(mac)), 201);
+        Mono<Response<String>> response = bc.setTags(t)
+            .then(setupBlobMatchConditionAsync(bc, match))
+            .flatMap(r -> {
+                String newMatch = r;
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setTagsConditions(tags);
+
+                return createLeaseAsyncClient(bc).acquireLeaseWithResponse(
+                    new BlobAcquireLeaseOptions(-1).setRequestConditions(mac));
+            });
+
+        assertAsyncResponseStatusCode(response, 201);
     }
 
     private static Stream<Arguments> acquireBlobLeaseDurationFailSupplier() {
@@ -133,16 +146,25 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void acquireBlobLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                        String noneMatch, String tags) {
         BlobAsyncClientBase bc = createBlobAsyncClient();
-        noneMatch = setupBlobMatchCondition(bc, noneMatch);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
 
-        StepVerifier.create(createLeaseAsyncClient(bc).acquireLeaseWithResponse(
-            new BlobAcquireLeaseOptions(-1).setRequestConditions(mac)))
+        Mono<Response<String>> response = setupBlobMatchConditionAsync(bc, noneMatch)
+            .flatMap(r -> {
+                String newNoneMatch = r;
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setTagsConditions(tags);
+
+                return createLeaseAsyncClient(bc).acquireLeaseWithResponse(
+                    new BlobAcquireLeaseOptions(-1).setRequestConditions(mac));
+            });
+
+        StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
     }
 
@@ -165,16 +187,19 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     @Test
     public void renewBlobLease() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseAsyncClient leaseClient = createLeaseAsyncClient(bc, leaseID);
 
-        // If running in live mode wait for the lease to expire to ensure we are actually renewing it
-        sleepIfRunningAgainstService(16000);
-        StepVerifier.create(leaseClient.renewLeaseWithResponse(new BlobRenewLeaseOptions()))
+        Mono<Tuple2<Response<String>, BlobLeaseAsyncClient>> response = setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID)
+            .flatMap(r -> {
+                BlobLeaseAsyncClient leaseClient = createLeaseAsyncClient(bc, r);
+                sleepIfRunningAgainstService(16000);
+                return Mono.zip(leaseClient.renewLeaseWithResponse(new BlobRenewLeaseOptions()), Mono.just(leaseClient));
+            });
+
+        StepVerifier.create(response)
             .assertNext(r -> {
-                validateBasicHeaders(r.getHeaders());
-                assertNotNull(r.getValue());
-                assertEquals(leaseClient.getLeaseId(), r.getValue());
+                validateBasicHeaders(r.getT1().getHeaders());
+                assertNotNull(r.getT1().getValue());
+                assertEquals(r.getT2().getLeaseId(), r.getT1().getValue());
             })
             .verifyComplete();
 
@@ -200,18 +225,30 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         BlobAsyncClientBase bc = createBlobAsyncClient();
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
-        bc.setTags(t).block();
-        match = setupBlobMatchCondition(bc, match);
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(bc, leaseID)
-            .renewLeaseWithResponse(new BlobRenewLeaseOptions().setRequestConditions(mac)), 200);
+        Mono<Response<String>> response = bc.setTags(t)
+            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, match)))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setTagsConditions(tags);
+
+                return createLeaseAsyncClient(bc, newLease)
+                    .renewLeaseWithResponse(new BlobRenewLeaseOptions().setRequestConditions(mac));
+            });
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @ParameterizedTest
@@ -219,17 +256,29 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void renewBlobLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                      String tags) {
         BlobAsyncClientBase bc = createBlobAsyncClient();
-        noneMatch = setupBlobMatchCondition(bc, noneMatch);
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
 
-        StepVerifier.create(createLeaseAsyncClient(bc, leaseID).renewLeaseWithResponse(
-            new BlobRenewLeaseOptions().setRequestConditions(mac)))
+        Mono<Response<String>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, noneMatch))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setTagsConditions(tags);
+
+                return createLeaseAsyncClient(bc, newLease).renewLeaseWithResponse(
+                    new BlobRenewLeaseOptions().setRequestConditions(mac));
+            });
+
+        StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
     }
 
@@ -270,18 +319,30 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         BlobAsyncClientBase bc = createBlobAsyncClient();
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
-        bc.setTags(t).block();
-        match = setupBlobMatchCondition(bc, match);
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(bc, leaseID).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions().setRequestConditions(mac)), 200);
+        Mono<Response<Void>> response = bc.setTags(t)
+            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, match)))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setTagsConditions(tags);
+
+                return createLeaseAsyncClient(bc, newLease).releaseLeaseWithResponse(
+                    new BlobReleaseLeaseOptions().setRequestConditions(mac));
+            });
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @ParameterizedTest
@@ -289,17 +350,29 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void releaseBlobLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match, String noneMatch,
                                        String tags) {
         BlobAsyncClientBase bc = createBlobAsyncClient();
-        noneMatch = setupBlobMatchCondition(bc, noneMatch);
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
 
-        StepVerifier.create(createLeaseAsyncClient(bc, leaseID).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions().setRequestConditions(mac)))
+        Mono<Response<Void>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, noneMatch))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setTagsConditions(tags);
+
+                return createLeaseAsyncClient(bc, newLease).releaseLeaseWithResponse(
+                    new BlobReleaseLeaseOptions().setRequestConditions(mac));
+            });
+
+        StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
     }
 
@@ -315,10 +388,10 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void breakBlobLease(int leaseTime, Integer breakPeriod, int remainingTime) {
         BlobAsyncClientBase bc = createBlobAsyncClient();
         BlobLeaseAsyncClient leaseClient = createLeaseAsyncClient(bc, testResourceNamer.randomUuid());
-        leaseClient.acquireLease(leaseTime).block();
 
-        StepVerifier.create(leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions()
-            .setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod))))
+        StepVerifier.create(leaseClient.acquireLease(leaseTime)
+            .then(leaseClient.breakLeaseWithResponse(new BlobBreakLeaseOptions()
+            .setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)))))
             .assertNext(r -> {
                 assertTrue(r.getValue() <= remainingTime);
                 assertTrue(validateBasicHeaders(r.getHeaders()));
@@ -355,18 +428,30 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         BlobAsyncClientBase bc = createBlobAsyncClient();
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
-        bc.setTags(t).block();
-        match = setupBlobMatchCondition(bc, match);
-        setupBlobLeaseCondition(bc, RECEIVED_ETAG);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(bc).breakLeaseWithResponse(
-            new BlobBreakLeaseOptions().setRequestConditions(mac)), 202);
+        Mono<Response<Integer>> response = bc.setTags(t)
+            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_ETAG), setupBlobMatchConditionAsync(bc, match)))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setTagsConditions(tags);
+
+                return createLeaseAsyncClient(bc).breakLeaseWithResponse(
+                    new BlobBreakLeaseOptions().setRequestConditions(mac));
+            });
+
+        assertAsyncResponseStatusCode(response, 202);
     }
 
     @ParameterizedTest
@@ -399,21 +484,19 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void changeBlobLease() {
         BlobAsyncClientBase bc = createBlobAsyncClient();
         BlobLeaseAsyncClient leaseClient = createLeaseAsyncClient(bc, testResourceNamer.randomUuid());
-        leaseClient.acquireLease(15).block();
-
         String newLeaseId = testResourceNamer.randomUuid();
-        Response<String> changeLeaseResponse = leaseClient.changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(newLeaseId)).block();
 
-        assertEquals(changeLeaseResponse.getValue(), newLeaseId);
-        assertEquals(changeLeaseResponse.getValue(), leaseClient.getLeaseId());
 
-        BlobLeaseAsyncClient leaseClient2 = createLeaseAsyncClient(bc, changeLeaseResponse.getValue());
+        Mono<BlobLeaseAsyncClient> client = leaseClient.acquireLease(15)
+            .then(leaseClient.changeLeaseWithResponse(new BlobChangeLeaseOptions(newLeaseId)))
+            .flatMap(r -> {
+                assertEquals(r.getValue(), newLeaseId);
+                assertEquals(r.getValue(), leaseClient.getLeaseId());
+                assertTrue(validateBasicHeaders(r.getHeaders()));
+                return Mono.just(createLeaseAsyncClient(bc, r.getValue()));
+            });
 
-        assertAsyncResponseStatusCode(leaseClient2.releaseLeaseWithResponse(new BlobReleaseLeaseOptions()),
-            200);
-        //todo isbr: make validatebasicheaders like datalake one
-        assertTrue(validateBasicHeaders(changeLeaseResponse.getHeaders()));
+        assertAsyncResponseStatusCode(client.flatMap(r -> r.releaseLeaseWithResponse(new BlobReleaseLeaseOptions())), 200);
     }
 
     @Test
@@ -432,18 +515,30 @@ public class LeaseAsyncApiTests extends BlobTestBase {
         BlobAsyncClientBase bc = createBlobAsyncClient();
         Map<String, String> t = new HashMap<>();
         t.put("foo", "bar");
-        bc.setTags(t).block();
-        match = setupBlobMatchCondition(bc, match);
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(bc, leaseID).changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(testResourceNamer.randomUuid()).setRequestConditions(mac)), 200);
+        Mono<Response<String>> response = bc.setTags(t)
+            .then(Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, match)))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newMatch)) {
+                    newMatch = null;
+                }
+                BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setIfMatch(newMatch)
+                    .setIfNoneMatch(noneMatch)
+                    .setTagsConditions(tags);
+
+                return createLeaseAsyncClient(bc, newLease).changeLeaseWithResponse(
+                    new BlobChangeLeaseOptions(testResourceNamer.randomUuid()).setRequestConditions(mac));
+            });
+
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @ParameterizedTest
@@ -451,17 +546,29 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     public void changeBlobLeaseACFail(OffsetDateTime modified, OffsetDateTime unmodified, String match,
                                       String noneMatch, String tags) {
         BlobAsyncClientBase bc = createBlobAsyncClient();
-        noneMatch = setupBlobMatchCondition(bc, noneMatch);
-        String leaseID = setupBlobLeaseCondition(bc, RECEIVED_LEASE_ID);
-        BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
-            .setIfModifiedSince(modified)
-            .setIfUnmodifiedSince(unmodified)
-            .setIfMatch(match)
-            .setIfNoneMatch(noneMatch)
-            .setTagsConditions(tags);
 
-        StepVerifier.create(createLeaseAsyncClient(bc, leaseID).changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(testResourceNamer.randomUuid()).setRequestConditions(mac)))
+        Mono<Response<String>> response = Mono.zip(setupBlobLeaseConditionAsync(bc, RECEIVED_LEASE_ID), setupBlobMatchConditionAsync(bc, noneMatch))
+            .flatMap(tuple -> {
+                String newLease = tuple.getT1();
+                String newNoneMatch = tuple.getT2();
+                if ("null".equals(newLease)) {
+                    newLease = null;
+                }
+                if ("null".equals(newNoneMatch)) {
+                    newNoneMatch = null;
+                }
+                BlobLeaseRequestConditions mac = new BlobLeaseRequestConditions()
+                    .setIfModifiedSince(modified)
+                    .setIfUnmodifiedSince(unmodified)
+                    .setIfMatch(match)
+                    .setIfNoneMatch(newNoneMatch)
+                    .setTagsConditions(tags);
+
+                return createLeaseAsyncClient(bc, newLease).changeLeaseWithResponse(
+                    new BlobChangeLeaseOptions(testResourceNamer.randomUuid()).setRequestConditions(mac));
+            });
+
+        StepVerifier.create(response)
             .verifyError(BlobStorageException.class);
     }
 
@@ -711,10 +818,10 @@ public class LeaseAsyncApiTests extends BlobTestBase {
     @MethodSource("breakBlobLeaseSupplier")
     public void breakContainerLease(int leaseTime, Integer breakPeriod, int remainingTime) {
         BlobLeaseAsyncClient leaseClient = createLeaseAsyncClient(ccAsync, testResourceNamer.randomUuid());
-        leaseClient.acquireLease(leaseTime).block();
 
-        StepVerifier.create(leaseClient.breakLeaseWithResponse(
-            new BlobBreakLeaseOptions().setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod))))
+        StepVerifier.create(leaseClient.acquireLease(leaseTime)
+            .then(leaseClient.breakLeaseWithResponse(
+            new BlobBreakLeaseOptions().setBreakPeriod(breakPeriod == null ? null : Duration.ofSeconds(breakPeriod)))))
             .assertNext(r -> {
                 assertTrue(r.getValue() <= remainingTime);
                 assertTrue(validateBasicHeaders(r.getHeaders()));
@@ -788,16 +895,17 @@ public class LeaseAsyncApiTests extends BlobTestBase {
 
         assertEquals(leaseClient.getLeaseId(), leaseID);
 
-        Response<String> changeLeaseResponse = leaseClient.changeLeaseWithResponse(
-            new BlobChangeLeaseOptions(testResourceNamer.randomUuid())).block();
+        Mono<BlobLeaseAsyncClient> client = leaseClient.changeLeaseWithResponse(new BlobChangeLeaseOptions(testResourceNamer.randomUuid()))
+            .flatMap(r -> {
+                assertTrue(validateBasicHeaders(r.getHeaders()));
+                String newLeaseId = r.getValue();
+                assertEquals(newLeaseId, leaseClient.getLeaseId());
+                assertNotEquals(newLeaseId, leaseID);
+                return Mono.just(createLeaseAsyncClient(ccAsync, newLeaseId));
+            });
 
-        assertTrue(validateBasicHeaders(changeLeaseResponse.getHeaders()));
-        String newLeaseId = changeLeaseResponse.getValue();
-        assertEquals(newLeaseId, leaseClient.getLeaseId());
-        assertNotEquals(newLeaseId, leaseID);
-
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(ccAsync, newLeaseId).releaseLeaseWithResponse(
-            new BlobReleaseLeaseOptions()), 200);
+        assertAsyncResponseStatusCode(client.flatMap(r -> r.releaseLeaseWithResponse(
+            new BlobReleaseLeaseOptions())), 200);
     }
 
     @Test

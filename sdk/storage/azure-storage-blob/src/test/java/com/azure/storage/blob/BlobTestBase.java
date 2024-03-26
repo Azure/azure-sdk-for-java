@@ -269,6 +269,14 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
+    protected Mono<String> setupBlobMatchConditionAsync(BlobAsyncClientBase bac, String match) {
+        if (Objects.equals(match, RECEIVED_ETAG)) {
+            return Objects.requireNonNull(bac.getProperties().map(BlobProperties::getETag));
+        } else {
+            return Mono.just(match == null ? "null" : match);
+        }
+    }
+
     /**
      * This helper method will acquire a lease on a blob to prepare for testing lease Id. We want to test
      * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
@@ -309,6 +317,24 @@ public class BlobTestBase extends TestProxyTestBase {
         }
     }
 
+    protected Mono<String> setupBlobLeaseConditionAsync(BlobAsyncClientBase bac, String leaseID) {
+        Mono<String> responseLeaseId = null;
+        if (Objects.equals(leaseID, RECEIVED_LEASE_ID) || Objects.equals(leaseID, GARBAGE_LEASE_ID)) {
+            responseLeaseId = new BlobLeaseClientBuilder()
+                .blobAsyncClient(bac)
+                .buildAsyncClient()
+                .acquireLease(-1);
+        }
+
+        if (responseLeaseId == null) {
+            return Mono.just(leaseID == null ? "null" : leaseID);
+        }
+
+        return responseLeaseId.map(returnedLeaseId -> Objects.equals(RECEIVED_LEASE_ID, leaseID)
+            ? returnedLeaseId : (leaseID == null ? "null" : leaseID));
+    }
+
+
     protected String setupContainerLeaseCondition(BlobContainerClient cu, String leaseID) {
         if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
             return createLeaseClient(cu).acquireLease(-1);
@@ -322,6 +348,14 @@ public class BlobTestBase extends TestProxyTestBase {
             return createLeaseAsyncClient(cu).acquireLease(-1).block();
         } else {
             return leaseID;
+        }
+    }
+
+    protected Mono<String> setupContainerLeaseConditionAsync(BlobContainerAsyncClient cu, String leaseID) {
+        if (Objects.equals(leaseID, RECEIVED_LEASE_ID)) {
+            return createLeaseAsyncClient(cu).acquireLease(-1);
+        } else {
+            return Mono.just(leaseID == null ? "null" : leaseID);
         }
     }
 
@@ -906,5 +940,15 @@ public class BlobTestBase extends TestProxyTestBase {
                                         List<BlobSignedIdentifier> identifiers) {
         cc.setAccessPolicy(access, identifiers).block();
         sleepIfRunningAgainstService(30 * 1000);
+    }
+
+    protected Mono<?> setAccessPolicySleepAsync2(BlobContainerAsyncClient cc, PublicAccessType access,
+                                             List<BlobSignedIdentifier> identifiers) {
+        Mono<?> setPolicyMono = cc.setAccessPolicy(access, identifiers);
+        if (!interceptorManager.isPlaybackMode()) {
+            setPolicyMono = setPolicyMono.then(Mono.delay(Duration.ofSeconds(30)));
+        }
+
+        return setPolicyMono;
     }
 }
