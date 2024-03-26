@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -52,7 +53,6 @@ public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
     @Generated
     @JsonCreator
     private LimitedOrderDiscrepancyInference(@JsonProperty(value = "orderType") FhirR4CodeableConcept orderType) {
-        setKind(RadiologyInsightsInferenceType.LIMITED_ORDER_DISCREPANCY);
         this.orderType = orderType;
     }
 
@@ -84,5 +84,24 @@ public final class LimitedOrderDiscrepancyInference extends FhirR4Extendible1 {
     @Generated
     public List<FhirR4CodeableConcept> getPresentBodyPartMeasurements() {
         return this.presentBodyPartMeasurements;
+    }
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.LIMITED_ORDER_DISCREPANCY;
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 }

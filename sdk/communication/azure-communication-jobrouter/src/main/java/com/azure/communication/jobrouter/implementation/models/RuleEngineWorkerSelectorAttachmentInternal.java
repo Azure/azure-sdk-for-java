@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -38,7 +39,6 @@ public final class RuleEngineWorkerSelectorAttachmentInternal extends WorkerSele
     @Generated
     @JsonCreator
     public RuleEngineWorkerSelectorAttachmentInternal(@JsonProperty(value = "rule") RouterRuleInternal rule) {
-        setKind(WorkerSelectorAttachmentKind.RULE_ENGINE);
         this.rule = rule;
     }
 
@@ -50,5 +50,24 @@ public final class RuleEngineWorkerSelectorAttachmentInternal extends WorkerSele
     @Generated
     public RouterRuleInternal getRule() {
         return this.rule;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.RULE_ENGINE;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public WorkerSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

@@ -29,7 +29,6 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
      */
     @Generated
     private RunStepCodeInterpreterImageOutput(RunStepCodeInterpreterImageReference image) {
-        setType("image");
         this.image = image;
     }
 
@@ -50,8 +49,8 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeJsonField("image", this.image);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -66,23 +65,40 @@ public final class RunStepCodeInterpreterImageOutput extends RunStepCodeInterpre
     @Generated
     public static RunStepCodeInterpreterImageOutput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String type = "image";
             RunStepCodeInterpreterImageReference image = null;
+            String type = "image";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = reader.getString();
-                } else if ("image".equals(fieldName)) {
+                if ("image".equals(fieldName)) {
                     image = RunStepCodeInterpreterImageReference.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             RunStepCodeInterpreterImageOutput deserializedRunStepCodeInterpreterImageOutput
                 = new RunStepCodeInterpreterImageOutput(image);
-            deserializedRunStepCodeInterpreterImageOutput.setType(type);
+            deserializedRunStepCodeInterpreterImageOutput.type = type;
             return deserializedRunStepCodeInterpreterImageOutput;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "image";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

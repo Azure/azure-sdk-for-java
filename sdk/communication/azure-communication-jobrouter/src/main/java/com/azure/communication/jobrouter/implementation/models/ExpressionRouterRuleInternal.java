@@ -9,6 +9,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -46,7 +47,6 @@ public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
     @Generated
     @JsonCreator
     public ExpressionRouterRuleInternal(@JsonProperty(value = "expression") String expression) {
-        setKind(RouterRuleKind.EXPRESSION);
         this.expression = expression;
     }
 
@@ -80,5 +80,24 @@ public final class ExpressionRouterRuleInternal extends RouterRuleInternal {
     @Generated
     public String getExpression() {
         return this.expression;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of RouterRule
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RouterRuleKind kind = RouterRuleKind.EXPRESSION;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of RouterRule.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RouterRuleKind getKind() {
+        return this.kind;
     }
 }

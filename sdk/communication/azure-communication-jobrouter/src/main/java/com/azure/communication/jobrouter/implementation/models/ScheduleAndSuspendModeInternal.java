@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -39,7 +40,6 @@ public final class ScheduleAndSuspendModeInternal extends JobMatchingModeInterna
     @Generated
     @JsonCreator
     public ScheduleAndSuspendModeInternal(@JsonProperty(value = "scheduleAt") OffsetDateTime scheduleAt) {
-        setKind(JobMatchingModeKind.SCHEDULE_AND_SUSPEND);
         this.scheduleAt = scheduleAt;
     }
 
@@ -51,5 +51,24 @@ public final class ScheduleAndSuspendModeInternal extends JobMatchingModeInterna
     @Generated
     public OffsetDateTime getScheduleAt() {
         return this.scheduleAt;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of JobMatchingMode.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private JobMatchingModeKind kind = JobMatchingModeKind.SCHEDULE_AND_SUSPEND;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of JobMatchingMode.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public JobMatchingModeKind getKind() {
+        return this.kind;
     }
 }

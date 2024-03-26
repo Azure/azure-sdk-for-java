@@ -60,16 +60,4 @@ public class OnYourDataAuthenticationOptions {
     public OnYourDataAuthenticationType getType() {
         return this.type;
     }
-
-    /**
-     * Set the type property: The authentication type.
-     *
-     * @param type the type value to set.
-     * @return the OnYourDataAuthenticationOptions object itself.
-     */
-    @Generated
-    protected OnYourDataAuthenticationOptions setType(OnYourDataAuthenticationType type) {
-        this.type = type;
-        return this;
-    }
 }

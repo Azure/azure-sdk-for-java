@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -47,7 +48,6 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
     @JsonCreator
     public OnYourDataEndpointVectorizationSource(@JsonProperty(value = "endpoint") String endpoint,
         @JsonProperty(value = "authentication") OnYourDataAuthenticationOptions authentication) {
-        setType(OnYourDataVectorizationSourceType.ENDPOINT);
         this.endpoint = endpoint;
         this.authentication = authentication;
     }
@@ -70,5 +70,24 @@ public final class OnYourDataEndpointVectorizationSource extends OnYourDataVecto
     @Generated
     public OnYourDataAuthenticationOptions getAuthentication() {
         return this.authentication;
+    }
+
+    /*
+     * The type of vectorization source to use.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.ENDPOINT;
+
+    /**
+     * Get the type property: The type of vectorization source to use.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public OnYourDataVectorizationSourceType getType() {
+        return this.type;
     }
 }

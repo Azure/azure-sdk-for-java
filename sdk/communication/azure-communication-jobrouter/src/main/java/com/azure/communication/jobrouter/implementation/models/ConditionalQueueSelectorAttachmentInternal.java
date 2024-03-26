@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -48,7 +49,6 @@ public final class ConditionalQueueSelectorAttachmentInternal extends QueueSelec
     @JsonCreator
     public ConditionalQueueSelectorAttachmentInternal(@JsonProperty(value = "condition") RouterRuleInternal condition,
         @JsonProperty(value = "queueSelectors") List<RouterQueueSelectorInternal> queueSelectors) {
-        setKind(QueueSelectorAttachmentKind.CONDITIONAL);
         this.condition = condition;
         this.queueSelectors = queueSelectors;
     }
@@ -71,5 +71,24 @@ public final class ConditionalQueueSelectorAttachmentInternal extends QueueSelec
     @Generated
     public List<RouterQueueSelectorInternal> getQueueSelectors() {
         return this.queueSelectors;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of QueueSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.CONDITIONAL;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public QueueSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

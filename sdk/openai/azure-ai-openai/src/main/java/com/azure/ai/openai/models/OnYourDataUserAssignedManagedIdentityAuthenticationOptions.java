@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -38,7 +39,6 @@ public final class OnYourDataUserAssignedManagedIdentityAuthenticationOptions ex
     @JsonCreator
     public OnYourDataUserAssignedManagedIdentityAuthenticationOptions(
         @JsonProperty(value = "managed_identity_resource_id") String managedIdentityResourceId) {
-        setType(OnYourDataAuthenticationType.USER_ASSIGNED_MANAGED_IDENTITY);
         this.managedIdentityResourceId = managedIdentityResourceId;
     }
 
@@ -50,5 +50,24 @@ public final class OnYourDataUserAssignedManagedIdentityAuthenticationOptions ex
     @Generated
     public String getManagedIdentityResourceId() {
         return this.managedIdentityResourceId;
+    }
+
+    /*
+     * The authentication type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.USER_ASSIGNED_MANAGED_IDENTITY;
+
+    /**
+     * Get the type property: The authentication type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public OnYourDataAuthenticationType getType() {
+        return this.type;
     }
 }

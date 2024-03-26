@@ -47,16 +47,4 @@ public class ChatMessageContentItem {
     public String getType() {
         return this.type;
     }
-
-    /**
-     * Set the type property: The discriminated object type.
-     *
-     * @param type the type value to set.
-     * @return the ChatMessageContentItem object itself.
-     */
-    @Generated
-    protected ChatMessageContentItem setType(String type) {
-        this.type = type;
-        return this;
-    }
 }

@@ -20,6 +20,12 @@ import java.util.Map;
 @Immutable
 public final class DocumentModelCopyToOperationDetails extends OperationDetails {
     /*
+     * Type of operation.
+     */
+    @Generated
+    private OperationKind kind = OperationKind.DOCUMENT_MODEL_COPY_TO;
+
+    /*
      * Operation result upon success.
      */
     @Generated
@@ -37,7 +43,17 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
     private DocumentModelCopyToOperationDetails(OperationStatus status, OffsetDateTime createdDateTime,
         OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
         super(status, createdDateTime, lastUpdatedDateTime, resourceLocation);
-        setKind(OperationKind.DOCUMENT_MODEL_COPY_TO);
+    }
+
+    /**
+     * Get the kind property: Type of operation.
+     * 
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public OperationKind getKind() {
+        return this.kind;
     }
 
     /**
@@ -65,11 +81,11 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedDateTime()));
         jsonWriter.writeStringField("resourceLocation", getResourceLocation());
-        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
         jsonWriter.writeNumberField("percentCompleted", getPercentCompleted());
         jsonWriter.writeStringField("apiVersion", getApiVersion());
         jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("error", getError());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("result", this.result);
         return jsonWriter.writeEndObject();
     }
@@ -90,11 +106,11 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
             OffsetDateTime createdDateTime = null;
             OffsetDateTime lastUpdatedDateTime = null;
             String resourceLocation = null;
-            OperationKind kind = OperationKind.DOCUMENT_MODEL_COPY_TO;
             Integer percentCompleted = null;
             String apiVersion = null;
             Map<String, String> tags = null;
             Error error = null;
+            OperationKind kind = OperationKind.DOCUMENT_MODEL_COPY_TO;
             DocumentModelDetails result = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -112,8 +128,6 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
                         = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("resourceLocation".equals(fieldName)) {
                     resourceLocation = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    kind = OperationKind.fromString(reader.getString());
                 } else if ("percentCompleted".equals(fieldName)) {
                     percentCompleted = reader.getNullable(JsonReader::getInt);
                 } else if ("apiVersion".equals(fieldName)) {
@@ -122,6 +136,8 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
                     tags = reader.readMap(reader1 -> reader1.getString());
                 } else if ("error".equals(fieldName)) {
                     error = Error.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = OperationKind.fromString(reader.getString());
                 } else if ("result".equals(fieldName)) {
                     result = DocumentModelDetails.fromJson(reader);
                 } else {
@@ -132,11 +148,11 @@ public final class DocumentModelCopyToOperationDetails extends OperationDetails 
                 = new DocumentModelCopyToOperationDetails(status, createdDateTime, lastUpdatedDateTime,
                     resourceLocation);
             deserializedDocumentModelCopyToOperationDetails.setOperationId(operationId);
-            deserializedDocumentModelCopyToOperationDetails.setKind(kind);
             deserializedDocumentModelCopyToOperationDetails.setPercentCompleted(percentCompleted);
             deserializedDocumentModelCopyToOperationDetails.setApiVersion(apiVersion);
             deserializedDocumentModelCopyToOperationDetails.setTags(tags);
             deserializedDocumentModelCopyToOperationDetails.setError(error);
+            deserializedDocumentModelCopyToOperationDetails.kind = kind;
             deserializedDocumentModelCopyToOperationDetails.result = result;
 
             return deserializedDocumentModelCopyToOperationDetails;

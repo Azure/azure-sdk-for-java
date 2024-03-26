@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -33,7 +34,6 @@ public final class StopFinishDetails extends ChatFinishDetails {
     @Generated
     @JsonCreator
     private StopFinishDetails(@JsonProperty(value = "stop") String stop) {
-        setType("stop");
         this.stop = stop;
     }
 
@@ -45,5 +45,24 @@ public final class StopFinishDetails extends ChatFinishDetails {
     @Generated
     public String getStop() {
         return this.stop;
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private String type = "stop";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

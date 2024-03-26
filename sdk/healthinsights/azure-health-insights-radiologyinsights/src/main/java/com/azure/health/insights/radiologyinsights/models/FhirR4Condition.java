@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -180,7 +181,6 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     @JsonCreator
     public FhirR4Condition(@JsonProperty(value = "resourceType") String resourceType) {
         super(resourceType);
-        setResourceType("Condition");
     }
 
     /**
@@ -723,5 +723,24 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     public FhirR4Condition setLanguage(String language) {
         super.setLanguage(language);
         return this;
+    }
+
+    /*
+     * resourceType
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "resourceType")
+    private String resourceType = "Condition";
+
+    /**
+     * Get the resourceType property: resourceType.
+     *
+     * @return the resourceType value.
+     */
+    @Generated
+    @Override
+    public String getResourceType() {
+        return this.resourceType;
     }
 }

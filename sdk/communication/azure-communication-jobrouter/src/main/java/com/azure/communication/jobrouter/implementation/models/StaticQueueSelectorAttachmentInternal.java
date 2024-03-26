@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -39,7 +40,6 @@ public final class StaticQueueSelectorAttachmentInternal extends QueueSelectorAt
     @JsonCreator
     public StaticQueueSelectorAttachmentInternal(
         @JsonProperty(value = "queueSelector") RouterQueueSelectorInternal queueSelector) {
-        setKind(QueueSelectorAttachmentKind.STATIC);
         this.queueSelector = queueSelector;
     }
 
@@ -51,5 +51,24 @@ public final class StaticQueueSelectorAttachmentInternal extends QueueSelectorAt
     @Generated
     public RouterQueueSelectorInternal getQueueSelector() {
         return this.queueSelector;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of QueueSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.STATIC;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public QueueSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

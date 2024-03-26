@@ -42,18 +42,6 @@ public class RunStepDetails implements JsonSerializable<RunStepDetails> {
     }
 
     /**
-     * Set the type property: The object type.
-     *
-     * @param type the type value to set.
-     * @return the RunStepDetails object itself.
-     */
-    @Generated
-    protected RunStepDetails setType(RunStepType type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated

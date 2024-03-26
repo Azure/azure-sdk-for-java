@@ -140,16 +140,4 @@ public class DistributionModeInternal {
     public DistributionModeKind getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: The type discriminator describing a sub-type of DistributionMode.
-     *
-     * @param kind the kind value to set.
-     * @return the DistributionModeInternal object itself.
-     */
-    @Generated
-    protected DistributionModeInternal setKind(DistributionModeKind kind) {
-        this.kind = kind;
-        return this;
-    }
 }

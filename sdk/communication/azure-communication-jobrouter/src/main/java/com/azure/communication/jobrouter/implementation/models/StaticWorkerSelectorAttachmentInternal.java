@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -39,7 +40,6 @@ public final class StaticWorkerSelectorAttachmentInternal extends WorkerSelector
     @JsonCreator
     public StaticWorkerSelectorAttachmentInternal(
         @JsonProperty(value = "workerSelector") RouterWorkerSelectorInternal workerSelector) {
-        setKind(WorkerSelectorAttachmentKind.STATIC);
         this.workerSelector = workerSelector;
     }
 
@@ -51,5 +51,24 @@ public final class StaticWorkerSelectorAttachmentInternal extends WorkerSelector
     @Generated
     public RouterWorkerSelectorInternal getWorkerSelector() {
         return this.workerSelector;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.STATIC;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public WorkerSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

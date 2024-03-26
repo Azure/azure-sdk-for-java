@@ -6,6 +6,8 @@ package com.azure.communication.jobrouter.implementation.models;
 import com.azure.communication.jobrouter.models.JobMatchingModeKind;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -26,6 +28,24 @@ public final class QueueAndMatchModeInternal extends JobMatchingModeInternal {
      */
     @Generated
     public QueueAndMatchModeInternal() {
-        setKind(JobMatchingModeKind.QUEUE_AND_MATCH);
+    }
+
+    /*
+     * The type discriminator describing a sub-type of JobMatchingMode.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private JobMatchingModeKind kind = JobMatchingModeKind.QUEUE_AND_MATCH;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of JobMatchingMode.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public JobMatchingModeKind getKind() {
+        return this.kind;
     }
 }

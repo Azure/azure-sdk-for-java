@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -46,7 +47,6 @@ public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourData
     @JsonCreator
     public OnYourDataKeyAndKeyIdAuthenticationOptions(@JsonProperty(value = "key") String key,
         @JsonProperty(value = "key_id") String keyId) {
-        setType(OnYourDataAuthenticationType.KEY_AND_KEY_ID);
         this.key = key;
         this.keyId = keyId;
     }
@@ -69,5 +69,24 @@ public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourData
     @Generated
     public String getKeyId() {
         return this.keyId;
+    }
+
+    /*
+     * The authentication type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.KEY_AND_KEY_ID;
+
+    /**
+     * Get the type property: The authentication type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public OnYourDataAuthenticationType getType() {
+        return this.type;
     }
 }

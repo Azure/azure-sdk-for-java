@@ -33,7 +33,6 @@ public final class RunStepRetrievalToolCall extends RunStepToolCall {
     @Generated
     private RunStepRetrievalToolCall(String id, Map<String, String> retrieval) {
         super(id);
-        setType("retrieval");
         this.retrieval = retrieval;
     }
 
@@ -55,8 +54,8 @@ public final class RunStepRetrievalToolCall extends RunStepToolCall {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeMapField("retrieval", this.retrieval, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -72,24 +71,41 @@ public final class RunStepRetrievalToolCall extends RunStepToolCall {
     public static RunStepRetrievalToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            String type = "retrieval";
             Map<String, String> retrieval = null;
+            String type = "retrieval";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
                 } else if ("retrieval".equals(fieldName)) {
                     retrieval = reader.readMap(reader1 -> reader1.getString());
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             RunStepRetrievalToolCall deserializedRunStepRetrievalToolCall = new RunStepRetrievalToolCall(id, retrieval);
-            deserializedRunStepRetrievalToolCall.setType(type);
+            deserializedRunStepRetrievalToolCall.type = type;
             return deserializedRunStepRetrievalToolCall;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "retrieval";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

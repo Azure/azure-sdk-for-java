@@ -29,7 +29,6 @@ public final class FunctionToolDefinition extends ToolDefinition {
      */
     @Generated
     public FunctionToolDefinition(FunctionDefinition function) {
-        setType("function");
         this.function = function;
     }
 
@@ -50,8 +49,8 @@ public final class FunctionToolDefinition extends ToolDefinition {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeJsonField("function", this.function);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -66,22 +65,39 @@ public final class FunctionToolDefinition extends ToolDefinition {
     @Generated
     public static FunctionToolDefinition fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String type = "function";
             FunctionDefinition function = null;
+            String type = "function";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = reader.getString();
-                } else if ("function".equals(fieldName)) {
+                if ("function".equals(fieldName)) {
                     function = FunctionDefinition.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             FunctionToolDefinition deserializedFunctionToolDefinition = new FunctionToolDefinition(function);
-            deserializedFunctionToolDefinition.setType(type);
+            deserializedFunctionToolDefinition.type = type;
             return deserializedFunctionToolDefinition;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "function";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

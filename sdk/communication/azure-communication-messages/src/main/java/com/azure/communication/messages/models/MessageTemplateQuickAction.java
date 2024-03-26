@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -45,7 +46,6 @@ public final class MessageTemplateQuickAction extends MessageTemplateValue {
     @JsonCreator
     public MessageTemplateQuickAction(@JsonProperty(value = "name") String refValue) {
         super(refValue);
-        setKind(MessageTemplateValueKind.QUICK_ACTION);
     }
 
     /**
@@ -90,5 +90,24 @@ public final class MessageTemplateQuickAction extends MessageTemplateValue {
     public MessageTemplateQuickAction setPayload(String payload) {
         this.payload = payload;
         return this;
+    }
+
+    /*
+     * The type discriminator describing a template parameter type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private MessageTemplateValueKind kind = MessageTemplateValueKind.QUICK_ACTION;
+
+    /**
+     * Get the kind property: The type discriminator describing a template parameter type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public MessageTemplateValueKind getKind() {
+        return this.kind;
     }
 }

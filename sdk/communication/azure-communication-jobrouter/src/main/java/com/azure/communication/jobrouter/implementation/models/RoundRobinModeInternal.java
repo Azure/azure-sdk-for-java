@@ -6,6 +6,8 @@ package com.azure.communication.jobrouter.implementation.models;
 import com.azure.communication.jobrouter.models.DistributionModeKind;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -22,7 +24,6 @@ public final class RoundRobinModeInternal extends DistributionModeInternal {
      */
     @Generated
     public RoundRobinModeInternal() {
-        setKind(DistributionModeKind.ROUND_ROBIN);
     }
 
     /**
@@ -53,5 +54,24 @@ public final class RoundRobinModeInternal extends DistributionModeInternal {
     public RoundRobinModeInternal setBypassSelectors(Boolean bypassSelectors) {
         super.setBypassSelectors(bypassSelectors);
         return this;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of DistributionMode.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private DistributionModeKind kind = DistributionModeKind.ROUND_ROBIN;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of DistributionMode.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public DistributionModeKind getKind() {
+        return this.kind;
     }
 }

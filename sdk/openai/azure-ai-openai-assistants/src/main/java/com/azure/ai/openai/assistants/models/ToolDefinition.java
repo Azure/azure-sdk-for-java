@@ -42,18 +42,6 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
     }
 
     /**
-     * Set the type property: The object type.
-     *
-     * @param type the type value to set.
-     * @return the ToolDefinition object itself.
-     */
-    @Generated
-    protected ToolDefinition setType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated

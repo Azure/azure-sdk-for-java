@@ -91,16 +91,4 @@ public abstract class NotificationContent {
     public CommunicationMessageKind getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: The type discriminator describing a notification type.
-     *
-     * @param kind the kind value to set.
-     * @return the NotificationContent object itself.
-     */
-    @Generated
-    protected NotificationContent setKind(CommunicationMessageKind kind) {
-        this.kind = kind;
-        return this;
-    }
 }

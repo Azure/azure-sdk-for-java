@@ -7,6 +7,7 @@ import com.azure.communication.jobrouter.models.RouterRuleKind;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -34,7 +35,6 @@ public final class StaticRouterRuleInternal extends RouterRuleInternal {
      */
     @Generated
     public StaticRouterRuleInternal() {
-        setKind(RouterRuleKind.STATIC);
     }
 
     /**
@@ -57,5 +57,24 @@ public final class StaticRouterRuleInternal extends RouterRuleInternal {
     public StaticRouterRuleInternal setValue(Object value) {
         this.value = value;
         return this;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of RouterRule
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RouterRuleKind kind = RouterRuleKind.STATIC;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of RouterRule.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RouterRuleKind getKind() {
+        return this.kind;
     }
 }

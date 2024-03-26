@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -46,7 +47,6 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     @JsonCreator
     private ImagingProcedureRecommendation(
         @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures) {
-        setKind("imagingProcedureRecommendation");
         this.imagingProcedures = imagingProcedures;
     }
 
@@ -68,5 +68,24 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     @Generated
     public List<ImagingProcedure> getImagingProcedures() {
         return this.imagingProcedures;
+    }
+
+    /*
+     * Procedure type : generic.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private String kind = "imagingProcedureRecommendation";
+
+    /**
+     * Get the kind property: Procedure type : generic.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public String getKind() {
+        return this.kind;
     }
 }

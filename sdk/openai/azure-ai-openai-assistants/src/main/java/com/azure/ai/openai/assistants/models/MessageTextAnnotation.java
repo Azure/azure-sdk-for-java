@@ -97,18 +97,6 @@ public class MessageTextAnnotation implements JsonSerializable<MessageTextAnnota
     }
 
     /**
-     * Set the type property: The object type.
-     *
-     * @param type the type value to set.
-     * @return the MessageTextAnnotation object itself.
-     */
-    @Generated
-    protected MessageTextAnnotation setType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated

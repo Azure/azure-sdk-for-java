@@ -55,16 +55,4 @@ public class WorkerSelectorAttachmentInternal {
     public WorkerSelectorAttachmentKind getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
-     *
-     * @param kind the kind value to set.
-     * @return the WorkerSelectorAttachmentInternal object itself.
-     */
-    @Generated
-    protected WorkerSelectorAttachmentInternal setKind(WorkerSelectorAttachmentKind kind) {
-        this.kind = kind;
-        return this;
-    }
 }

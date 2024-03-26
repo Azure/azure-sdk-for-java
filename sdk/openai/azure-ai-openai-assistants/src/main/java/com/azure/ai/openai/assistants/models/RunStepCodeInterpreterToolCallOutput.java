@@ -42,18 +42,6 @@ public class RunStepCodeInterpreterToolCallOutput implements JsonSerializable<Ru
     }
 
     /**
-     * Set the type property: The object type.
-     *
-     * @param type the type value to set.
-     * @return the RunStepCodeInterpreterToolCallOutput object itself.
-     */
-    @Generated
-    protected RunStepCodeInterpreterToolCallOutput setType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated

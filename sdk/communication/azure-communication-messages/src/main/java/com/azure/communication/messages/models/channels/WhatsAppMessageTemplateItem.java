@@ -11,6 +11,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -44,7 +45,6 @@ public final class WhatsAppMessageTemplateItem extends MessageTemplateItem {
     private WhatsAppMessageTemplateItem(@JsonProperty(value = "language") String language,
         @JsonProperty(value = "status") MessageTemplateStatus status) {
         super(language, status);
-        setKind(CommunicationMessagesChannel.WHATS_APP);
     }
 
     /**
@@ -56,5 +56,24 @@ public final class WhatsAppMessageTemplateItem extends MessageTemplateItem {
     public BinaryData getContent() {
         Object returnValue = this.content;
         return BinaryData.fromObject(returnValue);
+    }
+
+    /*
+     * The type discriminator describing a template type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private CommunicationMessagesChannel kind = CommunicationMessagesChannel.WHATS_APP;
+
+    /**
+     * Get the kind property: The type discriminator describing a template type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public CommunicationMessagesChannel getKind() {
+        return this.kind;
     }
 }

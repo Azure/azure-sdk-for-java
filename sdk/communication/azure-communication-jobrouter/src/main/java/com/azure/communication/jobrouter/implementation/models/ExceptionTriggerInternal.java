@@ -51,16 +51,4 @@ public class ExceptionTriggerInternal {
     public ExceptionTriggerKind getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: The type discriminator describing a sub-type of ExceptionTrigger.
-     *
-     * @param kind the kind value to set.
-     * @return the ExceptionTriggerInternal object itself.
-     */
-    @Generated
-    protected ExceptionTriggerInternal setKind(ExceptionTriggerKind kind) {
-        this.kind = kind;
-        return this;
-    }
 }

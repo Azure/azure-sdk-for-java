@@ -9,6 +9,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -55,7 +56,6 @@ public final class PassThroughWorkerSelectorAttachmentInternal extends WorkerSel
     @JsonCreator
     public PassThroughWorkerSelectorAttachmentInternal(@JsonProperty(value = "key") String key,
         @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
-        setKind(WorkerSelectorAttachmentKind.PASS_THROUGH);
         this.key = key;
         this.labelOperator = labelOperator;
     }
@@ -100,5 +100,24 @@ public final class PassThroughWorkerSelectorAttachmentInternal extends WorkerSel
     public PassThroughWorkerSelectorAttachmentInternal setExpiresAfterSeconds(Double expiresAfterSeconds) {
         this.expiresAfterSeconds = expiresAfterSeconds;
         return this;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.PASS_THROUGH;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public WorkerSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

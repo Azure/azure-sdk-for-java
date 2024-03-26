@@ -55,16 +55,4 @@ public class QueueSelectorAttachmentInternal {
     public QueueSelectorAttachmentKind getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
-     *
-     * @param kind the kind value to set.
-     * @return the QueueSelectorAttachmentInternal object itself.
-     */
-    @Generated
-    protected QueueSelectorAttachmentInternal setKind(QueueSelectorAttachmentKind kind) {
-        this.kind = kind;
-        return this;
-    }
 }

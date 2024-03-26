@@ -41,7 +41,6 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
     @Generated
     private RequiredFunctionToolCall(String id, RequiredFunctionToolCallDetails function) {
         super(id);
-        setType("function");
         this.function = function;
     }
 
@@ -53,8 +52,8 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeJsonField("function", this.function);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -70,24 +69,41 @@ public final class RequiredFunctionToolCall extends RequiredToolCall {
     public static RequiredFunctionToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            String type = "function";
             RequiredFunctionToolCallDetails function = null;
+            String type = "function";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
                 } else if ("function".equals(fieldName)) {
                     function = RequiredFunctionToolCallDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             RequiredFunctionToolCall deserializedRequiredFunctionToolCall = new RequiredFunctionToolCall(id, function);
-            deserializedRequiredFunctionToolCall.setType(type);
+            deserializedRequiredFunctionToolCall.type = type;
             return deserializedRequiredFunctionToolCall;
         });
+    }
+
+    /*
+     * The object type for the required tool call.
+     */
+    @Generated
+    private String type = "function";
+
+    /**
+     * Get the type property: The object type for the required tool call.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

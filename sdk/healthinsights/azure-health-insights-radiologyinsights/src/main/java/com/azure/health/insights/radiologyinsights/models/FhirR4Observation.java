@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -247,7 +248,6 @@ public final class FhirR4Observation extends FhirR4DomainResource {
         @JsonProperty(value = "status") ObservationStatusCodeType status,
         @JsonProperty(value = "code") FhirR4CodeableConcept code) {
         super(resourceType);
-        setResourceType("Observation");
         this.status = status;
         this.code = code;
     }
@@ -966,5 +966,24 @@ public final class FhirR4Observation extends FhirR4DomainResource {
     public FhirR4Observation setLanguage(String language) {
         super.setLanguage(language);
         return this;
+    }
+
+    /*
+     * resourceType
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "resourceType")
+    private String resourceType = "Observation";
+
+    /**
+     * Get the resourceType property: resourceType.
+     *
+     * @return the resourceType value.
+     */
+    @Generated
+    @Override
+    public String getResourceType() {
+        return this.resourceType;
     }
 }

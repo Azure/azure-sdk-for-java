@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -45,7 +46,6 @@ public final class LateralityDiscrepancyInference extends FhirR4Extendible1 {
     @JsonCreator
     private LateralityDiscrepancyInference(
         @JsonProperty(value = "discrepancyType") LateralityDiscrepancyType discrepancyType) {
-        setKind(RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY);
         this.discrepancyType = discrepancyType;
     }
 
@@ -67,5 +67,24 @@ public final class LateralityDiscrepancyInference extends FhirR4Extendible1 {
     @Generated
     public LateralityDiscrepancyType getDiscrepancyType() {
         return this.discrepancyType;
+    }
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.LATERALITY_DISCREPANCY;
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 }

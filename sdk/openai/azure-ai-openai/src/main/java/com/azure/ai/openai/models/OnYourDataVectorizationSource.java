@@ -52,16 +52,4 @@ public class OnYourDataVectorizationSource {
     public OnYourDataVectorizationSourceType getType() {
         return this.type;
     }
-
-    /**
-     * Set the type property: The type of vectorization source to use.
-     *
-     * @param type the type value to set.
-     * @return the OnYourDataVectorizationSource object itself.
-     */
-    @Generated
-    protected OnYourDataVectorizationSource setType(OnYourDataVectorizationSourceType type) {
-        this.type = type;
-        return this;
-    }
 }

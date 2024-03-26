@@ -81,16 +81,4 @@ public class ExceptionActionInternal {
     public ExceptionActionKind getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: The type discriminator describing a sub-type of ExceptionAction.
-     *
-     * @param kind the kind value to set.
-     * @return the ExceptionActionInternal object itself.
-     */
-    @Generated
-    protected ExceptionActionInternal setKind(ExceptionActionKind kind) {
-        this.kind = kind;
-        return this;
-    }
 }

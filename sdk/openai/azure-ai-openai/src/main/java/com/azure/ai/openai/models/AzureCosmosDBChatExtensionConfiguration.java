@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -49,7 +50,27 @@ public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExte
     @JsonCreator
     public AzureCosmosDBChatExtensionConfiguration(
         @JsonProperty(value = "parameters") AzureCosmosDBChatExtensionParameters parameters) {
-        setType(AzureChatExtensionType.AZURE_COSMOS_DB);
         this.parameters = parameters;
+    }
+
+    /*
+     *   The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
+     *   Azure chat extensions are only compatible with Azure OpenAI.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private AzureChatExtensionType type = AzureChatExtensionType.AZURE_COSMOS_DB;
+
+    /**
+     * Get the type property:   The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
+     *   Azure chat extensions are only compatible with Azure OpenAI.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public AzureChatExtensionType getType() {
+        return this.type;
     }
 }

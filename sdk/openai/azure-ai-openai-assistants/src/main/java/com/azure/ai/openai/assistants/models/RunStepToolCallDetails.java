@@ -30,7 +30,6 @@ public final class RunStepToolCallDetails extends RunStepDetails {
      */
     @Generated
     private RunStepToolCallDetails(List<RunStepToolCall> toolCalls) {
-        setType(RunStepType.TOOL_CALLS);
         this.toolCalls = toolCalls;
     }
 
@@ -51,8 +50,8 @@ public final class RunStepToolCallDetails extends RunStepDetails {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType() == null ? null : getType().toString());
         jsonWriter.writeArrayField("tool_calls", this.toolCalls, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -67,22 +66,39 @@ public final class RunStepToolCallDetails extends RunStepDetails {
     @Generated
     public static RunStepToolCallDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RunStepType type = RunStepType.TOOL_CALLS;
             List<RunStepToolCall> toolCalls = null;
+            RunStepType type = RunStepType.TOOL_CALLS;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = RunStepType.fromString(reader.getString());
-                } else if ("tool_calls".equals(fieldName)) {
+                if ("tool_calls".equals(fieldName)) {
                     toolCalls = reader.readArray(reader1 -> RunStepToolCall.fromJson(reader1));
+                } else if ("type".equals(fieldName)) {
+                    type = RunStepType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             RunStepToolCallDetails deserializedRunStepToolCallDetails = new RunStepToolCallDetails(toolCalls);
-            deserializedRunStepToolCallDetails.setType(type);
+            deserializedRunStepToolCallDetails.type = type;
             return deserializedRunStepToolCallDetails;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private RunStepType type = RunStepType.TOOL_CALLS;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public RunStepType getType() {
+        return this.type;
     }
 }

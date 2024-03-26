@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -94,7 +95,6 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
         @JsonProperty(value = "isOption") boolean isOption, @JsonProperty(value = "isGuideline") boolean isGuideline,
         @JsonProperty(value = "isHedging") boolean isHedging,
         @JsonProperty(value = "recommendedProcedure") ProcedureRecommendation recommendedProcedure) {
-        setKind(RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION);
         this.isConditional = isConditional;
         this.isOption = isOption;
         this.isGuideline = isGuideline;
@@ -180,5 +180,24 @@ public final class FollowupRecommendationInference extends FhirR4Extendible1 {
     @Generated
     public ProcedureRecommendation getRecommendedProcedure() {
         return this.recommendedProcedure;
+    }
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION;
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 }

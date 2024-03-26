@@ -7,6 +7,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -45,7 +46,6 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     @Generated
     @JsonCreator
     public ChatRequestSystemMessage(@JsonProperty(value = "content") String content) {
-        setRole(ChatRole.SYSTEM);
         this.content = content;
     }
 
@@ -79,5 +79,24 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     public ChatRequestSystemMessage setName(String name) {
         this.name = name;
         return this;
+    }
+
+    /*
+     * The chat role associated with this message.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "role")
+    private ChatRole role = ChatRole.SYSTEM;
+
+    /**
+     * Get the role property: The chat role associated with this message.
+     *
+     * @return the role value.
+     */
+    @Generated
+    @Override
+    public ChatRole getRole() {
+        return this.role;
     }
 }

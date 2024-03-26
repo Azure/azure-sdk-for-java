@@ -42,18 +42,6 @@ public class RequiredAction implements JsonSerializable<RequiredAction> {
     }
 
     /**
-     * Set the type property: The object type.
-     *
-     * @param type the type value to set.
-     * @return the RequiredAction object itself.
-     */
-    @Generated
-    protected RequiredAction setType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated

@@ -29,7 +29,6 @@ public final class SubmitToolOutputsAction extends RequiredAction {
      */
     @Generated
     private SubmitToolOutputsAction(SubmitToolOutputsDetails submitToolOutputs) {
-        setType("submit_tool_outputs");
         this.submitToolOutputs = submitToolOutputs;
     }
 
@@ -50,8 +49,8 @@ public final class SubmitToolOutputsAction extends RequiredAction {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeJsonField("submit_tool_outputs", this.submitToolOutputs);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -66,23 +65,40 @@ public final class SubmitToolOutputsAction extends RequiredAction {
     @Generated
     public static SubmitToolOutputsAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String type = "submit_tool_outputs";
             SubmitToolOutputsDetails submitToolOutputs = null;
+            String type = "submit_tool_outputs";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = reader.getString();
-                } else if ("submit_tool_outputs".equals(fieldName)) {
+                if ("submit_tool_outputs".equals(fieldName)) {
                     submitToolOutputs = SubmitToolOutputsDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             SubmitToolOutputsAction deserializedSubmitToolOutputsAction
                 = new SubmitToolOutputsAction(submitToolOutputs);
-            deserializedSubmitToolOutputsAction.setType(type);
+            deserializedSubmitToolOutputsAction.type = type;
             return deserializedSubmitToolOutputsAction;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "submit_tool_outputs";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

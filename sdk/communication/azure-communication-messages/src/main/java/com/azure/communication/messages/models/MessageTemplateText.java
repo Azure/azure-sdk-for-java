@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -36,7 +37,6 @@ public final class MessageTemplateText extends MessageTemplateValue {
     public MessageTemplateText(@JsonProperty(value = "name") String refValue,
         @JsonProperty(value = "text") String text) {
         super(refValue);
-        setKind(MessageTemplateValueKind.TEXT);
         this.text = text;
     }
 
@@ -48,5 +48,24 @@ public final class MessageTemplateText extends MessageTemplateValue {
     @Generated
     public String getText() {
         return this.text;
+    }
+
+    /*
+     * The type discriminator describing a template parameter type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private MessageTemplateValueKind kind = MessageTemplateValueKind.TEXT;
+
+    /**
+     * Get the kind property: The type discriminator describing a template parameter type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public MessageTemplateValueKind getKind() {
+        return this.kind;
     }
 }

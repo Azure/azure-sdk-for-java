@@ -6,6 +6,7 @@ package com.azure.communication.jobrouter.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -40,7 +41,6 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
      */
     @Generated
     public CancelExceptionActionInternal() {
-        setKind(ExceptionActionKind.CANCEL);
     }
 
     /**
@@ -95,5 +95,24 @@ public final class CancelExceptionActionInternal extends ExceptionActionInternal
     public CancelExceptionActionInternal setId(String id) {
         super.setId(id);
         return this;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of ExceptionAction.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private ExceptionActionKind kind = ExceptionActionKind.CANCEL;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of ExceptionAction.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public ExceptionActionKind getKind() {
+        return this.kind;
     }
 }

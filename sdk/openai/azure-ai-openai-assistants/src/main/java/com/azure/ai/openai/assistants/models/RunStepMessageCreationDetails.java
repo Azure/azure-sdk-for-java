@@ -29,7 +29,6 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
      */
     @Generated
     private RunStepMessageCreationDetails(RunStepMessageCreationReference messageCreation) {
-        setType(RunStepType.MESSAGE_CREATION);
         this.messageCreation = messageCreation;
     }
 
@@ -50,8 +49,8 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType() == null ? null : getType().toString());
         jsonWriter.writeJsonField("message_creation", this.messageCreation);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -66,23 +65,40 @@ public final class RunStepMessageCreationDetails extends RunStepDetails {
     @Generated
     public static RunStepMessageCreationDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            RunStepType type = RunStepType.MESSAGE_CREATION;
             RunStepMessageCreationReference messageCreation = null;
+            RunStepType type = RunStepType.MESSAGE_CREATION;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = RunStepType.fromString(reader.getString());
-                } else if ("message_creation".equals(fieldName)) {
+                if ("message_creation".equals(fieldName)) {
                     messageCreation = RunStepMessageCreationReference.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = RunStepType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             RunStepMessageCreationDetails deserializedRunStepMessageCreationDetails
                 = new RunStepMessageCreationDetails(messageCreation);
-            deserializedRunStepMessageCreationDetails.setType(type);
+            deserializedRunStepMessageCreationDetails.type = type;
             return deserializedRunStepMessageCreationDetails;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private RunStepType type = RunStepType.MESSAGE_CREATION;
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public RunStepType getType() {
+        return this.type;
     }
 }

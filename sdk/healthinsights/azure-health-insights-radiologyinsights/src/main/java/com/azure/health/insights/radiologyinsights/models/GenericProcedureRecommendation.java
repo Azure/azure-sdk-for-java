@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -44,7 +45,6 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     @Generated
     @JsonCreator
     private GenericProcedureRecommendation(@JsonProperty(value = "code") FhirR4CodeableConcept code) {
-        setKind("genericProcedureRecommendation");
         this.code = code;
     }
 
@@ -66,5 +66,24 @@ public final class GenericProcedureRecommendation extends ProcedureRecommendatio
     @Generated
     public String getDescription() {
         return this.description;
+    }
+
+    /*
+     * Procedure type : generic.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private String kind = "genericProcedureRecommendation";
+
+    /**
+     * Get the kind property: Procedure type : generic.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public String getKind() {
+        return this.kind;
     }
 }

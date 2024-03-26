@@ -34,7 +34,6 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
     private MessageTextFilePathAnnotation(String text, int startIndex, int endIndex,
         MessageTextFilePathDetails filePath) {
         super(text, startIndex, endIndex);
-        setType("file_path");
         this.filePath = filePath;
     }
 
@@ -58,8 +57,8 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
         jsonWriter.writeStringField("text", getText());
         jsonWriter.writeIntField("start_index", getStartIndex());
         jsonWriter.writeIntField("end_index", getEndIndex());
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeJsonField("file_path", this.filePath);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -77,8 +76,8 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
             String text = null;
             int startIndex = 0;
             int endIndex = 0;
-            String type = "file_path";
             MessageTextFilePathDetails filePath = null;
+            String type = "file_path";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -88,18 +87,35 @@ public final class MessageTextFilePathAnnotation extends MessageTextAnnotation {
                     startIndex = reader.getInt();
                 } else if ("end_index".equals(fieldName)) {
                     endIndex = reader.getInt();
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
                 } else if ("file_path".equals(fieldName)) {
                     filePath = MessageTextFilePathDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             MessageTextFilePathAnnotation deserializedMessageTextFilePathAnnotation
                 = new MessageTextFilePathAnnotation(text, startIndex, endIndex, filePath);
-            deserializedMessageTextFilePathAnnotation.setType(type);
+            deserializedMessageTextFilePathAnnotation.type = type;
             return deserializedMessageTextFilePathAnnotation;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "file_path";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

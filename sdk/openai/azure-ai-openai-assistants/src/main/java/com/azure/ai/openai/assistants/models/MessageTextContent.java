@@ -29,7 +29,6 @@ public final class MessageTextContent extends MessageContent {
      */
     @Generated
     private MessageTextContent(MessageTextDetails text) {
-        setType("text");
         this.text = text;
     }
 
@@ -50,8 +49,8 @@ public final class MessageTextContent extends MessageContent {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeJsonField("text", this.text);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -66,22 +65,39 @@ public final class MessageTextContent extends MessageContent {
     @Generated
     public static MessageTextContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String type = "text";
             MessageTextDetails text = null;
+            String type = "text";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = reader.getString();
-                } else if ("text".equals(fieldName)) {
+                if ("text".equals(fieldName)) {
                     text = MessageTextDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             MessageTextContent deserializedMessageTextContent = new MessageTextContent(text);
-            deserializedMessageTextContent.setType(type);
+            deserializedMessageTextContent.type = type;
             return deserializedMessageTextContent;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "text";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

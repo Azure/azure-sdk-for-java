@@ -50,16 +50,4 @@ public class ChatRequestMessage {
     public ChatRole getRole() {
         return this.role;
     }
-
-    /**
-     * Set the role property: The chat role associated with this message.
-     *
-     * @param role the role value to set.
-     * @return the ChatRequestMessage object itself.
-     */
-    @Generated
-    protected ChatRequestMessage setRole(ChatRole role) {
-        this.role = role;
-        return this;
-    }
 }

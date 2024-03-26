@@ -29,7 +29,6 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
      */
     @Generated
     private RunStepCodeInterpreterLogOutput(String logs) {
-        setType("logs");
         this.logs = logs;
     }
 
@@ -50,8 +49,8 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeStringField("logs", this.logs);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -66,23 +65,40 @@ public final class RunStepCodeInterpreterLogOutput extends RunStepCodeInterprete
     @Generated
     public static RunStepCodeInterpreterLogOutput fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String type = "logs";
             String logs = null;
+            String type = "logs";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = reader.getString();
-                } else if ("logs".equals(fieldName)) {
+                if ("logs".equals(fieldName)) {
                     logs = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             RunStepCodeInterpreterLogOutput deserializedRunStepCodeInterpreterLogOutput
                 = new RunStepCodeInterpreterLogOutput(logs);
-            deserializedRunStepCodeInterpreterLogOutput.setType(type);
+            deserializedRunStepCodeInterpreterLogOutput.type = type;
             return deserializedRunStepCodeInterpreterLogOutput;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "logs";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

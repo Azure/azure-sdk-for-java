@@ -32,7 +32,6 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
     @Generated
     private RunStepCodeInterpreterToolCall(String id, RunStepCodeInterpreterToolCallDetails codeInterpreter) {
         super(id);
-        setType("code_interpreter");
         this.codeInterpreter = codeInterpreter;
     }
 
@@ -54,8 +53,8 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeJsonField("code_interpreter", this.codeInterpreter);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -71,25 +70,42 @@ public final class RunStepCodeInterpreterToolCall extends RunStepToolCall {
     public static RunStepCodeInterpreterToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            String type = "code_interpreter";
             RunStepCodeInterpreterToolCallDetails codeInterpreter = null;
+            String type = "code_interpreter";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
                 } else if ("code_interpreter".equals(fieldName)) {
                     codeInterpreter = RunStepCodeInterpreterToolCallDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             RunStepCodeInterpreterToolCall deserializedRunStepCodeInterpreterToolCall
                 = new RunStepCodeInterpreterToolCall(id, codeInterpreter);
-            deserializedRunStepCodeInterpreterToolCall.setType(type);
+            deserializedRunStepCodeInterpreterToolCall.type = type;
             return deserializedRunStepCodeInterpreterToolCall;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "code_interpreter";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

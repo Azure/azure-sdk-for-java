@@ -56,16 +56,4 @@ public class JobMatchingModeInternal {
     public JobMatchingModeKind getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: The type discriminator describing a sub-type of JobMatchingMode.
-     *
-     * @param kind the kind value to set.
-     * @return the JobMatchingModeInternal object itself.
-     */
-    @Generated
-    protected JobMatchingModeInternal setKind(JobMatchingModeKind kind) {
-        this.kind = kind;
-        return this;
-    }
 }

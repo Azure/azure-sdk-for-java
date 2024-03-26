@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -37,7 +38,6 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
     @Generated
     @JsonCreator
     public ChatMessageImageContentItem(@JsonProperty(value = "image_url") ChatMessageImageUrl imageUrl) {
-        setType("image_url");
         this.imageUrl = imageUrl;
     }
 
@@ -49,5 +49,24 @@ public final class ChatMessageImageContentItem extends ChatMessageContentItem {
     @Generated
     public ChatMessageImageUrl getImageUrl() {
         return this.imageUrl;
+    }
+
+    /*
+     * The discriminated object type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private String type = "image_url";
+
+    /**
+     * Get the type property: The discriminated object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

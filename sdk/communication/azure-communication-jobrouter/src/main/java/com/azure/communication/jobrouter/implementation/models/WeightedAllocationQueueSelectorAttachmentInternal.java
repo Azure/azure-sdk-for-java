@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -40,7 +41,6 @@ public final class WeightedAllocationQueueSelectorAttachmentInternal extends Que
     @JsonCreator
     public WeightedAllocationQueueSelectorAttachmentInternal(
         @JsonProperty(value = "allocations") List<QueueWeightedAllocationInternal> allocations) {
-        setKind(QueueSelectorAttachmentKind.WEIGHTED_ALLOCATION);
         this.allocations = allocations;
     }
 
@@ -52,5 +52,24 @@ public final class WeightedAllocationQueueSelectorAttachmentInternal extends Que
     @Generated
     public List<QueueWeightedAllocationInternal> getAllocations() {
         return this.allocations;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of QueueSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.WEIGHTED_ALLOCATION;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public QueueSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

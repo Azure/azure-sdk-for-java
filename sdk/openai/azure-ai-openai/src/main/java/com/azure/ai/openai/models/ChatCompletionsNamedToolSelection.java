@@ -49,16 +49,4 @@ public class ChatCompletionsNamedToolSelection {
     public String getType() {
         return this.type;
     }
-
-    /**
-     * Set the type property: The object type.
-     *
-     * @param type the type value to set.
-     * @return the ChatCompletionsNamedToolSelection object itself.
-     */
-    @Generated
-    protected ChatCompletionsNamedToolSelection setType(String type) {
-        this.type = type;
-        return this;
-    }
 }

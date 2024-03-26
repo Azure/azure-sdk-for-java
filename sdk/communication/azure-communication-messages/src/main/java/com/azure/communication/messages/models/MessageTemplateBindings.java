@@ -50,16 +50,4 @@ public class MessageTemplateBindings {
     public MessageTemplateBindingsKind getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: The type discriminator describing a template bindings type.
-     *
-     * @param kind the kind value to set.
-     * @return the MessageTemplateBindings object itself.
-     */
-    @Generated
-    protected MessageTemplateBindings setKind(MessageTemplateBindingsKind kind) {
-        this.kind = kind;
-        return this;
-    }
 }

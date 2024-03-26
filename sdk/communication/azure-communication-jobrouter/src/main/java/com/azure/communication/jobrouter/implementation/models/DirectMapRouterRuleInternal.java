@@ -6,6 +6,8 @@ package com.azure.communication.jobrouter.implementation.models;
 import com.azure.communication.jobrouter.models.RouterRuleKind;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -26,6 +28,24 @@ public final class DirectMapRouterRuleInternal extends RouterRuleInternal {
      */
     @Generated
     public DirectMapRouterRuleInternal() {
-        setKind(RouterRuleKind.DIRECT_MAP);
+    }
+
+    /*
+     * The type discriminator describing a sub-type of RouterRule
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RouterRuleKind kind = RouterRuleKind.DIRECT_MAP;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of RouterRule.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RouterRuleKind getKind() {
+        return this.kind;
     }
 }

@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -38,7 +39,6 @@ public final class OnYourDataConnectionStringAuthenticationOptions extends OnYou
     @JsonCreator
     public OnYourDataConnectionStringAuthenticationOptions(
         @JsonProperty(value = "connection_string") String connectionString) {
-        setType(OnYourDataAuthenticationType.CONNECTION_STRING);
         this.connectionString = connectionString;
     }
 
@@ -50,5 +50,24 @@ public final class OnYourDataConnectionStringAuthenticationOptions extends OnYou
     @Generated
     public String getConnectionString() {
         return this.connectionString;
+    }
+
+    /*
+     * The authentication type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.CONNECTION_STRING;
+
+    /**
+     * Get the type property: The authentication type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public OnYourDataAuthenticationType getType() {
+        return this.type;
     }
 }

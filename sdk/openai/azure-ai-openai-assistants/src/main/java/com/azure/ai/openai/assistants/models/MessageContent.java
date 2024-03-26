@@ -42,18 +42,6 @@ public class MessageContent implements JsonSerializable<MessageContent> {
     }
 
     /**
-     * Set the type property: The object type.
-     *
-     * @param type the type value to set.
-     * @return the MessageContent object itself.
-     */
-    @Generated
-    protected MessageContent setType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated

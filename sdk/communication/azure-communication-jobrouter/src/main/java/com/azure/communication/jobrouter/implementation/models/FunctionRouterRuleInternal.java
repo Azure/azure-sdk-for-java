@@ -9,6 +9,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -46,7 +47,6 @@ public final class FunctionRouterRuleInternal extends RouterRuleInternal {
     @Generated
     @JsonCreator
     public FunctionRouterRuleInternal(@JsonProperty(value = "functionUri") String functionUri) {
-        setKind(RouterRuleKind.FUNCTION);
         this.functionUri = functionUri;
     }
 
@@ -80,5 +80,24 @@ public final class FunctionRouterRuleInternal extends RouterRuleInternal {
     public FunctionRouterRuleInternal setCredential(FunctionRouterRuleCredential credential) {
         this.credential = credential;
         return this;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of RouterRule
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RouterRuleKind kind = RouterRuleKind.FUNCTION;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of RouterRule.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RouterRuleKind getKind() {
+        return this.kind;
     }
 }

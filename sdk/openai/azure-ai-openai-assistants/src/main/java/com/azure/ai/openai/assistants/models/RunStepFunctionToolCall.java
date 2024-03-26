@@ -32,7 +32,6 @@ public final class RunStepFunctionToolCall extends RunStepToolCall {
     @Generated
     private RunStepFunctionToolCall(String id, RunStepFunctionToolCallDetails function) {
         super(id);
-        setType("function");
         this.function = function;
     }
 
@@ -54,8 +53,8 @@ public final class RunStepFunctionToolCall extends RunStepToolCall {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("id", getId());
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeJsonField("function", this.function);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -71,24 +70,41 @@ public final class RunStepFunctionToolCall extends RunStepToolCall {
     public static RunStepFunctionToolCall fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            String type = "function";
             RunStepFunctionToolCallDetails function = null;
+            String type = "function";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
                 } else if ("function".equals(fieldName)) {
                     function = RunStepFunctionToolCallDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             RunStepFunctionToolCall deserializedRunStepFunctionToolCall = new RunStepFunctionToolCall(id, function);
-            deserializedRunStepFunctionToolCall.setType(type);
+            deserializedRunStepFunctionToolCall.type = type;
             return deserializedRunStepFunctionToolCall;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "function";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

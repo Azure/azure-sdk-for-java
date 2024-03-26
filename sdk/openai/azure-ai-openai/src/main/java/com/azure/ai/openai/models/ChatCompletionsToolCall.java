@@ -64,16 +64,4 @@ public class ChatCompletionsToolCall {
         this.id = id;
         this.type = type;
     }
-
-    /**
-     * Set the type property: The object type.
-     *
-     * @param type the type value to set.
-     * @return the ChatCompletionsToolCall object itself.
-     */
-    @Generated
-    protected ChatCompletionsToolCall setType(String type) {
-        this.type = type;
-        return this;
-    }
 }

@@ -9,6 +9,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -48,7 +49,6 @@ public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelec
     @JsonCreator
     public PassThroughQueueSelectorAttachmentInternal(@JsonProperty(value = "key") String key,
         @JsonProperty(value = "labelOperator") LabelOperator labelOperator) {
-        setKind(QueueSelectorAttachmentKind.PASS_THROUGH);
         this.key = key;
         this.labelOperator = labelOperator;
     }
@@ -71,5 +71,24 @@ public final class PassThroughQueueSelectorAttachmentInternal extends QueueSelec
     @Generated
     public LabelOperator getLabelOperator() {
         return this.labelOperator;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of QueueSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.PASS_THROUGH;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public QueueSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

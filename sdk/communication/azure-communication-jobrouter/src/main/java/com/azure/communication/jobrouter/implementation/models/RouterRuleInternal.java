@@ -56,16 +56,4 @@ public class RouterRuleInternal {
     public RouterRuleKind getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: The type discriminator describing a sub-type of RouterRule.
-     *
-     * @param kind the kind value to set.
-     * @return the RouterRuleInternal object itself.
-     */
-    @Generated
-    protected RouterRuleInternal setKind(RouterRuleKind kind) {
-        this.kind = kind;
-        return this;
-    }
 }

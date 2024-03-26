@@ -61,18 +61,6 @@ public class RequiredToolCall implements JsonSerializable<RequiredToolCall> {
     }
 
     /**
-     * Set the type property: The object type for the required tool call.
-     *
-     * @param type the type value to set.
-     * @return the RequiredToolCall object itself.
-     */
-    @Generated
-    protected RequiredToolCall setType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated

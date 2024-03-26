@@ -51,16 +51,4 @@ public class ProcedureRecommendation {
     public String getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: Procedure type : generic.
-     *
-     * @param kind the kind value to set.
-     * @return the ProcedureRecommendation object itself.
-     */
-    @Generated
-    protected ProcedureRecommendation setKind(String kind) {
-        this.kind = kind;
-        return this;
-    }
 }

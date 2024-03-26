@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -46,7 +47,6 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
     @JsonCreator
     public ChatRequestFunctionMessage(@JsonProperty(value = "name") String name,
         @JsonProperty(value = "content") String content) {
-        setRole(ChatRole.FUNCTION);
         this.name = name;
         this.content = content;
     }
@@ -69,5 +69,24 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
     @Generated
     public String getContent() {
         return this.content;
+    }
+
+    /*
+     * The chat role associated with this message.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "role")
+    private ChatRole role = ChatRole.FUNCTION;
+
+    /**
+     * Get the role property: The chat role associated with this message.
+     *
+     * @return the role value.
+     */
+    @Generated
+    @Override
+    public ChatRole getRole() {
+        return this.role;
     }
 }

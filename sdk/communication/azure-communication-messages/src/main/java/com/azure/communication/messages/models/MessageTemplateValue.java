@@ -73,16 +73,4 @@ public abstract class MessageTemplateValue {
     public MessageTemplateValueKind getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: The type discriminator describing a template parameter type.
-     *
-     * @param kind the kind value to set.
-     * @return the MessageTemplateValue object itself.
-     */
-    @Generated
-    protected MessageTemplateValue setKind(MessageTemplateValueKind kind) {
-        this.kind = kind;
-        return this;
-    }
 }

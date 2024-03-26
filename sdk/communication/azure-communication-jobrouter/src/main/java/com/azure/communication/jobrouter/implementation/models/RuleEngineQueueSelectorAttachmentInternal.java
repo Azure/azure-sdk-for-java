@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -38,7 +39,6 @@ public final class RuleEngineQueueSelectorAttachmentInternal extends QueueSelect
     @Generated
     @JsonCreator
     public RuleEngineQueueSelectorAttachmentInternal(@JsonProperty(value = "rule") RouterRuleInternal rule) {
-        setKind(QueueSelectorAttachmentKind.RULE_ENGINE);
         this.rule = rule;
     }
 
@@ -50,5 +50,24 @@ public final class RuleEngineQueueSelectorAttachmentInternal extends QueueSelect
     @Generated
     public RouterRuleInternal getRule() {
         return this.rule;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of QueueSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private QueueSelectorAttachmentKind kind = QueueSelectorAttachmentKind.RULE_ENGINE;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of QueueSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public QueueSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

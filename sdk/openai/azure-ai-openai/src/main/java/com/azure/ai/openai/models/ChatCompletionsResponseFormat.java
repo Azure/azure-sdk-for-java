@@ -52,16 +52,4 @@ public class ChatCompletionsResponseFormat {
     public String getType() {
         return this.type;
     }
-
-    /**
-     * Set the type property: The discriminated type for the response format.
-     *
-     * @param type the type value to set.
-     * @return the ChatCompletionsResponseFormat object itself.
-     */
-    @Generated
-    protected ChatCompletionsResponseFormat setType(String type) {
-        this.type = type;
-        return this;
-    }
 }

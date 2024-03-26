@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -33,7 +34,6 @@ public final class FindingInference extends FhirR4Extendible1 {
     @Generated
     @JsonCreator
     private FindingInference(@JsonProperty(value = "finding") FhirR4Observation finding) {
-        setKind(RadiologyInsightsInferenceType.FINDING);
         this.finding = finding;
     }
 
@@ -45,5 +45,24 @@ public final class FindingInference extends FhirR4Extendible1 {
     @Generated
     public FhirR4Observation getFinding() {
         return this.finding;
+    }
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FINDING;
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 }

@@ -61,18 +61,6 @@ public class RunStepToolCall implements JsonSerializable<RunStepToolCall> {
     }
 
     /**
-     * Set the type property: The object type.
-     *
-     * @param type the type value to set.
-     * @return the RunStepToolCall object itself.
-     */
-    @Generated
-    protected RunStepToolCall setType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * {@inheritDoc}
      */
     @Generated

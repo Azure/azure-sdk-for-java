@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -37,7 +38,6 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
     @Generated
     @JsonCreator
     public ChatCompletionsFunctionToolDefinition(@JsonProperty(value = "function") FunctionDefinition function) {
-        setType("function");
         this.function = function;
     }
 
@@ -49,5 +49,24 @@ public final class ChatCompletionsFunctionToolDefinition extends ChatCompletions
     @Generated
     public FunctionDefinition getFunction() {
         return this.function;
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private String type = "function";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

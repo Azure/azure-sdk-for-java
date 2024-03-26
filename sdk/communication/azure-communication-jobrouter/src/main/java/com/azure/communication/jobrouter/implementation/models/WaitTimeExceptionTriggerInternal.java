@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -37,7 +38,6 @@ public final class WaitTimeExceptionTriggerInternal extends ExceptionTriggerInte
     @Generated
     @JsonCreator
     public WaitTimeExceptionTriggerInternal(@JsonProperty(value = "thresholdSeconds") double thresholdSeconds) {
-        setKind(ExceptionTriggerKind.WAIT_TIME);
         this.thresholdSeconds = thresholdSeconds;
     }
 
@@ -49,5 +49,24 @@ public final class WaitTimeExceptionTriggerInternal extends ExceptionTriggerInte
     @Generated
     public double getThresholdSeconds() {
         return this.thresholdSeconds;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of ExceptionTrigger.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private ExceptionTriggerKind kind = ExceptionTriggerKind.WAIT_TIME;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of ExceptionTrigger.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public ExceptionTriggerKind getKind() {
+        return this.kind;
     }
 }

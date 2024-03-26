@@ -8,6 +8,7 @@ import com.azure.communication.jobrouter.models.ScoringRuleOptions;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -38,7 +39,6 @@ public final class BestWorkerModeInternal extends DistributionModeInternal {
      */
     @Generated
     public BestWorkerModeInternal() {
-        setKind(DistributionModeKind.BEST_WORKER);
     }
 
     /**
@@ -113,5 +113,24 @@ public final class BestWorkerModeInternal extends DistributionModeInternal {
     public BestWorkerModeInternal setBypassSelectors(Boolean bypassSelectors) {
         super.setBypassSelectors(bypassSelectors);
         return this;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of DistributionMode.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private DistributionModeKind kind = DistributionModeKind.BEST_WORKER;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of DistributionMode.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public DistributionModeKind getKind() {
+        return this.kind;
     }
 }

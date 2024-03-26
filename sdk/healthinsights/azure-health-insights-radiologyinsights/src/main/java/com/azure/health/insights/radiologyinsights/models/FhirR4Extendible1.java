@@ -83,16 +83,4 @@ public class FhirR4Extendible1 {
     public RadiologyInsightsInferenceType getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: Inference type.
-     *
-     * @param kind the kind value to set.
-     * @return the FhirR4Extendible1 object itself.
-     */
-    @Generated
-    protected FhirR4Extendible1 setKind(RadiologyInsightsInferenceType kind) {
-        this.kind = kind;
-        return this;
-    }
 }

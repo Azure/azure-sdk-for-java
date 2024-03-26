@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -42,7 +43,6 @@ public final class TemplateNotificationContent extends NotificationContent {
     public TemplateNotificationContent(@JsonProperty(value = "channelRegistrationId") String channelRegistrationId,
         @JsonProperty(value = "to") List<String> to, @JsonProperty(value = "template") MessageTemplate template) {
         super(channelRegistrationId, to);
-        setKind(CommunicationMessageKind.TEMPLATE);
         this.template = template;
     }
 
@@ -54,5 +54,24 @@ public final class TemplateNotificationContent extends NotificationContent {
     @Generated
     public MessageTemplate getTemplate() {
         return this.template;
+    }
+
+    /*
+     * The type discriminator describing a notification type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private CommunicationMessageKind kind = CommunicationMessageKind.TEMPLATE;
+
+    /**
+     * Get the kind property: The type discriminator describing a notification type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public CommunicationMessageKind getKind() {
+        return this.kind;
     }
 }

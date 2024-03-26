@@ -5,6 +5,8 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -25,6 +27,24 @@ public final class ChatCompletionsJsonResponseFormat extends ChatCompletionsResp
      */
     @Generated
     public ChatCompletionsJsonResponseFormat() {
-        setType("json_object");
+    }
+
+    /*
+     * The discriminated type for the response format.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private String type = "json_object";
+
+    /**
+     * Get the type property: The discriminated type for the response format.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

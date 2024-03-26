@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -42,7 +43,6 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     @JsonCreator
     public ChatRequestToolMessage(@JsonProperty(value = "content") String content,
         @JsonProperty(value = "tool_call_id") String toolCallId) {
-        setRole(ChatRole.TOOL);
         this.content = content;
         this.toolCallId = toolCallId;
     }
@@ -65,5 +65,24 @@ public final class ChatRequestToolMessage extends ChatRequestMessage {
     @Generated
     public String getToolCallId() {
         return this.toolCallId;
+    }
+
+    /*
+     * The chat role associated with this message.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "role")
+    private ChatRole role = ChatRole.TOOL;
+
+    /**
+     * Get the role property: The chat role associated with this message.
+     *
+     * @return the role value.
+     */
+    @Generated
+    @Override
+    public ChatRole getRole() {
+        return this.role;
     }
 }

@@ -105,16 +105,4 @@ public abstract class MessageTemplateItem {
     public CommunicationMessagesChannel getKind() {
         return this.kind;
     }
-
-    /**
-     * Set the kind property: The type discriminator describing a template type.
-     *
-     * @param kind the kind value to set.
-     * @return the MessageTemplateItem object itself.
-     */
-    @Generated
-    protected MessageTemplateItem setKind(CommunicationMessagesChannel kind) {
-        this.kind = kind;
-        return this;
-    }
 }

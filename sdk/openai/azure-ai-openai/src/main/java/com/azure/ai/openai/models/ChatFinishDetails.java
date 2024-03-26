@@ -47,16 +47,4 @@ public class ChatFinishDetails {
     public String getType() {
         return this.type;
     }
-
-    /**
-     * Set the type property: The object type.
-     *
-     * @param type the type value to set.
-     * @return the ChatFinishDetails object itself.
-     */
-    @Generated
-    protected ChatFinishDetails setType(String type) {
-        this.type = type;
-        return this;
-    }
 }

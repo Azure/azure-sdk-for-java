@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -38,7 +39,6 @@ public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDat
     @Generated
     @JsonCreator
     public OnYourDataDeploymentNameVectorizationSource(@JsonProperty(value = "deployment_name") String deploymentName) {
-        setType(OnYourDataVectorizationSourceType.DEPLOYMENT_NAME);
         this.deploymentName = deploymentName;
     }
 
@@ -50,5 +50,24 @@ public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDat
     @Generated
     public String getDeploymentName() {
         return this.deploymentName;
+    }
+
+    /*
+     * The type of vectorization source to use.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.DEPLOYMENT_NAME;
+
+    /**
+     * Get the type property: The type of vectorization source to use.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public OnYourDataVectorizationSourceType getType() {
+        return this.type;
     }
 }

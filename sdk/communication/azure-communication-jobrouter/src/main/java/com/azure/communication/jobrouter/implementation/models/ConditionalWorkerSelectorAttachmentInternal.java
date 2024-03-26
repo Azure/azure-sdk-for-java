@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -48,7 +49,6 @@ public final class ConditionalWorkerSelectorAttachmentInternal extends WorkerSel
     @JsonCreator
     public ConditionalWorkerSelectorAttachmentInternal(@JsonProperty(value = "condition") RouterRuleInternal condition,
         @JsonProperty(value = "workerSelectors") List<RouterWorkerSelectorInternal> workerSelectors) {
-        setKind(WorkerSelectorAttachmentKind.CONDITIONAL);
         this.condition = condition;
         this.workerSelectors = workerSelectors;
     }
@@ -71,5 +71,24 @@ public final class ConditionalWorkerSelectorAttachmentInternal extends WorkerSel
     @Generated
     public List<RouterWorkerSelectorInternal> getWorkerSelectors() {
         return this.workerSelectors;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.CONDITIONAL;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public WorkerSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

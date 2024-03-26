@@ -49,16 +49,4 @@ public class ChatCompletionsToolDefinition {
     public String getType() {
         return this.type;
     }
-
-    /**
-     * Set the type property: The object type.
-     *
-     * @param type the type value to set.
-     * @return the ChatCompletionsToolDefinition object itself.
-     */
-    @Generated
-    protected ChatCompletionsToolDefinition setType(String type) {
-        this.type = type;
-        return this;
-    }
 }

@@ -8,6 +8,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
@@ -40,7 +41,6 @@ public final class WeightedAllocationWorkerSelectorAttachmentInternal extends Wo
     @JsonCreator
     public WeightedAllocationWorkerSelectorAttachmentInternal(
         @JsonProperty(value = "allocations") List<WorkerWeightedAllocationInternal> allocations) {
-        setKind(WorkerSelectorAttachmentKind.WEIGHTED_ALLOCATION);
         this.allocations = allocations;
     }
 
@@ -52,5 +52,24 @@ public final class WeightedAllocationWorkerSelectorAttachmentInternal extends Wo
     @Generated
     public List<WorkerWeightedAllocationInternal> getAllocations() {
         return this.allocations;
+    }
+
+    /*
+     * The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private WorkerSelectorAttachmentKind kind = WorkerSelectorAttachmentKind.WEIGHTED_ALLOCATION;
+
+    /**
+     * Get the kind property: The type discriminator describing a sub-type of WorkerSelectorAttachment.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public WorkerSelectorAttachmentKind getKind() {
+        return this.kind;
     }
 }

@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -53,7 +54,6 @@ public final class FollowupCommunicationInference extends FhirR4Extendible1 {
     @Generated
     @JsonCreator
     private FollowupCommunicationInference(@JsonProperty(value = "wasAcknowledged") boolean wasAcknowledged) {
-        setKind(RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION);
         this.wasAcknowledged = wasAcknowledged;
     }
 
@@ -85,5 +85,24 @@ public final class FollowupCommunicationInference extends FhirR4Extendible1 {
     @Generated
     public boolean isWasAcknowledged() {
         return this.wasAcknowledged;
+    }
+
+    /*
+     * Inference type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "kind")
+    private RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION;
+
+    /**
+     * Get the kind property: Inference type.
+     *
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public RadiologyInsightsInferenceType getKind() {
+        return this.kind;
     }
 }

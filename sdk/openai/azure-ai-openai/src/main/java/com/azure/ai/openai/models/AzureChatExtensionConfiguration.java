@@ -58,17 +58,4 @@ public class AzureChatExtensionConfiguration {
     public AzureChatExtensionType getType() {
         return this.type;
     }
-
-    /**
-     * Set the type property:   The label for the type of an Azure chat extension. This typically corresponds to a matching Azure resource.
-     *   Azure chat extensions are only compatible with Azure OpenAI.
-     *
-     * @param type the type value to set.
-     * @return the AzureChatExtensionConfiguration object itself.
-     */
-    @Generated
-    protected AzureChatExtensionConfiguration setType(AzureChatExtensionType type) {
-        this.type = type;
-        return this;
-    }
 }

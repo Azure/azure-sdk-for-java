@@ -35,7 +35,6 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
     private MessageTextFileCitationAnnotation(String text, int startIndex, int endIndex,
         MessageTextFileCitationDetails fileCitation) {
         super(text, startIndex, endIndex);
-        setType("file_citation");
         this.fileCitation = fileCitation;
     }
 
@@ -60,8 +59,8 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
         jsonWriter.writeStringField("text", getText());
         jsonWriter.writeIntField("start_index", getStartIndex());
         jsonWriter.writeIntField("end_index", getEndIndex());
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeJsonField("file_citation", this.fileCitation);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -79,8 +78,8 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
             String text = null;
             int startIndex = 0;
             int endIndex = 0;
-            String type = "file_citation";
             MessageTextFileCitationDetails fileCitation = null;
+            String type = "file_citation";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -90,18 +89,35 @@ public final class MessageTextFileCitationAnnotation extends MessageTextAnnotati
                     startIndex = reader.getInt();
                 } else if ("end_index".equals(fieldName)) {
                     endIndex = reader.getInt();
-                } else if ("type".equals(fieldName)) {
-                    type = reader.getString();
                 } else if ("file_citation".equals(fieldName)) {
                     fileCitation = MessageTextFileCitationDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             MessageTextFileCitationAnnotation deserializedMessageTextFileCitationAnnotation
                 = new MessageTextFileCitationAnnotation(text, startIndex, endIndex, fileCitation);
-            deserializedMessageTextFileCitationAnnotation.setType(type);
+            deserializedMessageTextFileCitationAnnotation.type = type;
             return deserializedMessageTextFileCitationAnnotation;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "file_citation";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

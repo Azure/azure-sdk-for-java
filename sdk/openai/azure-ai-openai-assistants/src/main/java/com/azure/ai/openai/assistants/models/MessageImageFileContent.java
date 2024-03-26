@@ -29,7 +29,6 @@ public final class MessageImageFileContent extends MessageContent {
      */
     @Generated
     private MessageImageFileContent(MessageImageFileDetails imageFile) {
-        setType("image_file");
         this.imageFile = imageFile;
     }
 
@@ -50,8 +49,8 @@ public final class MessageImageFileContent extends MessageContent {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType());
         jsonWriter.writeJsonField("image_file", this.imageFile);
+        jsonWriter.writeStringField("type", this.type);
         return jsonWriter.writeEndObject();
     }
 
@@ -66,22 +65,39 @@ public final class MessageImageFileContent extends MessageContent {
     @Generated
     public static MessageImageFileContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String type = "image_file";
             MessageImageFileDetails imageFile = null;
+            String type = "image_file";
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = reader.getString();
-                } else if ("image_file".equals(fieldName)) {
+                if ("image_file".equals(fieldName)) {
                     imageFile = MessageImageFileDetails.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    type = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
             MessageImageFileContent deserializedMessageImageFileContent = new MessageImageFileContent(imageFile);
-            deserializedMessageImageFileContent.setType(type);
+            deserializedMessageImageFileContent.type = type;
             return deserializedMessageImageFileContent;
         });
+    }
+
+    /*
+     * The object type.
+     */
+    @Generated
+    private String type = "image_file";
+
+    /**
+     * Get the type property: The object type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public String getType() {
+        return this.type;
     }
 }

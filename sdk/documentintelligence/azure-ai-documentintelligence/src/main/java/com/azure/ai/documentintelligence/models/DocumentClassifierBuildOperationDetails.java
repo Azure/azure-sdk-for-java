@@ -20,6 +20,12 @@ import java.util.Map;
 @Immutable
 public final class DocumentClassifierBuildOperationDetails extends OperationDetails {
     /*
+     * Type of operation.
+     */
+    @Generated
+    private OperationKind kind = OperationKind.DOCUMENT_CLASSIFIER_BUILD;
+
+    /*
      * Operation result upon success.
      */
     @Generated
@@ -37,7 +43,17 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
     private DocumentClassifierBuildOperationDetails(OperationStatus status, OffsetDateTime createdDateTime,
         OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
         super(status, createdDateTime, lastUpdatedDateTime, resourceLocation);
-        setKind(OperationKind.DOCUMENT_CLASSIFIER_BUILD);
+    }
+
+    /**
+     * Get the kind property: Type of operation.
+     * 
+     * @return the kind value.
+     */
+    @Generated
+    @Override
+    public OperationKind getKind() {
+        return this.kind;
     }
 
     /**
@@ -65,11 +81,11 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
                 ? null
                 : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedDateTime()));
         jsonWriter.writeStringField("resourceLocation", getResourceLocation());
-        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
         jsonWriter.writeNumberField("percentCompleted", getPercentCompleted());
         jsonWriter.writeStringField("apiVersion", getApiVersion());
         jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
         jsonWriter.writeJsonField("error", getError());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
         jsonWriter.writeJsonField("result", this.result);
         return jsonWriter.writeEndObject();
     }
@@ -90,11 +106,11 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
             OffsetDateTime createdDateTime = null;
             OffsetDateTime lastUpdatedDateTime = null;
             String resourceLocation = null;
-            OperationKind kind = OperationKind.DOCUMENT_CLASSIFIER_BUILD;
             Integer percentCompleted = null;
             String apiVersion = null;
             Map<String, String> tags = null;
             Error error = null;
+            OperationKind kind = OperationKind.DOCUMENT_CLASSIFIER_BUILD;
             DocumentClassifierDetails result = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -112,8 +128,6 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
                         = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("resourceLocation".equals(fieldName)) {
                     resourceLocation = reader.getString();
-                } else if ("kind".equals(fieldName)) {
-                    kind = OperationKind.fromString(reader.getString());
                 } else if ("percentCompleted".equals(fieldName)) {
                     percentCompleted = reader.getNullable(JsonReader::getInt);
                 } else if ("apiVersion".equals(fieldName)) {
@@ -122,6 +136,8 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
                     tags = reader.readMap(reader1 -> reader1.getString());
                 } else if ("error".equals(fieldName)) {
                     error = Error.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = OperationKind.fromString(reader.getString());
                 } else if ("result".equals(fieldName)) {
                     result = DocumentClassifierDetails.fromJson(reader);
                 } else {
@@ -132,11 +148,11 @@ public final class DocumentClassifierBuildOperationDetails extends OperationDeta
                 = new DocumentClassifierBuildOperationDetails(status, createdDateTime, lastUpdatedDateTime,
                     resourceLocation);
             deserializedDocumentClassifierBuildOperationDetails.setOperationId(operationId);
-            deserializedDocumentClassifierBuildOperationDetails.setKind(kind);
             deserializedDocumentClassifierBuildOperationDetails.setPercentCompleted(percentCompleted);
             deserializedDocumentClassifierBuildOperationDetails.setApiVersion(apiVersion);
             deserializedDocumentClassifierBuildOperationDetails.setTags(tags);
             deserializedDocumentClassifierBuildOperationDetails.setError(error);
+            deserializedDocumentClassifierBuildOperationDetails.kind = kind;
             deserializedDocumentClassifierBuildOperationDetails.result = result;
 
             return deserializedDocumentClassifierBuildOperationDetails;

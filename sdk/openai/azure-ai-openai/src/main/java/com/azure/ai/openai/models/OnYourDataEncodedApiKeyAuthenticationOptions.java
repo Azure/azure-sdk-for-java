@@ -7,6 +7,7 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -37,7 +38,6 @@ public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDa
     @Generated
     @JsonCreator
     public OnYourDataEncodedApiKeyAuthenticationOptions(@JsonProperty(value = "encoded_api_key") String encodedApiKey) {
-        setType(OnYourDataAuthenticationType.ENCODED_API_KEY);
         this.encodedApiKey = encodedApiKey;
     }
 
@@ -49,5 +49,24 @@ public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDa
     @Generated
     public String getEncodedApiKey() {
         return this.encodedApiKey;
+    }
+
+    /*
+     * The authentication type.
+     */
+    @Generated
+    @JsonTypeId
+    @JsonProperty(value = "type")
+    private OnYourDataAuthenticationType type = OnYourDataAuthenticationType.ENCODED_API_KEY;
+
+    /**
+     * Get the type property: The authentication type.
+     *
+     * @return the type value.
+     */
+    @Generated
+    @Override
+    public OnYourDataAuthenticationType getType() {
+        return this.type;
     }
 }
