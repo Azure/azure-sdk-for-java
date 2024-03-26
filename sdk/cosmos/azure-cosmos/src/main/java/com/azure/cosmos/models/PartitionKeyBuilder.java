@@ -7,9 +7,12 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.PartitionKeyHelper;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Builder for partition keys.
@@ -127,6 +130,9 @@ public final class PartitionKeyBuilder {
      * @return The PartitionKey
      */
     public static PartitionKey fromObjectArray(Object[] values, boolean strict) {
+        if (values == null) {
+            throw new IllegalArgumentException("values can't be null");
+        }
         return new PartitionKey(PartitionKeyInternal.fromObjectArray(values, strict));
     }
 
@@ -137,8 +143,16 @@ public final class PartitionKeyBuilder {
      * @return The PartitionKey
      */
     public static PartitionKey extractPartitionKeyFromDocument(
-        JsonSerializable document,
-        PartitionKeyDefinition partitionKeyDefinition) {
-        return PartitionKeyHelper.extractPartitionKeyFromDocument(document, partitionKeyDefinition);
+        Map<String, Object> document,
+        PartitionKeyDefinition partitionKeyDefinition) throws JsonProcessingException {
+        if (document == null) {
+            throw new IllegalArgumentException("document can't be null");
+        }
+        if (partitionKeyDefinition == null) {
+            throw new IllegalArgumentException("partitionKeyDefinition can't be null");
+        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        return PartitionKeyHelper.extractPartitionKeyFromDocument(
+            new JsonSerializable(objectMapper.writeValueAsString(document)), partitionKeyDefinition);
     }
 }
