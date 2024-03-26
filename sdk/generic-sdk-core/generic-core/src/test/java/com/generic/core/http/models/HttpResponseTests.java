@@ -74,29 +74,6 @@ public class HttpResponseTests {
     }
 
     @Test
-    public void constructorWithNullValueAndBodySupplier() throws IOException {
-        try (HttpResponse<?> response = new HttpResponse<>(HTTP_REQUEST, STATUS_CODE, HEADERS, null)) {
-            assertEquals(HTTP_REQUEST, response.getRequest());
-            assertEquals(STATUS_CODE, response.getStatusCode());
-            assertEquals(HEADERS, response.getHeaders());
-
-            AtomicBoolean wasBodySupplied = new AtomicBoolean(false);
-
-            HttpResponseAccessHelper.setBodySupplier(response, () -> {
-                wasBodySupplied.set(true);
-
-                return BODY;
-            });
-
-            // No body deserializer means we don't use the body and the value does not get populated.
-            assertNull(response.getValue());
-            assertFalse(wasBodySupplied.get());
-            assertEquals(BODY, response.getBody());
-            assertTrue(wasBodySupplied.get());
-        }
-    }
-
-    @Test
     public void constructorWithNullValueBodySetAndBodyDeserializer() throws IOException {
         try (HttpResponse<?> response = new HttpResponse<>(HTTP_REQUEST, STATUS_CODE, HEADERS, null)) {
             assertEquals(HTTP_REQUEST, response.getRequest());
@@ -120,43 +97,6 @@ public class HttpResponseTests {
     }
 
     @Test
-    public void constructorWithNullValueBodySupplierAndBodyDeserializer() throws IOException {
-        try (HttpResponse<?> response = new HttpResponse<>(HTTP_REQUEST, STATUS_CODE, HEADERS, null)) {
-            assertEquals(HTTP_REQUEST, response.getRequest());
-            assertEquals(STATUS_CODE, response.getStatusCode());
-            assertEquals(HEADERS, response.getHeaders());
-            assertNull(response.getValue()); // null value.
-
-            AtomicBoolean wasBodySupplied = new AtomicBoolean(false);
-            AtomicBoolean wasBodyDeserialized = new AtomicBoolean(false);
-
-            HttpResponseAccessHelper.setBodySupplier(response, () -> {
-                wasBodySupplied.set(true);
-
-                return BODY;
-            });
-            HttpResponseAccessHelper.setBodyDeserializer(response, binaryData -> {
-                wasBodyDeserialized.set(true);
-
-                return binaryData.toString();
-            });
-
-            assertFalse(wasBodySupplied.get());
-            assertFalse(wasBodyDeserialized.get());
-
-            assertEquals(BODY, response.getBody()); // Supplier is called.
-
-            assertTrue(wasBodySupplied.get());
-            assertFalse(wasBodyDeserialized.get());
-
-            assertEquals(VALUE, response.getValue()); // Deserializer is called.
-
-            assertTrue(wasBodySupplied.get());
-            assertTrue(wasBodyDeserialized.get());
-        }
-    }
-
-    @Test
     public void constructorWithValueDoesNotDeserializeBody() throws IOException {
         try (HttpResponse<?> response = new HttpResponse<>(HTTP_REQUEST, STATUS_CODE, HEADERS, VALUE)) {
             assertEquals(HTTP_REQUEST, response.getRequest());
@@ -174,27 +114,6 @@ public class HttpResponseTests {
 
             assertEquals(VALUE, response.getValue()); // Return value passed to constructor, deserializer is not called.
             assertFalse(wasBodyDeserialized.get());
-        }
-    }
-
-    @Test
-    public void constructorWithBodySetDoesNotUseSupplier() throws IOException {
-        try (HttpResponse<?> response = new HttpResponse<>(HTTP_REQUEST, STATUS_CODE, HEADERS, VALUE)) {
-            assertEquals(HTTP_REQUEST, response.getRequest());
-            assertEquals(STATUS_CODE, response.getStatusCode());
-            assertEquals(HEADERS, response.getHeaders());
-
-            AtomicBoolean wasBodySupplied = new AtomicBoolean(false);
-
-            HttpResponseAccessHelper.setBody(response, BODY);
-            HttpResponseAccessHelper.setBodySupplier(response, () -> {
-                wasBodySupplied.set(true);
-
-                return BODY;
-            });
-
-            assertNotNull(response.getBody()); // Return value passed to constructor, supplier is not called.
-            assertFalse(wasBodySupplied.get());
         }
     }
 }

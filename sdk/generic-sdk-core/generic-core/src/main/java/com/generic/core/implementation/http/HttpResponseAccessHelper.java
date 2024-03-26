@@ -7,7 +7,6 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.util.binarydata.BinaryData;
 
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * This class is used to access internal methods on {@link HttpResponse}.
@@ -38,16 +37,6 @@ public final class HttpResponseAccessHelper {
          * @return The modified {@link HttpResponse}.
          */
         HttpResponse<?> setBody(HttpResponse<?> httpResponse, BinaryData body);
-
-        /**
-         * Sets the body supplier for an {@link HttpResponse}.
-         *
-         * @param httpResponse The {@link HttpResponse} to set the body supplier of.
-         * @param bodySupplier The body supplier.
-         *
-         * @return The modified {@link HttpResponse}.
-         */
-        HttpResponse<?> setBodySupplier(HttpResponse<?> httpResponse, Supplier<BinaryData> bodySupplier);
 
         /**
          * Sets a function to deserialize the body of an {@link HttpResponse}.
@@ -83,18 +72,6 @@ public final class HttpResponseAccessHelper {
      */
     public static HttpResponse<?> setBody(HttpResponse<?> httpResponse, BinaryData body) {
         return accessor.setBody(httpResponse, body);
-    }
-
-    /**
-     * Sets the body supplier for an {@link HttpResponse}.
-     *
-     * @param httpResponse The {@link HttpResponse} to set the body supplier of.
-     * @param bodySupplier The body supplier.
-     *
-     * @return The modified {@link HttpResponse}.
-     */
-    public static HttpResponse<?> setBodySupplier(HttpResponse<?> httpResponse, Supplier<BinaryData> bodySupplier) {
-        return accessor.setBodySupplier(httpResponse, bodySupplier);
     }
 
     /**

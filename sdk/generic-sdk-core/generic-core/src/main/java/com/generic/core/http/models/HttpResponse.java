@@ -8,7 +8,6 @@ import com.generic.core.util.binarydata.BinaryData;
 
 import java.io.IOException;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 /**
  * The response of an {@link HttpRequest}.
@@ -31,11 +30,6 @@ public class HttpResponse<T> implements Response<T> {
             }
 
             @Override
-            public HttpResponse<?> setBodySupplier(HttpResponse<?> httpResponse, Supplier<BinaryData> bodySupplier) {
-                return httpResponse.setBodySupplier(bodySupplier);
-            }
-
-            @Override
             public HttpResponse<?> setBodyDeserializer(HttpResponse<?> httpResponse,
                                                        Function<BinaryData, Object> bodyDeserializer) {
                 return httpResponse.setBodyDeserializer(bodyDeserializer);
@@ -50,7 +44,6 @@ public class HttpResponse<T> implements Response<T> {
     private BinaryData body;
     private T value;
 
-    private Supplier<BinaryData> bodySupplier;
     private Function<BinaryData, Object> bodyDeserializer;
 
     /**
@@ -124,7 +117,7 @@ public class HttpResponse<T> implements Response<T> {
     public BinaryData getBody() {
         if (body == null) {
             if (value == null) {
-                body = bodySupplier == null ? EMPTY_BODY : bodySupplier.get();
+                body = EMPTY_BODY;
             } else if (value instanceof BinaryData) {
                 body = (BinaryData) value;
             } else {
@@ -154,17 +147,6 @@ public class HttpResponse<T> implements Response<T> {
      */
     private HttpResponse<T> setBody(BinaryData body) {
         this.body = body;
-
-        return this;
-    }
-
-    /**
-     * Sets the body supplier for this response.
-     *
-     * @param bodySupplier The body supplier.
-     */
-    private HttpResponse<T> setBodySupplier(Supplier<BinaryData> bodySupplier) {
-        this.bodySupplier = bodySupplier;
 
         return this;
     }

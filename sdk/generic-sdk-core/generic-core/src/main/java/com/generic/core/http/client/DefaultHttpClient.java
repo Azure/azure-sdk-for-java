@@ -227,7 +227,7 @@ class DefaultHttpClient implements HttpClient {
 
                         break;
                     case STREAM:
-                        setResponseBodySupplier(httpResponse, connection);
+                        setStreamingResponseBody(httpResponse, connection);
 
                         break;
                     case BUFFER:
@@ -274,14 +274,12 @@ class DefaultHttpClient implements HttpClient {
         return Objects.equals(ContentType.TEXT_EVENT_STREAM, responseHeaders.getValue(HttpHeaderName.CONTENT_TYPE));
     }
 
-    private void setResponseBodySupplier(HttpResponse<?> httpResponse, HttpURLConnection connection) {
-        HttpResponseAccessHelper.setBodySupplier(httpResponse, () -> {
-            try {
-                return BinaryData.fromStream(connection.getInputStream());
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
-        });
+    private void setStreamingResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
+        try {
+            HttpResponseAccessHelper.setBody(httpResponse, BinaryData.fromStream(connection.getInputStream()));
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+        }
     }
 
     private void ignoreResponseBody(HttpResponse<?> httpResponse, HttpURLConnection connection) {
