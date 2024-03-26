@@ -11,10 +11,10 @@ import java.time.OffsetDateTime;
 public final class DeviceInsightImpl implements DeviceInsight {
     private DeviceInsightInner innerObject;
 
-    private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
+    private final com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager;
 
-    DeviceInsightImpl(
-        DeviceInsightInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    DeviceInsightImpl(DeviceInsightInner innerObject,
+        com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -55,7 +55,7 @@ public final class DeviceInsightImpl implements DeviceInsight {
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.sphere.AzureSphereManager manager() {
+    private com.azure.resourcemanager.sphere.AzureSphereMgmtManager manager() {
         return this.serviceManager;
     }
 }

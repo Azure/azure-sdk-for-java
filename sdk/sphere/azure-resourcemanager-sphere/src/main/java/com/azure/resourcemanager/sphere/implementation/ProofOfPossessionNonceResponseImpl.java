@@ -13,11 +13,10 @@ import java.time.OffsetDateTime;
 public final class ProofOfPossessionNonceResponseImpl implements ProofOfPossessionNonceResponse {
     private ProofOfPossessionNonceResponseInner innerObject;
 
-    private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
+    private final com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager;
 
-    ProofOfPossessionNonceResponseImpl(
-        ProofOfPossessionNonceResponseInner innerObject,
-        com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    ProofOfPossessionNonceResponseImpl(ProofOfPossessionNonceResponseInner innerObject,
+        com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -54,7 +53,7 @@ public final class ProofOfPossessionNonceResponseImpl implements ProofOfPossessi
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.sphere.AzureSphereManager manager() {
+    private com.azure.resourcemanager.sphere.AzureSphereMgmtManager manager() {
         return this.serviceManager;
     }
 }

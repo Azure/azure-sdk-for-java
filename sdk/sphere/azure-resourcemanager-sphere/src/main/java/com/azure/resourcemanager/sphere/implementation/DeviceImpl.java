@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.sphere.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sphere.fluent.models.DeviceInner;
 import com.azure.resourcemanager.sphere.models.Device;
+import com.azure.resourcemanager.sphere.models.DeviceProperties;
 import com.azure.resourcemanager.sphere.models.DeviceUpdate;
+import com.azure.resourcemanager.sphere.models.DeviceUpdateProperties;
 import com.azure.resourcemanager.sphere.models.GenerateCapabilityImageRequest;
-import com.azure.resourcemanager.sphere.models.ProvisioningState;
 import com.azure.resourcemanager.sphere.models.SignedCapabilityImageResponse;
-import java.time.OffsetDateTime;
 
 public final class DeviceImpl implements Device, Device.Definition, Device.Update {
     private DeviceInner innerObject;
 
-    private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
+    private final com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -30,32 +31,12 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
         return this.innerModel().type();
     }
 
-    public String deviceId() {
-        return this.innerModel().deviceId();
+    public DeviceProperties properties() {
+        return this.innerModel().properties();
     }
 
-    public String chipSku() {
-        return this.innerModel().chipSku();
-    }
-
-    public String lastAvailableOsVersion() {
-        return this.innerModel().lastAvailableOsVersion();
-    }
-
-    public String lastInstalledOsVersion() {
-        return this.innerModel().lastInstalledOsVersion();
-    }
-
-    public OffsetDateTime lastOsUpdateUtc() {
-        return this.innerModel().lastOsUpdateUtc();
-    }
-
-    public OffsetDateTime lastUpdateRequestUtc() {
-        return this.innerModel().lastUpdateRequestUtc();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {
@@ -66,7 +47,7 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.sphere.AzureSphereManager manager() {
+    private com.azure.resourcemanager.sphere.AzureSphereMgmtManager manager() {
         return this.serviceManager;
     }
 
@@ -82,8 +63,8 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
 
     private DeviceUpdate updateProperties;
 
-    public DeviceImpl withExistingDeviceGroup(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    public DeviceImpl withExistingDeviceGroup(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName) {
         this.resourceGroupName = resourceGroupName;
         this.catalogName = catalogName;
         this.productName = productName;
@@ -92,38 +73,18 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
     }
 
     public Device create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevices()
-                .createOrUpdate(
-                    resourceGroupName,
-                    catalogName,
-                    productName,
-                    deviceGroupName,
-                    deviceName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getDevices().createOrUpdate(resourceGroupName, catalogName,
+            productName, deviceGroupName, deviceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Device create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevices()
-                .createOrUpdate(
-                    resourceGroupName,
-                    catalogName,
-                    productName,
-                    deviceGroupName,
-                    deviceName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient().getDevices().createOrUpdate(resourceGroupName, catalogName,
+            productName, deviceGroupName, deviceName, this.innerModel(), context);
         return this;
     }
 
-    DeviceImpl(String name, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    DeviceImpl(String name, com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager) {
         this.innerObject = new DeviceInner();
         this.serviceManager = serviceManager;
         this.deviceName = name;
@@ -135,101 +96,60 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
     }
 
     public Device apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevices()
-                .update(
-                    resourceGroupName,
-                    catalogName,
-                    productName,
-                    deviceGroupName,
-                    deviceName,
-                    updateProperties,
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getDevices().update(resourceGroupName, catalogName,
+            productName, deviceGroupName, deviceName, updateProperties, Context.NONE);
         return this;
     }
 
     public Device apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevices()
-                .update(
-                    resourceGroupName,
-                    catalogName,
-                    productName,
-                    deviceGroupName,
-                    deviceName,
-                    updateProperties,
-                    context);
+        this.innerObject = serviceManager.serviceClient().getDevices().update(resourceGroupName, catalogName,
+            productName, deviceGroupName, deviceName, updateProperties, context);
         return this;
     }
 
-    DeviceImpl(DeviceInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    DeviceImpl(DeviceInner innerObject, com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.catalogName = Utils.getValueFromIdByName(innerObject.id(), "catalogs");
-        this.productName = Utils.getValueFromIdByName(innerObject.id(), "products");
-        this.deviceGroupName = Utils.getValueFromIdByName(innerObject.id(), "deviceGroups");
-        this.deviceName = Utils.getValueFromIdByName(innerObject.id(), "devices");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.catalogName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "catalogs");
+        this.productName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "products");
+        this.deviceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deviceGroups");
+        this.deviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "devices");
     }
 
     public Device refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevices()
-                .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDevices()
+            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Device refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDevices()
-                .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDevices()
+            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deviceName, context)
+            .getValue();
         return this;
     }
 
-    public SignedCapabilityImageResponse generateCapabilityImage(
-        GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
-        return serviceManager
-            .devices()
-            .generateCapabilityImage(
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                generateDeviceCapabilityRequest);
+    public SignedCapabilityImageResponse
+        generateCapabilityImage(GenerateCapabilityImageRequest generateDeviceCapabilityRequest) {
+        return serviceManager.devices().generateCapabilityImage(resourceGroupName, catalogName, productName,
+            deviceGroupName, deviceName, generateDeviceCapabilityRequest);
     }
 
-    public SignedCapabilityImageResponse generateCapabilityImage(
-        GenerateCapabilityImageRequest generateDeviceCapabilityRequest, Context context) {
-        return serviceManager
-            .devices()
-            .generateCapabilityImage(
-                resourceGroupName,
-                catalogName,
-                productName,
-                deviceGroupName,
-                deviceName,
-                generateDeviceCapabilityRequest,
-                context);
+    public SignedCapabilityImageResponse
+        generateCapabilityImage(GenerateCapabilityImageRequest generateDeviceCapabilityRequest, Context context) {
+        return serviceManager.devices().generateCapabilityImage(resourceGroupName, catalogName, productName,
+            deviceGroupName, deviceName, generateDeviceCapabilityRequest, context);
     }
 
-    public DeviceImpl withDeviceId(String deviceId) {
-        this.innerModel().withDeviceId(deviceId);
+    public DeviceImpl withProperties(DeviceProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public DeviceImpl withDeviceGroupId(String deviceGroupId) {
-        this.updateProperties.withDeviceGroupId(deviceGroupId);
+    public DeviceImpl withProperties(DeviceUpdateProperties properties) {
+        this.updateProperties.withProperties(properties);
         return this;
     }
 }

@@ -10,10 +10,10 @@ import com.azure.resourcemanager.sphere.models.CertificateChainResponse;
 public final class CertificateChainResponseImpl implements CertificateChainResponse {
     private CertificateChainResponseInner innerObject;
 
-    private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
+    private final com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager;
 
-    CertificateChainResponseImpl(
-        CertificateChainResponseInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    CertificateChainResponseImpl(CertificateChainResponseInner innerObject,
+        com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -26,7 +26,7 @@ public final class CertificateChainResponseImpl implements CertificateChainRespo
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.sphere.AzureSphereManager manager() {
+    private com.azure.resourcemanager.sphere.AzureSphereMgmtManager manager() {
         return this.serviceManager;
     }
 }

@@ -17,29 +17,29 @@ public final class OperationsImpl implements Operations {
 
     private final OperationsClient innerClient;
 
-    private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
+    private final com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Operation> list() {
         PagedIterable<OperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Operation> list(Context context) {
         PagedIterable<OperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.sphere.AzureSphereManager manager() {
+    private com.azure.resourcemanager.sphere.AzureSphereMgmtManager manager() {
         return this.serviceManager;
     }
 }

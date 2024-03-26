@@ -4,21 +4,16 @@
 
 package com.azure.resourcemanager.sphere.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sphere.fluent.models.DeploymentInner;
-import com.azure.resourcemanager.sphere.fluent.models.ImageInner;
 import com.azure.resourcemanager.sphere.models.Deployment;
-import com.azure.resourcemanager.sphere.models.Image;
-import com.azure.resourcemanager.sphere.models.ProvisioningState;
-import java.time.OffsetDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import com.azure.resourcemanager.sphere.models.DeploymentProperties;
 
 public final class DeploymentImpl implements Deployment, Deployment.Definition, Deployment.Update {
     private DeploymentInner innerObject;
 
-    private final com.azure.resourcemanager.sphere.AzureSphereManager serviceManager;
+    private final com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -32,27 +27,12 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
         return this.innerModel().type();
     }
 
-    public String deploymentId() {
-        return this.innerModel().deploymentId();
+    public DeploymentProperties properties() {
+        return this.innerModel().properties();
     }
 
-    public List<Image> deployedImages() {
-        List<ImageInner> inner = this.innerModel().deployedImages();
-        if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner.stream().map(inner1 -> new ImageImpl(inner1, this.manager())).collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public OffsetDateTime deploymentDateUtc() {
-        return this.innerModel().deploymentDateUtc();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String resourceGroupName() {
@@ -63,7 +43,7 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.sphere.AzureSphereManager manager() {
+    private com.azure.resourcemanager.sphere.AzureSphereMgmtManager manager() {
         return this.serviceManager;
     }
 
@@ -77,8 +57,8 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
 
     private String deploymentName;
 
-    public DeploymentImpl withExistingDeviceGroup(
-        String resourceGroupName, String catalogName, String productName, String deviceGroupName) {
+    public DeploymentImpl withExistingDeviceGroup(String resourceGroupName, String catalogName, String productName,
+        String deviceGroupName) {
         this.resourceGroupName = resourceGroupName;
         this.catalogName = catalogName;
         this.productName = productName;
@@ -87,38 +67,18 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(
-                    resourceGroupName,
-                    catalogName,
-                    productName,
-                    deviceGroupName,
-                    deploymentName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdate(resourceGroupName,
+            catalogName, productName, deviceGroupName, deploymentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Deployment create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(
-                    resourceGroupName,
-                    catalogName,
-                    productName,
-                    deviceGroupName,
-                    deploymentName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdate(resourceGroupName,
+            catalogName, productName, deviceGroupName, deploymentName, this.innerModel(), context);
         return this;
     }
 
-    DeploymentImpl(String name, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    DeploymentImpl(String name, com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager) {
         this.innerObject = new DeploymentInner();
         this.serviceManager = serviceManager;
         this.deploymentName = name;
@@ -129,75 +89,44 @@ public final class DeploymentImpl implements Deployment, Deployment.Definition, 
     }
 
     public Deployment apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(
-                    resourceGroupName,
-                    catalogName,
-                    productName,
-                    deviceGroupName,
-                    deploymentName,
-                    this.innerModel(),
-                    Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdate(resourceGroupName,
+            catalogName, productName, deviceGroupName, deploymentName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Deployment apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .createOrUpdate(
-                    resourceGroupName,
-                    catalogName,
-                    productName,
-                    deviceGroupName,
-                    deploymentName,
-                    this.innerModel(),
-                    context);
+        this.innerObject = serviceManager.serviceClient().getDeployments().createOrUpdate(resourceGroupName,
+            catalogName, productName, deviceGroupName, deploymentName, this.innerModel(), context);
         return this;
     }
 
-    DeploymentImpl(DeploymentInner innerObject, com.azure.resourcemanager.sphere.AzureSphereManager serviceManager) {
+    DeploymentImpl(DeploymentInner innerObject,
+        com.azure.resourcemanager.sphere.AzureSphereMgmtManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.catalogName = Utils.getValueFromIdByName(innerObject.id(), "catalogs");
-        this.productName = Utils.getValueFromIdByName(innerObject.id(), "products");
-        this.deviceGroupName = Utils.getValueFromIdByName(innerObject.id(), "deviceGroups");
-        this.deploymentName = Utils.getValueFromIdByName(innerObject.id(), "deployments");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.catalogName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "catalogs");
+        this.productName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "products");
+        this.deviceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deviceGroups");
+        this.deploymentName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "deployments");
     }
 
     public Deployment refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .getWithResponse(
-                    resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDeployments()
+            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Deployment refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDeployments()
-                .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDeployments()
+            .getWithResponse(resourceGroupName, catalogName, productName, deviceGroupName, deploymentName, context)
+            .getValue();
         return this;
     }
 
-    public DeploymentImpl withDeploymentId(String deploymentId) {
-        this.innerModel().withDeploymentId(deploymentId);
-        return this;
-    }
-
-    public DeploymentImpl withDeployedImages(List<ImageInner> deployedImages) {
-        this.innerModel().withDeployedImages(deployedImages);
+    public DeploymentImpl withProperties(DeploymentProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 }

@@ -4,17 +4,20 @@
 
 package com.azure.resourcemanager.sphere.generated;
 
-/** Samples for Products ListByCatalog. */
+/**
+ * Samples for Products ListByCatalog.
+ */
 public final class ProductsListByCatalogSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/preview/2022-09-01-preview/examples/GetProducts.json
+     * x-ms-original-file:
+     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/GetProducts.json
      */
     /**
      * Sample code: Products_ListByCatalog.
-     *
-     * @param manager Entry point to AzureSphereManager.
+     * 
+     * @param manager Entry point to AzureSphereMgmtManager.
      */
-    public static void productsListByCatalog(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
+    public static void productsListByCatalog(com.azure.resourcemanager.sphere.AzureSphereMgmtManager manager) {
         manager.products().listByCatalog("MyResourceGroup1", "MyCatalog1", com.azure.core.util.Context.NONE);
     }
 }

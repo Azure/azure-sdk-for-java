@@ -4,17 +4,21 @@
 
 package com.azure.resourcemanager.sphere.generated;
 
-/** Samples for Catalogs CountDevices. */
+/**
+ * Samples for Catalogs CountDevices.
+ */
 public final class CatalogsCountDevicesSamples {
     /*
-     * x-ms-original-file: specification/sphere/resource-manager/Microsoft.AzureSphere/preview/2022-09-01-preview/examples/PostCountDevicesCatalog.json
+     * x-ms-original-file:
+     * specification/sphere/resource-manager/Microsoft.AzureSphere/stable/2024-04-01/examples/PostCountDevicesCatalog.
+     * json
      */
     /**
      * Sample code: Catalogs_CountDevices.
-     *
-     * @param manager Entry point to AzureSphereManager.
+     * 
+     * @param manager Entry point to AzureSphereMgmtManager.
      */
-    public static void catalogsCountDevices(com.azure.resourcemanager.sphere.AzureSphereManager manager) {
+    public static void catalogsCountDevices(com.azure.resourcemanager.sphere.AzureSphereMgmtManager manager) {
         manager.catalogs().countDevicesWithResponse("MyResourceGroup1", "MyCatalog1", com.azure.core.util.Context.NONE);
     }
 }
