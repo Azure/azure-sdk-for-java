@@ -1,5 +1,5 @@
-FeatureManagement:
-    FeatureFlags:
+feature_management:
+    feature_flags:
         -
             id: Alpha
             enabled: true

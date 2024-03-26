@@ -29,10 +29,6 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
 
     private static final long serialVersionUID = -1642032123104805346L;
 
-    private static final String FEATURE_FLAG_PASCAL_CASE = "FeatureFlags";
-
-    private static final String FEATURE_FLAG_KEBAB_CASE = "feature-flags";
-
     private static final String FEATURE_FLAG_SNAKE_CASE = "feature_flags";
 
     /**
@@ -75,8 +71,7 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
         // check if FeatureFlags section exist
         String featureFlagsSectionKey = "";
         for (String key : features.keySet()) {
-            if (FEATURE_FLAG_PASCAL_CASE.equalsIgnoreCase(key) || FEATURE_FLAG_KEBAB_CASE.equalsIgnoreCase(key)
-                || FEATURE_FLAG_SNAKE_CASE.equalsIgnoreCase(key)) {
+            if (FEATURE_FLAG_SNAKE_CASE.equalsIgnoreCase(key)) {
                 featureFlagsSectionKey = key;
                 break;
             }
@@ -138,11 +133,14 @@ public class FeatureManagementProperties extends HashMap<String, Object> {
 
         ServerSideFeature serverSideFeature = null;
         try {
-            LinkedHashMap<String, Object> ff = (LinkedHashMap<String, Object>) featureValue;
-            LinkedHashMap<String, Object> conditions = (LinkedHashMap<String, Object>) ff.get("conditions");
-
-            if (conditions == null) {
-                conditions = new LinkedHashMap<>();
+            LinkedHashMap<String, Object> ff = new LinkedHashMap<String, Object>();
+            if (featureValue.getClass().isAssignableFrom(LinkedHashMap.class.getClass())) {
+                ff = (LinkedHashMap<String, Object>) featureValue;
+            }
+            LinkedHashMap<String, Object> conditions = new LinkedHashMap<String, Object>();
+            if (ff.containsKey("conditions")
+                && ff.get("conditions").getClass().isAssignableFrom(LinkedHashMap.class.getClass())) {
+                conditions = (LinkedHashMap<String, Object>) ff.get("conditions");
             }
 
             if (conditions.get("client_filters") instanceof List) {
