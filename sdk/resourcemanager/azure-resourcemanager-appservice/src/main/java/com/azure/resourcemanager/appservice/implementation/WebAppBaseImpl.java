@@ -1857,10 +1857,8 @@ abstract class WebAppBaseImpl<FluentT extends WebAppBase, FluentImplT extends We
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public PublicNetworkAccess publicNetworkAccess() {
-        return Objects.isNull(innerModel().publicNetworkAccess())
-            && innerModel().publicNetworkAccess().trim().isEmpty() ? null : PublicNetworkAccess.fromString(innerModel().publicNetworkAccess());
+        return Objects.isNull(innerModel().publicNetworkAccess()) ? null : PublicNetworkAccess.fromString(innerModel().publicNetworkAccess());
     }
 
     @Override
