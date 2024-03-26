@@ -6,7 +6,7 @@ package com.generic.core.http;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
-import com.generic.core.http.policy.RetryPolicy;
+import com.generic.core.http.pipeline.RetryPolicy;
 
 /**
  * Codesnippets for {@link HttpPipelineBuilder}.
