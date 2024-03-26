@@ -4,11 +4,12 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.communication.phonenumbers.implementation.models.PurchasedPhoneNumberCapabilities;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Represents a purchased phone number. */
+/** The PurchasedPhoneNumber model. */
 @Fluent
 public final class PurchasedPhoneNumber {
     /*
@@ -39,7 +40,7 @@ public final class PurchasedPhoneNumber {
      * Capabilities of a phone number.
      */
     @JsonProperty(value = "capabilities", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private PhoneNumberCapabilities capabilities;
+    private PurchasedPhoneNumberCapabilities capabilities;
 
     /*
      * The assignment type of the phone number. A phone number can be assigned
@@ -113,7 +114,7 @@ public final class PurchasedPhoneNumber {
      *
      * @return the capabilities value.
      */
-    public PhoneNumberCapabilities getCapabilities() {
+    public PurchasedPhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
 

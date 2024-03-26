@@ -7,7 +7,7 @@ package com.azure.communication.phonenumbers.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents options to modify a search request for operator information. */
+/** The OperatorInformationOptions model. */
 @Fluent
 public final class OperatorInformationOptions {
     /*

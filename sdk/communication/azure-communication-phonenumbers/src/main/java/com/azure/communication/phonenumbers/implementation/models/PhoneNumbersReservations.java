@@ -4,19 +4,18 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PurchasedPhoneNumbers model. */
+/** The PhoneNumbersReservations model. */
 @Fluent
-public final class PurchasedPhoneNumbers {
+public final class PhoneNumbersReservations {
     /*
      * Represents a list of phone numbers.
      */
-    @JsonProperty(value = "phoneNumbers", required = true)
-    private List<PurchasedPhoneNumber> phoneNumbers;
+    @JsonProperty(value = "reservations", required = true)
+    private List<PhoneNumbersReservation> reservations;
 
     /*
      * Represents the URL link to the next page of phone number results.
@@ -25,22 +24,22 @@ public final class PurchasedPhoneNumbers {
     private String nextLink;
 
     /**
-     * Get the phoneNumbers property: Represents a list of phone numbers.
+     * Get the reservations property: Represents a list of phone numbers.
      *
-     * @return the phoneNumbers value.
+     * @return the reservations value.
      */
-    public List<PurchasedPhoneNumber> getPhoneNumbers() {
-        return this.phoneNumbers;
+    public List<PhoneNumbersReservation> getReservations() {
+        return this.reservations;
     }
 
     /**
-     * Set the phoneNumbers property: Represents a list of phone numbers.
+     * Set the reservations property: Represents a list of phone numbers.
      *
-     * @param phoneNumbers the phoneNumbers value to set.
-     * @return the PurchasedPhoneNumbers object itself.
+     * @param reservations the reservations value to set.
+     * @return the PhoneNumbersReservations object itself.
      */
-    public PurchasedPhoneNumbers setPhoneNumbers(List<PurchasedPhoneNumber> phoneNumbers) {
-        this.phoneNumbers = phoneNumbers;
+    public PhoneNumbersReservations setReservations(List<PhoneNumbersReservation> reservations) {
+        this.reservations = reservations;
         return this;
     }
 
@@ -57,9 +56,9 @@ public final class PurchasedPhoneNumbers {
      * Set the nextLink property: Represents the URL link to the next page of phone number results.
      *
      * @param nextLink the nextLink value to set.
-     * @return the PurchasedPhoneNumbers object itself.
+     * @return the PhoneNumbersReservations object itself.
      */
-    public PurchasedPhoneNumbers setNextLink(String nextLink) {
+    public PhoneNumbersReservations setNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }

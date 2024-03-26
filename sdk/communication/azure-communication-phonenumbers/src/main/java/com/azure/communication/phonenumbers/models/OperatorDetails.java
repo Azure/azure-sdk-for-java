@@ -13,7 +13,7 @@ public final class OperatorDetails {
     /*
      * Name of the phone operator
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
