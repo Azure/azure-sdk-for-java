@@ -1439,52 +1439,29 @@ public class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTes
 
         setReceiver(entityType, index, false);
 
-        // lastMessage: This is to make sure, if there is left over from previous run.
-        final ServiceBusReceivedMessage lastMessage = receiver.peekMessage().block(TIMEOUT);
-
         // Send messages.
-        Mono.when(messages.stream().map(this::sendMessage)
-            .collect(Collectors.toList()))
-            .block(TIMEOUT);
+        StepVerifier.create(Flux.fromIterable(messages).flatMap(this::sendMessage))
+                .verifyComplete();
 
         final ServiceBusReceiverAsyncClient autoCompleteReceiver =
             toClose(getReceiverBuilder(false, entityType, index, false)
                 .buildAsyncClient());
 
+        Set<Long> sequenceNumbers = new HashSet<>();
         // Act
         // Expecting that as we receive these messages, they'll be completed.
-        StepVerifier.create(autoCompleteReceiver.receiveMessages())
-            .assertNext(receivedMessage -> {
-                logMessage(receivedMessage, receiver.getEntityPath(), "sent messages");
-                if (lastMessage != null) {
-                    assertEquals(lastMessage.getMessageId(), receivedMessage.getMessageId());
-                } else {
-                    assertEquals(messageId, receivedMessage.getMessageId());
-                }
-            })
-            .assertNext(context -> {
-                if (lastMessage == null) {
-                    assertEquals(messageId, context.getMessageId());
-                }
-            })
-            .assertNext(context -> {
-                if (lastMessage == null) {
-                    assertEquals(messageId, context.getMessageId());
-                }
-            })
+        StepVerifier.create(autoCompleteReceiver.receiveMessages()
+                        .filter(m -> messageId.equals(m.getMessageId()))
+                        .doOnNext(m -> sequenceNumbers.add(m.getSequenceNumber())))
+            .expectNextCount(numberOfEvents)
             .thenAwait(shortWait) // Give time for autoComplete to finish
             .thenCancel()
             .verify(TIMEOUT);
 
-        // Assert
-        final ServiceBusReceivedMessage newLastMessage = receiver.peekMessage().block(TIMEOUT);
-        logMessage(newLastMessage, receiver.getEntityPath(), "peeked messages");
-        if (lastMessage == null) {
-            assertNull(newLastMessage,
-                String.format("Actual messageId[%s]", newLastMessage != null ? newLastMessage.getMessageId() : "n/a"));
-        } else {
-            assertNotNull(newLastMessage);
-            assertEquals(lastMessage.getSequenceNumber(), newLastMessage.getSequenceNumber());
+        // Assert messages are completed.
+        for (Long sequenceNumber : sequenceNumbers) {
+            StepVerifier.create(autoCompleteReceiver.peekMessage(sequenceNumber))
+                .verifyComplete();
         }
     }
 

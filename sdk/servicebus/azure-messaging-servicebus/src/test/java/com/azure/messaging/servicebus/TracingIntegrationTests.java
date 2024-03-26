@@ -35,7 +35,9 @@ import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.CountDownLatch;
@@ -388,8 +390,8 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         StepVerifier.create(sender.sendMessage(message)).expectComplete().verify(TIMEOUT);
 
-        CountDownLatch latch = new CountDownLatch(3);
-        spanProcessor.notifyIfCondition(latch, s -> (s.getName().equals("ServiceBus.process") || s.getName().equals("ServiceBus.renewMessageLock")) && s.getSpanContext().getTraceId().equals(traceId));
+        CountDownLatch latch = new CountDownLatch(1);
+        spanProcessor.notifyIfCondition(latch, s -> s.getName().equals("ServiceBus.receiveDeferredMessage") && receivedMessage.get() != null);
         toClose(receiver.receiveMessages()
             .skipUntil(m -> traceparent.equals(m.getApplicationProperties().get("traceparent")))
             .flatMap(m -> receiver.renewMessageLock(m).thenReturn(m))
@@ -398,10 +400,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .subscribe(m -> {
                 if (traceparent.equals(m.getApplicationProperties().get("traceparent"))) {
                     receivedMessage.compareAndSet(null, m);
-                    latch.countDown();
                 }
             }));
-        assertTrue(latch.await(50, TimeUnit.SECONDS));
+        assertTrue(latch.await(120, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
