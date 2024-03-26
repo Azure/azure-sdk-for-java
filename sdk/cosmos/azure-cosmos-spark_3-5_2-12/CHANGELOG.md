@@ -3,7 +3,7 @@
 ### 4.29.0-beta.1 (Unreleased)
 
 #### Features Added
-* Spark 3.5 support: - See [PR 35176](https://github.com/Azure/azure-sdk-for-java/pull/35176).
+* Spark 3.5 support: - See [PR 39395](https://github.com/Azure/azure-sdk-for-java/pull/39395/files).
 
 #### Breaking Changes
 
