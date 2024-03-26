@@ -12,23 +12,42 @@ import org.slf4j.Logger;
 
 import java.util.function.Consumer;
 
+/**
+ * Customization class for Monitor. These customizations will be applied on top of the generated code.
+ */
 public class MonitorIngestionCustomizations extends Customization {
+
+    /**
+     * Customizes the generated code.
+     * @param libraryCustomization The library customization.
+     * @param logger The logger.
+     */
     @Override
     public void customize(LibraryCustomization libraryCustomization, Logger logger) {
         packageCustomization(libraryCustomization.getPackage("com.azure.monitor.ingestion.implementation"), logger);
     }
 
+    /**
+     * Customizes the generated code for a package within the library.
+     * @param packageCustomization The package customization.
+     * @param logger The logger.
+     */
     private void packageCustomization(PackageCustomization packageCustomization, Logger logger) {
         IngestionUsingDataCollectionRulesClientBuilderCustomization(packageCustomization.getClass("IngestionUsingDataCollectionRulesClientBuilder"), logger);
     }
 
+    /**
+     * Customizes the generated code for `IngestionUsingDataCollectionRulesClientBuilder`.
+     * @param classCustomization The class customization.
+     * @param logger The logger.
+     */
     private void IngestionUsingDataCollectionRulesClientBuilderCustomization(ClassCustomization classCustomization, Logger logger) {
-        classCustomization.addImports("com.azure.monitor.ingestion.models.LogIngestionAudience");
+        classCustomization.addImports("com.azure.monitor.ingestion.models.LogsIngestionAudience");
 
 
 
         customizeAst(classCustomization, clazz -> {
-            clazz.addPrivateField("LogIngestionAudience", "audience")
+            clazz.addPrivateField("LogsIngestionAudience", "audience")
                 .addAnnotation("Generated")
                 .setJavadocComment("The audience indicating the authorization scope of log ingestion clients.")
                 .createSetter()
@@ -85,6 +104,11 @@ public class MonitorIngestionCustomizations extends Customization {
     }
 
 
+    /**
+     * Customizes the abstract syntax tree of a class.
+     * @param classCustomization The class customization.
+     * @param consumer The consumer.
+     */
     private static void customizeAst(ClassCustomization classCustomization, Consumer<ClassOrInterfaceDeclaration> consumer) {
         classCustomization.customizeAst(ast -> consumer.accept(ast.getClassByName(classCustomization.getClassName())
             .orElseThrow(() -> new RuntimeException("Class not found. " + classCustomization.getClassName()))));

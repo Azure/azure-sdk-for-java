@@ -15,35 +15,35 @@ public class LogsIngestionAudience {
     private static final String AZURE_CHINA = "https://monitor.azure.cn//.default";
 
     /**
-     * Creates an instance of LogIngestionAudience.
+     * Creates an instance of LogsIngestionAudience.
      * @param audience The audience for the log ingestion.
      */
-    LogIngestionAudience(String audience) {
+    LogsIngestionAudience(String audience) {
         this.audience = audience;
     }
 
     /**
-     * Creates an instance of LogIngestionAudience for Azure Public Cloud.
-     * @return LogIngestionAudience for Azure Public Cloud.
+     * Creates an instance of LogsIngestionAudience for Azure Public Cloud.
+     * @return LogsIngestionAudience for Azure Public Cloud.
      */
-    public static LogIngestionAudience azurePublic() {
-        return new LogIngestionAudience(AZURE_PUBLIC);
+    public static LogsIngestionAudience azurePublic() {
+        return new LogsIngestionAudience(AZURE_PUBLIC_CLOUD);
     }
 
     /**
-     * Creates an instance of LogIngestionAudience for Azure US Government Cloud.
-     * @return LogIngestionAudience for Azure US Government Cloud.
+     * Creates an instance of LogsIngestionAudience for Azure US Government Cloud.
+     * @return LogsIngestionAudience for Azure US Government Cloud.
      */
-    public static LogIngestionAudience azureUSGovernment() {
-        return new LogIngestionAudience(AZURE_US_GOV);
+    public static LogsIngestionAudience azureGovernment() {
+        return new LogsIngestionAudience(AZURE_GOVERNMENT);
     }
 
     /**
-     * Creates an instance of LogIngestionAudience for Azure China Cloud.
-     * @return LogIngestionAudience for Azure China Cloud.
+     * Creates an instance of LogsIngestionAudience for Azure China Cloud.
+     * @return LogsIngestionAudience for Azure China Cloud.
      */
-    public static LogIngestionAudience azureChina() {
-        return new LogIngestionAudience(AZURE_CHINA);
+    public static LogsIngestionAudience azureChina() {
+        return new LogsIngestionAudience(AZURE_CHINA);
     }
 
     /**

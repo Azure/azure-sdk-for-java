@@ -25,13 +25,6 @@
       <artifactId>azure-autorest-customization</artifactId>
       <version>1.0.0-beta.8</version>
     </dependency>
-
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-monitor-ingestion</artifactId>
-      <version>1.2.0-beta.1</version>
-      <scope>compile</scope>
-    </dependency>
   </dependencies>
 
 </project>
