@@ -6,8 +6,7 @@ package com.generic.core.models.traits;
 import com.generic.core.util.configuration.Configuration;
 
 /**
- * An {@link com.generic.core.models.traits SDK for Java trait} providing a consistent interface for setting
- * {@link Configuration}.
+ * A {@link com.generic.core.models.traits trait} providing a consistent interface for setting {@link Configuration}.
  *
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue to
  * return the concrete type, rather than the trait type.
