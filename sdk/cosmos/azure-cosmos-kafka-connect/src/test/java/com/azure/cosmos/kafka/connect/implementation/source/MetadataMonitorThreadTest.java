@@ -152,7 +152,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
         FeedRangesMetadataTopicPartition feedRangesMetadataTopicPartition =
             new FeedRangesMetadataTopicPartition(databaseName, multiPartitionContainer.getResourceId());
         FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffset =
-            new FeedRangesMetadataTopicOffset(Arrays.asList(FeedRangeEpkImpl.forFullRange().getRange()));
+            new FeedRangesMetadataTopicOffset(Arrays.asList(FeedRange.forFullRange()));
 
         Map<Map<String, Object>, Map<String, Object>> feedRangesOffSetMap = new HashMap<>();
         feedRangesOffSetMap.put(
@@ -236,7 +236,6 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
             new FeedRangesMetadataTopicOffset(
                 childRanges
                     .stream()
-                    .map(FeedRangeEpkImpl::getRange)
                     .collect(Collectors.toList()));
 
         Map<Map<String, Object>, Map<String, Object>> feedRangesOffSetMap = new HashMap<>();

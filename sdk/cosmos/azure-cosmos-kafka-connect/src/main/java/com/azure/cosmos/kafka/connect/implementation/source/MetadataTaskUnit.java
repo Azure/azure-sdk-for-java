@@ -3,8 +3,8 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.routing.Range;
+import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -24,21 +24,21 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkArgument;
+import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonSerialize(using = MetadataTaskUnit.MetadataTaskUnitSerializer.class)
 @JsonDeserialize(using = MetadataTaskUnit.MetadataTaskUnitDeserializer.class)
 public class MetadataTaskUnit implements ITaskUnit {
     private final String databaseName;
     private final List<String> containerRids;
-    private final Map<String, List<Range<String>>> containersEffectiveRangesMap;
+    private final Map<String, List<FeedRange>> containersEffectiveRangesMap;
     private final String topic;
 
     public MetadataTaskUnit(
         String databaseName,
         List<String> containerRids,
-        Map<String, List<Range<String>>> containersEffectiveRangesMap,
+        Map<String, List<FeedRange>> containersEffectiveRangesMap,
         String topic) {
 
         checkArgument(StringUtils.isNotEmpty(databaseName), "Argument 'databaseName' should not be null");
@@ -60,7 +60,7 @@ public class MetadataTaskUnit implements ITaskUnit {
         return containerRids;
     }
 
-    public Map<String, List<Range<String>>> getContainersEffectiveRangesMap() {
+    public Map<String, List<FeedRange>> getContainersEffectiveRangesMap() {
         return containersEffectiveRangesMap;
     }
 
@@ -125,7 +125,7 @@ public class MetadataTaskUnit implements ITaskUnit {
                             getContainersEffectiveRangesMap().
                             get(containerRid)
                             .stream()
-                            .map(range -> range.toJson())
+                            .map(range -> range.toString())
                             .collect(Collectors.toList())));
                 writer.writeEndObject();
             }
@@ -153,15 +153,15 @@ public class MetadataTaskUnit implements ITaskUnit {
             List<String> containerRids = mapper.readValue(rootNode.get("containerRids").asText(), new TypeReference<List<String>>() {});
             ArrayNode arrayNode = (ArrayNode) rootNode.get("containersEffectiveRangesMap");
 
-            Map<String, List<Range<String>>> containersEffectiveRangesMap = new HashMap<>();
+            Map<String, List<FeedRange>> containersEffectiveRangesMap = new HashMap<>();
             for (JsonNode jsonNode : arrayNode) {
                 String containerRid = jsonNode.get("containerRid").asText();
-                List<Range<String>> effectiveRanges =
+                List<FeedRange> effectiveRanges =
                     mapper
                         .readValue(
                             jsonNode.get("effectiveFeedRanges").asText(),
                             new TypeReference<List<String>>() {})
-                        .stream().map(rangeJson -> new Range<String>(rangeJson))
+                        .stream().map(rangeJson -> FeedRange.fromString(rangeJson))
                         .collect(Collectors.toList());
                 containersEffectiveRangesMap.put(containerRid, effectiveRanges);
             }

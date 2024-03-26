@@ -11,14 +11,18 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
+import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Instant;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -260,6 +264,42 @@ public final class CosmosChangeFeedRequestOptions {
         final ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuation);
 
         return createForProcessingFromContinuation(changeFeedState);
+    }
+
+    /***
+     * Creates a new {@link CosmosChangeFeedRequestOptions} instance to start processing
+     * change feed items based on a previous continuation
+     *
+     * @param continuation The continuation that was retrieved from a previously retrieved FeedResponse
+     * @param targetRange the new target range
+     * @param continuationLsn the new continuation lsn
+     * @return a new {@link CosmosChangeFeedRequestOptions} instance
+     */
+    public static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(
+        String continuation, FeedRange targetRange, String continuationLsn) {
+        if (targetRange instanceof FeedRangeEpkImpl) {
+            Range<String> normalizedRange =
+                FeedRangeInternal.normalizeRange(((FeedRangeEpkImpl) targetRange).getRange());
+
+
+            final ChangeFeedState changeFeedState = ChangeFeedState.fromString(continuation);
+            ChangeFeedState targetChangeFeedState =
+                new ChangeFeedStateV1(
+                    changeFeedState.getContainerRid(),
+                    (FeedRangeEpkImpl) targetRange,
+                    changeFeedState.getMode(),
+                    changeFeedState.getStartFromSettings(),
+                    FeedRangeContinuation.create(
+                        changeFeedState.getContainerRid(),
+                        (FeedRangeEpkImpl) targetRange,
+                        Arrays.asList(new CompositeContinuationToken(continuationLsn, normalizedRange))
+                    )
+                );
+
+            return createForProcessingFromContinuation(targetChangeFeedState);
+        }
+
+        throw new IllegalStateException("createForProcessingFromContinuation does not support feedRange type " + targetRange.getClass());
     }
 
     static CosmosChangeFeedRequestOptions createForProcessingFromContinuation(

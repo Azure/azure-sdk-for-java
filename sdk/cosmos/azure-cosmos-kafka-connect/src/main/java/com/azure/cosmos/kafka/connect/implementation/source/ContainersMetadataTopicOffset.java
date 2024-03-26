@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,14 +12,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * Containers metadata topic offset.
  */
 public class ContainersMetadataTopicOffset {
     public static final String CONTAINERS_RESOURCE_IDS_NAME_KEY = "cosmos.source.metadata.containerRids";
-    public static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    public static final ObjectMapper OBJECT_MAPPER = KafkaCosmosUtils.getSimpleObjectMapper();
 
     private final List<String> containerRids;
     public ContainersMetadataTopicOffset(List<String> containerRids) {
