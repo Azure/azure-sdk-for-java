@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.models.FeedRange;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -18,7 +18,7 @@ import static com.azure.cosmos.kafka.connect.implementation.guava25.base.Precond
 
 public class FeedRangesMetadataTopicOffset {
     public static final String CONTAINER_FEED_RANGES_KEY = "cosmos.source.metadata.container.feedRanges";
-    public static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    public static final ObjectMapper OBJECT_MAPPER = KafkaCosmosUtils.getSimpleObjectMapper();
 
     private final List<FeedRange> feedRanges;
 

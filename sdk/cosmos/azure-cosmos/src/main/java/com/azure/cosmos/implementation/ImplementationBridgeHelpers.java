@@ -943,7 +943,7 @@ public class ImplementationBridgeHelpers {
 
             Mono<List<FeedRange>> getFeedRanges(CosmosAsyncContainer cosmosAsyncContainer, boolean forceRefresh);
 
-            Mono<List<FeedRangeEpkImpl>> trySplitFeedRange(
+            Mono<List<FeedRange>> trySplitFeedRange(
                 CosmosAsyncContainer cosmosAsyncContainer,
                 FeedRange feedRange,
                 int targetedCountAfterSplit);

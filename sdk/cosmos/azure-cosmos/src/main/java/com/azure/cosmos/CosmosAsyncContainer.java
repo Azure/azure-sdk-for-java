@@ -2810,12 +2810,13 @@ public class CosmosAsyncContainer {
                 }
 
                 @Override
-                public Mono<List<FeedRangeEpkImpl>> trySplitFeedRange(
+                public Mono<List<FeedRange>> trySplitFeedRange(
                     CosmosAsyncContainer cosmosAsyncContainer,
                     FeedRange feedRange,
                     int targetedCountAfterSplit) {
 
-                    return cosmosAsyncContainer.trySplitFeedRange(feedRange, targetedCountAfterSplit);
+                    return cosmosAsyncContainer.trySplitFeedRange(feedRange, targetedCountAfterSplit)
+                        .map(feedRangeEpks -> feedRangeEpks.stream().collect(Collectors.toList()));
                 }
             });
     }

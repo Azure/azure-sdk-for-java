@@ -4,11 +4,11 @@
 package com.azure.cosmos.kafka.connect;
 
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
+import com.azure.cosmos.kafka.connect.implementation.Strings;
 import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;

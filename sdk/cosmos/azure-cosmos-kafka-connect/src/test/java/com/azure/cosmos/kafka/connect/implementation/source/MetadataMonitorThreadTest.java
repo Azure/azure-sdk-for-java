@@ -6,7 +6,6 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.TestConfigurations;
-import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.kafka.connect.InMemoryStorageReader;
 import com.azure.cosmos.kafka.connect.KafkaCosmosTestSuiteBase;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAccountConfig;
@@ -220,7 +219,7 @@ public class MetadataMonitorThreadTest extends KafkaCosmosTestSuiteBase {
                 .block();
         assertThat(feedRanges.size()).isEqualTo(1);
 
-        List<FeedRangeEpkImpl> childRanges =
+        List<FeedRange> childRanges =
             ImplementationBridgeHelpers
                 .CosmosAsyncContainerHelper
                 .getCosmosAsyncContainerAccessor()

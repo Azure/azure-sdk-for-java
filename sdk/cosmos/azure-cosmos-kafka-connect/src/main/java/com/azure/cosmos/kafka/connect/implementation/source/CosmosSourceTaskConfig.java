@@ -3,7 +3,7 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class CosmosSourceTaskConfig extends CosmosSourceConfig {
-    private static final ObjectMapper OBJECT_MAPPER = Utils.getSimpleObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = KafkaCosmosUtils.getSimpleObjectMapper();
     private static final String SOURCE_TASK_CONFIG_PREFIX = "kafka.connect.cosmos.source.task.";
 
     public static final String SOURCE_METADATA_TASK_UNIT = SOURCE_TASK_CONFIG_PREFIX + "metadataTaskUnit";

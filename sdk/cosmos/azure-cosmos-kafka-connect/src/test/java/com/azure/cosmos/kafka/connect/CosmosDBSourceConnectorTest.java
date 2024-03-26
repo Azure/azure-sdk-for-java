@@ -251,7 +251,6 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
         CosmosDBSourceConnector sourceConnector = new CosmosDBSourceConnector();
 
         try {
-
             Map<String, Object> sourceConfigMap = new HashMap<>();
             sourceConfigMap.put("kafka.connect.cosmos.accountEndpoint", TestConfigurations.HOST);
             sourceConfigMap.put("kafka.connect.cosmos.accountKey", TestConfigurations.MASTER_KEY);
@@ -271,7 +270,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             CosmosContainerProperties singlePartitionContainer = getSinglePartitionContainer(cosmosAsyncClient);
 
             // constructing feed range continuation offset
-            List<FeedRangeEpkImpl> childRanges =
+            List<FeedRange> childRanges =
                 ImplementationBridgeHelpers
                     .CosmosAsyncContainerHelper
                     .getCosmosAsyncContainerAccessor()
@@ -284,7 +283,7 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             Map<Map<String, Object>, Map<String, Object>> initialOffsetMap = new HashMap<>();
             List<FeedRangeTaskUnit> singlePartitionFeedRangeTaskUnits = new ArrayList<>();
 
-            for (FeedRangeEpkImpl childRange : childRanges) {
+            for (FeedRange childRange : childRanges) {
                 FeedRangeContinuationTopicPartition feedRangeContinuationTopicPartition =
                     new FeedRangeContinuationTopicPartition(
                         databaseName,
@@ -293,13 +292,13 @@ public class CosmosDBSourceConnectorTest extends KafkaCosmosTestSuiteBase {
 
                 String childRangeContinuationState = new ChangeFeedStateV1(
                     singlePartitionContainer.getResourceId(),
-                    childRange,
+                    (FeedRangeEpkImpl)childRange,
                     ChangeFeedMode.INCREMENTAL,
                     ChangeFeedStartFromInternal.createFromBeginning(),
                     FeedRangeContinuation.create(
                         singlePartitionContainer.getResourceId(),
-                        childRange,
-                        Arrays.asList(new CompositeContinuationToken("1", childRange.getRange())))).toString();
+                        (FeedRangeEpkImpl)childRange,
+                        Arrays.asList(new CompositeContinuationToken("1", ((FeedRangeEpkImpl)childRange).getRange())))).toString();
 
                 FeedRangeContinuationTopicOffset feedRangeContinuationTopicOffset =
                     new FeedRangeContinuationTopicOffset(childRangeContinuationState, "1");

@@ -5,10 +5,10 @@ package com.azure.cosmos.kafka.connect.implementation.source;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
 import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.kafka.connect.implementation.guava25.base.Stopwatch;
@@ -312,7 +312,7 @@ public class CosmosSourceTask extends SourceTask {
         } else {
             try {
                 KafkaCosmosChangeFeedState kafkaCosmosChangeFeedState =
-                    Utils.getSimpleObjectMapper().readValue(feedRangeTaskUnit.getContinuationState(), KafkaCosmosChangeFeedState.class);
+                KafkaCosmosUtils.getSimpleObjectMapper().readValue(feedRangeTaskUnit.getContinuationState(), KafkaCosmosChangeFeedState.class);
 
                 changeFeedRequestOptions =
                     CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(

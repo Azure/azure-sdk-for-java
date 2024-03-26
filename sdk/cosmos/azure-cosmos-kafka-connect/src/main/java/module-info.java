@@ -12,4 +12,5 @@ module com.azure.cosmos.kafka.connect {
     // public API surface area
     exports com.azure.cosmos.kafka.connect;
     uses com.azure.core.util.tracing.Tracer;
+    uses com.azure.cosmos.kafka.connect.implementation.guava25.base.PatternCompiler;
 }
