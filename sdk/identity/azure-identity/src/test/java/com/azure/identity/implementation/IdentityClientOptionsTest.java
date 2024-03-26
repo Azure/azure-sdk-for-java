@@ -15,7 +15,13 @@ public class IdentityClientOptionsTest {
     @Test
     public void testDefaultAuthorityHost() {
         IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-        Assertions.assertEquals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD, identityClientOptions.getAuthorityHost());
+
+        Configuration configuration = Configuration.getGlobalConfiguration();
+
+        String expected = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
+            AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+
+        Assertions.assertEquals(expected, identityClientOptions.getAuthorityHost());
     }
 
     @Test
