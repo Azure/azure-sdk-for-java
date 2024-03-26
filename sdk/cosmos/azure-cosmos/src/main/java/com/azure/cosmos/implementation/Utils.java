@@ -574,7 +574,7 @@ public class Utils {
             if (jsonTreeMap instanceof ObjectNodeMap) {
                 jsonNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
             } else {
-                jsonNode = simpleObjectMapper.convertValue(object, JsonNode.class);
+                jsonNode = simpleObjectMapper.convertValue(jsonTreeMap, JsonNode.class);
             }
             simpleObjectMapper.writeValue(byteBufferOutputStream, jsonNode);
             return byteBufferOutputStream.asByteBuffer();

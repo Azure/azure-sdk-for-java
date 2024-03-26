@@ -4973,7 +4973,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request -> readFeed(request)
                 .map(response -> toFeedResponsePage(
                                     response,
-                                    this.getEffectiveItemSerializer(nonNullOptions),
+                                    CosmosItemSerializer.DEFAULT_SERIALIZER,
                                     klass));
 
         return Paginator
