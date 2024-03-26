@@ -34,7 +34,7 @@ public final class AccessListRoleBindingsWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"kind\":\"qcaaewdaomdjvl\",\"metadata\":{\"first\":\"xkzb\",\"last\":\"sgeivsiy\",\"prev\":\"kdncj\",\"next\":\"onbzoggculapzwy\",\"total_size\":1152319383},\"data\":[{\"kind\":\"qxepnylbfuaj\",\"id\":\"jtlvofqzhvfciby\",\"metadata\":{\"self\":\"wuxrkjpvdwxfzwi\",\"resource_name\":\"wzjbh\",\"created_at\":\"sxjrk\",\"updated_at\":\"btrnegvm\",\"deleted_at\":\"uqeqv\"},\"principal\":\"spastjbkkdmf\",\"role_name\":\"est\",\"crn_pattern\":\"lx\"},{\"kind\":\"ilozapeewchpxlk\",\"id\":\"kuziycsle\",\"metadata\":{\"self\":\"uztcktyhjtqed\",\"resource_name\":\"zulwmmrqzzrrj\",\"created_at\":\"gl\",\"updated_at\":\"zgkrvqe\",\"deleted_at\":\"toepryu\"},\"principal\":\"wytpzdmovz\",\"role_name\":\"va\",\"crn_pattern\":\"zqadf\"}]}";
+            = "{\"kind\":\"qylkmqpzoyhlf\",\"metadata\":{\"first\":\"wgcloxoebqinji\",\"last\":\"wjfuj\",\"prev\":\"afcba\",\"next\":\"pzpofoiyjw\",\"total_size\":1217605698},\"data\":[{\"kind\":\"kkholvdndvia\",\"id\":\"gphuartvtiu\",\"metadata\":{\"self\":\"fchnmnah\",\"resource_name\":\"xhk\",\"created_at\":\"qirwrweoox\",\"updated_at\":\"i\",\"deleted_at\":\"xwrsnew\"},\"principal\":\"zqvbubqm\",\"role_name\":\"hsycxhxzgaz\",\"crn_pattern\":\"abo\"},{\"kind\":\"vmfqhppubo\",\"id\":\"epdfgkmtdherng\",\"metadata\":{\"self\":\"juahokqto\",\"resource_name\":\"auxofshfph\",\"created_at\":\"nulaiywzejywhsl\",\"updated_at\":\"ojpllndnpdwrpqaf\",\"deleted_at\":\"ug\"},\"principal\":\"n\",\"role_name\":\"yetefyp\",\"crn_pattern\":\"octfjgtixrjvzuyt\"},{\"kind\":\"mlmuowol\",\"id\":\"uir\",\"metadata\":{\"self\":\"ons\",\"resource_name\":\"nw\",\"created_at\":\"gajinnixjawrtmj\",\"updated_at\":\"myccx\",\"deleted_at\":\"hcoxov\"},\"principal\":\"khenlus\",\"role_name\":\"rd\",\"crn_pattern\":\"xtxrdcqtjvidt\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,30 +51,29 @@ public final class AccessListRoleBindingsWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        AccessListRoleBindingsSuccessResponse response
-            = manager.access()
-                .listRoleBindingsWithResponse("xlllchp", "db",
-                    new ListAccessRequestModel().withSearchFilters(mapOf("hfuk", "wrd", "fcvlerch", "vsjcswsmystuluqy",
-                        "xsspuunnoxyhk", "qbmfpjbabwidf", "ddrihpf", "g")),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        AccessListRoleBindingsSuccessResponse response = manager.access()
+            .listRoleBindingsWithResponse("vgfab", "iyji",
+                new ListAccessRequestModel()
+                    .withSearchFilters(mapOf("neiknpg", "phdu", "btozipqwje", "xgjiuqh", "xxgewpk", "mur")),
+                com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("qcaaewdaomdjvl", response.kind());
-        Assertions.assertEquals("xkzb", response.metadata().first());
-        Assertions.assertEquals("sgeivsiy", response.metadata().last());
-        Assertions.assertEquals("kdncj", response.metadata().prev());
-        Assertions.assertEquals("onbzoggculapzwy", response.metadata().next());
-        Assertions.assertEquals(1152319383, response.metadata().totalSize());
-        Assertions.assertEquals("qxepnylbfuaj", response.data().get(0).kind());
-        Assertions.assertEquals("jtlvofqzhvfciby", response.data().get(0).id());
-        Assertions.assertEquals("wuxrkjpvdwxfzwi", response.data().get(0).metadata().self());
-        Assertions.assertEquals("wzjbh", response.data().get(0).metadata().resourceName());
-        Assertions.assertEquals("sxjrk", response.data().get(0).metadata().createdAt());
-        Assertions.assertEquals("btrnegvm", response.data().get(0).metadata().updatedAt());
-        Assertions.assertEquals("uqeqv", response.data().get(0).metadata().deletedAt());
-        Assertions.assertEquals("spastjbkkdmf", response.data().get(0).principal());
-        Assertions.assertEquals("est", response.data().get(0).roleName());
-        Assertions.assertEquals("lx", response.data().get(0).crnPattern());
+        Assertions.assertEquals("qylkmqpzoyhlf", response.kind());
+        Assertions.assertEquals("wgcloxoebqinji", response.metadata().first());
+        Assertions.assertEquals("wjfuj", response.metadata().last());
+        Assertions.assertEquals("afcba", response.metadata().prev());
+        Assertions.assertEquals("pzpofoiyjw", response.metadata().next());
+        Assertions.assertEquals(1217605698, response.metadata().totalSize());
+        Assertions.assertEquals("kkholvdndvia", response.data().get(0).kind());
+        Assertions.assertEquals("gphuartvtiu", response.data().get(0).id());
+        Assertions.assertEquals("fchnmnah", response.data().get(0).metadata().self());
+        Assertions.assertEquals("xhk", response.data().get(0).metadata().resourceName());
+        Assertions.assertEquals("qirwrweoox", response.data().get(0).metadata().createdAt());
+        Assertions.assertEquals("i", response.data().get(0).metadata().updatedAt());
+        Assertions.assertEquals("xwrsnew", response.data().get(0).metadata().deletedAt());
+        Assertions.assertEquals("zqvbubqm", response.data().get(0).principal());
+        Assertions.assertEquals("hsycxhxzgaz", response.data().get(0).roleName());
+        Assertions.assertEquals("abo", response.data().get(0).crnPattern());
     }
 
     // Use "Map.of" if available

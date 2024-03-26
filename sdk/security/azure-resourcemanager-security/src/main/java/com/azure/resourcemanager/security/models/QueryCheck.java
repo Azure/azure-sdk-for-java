@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The rule query details. */
+/**
+ * The rule query details.
+ */
 @Fluent
 public final class QueryCheck {
     /*
@@ -29,13 +31,15 @@ public final class QueryCheck {
     @JsonProperty(value = "columnNames")
     private List<String> columnNames;
 
-    /** Creates an instance of QueryCheck class. */
+    /**
+     * Creates an instance of QueryCheck class.
+     */
     public QueryCheck() {
     }
 
     /**
      * Get the query property: The rule query.
-     *
+     * 
      * @return the query value.
      */
     public String query() {
@@ -44,7 +48,7 @@ public final class QueryCheck {
 
     /**
      * Set the query property: The rule query.
-     *
+     * 
      * @param query the query value to set.
      * @return the QueryCheck object itself.
      */
@@ -55,7 +59,7 @@ public final class QueryCheck {
 
     /**
      * Get the expectedResult property: Expected result.
-     *
+     * 
      * @return the expectedResult value.
      */
     public List<List<String>> expectedResult() {
@@ -64,7 +68,7 @@ public final class QueryCheck {
 
     /**
      * Set the expectedResult property: Expected result.
-     *
+     * 
      * @param expectedResult the expectedResult value to set.
      * @return the QueryCheck object itself.
      */
@@ -75,7 +79,7 @@ public final class QueryCheck {
 
     /**
      * Get the columnNames property: Column names of expected result.
-     *
+     * 
      * @return the columnNames value.
      */
     public List<String> columnNames() {
@@ -84,7 +88,7 @@ public final class QueryCheck {
 
     /**
      * Set the columnNames property: Column names of expected result.
-     *
+     * 
      * @param columnNames the columnNames value to set.
      * @return the QueryCheck object itself.
      */
@@ -95,7 +99,7 @@ public final class QueryCheck {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

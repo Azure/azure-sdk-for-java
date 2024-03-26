@@ -9,8 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Container App versioned application definition. Defines the desired state of an immutable revision. Any changes to
- * this section Will result in a new revision being created.
+ * Container App versioned application definition.
+ * Defines the desired state of an immutable revision.
+ * Any changes to this section Will result in a new revision being created.
  */
 @Fluent
 public final class Template {
@@ -59,13 +60,15 @@ public final class Template {
     @JsonProperty(value = "serviceBinds")
     private List<ServiceBind> serviceBinds;
 
-    /** Creates an instance of Template class. */
+    /**
+     * Creates an instance of Template class.
+     */
     public Template() {
     }
 
     /**
      * Get the revisionSuffix property: User friendly suffix that is appended to the revision name.
-     *
+     * 
      * @return the revisionSuffix value.
      */
     public String revisionSuffix() {
@@ -74,7 +77,7 @@ public final class Template {
 
     /**
      * Set the revisionSuffix property: User friendly suffix that is appended to the revision name.
-     *
+     * 
      * @param revisionSuffix the revisionSuffix value to set.
      * @return the Template object itself.
      */
@@ -88,7 +91,7 @@ public final class Template {
      * terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill
      * signal (no opportunity to shut down). If this value is nil, the default grace period will be used instead. Set
      * this value longer than the expected cleanup time for your process. Defaults to 30 seconds.
-     *
+     * 
      * @return the terminationGracePeriodSeconds value.
      */
     public Long terminationGracePeriodSeconds() {
@@ -100,7 +103,7 @@ public final class Template {
      * terminate gracefully. Value must be non-negative integer. The value zero indicates stop immediately via the kill
      * signal (no opportunity to shut down). If this value is nil, the default grace period will be used instead. Set
      * this value longer than the expected cleanup time for your process. Defaults to 30 seconds.
-     *
+     * 
      * @param terminationGracePeriodSeconds the terminationGracePeriodSeconds value to set.
      * @return the Template object itself.
      */
@@ -111,7 +114,7 @@ public final class Template {
 
     /**
      * Get the initContainers property: List of specialized containers that run before app containers.
-     *
+     * 
      * @return the initContainers value.
      */
     public List<InitContainer> initContainers() {
@@ -120,7 +123,7 @@ public final class Template {
 
     /**
      * Set the initContainers property: List of specialized containers that run before app containers.
-     *
+     * 
      * @param initContainers the initContainers value to set.
      * @return the Template object itself.
      */
@@ -131,7 +134,7 @@ public final class Template {
 
     /**
      * Get the containers property: List of container definitions for the Container App.
-     *
+     * 
      * @return the containers value.
      */
     public List<Container> containers() {
@@ -140,7 +143,7 @@ public final class Template {
 
     /**
      * Set the containers property: List of container definitions for the Container App.
-     *
+     * 
      * @param containers the containers value to set.
      * @return the Template object itself.
      */
@@ -151,7 +154,7 @@ public final class Template {
 
     /**
      * Get the scale property: Scaling properties for the Container App.
-     *
+     * 
      * @return the scale value.
      */
     public Scale scale() {
@@ -160,7 +163,7 @@ public final class Template {
 
     /**
      * Set the scale property: Scaling properties for the Container App.
-     *
+     * 
      * @param scale the scale value to set.
      * @return the Template object itself.
      */
@@ -171,7 +174,7 @@ public final class Template {
 
     /**
      * Get the volumes property: List of volume definitions for the Container App.
-     *
+     * 
      * @return the volumes value.
      */
     public List<Volume> volumes() {
@@ -180,7 +183,7 @@ public final class Template {
 
     /**
      * Set the volumes property: List of volume definitions for the Container App.
-     *
+     * 
      * @param volumes the volumes value to set.
      * @return the Template object itself.
      */
@@ -191,7 +194,7 @@ public final class Template {
 
     /**
      * Get the serviceBinds property: List of container app services bound to the app.
-     *
+     * 
      * @return the serviceBinds value.
      */
     public List<ServiceBind> serviceBinds() {
@@ -200,7 +203,7 @@ public final class Template {
 
     /**
      * Set the serviceBinds property: List of container app services bound to the app.
-     *
+     * 
      * @param serviceBinds the serviceBinds value to set.
      * @return the Template object itself.
      */
@@ -211,7 +214,7 @@ public final class Template {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

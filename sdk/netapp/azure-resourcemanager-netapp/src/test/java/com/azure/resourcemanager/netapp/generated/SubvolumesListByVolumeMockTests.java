@@ -32,7 +32,7 @@ public final class SubvolumesListByVolumeMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"path\":\"tlgy\",\"size\":8015109045379432698,\"parentPath\":\"lnnpx\",\"provisioningState\":\"afiqgeaarbgjekg\"},\"id\":\"lbyulidwcwvmze\",\"name\":\"jonfhjirwgdnqzbr\",\"type\":\"kspzhzmtksjcit\"}]}";
+            = "{\"value\":[{\"properties\":{\"path\":\"xgvelfclduccbird\",\"size\":3261437061903336605,\"parentPath\":\"o\",\"provisioningState\":\"egstmninwjizci\"},\"id\":\"ghgshejjtbxqmu\",\"name\":\"uxlxqzvners\",\"type\":\"ycucrwnamikzeb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,11 +49,11 @@ public final class SubvolumesListByVolumeMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SubvolumeInfo> response = manager.subvolumes().listByVolume("jchcsrlzknmzla", "rupdwvnphcnzq",
-            "pjhmqrhvthl", "iwdcxsmlzzhzd", com.azure.core.util.Context.NONE);
+        PagedIterable<SubvolumeInfo> response = manager.subvolumes().listByVolume("rtixokff", "yinljqe", "qwhix",
+            "onsts", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("tlgy", response.iterator().next().path());
-        Assertions.assertEquals(8015109045379432698L, response.iterator().next().size());
-        Assertions.assertEquals("lnnpx", response.iterator().next().parentPath());
+        Assertions.assertEquals("xgvelfclduccbird", response.iterator().next().path());
+        Assertions.assertEquals(3261437061903336605L, response.iterator().next().size());
+        Assertions.assertEquals("o", response.iterator().next().parentPath());
     }
 }

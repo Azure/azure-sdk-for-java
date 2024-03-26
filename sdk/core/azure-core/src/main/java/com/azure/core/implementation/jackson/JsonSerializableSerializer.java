@@ -3,12 +3,16 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.azure.core.implementation.ReflectionSerializable;
 import com.azure.json.JsonSerializable;
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.Module;
+import com.fasterxml.jackson.databind.SerializationConfig;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 
 import java.io.IOException;
 
@@ -23,7 +27,15 @@ final class JsonSerializableSerializer extends JsonSerializer<JsonSerializable> 
      * @return A module to be plugged into Jackson ObjectMapper.
      */
     public static Module getModule() {
-        return MODULE;
+        return new SimpleModule().setSerializerModifier(new BeanSerializerModifier() {
+            @Override
+            public JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc,
+                JsonSerializer<?> serializer) {
+                return ReflectionSerializable.supportsJsonSerializable(beanDesc.getBeanClass())
+                    ? new JsonSerializableSerializer()
+                    : serializer;
+            }
+        });
     }
 
     @Override

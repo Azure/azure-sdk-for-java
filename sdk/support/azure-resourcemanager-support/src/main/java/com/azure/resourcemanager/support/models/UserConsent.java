@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** User consent value provided. */
+/**
+ * User consent value provided.
+ */
 public final class UserConsent extends ExpandableStringEnum<UserConsent> {
-    /** Static value Yes for UserConsent. */
+    /**
+     * Static value Yes for UserConsent.
+     */
     public static final UserConsent YES = fromString("Yes");
 
-    /** Static value No for UserConsent. */
+    /**
+     * Static value No for UserConsent.
+     */
     public static final UserConsent NO = fromString("No");
 
     /**
      * Creates a new instance of UserConsent value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class UserConsent extends ExpandableStringEnum<UserConsent> {
 
     /**
      * Creates or finds a UserConsent from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UserConsent.
      */
@@ -38,7 +44,7 @@ public final class UserConsent extends ExpandableStringEnum<UserConsent> {
 
     /**
      * Gets known UserConsent values.
-     *
+     * 
      * @return known UserConsent values.
      */
     public static Collection<UserConsent> values() {

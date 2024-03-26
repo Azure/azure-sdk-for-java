@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The rule result adjusted with baseline. */
+/**
+ * The rule result adjusted with baseline.
+ */
 @Fluent
 public final class BaselineAdjustedResult {
     /*
@@ -35,13 +37,15 @@ public final class BaselineAdjustedResult {
     @JsonProperty(value = "resultsOnlyInBaseline")
     private List<List<String>> resultsOnlyInBaseline;
 
-    /** Creates an instance of BaselineAdjustedResult class. */
+    /**
+     * Creates an instance of BaselineAdjustedResult class.
+     */
     public BaselineAdjustedResult() {
     }
 
     /**
      * Get the baseline property: Baseline details.
-     *
+     * 
      * @return the baseline value.
      */
     public Baseline baseline() {
@@ -50,7 +54,7 @@ public final class BaselineAdjustedResult {
 
     /**
      * Set the baseline property: Baseline details.
-     *
+     * 
      * @param baseline the baseline value to set.
      * @return the BaselineAdjustedResult object itself.
      */
@@ -61,7 +65,7 @@ public final class BaselineAdjustedResult {
 
     /**
      * Get the status property: The rule result status.
-     *
+     * 
      * @return the status value.
      */
     public RuleStatus status() {
@@ -70,7 +74,7 @@ public final class BaselineAdjustedResult {
 
     /**
      * Set the status property: The rule result status.
-     *
+     * 
      * @param status the status value to set.
      * @return the BaselineAdjustedResult object itself.
      */
@@ -81,7 +85,7 @@ public final class BaselineAdjustedResult {
 
     /**
      * Get the resultsNotInBaseline property: Results the are not in baseline.
-     *
+     * 
      * @return the resultsNotInBaseline value.
      */
     public List<List<String>> resultsNotInBaseline() {
@@ -90,7 +94,7 @@ public final class BaselineAdjustedResult {
 
     /**
      * Set the resultsNotInBaseline property: Results the are not in baseline.
-     *
+     * 
      * @param resultsNotInBaseline the resultsNotInBaseline value to set.
      * @return the BaselineAdjustedResult object itself.
      */
@@ -101,7 +105,7 @@ public final class BaselineAdjustedResult {
 
     /**
      * Get the resultsOnlyInBaseline property: Results the are in baseline.
-     *
+     * 
      * @return the resultsOnlyInBaseline value.
      */
     public List<List<String>> resultsOnlyInBaseline() {
@@ -110,7 +114,7 @@ public final class BaselineAdjustedResult {
 
     /**
      * Set the resultsOnlyInBaseline property: Results the are in baseline.
-     *
+     * 
      * @param resultsOnlyInBaseline the resultsOnlyInBaseline value to set.
      * @return the BaselineAdjustedResult object itself.
      */
@@ -121,7 +125,7 @@ public final class BaselineAdjustedResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

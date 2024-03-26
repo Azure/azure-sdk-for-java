@@ -65,7 +65,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getCompletionsRunner((modelId, prompt) -> {
+        getCompletionsRunnerForNonAzure((modelId, prompt) -> {
             StepVerifier.create(client.getCompletions(modelId, new CompletionsOptions(prompt)))
                 .assertNext(resultCompletions -> {
                     assertCompletions(1, resultCompletions);
@@ -78,7 +78,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getCompletionsRunner((deploymentId, prompt) -> {
+        getCompletionsRunnerForNonAzure((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)))
                 .recordWith(ArrayList::new)
                 .thenConsumeWhile(chatCompletions -> {
@@ -94,7 +94,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getCompletionsFromSinglePromptRunner((modelId, prompt) -> {
+        getCompletionsFromSinglePromptRunnerForNonAzure((modelId, prompt) -> {
             StepVerifier.create(client.getCompletions(modelId, prompt))
                 .assertNext(resultCompletions -> {
                     assertCompletions(1, resultCompletions);
@@ -107,7 +107,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getCompletionsRunner((modelId, prompt) -> {
+        getCompletionsRunnerForNonAzure((modelId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)),
                     new RequestOptions()))
@@ -126,7 +126,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             httpClient,
             new KeyCredential("not_token_looking_string"));
 
-        getCompletionsRunner((modelId, prompt) -> {
+        getCompletionsRunnerForNonAzure((modelId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)),
                     new RequestOptions()))
@@ -141,7 +141,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getCompletionsRunner((modelId, prompt) -> {
+        getCompletionsRunnerForNonAzure((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
             completionsOptions.setMaxTokens(1024);
             completionsOptions.setN(3);
@@ -162,12 +162,12 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getCompletionsRunner((modelId, prompt) -> {
+        getCompletionsRunnerForNonAzure((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
             completionsOptions.setMaxTokens(3);
             StepVerifier.create(client.getCompletions(modelId, completionsOptions))
                 .assertNext(resultCompletions ->
-                    assertCompletions(1, "length", resultCompletions))
+                    assertCompletions(1, resultCompletions))
                 .verifyComplete();
         });
     }
@@ -176,7 +176,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getChatCompletionsForNonAzureRunner((modelId, chatMessages) -> {
+        getChatCompletionsRunnerForNonAzure((modelId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages)))
                 .assertNext(resultChatCompletions -> {
                     assertNotNull(resultChatCompletions.getUsage());
@@ -190,7 +190,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getChatCompletionsForNonAzureRunner((deploymentId, chatMessages) -> {
+        getChatCompletionsRunnerForNonAzure((deploymentId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages)))
                 .recordWith(ArrayList::new)
                 .thenConsumeWhile(chatCompletions -> true)
@@ -203,9 +203,27 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getChatCompletionsWithResponseRunnerForNonAzure(deploymentId -> chatMessages -> requestOptions -> {
+            StepVerifier.create(client.getChatCompletionsStreamWithResponse(deploymentId,
+                            new ChatCompletionsOptions(chatMessages), requestOptions))
+                    .recordWith(ArrayList::new)
+                    .thenConsumeWhile(response -> {
+                        assertResponseRequestHeader(response.getRequest());
+                        assertChatCompletionsStream(response.getValue());
+                        return true;
+                    })
+                    .consumeRecordedWith(messageList -> assertTrue(messageList.size() > 1))
+                    .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getChatCompletionsForNonAzureRunner((modelId, chatMessages) -> {
+        getChatCompletionsRunnerForNonAzure((modelId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new ChatCompletionsOptions(chatMessages)),
                     new RequestOptions()))
@@ -221,7 +239,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getEmbeddingNonAzureRunner((modelId, embeddingsOptions) -> {
+        getEmbeddingRunnerForNonAzure((modelId, embeddingsOptions) -> {
             StepVerifier.create(client.getEmbeddings(modelId, embeddingsOptions))
                 .assertNext(resultEmbeddings -> assertEmbeddings(resultEmbeddings))
                 .verifyComplete();
@@ -232,7 +250,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getEmbeddingNonAzureRunner((modelId, embeddingsOptions) -> {
+        getEmbeddingRunnerForNonAzure((modelId, embeddingsOptions) -> {
             StepVerifier.create(client.getEmbeddingsWithResponse(modelId,
                     BinaryData.fromObject(embeddingsOptions),
                     new RequestOptions()))
@@ -258,7 +276,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatFunctionAutoPreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
+        getChatFunctionRunnerForNonAzure((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setFunctionCall(FunctionCallConfig.AUTO);
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
                 .assertNext(chatCompletions -> {
@@ -279,7 +297,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatFunctionNonePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
+        getChatFunctionRunnerForNonAzure((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setFunctionCall(FunctionCallConfig.NONE);
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
                 .assertNext(chatCompletions -> {
@@ -293,7 +311,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testChatFunctionNotSuppliedByNamePreset(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getChatFunctionForNonAzureRunner((modelId, chatCompletionsOptions) -> {
+        getChatFunctionRunnerForNonAzure((modelId, chatCompletionsOptions) -> {
             chatCompletionsOptions.setFunctionCall(new FunctionCallConfig("NotMyFunction"));
             StepVerifier.create(client.getChatCompletions(modelId, chatCompletionsOptions))
                 .verifyErrorSatisfies(throwable -> {
@@ -719,5 +737,34 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                 assertFalse(CoreUtils.isNullOrEmpty(contentBuilder.toString()));
             }).verifyComplete();
         });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testTextToSpeech(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        textToSpeechRunnerForNonAzure(((modelId, speechGenerationOptions) -> {
+            StepVerifier.create(client.generateSpeechFromText(modelId, speechGenerationOptions))
+                    .assertNext(speech -> {
+                        assertNotNull(speech.toBytes());
+                    }).verifyComplete();
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testTextToSpeechWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        textToSpeechRunnerForNonAzure(((modelId, speechGenerationOptions) -> {
+            StepVerifier.create(client.generateSpeechFromTextWithResponse(modelId,
+                            BinaryData.fromObject(speechGenerationOptions), new RequestOptions()))
+                    .assertNext(response -> {
+                        assertTrue(response.getStatusCode() > 0);
+                        assertNotNull(response.getHeaders());
+                        BinaryData speech = response.getValue();
+                        assertNotNull(speech);
+                        assertNotNull(speech.toBytes());
+                    }).verifyComplete();
+        }));
     }
 }

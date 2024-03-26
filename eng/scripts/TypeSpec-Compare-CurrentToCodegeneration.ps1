@@ -36,13 +36,22 @@ Invoking tsp-client update
 
 "
 
+$failedSdk = $null
 foreach ($tspLocationPath in (Get-ChildItem -Path $Directory -Filter "tsp-location.yaml" -Recurse)) {
   $sdkPath = (get-item $tspLocationPath).Directory.FullName
   Write-Host "Generate SDK for $sdkPath"
   Push-Location
   Set-Location -Path $sdkPath
   tsp-client update
+  if ($LastExitCode -ne 0) {
+    $failedSdk += $sdkPath
+  }
   Pop-Location
+}
+
+if ($failedSdk.Length -gt 0) {
+  Write-Host "Code generation failed for following modules: $failedSdk"
+  exit 1
 }
 
 Write-Host "

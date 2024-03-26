@@ -34,24 +34,24 @@ import reactor.core.publisher.Mono;
  */
 public final class SecurityConnectorApplicationOperationsClientImpl
     implements SecurityConnectorApplicationOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SecurityConnectorApplicationOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SecurityCenterImpl client;
 
     /**
      * Initializes an instance of SecurityConnectorApplicationOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SecurityConnectorApplicationOperationsClientImpl(SecurityCenterImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    SecurityConnectorApplicationOperationsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(SecurityConnectorApplicationOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,79 +62,62 @@ public final class SecurityConnectorApplicationOperationsClientImpl
     @Host("{$host}")
     @ServiceInterface(name = "SecurityCenterSecuri")
     public interface SecurityConnectorApplicationOperationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<ApplicationInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("securityConnectorName") String securityConnectorName,
+            @PathParam("applicationId") String applicationId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ApplicationInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("securityConnectorName") String securityConnectorName,
             @PathParam("applicationId") String applicationId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ApplicationInner application, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("securityConnectorName") String securityConnectorName,
-            @PathParam("applicationId") String applicationId,
-            @BodyParam("application/json") ApplicationInner application,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}/providers/Microsoft.Security/applications/{applicationId}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("securityConnectorName") String securityConnectorName,
-            @PathParam("applicationId") String applicationId,
-            Context context);
+            @PathParam("applicationId") String applicationId, Context context);
     }
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific application for the requested scope by applicationId along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> getWithResponseAsync(
-        String resourceGroupName, String securityConnectorName, String applicationId) {
+    private Mono<Response<ApplicationInner>> getWithResponseAsync(String resourceGroupName,
+        String securityConnectorName, String applicationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -150,26 +133,16 @@ public final class SecurityConnectorApplicationOperationsClientImpl
         final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            securityConnectorName,
-                            applicationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+                resourceGroupName, securityConnectorName, applicationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
@@ -177,22 +150,18 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a specific application for the requested scope by applicationId along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> getWithResponseAsync(
-        String resourceGroupName, String securityConnectorName, String applicationId, Context context) {
+    private Mono<Response<ApplicationInner>> getWithResponseAsync(String resourceGroupName,
+        String securityConnectorName, String applicationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -208,23 +177,15 @@ public final class SecurityConnectorApplicationOperationsClientImpl
         final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                securityConnectorName,
-                applicationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            securityConnectorName, applicationId, accept, context);
     }
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,17 +194,17 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      * @return a specific application for the requested scope by applicationId on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInner> getAsync(
-        String resourceGroupName, String securityConnectorName, String applicationId) {
+    private Mono<ApplicationInner> getAsync(String resourceGroupName, String securityConnectorName,
+        String applicationId) {
         return getWithResponseAsync(resourceGroupName, securityConnectorName, applicationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
@@ -253,16 +214,16 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      * @return a specific application for the requested scope by applicationId along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInner> getWithResponse(
-        String resourceGroupName, String securityConnectorName, String applicationId, Context context) {
+    public Response<ApplicationInner> getWithResponse(String resourceGroupName, String securityConnectorName,
+        String applicationId, Context context) {
         return getWithResponseAsync(resourceGroupName, securityConnectorName, applicationId, context).block();
     }
 
     /**
      * Get a specific application for the requested scope by applicationId.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -277,32 +238,28 @@ public final class SecurityConnectorApplicationOperationsClientImpl
 
     /**
      * Creates or update a security Application on the given security connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Application over a given scope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return security Application over a given scope along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String securityConnectorName, String applicationId, ApplicationInner application) {
+    private Mono<Response<ApplicationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String securityConnectorName, String applicationId, ApplicationInner application) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -323,27 +280,17 @@ public final class SecurityConnectorApplicationOperationsClientImpl
         final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            securityConnectorName,
-                            applicationId,
-                            application,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, securityConnectorName, applicationId, application,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or update a security Application on the given security connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
@@ -351,27 +298,19 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security Application over a given scope along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return security Application over a given scope along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String securityConnectorName,
-        String applicationId,
-        ApplicationInner application,
-        Context context) {
+    private Mono<Response<ApplicationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String securityConnectorName, String applicationId, ApplicationInner application, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -392,24 +331,15 @@ public final class SecurityConnectorApplicationOperationsClientImpl
         final String apiVersion = "2022-07-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                securityConnectorName,
-                applicationId,
-                application,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(),
+            resourceGroupName, securityConnectorName, applicationId, application, accept, context);
     }
 
     /**
      * Creates or update a security Application on the given security connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
@@ -419,17 +349,17 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      * @return security Application over a given scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationInner> createOrUpdateAsync(
-        String resourceGroupName, String securityConnectorName, String applicationId, ApplicationInner application) {
+    private Mono<ApplicationInner> createOrUpdateAsync(String resourceGroupName, String securityConnectorName,
+        String applicationId, ApplicationInner application) {
         return createOrUpdateWithResponseAsync(resourceGroupName, securityConnectorName, applicationId, application)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or update a security Application on the given security connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
@@ -440,22 +370,17 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      * @return security Application over a given scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String securityConnectorName,
-        String applicationId,
-        ApplicationInner application,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, securityConnectorName, applicationId, application, context)
-            .block();
+    public Response<ApplicationInner> createOrUpdateWithResponse(String resourceGroupName, String securityConnectorName,
+        String applicationId, ApplicationInner application, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, securityConnectorName, applicationId, application,
+            context).block();
     }
 
     /**
      * Creates or update a security Application on the given security connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @param application Application over a subscription scope.
@@ -465,18 +390,17 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      * @return security Application over a given scope.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationInner createOrUpdate(
-        String resourceGroupName, String securityConnectorName, String applicationId, ApplicationInner application) {
-        return createOrUpdateWithResponse(
-                resourceGroupName, securityConnectorName, applicationId, application, Context.NONE)
-            .getValue();
+    public ApplicationInner createOrUpdate(String resourceGroupName, String securityConnectorName, String applicationId,
+        ApplicationInner application) {
+        return createOrUpdateWithResponse(resourceGroupName, securityConnectorName, applicationId, application,
+            Context.NONE).getValue();
     }
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -485,19 +409,15 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String securityConnectorName, String applicationId) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String securityConnectorName,
+        String applicationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -512,25 +432,16 @@ public final class SecurityConnectorApplicationOperationsClientImpl
         }
         final String apiVersion = "2022-07-01-preview";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            securityConnectorName,
-                            applicationId,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), apiVersion,
+                this.client.getSubscriptionId(), resourceGroupName, securityConnectorName, applicationId, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
@@ -540,19 +451,15 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String securityConnectorName, String applicationId, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String securityConnectorName,
+        String applicationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -567,22 +474,15 @@ public final class SecurityConnectorApplicationOperationsClientImpl
         }
         final String apiVersion = "2022-07-01-preview";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                securityConnectorName,
-                applicationId,
-                context);
+        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName,
+            securityConnectorName, applicationId, context);
     }
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -598,9 +498,9 @@ public final class SecurityConnectorApplicationOperationsClientImpl
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @param context The context to associate with this operation.
@@ -610,16 +510,16 @@ public final class SecurityConnectorApplicationOperationsClientImpl
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String securityConnectorName, String applicationId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String securityConnectorName,
+        String applicationId, Context context) {
         return deleteWithResponseAsync(resourceGroupName, securityConnectorName, applicationId, context).block();
     }
 
     /**
      * Delete an Application over a given scope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
+     * insensitive.
      * @param securityConnectorName The security connector name.
      * @param applicationId The security Application key - unique key for the standard application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

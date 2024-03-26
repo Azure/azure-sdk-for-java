@@ -6,39 +6,41 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner;
 
-/** An immutable client-side representation of ExternalSecuritySolution. */
+/**
+ * An immutable client-side representation of ExternalSecuritySolution.
+ */
 public interface ExternalSecuritySolution {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the location property: Location where the resource is stored.
-     *
+     * 
      * @return the location value.
      */
     String location();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.ExternalSecuritySolutionInner object.
-     *
+     * 
      * @return the inner object.
      */
     ExternalSecuritySolutionInner innerModel();

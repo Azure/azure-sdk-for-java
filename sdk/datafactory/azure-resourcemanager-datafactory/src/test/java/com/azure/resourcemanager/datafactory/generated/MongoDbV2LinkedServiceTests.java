@@ -18,26 +18,29 @@ public final class MongoDbV2LinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbV2LinkedService model = BinaryData.fromString(
-            "{\"type\":\"MongoDbV2\",\"typeProperties\":{\"connectionString\":\"datafzzmxqyjy\",\"database\":\"datarjpy\"},\"connectVia\":{\"referenceName\":\"ewvlkzmsyezxifj\",\"parameters\":{\"codzdhe\":\"datauovfotwvkuhtdx\",\"ahtkkccrusrz\":\"datanmcvmxiundif\"}},\"description\":\"oqodya\",\"parameters\":{\"ctilbxn\":{\"type\":\"Int\",\"defaultValue\":\"datalvtiploaws\"}},\"annotations\":[\"datajt\"],\"\":{\"cdrchue\":\"datahpelzavohvdb\",\"lvobctitexrbalv\":\"dataxliqcbonqjoekcjc\",\"pdyrqlazfjl\":\"datafdqilprqhxfqk\",\"q\":\"datackbjvdxhyf\"}}")
+            "{\"type\":\"MongoDbV2\",\"typeProperties\":{\"connectionString\":\"datasxiaj\",\"database\":\"datacrsdgtj\"},\"connectVia\":{\"referenceName\":\"opnccaxtp\",\"parameters\":{\"feabzjp\":\"datazehijlw\",\"ceqaklsfxlrx\":\"datahjmg\"}},\"description\":\"ymfqmvnhsfjxtusb\",\"parameters\":{\"onalpwa\":{\"type\":\"Float\",\"defaultValue\":\"datakkdptsppgtp\"},\"wnwnjdrnfgtmupbl\":{\"type\":\"Array\",\"defaultValue\":\"datawuyas\"}},\"annotations\":[\"dataqvz\",\"dataikxufuwcajyezlk\",\"dataiveftugiwsvlfp\",\"databpnrgnxwrfu\"],\"\":{\"fzuvuoxzy\":\"datay\"}}")
             .toObject(MongoDbV2LinkedService.class);
-        Assertions.assertEquals("ewvlkzmsyezxifj", model.connectVia().referenceName());
-        Assertions.assertEquals("oqodya", model.description());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("ctilbxn").type());
+        Assertions.assertEquals("opnccaxtp", model.connectVia().referenceName());
+        Assertions.assertEquals("ymfqmvnhsfjxtusb", model.description());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("onalpwa").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MongoDbV2LinkedService model = new MongoDbV2LinkedService()
-            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("ewvlkzmsyezxifj")
-                .withParameters(mapOf("codzdhe", "datauovfotwvkuhtdx", "ahtkkccrusrz", "datanmcvmxiundif")))
-            .withDescription("oqodya")
-            .withParameters(mapOf("ctilbxn",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datalvtiploaws")))
-            .withAnnotations(Arrays.asList("datajt")).withConnectionString("datafzzmxqyjy").withDatabase("datarjpy");
+            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("opnccaxtp")
+                .withParameters(mapOf("feabzjp", "datazehijlw", "ceqaklsfxlrx", "datahjmg")))
+            .withDescription("ymfqmvnhsfjxtusb")
+            .withParameters(mapOf("onalpwa",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datakkdptsppgtp"),
+                "wnwnjdrnfgtmupbl",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datawuyas")))
+            .withAnnotations(Arrays.asList("dataqvz", "dataikxufuwcajyezlk", "dataiveftugiwsvlfp", "databpnrgnxwrfu"))
+            .withConnectionString("datasxiaj").withDatabase("datacrsdgtj");
         model = BinaryData.fromObject(model).toObject(MongoDbV2LinkedService.class);
-        Assertions.assertEquals("ewvlkzmsyezxifj", model.connectVia().referenceName());
-        Assertions.assertEquals("oqodya", model.description());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("ctilbxn").type());
+        Assertions.assertEquals("opnccaxtp", model.connectVia().referenceName());
+        Assertions.assertEquals("ymfqmvnhsfjxtusb", model.description());
+        Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("onalpwa").type());
     }
 
     // Use "Map.of" if available

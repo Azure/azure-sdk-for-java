@@ -233,7 +233,8 @@ public class NettyAsyncHttpClientTests {
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
             .parallel()
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> doRequest(client, "/long").flatMap(HttpResponse::getBodyAsByteArray));
+            .flatMap(ignored -> doRequest(client, "/long"))
+            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
             TestUtils.assertArraysEqual(LONG_BODY, response);
@@ -247,7 +248,6 @@ public class NettyAsyncHttpClientTests {
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
 
         ForkJoinPool pool = new ForkJoinPool();
-
         try {
             List<Callable<Void>> requests = new ArrayList<>(numRequests);
             for (int i = 0; i < numRequests; i++) {

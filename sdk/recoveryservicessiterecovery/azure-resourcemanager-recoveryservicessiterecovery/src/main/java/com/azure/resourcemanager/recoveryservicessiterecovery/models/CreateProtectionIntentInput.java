@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Create protection intent input. */
+/**
+ * Create protection intent input.
+ */
 @Fluent
 public final class CreateProtectionIntentInput {
     /*
@@ -16,13 +18,15 @@ public final class CreateProtectionIntentInput {
     @JsonProperty(value = "properties")
     private CreateProtectionIntentProperties properties;
 
-    /** Creates an instance of CreateProtectionIntentInput class. */
+    /**
+     * Creates an instance of CreateProtectionIntentInput class.
+     */
     public CreateProtectionIntentInput() {
     }
 
     /**
      * Get the properties property: Create protection intent input properties.
-     *
+     * 
      * @return the properties value.
      */
     public CreateProtectionIntentProperties properties() {
@@ -31,7 +35,7 @@ public final class CreateProtectionIntentInput {
 
     /**
      * Set the properties property: Create protection intent input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CreateProtectionIntentInput object itself.
      */
@@ -42,7 +46,7 @@ public final class CreateProtectionIntentInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.chaos.models.ExperimentExecutionDetailsProperti
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Model that represents the extended properties of an experiment execution. */
+/**
+ * Model that represents the extended properties of an experiment execution.
+ */
 @Immutable
 public final class ExperimentExecutionDetailsProperties extends ExperimentExecutionProperties {
     /*
@@ -30,13 +32,15 @@ public final class ExperimentExecutionDetailsProperties extends ExperimentExecut
     @JsonProperty(value = "runInformation", access = JsonProperty.Access.WRITE_ONLY)
     private ExperimentExecutionDetailsPropertiesRunInformation runInformation;
 
-    /** Creates an instance of ExperimentExecutionDetailsProperties class. */
+    /**
+     * Creates an instance of ExperimentExecutionDetailsProperties class.
+     */
     public ExperimentExecutionDetailsProperties() {
     }
 
     /**
      * Get the failureReason property: The reason why the execution failed.
-     *
+     * 
      * @return the failureReason value.
      */
     public String failureReason() {
@@ -45,7 +49,7 @@ public final class ExperimentExecutionDetailsProperties extends ExperimentExecut
 
     /**
      * Get the lastActionAt property: String that represents the last action date time.
-     *
+     * 
      * @return the lastActionAt value.
      */
     public OffsetDateTime lastActionAt() {
@@ -54,7 +58,7 @@ public final class ExperimentExecutionDetailsProperties extends ExperimentExecut
 
     /**
      * Get the runInformation property: The information of the experiment run.
-     *
+     * 
      * @return the runInformation value.
      */
     public ExperimentExecutionDetailsPropertiesRunInformation runInformation() {
@@ -63,7 +67,7 @@ public final class ExperimentExecutionDetailsProperties extends ExperimentExecut
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

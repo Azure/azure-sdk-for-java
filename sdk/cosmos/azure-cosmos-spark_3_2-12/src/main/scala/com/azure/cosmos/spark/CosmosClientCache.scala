@@ -265,7 +265,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           // indicators that the default number of I/O threads can be too low
           // for workloads with large payloads
               SparkBridgeImplementationInternal
-                  .setIoThreadCountPerCoreFactor(directConfig, CosmosConstants.defaultIoThreadCountFactorPerCore)
+                  .setIoThreadCountPerCoreFactor(directConfig, SparkBridgeImplementationInternal.getIoThreadCountPerCoreOverride)
 
           directConfig =
           // Spark workloads often result in very high CPU load
@@ -509,6 +509,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       logDebug("Returned client to the pool = remaining active clients - Count: " +
         s"$remainingActiveClients, Spark contexts: ${ref.owners.keys.mkString(", ")}")
     }
+
+    override def getRefCount: Long = ref.refCount.get()
   }
 
   private[this] class ApplicationEndListener(val ctx: SparkContext)

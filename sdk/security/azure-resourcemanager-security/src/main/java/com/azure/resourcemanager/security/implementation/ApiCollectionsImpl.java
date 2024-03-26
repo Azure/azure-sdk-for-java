@@ -10,8 +10,8 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.ApiCollectionsClient;
-import com.azure.resourcemanager.security.fluent.models.ApiCollectionResponseInner;
-import com.azure.resourcemanager.security.models.ApiCollectionResponse;
+import com.azure.resourcemanager.security.fluent.models.ApiCollectionInner;
+import com.azure.resourcemanager.security.models.ApiCollection;
 import com.azure.resourcemanager.security.models.ApiCollections;
 
 public final class ApiCollectionsImpl implements ApiCollections {
@@ -21,45 +21,96 @@ public final class ApiCollectionsImpl implements ApiCollections {
 
     private final com.azure.resourcemanager.security.SecurityManager serviceManager;
 
-    public ApiCollectionsImpl(
-        ApiCollectionsClient innerClient, com.azure.resourcemanager.security.SecurityManager serviceManager) {
+    public ApiCollectionsImpl(ApiCollectionsClient innerClient,
+        com.azure.resourcemanager.security.SecurityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<ApiCollectionResponse> list(String resourceGroupName, String serviceName) {
-        PagedIterable<ApiCollectionResponseInner> inner = this.serviceClient().list(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new ApiCollectionResponseImpl(inner1, this.manager()));
+    public PagedIterable<ApiCollection> list() {
+        PagedIterable<ApiCollectionInner> inner = this.serviceClient().list();
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiCollectionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ApiCollectionResponse> list(String resourceGroupName, String serviceName, Context context) {
-        PagedIterable<ApiCollectionResponseInner> inner =
-            this.serviceClient().list(resourceGroupName, serviceName, context);
-        return Utils.mapPage(inner, inner1 -> new ApiCollectionResponseImpl(inner1, this.manager()));
+    public PagedIterable<ApiCollection> list(Context context) {
+        PagedIterable<ApiCollectionInner> inner = this.serviceClient().list(context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiCollectionImpl(inner1, this.manager()));
     }
 
-    public Response<ApiCollectionResponse> getWithResponse(
-        String resourceGroupName, String serviceName, String apiCollectionId, Context context) {
-        Response<ApiCollectionResponseInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, apiCollectionId, context);
+    public PagedIterable<ApiCollection> listByResourceGroup(String resourceGroupName) {
+        PagedIterable<ApiCollectionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiCollectionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ApiCollection> listByResourceGroup(String resourceGroupName, Context context) {
+        PagedIterable<ApiCollectionInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiCollectionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ApiCollection> listByAzureApiManagementService(String resourceGroupName, String serviceName) {
+        PagedIterable<ApiCollectionInner> inner
+            = this.serviceClient().listByAzureApiManagementService(resourceGroupName, serviceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiCollectionImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ApiCollection> listByAzureApiManagementService(String resourceGroupName, String serviceName,
+        Context context) {
+        PagedIterable<ApiCollectionInner> inner
+            = this.serviceClient().listByAzureApiManagementService(resourceGroupName, serviceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApiCollectionImpl(inner1, this.manager()));
+    }
+
+    public Response<ApiCollection> getByAzureApiManagementServiceWithResponse(String resourceGroupName,
+        String serviceName, String apiId, Context context) {
+        Response<ApiCollectionInner> inner = this.serviceClient()
+            .getByAzureApiManagementServiceWithResponse(resourceGroupName, serviceName, apiId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ApiCollectionResponseImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApiCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public ApiCollectionResponse get(String resourceGroupName, String serviceName, String apiCollectionId) {
-        ApiCollectionResponseInner inner = this.serviceClient().get(resourceGroupName, serviceName, apiCollectionId);
+    public ApiCollection getByAzureApiManagementService(String resourceGroupName, String serviceName, String apiId) {
+        ApiCollectionInner inner
+            = this.serviceClient().getByAzureApiManagementService(resourceGroupName, serviceName, apiId);
         if (inner != null) {
-            return new ApiCollectionResponseImpl(inner, this.manager());
+            return new ApiCollectionImpl(inner, this.manager());
         } else {
             return null;
         }
+    }
+
+    public ApiCollection onboardAzureApiManagementApi(String resourceGroupName, String serviceName, String apiId) {
+        ApiCollectionInner inner
+            = this.serviceClient().onboardAzureApiManagementApi(resourceGroupName, serviceName, apiId);
+        if (inner != null) {
+            return new ApiCollectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public ApiCollection onboardAzureApiManagementApi(String resourceGroupName, String serviceName, String apiId,
+        Context context) {
+        ApiCollectionInner inner
+            = this.serviceClient().onboardAzureApiManagementApi(resourceGroupName, serviceName, apiId, context);
+        if (inner != null) {
+            return new ApiCollectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> offboardAzureApiManagementApiWithResponse(String resourceGroupName, String serviceName,
+        String apiId, Context context) {
+        return this.serviceClient().offboardAzureApiManagementApiWithResponse(resourceGroupName, serviceName, apiId,
+            context);
+    }
+
+    public void offboardAzureApiManagementApi(String resourceGroupName, String serviceName, String apiId) {
+        this.serviceClient().offboardAzureApiManagementApi(resourceGroupName, serviceName, apiId);
     }
 
     private ApiCollectionsClient serviceClient() {

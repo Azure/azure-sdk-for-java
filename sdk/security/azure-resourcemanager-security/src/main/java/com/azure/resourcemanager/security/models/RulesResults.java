@@ -7,18 +7,20 @@ package com.azure.resourcemanager.security.models;
 import com.azure.resourcemanager.security.fluent.models.RulesResultsInner;
 import java.util.List;
 
-/** An immutable client-side representation of RulesResults. */
+/**
+ * An immutable client-side representation of RulesResults.
+ */
 public interface RulesResults {
     /**
      * Gets the value property: List of rule results.
-     *
+     * 
      * @return the value value.
      */
     List<RuleResults> value();
 
     /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.RulesResultsInner object.
-     *
+     * 
      * @return the inner object.
      */
     RulesResultsInner innerModel();

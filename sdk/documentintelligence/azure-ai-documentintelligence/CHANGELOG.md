@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,25 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.2 (2024-03-06)
+
+### Features Added
+- Support `retry-header` in `DocumentIntelligenceAdministrationClient` and `DocumentIntelligenceClient` for retrying failed polling operations.
+- Added a property, `baseClassifierId` to `BuildDocumentClassfiierOptions` to specify the base classifier id to build upon.
+- Added a property, `baseClassifierId` to `DocumentClassifierDetails` to specify the base classfier if on top of which the classifier was trained.
+- Added a property, `warnings`, to `DocumentModelDetails` and `DocumentClassifierDetails`, to represent the list of warnings encountered when building the model.
+- Added a property, `valueSelectionGroup` to `DocumentField` model.
+
+### Breaking Changes
+- The Azure Document Intelligence Client Library, now targets the Azure AI Document Intelligence service API version `"2024-02-29-preview"`.
+Please note that support for `2023-10-31-preview` has been discontinued.
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 
 ## 1.0.0-beta.1 (2023-11-16)
 

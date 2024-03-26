@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details of the gateway operation. */
+/**
+ * Details of the gateway operation.
+ */
 @Immutable
 public final class GatewayOperationDetails {
     /*
@@ -59,13 +61,15 @@ public final class GatewayOperationDetails {
     @JsonProperty(value = "vmwareReadThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private Long vmwareReadThroughput;
 
-    /** Creates an instance of GatewayOperationDetails class. */
+    /**
+     * Creates an instance of GatewayOperationDetails class.
+     */
     public GatewayOperationDetails() {
     }
 
     /**
      * Get the state property: A value indicating the state of gateway operation.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -74,7 +78,7 @@ public final class GatewayOperationDetails {
 
     /**
      * Get the progressPercentage property: A value indicating the progress percentage of gateway operation.
-     *
+     * 
      * @return the progressPercentage value.
      */
     public Integer progressPercentage() {
@@ -83,7 +87,7 @@ public final class GatewayOperationDetails {
 
     /**
      * Get the timeElapsed property: A value indicating the time elapsed for the operation in milliseconds.
-     *
+     * 
      * @return the timeElapsed value.
      */
     public Long timeElapsed() {
@@ -92,7 +96,7 @@ public final class GatewayOperationDetails {
 
     /**
      * Get the timeRemaining property: A value indicating the time remaining for the operation in milliseconds.
-     *
+     * 
      * @return the timeRemaining value.
      */
     public Long timeRemaining() {
@@ -101,7 +105,7 @@ public final class GatewayOperationDetails {
 
     /**
      * Get the uploadSpeed property: A value indicating the upload speed in bytes per second.
-     *
+     * 
      * @return the uploadSpeed value.
      */
     public Long uploadSpeed() {
@@ -110,7 +114,7 @@ public final class GatewayOperationDetails {
 
     /**
      * Get the hostname property: A value indicating the ESXi host name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -119,7 +123,7 @@ public final class GatewayOperationDetails {
 
     /**
      * Get the dataStores property: A value indicating the datastore collection.
-     *
+     * 
      * @return the dataStores value.
      */
     public List<String> dataStores() {
@@ -128,7 +132,7 @@ public final class GatewayOperationDetails {
 
     /**
      * Get the vmwareReadThroughput property: A value indicating the VMware read throughput in bytes per second.
-     *
+     * 
      * @return the vmwareReadThroughput value.
      */
     public Long vmwareReadThroughput() {
@@ -137,7 +141,7 @@ public final class GatewayOperationDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

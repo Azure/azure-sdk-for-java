@@ -20,35 +20,36 @@ public final class ExecuteDataFlowActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExecuteDataFlowActivityTypeProperties model = BinaryData.fromString(
-            "{\"dataFlow\":{\"type\":\"DataFlowReference\",\"referenceName\":\"jguwdfn\",\"datasetParameters\":\"datavuquf\",\"parameters\":{\"vovj\":\"datauibujjvojmyn\"},\"\":{\"awmrhpfg\":\"dataewfqvlh\",\"mefppjxtgffwq\":\"datalrnf\",\"gfgirrzyngdvdr\":\"datad\"}},\"staging\":{\"linkedService\":{\"referenceName\":\"qfrxggvstyxv\",\"parameters\":{\"imfpnp\":\"dataaqf\",\"tdorvxdwgpu\":\"datakdgjnd\",\"dzjmjkg\":\"datajeffpidwqr\"}},\"folderPath\":\"datapplcoqb\"},\"integrationRuntime\":{\"referenceName\":\"e\",\"parameters\":{\"ldlok\":\"datazaja\"}},\"compute\":{\"computeType\":\"datazfltxqpozq\",\"coreCount\":\"dataqfkfevhgjk\"},\"traceLevel\":\"datawjnvhuswmwvqb\",\"continueOnError\":\"datazjmfqusp\",\"runConcurrently\":\"datavthkgjaaqhd\",\"sourceStagingConcurrency\":\"datafjvfrg\"}")
+            "{\"dataFlow\":{\"type\":\"DataFlowReference\",\"referenceName\":\"gmfnpeluvxsicp\",\"datasetParameters\":\"datakupngo\",\"parameters\":{\"f\":\"dataayrguxfjjg\"},\"\":{\"krppxj\":\"datagrubofhkbjg\",\"ladibsjirhaqedfu\":\"datarujdskkkz\"}},\"staging\":{\"linkedService\":{\"referenceName\":\"akfxz\",\"parameters\":{\"jfrpbdxsjceyyebg\":\"datacwhjv\"}},\"folderPath\":\"datafntrbnvwhq\"},\"integrationRuntime\":{\"referenceName\":\"qdyfugksmxvevu\",\"parameters\":{\"naynlxwukpqcf\":\"datanyuy\",\"hizmzbaqrxzjm\":\"dataxagtiyvdslrrtv\",\"bdwqwh\":\"datatmedoyke\"}},\"compute\":{\"computeType\":\"datayrfjzyiniuua\",\"coreCount\":\"dataisqkotbmhryrif\"},\"traceLevel\":\"datayavhesqnvsqte\",\"continueOnError\":\"dataswnfakcchcnm\",\"runConcurrently\":\"datahduyigadpqpchgv\",\"sourceStagingConcurrency\":\"datagylbmfr\"}")
             .toObject(ExecuteDataFlowActivityTypeProperties.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.dataFlow().type());
-        Assertions.assertEquals("jguwdfn", model.dataFlow().referenceName());
-        Assertions.assertEquals("qfrxggvstyxv", model.staging().linkedService().referenceName());
-        Assertions.assertEquals("e", model.integrationRuntime().referenceName());
+        Assertions.assertEquals("gmfnpeluvxsicp", model.dataFlow().referenceName());
+        Assertions.assertEquals("akfxz", model.staging().linkedService().referenceName());
+        Assertions.assertEquals("qdyfugksmxvevu", model.integrationRuntime().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteDataFlowActivityTypeProperties model = new ExecuteDataFlowActivityTypeProperties()
-            .withDataFlow(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-                .withReferenceName("jguwdfn").withDatasetParameters("datavuquf")
-                .withParameters(mapOf("vovj", "datauibujjvojmyn")).withAdditionalProperties(mapOf()))
-            .withStaging(new DataFlowStagingInfo()
-                .withLinkedService(new LinkedServiceReference().withReferenceName("qfrxggvstyxv").withParameters(
-                    mapOf("imfpnp", "dataaqf", "tdorvxdwgpu", "datakdgjnd", "dzjmjkg", "datajeffpidwqr")))
-                .withFolderPath("datapplcoqb"))
-            .withIntegrationRuntime(
-                new IntegrationRuntimeReference().withReferenceName("e").withParameters(mapOf("ldlok", "datazaja")))
-            .withCompute(new ExecuteDataFlowActivityTypePropertiesCompute().withComputeType("datazfltxqpozq")
-                .withCoreCount("dataqfkfevhgjk"))
-            .withTraceLevel("datawjnvhuswmwvqb").withContinueOnError("datazjmfqusp")
-            .withRunConcurrently("datavthkgjaaqhd").withSourceStagingConcurrency("datafjvfrg");
+        ExecuteDataFlowActivityTypeProperties model
+            = new ExecuteDataFlowActivityTypeProperties()
+                .withDataFlow(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
+                    .withReferenceName("gmfnpeluvxsicp").withDatasetParameters("datakupngo")
+                    .withParameters(mapOf("f", "dataayrguxfjjg")).withAdditionalProperties(mapOf()))
+                .withStaging(
+                    new DataFlowStagingInfo().withLinkedService(new LinkedServiceReference().withReferenceName("akfxz")
+                        .withParameters(mapOf("jfrpbdxsjceyyebg", "datacwhjv"))).withFolderPath("datafntrbnvwhq"))
+                .withIntegrationRuntime(new IntegrationRuntimeReference().withReferenceName("qdyfugksmxvevu")
+                    .withParameters(mapOf("naynlxwukpqcf", "datanyuy", "hizmzbaqrxzjm", "dataxagtiyvdslrrtv", "bdwqwh",
+                        "datatmedoyke")))
+                .withCompute(new ExecuteDataFlowActivityTypePropertiesCompute().withComputeType("datayrfjzyiniuua")
+                    .withCoreCount("dataisqkotbmhryrif"))
+                .withTraceLevel("datayavhesqnvsqte").withContinueOnError("dataswnfakcchcnm")
+                .withRunConcurrently("datahduyigadpqpchgv").withSourceStagingConcurrency("datagylbmfr");
         model = BinaryData.fromObject(model).toObject(ExecuteDataFlowActivityTypeProperties.class);
         Assertions.assertEquals(DataFlowReferenceType.DATA_FLOW_REFERENCE, model.dataFlow().type());
-        Assertions.assertEquals("jguwdfn", model.dataFlow().referenceName());
-        Assertions.assertEquals("qfrxggvstyxv", model.staging().linkedService().referenceName());
-        Assertions.assertEquals("e", model.integrationRuntime().referenceName());
+        Assertions.assertEquals("gmfnpeluvxsicp", model.dataFlow().referenceName());
+        Assertions.assertEquals("akfxz", model.staging().linkedService().referenceName());
+        Assertions.assertEquals("qdyfugksmxvevu", model.integrationRuntime().referenceName());
     }
 
     // Use "Map.of" if available

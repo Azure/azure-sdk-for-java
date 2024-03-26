@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Create protection container input properties. */
+/**
+ * Create protection container input properties.
+ */
 @Fluent
 public final class CreateProtectionContainerInputProperties {
     /*
@@ -17,13 +19,15 @@ public final class CreateProtectionContainerInputProperties {
     @JsonProperty(value = "providerSpecificInput")
     private List<ReplicationProviderSpecificContainerCreationInput> providerSpecificInput;
 
-    /** Creates an instance of CreateProtectionContainerInputProperties class. */
+    /**
+     * Creates an instance of CreateProtectionContainerInputProperties class.
+     */
     public CreateProtectionContainerInputProperties() {
     }
 
     /**
      * Get the providerSpecificInput property: Provider specific inputs for container creation.
-     *
+     * 
      * @return the providerSpecificInput value.
      */
     public List<ReplicationProviderSpecificContainerCreationInput> providerSpecificInput() {
@@ -32,19 +36,19 @@ public final class CreateProtectionContainerInputProperties {
 
     /**
      * Set the providerSpecificInput property: Provider specific inputs for container creation.
-     *
+     * 
      * @param providerSpecificInput the providerSpecificInput value to set.
      * @return the CreateProtectionContainerInputProperties object itself.
      */
-    public CreateProtectionContainerInputProperties withProviderSpecificInput(
-        List<ReplicationProviderSpecificContainerCreationInput> providerSpecificInput) {
+    public CreateProtectionContainerInputProperties
+        withProviderSpecificInput(List<ReplicationProviderSpecificContainerCreationInput> providerSpecificInput) {
         this.providerSpecificInput = providerSpecificInput;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

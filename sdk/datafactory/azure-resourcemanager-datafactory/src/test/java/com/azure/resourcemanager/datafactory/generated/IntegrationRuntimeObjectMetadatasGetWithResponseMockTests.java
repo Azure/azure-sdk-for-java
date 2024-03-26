@@ -32,7 +32,7 @@ public final class IntegrationRuntimeObjectMetadatasGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":6879995143339576966,\"name\":\"ruwljfdcy\",\"description\":\"qq\"},{\"type\":\"SsisObjectMetadata\",\"id\":5293849071624099090,\"name\":\"ywbnerygsifsa\",\"description\":\"ccsvajn\"},{\"type\":\"SsisObjectMetadata\",\"id\":8970486371925458316,\"name\":\"yrv\",\"description\":\"ojkysolmzrfhlyn\"},{\"type\":\"SsisObjectMetadata\",\"id\":3036714402389451136,\"name\":\"yysbjt\",\"description\":\"fhnqx\"}],\"nextLink\":\"emvqxxuwsat\"}";
+            = "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":8310288998494192853,\"name\":\"zpxlyabjrz\",\"description\":\"sjfwurhkuxp\"}],\"nextLink\":\"wmbgwgmyglnsnkyl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,13 +50,14 @@ public final class IntegrationRuntimeObjectMetadatasGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         SsisObjectMetadataListResponse response = manager.integrationRuntimeObjectMetadatas()
-            .getWithResponse("pwabrzrhdezlhs", "c", "dbolczhyqd",
-                new GetSsisObjectMetadataRequest().withMetadataPath("qoajfoscdemfat"), com.azure.core.util.Context.NONE)
+            .getWithResponse("igh", "xx", "betmqugovcd",
+                new GetSsisObjectMetadataRequest().withMetadataPath("lrbsfqrgjejabqv"),
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(6879995143339576966L, response.value().get(0).id());
-        Assertions.assertEquals("ruwljfdcy", response.value().get(0).name());
-        Assertions.assertEquals("qq", response.value().get(0).description());
-        Assertions.assertEquals("emvqxxuwsat", response.nextLink());
+        Assertions.assertEquals(8310288998494192853L, response.value().get(0).id());
+        Assertions.assertEquals("zpxlyabjrz", response.value().get(0).name());
+        Assertions.assertEquals("sjfwurhkuxp", response.value().get(0).description());
+        Assertions.assertEquals("wmbgwgmyglnsnkyl", response.nextLink());
     }
 }

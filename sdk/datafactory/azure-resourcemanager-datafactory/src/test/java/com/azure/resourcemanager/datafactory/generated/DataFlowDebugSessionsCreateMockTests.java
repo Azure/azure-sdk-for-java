@@ -35,7 +35,7 @@ public final class DataFlowDebugSessionsCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"status\":\"ztrmtimtfauylqpz\",\"sessionId\":\"ngfcbldpeforx\"}";
+        String responseStr = "{\"status\":\"gaecujlaecwnn\",\"sessionId\":\"f\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -52,16 +52,17 @@ public final class DataFlowDebugSessionsCreateMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        CreateDataFlowDebugSessionResponse response = manager.dataFlowDebugSessions().create("hengkwhkekxohqv", "pwzoq",
-            new CreateDataFlowDebugSessionRequest().withComputeType("mkjleelakvhgefvp").withCoreCount(384659902)
-                .withTimeToLive(37607510)
-                .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("exu")
-                    .withProperties(new IntegrationRuntime().withDescription("gqiprbqdtcibb")
-                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))),
-            com.azure.core.util.Context.NONE);
+        CreateDataFlowDebugSessionResponse response
+            = manager.dataFlowDebugSessions().create("zudysndiexb", "kwjmqnbaerggqaoh",
+                new CreateDataFlowDebugSessionRequest().withComputeType("qvb").withCoreCount(1071652867)
+                    .withTimeToLive(834593701)
+                    .withIntegrationRuntime(new IntegrationRuntimeDebugResource().withName("xgidjiijpdbwknbm")
+                        .withProperties(new IntegrationRuntime().withDescription("n")
+                            .withAdditionalProperties(mapOf("type", "IntegrationRuntime")))),
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ztrmtimtfauylqpz", response.status());
-        Assertions.assertEquals("ngfcbldpeforx", response.sessionId());
+        Assertions.assertEquals("gaecujlaecwnn", response.status());
+        Assertions.assertEquals("f", response.sessionId());
     }
 
     // Use "Map.of" if available

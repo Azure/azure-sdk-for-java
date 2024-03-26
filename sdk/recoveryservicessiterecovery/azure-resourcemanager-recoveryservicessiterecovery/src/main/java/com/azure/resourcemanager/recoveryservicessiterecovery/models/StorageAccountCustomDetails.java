@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Storage account custom input. */
+/**
+ * Storage account custom input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "resourceType",
     defaultImpl = StorageAccountCustomDetails.class)
 @JsonTypeName("StorageAccountCustomDetails")
-@JsonSubTypes({@JsonSubTypes.Type(name = "Existing", value = ExistingStorageAccount.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "Existing", value = ExistingStorageAccount.class) })
 @Immutable
 public class StorageAccountCustomDetails {
-    /** Creates an instance of StorageAccountCustomDetails class. */
+    /**
+     * Creates an instance of StorageAccountCustomDetails class.
+     */
     public StorageAccountCustomDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

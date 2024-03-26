@@ -8,53 +8,55 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.support.fluent.models.FileWorkspaceDetailsInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of FileWorkspaceDetails. */
+/**
+ * An immutable client-side representation of FileWorkspaceDetails.
+ */
 public interface FileWorkspaceDetails {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the createdOn property: Time in UTC (ISO 8601 format) when file workspace was created.
-     *
+     * 
      * @return the createdOn value.
      */
     OffsetDateTime createdOn();
 
     /**
      * Gets the expirationTime property: Time in UTC (ISO 8601 format) when file workspace is going to expire.
-     *
+     * 
      * @return the expirationTime value.
      */
     OffsetDateTime expirationTime();
 
     /**
      * Gets the inner com.azure.resourcemanager.support.fluent.models.FileWorkspaceDetailsInner object.
-     *
+     * 
      * @return the inner object.
      */
     FileWorkspaceDetailsInner innerModel();

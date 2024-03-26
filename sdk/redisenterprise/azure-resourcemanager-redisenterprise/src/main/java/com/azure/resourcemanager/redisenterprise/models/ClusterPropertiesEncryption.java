@@ -7,7 +7,9 @@ package com.azure.resourcemanager.redisenterprise.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Encryption-at-rest configuration for the cluster. */
+/**
+ * Encryption-at-rest configuration for the cluster.
+ */
 @Fluent
 public final class ClusterPropertiesEncryption {
     /*
@@ -17,14 +19,16 @@ public final class ClusterPropertiesEncryption {
     @JsonProperty(value = "customerManagedKeyEncryption")
     private ClusterPropertiesEncryptionCustomerManagedKeyEncryption customerManagedKeyEncryption;
 
-    /** Creates an instance of ClusterPropertiesEncryption class. */
+    /**
+     * Creates an instance of ClusterPropertiesEncryption class.
+     */
     public ClusterPropertiesEncryption() {
     }
 
     /**
      * Get the customerManagedKeyEncryption property: All Customer-managed key encryption properties for the resource.
      * Set this to an empty object to use Microsoft-managed key encryption.
-     *
+     * 
      * @return the customerManagedKeyEncryption value.
      */
     public ClusterPropertiesEncryptionCustomerManagedKeyEncryption customerManagedKeyEncryption() {
@@ -34,7 +38,7 @@ public final class ClusterPropertiesEncryption {
     /**
      * Set the customerManagedKeyEncryption property: All Customer-managed key encryption properties for the resource.
      * Set this to an empty object to use Microsoft-managed key encryption.
-     *
+     * 
      * @param customerManagedKeyEncryption the customerManagedKeyEncryption value to set.
      * @return the ClusterPropertiesEncryption object itself.
      */
@@ -46,7 +50,7 @@ public final class ClusterPropertiesEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.fluent.models.SecurityConnectorInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of security connectors response. */
+/**
+ * List of security connectors response.
+ */
 @Fluent
 public final class SecurityConnectorsList {
     /*
@@ -25,13 +27,15 @@ public final class SecurityConnectorsList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SecurityConnectorsList class. */
+    /**
+     * Creates an instance of SecurityConnectorsList class.
+     */
     public SecurityConnectorsList() {
     }
 
     /**
      * Get the value property: The list of security connectors under the given scope.
-     *
+     * 
      * @return the value value.
      */
     public List<SecurityConnectorInner> value() {
@@ -40,7 +44,7 @@ public final class SecurityConnectorsList {
 
     /**
      * Set the value property: The list of security connectors under the given scope.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecurityConnectorsList object itself.
      */
@@ -51,7 +55,7 @@ public final class SecurityConnectorsList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class SecurityConnectorsList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SecurityConnectorsList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SecurityConnectorsList"));
         } else {
             value().forEach(e -> e.validate());
         }

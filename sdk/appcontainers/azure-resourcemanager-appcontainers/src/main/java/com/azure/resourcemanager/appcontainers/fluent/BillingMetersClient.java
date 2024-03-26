@@ -10,18 +10,20 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.BillingMeterCollectionInner;
 
-/** An instance of this class provides access to all the operations defined in BillingMetersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BillingMetersClient.
+ */
 public interface BillingMetersClient {
     /**
      * Get billing meters by location.
-     *
-     * <p>Get all billingMeters for a location.
-     *
+     * 
+     * Get all billingMeters for a location.
+     * 
      * @param location The name of Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all billingMeters for a location along with {@link Response}.
      */
@@ -30,13 +32,13 @@ public interface BillingMetersClient {
 
     /**
      * Get billing meters by location.
-     *
-     * <p>Get all billingMeters for a location.
-     *
+     * 
+     * Get all billingMeters for a location.
+     * 
      * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
-     *     is rejected by server.
+     * is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all billingMeters for a location.
      */

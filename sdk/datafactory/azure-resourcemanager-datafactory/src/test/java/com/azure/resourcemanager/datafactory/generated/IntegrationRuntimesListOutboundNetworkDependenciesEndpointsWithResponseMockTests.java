@@ -31,7 +31,7 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsWi
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"category\":\"grsvyjrq\",\"endpoints\":[{\"domainName\":\"vmxibpcnmps\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"entiprriqwf\",\"endpointDetails\":[{},{}]}]},{\"category\":\"yingr\",\"endpoints\":[{\"domainName\":\"cqndgbxtzyt\",\"endpointDetails\":[{},{},{}]}]},{\"category\":\"hntchigub\",\"endpoints\":[{\"domainName\":\"gyazppefsdoo\",\"endpointDetails\":[{}]}]},{\"category\":\"fiey\",\"endpoints\":[{\"domainName\":\"qtwohfhs\",\"endpointDetails\":[{}]},{\"domainName\":\"umevgoaxtw\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"uirskoaxs\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"qliyxzeniiu\",\"endpointDetails\":[{},{},{}]}]}]}";
+            = "{\"value\":[{\"category\":\"eoqwngtiyzzifuov\",\"endpoints\":[{\"domainName\":\"gts\",\"endpointDetails\":[{},{},{}]},{\"domainName\":\"rk\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"crxcnuyfvridzqoi\",\"endpointDetails\":[{},{},{}]}]},{\"category\":\"vayboubi\",\"endpoints\":[{\"domainName\":\"qmydpoj\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"xdg\",\"endpointDetails\":[{},{}]},{\"domainName\":\"eadqopw\",\"endpointDetails\":[{}]},{\"domainName\":\"rhdezlhsdcpdbo\",\"endpointDetails\":[{},{},{}]}]},{\"category\":\"yqdvxqo\",\"endpoints\":[{\"domainName\":\"scde\",\"endpointDetails\":[{},{}]},{\"domainName\":\"ftzxtr\",\"endpointDetails\":[{}]},{\"domainName\":\"ljfdc\",\"endpointDetails\":[{}]}]},{\"category\":\"q\",\"endpoints\":[{\"domainName\":\"dywbnerygsifsahk\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"ajnsuuxbyrvgu\",\"endpointDetails\":[{},{}]},{\"domainName\":\"solmzrfhlynkius\",\"endpointDetails\":[{},{},{},{}]},{\"domainName\":\"bjtsqfhnqxqtemvq\",\"endpointDetails\":[{},{},{},{}]}]}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,10 +49,10 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsWi
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse response
-            = manager.integrationRuntimes().listOutboundNetworkDependenciesEndpointsWithResponse("whjfuoips",
-                "vcqhzejbro", "h", com.azure.core.util.Context.NONE).getValue();
+            = manager.integrationRuntimes().listOutboundNetworkDependenciesEndpointsWithResponse("syifdrbkprblwsb",
+                "sekqqt", "rupogtrwkuwn", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("grsvyjrq", response.value().get(0).category());
-        Assertions.assertEquals("vmxibpcnmps", response.value().get(0).endpoints().get(0).domainName());
+        Assertions.assertEquals("eoqwngtiyzzifuov", response.value().get(0).category());
+        Assertions.assertEquals("gts", response.value().get(0).endpoints().get(0).domainName());
     }
 }

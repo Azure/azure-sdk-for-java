@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * the aggregation type of the metric.
+ * The aggregation type of the metric.
  */
 public enum AggregationType {
     /**

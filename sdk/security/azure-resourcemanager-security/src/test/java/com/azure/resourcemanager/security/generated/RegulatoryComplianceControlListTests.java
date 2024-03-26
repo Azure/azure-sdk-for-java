@@ -14,20 +14,20 @@ import org.junit.jupiter.api.Assertions;
 public final class RegulatoryComplianceControlListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RegulatoryComplianceControlList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"mbzonokix\",\"state\":\"Passed\",\"passedAssessments\":1122267125,\"failedAssessments\":1711524187,\"skippedAssessments\":2101008571},\"id\":\"frl\",\"name\":\"zszrnwoiindfpw\",\"type\":\"jylwbtlhflsj\"}],\"nextLink\":\"hszfjvfb\"}")
-                .toObject(RegulatoryComplianceControlList.class);
-        Assertions.assertEquals(State.PASSED, model.value().get(0).state());
+        RegulatoryComplianceControlList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"description\":\"bqdxbx\",\"state\":\"Unsupported\",\"passedAssessments\":1836889631,\"failedAssessments\":620924213,\"skippedAssessments\":836308274},\"id\":\"dlkzgxhuri\",\"name\":\"lbpodxunk\",\"type\":\"ebxmubyynt\"},{\"properties\":{\"description\":\"bqtkoievseotgqr\",\"state\":\"Skipped\",\"passedAssessments\":98779693,\"failedAssessments\":1887219641,\"skippedAssessments\":738915892},\"id\":\"wzizxbmpgcjefuzm\",\"name\":\"vpbttd\",\"type\":\"morppxebmnzbtbh\"},{\"properties\":{\"description\":\"lkfg\",\"state\":\"Passed\",\"passedAssessments\":834040298,\"failedAssessments\":458990624,\"skippedAssessments\":2052379315},\"id\":\"phsdyhto\",\"name\":\"fikdowwqu\",\"type\":\"v\"},{\"properties\":{\"description\":\"clvit\",\"state\":\"Unsupported\",\"passedAssessments\":176578322,\"failedAssessments\":1712807279,\"skippedAssessments\":587852733},\"id\":\"gbhcohfwdsj\",\"name\":\"ka\",\"type\":\"jutiiswacff\"}],\"nextLink\":\"k\"}")
+            .toObject(RegulatoryComplianceControlList.class);
+        Assertions.assertEquals(State.UNSUPPORTED, model.value().get(0).state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RegulatoryComplianceControlList model =
-            new RegulatoryComplianceControlList()
-                .withValue(Arrays.asList(new RegulatoryComplianceControlInner().withState(State.PASSED)));
+        RegulatoryComplianceControlList model = new RegulatoryComplianceControlList()
+            .withValue(Arrays.asList(new RegulatoryComplianceControlInner().withState(State.UNSUPPORTED),
+                new RegulatoryComplianceControlInner().withState(State.SKIPPED),
+                new RegulatoryComplianceControlInner().withState(State.PASSED),
+                new RegulatoryComplianceControlInner().withState(State.UNSUPPORTED)));
         model = BinaryData.fromObject(model).toObject(RegulatoryComplianceControlList.class);
-        Assertions.assertEquals(State.PASSED, model.value().get(0).state());
+        Assertions.assertEquals(State.UNSUPPORTED, model.value().get(0).state());
     }
 }

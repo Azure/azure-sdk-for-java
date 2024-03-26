@@ -8,58 +8,60 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Monitors. */
+/**
+ * Resource collection API of Monitors.
+ */
 public interface Monitors {
     /**
      * List NewRelicMonitorResource resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NewRelicMonitorResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a NewRelicMonitorResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<NewRelicMonitorResource> list();
 
     /**
      * List NewRelicMonitorResource resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NewRelicMonitorResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a NewRelicMonitorResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<NewRelicMonitorResource> list(Context context);
 
     /**
      * List NewRelicMonitorResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NewRelicMonitorResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a NewRelicMonitorResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<NewRelicMonitorResource> listByResourceGroup(String resourceGroupName);
 
     /**
      * List NewRelicMonitorResource resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a NewRelicMonitorResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a NewRelicMonitorResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<NewRelicMonitorResource> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Get a NewRelicMonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param context The context to associate with this operation.
@@ -68,12 +70,12 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a NewRelicMonitorResource along with {@link Response}.
      */
-    Response<NewRelicMonitorResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<NewRelicMonitorResource> getByResourceGroupWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Get a NewRelicMonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -85,7 +87,7 @@ public interface Monitors {
 
     /**
      * Delete a NewRelicMonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param userEmail User Email.
      * @param monitorName Name of the Monitors resource.
@@ -97,7 +99,7 @@ public interface Monitors {
 
     /**
      * Delete a NewRelicMonitorResource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param userEmail User Email.
      * @param monitorName Name of the Monitors resource.
@@ -110,7 +112,7 @@ public interface Monitors {
 
     /**
      * Get metric rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param request The details of the get metrics status request.
@@ -120,12 +122,12 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return metric rules along with {@link Response}.
      */
-    Response<MetricRules> getMetricRulesWithResponse(
-        String resourceGroupName, String monitorName, MetricsRequest request, Context context);
+    Response<MetricRules> getMetricRulesWithResponse(String resourceGroupName, String monitorName,
+        MetricsRequest request, Context context);
 
     /**
      * Get metric rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param request The details of the get metrics status request.
@@ -138,7 +140,7 @@ public interface Monitors {
 
     /**
      * Get metric status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param request The details of the get metrics status request.
@@ -148,12 +150,12 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return metric status along with {@link Response}.
      */
-    Response<MetricsStatusResponse> getMetricStatusWithResponse(
-        String resourceGroupName, String monitorName, MetricsStatusRequest request, Context context);
+    Response<MetricsStatusResponse> getMetricStatusWithResponse(String resourceGroupName, String monitorName,
+        MetricsStatusRequest request, Context context);
 
     /**
      * Get metric status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param request The details of the get metrics status request.
@@ -166,7 +168,7 @@ public interface Monitors {
 
     /**
      * List the app service resources currently being monitored by the NewRelic resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param request The details of the app services get request.
@@ -175,12 +177,12 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list app services Operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AppServiceInfo> listAppServices(
-        String resourceGroupName, String monitorName, AppServicesGetRequest request);
+    PagedIterable<AppServiceInfo> listAppServices(String resourceGroupName, String monitorName,
+        AppServicesGetRequest request);
 
     /**
      * List the app service resources currently being monitored by the NewRelic resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param request The details of the app services get request.
@@ -190,12 +192,12 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list app services Operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AppServiceInfo> listAppServices(
-        String resourceGroupName, String monitorName, AppServicesGetRequest request, Context context);
+    PagedIterable<AppServiceInfo> listAppServices(String resourceGroupName, String monitorName,
+        AppServicesGetRequest request, Context context);
 
     /**
      * Switches the billing for NewRelic monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param request The details of the switch billing request.
@@ -205,12 +207,12 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Monitor Resource by NewRelic.
      */
-    Response<NewRelicMonitorResource> switchBillingWithResponse(
-        String resourceGroupName, String monitorName, SwitchBillingRequest request, Context context);
+    Response<NewRelicMonitorResource> switchBillingWithResponse(String resourceGroupName, String monitorName,
+        SwitchBillingRequest request, Context context);
 
     /**
      * Switches the billing for NewRelic monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param request The details of the switch billing request.
@@ -223,7 +225,7 @@ public interface Monitors {
 
     /**
      * List the compute vm resources currently being monitored by the NewRelic resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param request The details of the Hosts get request.
@@ -236,7 +238,7 @@ public interface Monitors {
 
     /**
      * List the compute vm resources currently being monitored by the NewRelic resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param request The details of the Hosts get request.
@@ -246,40 +248,65 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of a list VM Host Operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<VMInfo> listHosts(
-        String resourceGroupName, String monitorName, HostsGetRequest request, Context context);
+    PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName, HostsGetRequest request,
+        Context context);
 
     /**
      * List the resources currently being monitored by the NewRelic monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the resources being monitored by NewRelic monitor resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of all the resources being monitored by NewRelic monitor resource as paginated response with
+     * {@link PagedIterable}.
      */
     PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName);
 
     /**
      * List the resources currently being monitored by the NewRelic monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the resources being monitored by NewRelic monitor resource as paginated response with {@link
-     *     PagedIterable}.
+     * @return list of all the resources being monitored by NewRelic monitor resource as paginated response with
+     * {@link PagedIterable}.
      */
-    PagedIterable<MonitoredResource> listMonitoredResources(
-        String resourceGroupName, String monitorName, Context context);
+    PagedIterable<MonitoredResource> listMonitoredResources(String resourceGroupName, String monitorName,
+        Context context);
+
+    /**
+     * List all Azure resources associated to the same NewRelic organization and account as the target resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitors resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LinkedResource> listLinkedResources(String resourceGroupName, String monitorName);
+
+    /**
+     * List all Azure resources associated to the same NewRelic organization and account as the target resource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the Monitors resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<LinkedResource> listLinkedResources(String resourceGroupName, String monitorName, Context context);
 
     /**
      * Returns the payload that needs to be passed in the request body for installing NewRelic agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @param context The context to associate with this operation.
@@ -288,12 +315,12 @@ public interface Monitors {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of payload to be passed while installing VM agent along with {@link Response}.
      */
-    Response<VMExtensionPayload> vmHostPayloadWithResponse(
-        String resourceGroupName, String monitorName, Context context);
+    Response<VMExtensionPayload> vmHostPayloadWithResponse(String resourceGroupName, String monitorName,
+        Context context);
 
     /**
      * Returns the payload that needs to be passed in the request body for installing NewRelic agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the Monitors resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,7 +332,7 @@ public interface Monitors {
 
     /**
      * Get a NewRelicMonitorResource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -316,7 +343,7 @@ public interface Monitors {
 
     /**
      * Get a NewRelicMonitorResource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -328,7 +355,7 @@ public interface Monitors {
 
     /**
      * Begins definition for a new NewRelicMonitorResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NewRelicMonitorResource definition.
      */

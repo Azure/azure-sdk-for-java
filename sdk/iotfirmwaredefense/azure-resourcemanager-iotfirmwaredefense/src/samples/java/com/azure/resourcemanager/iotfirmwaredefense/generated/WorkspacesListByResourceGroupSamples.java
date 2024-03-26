@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.iotfirmwaredefense.generated;
 
-/** Samples for Workspaces ListByResourceGroup. */
+/**
+ * Samples for Workspaces ListByResourceGroup.
+ */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_ListByResourceGroup_MaximumSet_Gen.json
+     * x-ms-original-file: specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/
+     * Workspaces_ListByResourceGroup_MaximumSet_Gen.json
      */
     /**
      * Sample code: Workspaces_ListByResourceGroup_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to IoTFirmwareDefenseManager.
      */
     public static void workspacesListByResourceGroupMaximumSetGen(
@@ -20,11 +23,12 @@ public final class WorkspacesListByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/preview/2023-02-08-preview/examples/Workspaces_ListByResourceGroup_MinimumSet_Gen.json
+     * x-ms-original-file: specification/fist/resource-manager/Microsoft.IoTFirmwareDefense/stable/2024-01-10/examples/
+     * Workspaces_ListByResourceGroup_MinimumSet_Gen.json
      */
     /**
      * Sample code: Workspaces_ListByResourceGroup_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to IoTFirmwareDefenseManager.
      */
     public static void workspacesListByResourceGroupMinimumSetGen(

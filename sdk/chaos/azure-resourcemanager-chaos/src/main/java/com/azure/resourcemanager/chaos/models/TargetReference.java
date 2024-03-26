@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Model that represents a reference to a Target in the selector. */
+/**
+ * Model that represents a reference to a Target in the selector.
+ */
 @Fluent
 public final class TargetReference {
     /*
@@ -23,13 +25,15 @@ public final class TargetReference {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of TargetReference class. */
+    /**
+     * Creates an instance of TargetReference class.
+     */
     public TargetReference() {
     }
 
     /**
      * Get the type property: Enum of the Target reference type.
-     *
+     * 
      * @return the type value.
      */
     public TargetReferenceType type() {
@@ -38,7 +42,7 @@ public final class TargetReference {
 
     /**
      * Set the type property: Enum of the Target reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the TargetReference object itself.
      */
@@ -49,7 +53,7 @@ public final class TargetReference {
 
     /**
      * Get the id property: String of the resource ID of a Target resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -58,7 +62,7 @@ public final class TargetReference {
 
     /**
      * Set the id property: String of the resource ID of a Target resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the TargetReference object itself.
      */
@@ -69,19 +73,17 @@ public final class TargetReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model TargetReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model TargetReference"));
         }
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model TargetReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property id in model TargetReference"));
         }
     }
 

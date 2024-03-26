@@ -12,20 +12,16 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeRepli
 public final class ResumeReplicationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResumeReplicationInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ResumeReplicationProviderSpecificInput\"}}}")
-                .toObject(ResumeReplicationInput.class);
+        ResumeReplicationInput model = BinaryData.fromString(
+            "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ResumeReplicationProviderSpecificInput\"}}}")
+            .toObject(ResumeReplicationInput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResumeReplicationInput model =
-            new ResumeReplicationInput()
-                .withProperties(
-                    new ResumeReplicationInputProperties()
-                        .withProviderSpecificDetails(new ResumeReplicationProviderSpecificInput()));
+        ResumeReplicationInput model
+            = new ResumeReplicationInput().withProperties(new ResumeReplicationInputProperties()
+                .withProviderSpecificDetails(new ResumeReplicationProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(ResumeReplicationInput.class);
     }
 }

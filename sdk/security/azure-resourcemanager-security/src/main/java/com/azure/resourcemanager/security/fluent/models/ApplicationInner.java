@@ -10,7 +10,9 @@ import com.azure.resourcemanager.security.models.ApplicationSourceResourceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Security Application over a given scope. */
+/**
+ * Security Application over a given scope.
+ */
 @Fluent
 public final class ApplicationInner extends ProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class ApplicationInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ApplicationProperties innerProperties;
 
-    /** Creates an instance of ApplicationInner class. */
+    /**
+     * Creates an instance of ApplicationInner class.
+     */
     public ApplicationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of a security application.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationProperties innerProperties() {
@@ -34,7 +38,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the displayName property: display name of the application.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -43,7 +47,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the displayName property: display name of the application.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ApplicationInner object itself.
      */
@@ -57,7 +61,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the description property: description of the application.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -66,7 +70,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the description property: description of the application.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApplicationInner object itself.
      */
@@ -80,7 +84,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the sourceResourceType property: The application source, what it affects, e.g. Assessments.
-     *
+     * 
      * @return the sourceResourceType value.
      */
     public ApplicationSourceResourceType sourceResourceType() {
@@ -89,7 +93,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the sourceResourceType property: The application source, what it affects, e.g. Assessments.
-     *
+     * 
      * @param sourceResourceType the sourceResourceType value to set.
      * @return the ApplicationInner object itself.
      */
@@ -103,7 +107,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the conditionSets property: The application conditionSets - see examples.
-     *
+     * 
      * @return the conditionSets value.
      */
     public List<Object> conditionSets() {
@@ -112,7 +116,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the conditionSets property: The application conditionSets - see examples.
-     *
+     * 
      * @param conditionSets the conditionSets value to set.
      * @return the ApplicationInner object itself.
      */
@@ -126,7 +130,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

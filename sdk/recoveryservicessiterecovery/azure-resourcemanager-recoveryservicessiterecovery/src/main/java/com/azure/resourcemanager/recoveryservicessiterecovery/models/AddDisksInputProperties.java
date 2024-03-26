@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Add Disks input properties. */
+/**
+ * Add Disks input properties.
+ */
 @Fluent
 public final class AddDisksInputProperties {
     /*
@@ -18,7 +20,9 @@ public final class AddDisksInputProperties {
     @JsonProperty(value = "providerSpecificDetails", required = true)
     private AddDisksProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of AddDisksInputProperties class. */
+    /**
+     * Creates an instance of AddDisksInputProperties class.
+     */
     public AddDisksInputProperties() {
     }
 
@@ -26,7 +30,7 @@ public final class AddDisksInputProperties {
      * Get the providerSpecificDetails property: The ReplicationProviderInput. For HyperVReplicaAzure provider, it will
      * be AzureEnableProtectionInput object. For San provider, it will be SanEnableProtectionInput object. For
      * HyperVReplicaAzure provider, it can be null.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public AddDisksProviderSpecificInput providerSpecificDetails() {
@@ -37,7 +41,7 @@ public final class AddDisksInputProperties {
      * Set the providerSpecificDetails property: The ReplicationProviderInput. For HyperVReplicaAzure provider, it will
      * be AzureEnableProtectionInput object. For San provider, it will be SanEnableProtectionInput object. For
      * HyperVReplicaAzure provider, it can be null.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the AddDisksInputProperties object itself.
      */
@@ -48,15 +52,13 @@ public final class AddDisksInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model AddDisksInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property providerSpecificDetails in model AddDisksInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }

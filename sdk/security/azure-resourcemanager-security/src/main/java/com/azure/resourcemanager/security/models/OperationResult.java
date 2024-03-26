@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the long run operation result of governance rule. */
+/**
+ * The status of the long run operation result of governance rule.
+ */
 public final class OperationResult extends ExpandableStringEnum<OperationResult> {
-    /** Static value Succeeded for OperationResult. */
+    /**
+     * Static value Succeeded for OperationResult.
+     */
     public static final OperationResult SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for OperationResult. */
+    /**
+     * Static value Failed for OperationResult.
+     */
     public static final OperationResult FAILED = fromString("Failed");
 
-    /** Static value Canceled for OperationResult. */
+    /**
+     * Static value Canceled for OperationResult.
+     */
     public static final OperationResult CANCELED = fromString("Canceled");
 
     /**
      * Creates a new instance of OperationResult value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class OperationResult extends ExpandableStringEnum<OperationResult>
 
     /**
      * Creates or finds a OperationResult from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OperationResult.
      */
@@ -41,7 +49,7 @@ public final class OperationResult extends ExpandableStringEnum<OperationResult>
 
     /**
      * Gets known OperationResult values.
-     *
+     * 
      * @return known OperationResult values.
      */
     public static Collection<OperationResult> values() {

@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VCenterProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** vCenter definition. */
+/**
+ * vCenter definition.
+ */
 @Fluent
 public final class VCenterInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class VCenterInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of VCenterInner class. */
+    /**
+     * Creates an instance of VCenterInner class.
+     */
     public VCenterInner() {
     }
 
     /**
      * Get the properties property: VCenter related data.
-     *
+     * 
      * @return the properties value.
      */
     public VCenterProperties properties() {
@@ -39,7 +43,7 @@ public final class VCenterInner extends ProxyResource {
 
     /**
      * Set the properties property: VCenter related data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the VCenterInner object itself.
      */
@@ -50,7 +54,7 @@ public final class VCenterInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class VCenterInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the VCenterInner object itself.
      */
@@ -70,7 +74,7 @@ public final class VCenterInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

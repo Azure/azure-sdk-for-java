@@ -10,32 +10,10 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.FirmwaresClient;
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.BinaryHardeningInner;
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.BinaryHardeningSummaryInner;
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.ComponentInner;
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.CryptoCertificateInner;
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.CryptoCertificateSummaryInner;
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.CryptoKeyInner;
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.CryptoKeySummaryInner;
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.CveInner;
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.CveSummaryInner;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.FirmwareInner;
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.FirmwareSummaryInner;
-import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.PasswordHashInner;
 import com.azure.resourcemanager.iotfirmwaredefense.fluent.models.UrlTokenInner;
-import com.azure.resourcemanager.iotfirmwaredefense.models.BinaryHardening;
-import com.azure.resourcemanager.iotfirmwaredefense.models.BinaryHardeningSummary;
-import com.azure.resourcemanager.iotfirmwaredefense.models.Component;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CryptoCertificate;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CryptoCertificateSummary;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CryptoKey;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CryptoKeySummary;
-import com.azure.resourcemanager.iotfirmwaredefense.models.Cve;
-import com.azure.resourcemanager.iotfirmwaredefense.models.CveSummary;
 import com.azure.resourcemanager.iotfirmwaredefense.models.Firmware;
-import com.azure.resourcemanager.iotfirmwaredefense.models.FirmwareSummary;
 import com.azure.resourcemanager.iotfirmwaredefense.models.Firmwares;
-import com.azure.resourcemanager.iotfirmwaredefense.models.PasswordHash;
 import com.azure.resourcemanager.iotfirmwaredefense.models.UrlToken;
 
 public final class FirmwaresImpl implements Firmwares {
@@ -45,8 +23,7 @@ public final class FirmwaresImpl implements Firmwares {
 
     private final com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager serviceManager;
 
-    public FirmwaresImpl(
-        FirmwaresClient innerClient,
+    public FirmwaresImpl(FirmwaresClient innerClient,
         com.azure.resourcemanager.iotfirmwaredefense.IoTFirmwareDefenseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -54,17 +31,17 @@ public final class FirmwaresImpl implements Firmwares {
 
     public PagedIterable<Firmware> listByWorkspace(String resourceGroupName, String workspaceName) {
         PagedIterable<FirmwareInner> inner = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new FirmwareImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FirmwareImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Firmware> listByWorkspace(String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<FirmwareInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new FirmwareImpl(inner1, this.manager()));
+        PagedIterable<FirmwareInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new FirmwareImpl(inner1, this.manager()));
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String firmwareId,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, workspaceName, firmwareId, context);
     }
 
@@ -72,15 +49,12 @@ public final class FirmwaresImpl implements Firmwares {
         this.serviceClient().delete(resourceGroupName, workspaceName, firmwareId);
     }
 
-    public Response<Firmware> getWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        Response<FirmwareInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, firmwareId, context);
+    public Response<Firmware> getWithResponse(String resourceGroupName, String workspaceName, String firmwareId,
+        Context context) {
+        Response<FirmwareInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, firmwareId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FirmwareImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -96,15 +70,12 @@ public final class FirmwaresImpl implements Firmwares {
         }
     }
 
-    public Response<UrlToken> generateDownloadUrlWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        Response<UrlTokenInner> inner =
-            this.serviceClient().generateDownloadUrlWithResponse(resourceGroupName, workspaceName, firmwareId, context);
+    public Response<UrlToken> generateDownloadUrlWithResponse(String resourceGroupName, String workspaceName,
+        String firmwareId, Context context) {
+        Response<UrlTokenInner> inner = this.serviceClient().generateDownloadUrlWithResponse(resourceGroupName,
+            workspaceName, firmwareId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UrlTokenImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -120,17 +91,12 @@ public final class FirmwaresImpl implements Firmwares {
         }
     }
 
-    public Response<UrlToken> generateFilesystemDownloadUrlWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        Response<UrlTokenInner> inner =
-            this
-                .serviceClient()
-                .generateFilesystemDownloadUrlWithResponse(resourceGroupName, workspaceName, firmwareId, context);
+    public Response<UrlToken> generateFilesystemDownloadUrlWithResponse(String resourceGroupName, String workspaceName,
+        String firmwareId, Context context) {
+        Response<UrlTokenInner> inner = this.serviceClient()
+            .generateFilesystemDownloadUrlWithResponse(resourceGroupName, workspaceName, firmwareId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new UrlTokenImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -138,8 +104,8 @@ public final class FirmwaresImpl implements Firmwares {
     }
 
     public UrlToken generateFilesystemDownloadUrl(String resourceGroupName, String workspaceName, String firmwareId) {
-        UrlTokenInner inner =
-            this.serviceClient().generateFilesystemDownloadUrl(resourceGroupName, workspaceName, firmwareId);
+        UrlTokenInner inner
+            = this.serviceClient().generateFilesystemDownloadUrl(resourceGroupName, workspaceName, firmwareId);
         if (inner != null) {
             return new UrlTokenImpl(inner, this.manager());
         } else {
@@ -147,378 +113,78 @@ public final class FirmwaresImpl implements Firmwares {
         }
     }
 
-    public Response<FirmwareSummary> generateSummaryWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        Response<FirmwareSummaryInner> inner =
-            this.serviceClient().generateSummaryWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new FirmwareSummaryImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public FirmwareSummary generateSummary(String resourceGroupName, String workspaceName, String firmwareId) {
-        FirmwareSummaryInner inner = this.serviceClient().generateSummary(resourceGroupName, workspaceName, firmwareId);
-        if (inner != null) {
-            return new FirmwareSummaryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public PagedIterable<Component> listGenerateComponentList(
-        String resourceGroupName, String workspaceName, String firmwareId) {
-        PagedIterable<ComponentInner> inner =
-            this.serviceClient().listGenerateComponentList(resourceGroupName, workspaceName, firmwareId);
-        return Utils.mapPage(inner, inner1 -> new ComponentImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Component> listGenerateComponentList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        PagedIterable<ComponentInner> inner =
-            this.serviceClient().listGenerateComponentList(resourceGroupName, workspaceName, firmwareId, context);
-        return Utils.mapPage(inner, inner1 -> new ComponentImpl(inner1, this.manager()));
-    }
-
-    public Response<Component> generateComponentDetailsWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        Response<ComponentInner> inner =
-            this
-                .serviceClient()
-                .generateComponentDetailsWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ComponentImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Component generateComponentDetails(String resourceGroupName, String workspaceName, String firmwareId) {
-        ComponentInner inner =
-            this.serviceClient().generateComponentDetails(resourceGroupName, workspaceName, firmwareId);
-        if (inner != null) {
-            return new ComponentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public PagedIterable<BinaryHardening> listGenerateBinaryHardeningList(
-        String resourceGroupName, String workspaceName, String firmwareId) {
-        PagedIterable<BinaryHardeningInner> inner =
-            this.serviceClient().listGenerateBinaryHardeningList(resourceGroupName, workspaceName, firmwareId);
-        return Utils.mapPage(inner, inner1 -> new BinaryHardeningImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<BinaryHardening> listGenerateBinaryHardeningList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        PagedIterable<BinaryHardeningInner> inner =
-            this.serviceClient().listGenerateBinaryHardeningList(resourceGroupName, workspaceName, firmwareId, context);
-        return Utils.mapPage(inner, inner1 -> new BinaryHardeningImpl(inner1, this.manager()));
-    }
-
-    public Response<BinaryHardeningSummary> generateBinaryHardeningSummaryWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        Response<BinaryHardeningSummaryInner> inner =
-            this
-                .serviceClient()
-                .generateBinaryHardeningSummaryWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BinaryHardeningSummaryImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public BinaryHardeningSummary generateBinaryHardeningSummary(
-        String resourceGroupName, String workspaceName, String firmwareId) {
-        BinaryHardeningSummaryInner inner =
-            this.serviceClient().generateBinaryHardeningSummary(resourceGroupName, workspaceName, firmwareId);
-        if (inner != null) {
-            return new BinaryHardeningSummaryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<BinaryHardening> generateBinaryHardeningDetailsWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        Response<BinaryHardeningInner> inner =
-            this
-                .serviceClient()
-                .generateBinaryHardeningDetailsWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BinaryHardeningImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public BinaryHardening generateBinaryHardeningDetails(
-        String resourceGroupName, String workspaceName, String firmwareId) {
-        BinaryHardeningInner inner =
-            this.serviceClient().generateBinaryHardeningDetails(resourceGroupName, workspaceName, firmwareId);
-        if (inner != null) {
-            return new BinaryHardeningImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public PagedIterable<PasswordHash> listGeneratePasswordHashList(
-        String resourceGroupName, String workspaceName, String firmwareId) {
-        PagedIterable<PasswordHashInner> inner =
-            this.serviceClient().listGeneratePasswordHashList(resourceGroupName, workspaceName, firmwareId);
-        return Utils.mapPage(inner, inner1 -> new PasswordHashImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<PasswordHash> listGeneratePasswordHashList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        PagedIterable<PasswordHashInner> inner =
-            this.serviceClient().listGeneratePasswordHashList(resourceGroupName, workspaceName, firmwareId, context);
-        return Utils.mapPage(inner, inner1 -> new PasswordHashImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Cve> listGenerateCveList(String resourceGroupName, String workspaceName, String firmwareId) {
-        PagedIterable<CveInner> inner =
-            this.serviceClient().listGenerateCveList(resourceGroupName, workspaceName, firmwareId);
-        return Utils.mapPage(inner, inner1 -> new CveImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Cve> listGenerateCveList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        PagedIterable<CveInner> inner =
-            this.serviceClient().listGenerateCveList(resourceGroupName, workspaceName, firmwareId, context);
-        return Utils.mapPage(inner, inner1 -> new CveImpl(inner1, this.manager()));
-    }
-
-    public Response<CveSummary> generateCveSummaryWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        Response<CveSummaryInner> inner =
-            this.serviceClient().generateCveSummaryWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CveSummaryImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public CveSummary generateCveSummary(String resourceGroupName, String workspaceName, String firmwareId) {
-        CveSummaryInner inner = this.serviceClient().generateCveSummary(resourceGroupName, workspaceName, firmwareId);
-        if (inner != null) {
-            return new CveSummaryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CryptoCertificateSummary> generateCryptoCertificateSummaryWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        Response<CryptoCertificateSummaryInner> inner =
-            this
-                .serviceClient()
-                .generateCryptoCertificateSummaryWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CryptoCertificateSummaryImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public CryptoCertificateSummary generateCryptoCertificateSummary(
-        String resourceGroupName, String workspaceName, String firmwareId) {
-        CryptoCertificateSummaryInner inner =
-            this.serviceClient().generateCryptoCertificateSummary(resourceGroupName, workspaceName, firmwareId);
-        if (inner != null) {
-            return new CryptoCertificateSummaryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<CryptoKeySummary> generateCryptoKeySummaryWithResponse(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        Response<CryptoKeySummaryInner> inner =
-            this
-                .serviceClient()
-                .generateCryptoKeySummaryWithResponse(resourceGroupName, workspaceName, firmwareId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CryptoKeySummaryImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public CryptoKeySummary generateCryptoKeySummary(
-        String resourceGroupName, String workspaceName, String firmwareId) {
-        CryptoKeySummaryInner inner =
-            this.serviceClient().generateCryptoKeySummary(resourceGroupName, workspaceName, firmwareId);
-        if (inner != null) {
-            return new CryptoKeySummaryImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public PagedIterable<CryptoCertificate> listGenerateCryptoCertificateList(
-        String resourceGroupName, String workspaceName, String firmwareId) {
-        PagedIterable<CryptoCertificateInner> inner =
-            this.serviceClient().listGenerateCryptoCertificateList(resourceGroupName, workspaceName, firmwareId);
-        return Utils.mapPage(inner, inner1 -> new CryptoCertificateImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<CryptoCertificate> listGenerateCryptoCertificateList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        PagedIterable<CryptoCertificateInner> inner =
-            this
-                .serviceClient()
-                .listGenerateCryptoCertificateList(resourceGroupName, workspaceName, firmwareId, context);
-        return Utils.mapPage(inner, inner1 -> new CryptoCertificateImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<CryptoKey> listGenerateCryptoKeyList(
-        String resourceGroupName, String workspaceName, String firmwareId) {
-        PagedIterable<CryptoKeyInner> inner =
-            this.serviceClient().listGenerateCryptoKeyList(resourceGroupName, workspaceName, firmwareId);
-        return Utils.mapPage(inner, inner1 -> new CryptoKeyImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<CryptoKey> listGenerateCryptoKeyList(
-        String resourceGroupName, String workspaceName, String firmwareId, Context context) {
-        PagedIterable<CryptoKeyInner> inner =
-            this.serviceClient().listGenerateCryptoKeyList(resourceGroupName, workspaceName, firmwareId, context);
-        return Utils.mapPage(inner, inner1 -> new CryptoKeyImpl(inner1, this.manager()));
-    }
-
     public Firmware getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String firmwareId = Utils.getValueFromIdByName(id, "firmwares");
+        String firmwareId = ResourceManagerUtils.getValueFromIdByName(id, "firmwares");
         if (firmwareId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE).getValue();
     }
 
     public Response<Firmware> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String firmwareId = Utils.getValueFromIdByName(id, "firmwares");
+        String firmwareId = ResourceManagerUtils.getValueFromIdByName(id, "firmwares");
         if (firmwareId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, firmwareId, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String firmwareId = Utils.getValueFromIdByName(id, "firmwares");
+        String firmwareId = ResourceManagerUtils.getValueFromIdByName(id, "firmwares");
         if (firmwareId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
         }
         this.deleteWithResponse(resourceGroupName, workspaceName, firmwareId, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
+        String workspaceName = ResourceManagerUtils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
-        String firmwareId = Utils.getValueFromIdByName(id, "firmwares");
+        String firmwareId = ResourceManagerUtils.getValueFromIdByName(id, "firmwares");
         if (firmwareId == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'firmwares'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, workspaceName, firmwareId, context);
     }

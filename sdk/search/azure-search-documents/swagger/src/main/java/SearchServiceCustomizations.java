@@ -95,7 +95,7 @@ public class SearchServiceCustomizations extends Customization {
         customizeSearchIndexerDataSourceConnection(publicCustomization.getClass("SearchIndexerDataSourceConnection"));
         customizeSemanticPrioritizedFields(publicCustomization.getClass("SemanticPrioritizedFields"));
         customizeVectorSearch(publicCustomization.getClass("VectorSearch"));
-        customizeSearchError(implCustomization.getClass("SearchError"));
+        // customizeSearchError(implCustomization.getClass("SearchError"));
 
         bulkRemoveFromJsonMethods(publicCustomization.getClass("SearchIndexerKnowledgeStoreProjectionSelector"),
             publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"));

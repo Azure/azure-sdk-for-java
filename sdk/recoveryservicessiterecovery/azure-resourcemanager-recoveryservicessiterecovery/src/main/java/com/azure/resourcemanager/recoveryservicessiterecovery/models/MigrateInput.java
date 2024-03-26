@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input for migrate. */
+/**
+ * Input for migrate.
+ */
 @Fluent
 public final class MigrateInput {
     /*
@@ -17,13 +19,15 @@ public final class MigrateInput {
     @JsonProperty(value = "properties", required = true)
     private MigrateInputProperties properties;
 
-    /** Creates an instance of MigrateInput class. */
+    /**
+     * Creates an instance of MigrateInput class.
+     */
     public MigrateInput() {
     }
 
     /**
      * Get the properties property: Migrate input properties.
-     *
+     * 
      * @return the properties value.
      */
     public MigrateInputProperties properties() {
@@ -32,7 +36,7 @@ public final class MigrateInput {
 
     /**
      * Set the properties property: Migrate input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MigrateInput object itself.
      */
@@ -43,14 +47,13 @@ public final class MigrateInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property properties in model MigrateInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model MigrateInput"));
         } else {
             properties().validate();
         }

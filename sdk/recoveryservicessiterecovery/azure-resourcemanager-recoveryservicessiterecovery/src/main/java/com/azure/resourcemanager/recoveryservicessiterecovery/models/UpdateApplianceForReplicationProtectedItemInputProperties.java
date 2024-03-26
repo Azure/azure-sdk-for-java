@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Update appliance for protected item input properties. */
+/**
+ * Update appliance for protected item input properties.
+ */
 @Fluent
 public final class UpdateApplianceForReplicationProtectedItemInputProperties {
     /*
@@ -23,13 +25,15 @@ public final class UpdateApplianceForReplicationProtectedItemInputProperties {
     @JsonProperty(value = "providerSpecificDetails", required = true)
     private UpdateReplicationProtectedItemProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of UpdateApplianceForReplicationProtectedItemInputProperties class. */
+    /**
+     * Creates an instance of UpdateApplianceForReplicationProtectedItemInputProperties class.
+     */
     public UpdateApplianceForReplicationProtectedItemInputProperties() {
     }
 
     /**
      * Get the targetApplianceId property: The target appliance Id.
-     *
+     * 
      * @return the targetApplianceId value.
      */
     public String targetApplianceId() {
@@ -38,7 +42,7 @@ public final class UpdateApplianceForReplicationProtectedItemInputProperties {
 
     /**
      * Set the targetApplianceId property: The target appliance Id.
-     *
+     * 
      * @param targetApplianceId the targetApplianceId value to set.
      * @return the UpdateApplianceForReplicationProtectedItemInputProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class UpdateApplianceForReplicationProtectedItemInputProperties {
 
     /**
      * Get the providerSpecificDetails property: The provider specific input to update replication protected item.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public UpdateReplicationProtectedItemProviderSpecificInput providerSpecificDetails() {
@@ -58,40 +62,34 @@ public final class UpdateApplianceForReplicationProtectedItemInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific input to update replication protected item.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the UpdateApplianceForReplicationProtectedItemInputProperties object itself.
      */
-    public UpdateApplianceForReplicationProtectedItemInputProperties withProviderSpecificDetails(
-        UpdateReplicationProtectedItemProviderSpecificInput providerSpecificDetails) {
+    public UpdateApplianceForReplicationProtectedItemInputProperties
+        withProviderSpecificDetails(UpdateReplicationProtectedItemProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetApplianceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetApplianceId in model"
-                            + " UpdateApplianceForReplicationProtectedItemInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetApplianceId in model UpdateApplianceForReplicationProtectedItemInputProperties"));
         }
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model"
-                            + " UpdateApplianceForReplicationProtectedItemInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property providerSpecificDetails in model UpdateApplianceForReplicationProtectedItemInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }
     }
 
-    private static final ClientLogger LOGGER =
-        new ClientLogger(UpdateApplianceForReplicationProtectedItemInputProperties.class);
+    private static final ClientLogger LOGGER
+        = new ClientLogger(UpdateApplianceForReplicationProtectedItemInputProperties.class);
 }
