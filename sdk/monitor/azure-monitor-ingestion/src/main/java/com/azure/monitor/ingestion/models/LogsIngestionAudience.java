@@ -12,8 +12,19 @@ import java.util.Collection;
  */
 public class LogsIngestionAudience extends ExpandableStringEnum<LogsIngestionAudience> {
 
+    /**
+     * Static value for Azure Public Cloud.
+     */
     public static final LogsIngestionAudience AZURE_PUBLIC_CLOUD = fromString("https://monitor.azure.com//.default");
+
+    /**
+     * Static value for Azure US Government.
+     */
     private static final LogsIngestionAudience AZURE_GOVERNMENT = fromString("https://monitor.azure.us//.default");
+
+    /**
+     * Static value for Azure China.
+     */
     private static final LogsIngestionAudience AZURE_CHINA = fromString("https://monitor.azure.cn//.default");
 
     /**
@@ -23,9 +34,20 @@ public class LogsIngestionAudience extends ExpandableStringEnum<LogsIngestionAud
     LogsIngestionAudience() {
     }
 
+    /**
+     * Creates an instance of LogsIngestionAudience.
+     *
+     * @param name the string value.
+     */
     public static LogsIngestionAudience fromString(String name) {
         return fromString(name, LogsIngestionAudience.class);
     }
+
+    /**
+     * Get the collection of LogsIngestionAudience values.
+     *
+     * @return the collection of LogsIngestionAudience values.
+     */
     public static Collection<LogsIngestionAudience> values() {
         return values(LogsIngestionAudience.class);
     }
