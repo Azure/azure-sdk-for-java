@@ -203,13 +203,4 @@ public class Context {
         // This should never be reached but is required by the compiler.
         return Optional.empty();
     }
-
-    /**
-     * Get the total size of this {@link Context}.
-     *
-     * @return The total size of this {@link Context}.
-     */
-    public int getContextCount() {
-        return contextCount;
-    }
 }

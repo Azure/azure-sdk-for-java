@@ -5,10 +5,8 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.models.HttpHeaderName;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.RequestOptions;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.util.ClientLogger;
-import com.generic.core.util.Context;
 import com.generic.core.util.binarydata.BinaryData;
 import com.generic.core.util.binarydata.InputStreamBinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
@@ -77,90 +75,6 @@ public final class RestProxyUtils {
 
     static String bodyTooSmall(long length, long expectedLength) {
         return "Request body emitted " + length + " bytes, less than the expected " + expectedLength + " bytes.";
-    }
-
-    /**
-     * Merges data from a {@link Context} provided with {@link RequestOptions} into another {@link Context}.
-     *
-     * @param context The {@link Context} to merge data into.
-     * @param options The {@link RequestOptions} holding the {@link Context} to merge data from.
-     *
-     * @return The merged {@link Context}.
-     */
-    public static Context mergeRequestOptionsContext(Context context, RequestOptions options) {
-        if (options == null) {
-            return context;
-        }
-
-        Context optionsContext = options.getContext();
-
-        if (optionsContext != null && optionsContext != Context.NONE) {
-            context = mergeContexts(context, optionsContext);
-        }
-
-        return context;
-    }
-
-    /**
-     * Merges data from two {@link Context} instances.
-     *
-     * @param into The {@link Context} to merge data into.
-     * @param from The {@link Context} to merge data from.
-     *
-     * @return The merged {@link Context}.
-     */
-    private static Context mergeContexts(Context into, Context from) {
-        // If the 'into' Context is the NONE Context just return the 'from' Context.
-        // This is safe as Context is immutable and prevents needing to create any new Contexts and temporary arrays.
-        if (into == null || into == Context.NONE) {
-            return from;
-        }
-
-        // Same goes the other way, where if the 'from' Context is the NONE Context just return the 'into' Context.
-        if (from == null || from == Context.NONE) {
-            return into;
-        }
-
-        if (from.getContextCount() == 1) {
-            return into.addData(from.getKey(), from.getValue());
-        }
-
-        Context[] contextChain = getContextChain(from);
-
-        Context returnContext = into;
-
-        for (Context toAdd : contextChain) {
-            if (toAdd != null) {
-                returnContext = returnContext.addData(toAdd.getKey(), toAdd.getValue());
-            }
-        }
-
-        return returnContext;
-    }
-
-    /**
-     * Gets the {@link Context Contexts} in the chain of {@link Context Contexts} that this {@link Context} is the tail
-     * of.
-     *
-     * @return The {@link Context Contexts}, in oldest-to-newest order, in the chain of {@link Context Contexts} that
-     * this {@link Context} is the tail of.
-     */
-    private static Context[] getContextChain(Context context) {
-        Context[] chain = new Context[context.getContextCount()];
-
-        int chainPosition = context.getContextCount() - 1;
-
-        for (Context pointer = context; pointer != null; pointer = pointer.getParent()) {
-            chain[chainPosition--] = pointer;
-
-            // If the contextCount is 1 that means the next parent Context is the NONE Context.
-            // Break out of the loop to prevent a meaningless check.
-            if (pointer.getContextCount() == 1) {
-                break;
-            }
-        }
-
-        return chain;
     }
 
     /**
