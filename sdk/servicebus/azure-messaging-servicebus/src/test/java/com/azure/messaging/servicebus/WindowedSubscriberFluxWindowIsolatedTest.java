@@ -388,13 +388,14 @@ public final class WindowedSubscriberFluxWindowIsolatedTest {
     }
 
     private static Flux<Integer> enqueueWithRetry(WindowedSubscriber<Integer> subscriber, int windowSize, Duration windowTimeout, AtomicReference<EnqueueResult<Integer>> rRef) {
-        for (int i = 0; i < 10; i ++) {
+        for (int i = 0; i < 1; i ++) {
             try {
                 final EnqueueResult<Integer> r = subscriber.enqueueRequestImpl(windowSize, windowTimeout);
                 rRef.set(r);
                 return r.getWindowFlux();
             } catch (RejectedExecutionException e) {
                 LOGGER.warning("Can't enqueue request", e);
+                LOGGER.warning("cause", e.getCause());
             }
             try {
                 Thread.sleep(1000);
