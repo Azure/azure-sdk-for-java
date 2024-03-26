@@ -566,6 +566,7 @@ public class Utils {
         return effectiveItemSerializer.deserialize(new ObjectNodeMap(jsonNode), itemClassType);
     }
 
+    @SuppressWarnings("unchecked")
     public static ByteBuffer serializeJsonToByteBuffer(CosmosItemSerializer serializer, Object object, Consumer<Map<String, Object>> onAfterSerialization) {
         checkArgument(serializer != null || object instanceof Map<?, ?>, "Argument 'serializer' must not be null.");
         try {
