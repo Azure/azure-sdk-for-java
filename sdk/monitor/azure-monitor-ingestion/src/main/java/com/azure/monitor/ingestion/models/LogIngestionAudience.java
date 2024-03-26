@@ -6,7 +6,7 @@ package com.azure.monitor.ingestion.models;
 /**
  * The audience indicating the authorization scope of log ingestion clients.
  */
-public class LogIngestionAudience {
+public class LogsIngestionAudience {
 
     private final String audience;
 
