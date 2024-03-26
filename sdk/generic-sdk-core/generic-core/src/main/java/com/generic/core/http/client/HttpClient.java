@@ -3,7 +3,6 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.annotation.ServiceClient;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.Response;
 import com.generic.core.implementation.http.client.DefaultHttpClientProvider;
@@ -26,9 +25,11 @@ public interface HttpClient {
     /**
      * Get an instance of the default {@link HttpClient} implementation.
      *
-     * @return A new {@link HttpClient} instance, entirely unrelated to all other instances that were created previously
-     * If {@code ENABLE_HTTP_CLIENT_SHARING} is not specified or set to {@code false}. Otherwise, return a singleton
-     * {@link HttpClient} that can be shared amongst different {@link ServiceClient} instances.
+     * <p>By default, the returned instance will be newly created and entirely unrelated to all other instances that
+     * were created previously. If the global variable {@code ENABLE_HTTP_CLIENT_SHARING} is configured to {@code true},
+     * a shared singleton {@link HttpClient} will be returned instead.</p>
+     *
+     * @return An instance of the default {@link HttpClient} implementation.
      */
     static HttpClient getDefault() {
         if (Configuration.getGlobalConfiguration().get("ENABLE_HTTP_CLIENT_SHARING", Boolean.FALSE)) {
@@ -39,14 +40,17 @@ public interface HttpClient {
     }
 
     /**
-     * Get a new instance of the {@link HttpClient} that the default {@link HttpClientProvider} is configured to
-     * create. If no {@link HttpClientProvider} can be found on the classpath, an instance of the default
-     * {@link HttpClient} implementation will be returned instead, in which it would effectively be the same as calling
-     * {@link #getDefault()}.
+     * Get a new instance of the {@link HttpClient} that the default {@link HttpClientProvider} is configured to create.
      *
-     * @return A new {@link HttpClient} instance, entirely unrelated to all other instances that were created previously
-     * If {@code ENABLE_HTTP_CLIENT_SHARING} is not specified or set to {@code false}. Otherwise, return a singleton
-     * {@link HttpClient} that can be shared amongst different {@link ServiceClient} instances.
+     * <p>By default, the returned instance will be newly created and entirely unrelated to all other instances that
+     * were created previously. If the global variable {@code ENABLE_HTTP_CLIENT_SHARING} is configured to {@code true},
+     * a shared singleton {@link HttpClient} will be returned instead.</p>
+     *
+     * <p>Additionally, if no {@link HttpClientProvider} can be found on the classpath, an instance of the default
+     * {@link HttpClient} implementation will be returned instead, in which it would effectively be the same as calling
+     * {@link #getDefault()}.</p>
+     *
+     * @return An instance of {@link HttpClient} that the default {@link HttpClientProvider} is configured to create.
      */
     static HttpClient getInstance() {
         final String NO_DEFAULT_PROVIDER_MESSAGE = "A request was made to load the default HttpClient provider "
