@@ -9,7 +9,6 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.io.StringReader;
@@ -282,11 +281,7 @@ public final class XmlReader implements AutoCloseable {
             return null;
         }
 
-        try {
-            return converter.read(textValue);
-        } catch (IOException ex) {
-            throw new XMLStreamException(ex);
-        }
+        return converter.read(textValue);
     }
 
     /**
@@ -441,11 +436,7 @@ public final class XmlReader implements AutoCloseable {
             return null;
         }
 
-        try {
-            return converter.read(textValue);
-        } catch (IOException ex) {
-            throw new XMLStreamException(ex);
-        }
+        return converter.read(textValue);
     }
 
     /**
@@ -502,11 +493,7 @@ public final class XmlReader implements AutoCloseable {
                 "Expected XML element to be '" + startTagName + "' but it was: " + tagName + "'.");
         }
 
-        try {
-            return converter.read(this);
-        } catch (IOException ex) {
-            throw new XMLStreamException(ex);
-        }
+        return converter.read(this);
     }
 
     /**
