@@ -4,6 +4,7 @@
 
 - General Availability version of PSTN dial-out capability feature
 
+<<<<<<< HEAD
 
 ## 1.0.9 (2024-03-20)
 
@@ -16,6 +17,12 @@
 - Upgraded `azure-communication-common` from `1.3.0` to version `1.3.1`.
 
 
+=======
+## 1.1.0-beta.2 (Unreleased)
+
+### Other Changes
+
+>>>>>>> 1634570fef9 (update changelog)
 ## 1.0.8 (2024-02-20)
 
 ### Other Changes
