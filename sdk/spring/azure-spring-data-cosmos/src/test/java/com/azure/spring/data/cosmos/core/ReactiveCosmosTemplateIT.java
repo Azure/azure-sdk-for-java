@@ -758,11 +758,11 @@ public class ReactiveCosmosTemplateIT {
     }
 
     @Test
-    public void queryWithQueryMerticsEnabled() throws ClassNotFoundException {
+    public void queryWithIndexMerticsEnabled() throws ClassNotFoundException {
         final CosmosConfig config = CosmosConfig.builder()
-            .enableQueryMetrics(true)
+            .enableIndexMetrics(true)
             .build();
-        final ReactiveCosmosTemplate queryMetricsEnabledCosmosTemplate = createReactiveCosmosTemplate(config, TestConstants.DB_NAME);
+        final ReactiveCosmosTemplate indexMetricsEnabledCosmosTemplate = createReactiveCosmosTemplate(config, TestConstants.DB_NAME);
 
         final AuditableEntity entity = new AuditableEntity();
         entity.setId(UUID.randomUUID().toString());
@@ -771,10 +771,10 @@ public class ReactiveCosmosTemplateIT {
 
         Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
-        final Flux<AuditableEntity> flux = queryMetricsEnabledCosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class);
+        final Flux<AuditableEntity> flux = indexMetricsEnabledCosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class);
 
         StepVerifier.create(flux).expectNextCount(1).verifyComplete();
-        assertEquals((boolean) ReflectionTestUtils.getField(queryMetricsEnabledCosmosTemplate, "queryMetricsEnabled"), true);
+        assertEquals((boolean) ReflectionTestUtils.getField(indexMetricsEnabledCosmosTemplate, "indexMetricsEnabled"), true);
     }
 
     @Test

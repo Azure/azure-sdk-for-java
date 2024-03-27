@@ -1073,6 +1073,22 @@ public class CosmosTemplateIT {
     }
 
     @Test
+    public void queryDatabaseWithIndexMerticsEnabled() throws ClassNotFoundException {
+        final CosmosConfig config = CosmosConfig.builder()
+            .enableIndexMetrics(true)
+            .build();
+        final CosmosTemplate indexMetricsEnabledCosmosTemplate = createCosmosTemplate(config, TestConstants.DB_NAME);
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "firstName",
+            Collections.singletonList(TEST_PERSON.getFirstName()), Part.IgnoreCaseType.NEVER);
+        final CosmosQuery query = new CosmosQuery(criteria);
+
+        final long count = indexMetricsEnabledCosmosTemplate.count(query, containerName);
+
+        assertEquals((boolean) ReflectionTestUtils.getField(indexMetricsEnabledCosmosTemplate, "indexMetricsEnabled"), true);
+    }
+
+    @Test
     public void userAgentSpringDataCosmosSuffix() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         //  getUserAgentSuffix method from CosmosClientBuilder
         Method getUserAgentSuffix = CosmosClientBuilder.class.getDeclaredMethod("getUserAgentSuffix");
