@@ -305,7 +305,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
 
         KafkaCosmosChangeFeedState changeFeedState =
             new KafkaCosmosChangeFeedState(
-                feedRangeContinuationTopicOffset.getContinuationState(),
+                feedRangeContinuationTopicOffset.getResponseContinuation(),
                 feedRange,
                 feedRangeContinuationTopicOffset.getItemLsn());
 

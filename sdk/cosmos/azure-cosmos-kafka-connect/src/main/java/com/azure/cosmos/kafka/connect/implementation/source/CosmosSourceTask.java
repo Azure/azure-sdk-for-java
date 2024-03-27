@@ -321,9 +321,9 @@ public class CosmosSourceTask extends SourceTask {
                     ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper
                         .getCosmosChangeFeedRequestOptionsAccessor()
                         .createForProcessingFromContinuation(
-                            kafkaCosmosChangeFeedState.getContinuationState(),
+                            kafkaCosmosChangeFeedState.getResponseContinuation(),
                             kafkaCosmosChangeFeedState.getTargetRange(),
-                            kafkaCosmosChangeFeedState.getContinuationLsn());
+                            kafkaCosmosChangeFeedState.getItemLsn());
 
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
