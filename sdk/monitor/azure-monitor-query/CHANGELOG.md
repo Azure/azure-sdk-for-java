@@ -1,18 +1,15 @@
 # Release History
 
-## 1.3.0-beta.3 (Unreleased)
+## 1.3.0 (2024-03-26)
 
 ### Features Added
 
-### Breaking Changes
+- Added `MetricsClient` and `MetricsAsyncClient` to support querying metrics for multiple resources in a single request.
 
 ### Bugs Fixed
 
 - Fixed the issue with `MetricsQueryClient` and `MetricsQueryAsyncClient` where the `listMetricDefinitions` method was returning 
 `MetricsDefinition` objects with null values for `supportedAggregationTypes`.[(#36698)](https://github.com/Azure/azure-sdk-for-java/issues/36698)
-
-### Other Changes
-
 
 ## 1.2.10 (2024-03-20)
 
@@ -22,7 +19,6 @@
 
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
 - Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
-
 
 ## 1.2.9 (2024-02-20)
 
