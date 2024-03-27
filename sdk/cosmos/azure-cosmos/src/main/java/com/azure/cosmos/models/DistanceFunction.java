@@ -33,10 +33,18 @@ public enum DistanceFunction {
         return this.overWireValue;
     }
 
+    /**
+     *
+     * @return value for the enum
+     */
     public String getValue() {
         return this.overWireValue;
     }
 
+    /**
+     *
+     * @return if the value for the enum is empty or not.
+     */
     public boolean isEmpty() {
         return this.overWireValue.isEmpty();
     }

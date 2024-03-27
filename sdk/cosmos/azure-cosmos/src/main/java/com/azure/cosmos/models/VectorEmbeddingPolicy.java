@@ -34,7 +34,7 @@ public final class VectorEmbeddingPolicy {
     private static void validateEmbeddings(List<Embedding> embeddings) {
         embeddings.forEach(embedding -> {
             if (embedding == null) {
-                throw new IllegalArgumentException("");
+                throw new IllegalArgumentException("Embedding cannot be empty.");
             }
             validateEmbeddingPath(embedding.getPath());
             validateEmbeddingDimensions(embedding.getDimensions());
@@ -45,7 +45,7 @@ public final class VectorEmbeddingPolicy {
 
     private static void validateEmbeddingPath(String path) {
         if (StringUtils.isEmpty(path)) {
-            throw new IllegalArgumentException("");
+            throw new IllegalArgumentException("embedding path is empty");
         }
 
         if (path.charAt(0) != '/' || path.lastIndexOf('/') != 0) {
@@ -54,8 +54,8 @@ public final class VectorEmbeddingPolicy {
     }
 
     private static void validateEmbeddingDimensions(Long dimensions) {
-        if (dimensions == null || dimensions < 1) {
-            throw new IllegalArgumentException("");
+        if (dimensions < 1) {
+            throw new IllegalArgumentException("dimensions for the embedding has to be a long value greater than 1");
         }
     }
 
@@ -82,7 +82,7 @@ public final class VectorEmbeddingPolicy {
     /**
      * Gets the paths for embeddings along with path-specific settings for the item.
      *
-     * @return
+     * @return the paths for embeddings along with path-specific settings for the item.
      */
     public List<Embedding> getEmbeddings() {
         return this.embeddings;

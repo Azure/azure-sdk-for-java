@@ -30,14 +30,13 @@ public final class Embedding {
     /**
      * Sets the path for the embedding.
      *
-     * @param path
+     * @param path the path for the embedding
      * @return Embedding
      */
     public Embedding setPath(String path) {
         this.path = path;
         return this;
     }
-
 
     /**
      * Gets the data type for the embedding.
@@ -51,7 +50,7 @@ public final class Embedding {
     /**
      * Sets the data type for the embedding.
      *
-     * @param vectorDataType
+     * @param vectorDataType the data type for the embedding
      * @return Embedding
      */
     public Embedding setVectorDataType(String vectorDataType) {
@@ -71,7 +70,7 @@ public final class Embedding {
     /**
      * Sets the dimensions for the embedding.
      *
-     * @param dimensions
+     * @param dimensions the dimensions for the embedding
      * @return Embedding
      */
     public Embedding setDimensions(Long dimensions) {
@@ -91,7 +90,7 @@ public final class Embedding {
     /**
      * Sets the distanceFunction for the embedding.
      *
-     * @param distanceFunction
+     * @param distanceFunction the distanceFunction for the embedding
      * @return Embedding
      */
     public Embedding setDistanceFunction(String distanceFunction) {

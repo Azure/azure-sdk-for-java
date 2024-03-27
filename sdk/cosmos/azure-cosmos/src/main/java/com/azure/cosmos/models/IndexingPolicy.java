@@ -284,6 +284,7 @@ public final class IndexingPolicy {
      * Sets the vector indexes.
      *
      * @param vectorIndexes the vector indexes
+     * @return the Indexing Policy.
      */
     public IndexingPolicy setVectorIndexes(List<VectorIndexSpec> vectorIndexes) {
         this.vectorIndexes = vectorIndexes;

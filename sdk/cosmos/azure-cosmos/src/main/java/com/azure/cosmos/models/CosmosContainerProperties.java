@@ -362,6 +362,7 @@ public final class CosmosContainerProperties {
      * used in performing vector search on the items in a collection in the Azure CosmosDB database service.
      *
      * @param value the Vector Embedding Policy.
+     * @return the CosmosContainerProperties.
      */
     public CosmosContainerProperties setVectorEmbeddingPolicy(VectorEmbeddingPolicy value) {
         this.documentCollection.setVectorEmbeddingPolicy(value);
